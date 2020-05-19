@@ -1,8 +1,7 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.Event
+import org.coner.trailer.TestGroupings
 import org.coner.trailer.TestPeople
-import org.coner.trailer.TestSeasonEvents
 
 object TestStandingsReports {
 
@@ -11,7 +10,7 @@ object TestStandingsReports {
             return StandingsReport(
                     sections = listOf(
                             StandingsReport.Section(
-                                    name = "NOV",
+                                    title = TestGroupings.THSCC_2019_NOV.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,
@@ -55,7 +54,7 @@ object TestStandingsReports {
                                     )
                             ),
                             StandingsReport.Section(
-                                    name = "STR",
+                                    title = TestGroupings.THSCC_2019_STR.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,
@@ -102,7 +101,7 @@ object TestStandingsReports {
                                     )
                             ),
                             StandingsReport.Section(
-                                    name = "GS",
+                                    title = TestGroupings.THSCC_2019_GS.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,

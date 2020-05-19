@@ -7,7 +7,7 @@ class StandingsReport(
         val sections: List<Section>
 ) {
     class Section(
-            val name: String,
+            val title: String,
             val standings: List<Standing>
     )
 
