@@ -6,19 +6,24 @@ sealed class ParticipantResult(
         val position: Int,
         val participant: Participant
 ) {
-    class WithBestScoredRunOnly(
+    class WithPersonalBestRunOnly(
             position: Int,
             participant: Participant,
-            val bestRun: ResultRun
+            val personalBestRun: ResultRun?
     ) : ParticipantResult(position = position, participant = participant)
 
-    class WithScoredRuns(
+    class WithAllScoredRuns(
             position: Int,
             participant: Participant,
-            val scoredRuns: List<ResultRun>,
-            val bestRun: ResultRun
+            val scoredRuns: List<ResultRun>
     ) : ParticipantResult(
             position = position,
             participant = participant
-    )
+    ) {
+
+        val personalBestRun: ResultRun? = when {
+            scoredRuns.isNotEmpty() -> scoredRuns.single { it.personalBest }
+            else -> null
+        }
+    }
 }

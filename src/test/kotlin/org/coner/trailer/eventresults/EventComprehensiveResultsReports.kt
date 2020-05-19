@@ -15,7 +15,7 @@ object EventComprehensiveResultsReports {
                 classedResults = GroupedResultsReport(
                         groupingsToResultsMap = mapOf(
                                 TestGroupings.THSCC_2019_NOV to listOf(
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 4,
                                                 participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
                                                 scoredRuns = listOf(
@@ -28,7 +28,8 @@ object EventComprehensiveResultsReports {
                                                                 cones = 3
                                                         ),
                                                         ResultRun(
-                                                                time = Time("48.515")
+                                                                time = Time("48.515"),
+                                                                personalBest = true
                                                         ),
                                                         ResultRun(
                                                                 time = Time("49.076"),
@@ -37,13 +38,9 @@ object EventComprehensiveResultsReports {
                                                         ResultRun(
                                                                 time = Time("49.436")
                                                         )
-
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("48.515")
                                                 )
                                         ),
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 9,
                                                 participant = TestParticipants.Thscc2019Points1.BRYANT_MORAN,
                                                 scoredRuns = listOf(
@@ -55,7 +52,8 @@ object EventComprehensiveResultsReports {
                                                                 time = Time("55.831")
                                                         ),
                                                         ResultRun(
-                                                                time = Time("52.201")
+                                                                time = Time("52.201"),
+                                                                personalBest = true
                                                         ),
                                                         ResultRun(
                                                                 time = Time("52.062"),
@@ -64,12 +62,9 @@ object EventComprehensiveResultsReports {
                                                         ResultRun(
                                                                 time = Time("53.074")
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("52.201")
                                                 )
                                         ),
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 11,
                                                 participant = TestParticipants.Thscc2019Points1.DOMINIC_ROGERS,
                                                 scoredRuns = listOf(
@@ -88,16 +83,14 @@ object EventComprehensiveResultsReports {
                                                                 time = Time("53.409")
                                                         ),
                                                         ResultRun(
-                                                                time = Time("52.447")
+                                                                time = Time("52.447"),
+                                                                personalBest = true
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("52.447")
                                                 )
                                         )
                                 ),
                                 TestGroupings.THSCC_2019_STR to listOf(
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 2,
                                                 participant = TestParticipants.Thscc2019Points1.EUGENE_DRAKE,
                                                 scoredRuns = listOf(
@@ -115,14 +108,12 @@ object EventComprehensiveResultsReports {
                                                                 didNotFinish = true
                                                         ),
                                                         ResultRun(
-                                                                time = Time("47.544")
+                                                                time = Time("47.544"),
+                                                                personalBest = true
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("47.544")
                                                 )
                                         ),
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 4,
                                                 participant = TestParticipants.Thscc2019Points1.JIMMY_MCKENZIE,
                                                 scoredRuns = listOf(
@@ -141,16 +132,14 @@ object EventComprehensiveResultsReports {
                                                                 time = Time("49.992")
                                                         ),
                                                         ResultRun(
-                                                                time = Time("48.723")
+                                                                time = Time("48.723"),
+                                                                personalBest = true
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("48.723")
                                                 )
                                         )
                                 ),
                                 TestGroupings.THSCC_2019_GS to listOf(
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 2,
                                                 participant = TestParticipants.Thscc2019Points1.TERI_POTTER,
                                                 scoredRuns = listOf(
@@ -168,14 +157,12 @@ object EventComprehensiveResultsReports {
                                                                 time = Time("49.208")
                                                         ),
                                                         ResultRun(
-                                                                time = Time("48.141")
+                                                                time = Time("48.141"),
+                                                                personalBest = true
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("48.141")
                                                 )
                                         ),
-                                        ParticipantResult.WithScoredRuns(
+                                        ParticipantResult.WithAllScoredRuns(
                                                 position = 3,
                                                 participant = TestParticipants.Thscc2019Points1.NORMAN_ROBINSON,
                                                 scoredRuns = listOf(
@@ -192,11 +179,9 @@ object EventComprehensiveResultsReports {
                                                                 time = Time("49.637")
                                                         ),
                                                         ResultRun(
-                                                                time = Time("49.057")
+                                                                time = Time("49.057"),
+                                                                personalBest = true
                                                         )
-                                                ),
-                                                bestRun = ResultRun(
-                                                        time = Time("49.057")
                                                 )
                                         )
                                 )
