@@ -15,37 +15,189 @@ object EventComprehensiveResultsReports {
                 classedResults = GroupedResultsReport(
                         groupingsToResultsMap = mapOf(
                                 TestGroupings.THSCC_2019_NOV to listOf(
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 4,
-                                                participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF
+                                                participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("49.419"),
+                                                                cones = 4
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.848"),
+                                                                cones = 3
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("48.515")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.076"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.436")
+                                                        )
+
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("48.515")
+                                                )
                                         ),
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 9,
-                                                participant = TestParticipants.Thscc2019Points1.BRYANT_MORAN
+                                                participant = TestParticipants.Thscc2019Points1.BRYANT_MORAN,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("56.353"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("55.831")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("52.201")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("52.062"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("53.074")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("52.201")
+                                                )
                                         ),
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 11,
-                                                participant = TestParticipants.Thscc2019Points1.DOMINIC_ROGERS
+                                                participant = TestParticipants.Thscc2019Points1.DOMINIC_ROGERS,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("54.246")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("53.629"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("51.856"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("53.409")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("52.447")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("52.447")
+                                                )
                                         )
                                 ),
                                 TestGroupings.THSCC_2019_STR to listOf(
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 2,
-                                                participant = TestParticipants.Thscc2019Points1.EUGENE_DRAKE
+                                                participant = TestParticipants.Thscc2019Points1.EUGENE_DRAKE,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("49.367")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.230")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("48.807")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.573"),
+                                                                didNotFinish = true
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("47.544")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("47.544")
+                                                )
                                         ),
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 4,
-                                                participant = TestParticipants.Thscc2019Points1.JIMMY_MCKENZIE
+                                                participant = TestParticipants.Thscc2019Points1.JIMMY_MCKENZIE,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("50.115"),
+                                                                cones = 2
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("50.162"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.672")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.992")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("48.723")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("48.723")
+                                                )
                                         )
                                 ),
                                 TestGroupings.THSCC_2019_GS to listOf(
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 2,
-                                                participant = TestParticipants.Thscc2019Points1.TERI_POTTER
+                                                participant = TestParticipants.Thscc2019Points1.TERI_POTTER,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("51.026")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.335")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("48.396"),
+                                                                cones = 1
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.208")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("48.141")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("48.141")
+                                                )
                                         ),
-                                        ParticipantResult(
+                                        ParticipantResult.WithScoredRuns(
                                                 position = 3,
-                                                participant = TestParticipants.Thscc2019Points1.NORMAN_ROBINSON
+                                                participant = TestParticipants.Thscc2019Points1.NORMAN_ROBINSON,
+                                                scoredRuns = listOf(
+                                                        ResultRun(
+                                                                time = Time("52.400")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("52.122")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("51.967")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.637")
+                                                        ),
+                                                        ResultRun(
+                                                                time = Time("49.057")
+                                                        )
+                                                ),
+                                                bestRun = ResultRun(
+                                                        time = Time("49.057")
+                                                )
                                         )
                                 )
                         )
