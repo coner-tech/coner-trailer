@@ -2,7 +2,7 @@ package org.coner.trailer.eventresults
 
 import org.coner.trailer.*
 
-object EventComprehensiveResultsReports {
+object TestEventComprehensiveResultsReports {
 
     val THSCC_2019_POINTS_1: EventComprehensiveResultsReport
         get() = EventComprehensiveResultsReport(
@@ -12,7 +12,7 @@ object EventComprehensiveResultsReports {
                 handicapTimeResults = EventOverallResultsReport(
                         participantResults = listOf()
                 ),
-                classedResults = GroupedResultsReport(
+                groupedResults = GroupedResultsReport(
                         groupingsToResultsMap = mapOf(
                                 TestGroupings.THSCC_2019_NOV to listOf(
                                         ParticipantResult.WithAllScoredRuns(

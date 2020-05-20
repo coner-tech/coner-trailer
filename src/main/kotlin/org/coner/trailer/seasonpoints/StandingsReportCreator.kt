@@ -1,15 +1,33 @@
 package org.coner.trailer.seasonpoints
 
+import org.coner.trailer.Grouping
 import org.coner.trailer.eventresults.EventComprehensiveResultsReport
+import org.coner.trailer.eventresults.GroupedResultsReport
 
 class StandingsReportCreator {
-    fun create(params: CreationParameters): StandingsReport {
+
+    fun createComprehensiveStandingsReport(params: ComprehensiveStandingsReportParameters): StandingsReport {
         TODO()
     }
 
-    class CreationParameters(
+    class ComprehensiveStandingsReportParameters(
             val eventNumberToEventComprehensiveResultsReport: Map<Int, EventComprehensiveResultsReport>
     ) {
 
     }
+
+    fun createGroupedStandingsSections(eventNumberToGroupedResultsReports: Map<Int, GroupedResultsReport>): List<StandingsReport.Section> {
+        val groupsToSectionTitles: Map<Grouping, String> = eventNumberToGroupedResultsReports.values
+                .flatMap { it.groupingsToResultsMap.keys }
+                .distinct()
+                .map { it to it.abbreviation }
+                .toMap()
+        return groupsToSectionTitles.map {
+            StandingsReport.Section(
+                    title = it.value,
+                    standings = emptyList()
+            )
+        }
+    }
+
 }
