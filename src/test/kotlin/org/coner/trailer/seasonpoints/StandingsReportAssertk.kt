@@ -6,3 +6,5 @@ import assertk.assertions.prop
 
 fun Assert<StandingsReport.Section>.title() = prop("title") { it.title }
 fun Assert<StandingsReport.Section>.hasTitle(expected: String) = title().isEqualTo(expected)
+
+fun Assert<StandingsReport.Section>.standings() = prop("standings") { it.standings }

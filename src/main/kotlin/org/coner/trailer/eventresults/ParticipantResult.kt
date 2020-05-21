@@ -6,6 +6,11 @@ sealed class ParticipantResult(
         val position: Int,
         val participant: Participant
 ) {
+
+    init {
+        require(position >= 1) { "Position is 1-indexed, argument must be greater than or equal to 1" }
+    }
+
     class WithPersonalBestRunOnly(
             position: Int,
             participant: Participant,
@@ -26,4 +31,6 @@ sealed class ParticipantResult(
             else -> null
         }
     }
+
+    internal class Minimal(position: Int, participant: Participant) : ParticipantResult(position, participant)
 }
