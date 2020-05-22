@@ -20,7 +20,7 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections`() {
         val eventNumberToGroupedResultsReports = mapOf(
-                1 to TestEventComprehensiveResultsReports.THSCC_2019_POINTS_1.groupedResults
+                1 to TestEventComprehensiveResultsReports.THSCC_2019_POINTS_1.groupedResultsReports.single()
         )
 
         val actual = creator.createGroupedStandingsSections(eventNumberToGroupedResultsReports)
