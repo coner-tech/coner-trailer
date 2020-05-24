@@ -1,7 +1,7 @@
 package org.coner.trailer.seasonpoints
 
 import org.coner.trailer.Grouping
-import org.coner.trailer.eventresults.EventComprehensiveResultsReport
+import org.coner.trailer.eventresults.ComprehensiveResultsReport
 import org.coner.trailer.eventresults.GroupedResultsReport
 
 class StandingsReportCreator {
@@ -11,7 +11,7 @@ class StandingsReportCreator {
     }
 
     class ComprehensiveStandingsReportParameters(
-            val eventNumberToEventComprehensiveResultsReport: Map<Int, EventComprehensiveResultsReport>
+            val eventNumberToComprehensiveResultsReport: Map<Int, ComprehensiveResultsReport>
     ) {
 
     }

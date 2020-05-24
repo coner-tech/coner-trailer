@@ -4,7 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.TestGroupings
-import org.coner.trailer.eventresults.TestEventComprehensiveResultsReports
+import org.coner.trailer.eventresults.TestComprehensiveResultsReports
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -20,7 +20,7 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections`() {
         val eventNumberToGroupedResultsReports = mapOf(
-                1 to TestEventComprehensiveResultsReports.THSCC_2019_POINTS_1.groupedResultsReports.single()
+                1 to TestComprehensiveResultsReports.THSCC_2019_POINTS_1.groupedResultsReports.single()
         )
 
         val actual = creator.createGroupedStandingsSections(eventNumberToGroupedResultsReports)

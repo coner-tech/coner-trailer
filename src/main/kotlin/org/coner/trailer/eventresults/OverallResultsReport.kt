@@ -1,7 +1,6 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Event
-
-class EventOverallResultsReport(
+class OverallResultsReport(
+        type: ResultsType,
         val participantResults: List<ParticipantResult>
-)
+) : ResultsReport(type = type)

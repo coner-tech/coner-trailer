@@ -1,7 +1,7 @@
 package org.coner.trailer.eventresults
 
-class EventComprehensiveResultsReport(
-        val overallResultsReports: List<EventOverallResultsReport>,
+class ComprehensiveResultsReport(
+        val overallResultsReports: List<OverallResultsReport>,
         val groupedResultsReports: List<GroupedResultsReport>
 ) {
 }
