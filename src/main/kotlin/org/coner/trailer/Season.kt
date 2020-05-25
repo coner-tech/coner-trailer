@@ -6,6 +6,6 @@ import java.util.*
 class Season(
         val id: UUID = UUID.randomUUID(),
         val name: String,
-        val seasonPointsCalculatorConfigurationModel: CalculatorConfigurationModel? = null
-) {
-}
+        val seasonPointsCalculatorConfigurationModel: CalculatorConfigurationModel,
+        val events: List<SeasonEvent>
+)

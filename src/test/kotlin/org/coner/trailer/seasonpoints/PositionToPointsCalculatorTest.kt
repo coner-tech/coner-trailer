@@ -110,7 +110,7 @@ class PositionToPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(LsccSpecialCupStyleParam::class)
     fun `It should calculate points LSCC Special Cup-style`(param: LsccSpecialCupStyleParam) {
-        val calculator = TestParticipantResultPositionMappedPointsCalculators.LSCC_SPECIAL_CUP_CALCULATOR
+        val calculator = TestParticipantResultPositionMappedPointsCalculators.LSCC_OVERALL_CALCULATOR
 
         val actual = calculator.calculate(param.participantResult)
 

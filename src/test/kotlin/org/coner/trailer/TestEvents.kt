@@ -42,18 +42,9 @@ object TestEvents {
             name = "2019 THSCC Points Event #9"
     )
 
-    private val byId = mutableMapOf<UUID, Event>()
-
-    operator fun get(eventId: UUID): Event {
-        return checkNotNull(byId[eventId]) { "No event found with id $eventId" }
-    }
 
     private fun factory(
             date: LocalDate,
             name: String
-    ): Event {
-        return Event(date = date, name = name).apply {
-            byId[id] = this
-        }
-    }
+    ) = Event(date = date, name = name)
 }

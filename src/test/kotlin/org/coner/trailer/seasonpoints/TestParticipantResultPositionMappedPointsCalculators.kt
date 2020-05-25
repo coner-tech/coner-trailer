@@ -14,7 +14,7 @@ object TestParticipantResultPositionMappedPointsCalculators {
                 defaultPoints = 1
         )
 
-    val LSCC_SPECIAL_CUP_CALCULATOR: ParticipantResultPositionMappedPointsCalculator
+    val LSCC_OVERALL_CALCULATOR: ParticipantResultPositionMappedPointsCalculator
         get() = ParticipantResultPositionMappedPointsCalculator(
                 positionToPointsMap = mapOf(
                         1 to 10,

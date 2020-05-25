@@ -7,7 +7,6 @@ import java.util.*
 class Event(
         val id: UUID = UUID.randomUUID(),
         val date: LocalDate,
-        val name: String,
-        val seasonPointsCalculatorConfigurationModel: CalculatorConfigurationModel? = null
+        val name: String
 ) {
 }
