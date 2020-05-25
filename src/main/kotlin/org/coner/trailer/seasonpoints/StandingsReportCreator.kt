@@ -23,11 +23,6 @@ class StandingsReportCreator {
     )
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): Map<Grouping, StandingsReport.Section> {
-        val groupingsToSectionTitles: Map<Grouping, String> = param.eventToGroupedResultsReports.values
-                .flatMap { it.groupingsToResultsMap.keys }
-                .distinct()
-                .map { it to it.abbreviation }
-                .toMap()
         val eventToCalculator: Map<SeasonEvent, ParticipantResultPositionMappedPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val model = event.seasonPointsCalculatorConfigurationModel
                     ?: param.season.seasonPointsCalculatorConfigurationModel
