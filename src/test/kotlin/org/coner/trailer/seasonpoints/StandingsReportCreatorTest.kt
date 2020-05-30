@@ -29,7 +29,8 @@ class StandingsReportCreatorTest {
                 eventToGroupedResultsReports = mapOf(
                         TestSeasonEvents.LSCC_2019.POINTS1 to TestComprehensiveResultsReports.THSCC_2019_POINTS_1.groupedResultsReports.single()
                 ),
-                takeTopEventScores = 7
+                takeTopEventScores = 7,
+                rankingSort = TestRankingSorts.LSCC
         )
 
         val actual = creator.createGroupedStandingsSections(param)

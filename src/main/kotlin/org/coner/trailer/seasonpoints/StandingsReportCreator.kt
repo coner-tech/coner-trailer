@@ -19,7 +19,8 @@ class StandingsReportCreator {
             val resultsType: ResultsType,
             val season: Season,
             val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val takeTopEventScores: Int
+            val takeTopEventScores: Int,
+            val rankingSort: Comparator<PersonStandingAccumulator>
     )
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): Map<Grouping, StandingsReport.Section> {
@@ -50,7 +51,10 @@ class StandingsReportCreator {
                             ).apply {
                                 accumulators[participantGroupingResult.participant.person] = this
                             }
-                    accumulator.eventToPoints[event] = calculator.calculate(participantGroupingResult)
+                    with(accumulator) {
+                        eventToPoints[event] = calculator.calculate(participantGroupingResult)
+                        positionToFinishCount[participantGroupingResult.position] = (positionToFinishCount[participantGroupingResult.position] ?: 0).inc()
+                    }
                 }
             }
         }
@@ -64,7 +68,7 @@ class StandingsReportCreator {
         val groupingsToFinalAccumulators = groupingsToPersonStandingAccumulators.map { (grouping, peopleStandingAccumulators) ->
             val finalAccumulators = peopleStandingAccumulators.values
                     .toList()
-                    .sortedByDescending { it.score }
+                    .sortedWith(param.rankingSort)
             grouping to finalAccumulators
         }.toMap()
         val sectionStandings: Map<Grouping, List<StandingsReport.Standing>> = groupingsToFinalAccumulators
@@ -85,12 +89,4 @@ class StandingsReportCreator {
             )
         }.toMap()
     }
-
-    private class PersonStandingAccumulator(
-            val person: Person
-    ) {
-        val eventToPoints = mutableMapOf<SeasonEvent, Int>()
-        var score: Int = 0
-    }
-
 }
