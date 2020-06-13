@@ -11,7 +11,7 @@ object TestGroupedResultsReports {
                     type = StandardResultsTypes.competitionGrouped,
                     groupingsToResultsMap = mapOf(
                             TestGroupings.THSCC_2019_NOV to listOf(
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 4,
                                             participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
                                             scoredRuns = listOf(
@@ -38,7 +38,7 @@ object TestGroupedResultsReports {
                                             marginOfVictory = Time("0.802"),
                                             marginOfLoss = Time("0.045")
                                     ),
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 9,
                                             participant = TestParticipants.Thscc2019Points1.BRYANT_MORAN,
                                             scoredRuns = listOf(
@@ -64,7 +64,7 @@ object TestGroupedResultsReports {
                                             marginOfVictory = Time("0.203"),
                                             marginOfLoss = Time("0.489")
                                     ),
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 11,
                                             participant = TestParticipants.Thscc2019Points1.DOMINIC_ROGERS,
                                             scoredRuns = listOf(
@@ -92,7 +92,7 @@ object TestGroupedResultsReports {
                                     )
                             ),
                             TestGroupings.THSCC_2019_STR to listOf(
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 2,
                                             participant = TestParticipants.Thscc2019Points1.EUGENE_DRAKE,
                                             scoredRuns = listOf(
@@ -117,7 +117,7 @@ object TestGroupedResultsReports {
                                             marginOfVictory = Time("0.830"),
                                             marginOfLoss = Time("1.401")
                                     ),
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 4,
                                             participant = TestParticipants.Thscc2019Points1.JIMMY_MCKENZIE,
                                             scoredRuns = listOf(
@@ -145,7 +145,7 @@ object TestGroupedResultsReports {
                                     )
                             ),
                             TestGroupings.THSCC_2019_GS to listOf(
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 2,
                                             participant = TestParticipants.Thscc2019Points1.TERI_POTTER,
                                             scoredRuns = listOf(
@@ -170,7 +170,7 @@ object TestGroupedResultsReports {
                                             marginOfVictory = Time("0.916"),
                                             marginOfLoss = Time("0.379")
                                     ),
-                                    ParticipantResult.WithAllScoredRuns(
+                                    ParticipantResult(
                                             position = 3,
                                             participant = TestParticipants.Thscc2019Points1.NORMAN_ROBINSON,
                                             scoredRuns = listOf(

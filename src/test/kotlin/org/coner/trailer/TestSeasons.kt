@@ -2,8 +2,8 @@ package org.coner.trailer
 
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
-import org.coner.trailer.seasonpoints.TestParticipantResultPositionMappedPointsCalculators.LSCC_GROUPING_CALCULATOR
-import org.coner.trailer.seasonpoints.TestParticipantResultPositionMappedPointsCalculators.LSCC_OVERALL_CALCULATOR
+import org.coner.trailer.seasonpoints.TestParticipantResultPointsCalculators.LSCC_GROUPING_CALCULATOR
+import org.coner.trailer.seasonpoints.TestParticipantResultPointsCalculators.LSCC_OVERALL_CALCULATOR
 
 object TestSeasons {
 
