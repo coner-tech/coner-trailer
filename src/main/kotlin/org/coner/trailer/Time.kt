@@ -2,13 +2,13 @@ package org.coner.trailer
 
 import java.math.BigDecimal
 
-data class Time(
+class Time(
         val value: BigDecimal
 ) {
-    constructor(seconds: Int, milliseconds: Int) : this(BigDecimal("$seconds.$milliseconds"))
-    constructor(string: String) : this(BigDecimal(string))
+    constructor(valueAsString: String) : this(BigDecimal(valueAsString))
 
     init {
-        check(value.scale() == 3) { "There must be 3 decimal digits, but there were ${value.scale()}" }
+        require(value.scale() == 3) { "Value must have 3 decimal digits, but is ${value.scale()}" }
+        require(value >= BigDecimal.ZERO) { "Value must be great than or equal to zero" }
     }
 }

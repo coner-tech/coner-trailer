@@ -14,7 +14,9 @@ class ParticipantResultTest {
         assertThrows<IllegalArgumentException> {
             ParticipantResult.Minimal(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF
+                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                    marginOfVictory = null,
+                    marginOfLoss = null
             )
         }
     }
@@ -25,7 +27,9 @@ class ParticipantResultTest {
         assertDoesNotThrow {
             ParticipantResult.Minimal(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF
+                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                    marginOfVictory = null,
+                    marginOfLoss = null
             )
         }
     }

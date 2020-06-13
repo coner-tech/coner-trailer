@@ -34,7 +34,9 @@ object TestGroupedResultsReports {
                                                     ResultRun(
                                                             time = Time("49.436")
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.802"),
+                                            marginOfLoss = Time("0.045")
                                     ),
                                     ParticipantResult.WithAllScoredRuns(
                                             position = 9,
@@ -58,7 +60,9 @@ object TestGroupedResultsReports {
                                                     ResultRun(
                                                             time = Time("53.074")
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.203"),
+                                            marginOfLoss = Time("0.489")
                                     ),
                                     ParticipantResult.WithAllScoredRuns(
                                             position = 11,
@@ -82,7 +86,9 @@ object TestGroupedResultsReports {
                                                             time = Time("52.447"),
                                                             personalBest = true
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.079"),
+                                            marginOfLoss = Time("0.043")
                                     )
                             ),
                             TestGroupings.THSCC_2019_STR to listOf(
@@ -107,7 +113,9 @@ object TestGroupedResultsReports {
                                                             time = Time("47.544"),
                                                             personalBest = true
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.830"),
+                                            marginOfLoss = Time("1.401")
                                     ),
                                     ParticipantResult.WithAllScoredRuns(
                                             position = 4,
@@ -131,7 +139,9 @@ object TestGroupedResultsReports {
                                                             time = Time("48.723"),
                                                             personalBest = true
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.633"),
+                                            marginOfLoss = Time("0.349")
                                     )
                             ),
                             TestGroupings.THSCC_2019_GS to listOf(
@@ -156,7 +166,9 @@ object TestGroupedResultsReports {
                                                             time = Time("48.141"),
                                                             personalBest = true
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.916"),
+                                            marginOfLoss = Time("0.379")
                                     ),
                                     ParticipantResult.WithAllScoredRuns(
                                             position = 3,
@@ -178,7 +190,9 @@ object TestGroupedResultsReports {
                                                             time = Time("49.057"),
                                                             personalBest = true
                                                     )
-                                            )
+                                            ),
+                                            marginOfVictory = Time("0.453"),
+                                            marginOfLoss = Time("0.916")
                                     )
                             )
                     )
