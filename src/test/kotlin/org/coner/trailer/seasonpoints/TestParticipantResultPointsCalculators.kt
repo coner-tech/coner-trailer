@@ -2,7 +2,7 @@ package org.coner.trailer.seasonpoints
 
 object TestParticipantResultPointsCalculators {
 
-    val LSCC_GROUPING_CALCULATOR: ParticipantResultPointsCalculator
+    val lsccGroupingCalculator: ParticipantResultPointsCalculator
         get() = ParticipantResultPointsCalculator(
                 positionToPoints = mapOf(
                         1 to 9,
@@ -14,7 +14,7 @@ object TestParticipantResultPointsCalculators {
                 defaultPoints = 1
         )
 
-    val LSCC_OVERALL_CALCULATOR: ParticipantResultPointsCalculator
+    val lsccOverallCalculator: ParticipantResultPointsCalculator
         get() = ParticipantResultPointsCalculator(
                 positionToPoints = mapOf(
                         1 to 10,
@@ -31,7 +31,7 @@ object TestParticipantResultPointsCalculators {
                 defaultPoints = 0
         )
 
-    val NLSCC_CALCULATOR: ParticipantResultPointsCalculator
+    val olsccCalculator: ParticipantResultPointsCalculator
         get() = ParticipantResultPointsCalculator(
                 didNotFinishPoints = 1,
                 didNotStartPoints = 0,

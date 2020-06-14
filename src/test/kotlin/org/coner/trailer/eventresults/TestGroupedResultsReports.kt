@@ -6,14 +6,14 @@ import org.coner.trailer.Time
 
 object TestGroupedResultsReports {
 
-    val LSCC_2019_POINTS_1 = listOf(
+    val lscc2019Points1 = listOf(
             GroupedResultsReport(
                     type = StandardResultsTypes.competitionGrouped,
                     groupingsToResultsMap = mapOf(
-                            TestGroupings.THSCC_2019_NOV to listOf(
+                            TestGroupings.Lscc2019.NOV to listOf(
                                     ParticipantResult(
                                             position = 4,
-                                            participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                                            participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("49.419"),
@@ -40,7 +40,7 @@ object TestGroupedResultsReports {
                                     ),
                                     ParticipantResult(
                                             position = 9,
-                                            participant = TestParticipants.Thscc2019Points1.BRYANT_MORAN,
+                                            participant = TestParticipants.Lscc2019Points1.BRYANT_MORAN,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("56.353"),
@@ -66,7 +66,7 @@ object TestGroupedResultsReports {
                                     ),
                                     ParticipantResult(
                                             position = 11,
-                                            participant = TestParticipants.Thscc2019Points1.DOMINIC_ROGERS,
+                                            participant = TestParticipants.Lscc2019Points1.DOMINIC_ROGERS,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("54.246")
@@ -91,10 +91,10 @@ object TestGroupedResultsReports {
                                             marginOfLoss = Time("0.043")
                                     )
                             ),
-                            TestGroupings.THSCC_2019_STR to listOf(
+                            TestGroupings.Lscc2019.STR to listOf(
                                     ParticipantResult(
                                             position = 2,
-                                            participant = TestParticipants.Thscc2019Points1.EUGENE_DRAKE,
+                                            participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("49.367")
@@ -119,7 +119,7 @@ object TestGroupedResultsReports {
                                     ),
                                     ParticipantResult(
                                             position = 4,
-                                            participant = TestParticipants.Thscc2019Points1.JIMMY_MCKENZIE,
+                                            participant = TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("50.115"),
@@ -144,10 +144,10 @@ object TestGroupedResultsReports {
                                             marginOfLoss = Time("0.349")
                                     )
                             ),
-                            TestGroupings.THSCC_2019_GS to listOf(
+                            TestGroupings.Lscc2019.GS to listOf(
                                     ParticipantResult(
                                             position = 2,
-                                            participant = TestParticipants.Thscc2019Points1.TERI_POTTER,
+                                            participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("51.026")
@@ -172,7 +172,7 @@ object TestGroupedResultsReports {
                                     ),
                                     ParticipantResult(
                                             position = 3,
-                                            participant = TestParticipants.Thscc2019Points1.NORMAN_ROBINSON,
+                                            participant = TestParticipants.Lscc2019Points1.NORMAN_ROBINSON,
                                             scoredRuns = listOf(
                                                     ResultRun(
                                                             time = Time("52.400")

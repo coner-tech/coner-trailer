@@ -19,7 +19,7 @@ class StandingsReportCreator {
             val resultsType: ResultsType,
             val season: Season,
             val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val takeTopEventScores: Int,
+            val takeTopEventScores: Int?,
             val rankingSort: Comparator<PersonStandingAccumulator>
     )
 
@@ -61,7 +61,7 @@ class StandingsReportCreator {
         groupingsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
             personToStandingAccumulators.values.forEach { accumulator ->
                 accumulator.score = accumulator.eventToPoints.values.sortedDescending()
-                        .take(param.takeTopEventScores)
+                        .take(param.takeTopEventScores ?: Int.MAX_VALUE)
                         .sum()
             }
         }

@@ -16,31 +16,31 @@ class ParticipantResultPointsCalculatorTest {
             val expected: Int
     ) {
         FIRST(
-                participantResult = mockkParticipantResult(1, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(1, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 9
         ),
         SECOND(
-                participantResult = mockkParticipantResult(2, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(2, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 6
         ),
         THIRD(
-                participantResult = mockkParticipantResult(3, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(3, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 4
         ),
         FOURTH(
-                participantResult = mockkParticipantResult(4, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(4, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 3
         ),
         FIFTH(
-                participantResult = mockkParticipantResult(5, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(5, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 2
         ),
         SIXTH(
-                participantResult = mockkParticipantResult(6, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(6, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         ),
         DFL(
-                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         )
     }
@@ -48,7 +48,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(LsccGroupingStyleParam::class)
     fun `It should calculate points LSCC Grouping-style`(param: LsccGroupingStyleParam) {
-        val calculator = TestParticipantResultPointsCalculators.LSCC_GROUPING_CALCULATOR
+        val calculator = TestParticipantResultPointsCalculators.lsccGroupingCalculator
 
         val actual = calculator.calculate(param.participantResult)
 
@@ -60,51 +60,51 @@ class ParticipantResultPointsCalculatorTest {
             val expected: Int
     ) {
         FIRST(
-                participantResult = mockkParticipantResult(1, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(1, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 10
         ),
         SECOND(
-                participantResult = mockkParticipantResult(2, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(2, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 9
         ),
         THIRD(
-                participantResult = mockkParticipantResult(3, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(3, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 8
         ),
         FOURTH(
-                participantResult = mockkParticipantResult(4, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(4, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 7
         ),
         FIFTH(
-                participantResult = mockkParticipantResult(5, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(5, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 6
         ),
         SIXTH(
-                participantResult = mockkParticipantResult(6, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(6, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 5
         ),
         SEVENTH(
-                participantResult = mockkParticipantResult(7, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(7, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 4
         ),
         EIGHTH(
-                participantResult = mockkParticipantResult(8, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(8, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 3
         ),
         NINTH(
-                participantResult = mockkParticipantResult(9, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(9, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 2
         ),
         TENTH(
-                participantResult = mockkParticipantResult(10, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(10, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         ),
         ELEVENTH(
-                participantResult = mockkParticipantResult(11, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(11, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 0
         ),
         DFL(
-                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Thscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 0
         ),
     }
@@ -112,7 +112,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(LsccSpecialCupStyleParam::class)
     fun `It should calculate points LSCC Special Cup-style`(param: LsccSpecialCupStyleParam) {
-        val calculator = TestParticipantResultPointsCalculators.LSCC_OVERALL_CALCULATOR
+        val calculator = TestParticipantResultPointsCalculators.lsccOverallCalculator
 
         val actual = calculator.calculate(param.participantResult)
 
@@ -126,7 +126,7 @@ class ParticipantResultPointsCalculatorTest {
         FIRST_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 1,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 20
@@ -134,7 +134,7 @@ class ParticipantResultPointsCalculatorTest {
         FIRST_DNF(
                 participantResult = mockkParticipantResult(
                         position = 1,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun(didNotFinish = true)
                 ),
                 expected = 1
@@ -142,7 +142,7 @@ class ParticipantResultPointsCalculatorTest {
         FIRST_DNS(
                 participantResult = mockkParticipantResult(
                         position = 1,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = null
                 ),
                 expected = 0
@@ -150,7 +150,7 @@ class ParticipantResultPointsCalculatorTest {
         SECOND_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 2,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 16
@@ -158,7 +158,7 @@ class ParticipantResultPointsCalculatorTest {
         FIFTH_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 5,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 9
@@ -166,7 +166,7 @@ class ParticipantResultPointsCalculatorTest {
         TENTH_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 10,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 2
@@ -174,7 +174,7 @@ class ParticipantResultPointsCalculatorTest {
         ELEVENTH_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 11,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 1
@@ -182,7 +182,7 @@ class ParticipantResultPointsCalculatorTest {
         TWELFTH_CLEAN(
                 participantResult = mockkParticipantResult(
                         position = 12,
-                        participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                         personalBestRun = mockkResultRun()
                 ),
                 expected = 1
@@ -192,7 +192,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(NlsccParam::class)
     fun `It should calculate points NLSCC-style`(param: NlsccParam) {
-        val calculator = TestParticipantResultPointsCalculators.NLSCC_CALCULATOR
+        val calculator = TestParticipantResultPointsCalculators.olsccCalculator
 
         val actual = calculator.calculate(param.participantResult)
 

@@ -1,7 +1,5 @@
 package org.coner.trailer.eventresults
 
-import io.mockk.every
-import io.mockk.mockk
 import org.coner.trailer.TestParticipants
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -16,7 +14,7 @@ class ParticipantResultTest {
         assertThrows<IllegalArgumentException> {
             ParticipantResult(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                     marginOfVictory = null,
                     marginOfLoss = null,
                     scoredRuns = emptyList()
@@ -30,7 +28,7 @@ class ParticipantResultTest {
         assertDoesNotThrow {
             ParticipantResult(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF,
+                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                     marginOfVictory = null,
                     marginOfLoss = null,
                     scoredRuns = emptyList()

@@ -2,7 +2,7 @@ package org.coner.trailer.eventresults
 
 object TestComprehensiveResultsReports {
 
-    val THSCC_2019_POINTS_1: ComprehensiveResultsReport
+    val lscc2019Points1: ComprehensiveResultsReport
         get() = ComprehensiveResultsReport(
                 overallResultsReports = listOf(
                         OverallResultsReport(
@@ -14,7 +14,7 @@ object TestComprehensiveResultsReports {
                                 participantResults = listOf()
                         )
                 ),
-                groupedResultsReports = TestGroupedResultsReports.LSCC_2019_POINTS_1
+                groupedResultsReports = TestGroupedResultsReports.lscc2019Points1
         )
 
 }
