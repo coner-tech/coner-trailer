@@ -22,7 +22,7 @@ class StandingsReportCreatorTest {
     }
 
     @Test
-    fun `Create grouped standings sections`() {
+    fun `Create grouped standings sections for LSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 resultsType = StandardResultsTypes.competitionGrouped,
                 season = TestSeasons.LSCC_2019,

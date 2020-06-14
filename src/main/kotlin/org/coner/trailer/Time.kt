@@ -3,7 +3,7 @@ package org.coner.trailer
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Time(
+data class Time(
         val value: BigDecimal
 ) : Comparable<Time> {
     constructor(valueAsString: String) : this(BigDecimal(valueAsString))
@@ -18,7 +18,7 @@ class Time(
     }
 }
 
-fun List<Time>.average(): Time? {
+fun Collection<Time>.average(): Time? {
     var sum: BigDecimal = BigDecimal.ZERO
     var count = 0
     for (time in this) {
