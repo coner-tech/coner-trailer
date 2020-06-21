@@ -64,5 +64,8 @@ class StandingsReportCreatorTest {
         )
 
         val actual = creator.createGroupedStandingsSections(param)
+
+        // actual results not accessible at time of coding.
+        // punting until further notice.
     }
 }
