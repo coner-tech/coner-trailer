@@ -75,7 +75,22 @@ class StandingsReportCreator {
                 .map { (grouping, accumulators) ->
                     grouping to accumulators.mapIndexed { index, accumulator ->
                         StandingsReport.Standing(
-                                position = index + 1,
+                                position = if (index > 0) {
+                                    val previousAccumulator = accumulators[index - 1]
+                                    val comparison = param.rankingSort.compare(accumulator, previousAccumulator)
+                                    accumulator.position = if (comparison != 0) {
+                                        checkNotNull(previousAccumulator.position) + 1
+                                    } else {
+                                        accumulator.tie = true
+                                        previousAccumulator.tie = true
+                                        previousAccumulator.position
+                                    }
+                                    checkNotNull(accumulator.position)
+                                } else {
+                                    accumulator.position = 1
+                                    checkNotNull(accumulator.position)
+                                },
+                                tie = accumulator.tie,
                                 person = accumulator.person,
                                 eventToPoints = accumulator.eventToPoints.toMap(),
                                 score = accumulator.score
@@ -89,4 +104,5 @@ class StandingsReportCreator {
             )
         }.toMap()
     }
+
 }

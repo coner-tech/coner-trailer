@@ -12,6 +12,8 @@ class PersonStandingAccumulator(
     val positionToFinishCount = mutableMapOf<Int, Int>()
     var score: Int = 0
     val marginsOfVictory = mutableListOf<Time>()
+    var position: Int? = null
+    var tie: Boolean = false
 }
 
 fun Comparator<PersonStandingAccumulator>.thenByPositionFinishCountDescending(position: Int): Comparator<PersonStandingAccumulator> {

@@ -16,7 +16,8 @@ class StandingsReport(
             val position: Int,
             val person: Person,
             val eventToPoints: Map<SeasonEvent, Int>,
-            val score: Int
+            val score: Int,
+            val tie: Boolean
     )
 
 }

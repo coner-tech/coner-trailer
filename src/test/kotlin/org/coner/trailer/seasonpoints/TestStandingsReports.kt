@@ -25,7 +25,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points8 to 9,
                                                             TestSeasonEvents.Lscc2019.points9 to 9
                                                     ),
-                                                    score = 41
+                                                    score = 41,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 2,
@@ -36,7 +37,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points3 to 9,
                                                             TestSeasonEvents.Lscc2019.points5 to 9
                                                     ),
-                                                    score = 30
+                                                    score = 30,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 3,
@@ -50,7 +52,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points7 to 9,
                                                             TestSeasonEvents.Lscc2019.points9 to 1
                                                     ),
-                                                    score = 25
+                                                    score = 25,
+                                                    tie = false
                                             )
                                     )
                             ),
@@ -69,7 +72,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points7 to 9,
                                                             TestSeasonEvents.Lscc2019.points9 to 3
                                                     ),
-                                                    score = 57
+                                                    score = 57,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 2,
@@ -84,7 +88,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points7 to 6,
                                                             TestSeasonEvents.Lscc2019.points9 to 4
                                                     ),
-                                                    score = 34
+                                                    score = 34,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 3,
@@ -97,7 +102,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points8 to 6,
                                                             TestSeasonEvents.Lscc2019.points9 to 2
                                                     ),
-                                                    score = 22
+                                                    score = 22,
+                                                    tie = false
                                             )
                                     )
                             ),
@@ -117,7 +123,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points8 to 6,
                                                             TestSeasonEvents.Lscc2019.points9 to 9
                                                     ),
-                                                    score = 57
+                                                    score = 57,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 2,
@@ -130,7 +137,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points7 to 9,
                                                             TestSeasonEvents.Lscc2019.points8 to 4
                                                     ),
-                                                    score = 35
+                                                    score = 35,
+                                                    tie = false
                                             ),
                                             StandingsReport.Standing(
                                                     position = 3,
@@ -146,7 +154,8 @@ object TestStandingsReports {
                                                             TestSeasonEvents.Lscc2019.points8 to 3,
                                                             TestSeasonEvents.Lscc2019.points9 to 4
                                                     ),
-                                                    score = 27
+                                                    score = 27,
+                                                    tie = false
                                             )
                                     )
                             )
