@@ -22,11 +22,16 @@ object TestSeasonEvents {
         val points9: SeasonEvent
             get() = points(event = TestEvents.Lscc2019.points9, eventNumber = 9)
 
-        private fun points(event: Event, eventNumber: Int) = SeasonEvent(
-                event = event,
-                eventNumber = eventNumber,
-                seasonPointsCalculatorConfigurationModel = null,
-                points = true
-        )
+    }
+    private fun points(event: Event, eventNumber: Int) = SeasonEvent(
+            event = event,
+            eventNumber = eventNumber,
+            seasonPointsCalculatorConfigurationModel = null,
+            points = true
+    )
+
+    object Olscc2019 {
+        val points1: SeasonEvent
+            get() = points(event = TestEvents.Olscc2019.points1, eventNumber = 1)
     }
 }

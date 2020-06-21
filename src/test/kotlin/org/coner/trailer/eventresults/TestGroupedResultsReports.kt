@@ -198,4 +198,12 @@ object TestGroupedResultsReports {
                     )
             )
     )
+
+    val olscc2019Points1: List<GroupedResultsReport>
+        get() = listOf(
+                GroupedResultsReport(
+                        type = StandardResultsTypes.competitionGrouped,
+                        groupingsToResultsMap = emptyMap()
+                )
+        )
 }

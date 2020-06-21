@@ -62,5 +62,7 @@ class StandingsReportCreatorTest {
                 takeTopEventScores = null,
                 rankingSort = TestRankingSorts.olscc
         )
+
+        val actual = creator.createGroupedStandingsSections(param)
     }
 }
