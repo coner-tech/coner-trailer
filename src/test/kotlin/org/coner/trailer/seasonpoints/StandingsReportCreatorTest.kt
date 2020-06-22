@@ -26,7 +26,7 @@ class StandingsReportCreatorTest {
                 resultsType = StandardResultsTypes.competitionGrouped,
                 season = TestSeasons.lscc2019,
                 eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.lscc2019Points1.groupedResultsReports.single()
+                        TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
                 ),
                 takeTopEventScores = 7,
                 rankingSort = TestRankingSorts.lscc
@@ -52,12 +52,33 @@ class StandingsReportCreatorTest {
     }
 
     @Test
+    fun `It should create grouped standings sections with LSCC 2019-style tie breaking`() {
+        val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
+                resultsType = StandardResultsTypes.competitionGrouped,
+                season = TestSeasons.lscc2019,
+                eventToGroupedResultsReports = mapOf(
+                        TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveResultsReports.LsccTieBreaking.points1.groupedResultsReports.single(),
+                        TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveResultsReports.LsccTieBreaking.points2.groupedResultsReports.single()
+
+                ),
+                rankingSort = TestRankingSorts.lscc,
+                takeTopEventScores = 2
+        )
+
+        val actual = creator.createGroupedStandingsSections(param)
+
+        assertThat(actual).all {
+            TODO("Assert ties")
+        }
+    }
+
+    @Test
     fun `Create grouped standings sections for OLSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 resultsType = StandardResultsTypes.competitionGrouped,
                 season = TestSeasons.olscc2019,
                 eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.olscc2019Points1.groupedResultsReports.single()
+                        TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()
                 ),
                 takeTopEventScores = null,
                 rankingSort = TestRankingSorts.olscc
