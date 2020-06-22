@@ -1,6 +1,5 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
 

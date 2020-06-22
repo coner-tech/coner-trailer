@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.TestGroupings
+import org.coner.trailer.TestPeople
 import org.coner.trailer.TestSeasonEvents
 import org.coner.trailer.TestSeasons
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -68,7 +69,36 @@ class StandingsReportCreatorTest {
         val actual = creator.createGroupedStandingsSections(param)
 
         assertThat(actual).all {
-            TODO("Assert ties")
+            key(TestGroupings.Lscc2019.HS).all {
+                standings().all {
+                    hasSize(5)
+                    index(0).all {
+                        hasPosition(1)
+                        isTie()
+                        hasPerson(TestPeople.REBECCA_JACKSON)
+                    }
+                    index(1).all {
+                        hasPosition(1)
+                        isTie()
+                        hasPerson(TestPeople.JIMMY_MCKENZIE)
+                    }
+                    index(2).all {
+                        hasPosition(2)
+                        isNotTie()
+                        hasPerson(TestPeople.EUGENE_DRAKE)
+                    }
+                    index(3).all {
+                        hasPosition(3)
+                        isTie()
+                        hasPerson(TestPeople.TERI_POTTER)
+                    }
+                    index(4).all {
+                        hasPosition(3)
+                        isTie()
+                        hasPerson(TestPeople.HARRY_WEBSTER)
+                    }
+                }
+            }
         }
     }
 
