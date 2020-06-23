@@ -45,6 +45,9 @@ class StandingsReportCreator {
                             groupingsToPersonStandingAccumulators[grouping] = this
                         }
                 for (participantGroupingResult in groupingResults) {
+                    if (!participantGroupingResult.participant.seasonPointsEligible) {
+                        continue
+                    }
                     val accumulator = accumulators[participantGroupingResult.participant.person]
                             ?: PersonStandingAccumulator(
                                     person = participantGroupingResult.participant.person
