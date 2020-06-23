@@ -1,34 +1,49 @@
 package org.coner.trailer
 
-import java.awt.event.TextEvent
-
 object TestSeasonEvents {
 
-    object LSCC_2019 {
-        val POINTS1: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS1, eventNumber = 1)
-        val POINTS2: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS2, eventNumber = 2)
-        val POINTS3: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS3, eventNumber = 3)
-        val POINTS4: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS4, eventNumber = 4)
-        val POINTS5: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS5, eventNumber = 5)
-        val POINTS6: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS6, eventNumber = 6)
-        val POINTS7: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS7, eventNumber = 7)
-        val POINTS8: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS8, eventNumber = 8)
-        val POINTS9: SeasonEvent
-            get() = points(event = TestEvents.THSCC_2019_POINTS9, eventNumber = 9)
+    object Lscc2019 {
+        val points1: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points1, eventNumber = 1)
+        val points2: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points2, eventNumber = 2)
+        val points3: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points3, eventNumber = 3)
+        val points4: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points4, eventNumber = 4)
+        val points5: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points5, eventNumber = 5)
+        val points6: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points6, eventNumber = 6)
+        val points7: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points7, eventNumber = 7)
+        val points8: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points8, eventNumber = 8)
+        val points9: SeasonEvent
+            get() = points(event = TestEvents.Lscc2019.points9, eventNumber = 9)
+    }
 
-        private fun points(event: Event, eventNumber: Int) = SeasonEvent(
-                event = event,
-                eventNumber = eventNumber,
-                seasonPointsCalculatorConfigurationModel = null,
-                points = true
+    object LsccTieBreaking {
+        val points1: SeasonEvent get() = points(
+                event = TestEvents.Lscc2019.points1,
+                eventNumber = 1
+        )
+        val points2: SeasonEvent get() = points(
+                event = TestEvents.Lscc2019.points2,
+                eventNumber = 2
         )
     }
+
+    object Olscc2019 {
+
+        val points1: SeasonEvent
+            get() = points(event = TestEvents.Olscc2019.points1, eventNumber = 1)
+    }
+
+    private fun points(event: Event, eventNumber: Int) = SeasonEvent(
+            event = event,
+            eventNumber = eventNumber,
+            seasonPointsCalculatorConfigurationModel = null,
+            points = true
+    )
 }

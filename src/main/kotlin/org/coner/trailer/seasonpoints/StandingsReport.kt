@@ -1,6 +1,5 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
 
@@ -16,7 +15,8 @@ class StandingsReport(
             val position: Int,
             val person: Person,
             val eventToPoints: Map<SeasonEvent, Int>,
-            val score: Int
+            val score: Int,
+            val tie: Boolean
     )
 
 }

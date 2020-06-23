@@ -1,36 +1,24 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Participant
+import org.coner.trailer.Time
 
-sealed class ParticipantResult(
+data class ParticipantResult(
         val position: Int,
-        val participant: Participant
+        val participant: Participant,
+        val marginOfVictory: Time?,
+        val marginOfLoss: Time?,
+        val scoredRuns: List<ResultRun>
 ) {
 
     init {
         require(position >= 1) { "Position is 1-indexed, argument must be greater than or equal to 1" }
     }
 
-    class WithPersonalBestRunOnly(
-            position: Int,
-            participant: Participant,
-            val personalBestRun: ResultRun?
-    ) : ParticipantResult(position = position, participant = participant)
-
-    class WithAllScoredRuns(
-            position: Int,
-            participant: Participant,
-            val scoredRuns: List<ResultRun>
-    ) : ParticipantResult(
-            position = position,
-            participant = participant
-    ) {
-
-        val personalBestRun: ResultRun? = when {
+    val personalBestRun: ResultRun? by lazy {
+        when {
             scoredRuns.isNotEmpty() -> scoredRuns.single { it.personalBest }
             else -> null
         }
     }
-
-    internal class Minimal(position: Int, participant: Participant) : ParticipantResult(position, participant)
 }

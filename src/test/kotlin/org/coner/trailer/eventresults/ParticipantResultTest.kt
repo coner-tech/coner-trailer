@@ -12,9 +12,12 @@ class ParticipantResultTest {
     @ValueSource(ints = [0, -1, Int.MIN_VALUE])
     fun `Its constructor should throw when position is invalid`(param: Int) {
         assertThrows<IllegalArgumentException> {
-            ParticipantResult.Minimal(
+            ParticipantResult(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF
+                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
+                    marginOfVictory = null,
+                    marginOfLoss = null,
+                    scoredRuns = emptyList()
             )
         }
     }
@@ -23,9 +26,12 @@ class ParticipantResultTest {
     @ValueSource(ints = [1, 2, 3, 4, Int.MAX_VALUE])
     fun `Its constructor should not throw when position is valid`(param: Int) {
         assertDoesNotThrow {
-            ParticipantResult.Minimal(
+            ParticipantResult(
                     position = param,
-                    participant = TestParticipants.Thscc2019Points1.BRANDY_HUFF
+                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
+                    marginOfVictory = null,
+                    marginOfLoss = null,
+                    scoredRuns = emptyList()
             )
         }
     }

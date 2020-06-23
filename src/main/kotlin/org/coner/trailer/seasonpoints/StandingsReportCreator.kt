@@ -19,12 +19,12 @@ class StandingsReportCreator {
             val resultsType: ResultsType,
             val season: Season,
             val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val takeTopEventScores: Int,
+            val takeTopEventScores: Int?,
             val rankingSort: Comparator<PersonStandingAccumulator>
     )
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): Map<Grouping, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, ParticipantResultPositionMappedPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
+        val eventToCalculator: Map<SeasonEvent, ParticipantResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val model = event.seasonPointsCalculatorConfigurationModel
                     ?: param.season.seasonPointsCalculatorConfigurationModel
             val calculator = model.resultsTypeToCalculatorMap[param.resultsType]
@@ -61,7 +61,7 @@ class StandingsReportCreator {
         groupingsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
             personToStandingAccumulators.values.forEach { accumulator ->
                 accumulator.score = accumulator.eventToPoints.values.sortedDescending()
-                        .take(param.takeTopEventScores)
+                        .take(param.takeTopEventScores ?: Int.MAX_VALUE)
                         .sum()
             }
         }
@@ -71,11 +71,29 @@ class StandingsReportCreator {
                     .sortedWith(param.rankingSort)
             grouping to finalAccumulators
         }.toMap()
+        groupingsToFinalAccumulators.forEach { (_, accumulators) ->
+            accumulators.mapIndexed { index, accumulator ->
+                accumulator.position = if (index > 0) {
+                    val previousAccumulator = accumulators[index - 1]
+                    val comparison = param.rankingSort.compare(accumulator, previousAccumulator)
+                    if (comparison != 0) {
+                        checkNotNull(previousAccumulator.position) + 1
+                    } else {
+                        accumulator.tie = true
+                        previousAccumulator.tie = true
+                        previousAccumulator.position
+                    }
+                } else {
+                    1
+                }
+            }
+        }
         val sectionStandings: Map<Grouping, List<StandingsReport.Standing>> = groupingsToFinalAccumulators
                 .map { (grouping, accumulators) ->
-                    grouping to accumulators.mapIndexed { index, accumulator ->
+                    grouping to accumulators.map { accumulator ->
                         StandingsReport.Standing(
-                                position = index + 1,
+                                position = checkNotNull(accumulator.position),
+                                tie = accumulator.tie,
                                 person = accumulator.person,
                                 eventToPoints = accumulator.eventToPoints.toMap(),
                                 score = accumulator.score
@@ -89,4 +107,5 @@ class StandingsReportCreator {
             )
         }.toMap()
     }
+
 }
