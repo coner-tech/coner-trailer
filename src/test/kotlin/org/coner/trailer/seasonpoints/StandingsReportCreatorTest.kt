@@ -3,12 +3,8 @@ package org.coner.trailer.seasonpoints
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import org.coner.trailer.TestGroupings
-import org.coner.trailer.TestPeople
-import org.coner.trailer.TestSeasonEvents
-import org.coner.trailer.TestSeasons
-import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.eventresults.TestComprehensiveResultsReports
+import org.coner.trailer.*
+import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -98,6 +94,50 @@ class StandingsReportCreatorTest {
                         hasPerson(TestPeople.HARRY_WEBSTER)
                     }
                 }
+            }
+        }
+    }
+
+    @Test
+    fun `It should exclude participants not eligible for season points`() {
+        val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
+                resultsType = StandardResultsTypes.competitionGrouped,
+                season = TestSeasons.lscc2019,
+                eventToGroupedResultsReports = mapOf(
+                        TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
+                                type = StandardResultsTypes.competitionGrouped,
+                                groupingsToResultsMap = mapOf(
+                                        TestGroupings.Lscc2019.HS to listOf(
+                                                ParticipantResult(
+                                                        position = 1,
+                                                        participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
+                                                                seasonPointsEligible = false // only value relevant to test
+                                                        ),
+                                                        scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
+                                                        marginOfVictory = null,
+                                                        marginOfLoss = null
+                                                ),
+                                                ParticipantResult( // to make sure eligible are included
+                                                        position = 2,
+                                                        participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                                                        scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
+                                                        marginOfVictory = null,
+                                                        marginOfLoss = null
+                                                )
+                                        )
+                                )
+                        )
+                ),
+                rankingSort = TestRankingSorts.lscc,
+                takeTopEventScores = 2
+        )
+
+        val actual = creator.createGroupedStandingsSections(param)
+
+        assertThat(actual).all {
+            key(TestGroupings.Lscc2019.HS).standings().all {
+                hasSize(1)
+                index(0).hasPerson(TestPeople.REBECCA_JACKSON)
             }
         }
     }

@@ -1,7 +1,8 @@
 package org.coner.trailer
 
-class Participant(
+data class Participant(
         val person: Person,
         val grouping: Grouping,
-        val car: Car
+        val car: Car,
+        val seasonPointsEligible: Boolean
 )
