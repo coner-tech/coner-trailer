@@ -2,7 +2,9 @@ package org.coner.trailer
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -52,5 +54,21 @@ class TimeTest {
         val actual = times.average()
 
         assertThat(actual).isEqualTo(Time("46.194"))
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["123.456", "0.000", "1.100"])
+    fun `Its pattern should match on valid time strings`(param: String) {
+        val actual = Time.pattern.matcher(param).matches()
+
+        assertThat(actual, "match result").isTrue()
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["-123.456", "", "7.89", "DNF", "45.678+1"])
+    fun `Its pattern should not match on invalid time strings`(param: String) {
+        val actual = Time.pattern.matcher(param).matches()
+
+        assertThat(actual, "match result").isFalse()
     }
 }
