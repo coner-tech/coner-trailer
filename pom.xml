@@ -11,6 +11,7 @@
     <modules>
         <module>modules/core</module>
         <module>modules/datasource-crispy-fish</module>
+        <module>modules/core-test</module>
     </modules>
 
     <properties>

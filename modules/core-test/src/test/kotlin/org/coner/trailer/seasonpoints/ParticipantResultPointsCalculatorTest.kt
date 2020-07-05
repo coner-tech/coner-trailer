@@ -2,6 +2,7 @@ package org.coner.trailer.seasonpoints
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import org.coner.trailer.TestParticipantResultPointsCalculators
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.mockkParticipantResult

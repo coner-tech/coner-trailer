@@ -1,4 +1,6 @@
-package org.coner.trailer.seasonpoints
+package org.coner.trailer
+
+import org.coner.trailer.seasonpoints.ParticipantResultPointsCalculator
 
 object TestParticipantResultPointsCalculators {
 
