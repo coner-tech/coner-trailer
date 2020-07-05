@@ -6,6 +6,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.NORMAN_ROBINSON,
                     grouping = TestGroupings.Lscc2019.GS,
+                    number = "52",
                     car = Car(
                             model = "2017 Volkswagen GTI",
                             color = "White"
@@ -16,6 +17,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.TERI_POTTER,
                     grouping = TestGroupings.Lscc2019.GS,
+                    number = "40",
                     car = Car(
                             model = "2017 Ford Focus ST",
                             color = "White"
@@ -26,6 +28,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.EUGENE_DRAKE,
                     grouping = TestGroupings.Lscc2019.GS,
+                    number = "1",
                     car = Car(
                             model = "1999 Mazda Miata",
                             color = "" // empty
@@ -36,6 +39,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.JIMMY_MCKENZIE,
                     grouping = TestGroupings.Lscc2019.STR,
+                    number = "23",
                     car = Car(
                             model = "1994 Mazda Miata",
                             color = "White"
@@ -46,6 +50,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.REBECCA_JACKSON,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "1",
                     car = Car(
                             model = "2017 Mazda 6",
                             color = "Red"
@@ -58,6 +63,7 @@ object TestParticipants {
                     grouping = Grouping.Paired(
                             pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.BS
                     ),
+                    number = "177",
                     car = Car(
                             model = "2018 Subaru WRX",
                             color = "WorldRallyBlue"
@@ -70,6 +76,7 @@ object TestParticipants {
                     grouping = Grouping.Paired(
                             pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.GS
                     ),
+                    number = "58",
                     car = Car(
                             model = "2017 Volkswagen GTI",
                             color = "White"
@@ -82,6 +89,7 @@ object TestParticipants {
                     grouping = Grouping.Paired(
                             pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
                     ),
+                    number = "18",
                     car = Car(
                             model = "2002 Mazda Miata",
                             color = "Blue"
@@ -95,6 +103,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.REBECCA_JACKSON,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "1",
                     car = Car(
                             model = "2017 Mazda 6",
                             color = "Red"
@@ -105,6 +114,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.JIMMY_MCKENZIE,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "23",
                     car = Car(
                             model = "1994 Mazda Miata",
                             color = "White"
@@ -115,6 +125,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.EUGENE_DRAKE,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "1",
                     car = Car(
                             model = "1999 Mazda Miata",
                             color = "" // empty
@@ -125,6 +136,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.TERI_POTTER,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "40",
                     car = Car(
                             model = "2017 Ford Focus ST",
                             color = "White"
@@ -135,6 +147,7 @@ object TestParticipants {
             factory(
                     person = TestPeople.HARRY_WEBSTER,
                     grouping = TestGroupings.Lscc2019.HS,
+                    number = "46",
                     car = Car(
                             model = "2013 Mazda mazdaspeed3",
                             color = "silver"
@@ -146,6 +159,7 @@ object TestParticipants {
     private fun factory(
             person: Person,
             grouping: Grouping,
+            number: String,
             car: Car,
             seasonPointsEligible: Boolean = true
     ) = Participant(
@@ -153,6 +167,7 @@ object TestParticipants {
             firstName = person.name.split(' ').first(),
             lastName = person.name.split(' ').last(),
             grouping = grouping,
+            number = number,
             car = car,
             seasonPointsEligible = seasonPointsEligible
     )

@@ -17,6 +17,7 @@ object ParticipantMapper {
                         color = fromRegistration.carColor
                 ),
                 grouping = GroupingMapper.map(fromRegistration),
+                number = fromRegistration.number,
                 seasonPointsEligible = withPerson != null
         )
     }
