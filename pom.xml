@@ -136,8 +136,8 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>central</id>
-            <name>bintray</name>
+            <id>jcenter</id>
+            <name>bintray jcenter</name>
             <url>https://jcenter.bintray.com</url>
         </repository>
     </repositories>
