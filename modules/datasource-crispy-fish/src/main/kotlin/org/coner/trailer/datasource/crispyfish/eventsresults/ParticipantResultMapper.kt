@@ -21,12 +21,10 @@ object ParticipantResultMapper {
                         fromRegistration = crispyFishRegistration,
                         withPerson = peopleByMemberId[crispyFishRegistration.memberNumber]
                 ),
-                scoredRuns = crispyFishRegistration.runs
-                        .mapIndexed { index, registrationRun -> ResultRunMapper.map(
-                                crispyFishRegistrationRun = registrationRun,
-                                crispyFishRegistrationRunIndex = index,
-                                crispyFishRegistrationBestRun = crispyFishRegistration.bestRun
-                        ) },
+                scoredRuns = ResultRunMapper.map(
+                        crispyFishRegistrationRuns = crispyFishRegistration.runs,
+                        crispyFishRegistrationBestRun = crispyFishRegistration.bestRun
+                ),
                 marginOfLoss = null,
                 marginOfVictory = null
         )

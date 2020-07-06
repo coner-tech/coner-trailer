@@ -21,6 +21,19 @@ object ResultRunMapper {
         )
     }
 
+    fun map(
+            crispyFishRegistrationRuns: List<RegistrationRun>,
+            crispyFishRegistrationBestRun: Int?
+    ): List<ResultRun> {
+        return crispyFishRegistrationRuns.mapIndexed { index, registrationRun ->
+            map(
+                    crispyFishRegistrationRun = registrationRun,
+                    crispyFishRegistrationRunIndex = index,
+                    crispyFishRegistrationBestRun = crispyFishRegistrationBestRun
+            )
+        }
+    }
+
     private fun RegistrationRun.mapTime(): Time? {
         return if (hasValidTime())
             Time(time)
