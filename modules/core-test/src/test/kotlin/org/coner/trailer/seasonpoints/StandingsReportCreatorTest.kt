@@ -2,7 +2,9 @@ package org.coner.trailer.seasonpoints
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.key
 import org.coner.trailer.*
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
@@ -110,6 +112,7 @@ class StandingsReportCreatorTest {
                                         TestGroupings.Lscc2019.HS to listOf(
                                                 ParticipantResult(
                                                         position = 1,
+                                                        score = Score("0.000"),
                                                         participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
                                                                 seasonPointsEligible = false // only value relevant to test
                                                         ),
@@ -119,6 +122,7 @@ class StandingsReportCreatorTest {
                                                 ),
                                                 ParticipantResult( // to make sure eligible are included
                                                         position = 2,
+                                                        score = Score("0.000"),
                                                         participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
                                                         scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
                                                         marginOfVictory = null,

@@ -1,9 +1,7 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Participant
-import org.coner.trailer.TestGroupings
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.Time
+import org.coner.trailer.*
+import java.math.BigDecimal
 
 object TestGroupedResultsReports {
 
@@ -16,6 +14,7 @@ object TestGroupedResultsReports {
                                 TestGroupings.Lscc2019.NOV to listOf(
                                         ParticipantResult(
                                                 position = 4,
+                                                score = Score("48.515"),
                                                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -43,6 +42,7 @@ object TestGroupedResultsReports {
                                         ),
                                         ParticipantResult(
                                                 position = 9,
+                                                score = Score("52.201"),
                                                 participant = TestParticipants.Lscc2019Points1.BRYANT_MORAN,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -69,6 +69,7 @@ object TestGroupedResultsReports {
                                         ),
                                         ParticipantResult(
                                                 position = 11,
+                                                score = Score("52.447"),
                                                 participant = TestParticipants.Lscc2019Points1.DOMINIC_ROGERS,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -97,6 +98,7 @@ object TestGroupedResultsReports {
                                 TestGroupings.Lscc2019.STR to listOf(
                                         ParticipantResult(
                                                 position = 2,
+                                                score = Score("47.544"),
                                                 participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -122,6 +124,7 @@ object TestGroupedResultsReports {
                                         ),
                                         ParticipantResult(
                                                 position = 4,
+                                                score = Score("48.723"),
                                                 participant = TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -150,6 +153,7 @@ object TestGroupedResultsReports {
                                 TestGroupings.Lscc2019.GS to listOf(
                                         ParticipantResult(
                                                 position = 2,
+                                                score = Score("48.141"),
                                                 participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -175,6 +179,7 @@ object TestGroupedResultsReports {
                                         ),
                                         ParticipantResult(
                                                 position = 3,
+                                                score = Score("49.057"),
                                                 participant = TestParticipants.Lscc2019Points1.NORMAN_ROBINSON,
                                                 scoredRuns = listOf(
                                                         ResultRun(
@@ -268,6 +273,7 @@ object TestGroupedResultsReports {
                 position = position,
                 participant = participant,
                 // below properties irrelevant to test:
+                score = Score("0.000"),
                 scoredRuns = listOf(ResultRun(time = Time("0.000"), personalBest = true)),
                 marginOfLoss = null,
                 marginOfVictory = null

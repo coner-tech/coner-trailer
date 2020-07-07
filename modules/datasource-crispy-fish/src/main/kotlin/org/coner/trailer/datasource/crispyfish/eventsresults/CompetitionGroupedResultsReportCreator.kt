@@ -24,7 +24,7 @@ class CompetitionGroupedResultsReportCreator() {
         return GroupedResultsReport(
                 type = StandardResultsTypes.competitionGrouped,
                 groupingsToResultsMap = results
-                        .sortedBy { it.position }
+                        .sortedBy { it.score.value }
                         .groupBy { it.participant.resultGrouping() }
         )
     }

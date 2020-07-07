@@ -17,31 +17,31 @@ class ParticipantResultPointsCalculatorTest {
             val expected: Int
     ) {
         FIRST(
-                participantResult = mockkParticipantResult(1, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(1, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 9
         ),
         SECOND(
-                participantResult = mockkParticipantResult(2, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(2, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 6
         ),
         THIRD(
-                participantResult = mockkParticipantResult(3, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(3, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 4
         ),
         FOURTH(
-                participantResult = mockkParticipantResult(4, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(4, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 3
         ),
         FIFTH(
-                participantResult = mockkParticipantResult(5, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(5, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 2
         ),
         SIXTH(
-                participantResult = mockkParticipantResult(6, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(6, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         ),
         DFL(
-                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(Int.MAX_VALUE, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         )
     }
@@ -61,51 +61,51 @@ class ParticipantResultPointsCalculatorTest {
             val expected: Int
     ) {
         FIRST(
-                participantResult = mockkParticipantResult(1, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(1, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 10
         ),
         SECOND(
-                participantResult = mockkParticipantResult(2, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(2, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 9
         ),
         THIRD(
-                participantResult = mockkParticipantResult(3, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(3, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 8
         ),
         FOURTH(
-                participantResult = mockkParticipantResult(4, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(4, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 7
         ),
         FIFTH(
-                participantResult = mockkParticipantResult(5, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(5, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 6
         ),
         SIXTH(
-                participantResult = mockkParticipantResult(6, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(6, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 5
         ),
         SEVENTH(
-                participantResult = mockkParticipantResult(7, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(7, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 4
         ),
         EIGHTH(
-                participantResult = mockkParticipantResult(8, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(8, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 3
         ),
         NINTH(
-                participantResult = mockkParticipantResult(9, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(9, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 2
         ),
         TENTH(
-                participantResult = mockkParticipantResult(10, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(10, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 1
         ),
         ELEVENTH(
-                participantResult = mockkParticipantResult(11, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(11, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 0
         ),
         DFL(
-                participantResult = mockkParticipantResult(Int.MAX_VALUE, TestParticipants.Lscc2019Points1.BRANDY_HUFF),
+                participantResult = mockkParticipantResult(Int.MAX_VALUE, participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF),
                 expected = 0
         ),
     }

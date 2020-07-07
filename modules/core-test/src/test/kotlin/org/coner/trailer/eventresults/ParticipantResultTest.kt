@@ -1,5 +1,6 @@
 package org.coner.trailer.eventresults
 
+import org.coner.trailer.Score
 import org.coner.trailer.TestParticipants
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -14,6 +15,7 @@ class ParticipantResultTest {
         assertThrows<IllegalArgumentException> {
             ParticipantResult(
                     position = param,
+                    score = Score("0.000"),
                     participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                     marginOfVictory = null,
                     marginOfLoss = null,
@@ -28,6 +30,7 @@ class ParticipantResultTest {
         assertDoesNotThrow {
             ParticipantResult(
                     position = param,
+                    score = Score("0.000"),
                     participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                     marginOfVictory = null,
                     marginOfLoss = null,

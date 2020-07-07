@@ -63,7 +63,7 @@ class ParticipantResultMapperTest {
                 ResultRun(time = Time("53.175")),
                 ResultRun(time = Time("52.130")),
                 ResultRun(time = Time("52.117")),
-                ResultRun(time = Time("51.408"))
+                ResultRun(time = Time("51.408"), personalBest = true)
         )
         every {
             ResultRunMapper.map(

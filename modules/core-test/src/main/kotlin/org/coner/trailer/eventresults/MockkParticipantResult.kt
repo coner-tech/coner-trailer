@@ -4,9 +4,11 @@ import io.mockk.every
 import io.mockk.mockk
 import org.coner.trailer.Participant
 import org.coner.trailer.Time
+import java.math.BigDecimal
 
 fun mockkParticipantResult(
         position: Int,
+        score: BigDecimal = BigDecimal("123.456"),
         participant: Participant,
         marginOfVictory: Time? = null,
         marginOfLoss: Time? = null,
