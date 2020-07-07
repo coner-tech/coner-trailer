@@ -2,6 +2,10 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isNotNull
+import assertk.assertions.key
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.crispyfish.filetype.ecf.EventControlFileAssistant
@@ -10,8 +14,8 @@ import org.coner.crispyfish.model.ClassDefinition
 import org.coner.crispyfish.query.CategoriesQuery
 import org.coner.crispyfish.query.HandicapsQuery
 import org.coner.crispyfish.query.RegistrationsQuery
-import org.coner.trailer.Person
-import org.coner.trailer.TestPeople
+import org.coner.trailer.*
+import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -46,7 +50,25 @@ class CompetitionGroupedResultsReportCreatorTest {
                 peopleByMemberId = peopleByMemberId
         )
 
-        TODO()
+        assertThat(actual).all {
+            hasType(StandardResultsTypes.competitionGrouped)
+            resultsForGroupingAbbreviation("HS").isNotNull().all {
+                hasSize(2)
+                index(0).all {
+                    hasPosition(1)
+                    participant().hasFirstName("Anastasia")
+                    participant().hasLastName("Rigler")
+                    participant().hasNumber("130")
+                    TODO("more detailed assertions, cleanup")
+                }
+            }
+            resultsForGroupingAbbreviation("STR").isNotNull().all {
+                hasSize(2)
+            }
+            resultsForGroupingAbbreviation("NOV").isNotNull().all {
+                hasSize(3)
+            }
+        }
     }
 
     @Test
