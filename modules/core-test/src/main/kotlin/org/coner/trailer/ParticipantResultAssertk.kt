@@ -10,6 +10,8 @@ import org.coner.trailer.eventresults.ResultRun
 fun Assert<ParticipantResult>.position() = prop("position") { it.position }
 fun Assert<ParticipantResult>.hasPosition(expected: Int) = position().isEqualTo(expected)
 
+fun Assert<ParticipantResult>.score() = prop("score") { it.score }
+
 fun Assert<ParticipantResult>.participant() = prop("participant") { it.participant }
 fun Assert<ParticipantResult>.hasParticipant(expected: Participant) = participant().isDataClassEqualTo(expected)
 

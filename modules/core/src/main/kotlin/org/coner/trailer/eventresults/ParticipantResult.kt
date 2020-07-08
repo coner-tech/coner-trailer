@@ -1,9 +1,7 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Participant
-import org.coner.trailer.Score
 import org.coner.trailer.Time
-import java.math.BigDecimal
 
 data class ParticipantResult(
         val position: Int,

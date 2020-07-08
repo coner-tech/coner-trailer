@@ -40,8 +40,8 @@ class ParticipantResultMapperTest {
         )
 
         val actual = ParticipantResultMapper.map(
-                crispyFishRegistration = registration,
-                crispyFishResult = noRegistrationResult,
+                cfRegistration = registration,
+                cfResult = noRegistrationResult,
                 peopleByMemberId = emptyMap()
         )
 
@@ -73,8 +73,8 @@ class ParticipantResultMapperTest {
         }.returns(expectedScoredRuns)
 
         val actual = ParticipantResultMapper.map(
-                crispyFishRegistration = registration,
-                crispyFishResult = result,
+                cfRegistration = registration,
+                cfResult = result,
                 peopleByMemberId = peopleByMemberId
         )
 

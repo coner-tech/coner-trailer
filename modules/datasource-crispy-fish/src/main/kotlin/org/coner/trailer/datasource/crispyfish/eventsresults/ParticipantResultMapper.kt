@@ -3,34 +3,36 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.Person
-import org.coner.trailer.Score
+import org.coner.trailer.eventresults.Score
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
+import java.math.BigDecimal
 
 object ParticipantResultMapper {
 
     fun map(
-            crispyFishRegistration: Registration,
-            crispyFishResult: RegistrationResult,
+            cfRegistration: Registration,
+            cfResult: RegistrationResult,
             peopleByMemberId: Map<String, Person>
     ): ParticipantResult? {
-        val classResultPosition = crispyFishResult.position ?: return null
+        val classResultPosition = cfResult.position ?: return null
         val scoredRuns = ResultRunMapper.map(
-                crispyFishRegistrationRuns = crispyFishRegistration.runs,
-                crispyFishRegistrationBestRun = crispyFishRegistration.bestRun
+                crispyFishRegistrationRuns = cfRegistration.runs,
+                crispyFishRegistrationBestRun = cfRegistration.bestRun
         )
         val bestRun = scoredRuns.single { it.personalBest }
         return ParticipantResult(
                 position = classResultPosition,
                 score = when {
-                    crispyFishResult.time.isValidTime() -> Score(crispyFishResult.time)
-                    crispyFishResult.time.isDidNotFinish() -> Score.forDidNotFinishWithBestTime(bestRun.time)
-                    else -> Score(Int.MAX_VALUE)
+                    cfResult.hasValidTime() -> Score(BigDecimal(cfResult.time))
+                    cfResult.hasDidNotFinish() -> Score.forDidNotFinishWithBestTime(bestRun.time)
+                    cfResult.hasDisqualified() -> Score.forDisqualifiedWithBestTime(bestRun.time)
+                    else -> return null
                 },
                 participant = ParticipantMapper.map(
-                        fromRegistration = crispyFishRegistration,
-                        withPerson = peopleByMemberId[crispyFishRegistration.memberNumber]
+                        fromRegistration = cfRegistration,
+                        withPerson = peopleByMemberId[cfRegistration.memberNumber]
                 ),
                 scoredRuns = scoredRuns,
                 marginOfLoss = null,
@@ -38,7 +40,8 @@ object ParticipantResultMapper {
         )
     }
 
-    private fun String.isValidTime() = Time.pattern.matcher(this).matches()
-    private fun String.isDidNotFinish() = this == "DNF"
+    private fun RegistrationResult.hasValidTime() = Time.pattern.matcher(time).matches()
+    private fun RegistrationResult.hasDidNotFinish() = time == "DNF"
+    private fun RegistrationResult.hasDisqualified() = time == "DSQ"
 
 }

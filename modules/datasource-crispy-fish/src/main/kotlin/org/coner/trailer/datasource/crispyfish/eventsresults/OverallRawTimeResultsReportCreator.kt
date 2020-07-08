@@ -14,8 +14,8 @@ class OverallRawTimeResultsReportCreator {
         val results = crispyFishRegistrations
                 .mapNotNull {
                     ParticipantResultMapper.map(
-                            crispyFishRegistration = it,
-                            crispyFishResult = it.rawResult,
+                            cfRegistration = it,
+                            cfResult = it.rawResult,
                             peopleByMemberId = peopleByMemberId
                     )
                 }

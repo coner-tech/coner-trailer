@@ -56,11 +56,24 @@ class CompetitionGroupedResultsReportCreatorTest {
                 hasSize(2)
                 index(0).all {
                     hasPosition(1)
-                    participant().hasFirstName("Anastasia")
-                    participant().hasLastName("Rigler")
-                    participant().hasNumber("130")
-                    TODO("more detailed assertions, cleanup")
+                    participant().all {
+                        hasFirstName("Anastasia")
+                        hasLastName("Rigler")
+                        grouping().isSingular().hasAbbreviation("HS")
+                        hasNumber("130")
+                    }
+
                 }
+                index(1).all {
+                    hasPosition(2)
+                    participant().all {
+                        hasFirstName("Rebecca")
+                        hasLastName("Jackson")
+                        grouping().isSingular().hasAbbreviation("HS")
+                        hasNumber("1")
+                    }
+                }
+
             }
             resultsForGroupingAbbreviation("STR").isNotNull().all {
                 hasSize(2)

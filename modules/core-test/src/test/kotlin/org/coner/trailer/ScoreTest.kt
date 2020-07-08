@@ -1,6 +1,7 @@
 package org.coner.trailer
 
 import assertk.assertThat
+import org.coner.trailer.eventresults.Score
 import org.junit.jupiter.api.Test
 
 class ScoreTest {

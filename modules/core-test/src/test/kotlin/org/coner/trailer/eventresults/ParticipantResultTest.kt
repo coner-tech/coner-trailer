@@ -1,6 +1,5 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Score
 import org.coner.trailer.TestParticipants
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows

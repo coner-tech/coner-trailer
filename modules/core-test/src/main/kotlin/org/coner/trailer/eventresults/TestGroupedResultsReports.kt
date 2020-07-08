@@ -1,7 +1,6 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.*
-import java.math.BigDecimal
 
 object TestGroupedResultsReports {
 

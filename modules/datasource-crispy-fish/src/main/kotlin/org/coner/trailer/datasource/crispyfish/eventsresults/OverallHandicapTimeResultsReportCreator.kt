@@ -14,8 +14,8 @@ class OverallHandicapTimeResultsReportCreator {
         val results = crispyFishRegistrations
                 .mapNotNull {
                     ParticipantResultMapper.map(
-                            crispyFishRegistration = it,
-                            crispyFishResult = it.paxResult,
+                            cfRegistration = it,
+                            cfResult = it.paxResult,
                             peopleByMemberId = peopleByMemberId
                     )
                 }
