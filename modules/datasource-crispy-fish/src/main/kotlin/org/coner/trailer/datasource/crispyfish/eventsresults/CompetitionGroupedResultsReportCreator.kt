@@ -26,6 +26,13 @@ class CompetitionGroupedResultsReportCreator() {
                 groupingsToResultsMap = results
                         .sortedBy { it.score.value }
                         .groupBy { it.participant.resultGrouping() }
+                        .map { (grouping, results) ->
+                            grouping to results.mapIndexed { index, participantResult ->
+                                participantResult.copy(
+                                        position = index + 1
+                                )
+                            }
+                        }.toMap()
         )
     }
 
