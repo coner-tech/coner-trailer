@@ -8,14 +8,23 @@ data class Score constructor(
         val penalty: Penalty? = null
 ) {
 
+    constructor(
+            value: String,
+            penalty: Penalty? = null
+    ) : this(value = BigDecimal(value), penalty = penalty)
+
+    init {
+        require(value.scale() == 3) { "Scale must be 3 but was ${value.scale()}" }
+    }
+
     companion object {
 
         fun withPenalty(time: Time, penalty: Penalty): Score {
             val timeScoreInt = penalty.floor + (time.value.toScoreInt())
-            return Score(value = BigDecimal("$timeScoreInt.000"), penalty = penalty)
+            return Score(value = "$timeScoreInt.000", penalty = penalty)
         }
 
-        fun withoutTime() = Score(value = BigDecimal("${INT_MAX_VALUE_TWO_TENTHS}.000"))
+        fun withoutTime() = Score(value ="$INT_MAX_VALUE_TWO_TENTHS.000")
     }
 
     enum class Penalty(
