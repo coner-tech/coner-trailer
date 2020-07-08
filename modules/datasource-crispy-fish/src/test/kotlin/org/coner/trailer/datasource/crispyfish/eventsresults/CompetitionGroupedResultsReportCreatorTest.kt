@@ -73,13 +73,66 @@ class CompetitionGroupedResultsReportCreatorTest {
                         hasNumber("1")
                     }
                 }
-
             }
             resultsForGroupingAbbreviation("STR").isNotNull().all {
                 hasSize(2)
+                index(0).all {
+                    hasPosition(1)
+                    participant().all {
+                        hasFirstName("Eugene")
+                        hasLastName("Drake")
+                        grouping().isSingular().hasAbbreviation("STR")
+                        hasNumber("1")
+                    }
+                }
+                index(1).all {
+                    hasPosition(2)
+                    participant().all {
+                        hasFirstName("Jimmy")
+                        hasLastName("Mckenzie")
+                        grouping().isSingular().hasAbbreviation("STR")
+                        hasNumber("23")
+                    }
+                }
             }
             resultsForGroupingAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
+                index(0).all {
+                    hasPosition(1)
+                    participant().all {
+                        hasFirstName("Brandy")
+                        hasLastName("Huff")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("BS")
+                        }
+                        hasNumber("177")
+                    }
+                }
+                index(1).all {
+                    hasPosition(2)
+                    participant().all {
+                        hasFirstName("Bryant")
+                        hasLastName("Moran")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("ES")
+                        }
+                        hasNumber("58")
+                    }
+                }
+                index(2).all {
+                    hasPosition(3)
+                    participant().all {
+                        hasFirstName("Dominic")
+                        hasLastName("Rogers")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("ES")
+                        }
+                        hasNumber("18")
+                    }
+                }
             }
         }
     }

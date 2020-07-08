@@ -15,7 +15,6 @@ fun Assert<Grouping>.hasAbbreviation(expected: String) = abbreviation().isEqualT
 fun Assert<Grouping>.isSingular() = isInstanceOf(Grouping.Singular::class)
 
 fun Assert<Grouping>.isPaired() = isInstanceOf(Grouping.Paired::class)
-fun Assert<Grouping>.asPaired() = transform("as a Grouping.Paired") { it as Grouping.Paired }
 fun Assert<Grouping.Paired>.pair() = prop("pair") { it.pair }
-fun Assert<Grouping.Paired>.onFirst(body: Assert<Grouping>.() -> Unit) = pair().prop("first") { it.first }.all(body)
-fun Assert<Grouping.Paired>.onSecond(body: Assert<Grouping>.() -> Unit) = pair().prop("second") { it.second}.all(body)
+fun Assert<Grouping.Paired>.first() = pair().prop("first") { it.first }
+fun Assert<Grouping.Paired>.second() = pair().prop("second") { it.second}

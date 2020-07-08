@@ -41,14 +41,13 @@ class GroupingMapperTest {
         val actual = GroupingMapper.map(input)
 
         assertThat(actual).all {
-            isPaired()
-            asPaired().all {
-                onFirst {
+            isPaired().all {
+                first().all {
                     isSingular()
                     hasAbbreviation("NOV")
                     hasName("Novice")
                 }
-                onSecond {
+                second().all {
                     isSingular()
                     hasAbbreviation("BS")
                     hasName("B Street")
