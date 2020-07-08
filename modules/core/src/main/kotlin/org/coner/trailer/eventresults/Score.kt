@@ -10,26 +10,26 @@ data class Score constructor(
 
     companion object {
 
-        fun forDidNotFinishWithBestTime(time: Time?): Score {
-            val timeScoreInt = INT_MAX_VALUE_ONE_TENTH + (time?.value?.toScoreInt() ?: INT_MAX_VALUE_ONE_TENTH)
-            return Score(value = BigDecimal("$timeScoreInt.000"), penalty = Penalty.DID_NOT_FINISH)
+        fun withPenalty(time: Time, penalty: Penalty): Score {
+            val timeScoreInt = penalty.floor + (time.value.toScoreInt())
+            return Score(value = BigDecimal("$timeScoreInt.000"), penalty = penalty)
         }
 
-        fun forDisqualifiedWithBestTime(time: Time?): Score {
-            val timeScoreInt = INT_MAX_VALUE_TWO_TENTHS + (time?.value?.toScoreInt() ?: INT_MAX_VALUE_ONE_TENTH)
-            return Score(value = BigDecimal("$timeScoreInt.000"), penalty = Penalty.DISQUALIFIED)
-        }
+        fun withoutTime() = Score(value = BigDecimal("${INT_MAX_VALUE_TWO_TENTHS}.000"))
     }
 
-    enum class Penalty {
-        DID_NOT_FINISH,
-        DISQUALIFIED
+    enum class Penalty(
+            val floor: Int
+    ) {
+        DID_NOT_FINISH(INT_MAX_VALUE_ONE_TENTH),
+        DISQUALIFIED(INT_MAX_VALUE_TWO_TENTHS)
     }
 
 }
 
 private const val INT_MAX_VALUE_ONE_TENTH = 214748364
 private const val INT_MAX_VALUE_TWO_TENTHS = 429496729
+private const val INT_MAX_VALUE_THREE_TENTHS = 644245094
 
 private fun BigDecimal.toScoreInt(): Int {
     check(toInt() < INT_MAX_VALUE_ONE_TENTH) { "Integer value for scoring must be less than $INT_MAX_VALUE_ONE_TENTH" }
