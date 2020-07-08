@@ -14,7 +14,12 @@ data class Score constructor(
     ) : this(value = BigDecimal(value), penalty = penalty)
 
     init {
-        require(value.scale() == 3) { "Scale must be 3 but was ${value.scale()}" }
+        require(value.scale() == 3) {
+            "Scale must be 3 but was ${value.scale()}"
+        }
+        require(penalty == null || value.toInt() >= INT_MAX_VALUE_ONE_TENTH) {
+            "Score with penalty must have value greater than penalty floor. Use the withPenalty factory."
+        }
     }
 
     companion object {
