@@ -29,8 +29,8 @@ object ScoreMapper {
         }
         return when {
             cfResult.hasValidTime() -> Score(BigDecimal(cfResult.time))
-            cfResult.hasDidNotFinish() -> synthesizePenaltyTime(Score.Penalty.DID_NOT_FINISH)
-            cfResult.hasDisqualified() -> synthesizePenaltyTime(Score.Penalty.DISQUALIFIED)
+            cfResult.hasDidNotFinish() -> synthesizePenaltyTime(Score.Penalty.DidNotFinish)
+            cfResult.hasDisqualified() -> synthesizePenaltyTime(Score.Penalty.Disqualified)
             else -> Score.withoutTime()
         }
     }
