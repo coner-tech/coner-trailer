@@ -152,7 +152,82 @@ class CompetitionGroupedResultsReportCreatorTest {
                 peopleByMemberId = peopleByMemberId
         )
 
-        TODO()
+        assertThat(actual).all {
+            hasType(StandardResultsTypes.competitionGrouped)
+            resultsForGroupingAbbreviation("HS").isNotNull().all {
+                hasSize(1)
+                index(0).all {
+                    hasPosition(1)
+                    participant().all {
+                        hasFirstName("Anastasia")
+                        hasLastName("Rigler")
+                        grouping().isSingular().hasAbbreviation("HS")
+                        hasNumber("130")
+                    }
+
+                }
+            }
+            resultsForGroupingAbbreviation("STR").isNotNull().all {
+                hasSize(2)
+                index(0).all {
+                    hasPosition(1)
+                    participant().all {
+                        hasFirstName("Rebecca")
+                        hasLastName("Jackson")
+                        grouping().isSingular().hasAbbreviation("STR")
+                        hasNumber("8")
+                    }
+                }
+                index(1).all {
+                    hasPosition(2)
+                    participant().all {
+                        hasFirstName("Jimmy")
+                        hasLastName("Mckenzie")
+                        grouping().isSingular().hasAbbreviation("STR")
+                        hasNumber("23")
+                    }
+                }
+            }
+            resultsForGroupingAbbreviation("NOV").isNotNull().all {
+                hasSize(3)
+                index(0).all {
+                    hasPosition(1)
+                    participant().all {
+                        hasFirstName("Brandy")
+                        hasLastName("Huff")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("BS")
+                        }
+                        hasNumber("52")
+                    }
+                }
+                index(1).all {
+                    hasPosition(2)
+                    participant().all {
+                        hasFirstName("Dominic")
+                        hasLastName("Rogers")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("ES")
+                        }
+                        hasNumber("18")
+                    }
+                }
+                index(2).all {
+                    hasPosition(3)
+                    participant().all {
+                        hasFirstName("Bennett")
+                        hasLastName("Pantone")
+                        grouping().isPaired().all {
+                            first().hasAbbreviation("NOV")
+                            second().hasAbbreviation("CS")
+                        }
+                        hasNumber("20")
+                    }
+                }
+            }
+        }
     }
 
     @Test
