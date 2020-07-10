@@ -8,11 +8,14 @@ import org.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import org.coner.crispyfish.filetype.staging.StagingFileAssistant
 import org.coner.crispyfish.model.ClassDefinition
+import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.query.CategoriesQuery
 import org.coner.crispyfish.query.HandicapsQuery
 import org.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.*
 import org.coner.trailer.eventresults.*
+import org.coner.trailer.seasonpoints.StandingsReportCreator
+import org.coner.trailer.seasonpoints.TestRankingSorts
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -34,13 +37,7 @@ class CompetitionGroupedResultsReportCreatorTest {
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 1`() {
-        val ecf = ecfFactory("2019-01-01 event 1.ecf")
-        val registrations = RegistrationsQuery(
-                eventControlFile = ecf,
-                categories = lscc2019Categories,
-                handicaps = lscc2019Handicaps
-        ).query()
-        check(registrations.isNotEmpty()) { "Sanity check failed: registrations empty" }
+        val registrations = queryRegistrations("2019-01-01 event 1.ecf")
 
         val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
                 crispyFishRegistrations = registrations,
@@ -130,13 +127,7 @@ class CompetitionGroupedResultsReportCreatorTest {
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 2`() {
-        val ecf = ecfFactory("2019-02-02 event 2.ecf")
-        val registrations = RegistrationsQuery(
-                eventControlFile = ecf,
-                categories = lscc2019Categories,
-                handicaps = lscc2019Handicaps
-        ).query()
-        check(registrations.isNotEmpty()) { "Sanity check failed: registrations empty" }
+        val registrations = queryRegistrations("2019-02-02 event 2.ecf")
 
         val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
                 crispyFishRegistrations = registrations,
@@ -218,13 +209,7 @@ class CompetitionGroupedResultsReportCreatorTest {
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 3`() {
-        val ecf = ecfFactory("2019-03-03 event 3.ecf")
-        val registrations = RegistrationsQuery(
-                eventControlFile = ecf,
-                categories = lscc2019Categories,
-                handicaps = lscc2019Handicaps
-        ).query()
-        check(registrations.isNotEmpty()) { "Sanity check failed: registrations empty" }
+        val registrations = queryRegistrations("2019-03-03 event 3.ecf")
 
         val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
                 crispyFishRegistrations = registrations,
@@ -320,6 +305,16 @@ class CompetitionGroupedResultsReportCreatorTest {
         }
     }
 
+}
+
+private fun CompetitionGroupedResultsReportCreatorTest.queryRegistrations(ecfFileName: String): List<Registration> {
+    return RegistrationsQuery(
+            eventControlFile = ecfFactory(ecfFileName),
+            categories = lscc2019Categories,
+            handicaps = lscc2019Handicaps
+    ).query().also {
+        check(it.isNotEmpty()) { "Sanity check failed: registrations empty" }
+    }
 }
 
 private fun personFactory(person: Person, withMemberId: String): Person {

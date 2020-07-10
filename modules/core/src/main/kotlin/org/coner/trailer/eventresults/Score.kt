@@ -17,8 +17,8 @@ data class Score constructor(
         require(value.scale() == 3) {
             "Scale must be 3 but was ${value.scale()}"
         }
-        require(penalty == null || value > Penalty.floorValue) {
-            "Score with penalty must have value greater than penalty floor. Use the withPenalty factory."
+        require(penalty == null || value >= penalty.floor) {
+            "Score with penalty must have value greater than or equal to its penalty's floor. Use the withPenalty factory."
         }
     }
 
