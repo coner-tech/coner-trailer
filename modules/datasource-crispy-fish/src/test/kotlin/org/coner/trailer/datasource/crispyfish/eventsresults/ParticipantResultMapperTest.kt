@@ -42,7 +42,7 @@ class ParticipantResultMapperTest {
         val actual = ParticipantResultMapper.map(
                 cfRegistration = registration,
                 cfResult = noRegistrationResult,
-                peopleByMemberId = emptyMap()
+                memberIdToPeople = emptyMap()
         )
 
         assertThat(actual).isNull()
@@ -75,7 +75,7 @@ class ParticipantResultMapperTest {
         val actual = ParticipantResultMapper.map(
                 cfRegistration = registration,
                 cfResult = result,
-                peopleByMemberId = peopleByMemberId
+                memberIdToPeople = peopleByMemberId
         )
 
         assertThat(actual).isNotNull().all {

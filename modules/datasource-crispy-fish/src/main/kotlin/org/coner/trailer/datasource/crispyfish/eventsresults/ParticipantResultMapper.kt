@@ -11,7 +11,7 @@ object ParticipantResultMapper {
     fun map(
             cfRegistration: Registration,
             cfResult: RegistrationResult,
-            peopleByMemberId: Map<String, Person>
+            memberIdToPeople: Map<String, Person>
     ): ParticipantResult? {
         val cfResultPosition = cfResult.position ?: return null
         val scoredRuns = ResultRunMapper.map(
@@ -27,7 +27,7 @@ object ParticipantResultMapper {
                 ),
                 participant = ParticipantMapper.map(
                         fromRegistration = cfRegistration,
-                        withPerson = peopleByMemberId[cfRegistration.memberNumber]
+                        withPerson = memberIdToPeople[cfRegistration.memberNumber]
                 ),
                 scoredRuns = scoredRuns,
                 marginOfLoss = null,

@@ -16,7 +16,7 @@ class OverallRawTimeResultsReportCreator {
                     ParticipantResultMapper.map(
                             cfRegistration = it,
                             cfResult = it.rawResult,
-                            peopleByMemberId = peopleByMemberId
+                            memberIdToPeople = peopleByMemberId
                     )
                 }
                 .sortedBy { it.position }

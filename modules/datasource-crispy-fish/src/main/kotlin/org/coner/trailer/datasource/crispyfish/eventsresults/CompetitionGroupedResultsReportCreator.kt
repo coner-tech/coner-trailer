@@ -11,14 +11,14 @@ class CompetitionGroupedResultsReportCreator() {
 
     fun createFromRegistrationData(
             crispyFishRegistrations: List<Registration>,
-            peopleByMemberId: Map<String, Person>
+            memberIdToPeople: Map<String, Person>
     ) : GroupedResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
                     ParticipantResultMapper.map(
                             cfRegistration = it,
                             cfResult = it.classResult,
-                            peopleByMemberId = peopleByMemberId
+                            memberIdToPeople = memberIdToPeople
                     )
                 }
         return GroupedResultsReport(

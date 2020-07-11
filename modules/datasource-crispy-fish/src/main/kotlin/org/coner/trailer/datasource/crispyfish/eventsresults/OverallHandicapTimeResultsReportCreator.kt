@@ -16,7 +16,7 @@ class OverallHandicapTimeResultsReportCreator {
                     ParticipantResultMapper.map(
                             cfRegistration = it,
                             cfResult = it.paxResult,
-                            peopleByMemberId = peopleByMemberId
+                            memberIdToPeople = peopleByMemberId
                     )
                 }
                 .sortedBy { it.position }
