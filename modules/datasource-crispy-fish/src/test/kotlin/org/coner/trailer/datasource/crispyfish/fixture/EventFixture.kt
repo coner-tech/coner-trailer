@@ -5,9 +5,12 @@ import org.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import org.coner.crispyfish.filetype.staging.StagingFileAssistant
 import org.coner.crispyfish.query.RegistrationsQuery
+import org.coner.trailer.Event
+import org.coner.trailer.SeasonEvent
 import java.io.File
 
 class EventFixture(
+        val coreSeasonEvent: SeasonEvent,
         val ecfFileName: String,
         val conePenalty: Int = 2
 ) {
