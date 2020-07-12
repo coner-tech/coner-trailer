@@ -27,7 +27,7 @@ object TestGroupings {
         val STR: Grouping
             get() = Grouping.Singular(
                     abbreviation = "STR",
-                    name = "Street Touring Roadster"
+                    name = "Street Touring R"
             )
         val NOV: Grouping
             get() = Grouping.Singular(

@@ -68,6 +68,46 @@ class SeasonPointsStandingsTest {
                     }
                 }
             }
+            key(TestGroupings.Lscc2019.HS).all {
+                standings().all {
+                    hasSize(2)
+                    index(0).all {
+                        hasPosition(1)
+                        isNotTie()
+                        hasScore(18)
+                        person().hasSameIdAs(TestPeople.ANASTASIA_RIGLER)
+                    }
+                    index(1).all {
+                        hasPosition(2)
+                        isNotTie()
+                        hasScore(6)
+                        person().hasSameIdAs(TestPeople.REBECCA_JACKSON)
+                    }
+                }
+            }
+            key(TestGroupings.Lscc2019.STR).all {
+                standings().all {
+                    hasSize(3)
+                    index(0).all {
+                        hasPosition(1)
+                        isNotTie()
+                        hasScore(18)
+                        person().hasSameIdAs(TestPeople.REBECCA_JACKSON)
+                    }
+                    index(1).all {
+                        hasPosition(2)
+                        isNotTie()
+                        hasScore(13)
+                        person().hasSameIdAs(TestPeople.EUGENE_DRAKE)
+                    }
+                    index(2).all {
+                        hasPosition(3)
+                        isNotTie()
+                        hasScore(12)
+                        person().hasSameIdAs(TestPeople.JIMMY_MCKENZIE)
+                    }
+                }
+            }
         }
     }
 }
