@@ -11,6 +11,7 @@ import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.hasSameIdAs
 import org.coner.trailer.seasonpoints.*
 import org.junit.jupiter.api.Test
 
@@ -45,25 +46,25 @@ class SeasonPointsStandingsTest {
                         hasPosition(1)
                         isNotTie()
                         hasScore(18)
-                        person().corresponds(TestPeople.BRANDY_HUFF) { actual, expected -> actual.id == expected.id }
+                        person().hasSameIdAs(TestPeople.BRANDY_HUFF)
                     }
                     index(1).all {
                         hasPosition(2)
                         isNotTie()
                         hasScore(12)
-                        person().corresponds(TestPeople.BRYANT_MORAN) { actual, expected -> actual.id == expected.id }
+                        person().hasSameIdAs(TestPeople.BRYANT_MORAN)
                     }
                     index(2).all {
                         hasPosition(3)
                         isNotTie()
                         hasScore(10)
-                        person().corresponds(TestPeople.DOMINIC_ROGERS) { actual, expected -> actual.id == expected.id }
+                        person().hasSameIdAs(TestPeople.DOMINIC_ROGERS)
                     }
                     index(3).all {
                         hasPosition(4)
                         isNotTie()
                         hasScore(7)
-                        person().corresponds(TestPeople.BENNETT_PANTONE) { actual, expected -> actual.id == expected.id }
+                        person().hasSameIdAs(TestPeople.BENNETT_PANTONE)
                     }
                 }
             }
