@@ -3,22 +3,21 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
-import org.coner.trailer.Person
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.StandardResultsTypes
 
-class CompetitionGroupedResultsReportCreator() {
+class CompetitionGroupedResultsReportCreator(
+        private val participantResultMapper: ParticipantResultMapper
+) {
 
     fun createFromRegistrationData(
-            crispyFishRegistrations: List<Registration>,
-            memberIdToPeople: Map<String, Person>
+            crispyFishRegistrations: List<Registration>
     ) : GroupedResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    ParticipantResultMapper.map(
+                    participantResultMapper.map(
                             cfRegistration = it,
-                            cfResult = it.classResult,
-                            memberIdToPeople = memberIdToPeople
+                            cfResult = it.classResult
                     )
                 }
         return GroupedResultsReport(
@@ -32,7 +31,9 @@ class CompetitionGroupedResultsReportCreator() {
                                         position = index + 1
                                 )
                             }
-                        }.toMap()
+                        }
+                        .toMap()
+                        .toSortedMap()
         )
     }
 

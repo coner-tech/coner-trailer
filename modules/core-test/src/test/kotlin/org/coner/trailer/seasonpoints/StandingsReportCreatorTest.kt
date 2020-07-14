@@ -108,7 +108,7 @@ class StandingsReportCreatorTest {
                 eventToGroupedResultsReports = mapOf(
                         TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
                                 type = StandardResultsTypes.competitionGrouped,
-                                groupingsToResultsMap = mapOf(
+                                groupingsToResultsMap = sortedMapOf(
                                         TestGroupings.Lscc2019.HS to listOf(
                                                 ParticipantResult(
                                                         position = 1,

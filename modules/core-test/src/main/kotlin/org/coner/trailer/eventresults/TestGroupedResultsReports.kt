@@ -9,7 +9,7 @@ object TestGroupedResultsReports {
         val points1 = listOf(
                 GroupedResultsReport(
                         type = StandardResultsTypes.competitionGrouped,
-                        groupingsToResultsMap = mapOf(
+                        groupingsToResultsMap = sortedMapOf(
                                 TestGroupings.Lscc2019.NOV to listOf(
                                         ParticipantResult(
                                                 position = 4,
@@ -212,7 +212,7 @@ object TestGroupedResultsReports {
         val points1: List<GroupedResultsReport> get() = listOf(
                 GroupedResultsReport(
                         type = StandardResultsTypes.competitionGrouped,
-                        groupingsToResultsMap = mapOf(
+                        groupingsToResultsMap = sortedMapOf(
                                 TestGroupings.Lscc2019.HS to listOf(
                                         tieBreakingParticipantResult(
                                                 position = 1,
@@ -241,7 +241,7 @@ object TestGroupedResultsReports {
         val points2: List<GroupedResultsReport> get() = listOf(
                 GroupedResultsReport(
                         type = StandardResultsTypes.competitionGrouped,
-                        groupingsToResultsMap = mapOf(
+                        groupingsToResultsMap = sortedMapOf(
                                 TestGroupings.Lscc2019.HS to listOf(
                                         tieBreakingParticipantResult(
                                                 position = 1,
@@ -284,7 +284,7 @@ object TestGroupedResultsReports {
             get() = listOf(
                     GroupedResultsReport(
                             type = StandardResultsTypes.competitionGrouped,
-                            groupingsToResultsMap = emptyMap()
+                            groupingsToResultsMap = sortedMapOf()
                     )
             )
 

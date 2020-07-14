@@ -2,7 +2,6 @@ package org.coner.trailer.datasource.crispyfish.seasonpoints
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.corresponds
 import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.key
@@ -20,11 +19,10 @@ class SeasonPointsStandingsTest {
     @Test
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified
-        val competitionGroupedResultsReportCreator = CompetitionGroupedResultsReportCreator()
         val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
-            eventFixture.coreSeasonEvent to competitionGroupedResultsReportCreator.createFromRegistrationData(
-                    crispyFishRegistrations = eventFixture.registrations(seasonFixture),
-                    memberIdToPeople = seasonFixture.memberIdToPeople
+            val creator = CompetitionGroupedResultsReportCreator(eventFixture.participantResultMapper)
+            eventFixture.coreSeasonEvent to creator.createFromRegistrationData(
+                    crispyFishRegistrations = eventFixture.registrations(seasonFixture)
             )
         }.toMap()
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(

@@ -3,29 +3,23 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import org.coner.crispyfish.filetype.ecf.EventControlFile
-import org.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import org.coner.crispyfish.filetype.staging.StagingFileAssistant
-import org.coner.crispyfish.model.Registration
-import org.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.*
-import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
+import org.coner.trailer.datasource.crispyfish.GroupingMapper
+import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class CompetitionGroupedResultsReportCreatorTest {
+
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 1`() {
         val season = SeasonFixture.Lscc2019Simplified
-        val registrations = season.event1.registrations(season)
+        val event = season.event1
 
-        val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
-                crispyFishRegistrations = registrations,
-                memberIdToPeople = season.memberIdToPeople
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
+                crispyFishRegistrations = event.registrations(season)
         )
 
         assertThat(actual).all {
@@ -112,11 +106,11 @@ class CompetitionGroupedResultsReportCreatorTest {
     @Test
     fun `It should create from registration data for LSCC 2019 event 2`() {
         val season = SeasonFixture.Lscc2019Simplified
-        val registrations = season.event2.registrations(season)
+        val event = season.event2
+        val registrations = event.registrations(season)
 
-        val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
-                crispyFishRegistrations = registrations,
-                memberIdToPeople = season.memberIdToPeople
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
+                crispyFishRegistrations = registrations
         )
 
         assertThat(actual).all {
@@ -195,11 +189,11 @@ class CompetitionGroupedResultsReportCreatorTest {
     @Test
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified
-        val registrations = season.event3.registrations(season)
+        val event = season.event3
+        val registrations = event.registrations(season)
 
-        val actual = CompetitionGroupedResultsReportCreator().createFromRegistrationData(
-                crispyFishRegistrations = registrations,
-                memberIdToPeople = season.memberIdToPeople
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
+                crispyFishRegistrations = registrations
         )
 
         assertThat(actual).all {

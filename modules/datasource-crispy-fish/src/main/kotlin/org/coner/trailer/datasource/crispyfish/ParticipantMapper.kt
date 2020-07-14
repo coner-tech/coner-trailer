@@ -5,7 +5,9 @@ import org.coner.trailer.Car
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 
-object ParticipantMapper {
+class ParticipantMapper(
+        private val groupingMapper: GroupingMapper
+) {
 
     fun map(fromRegistration: Registration, withPerson: Person?): Participant {
         return Participant(
@@ -16,7 +18,7 @@ object ParticipantMapper {
                         model = fromRegistration.carModel,
                         color = fromRegistration.carColor
                 ),
-                grouping = GroupingMapper.map(fromRegistration),
+                grouping = groupingMapper.map(fromRegistration),
                 number = fromRegistration.number,
                 seasonPointsEligible = withPerson != null
         )

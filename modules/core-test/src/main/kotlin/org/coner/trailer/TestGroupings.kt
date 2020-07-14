@@ -7,32 +7,38 @@ object TestGroupings {
         val BS: Grouping
             get() = Grouping.Singular(
                     abbreviation = "BS",
-                    name = "B Street"
+                    name = "B Street",
+                    sort = 3
             )
         val ES: Grouping
             get() = Grouping.Singular(
                     abbreviation = "ES",
-                    name = "E Street"
+                    name = "E Street",
+                    sort = 6
             )
         val GS: Grouping
             get() = Grouping.Singular(
                     abbreviation = "GS",
-                    name = "G Street"
+                    name = "G Street",
+                    sort = 8
             )
         val HS: Grouping
             get() = Grouping.Singular(
                     abbreviation = "HS",
-                    name = "H Street"
+                    name = "H Street",
+                    sort = 9
             )
         val STR: Grouping
             get() = Grouping.Singular(
                     abbreviation = "STR",
-                    name = "Street Touring R"
+                    name = "Street Touring R",
+                    sort = 14
             )
         val NOV: Grouping
             get() = Grouping.Singular(
                     abbreviation = "NOV",
-                    name = "Novice"
+                    name = "Novice",
+                    sort = 49
             )
     }
 }

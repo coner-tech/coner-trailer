@@ -4,14 +4,17 @@ import java.util.*
 
 sealed class Grouping(
         val abbreviation: String,
-        val name: String
-) {
+        val name: String,
+        val sort: Int
+) : Comparable<Grouping> {
     class Singular(
             abbreviation: String,
-            name: String
+            name: String,
+            sort: Int
     ) : Grouping(
             abbreviation = abbreviation,
-            name = name
+            name = name,
+            sort = sort
     )
 
     class Paired(
@@ -19,7 +22,8 @@ sealed class Grouping(
             groupingsAsList: List<Grouping> = pair.toList()
     ) : Grouping(
             abbreviation = groupingsAsList.joinToString(separator = " ") { it.abbreviation },
-            name = groupingsAsList.joinToString(separator = ", ") { it.name }
+            name = groupingsAsList.joinToString(separator = ", ") { it.name },
+            sort = pair.first.sort
     )
 
     override fun equals(other: Any?): Boolean {
@@ -28,12 +32,17 @@ sealed class Grouping(
 
         if (abbreviation != other.abbreviation) return false
         if (name != other.name) return false
+        if (sort != other.sort) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(abbreviation, name)
+        return Objects.hash(abbreviation, name, sort)
+    }
+
+    override fun compareTo(other: Grouping): Int {
+        return compareValues(sort, other.sort)
     }
 
 

@@ -5,18 +5,18 @@ import org.coner.trailer.Person
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.StandardResultsTypes
 
-class OverallRawTimeResultsReportCreator {
+class OverallRawTimeResultsReportCreator(
+        private val participantResultMapper: ParticipantResultMapper
+) {
 
     fun createFromRegistrationData(
-            crispyFishRegistrations: List<Registration>,
-            peopleByMemberId: Map<String, Person>
+            crispyFishRegistrations: List<Registration>
     ) : OverallResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    ParticipantResultMapper.map(
+                    participantResultMapper.map(
                             cfRegistration = it,
-                            cfResult = it.rawResult,
-                            memberIdToPeople = peopleByMemberId
+                            cfResult = it.rawResult
                     )
                 }
                 .sortedBy { it.position }

@@ -5,7 +5,9 @@ import org.coner.trailer.Person
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.StandardResultsTypes
 
-class OverallHandicapTimeResultsReportCreator {
+class OverallHandicapTimeResultsReportCreator(
+        private val participantResultMapper: ParticipantResultMapper
+) {
 
     fun createFromRegistrationData(
             crispyFishRegistrations: List<Registration>,
@@ -13,10 +15,9 @@ class OverallHandicapTimeResultsReportCreator {
     ) : OverallResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    ParticipantResultMapper.map(
+                    participantResultMapper.map(
                             cfRegistration = it,
-                            cfResult = it.paxResult,
-                            memberIdToPeople = peopleByMemberId
+                            cfResult = it.paxResult
                     )
                 }
                 .sortedBy { it.position }

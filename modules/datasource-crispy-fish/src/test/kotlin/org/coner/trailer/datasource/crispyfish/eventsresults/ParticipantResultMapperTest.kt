@@ -4,7 +4,9 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
+import io.mockk.MockKAnnotations
 import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.coner.crispyfish.model.RegistrationResult
@@ -18,9 +20,12 @@ import org.junit.jupiter.api.Test
 
 class ParticipantResultMapperTest {
 
+    @MockK
+    private lateinit var participantMapper: ParticipantMapper
+
     @BeforeEach
     fun before() {
-        mockkObject(ParticipantMapper)
+        MockKAnnotations.init(this)
         mockkObject(ResultRunMapper)
     }
 
@@ -38,11 +43,14 @@ class ParticipantResultMapperTest {
                 paxResult = noRegistrationResult,
                 classResult = noRegistrationResult
         )
-
-        val actual = ParticipantResultMapper.map(
-                cfRegistration = registration,
-                cfResult = noRegistrationResult,
+        val participantResultMapper = ParticipantResultMapper(
+                participantMapper,
                 memberIdToPeople = emptyMap()
+        )
+
+        val actual = participantResultMapper.map(
+                cfRegistration = registration,
+                cfResult = noRegistrationResult
         )
 
         assertThat(actual).isNull()
@@ -54,9 +62,9 @@ class ParticipantResultMapperTest {
         val result = registration.classResult
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val peopleByMemberId = mapOf(checkNotNull(expectedPerson.memberId) to expectedPerson)
+        val memberIdToPeople = mapOf(checkNotNull(expectedPerson.memberId) to expectedPerson)
         every {
-            ParticipantMapper.map(fromRegistration = registration, withPerson = expectedPerson)
+            participantMapper.map(fromRegistration = registration, withPerson = expectedPerson)
         }.returns(expectedParticipant)
         val expectedScoredRuns = listOf(
                 ResultRun(time = Time("52.749")),
@@ -71,11 +79,14 @@ class ParticipantResultMapperTest {
                     crispyFishRegistrationBestRun = registration.bestRun
             )
         }.returns(expectedScoredRuns)
+        val participantResultMapper = ParticipantResultMapper(
+                participantMapper,
+                memberIdToPeople
+        )
 
-        val actual = ParticipantResultMapper.map(
+        val actual = participantResultMapper.map(
                 cfRegistration = registration,
-                cfResult = result,
-                memberIdToPeople = peopleByMemberId
+                cfResult = result
         )
 
         assertThat(actual).isNotNull().all {

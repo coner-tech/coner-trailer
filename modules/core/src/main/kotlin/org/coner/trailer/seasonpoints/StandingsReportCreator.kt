@@ -4,6 +4,8 @@ import org.coner.trailer.*
 import org.coner.trailer.eventresults.ComprehensiveResultsReport
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.ResultsType
+import java.util.*
+import kotlin.Comparator
 
 class StandingsReportCreator {
 
@@ -23,7 +25,7 @@ class StandingsReportCreator {
             val rankingSort: Comparator<PersonStandingAccumulator>
     )
 
-    fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): Map<Grouping, StandingsReport.Section> {
+    fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): SortedMap<Grouping, StandingsReport.Section> {
         val eventToCalculator: Map<SeasonEvent, ParticipantResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val model = event.seasonPointsCalculatorConfigurationModel
                     ?: param.season.seasonPointsCalculatorConfigurationModel
@@ -104,12 +106,15 @@ class StandingsReportCreator {
                         )
                     }.toList()
                 }.toMap()
-        return sectionStandings.map { (grouping, standings) ->
-            grouping to StandingsReport.Section(
-                    title = grouping.abbreviation,
-                    standings = standings
-            )
-        }.toMap()
+        return sectionStandings
+                .map { (grouping, standings) ->
+                    grouping to StandingsReport.Section(
+                            title = grouping.abbreviation,
+                            standings = standings
+                    )
+                }
+                .toMap()
+                .toSortedMap()
     }
 
 }

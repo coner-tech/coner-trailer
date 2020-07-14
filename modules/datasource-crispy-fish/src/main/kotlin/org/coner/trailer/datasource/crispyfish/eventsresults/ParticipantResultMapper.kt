@@ -6,12 +6,14 @@ import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
 
-object ParticipantResultMapper {
+class ParticipantResultMapper(
+        private val participantMapper: ParticipantMapper,
+        private val memberIdToPeople: Map<String, Person>
+) {
 
     fun map(
             cfRegistration: Registration,
-            cfResult: RegistrationResult,
-            memberIdToPeople: Map<String, Person>
+            cfResult: RegistrationResult
     ): ParticipantResult? {
         val cfResultPosition = cfResult.position ?: return null
         val scoredRuns = ResultRunMapper.map(
@@ -25,7 +27,7 @@ object ParticipantResultMapper {
                         cfResult = cfResult,
                         scoredRuns = scoredRuns
                 ),
-                participant = ParticipantMapper.map(
+                participant = participantMapper.map(
                         fromRegistration = cfRegistration,
                         withPerson = memberIdToPeople[cfRegistration.memberNumber]
                 ),

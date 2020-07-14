@@ -4,45 +4,25 @@ import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.crispyfish.query.CategoriesQuery
 import org.coner.crispyfish.query.HandicapsQuery
 import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.GroupingMapper
+import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
 import java.io.File
 import java.time.LocalDate
 
-sealed class SeasonFixture {
-    abstract val path: String
+sealed class SeasonFixture(
+        val path: String,
+        val classDefinitionFixture: ClassDefinitionFixture
+) {
     abstract val events: List<EventFixture>
-    abstract val classDefinitionFixture: ClassDefinitionFixture
     abstract val memberIdToPeople: Map<String, Person>
     abstract val season: Season
-    object Lscc2019Simplified : SeasonFixture() {
-        val event1 = EventFixture(
-                coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-01-01"), name = "Event 1"),
-                        eventNumber = 1,
-                        points = true
-                ),
-                ecfFileName = "2019-01-01 event 1.ecf"
-        )
-        val event2 = EventFixture(
-                coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-02-02"), name = "Event 2"),
-                        eventNumber = 2,
-                        points = true
-                ),
-                ecfFileName = "2019-02-02 event 2.ecf"
-        )
-        val event3 = EventFixture(
-                coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-03-03"), name = "Event 3"),
-                        eventNumber = 3,
-                        points = true
-                ),
-                ecfFileName = "2019-03-03 event 3.ecf"
-        )
-        override val path = "lscc-2019-simplified"
-        override val classDefinitionFixture = ClassDefinitionFixture("lscc2019.def")
-        override val events = listOf(event1, event2, event3)
+    object Lscc2019Simplified : SeasonFixture(
+            path = "lscc-2019-simplified",
+            classDefinitionFixture = ClassDefinitionFixture("lscc2019.def")
+    ) {
         override val memberIdToPeople = listOf(
                 personFactory(TestPeople.DOMINIC_ROGERS, "2019-00061"),
                 personFactory(TestPeople.BRANDY_HUFF, "2019-00080"),
@@ -53,6 +33,37 @@ sealed class SeasonFixture {
                 personFactory(TestPeople.EUGENE_DRAKE, "2019-00057"),
                 personFactory(TestPeople.BENNETT_PANTONE, "2019-00295")
         ).map { it.memberId to it }.toMap()
+        val event1 = EventFixture(
+                groupingMapper = groupingMapper,
+                memberIdToPeople = memberIdToPeople,
+                coreSeasonEvent = SeasonEvent(
+                        event = Event(date = LocalDate.parse("2019-01-01"), name = "Event 1"),
+                        eventNumber = 1,
+                        points = true
+                ),
+                ecfFileName = "2019-01-01 event 1.ecf"
+        )
+        val event2 = EventFixture(
+                groupingMapper = groupingMapper,
+                memberIdToPeople = memberIdToPeople,
+                coreSeasonEvent = SeasonEvent(
+                        event = Event(date = LocalDate.parse("2019-02-02"), name = "Event 2"),
+                        eventNumber = 2,
+                        points = true
+                ),
+                ecfFileName = "2019-02-02 event 2.ecf"
+        )
+        val event3 = EventFixture(
+                groupingMapper = groupingMapper,
+                memberIdToPeople = memberIdToPeople,
+                coreSeasonEvent = SeasonEvent(
+                        event = Event(date = LocalDate.parse("2019-03-03"), name = "Event 3"),
+                        eventNumber = 3,
+                        points = true
+                ),
+                ecfFileName = "2019-03-03 event 3.ecf"
+        )
+        override val events = listOf(event1, event2, event3)
         override val season = Season(
                 name = "LSCC 2019 Simplified",
                 events = events.map { it.coreSeasonEvent },
@@ -64,13 +75,16 @@ sealed class SeasonFixture {
         )
     }
 
-    fun classDefinitionFile() = ClassDefinitionFile(
+    val classDefinitionFile = ClassDefinitionFile(
             file = File(javaClass.getResource("/seasons/$path/${classDefinitionFixture.fileName}").toURI())
     )
 
-    fun categories() = CategoriesQuery(classDefinitionFile()).query()
-
-    fun handicaps() = HandicapsQuery(classDefinitionFile()).query()
+    val classDefinitions = classDefinitionFile.mapper().all()
+    val categories = classDefinitions.filter { it.paxed }
+    val handicaps = classDefinitions.filter { !it.paxed }
+    val groupingMapper = GroupingMapper(
+            classDefinitions = classDefinitions
+    )
 }
 
 private fun personFactory(person: Person, withMemberId: String): Person {

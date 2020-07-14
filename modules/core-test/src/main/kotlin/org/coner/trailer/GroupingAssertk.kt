@@ -12,6 +12,9 @@ fun Assert<Grouping>.hasName(expected: String) = name().isEqualTo(expected)
 fun Assert<Grouping>.abbreviation() = prop("abbreviation") { it.abbreviation }
 fun Assert<Grouping>.hasAbbreviation(expected: String) = abbreviation().isEqualTo(expected)
 
+fun Assert<Grouping>.sort() = prop("sort") { it.sort }
+fun Assert<Grouping>.hasSort(expected: Int) = sort().isEqualTo(expected)
+
 fun Assert<Grouping>.isSingular() = isInstanceOf(Grouping.Singular::class)
 
 fun Assert<Grouping>.isPaired() = isInstanceOf(Grouping.Paired::class)
