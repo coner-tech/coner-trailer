@@ -1,6 +1,6 @@
 package org.coner.trailer
 
-class Car(
+data class Car(
         val model: String,
         val color: String
 )

@@ -2,6 +2,7 @@ package org.coner.trailer
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.regex.Pattern
 
 data class Time(
         val value: BigDecimal
@@ -15,6 +16,12 @@ data class Time(
 
     override fun compareTo(other: Time): Int {
         return value.compareTo(other.value)
+    }
+
+    companion object {
+        val pattern: Pattern by lazy {
+            Pattern.compile("^[\\d]{1,3}\\.[\\d]{3}$")
+        }
     }
 }
 

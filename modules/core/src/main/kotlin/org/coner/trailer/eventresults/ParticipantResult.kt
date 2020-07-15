@@ -5,6 +5,7 @@ import org.coner.trailer.Time
 
 data class ParticipantResult(
         val position: Int,
+        val score: Score,
         val participant: Participant,
         val marginOfVictory: Time?,
         val marginOfLoss: Time?,
