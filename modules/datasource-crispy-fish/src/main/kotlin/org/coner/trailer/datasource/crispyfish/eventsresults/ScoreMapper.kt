@@ -36,6 +36,6 @@ object ScoreMapper {
     }
 
     private fun RegistrationResult.hasValidTime() = Time.pattern.matcher(time).matches()
-    private fun RegistrationResult.hasDidNotFinish() = time == "DNF"
+    private fun RegistrationResult.hasDidNotFinish() = time == "DNF" || time == "-" // yes, really
     private fun RegistrationResult.hasDisqualified() = time == "DSQ"
 }

@@ -4,8 +4,6 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.*
-import org.coner.trailer.datasource.crispyfish.GroupingMapper
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test

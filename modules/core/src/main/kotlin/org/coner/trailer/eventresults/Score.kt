@@ -28,18 +28,17 @@ data class Score constructor(
             return Score(value = penalty.floor + time.value, penalty = penalty)
         }
 
-        fun withoutTime() = Score(value = BigDecimal.valueOf(Penalty.intMaxValueTwoTenthsAsLong))
+        fun withoutTime() = Score(value = BigDecimal.valueOf(Penalty.intMaxValueTwoTenthsAsLong).setScale(3))
     }
 
     sealed class Penalty(
             val floor: BigDecimal
     ) {
-        object DidNotFinish : Penalty(floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong))
-        object Disqualified : Penalty(floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong))
+        object DidNotFinish : Penalty(floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3))
+        object Disqualified : Penalty(floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3))
         companion object {
             const val intMaxValueOneTenthAsLong = 214748364L
             const val intMaxValueTwoTenthsAsLong = 429496729L
-            val floorValue: BigDecimal = BigDecimal.valueOf(intMaxValueOneTenthAsLong)
         }
 
     }

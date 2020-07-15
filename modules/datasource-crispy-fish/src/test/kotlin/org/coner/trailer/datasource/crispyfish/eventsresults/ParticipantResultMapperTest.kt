@@ -13,7 +13,7 @@ import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
-import org.coner.trailer.eventresults.ResultRun
+import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

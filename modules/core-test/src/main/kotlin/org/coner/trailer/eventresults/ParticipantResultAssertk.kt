@@ -1,11 +1,10 @@
-package org.coner.trailer
+package org.coner.trailer.eventresults
 
 import assertk.Assert
 import assertk.assertions.isDataClassEqualTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
-import org.coner.trailer.eventresults.ParticipantResult
-import org.coner.trailer.eventresults.ResultRun
+import org.coner.trailer.Participant
 
 fun Assert<ParticipantResult>.position() = prop("position") { it.position }
 fun Assert<ParticipantResult>.hasPosition(expected: Int) = position().isEqualTo(expected)

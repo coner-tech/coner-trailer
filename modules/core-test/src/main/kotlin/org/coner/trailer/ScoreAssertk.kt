@@ -8,6 +8,7 @@ import java.math.BigDecimal
 
 fun Assert<Score>.value() = prop("value") { it.value }
 fun Assert<Score>.hasValue(expected: BigDecimal) = value().isEqualTo(expected)
+fun Assert<Score>.hasValue(expected: String) = hasValue(BigDecimal(expected))
 
 fun Assert<Score>.penalty() = prop("penalty") { it.penalty }
 fun Assert<Score>.hasDidNotFinish() = all {
