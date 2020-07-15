@@ -117,6 +117,14 @@
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
+                                <configuration>
+                                    <excludes>
+                                        <!-- exclude custom Assertk extensions -->
+                                        <exclude>**/*AssertkKt</exclude>
+                                        <!-- exclude custom Mockk extensions -->
+                                        <exclude>**/Mockk*kt</exclude>
+                                    </excludes>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>report</id>
