@@ -23,6 +23,21 @@ object TestSeasonEvents {
             get() = points(event = TestEvents.Lscc2019.points9, eventNumber = 9)
     }
 
+    object Lscc2019Simplified {
+        val points1 by lazy { points(
+                event = TestEvents.Lscc2019Simplified.points1,
+                eventNumber = 1
+        ) }
+        val points2 by lazy { points(
+                event = TestEvents.Lscc2019Simplified.points2,
+                eventNumber = 2
+        ) }
+        val points3 by lazy { points(
+                event = TestEvents.Lscc2019Simplified.points3,
+                eventNumber = 3
+        ) }
+    }
+
     object LsccTieBreaking {
         val points1: SeasonEvent get() = points(
                 event = TestEvents.Lscc2019.points1,

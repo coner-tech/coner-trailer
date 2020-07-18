@@ -101,7 +101,7 @@ class StandingsReportCreator {
                                 position = checkNotNull(accumulator.position),
                                 tie = accumulator.tie,
                                 person = accumulator.person,
-                                eventToPoints = accumulator.eventToPoints.toMap(),
+                                eventToPoints = accumulator.eventToPoints.toSortedMap(),
                                 score = accumulator.score
                         )
                     }.toList()

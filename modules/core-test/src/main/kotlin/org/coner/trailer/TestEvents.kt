@@ -53,6 +53,21 @@ object TestEvents {
             )
     }
 
+    object Lscc2019Simplified {
+        val points1 by lazy { Event(
+                date = LocalDate.parse("2019-01-01"),
+                name = "2019 LSCC Simplified Points Event #1"
+        ) }
+        val points2 by lazy { Event(
+                date = LocalDate.parse("2019-02-02"),
+                name = "2019 LSCC Simplified Points Event #2"
+        ) }
+        val points3 by lazy { Event(
+                date = LocalDate.parse("2019-03-03"),
+                name = "2019 LSCC Simplified Points Event #3"
+        ) }
+    }
+
     object Olscc2019 {
         val points1: Event
             get() = Event(
