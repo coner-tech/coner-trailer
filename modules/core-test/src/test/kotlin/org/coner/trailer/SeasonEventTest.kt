@@ -65,7 +65,7 @@ class SeasonEventTest {
         val one = TestSeasonEvents.Lscc2019Simplified.points1
         val testAndTune = SeasonEvent(
                 event = Event(
-                        date = LocalDate.parse("2019-02-01"), // important
+                        date = LocalDate.parse("2019-02-01"), // important: after "one", before "two"
                         name = "Test and Tune"
                 ),
                 points = false,
