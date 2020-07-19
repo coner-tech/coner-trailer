@@ -6,8 +6,13 @@ import java.util.*
 
 class StandingsReport(
         val sections: List<Section>,
-        val seasonEvents: List<SeasonEvent>
+        val pointsEvents: List<SeasonEvent>
 ) {
+
+    init {
+        require(pointsEvents.all { it.points }) { "pointsEvents must contain only SeasonEvent instances with points==true" }
+    }
+
     class Section(
             val title: String,
             val standings: List<Standing>
@@ -19,6 +24,8 @@ class StandingsReport(
             val eventToPoints: SortedMap<SeasonEvent, Int>,
             val score: Int,
             val tie: Boolean
-    )
+    ) {
+        val count = eventToPoints.size
+    }
 
 }
