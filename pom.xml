@@ -24,6 +24,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <assertk.version>0.22</assertk.version>
         <mockk.version>1.10.0</mockk.version>
+        <jsoup.version>1.13.1</jsoup.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +61,12 @@
                 <groupId>io.mockk</groupId>
                 <artifactId>mockk</artifactId>
                 <version>${mockk.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
