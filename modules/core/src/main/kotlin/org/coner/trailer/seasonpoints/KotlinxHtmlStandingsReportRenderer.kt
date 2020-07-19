@@ -35,6 +35,7 @@ class KotlinxHtmlStandingsReportRenderer {
                 colSpan = "2"
             }
             th {
+                TODO("report.pointsEventCount")
                 colSpan = report.seasonEvents.count { it.points }.toString()
                 scope = ThScope.colGroup
                 text("Events")
@@ -43,6 +44,7 @@ class KotlinxHtmlStandingsReportRenderer {
         tr {
             th { text("Name") }
             th { text("Member #") }
+            TODO("report.seasonPointsEvents")
             report.seasonEvents
                     .filter { it.points }
                     .forEach { seasonPointsEvent ->
@@ -64,20 +66,20 @@ class KotlinxHtmlStandingsReportRenderer {
             standing: StandingsReport.Standing) = tr {
         td { text(standing.person.name) }
         td { text(standing.person.memberId) }
+        TODO("report.seasonPointsEvents")
         report.seasonEvents
                 .filter { it.points }
                 .forEach { seasonPointsEvent ->
                     standingsReportSectionTableEventPointsCell(seasonPointsEvent, standing)
                 }
+        TODO("standing.count")
         td { text(standing.eventToPoints.values.size) }
         td { text(standing.score) }
     }
 
     private fun TR.standingsReportSectionTableEventPointsCell(seasonEvent: SeasonEvent, standing: StandingsReport.Standing) = td {
-        val points = standing.eventToPoints[seasonEvent] ?: -1
-        if (points >= 0) {
-            text(points)
-        }
+        val points = standing.eventToPoints[seasonEvent] ?: return@td
+        text(points)
     }
 
 }
