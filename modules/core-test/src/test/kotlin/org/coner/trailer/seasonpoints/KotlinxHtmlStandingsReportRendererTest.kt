@@ -8,8 +8,10 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
+import java.awt.Desktop
 
 class KotlinxHtmlStandingsReportRendererTest {
 
@@ -27,7 +29,7 @@ class KotlinxHtmlStandingsReportRendererTest {
             assertThat(actualFragment, "rendered fragment")
                     .transform("id") { it.attr("id") }
                     .isEqualTo("season-points-standings")
-
+            browseTo(actualDocument)
             val actualSections = actualDocument.select("section")
             assertThat(actualSections, "rendered sections").all {
                 hasSize(3)
@@ -42,5 +44,20 @@ class KotlinxHtmlStandingsReportRendererTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun `It should render content-only for Lscc2019TieBreaking report`() {
+        renderer = KotlinxHtmlStandingsReportRenderer()
+
+        val actual = renderer.renderContentOnly(TestStandingsReports.lscc2019TieBreaking)
+
+    }
+
+    @Deprecated
+    private fun browseTo(actualDocument: Document) {
+        val file = createTempFile().apply { writeText(actualDocument.toString()) }
+        Desktop.getDesktop().browse(file.toURI())
+        Thread.sleep(2000)
     }
 }
