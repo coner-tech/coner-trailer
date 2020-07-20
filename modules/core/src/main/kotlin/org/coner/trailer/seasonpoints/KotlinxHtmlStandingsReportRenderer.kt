@@ -32,7 +32,7 @@ class KotlinxHtmlStandingsReportRenderer {
     ) = thead {
         tr {
             th {
-                colSpan = "2"
+                colSpan = "3"
             }
             th {
                 colSpan = report.pointsEvents.size.toString()
@@ -41,6 +41,7 @@ class KotlinxHtmlStandingsReportRenderer {
             }
         }
         tr {
+            th { abbr { title = "Position"; text("Pos.") } }
             th { text("Name") }
             th { text("Member #") }
             report.pointsEvents.forEach { pointsEvents ->
@@ -60,6 +61,7 @@ class KotlinxHtmlStandingsReportRenderer {
     private fun TBODY.standingsReportSectionTableRow(
             report: StandingsReport,
             standing: StandingsReport.Standing) = tr {
+        td { text(standing.position) }
         td { text(standing.person.name) }
         td { text(standing.person.memberId) }
         report.pointsEvents.forEach { pointsEvent ->
