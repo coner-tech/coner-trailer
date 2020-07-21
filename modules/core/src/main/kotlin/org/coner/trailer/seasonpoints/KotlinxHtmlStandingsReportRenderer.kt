@@ -11,6 +11,7 @@ class KotlinxHtmlStandingsReportRenderer {
         report.sections.forEach { section ->
             standingsReportSection(report, section)
         }
+        legend()
     }
 
     private fun DIV.standingsReportSection(
@@ -61,7 +62,12 @@ class KotlinxHtmlStandingsReportRenderer {
     private fun TBODY.standingsReportSectionTableRow(
             report: StandingsReport,
             standing: StandingsReport.Standing) = tr {
-        td { text(standing.position) }
+        td {
+            text(standing.position)
+            if (standing.tie) {
+                a("#legend-tie") { text("*") }
+            }
+        }
         td { text(standing.person.name) }
         td { text(standing.person.memberId) }
         report.pointsEvents.forEach { pointsEvent ->
@@ -74,6 +80,16 @@ class KotlinxHtmlStandingsReportRenderer {
     private fun TR.standingsReportSectionTableEventPointsCell(seasonEvent: SeasonEvent, standing: StandingsReport.Standing) = td {
         val points = standing.eventToPoints[seasonEvent] ?: return@td
         text(points)
+    }
+
+    private fun DIV.legend() = dl {
+        dt {
+            id = "legend-tie"
+            text("*")
+        }
+        dd {
+            text("Tie")
+        }
     }
 
 }

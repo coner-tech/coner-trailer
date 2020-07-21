@@ -12,8 +12,8 @@ object TestPeople {
     val JIMMY_MCKENZIE by lazy { factory("Jimmy Mckenzie", "2476") }
     val EUGENE_DRAKE by lazy { factory("Eugene Drake", "2019-00057") }
     val BENNETT_PANTONE by lazy { factory("Bennett Pantone", "2019-00295") }
-    val TERI_POTTER by lazy { factory("Teri Potter") }
-    val HARRY_WEBSTER by lazy { factory("Harry Webster") }
+    val TERI_POTTER by lazy { factory("Teri Potter", "2019-00051") }
+    val HARRY_WEBSTER by lazy { factory("Harry Webster", "2276") }
     val NORMAN_ROBINSON by lazy { factory("Norman Robinson") }
     val JOHNNIE_ROWE by lazy { factory("Johnnie Rowe") }
 

@@ -166,7 +166,67 @@ object TestStandingsReports {
         }
 
     val lscc2019TieBreaking by lazy {
-        TODO()
+        val seasonEvents = TestSeasonEvents.LsccTieBreaking
+        StandingsReport(
+                sections = listOf(
+                        StandingsReport.Section(
+                                title = TestGroupings.Lscc2019.HS.name,
+                                standings = listOf(
+                                        StandingsReport.Standing(
+                                                position = 1,
+                                                person = TestPeople.REBECCA_JACKSON,
+                                                eventToPoints = sortedMapOf(
+                                                        seasonEvents.points1 to 9,
+                                                        seasonEvents.points2 to 6
+                                                ),
+                                                score = 15,
+                                                tie = true
+                                        ),
+                                        StandingsReport.Standing(
+                                                position = 1,
+                                                person = TestPeople.JIMMY_MCKENZIE,
+                                                eventToPoints = sortedMapOf(
+                                                        seasonEvents.points1 to 6,
+                                                        seasonEvents.points2 to 9
+                                                ),
+                                                score = 15,
+                                                tie = true
+                                        ),
+                                        StandingsReport.Standing(
+                                                position = 2,
+                                                person = TestPeople.EUGENE_DRAKE,
+                                                eventToPoints = sortedMapOf(
+                                                        seasonEvents.points1 to 4,
+                                                        seasonEvents.points2 to 4
+                                                ),
+                                                score = 8,
+                                                tie = false
+                                        ),
+                                        StandingsReport.Standing(
+                                                position = 3,
+                                                person = TestPeople.TERI_POTTER,
+                                                eventToPoints = sortedMapOf(
+                                                        seasonEvents.points1 to 3,
+                                                        seasonEvents.points2 to 2
+                                                ),
+                                                score = 5,
+                                                tie = true
+                                        ),
+                                        StandingsReport.Standing(
+                                                position = 3,
+                                                person = TestPeople.HARRY_WEBSTER,
+                                                eventToPoints = sortedMapOf(
+                                                        seasonEvents.points1 to 2,
+                                                        seasonEvents.points2 to 3
+                                                ),
+                                                score = 5,
+                                                tie = true
+                                        )
+                                )
+                        )
+                ),
+                pointsEvents = TestSeasons.lscc2019TieBreaking.events
+        )
     }
 
     val lscc2019Simplified by lazy {

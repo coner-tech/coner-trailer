@@ -52,9 +52,11 @@ class KotlinxHtmlStandingsReportRendererTest {
 
         val actual = renderer.renderContentOnly(TestStandingsReports.lscc2019TieBreaking)
 
+        val actualDocument = Jsoup.parseBodyFragment(actual)
+        browseTo(actualDocument)
     }
 
-    @Deprecated
+    @Deprecated(message = "Remove prior to caeos/coner-trailer#13 completion")
     private fun browseTo(actualDocument: Document) {
         val file = createTempFile().apply { writeText(actualDocument.toString()) }
         Desktop.getDesktop().browse(file.toURI())

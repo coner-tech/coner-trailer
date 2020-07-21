@@ -28,6 +28,19 @@ object TestSeasons {
             )
     )
 
+    val lscc2019TieBreaking by lazy { Season(
+            name = "LSCC 2019 Tie-Breaking",
+            seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
+                    StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
+                    StandardResultsTypes.overallRawTime to lsccOverallCalculator,
+                    StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
+            )),
+            events = listOf(
+                    TestSeasonEvents.LsccTieBreaking.points1,
+                    TestSeasonEvents.LsccTieBreaking.points2
+            )
+    ) }
+
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
             seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
