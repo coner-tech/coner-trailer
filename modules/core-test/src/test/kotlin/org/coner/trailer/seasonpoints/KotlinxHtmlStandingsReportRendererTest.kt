@@ -29,7 +29,6 @@ class KotlinxHtmlStandingsReportRendererTest {
             assertThat(actualFragment, "rendered fragment")
                     .transform("id") { it.attr("id") }
                     .isEqualTo("season-points-standings")
-            browseTo(actualDocument)
             val actualSections = actualDocument.select("section")
             assertThat(actualSections, "rendered sections").all {
                 hasSize(3)
@@ -53,13 +52,6 @@ class KotlinxHtmlStandingsReportRendererTest {
         val actual = renderer.renderContentOnly(TestStandingsReports.lscc2019TieBreaking)
 
         val actualDocument = Jsoup.parseBodyFragment(actual)
-        browseTo(actualDocument)
     }
 
-    @Deprecated(message = "Remove prior to caeos/coner-trailer#13 completion")
-    private fun browseTo(actualDocument: Document) {
-        val file = createTempFile().apply { writeText(actualDocument.toString()) }
-        Desktop.getDesktop().browse(file.toURI())
-        Thread.sleep(2000)
-    }
 }
