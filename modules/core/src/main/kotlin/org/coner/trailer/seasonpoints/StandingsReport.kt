@@ -2,10 +2,17 @@ package org.coner.trailer.seasonpoints
 
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
+import java.util.*
 
 class StandingsReport(
-        val sections: List<Section>
+        val sections: List<Section>,
+        val pointsEvents: List<SeasonEvent>
 ) {
+
+    init {
+        require(pointsEvents.all { it.points }) { "pointsEvents must contain only SeasonEvent instances with points==true" }
+    }
+
     class Section(
             val title: String,
             val standings: List<Standing>
@@ -14,9 +21,11 @@ class StandingsReport(
     class Standing(
             val position: Int,
             val person: Person,
-            val eventToPoints: Map<SeasonEvent, Int>,
+            val eventToPoints: SortedMap<SeasonEvent, Int>,
             val score: Int,
             val tie: Boolean
-    )
+    ) {
+        val count = eventToPoints.size
+    }
 
 }
