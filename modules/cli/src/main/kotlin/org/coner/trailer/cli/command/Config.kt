@@ -22,14 +22,7 @@ class Config : CliktCommand() {
 
         private val config by requireObject<ConfigGateway>()
         override fun run() {
-            config.listDatabases()
-                    .forEach {
-                        echo("""
-                        ${it.name}
-                            Crispy Fish:    ${it.crispyFishDatabase}
-                            Snoozle:        ${it.snoozleDatabase}
-                    """.trimIndent())
-                    }
+            config.listDatabases().forEach { echo(it.render()) }
         }
     }
     class Database : CliktCommand(
@@ -39,7 +32,7 @@ class Config : CliktCommand() {
 
         val name: String by argument()
 
-        class Value : OptionGroup() {
+        class Set : OptionGroup() {
 
             val crispyFishDatabase: File by option()
                     .file(
@@ -61,13 +54,18 @@ class Config : CliktCommand() {
         }
 
 
-        val value: Value? by Value().cooccurring()
+        val set: Set? by Set().cooccurring()
 
         override fun run() {
-            val value = this.value
-            if (value != null) {
-                val dbConfig = DatabaseConfiguration(name, value.crispyFishDatabase, value.snoozleDatabase)
+            val value = set?.let { newValue ->
+                val dbConfig = DatabaseConfiguration(name, newValue.crispyFishDatabase, newValue.snoozleDatabase)
                 config.configureDatabase(dbConfig)
+                dbConfig
+            } ?: config.listDatabases().singleOrNull { it.name == name }
+            if (value != null) {
+                echo(value.render())
+            } else {
+                echo("No database found with name: $name.")
             }
         }
     }
@@ -88,3 +86,9 @@ class Config : CliktCommand() {
         }
     }
 }
+
+private fun DatabaseConfiguration.render() = """
+    $name
+        Crispy Fish:        $crispyFishDatabase
+        Snoozle:            $snoozleDatabase
+""".trimIndent()
