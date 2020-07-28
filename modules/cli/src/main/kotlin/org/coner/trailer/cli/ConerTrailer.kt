@@ -1,16 +1,20 @@
 package org.coner.trailer.cli
 
 import com.github.ajalt.clikt.core.subcommands
-import org.coner.trailer.cli.command.ConerTrailer
-import org.coner.trailer.cli.command.Config
+import org.coner.trailer.cli.command.*
 
 fun main(args: Array<out String>) {
-    val app = ConerTrailer().subcommands(
-            Config().subcommands(
-                    Config.ListDatabases(),
-                    Config.RemoveDatabase(),
-                    Config.Database()
-            )
+    val app = RootCommand().subcommands(
+            ConfigCommand().subcommands(
+                    ConfigDatabase().subcommands(
+                            ConfigDatabaseListCommand(),
+                            ConfigDatabaseGetCommand(),
+                            ConfigDatabaseSetCommand(),
+                            ConfigDatabaseSetDefaultCommand(),
+                            ConfigDatabaseRemoveCommand()
+                    )
+            ),
+            StubCommand()
     )
     app.main(args)
 }

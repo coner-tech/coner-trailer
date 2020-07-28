@@ -4,7 +4,7 @@ import net.harawata.appdirs.AppDirsFactory
 import java.io.File
 import java.util.*
 
-class ConfigGateway {
+class ConfigurationService {
 
     private val appDirs by lazy {
         AppDirsFactory.getInstance()
@@ -34,8 +34,11 @@ class ConfigGateway {
 
     fun configureDatabase(dbConfig: DatabaseConfiguration) {
         val properties = loadProperties()
-        properties[buildCrispyFishDatabasePropertyKey(dbConfig.name)] = dbConfig.crispyFishDatabase.toString()
-        properties[buildSnoozleDatabasePropertyKey(dbConfig.name)] = dbConfig.snoozleDatabase.toString()
+        if (dbConfig.default) {
+            properties[PropertyKeys.DEFAULT_DATABASE] = dbConfig.name
+        }
+        properties[PropertyKeys.crispyFishDatabase(dbConfig.name)] = dbConfig.crispyFishDatabase.toString()
+        properties[PropertyKeys.snoozleDatabase(dbConfig.name)] = dbConfig.snoozleDatabase.toString()
         properties.store(propertiesFile.bufferedWriter(), null)
     }
 
@@ -44,21 +47,24 @@ class ConfigGateway {
         return properties
                 .mapNotNull { findDatabaseNameIn(it.key) }
                 .distinct()
-                .sorted()
                 .map { name -> buildDatabaseConfiguration(name, properties) }
+                .sortedWith(
+                        compareByDescending(DatabaseConfiguration::default)
+                                .thenByDescending(DatabaseConfiguration::name)
+                )
     }
 
     fun removeDatabase(name: String) {
         loadProperties().apply {
-            remove(buildCrispyFishDatabasePropertyKey(name))
-            remove(buildSnoozleDatabasePropertyKey(name))
+            remove(PropertyKeys.crispyFishDatabase(name))
+            remove(PropertyKeys.snoozleDatabase(name))
             store(propertiesFile.bufferedWriter(), null)
         }
     }
 
     private fun buildDatabaseConfiguration(name: String, properties: Properties): DatabaseConfiguration {
-        val crispyFishDatabasePropertyKey = buildCrispyFishDatabasePropertyKey(name)
-        val snoozleDatabasePropertyKey = buildSnoozleDatabasePropertyKey(name)
+        val crispyFishDatabasePropertyKey = PropertyKeys.crispyFishDatabase(name)
+        val snoozleDatabasePropertyKey = PropertyKeys.snoozleDatabase(name)
         return DatabaseConfiguration(
                 name = name,
                 crispyFishDatabase = File(
@@ -68,7 +74,8 @@ class ConfigGateway {
                 snoozleDatabase = File(
                         properties.getProperty(snoozleDatabasePropertyKey)
                                 ?: throw IllegalStateException("Config file has no snoozle configuration for database $name")
-                )
+                ),
+                default = properties.getProperty(PropertyKeys.DEFAULT_DATABASE) == name
         )
     }
 
@@ -78,8 +85,21 @@ class ConfigGateway {
         return propertyKey.substring(3..lastIndexOfName)
     }
 
-    private fun buildCrispyFishDatabasePropertyKey(name: String) = "db[$name].crispyFishDatabase"
+    fun getDatabase(name: String): DatabaseConfiguration? {
+        return listDatabases().singleOrNull { it.name == name }
+    }
 
-    private fun buildSnoozleDatabasePropertyKey(name: String) = "db[$name].snoozleDatabase"
+    fun getDefaultDatabase() : DatabaseConfiguration? {
+        return listDatabases().singleOrNull { it.default }
+    }
+
+    private object PropertyKeys {
+
+        const val DEFAULT_DATABASE = "db.default"
+
+        fun crispyFishDatabase(name: String) = "db[$name].crispyFishDatabase"
+
+        fun snoozleDatabase(name: String) = "db[$name].snoozleDatabase"
+    }
 
 }

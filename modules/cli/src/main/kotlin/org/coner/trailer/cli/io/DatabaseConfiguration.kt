@@ -5,7 +5,8 @@ import java.io.File
 data class DatabaseConfiguration(
         val name: String,
         val crispyFishDatabase: File,
-        val snoozleDatabase: File
+        val snoozleDatabase: File,
+        val default: Boolean
 ) {
     init {
         require(name.all { it.isLetterOrDigit() }) { "name must be alphanumeric" }
