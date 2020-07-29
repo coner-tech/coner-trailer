@@ -1,14 +1,12 @@
 package org.coner.trailer.cli.io
 
-import net.harawata.appdirs.AppDirsFactory
+import net.harawata.appdirs.AppDirs
 import java.io.File
 import java.util.*
 
-class ConfigurationService {
-
-    private val appDirs by lazy {
-        AppDirsFactory.getInstance()
-    }
+class ConfigurationService(
+        private val appDirs: AppDirs
+) {
 
     private val configDir by lazy {
         File(appDirs.getUserConfigDir("coner-trailer", "1.0", "coner"))

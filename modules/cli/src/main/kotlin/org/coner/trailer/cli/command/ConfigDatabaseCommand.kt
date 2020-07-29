@@ -1,8 +1,6 @@
 package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.requireObject
-import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -11,30 +9,31 @@ import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import java.io.File
 
-class ConfigDatabase : CliktCommand(name = "database") {
+class ConfigDatabaseCommand : CliktCommand(name = "database") {
 
     override fun run() = Unit
 
 }
 
 
-class ConfigDatabaseListCommand : CliktCommand(
+class ConfigDatabaseListCommand(
+        private val config: ConfigurationService
+) : CliktCommand(
         name = "list",
         help = "List database configurations"
 ) {
 
-    private val config by requireObject<ConfigurationService>()
     override fun run() {
         config.listDatabases().forEach { echo(it.render()) }
     }
 }
 
-class ConfigDatabaseGetCommand : CliktCommand(
+class ConfigDatabaseGetCommand(
+        private val config: ConfigurationService
+) : CliktCommand(
         name = "get",
         help = "Get database configuration"
 ) {
-    private val config by requireObject<ConfigurationService>()
-
     val name: String by option().required()
 
     override fun run() {
@@ -47,12 +46,12 @@ class ConfigDatabaseGetCommand : CliktCommand(
     }
 }
 
-class ConfigDatabaseSetCommand : CliktCommand(
+class ConfigDatabaseSetCommand(
+        private val config: ConfigurationService
+) : CliktCommand(
         name = "set",
         help = "Set database configuration"
 ) {
-
-    private val config by requireObject<ConfigurationService>()
 
     val name: String by option().required()
     val crispyFishDatabase: File by option()
@@ -86,7 +85,9 @@ class ConfigDatabaseSetCommand : CliktCommand(
     }
 }
 
-class ConfigDatabaseRemoveCommand : CliktCommand(
+class ConfigDatabaseRemoveCommand(
+        private val config: ConfigurationService
+) : CliktCommand(
         name = "remove",
         help = """
                 Remove a database from the CLI app's config file.
@@ -95,7 +96,6 @@ class ConfigDatabaseRemoveCommand : CliktCommand(
                 database itself.
             """.trimIndent()
 ) {
-    private val config by requireObject<ConfigurationService>()
 
     val name: String by option().required()
 
@@ -104,12 +104,12 @@ class ConfigDatabaseRemoveCommand : CliktCommand(
     }
 }
 
-class ConfigDatabaseSetDefaultCommand : CliktCommand(
+class ConfigDatabaseSetDefaultCommand(
+        private val config: ConfigurationService
+) : CliktCommand(
         name = "set-default",
         help = "Set named database to default"
 ) {
-
-    private val config by requireObject<ConfigurationService>()
 
     val name: String by option().required()
 
