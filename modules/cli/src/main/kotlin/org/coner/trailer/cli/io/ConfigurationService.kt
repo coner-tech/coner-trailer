@@ -52,6 +52,10 @@ class ConfigurationService(
                 )
     }
 
+    fun listDatabasesByName() = listDatabases()
+            .map { it.name to it }
+            .toMap()
+
     fun removeDatabase(name: String) {
         loadProperties().apply {
             remove(PropertyKeys.crispyFishDatabase(name))

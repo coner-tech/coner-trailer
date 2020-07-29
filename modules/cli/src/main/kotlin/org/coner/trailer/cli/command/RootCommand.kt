@@ -23,14 +23,12 @@ class RootCommand(
                 |   See: coner-trailer config database
                 """.trimMargin()
     )
-            .choice(config.listDatabases().map { it.name to it }.toMap())
+            .choice(config.listDatabasesByName())
 
-    @OptIn(ExperimentalValueSourceApi::class)
     override fun run() {
         config.setup()
         currentContext.obj = Payload(
-                databaseConfiguration = database
-                        ?: config.getDefaultDatabase()
+                databaseConfiguration = database ?: config.getDefaultDatabase()
         )
     }
 

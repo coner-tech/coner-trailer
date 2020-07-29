@@ -28,7 +28,7 @@ class RootCommandTest {
     fun before() {
         MockKAnnotations.init(this)
         every { config.setup() }.answers { Unit }
-        every { config.listDatabases() }.answers { databaseList() }
+        every { config.listDatabasesByName() }.answers { databasesByName() }
         every { config.getDefaultDatabase() }.returns(barDatabase)
         command = RootCommand(config)
     }
@@ -86,4 +86,7 @@ private val barDatabase = DatabaseConfiguration(
         snoozleDatabase = createTempDir(),
         default = true
 )
-private fun databaseList() = listOf(fooDatabase, barDatabase)
+private fun databasesByName() = mapOf(
+        fooDatabase.name to fooDatabase,
+        barDatabase.name to barDatabase
+)
