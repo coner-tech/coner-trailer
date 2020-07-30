@@ -9,7 +9,7 @@ data class DatabaseConfiguration(
         val default: Boolean
 ) {
     init {
-        require(name.all { it.isLetterOrDigit() }) { "name must be alphanumeric" }
+        require(name.all { it.isLetterOrDigit() || it == '-' || it == '_' || it == ' ' }) { "name must be alphanumeric" }
 
         require(crispyFishDatabase.exists()) { "crispyFishDatabase must exist" }
         require(crispyFishDatabase.isDirectory) { "crispyFishDatabase must be a directory" }
@@ -20,4 +20,5 @@ data class DatabaseConfiguration(
         require(snoozleDatabase.canRead()) { "snoozleDatabase must be readable" }
         require(snoozleDatabase.canWrite()) { "snoozleDatabase must be writable" }
     }
+
 }

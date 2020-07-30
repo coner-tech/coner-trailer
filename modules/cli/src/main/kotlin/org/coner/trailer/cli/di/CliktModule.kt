@@ -3,18 +3,28 @@ package org.coner.trailer.cli.di
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import org.coner.trailer.cli.command.*
+import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
 val cliktModule = DI.Module("clikt") {
+    bind<DatabaseConfiguration>(RootCommand.NoDatabase) with singleton {
+        val config: ConfigurationService = directDI.instance()
+        DatabaseConfiguration(
+                name = "no database",
+                crispyFishDatabase = config.propertiesFile.parentFile,
+                snoozleDatabase = config.propertiesFile.parentFile,
+                default = false
+        )
+    }
     bind<CliktCommand>() with singleton { RootCommand(
-            config = instance()
+            di = di
     )
             .subcommands(
-                    instance<ConfigCommand>(),
-                    StubCommand()
+                    instance<ConfigCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()

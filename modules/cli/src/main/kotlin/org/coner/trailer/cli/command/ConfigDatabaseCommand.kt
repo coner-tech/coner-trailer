@@ -9,7 +9,10 @@ import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import java.io.File
 
-class ConfigDatabaseCommand : CliktCommand(name = "database") {
+class ConfigDatabaseCommand : CliktCommand(
+        name = "database",
+        help = "Grouping of database configuration commands"
+) {
 
     override fun run() = Unit
 
