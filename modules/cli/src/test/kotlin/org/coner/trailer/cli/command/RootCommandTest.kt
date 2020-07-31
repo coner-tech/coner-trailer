@@ -15,11 +15,14 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.service.StubService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import java.io.File
 
 class RootCommandTest {
 
@@ -30,18 +33,23 @@ class RootCommandTest {
     @RelaxedMockK
     lateinit var noDatabase: DatabaseConfiguration
 
+    @TempDir
+    lateinit var temp: File
+
+    lateinit var dbConfigs: TestDatabaseConfigurations
     lateinit var di: DI
 
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
+        dbConfigs = TestDatabaseConfigurations(temp)
     }
 
     @Test
     fun `When given --database with existing database name it should use it`() {
         arrangeWithDatabases()
         // foo exists
-        every { config.getDatabase("foo") }.returns(fooDatabase)
+        every { config.listDatabasesByName()}.returns(dbConfigs.allByName)
 
         command.parse(arrayOf("--database", "foo"))
 
@@ -49,7 +57,7 @@ class RootCommandTest {
                 .isNotNull()
                 .isInstanceOf(DI::class)
                 .transform { it.direct.instance<DatabaseConfiguration>() }
-                .isSameAs(fooDatabase)
+                .isSameAs(dbConfigs.foo)
     }
 
     @Test
@@ -70,7 +78,7 @@ class RootCommandTest {
     @Test
     fun `When not given --database it should use the default if available`() {
         arrangeWithDatabases()
-        val defaultDatabase = databasesByName()
+        val defaultDatabase = dbConfigs.allByName
                 .values
                 .single { it.default }
 
@@ -108,23 +116,6 @@ class RootCommandTest {
     }
 }
 
-private val fooDatabase = DatabaseConfiguration(
-        name = "foo",
-        crispyFishDatabase = createTempDir(),
-        snoozleDatabase = createTempDir(),
-        default = false
-)
-private val barDatabase = DatabaseConfiguration(
-        name = "bar",
-        crispyFishDatabase = createTempDir(),
-        snoozleDatabase = createTempDir(),
-        default = true
-)
-private fun databasesByName() = mapOf(
-        fooDatabase.name to fooDatabase,
-        barDatabase.name to barDatabase
-)
-
 private fun RootCommandTest.arrangeWithDatabases() {
     di = DI {
         bind<ConfigurationService>() with instance(config)
@@ -134,8 +125,8 @@ private fun RootCommandTest.arrangeWithDatabases() {
         ) }
     }
     every { config.setup() }.answers { Unit }
-    every { config.listDatabasesByName() }.answers { databasesByName() }
-    every { config.getDefaultDatabase() }.returns(barDatabase)
+    every { config.listDatabasesByName() }.answers { dbConfigs.allByName }
+    every { config.getDefaultDatabase() }.returns(dbConfigs.bar)
     command = RootCommand(di)
 }
 

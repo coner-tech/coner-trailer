@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
@@ -16,6 +17,7 @@ class ConfigDatabaseCommand : CliktCommand(
 
     override fun run() = Unit
 
+    interface Subcommand
 }
 
 
@@ -24,10 +26,10 @@ class ConfigDatabaseListCommand(
 ) : CliktCommand(
         name = "list",
         help = "List database configurations"
-) {
+), ConfigDatabaseCommand.Subcommand {
 
     override fun run() {
-        config.listDatabases().forEach { echo(it.render()) }
+        config.listDatabases().forEach { echo(render(it)) }
     }
 }
 
@@ -36,16 +38,13 @@ class ConfigDatabaseGetCommand(
 ) : CliktCommand(
         name = "get",
         help = "Get database configuration"
-) {
-    val name: String by option().required()
+), ConfigDatabaseCommand.Subcommand {
+    val dbConfig: DatabaseConfiguration by option(names = *arrayOf("--name"))
+            .choice(config.listDatabasesByName())
+            .required()
 
     override fun run() {
-        val value = config.listDatabases().singleOrNull { it.name == name }
-        if (value != null) {
-            echo(value.render())
-        } else {
-            echo(databaseNotFound(name))
-        }
+        echo(render(dbConfig))
     }
 }
 
@@ -54,7 +53,7 @@ class ConfigDatabaseSetCommand(
 ) : CliktCommand(
         name = "set",
         help = "Set database configuration"
-) {
+), ConfigDatabaseCommand.Subcommand {
 
     val name: String by option().required()
     val crispyFishDatabase: File by option()
@@ -84,7 +83,7 @@ class ConfigDatabaseSetCommand(
                 default = default
         )
         config.configureDatabase(dbConfig)
-        echo(dbConfig.render())
+        echo(render(dbConfig))
     }
 }
 
@@ -112,7 +111,7 @@ class ConfigDatabaseSetDefaultCommand(
 ) : CliktCommand(
         name = "set-default",
         help = "Set named database to default"
-) {
+), ConfigDatabaseCommand.Subcommand {
 
     val name: String by option().required()
 
@@ -123,17 +122,17 @@ class ConfigDatabaseSetDefaultCommand(
                     default = true
             )
             config.configureDatabase(newValue)
-            echo(newValue.render())
+            echo(render(newValue))
         } else {
             echo(databaseNotFound(name))
         }
     }
 }
 
-private fun databaseNotFound(name: String) = "No database found with name: $name."
+fun ConfigDatabaseCommand.Subcommand.databaseNotFound(name: String) = "No database found with name: $name."
 
-private fun DatabaseConfiguration.render() = """
-    $name ${if (default) "[Default]" else ""}
+fun ConfigDatabaseCommand.Subcommand.render(config: DatabaseConfiguration) = config.run { """
+    ${config.name} ${if (default) "[Default]" else ""}
         Crispy Fish:        $crispyFishDatabase
         Snoozle:            $snoozleDatabase
-""".trimIndent()
+""".trimIndent() }
