@@ -1,9 +1,12 @@
 package org.coner.trailer.cli.command
 
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.output.defaultCliktConsole
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
@@ -85,18 +88,15 @@ class ConfigDatabaseSetDefaultCommand(
         help = "Set named database to default"
 ), ConfigDatabaseCommand.Subcommand {
 
-    val name: String by option().required()
+    val dbConfig: DatabaseConfiguration by option(names = *arrayOf("--name"))
+            .choice(config.listDatabasesByName())
+            .required()
 
     override fun run() {
-        val value = config.listDatabases().singleOrNull { it.name == name }
-        if (value != null) {
-            val newValue = value.copy(
-                    default = true
-            )
-            config.configureDatabase(newValue)
-            echo(render(newValue))
-        } else {
-            echo(databaseNotFound(name))
-        }
+        if (dbConfig == config.noDatabase) throw Abort()
+        val asDefault = dbConfig.copy(
+                default = true
+        )
+        config.configureDatabase(asDefault)
     }
 }
