@@ -1,8 +1,7 @@
 package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.BadParameterValue
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import org.coner.trailer.cli.io.ConfigurationService
@@ -17,7 +16,7 @@ class ConfigDatabaseGetCommandTest {
 
     lateinit var command: ConfigDatabaseGetCommand
 
-    @RelaxedMockK
+    @MockK
     lateinit var config: ConfigurationService
 
     @TempDir
@@ -36,6 +35,9 @@ class ConfigDatabaseGetCommandTest {
         arrangeWithTestDatabaseConfigurations()
 
         command.parse(arrayOf("--name", "foo"))
+
+        verify { config.listDatabasesByName() }
+        confirmVerified(config)
     }
 
     @Test
@@ -48,6 +50,9 @@ class ConfigDatabaseGetCommandTest {
         assertThrows<BadParameterValue> {
             command.parse(arrayOf("--name", baz))
         }
+
+        verify { config.listDatabasesByName() }
+        confirmVerified(config)
     }
 }
 
