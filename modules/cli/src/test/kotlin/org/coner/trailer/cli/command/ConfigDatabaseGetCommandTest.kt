@@ -51,7 +51,7 @@ class ConfigDatabaseGetCommandTest {
     }
 }
 
-fun ConfigDatabaseGetCommandTest.arrangeWithTestDatabaseConfigurations() {
+private fun ConfigDatabaseGetCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
     command = ConfigDatabaseGetCommand(config)
 }

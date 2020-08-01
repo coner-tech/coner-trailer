@@ -19,18 +19,9 @@ class RootCommand(
 ), DIAware {
 
     private val config: ConfigurationService by instance()
-    private val noDatabase: DatabaseConfiguration by instance(NoDatabase)
 
     init {
         config.setup()
-    }
-
-    private val databasesByName = config.listDatabasesByName().let {
-        if (it.isNotEmpty()) {
-            it
-        } else {
-            mapOf(noDatabase.name to noDatabase)
-        }
     }
 
     val database: DatabaseConfiguration by option(
@@ -40,20 +31,20 @@ class RootCommand(
                 |   See: coner-trailer config database
                 """.trimMargin()
     )
-            .choice(databasesByName)
-            .default(config.getDefaultDatabase() ?: noDatabase)
+            .choice(config.listDatabasesByName())
+            .default(config.getDefaultDatabase() ?: config.noDatabase)
 
     override fun run() {
         // TODO: first-run setup
         currentContext.invokedSubcommand?.also { subcommand ->
-            if (database == noDatabase && subcommand !is PermitNoDatabaseChosen) {
+            if (database == config.noDatabase && subcommand !is PermitNoDatabaseChosen) {
                 echo("No database chosen and no default configured. See: coner-trailer config database")
                 throw Abort()
             }
         }
         currentContext.obj = DI {
             extend(di)
-            if (database != noDatabase) {
+            if (database != config.noDatabase) {
                 import(serviceModule(databaseConfiguration = database))
             }
         }
@@ -67,5 +58,4 @@ class RootCommand(
      */
     interface PermitNoDatabaseChosen
 
-    object NoDatabase
 }

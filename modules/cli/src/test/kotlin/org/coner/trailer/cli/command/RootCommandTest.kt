@@ -42,6 +42,7 @@ class RootCommandTest {
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
+        every { config.noDatabase } returns noDatabase
         dbConfigs = TestDatabaseConfigurations(temp)
     }
 
@@ -119,7 +120,6 @@ class RootCommandTest {
 private fun RootCommandTest.arrangeWithDatabases() {
     di = DI {
         bind<ConfigurationService>() with instance(config)
-        bind<DatabaseConfiguration>(RootCommand.NoDatabase) with instance(noDatabase)
         bind<StubService>() with singleton { StubService(
                 databaseConfiguration = instance()
         ) }
@@ -133,13 +133,14 @@ private fun RootCommandTest.arrangeWithDatabases() {
 private fun RootCommandTest.arrangeWithoutDatabasesCase() {
     di = DI {
         bind<ConfigurationService>() with instance(config)
-        bind<DatabaseConfiguration>(RootCommand.NoDatabase) with instance(noDatabase)
         bind<StubService>() with singleton { StubService(
                 databaseConfiguration = instance()
         ) }
     }
     every { config.setup() }.answers { Unit }
-    every { config.listDatabasesByName() }.answers { emptyMap() }
+    every { config.listDatabasesByName() }.answers { mapOf(
+            noDatabase.name to noDatabase
+    ) }
     every { config.getDefaultDatabase() }.returns(null)
     command = RootCommand(di)
             .subcommands(

@@ -30,6 +30,13 @@ class ConfigurationService(
         }
     }
 
+    val noDatabase: DatabaseConfiguration by lazy { DatabaseConfiguration(
+            name = "no database",
+            crispyFishDatabase = propertiesFile.parentFile,
+            snoozleDatabase = propertiesFile.parentFile,
+            default = false
+    ) }
+
     fun configureDatabase(dbConfig: DatabaseConfiguration) {
         val properties = loadProperties()
         if (dbConfig.default) {
@@ -50,16 +57,20 @@ class ConfigurationService(
                         compareByDescending(DatabaseConfiguration::default)
                                 .thenByDescending(DatabaseConfiguration::name)
                 )
+                .let { actual ->
+                    if (actual.isNotEmpty()) actual
+                    else listOf(noDatabase)
+                }
     }
 
     fun listDatabasesByName() = listDatabases()
             .map { it.name to it }
             .toMap()
 
-    fun removeDatabase(name: String) {
+    fun removeDatabase(dbConfig: DatabaseConfiguration) {
         loadProperties().apply {
-            remove(PropertyKeys.crispyFishDatabase(name))
-            remove(PropertyKeys.snoozleDatabase(name))
+            remove(PropertyKeys.crispyFishDatabase(dbConfig.name))
+            remove(PropertyKeys.snoozleDatabase(dbConfig.name))
             store(propertiesFile.bufferedWriter(), null)
         }
     }

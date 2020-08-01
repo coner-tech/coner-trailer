@@ -1,9 +1,11 @@
 package org.coner.trailer.cli.command
 
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
@@ -91,10 +93,13 @@ class ConfigDatabaseRemoveCommand(
             """.trimIndent()
 ) {
 
-    val name: String by option().required()
+    val dbConfig: DatabaseConfiguration by option(names = *arrayOf("--name"))
+            .choice(config.listDatabasesByName())
+            .required()
 
     override fun run() {
-        config.removeDatabase(name)
+        if (dbConfig == config.noDatabase) throw Abort()
+        config.removeDatabase(dbConfig)
     }
 }
 
