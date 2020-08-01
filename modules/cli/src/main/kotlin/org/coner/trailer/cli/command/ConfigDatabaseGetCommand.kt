@@ -17,7 +17,7 @@ class ConfigDatabaseGetCommand(
 ) : CliktCommand(
         name = "get",
         help = "Get database configuration"
-), ConfigDatabaseCommand.Subcommand {
+) {
 
     init {
         context {

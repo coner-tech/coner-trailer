@@ -29,6 +29,8 @@ val cliktModule = DI.Module("clikt") {
     bind<ConfigDatabaseCommand>() with singleton { ConfigDatabaseCommand()
             .subcommands(
                     ConfigDatabaseListCommand(
+                            useConsole = instance(),
+                            view = instance(),
                             config = instance()
                     ),
                     ConfigDatabaseGetCommand(
@@ -37,6 +39,7 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     ConfigDatabaseSetCommand(
+                            view = instance(),
                             config = instance()
                     ),
                     ConfigDatabaseSetDefaultCommand(

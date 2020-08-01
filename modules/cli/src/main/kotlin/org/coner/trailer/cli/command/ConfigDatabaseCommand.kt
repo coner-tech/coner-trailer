@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.view.DatabaseConfigurationView
 import java.io.File
 
 class ConfigDatabaseCommand : CliktCommand(
@@ -15,36 +16,15 @@ class ConfigDatabaseCommand : CliktCommand(
 ) {
 
     override fun run() = Unit
-
-    interface Subcommand {
-        fun databaseNotFound(name: String) = "No database found with name: $name."
-
-        fun render(config: DatabaseConfiguration) = config.run { """
-    ${config.name} ${if (default) "[Default]" else ""}
-        Crispy Fish:        $crispyFishDatabase
-        Snoozle:            $snoozleDatabase
-""".trimIndent() }
-    }
-}
-
-class ConfigDatabaseListCommand(
-        private val config: ConfigurationService
-) : CliktCommand(
-        name = "list",
-        help = "List database configurations"
-), ConfigDatabaseCommand.Subcommand {
-
-    override fun run() {
-        config.listDatabases().forEach { echo(render(it)) }
-    }
 }
 
 class ConfigDatabaseSetCommand(
+        private val view: DatabaseConfigurationView,
         private val config: ConfigurationService
 ) : CliktCommand(
         name = "set",
         help = "Set database configuration"
-), ConfigDatabaseCommand.Subcommand {
+) {
 
     val name: String by option().required()
     val crispyFishDatabase: File by option()
@@ -74,7 +54,7 @@ class ConfigDatabaseSetCommand(
                 default = default
         )
         config.configureDatabase(dbConfig)
-        echo(render(dbConfig))
+        echo(view.render(dbConfig))
     }
 }
 

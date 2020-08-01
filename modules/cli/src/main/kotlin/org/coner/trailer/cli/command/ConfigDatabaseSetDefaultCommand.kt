@@ -13,7 +13,7 @@ class ConfigDatabaseSetDefaultCommand(
 ) : CliktCommand(
         name = "set-default",
         help = "Set named database to default"
-), ConfigDatabaseCommand.Subcommand {
+) {
 
     val dbConfig: DatabaseConfiguration by option(names = *arrayOf("--name"))
             .choice(config.listDatabasesByName())

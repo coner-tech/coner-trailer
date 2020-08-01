@@ -8,7 +8,7 @@ class TestDatabaseConfigurations(
 
     val foo = factory(name = "foo")
     val bar = factory(name = "bar", default = true)
-    val all = listOf(foo, bar)
+    val all = listOf(bar, foo)
     val allByName = all.map { it.name to it }.toMap()
 
     val noDatabase = factory(

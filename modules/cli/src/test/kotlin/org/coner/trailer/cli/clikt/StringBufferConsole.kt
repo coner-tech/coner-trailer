@@ -7,8 +7,8 @@ class StringBufferConsole : CliktConsole {
     private val out = StringBuffer()
     private val err = StringBuffer()
 
-    val output: String get() = out.toString()
-    val error: String get() = err.toString()
+    val output: String get() = out.toString().trim()
+    val error: String get() = err.toString().trim()
 
     override val lineSeparator = requireNotNull(System.lineSeparator())
 
