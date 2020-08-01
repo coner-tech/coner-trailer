@@ -11,6 +11,10 @@ class TestDatabaseConfigurations(
     val all = listOf(foo, bar)
     val allByName = all.map { it.name to it }.toMap()
 
+    val noDatabase = factory(
+            name = "no database"
+    )
+
     private fun factory(name: String, default: Boolean = false): DatabaseConfiguration {
         fun dir(type: String) = root
                 .resolve(type)

@@ -20,8 +20,6 @@ class ConfigDatabaseRemoveCommandTest {
 
     @MockK
     lateinit var config: ConfigurationService
-    @MockK
-    lateinit var noDatabase: DatabaseConfiguration
 
     @TempDir
     lateinit var temp: File
@@ -31,8 +29,6 @@ class ConfigDatabaseRemoveCommandTest {
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
-        every { config.noDatabase } returns noDatabase
-        every { noDatabase.name } returns ""
         dbConfigs = TestDatabaseConfigurations(temp)
     }
 
@@ -70,7 +66,7 @@ class ConfigDatabaseRemoveCommandTest {
     @Test
     fun `When no databases exist it should still print its help`() {
         every { config.listDatabasesByName() } returns mapOf(
-                noDatabase.name to noDatabase
+                dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
         command = ConfigDatabaseRemoveCommand(config)
 
@@ -85,12 +81,13 @@ class ConfigDatabaseRemoveCommandTest {
     @Test
     fun `When no databases exist it should not remove anything`() {
         every { config.listDatabasesByName() } returns mapOf(
-                noDatabase.name to noDatabase
+                dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
+        every { config.noDatabase } returns dbConfigs.noDatabase
         command = ConfigDatabaseRemoveCommand(config)
 
         assertThrows<Abort> {
-            command.parse(arrayOf("--name", ""))
+            command.parse(arrayOf("--name", dbConfigs.noDatabase.name))
         }
 
         verifyOrder {
@@ -104,5 +101,6 @@ class ConfigDatabaseRemoveCommandTest {
 
 private fun ConfigDatabaseRemoveCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
+    every { config.noDatabase }.returns(dbConfigs.noDatabase)
     command = ConfigDatabaseRemoveCommand(config)
 }

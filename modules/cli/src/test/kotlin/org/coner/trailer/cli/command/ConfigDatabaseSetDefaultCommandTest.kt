@@ -3,9 +3,11 @@ package org.coner.trailer.cli.command
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualToIgnoringGivenProperties
+import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.github.ajalt.clikt.core.Abort
+import com.github.ajalt.clikt.core.BadParameterValue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.coner.trailer.cli.io.ConfigurationService
@@ -23,8 +25,6 @@ class ConfigDatabaseSetDefaultCommandTest {
 
     @MockK
     lateinit var config: ConfigurationService
-    @MockK
-    lateinit var noDatabase: DatabaseConfiguration
 
     @TempDir
     lateinit var temp: File
@@ -39,41 +39,40 @@ class ConfigDatabaseSetDefaultCommandTest {
 
     @Test
     fun `When given valid name it should set default`() {
-        val slot = slot<DatabaseConfiguration>()
-        every { config.configureDatabase(dbConfig = capture(slot)) }
         arrangeWithTestDatabaseConfigurations()
+        val slot = slot<DatabaseConfiguration>()
+        every { config.configureDatabase(capture(slot)) } answers { Unit }
 
         command.parse(arrayOf("--name", "foo"))
 
         verifyOrder {
             config.listDatabasesByName()
             config.noDatabase
-        }
-        assertThat(slot.captured).all {
-            isEqualToIgnoringGivenProperties(dbConfigs.foo)
-            prop("default") { it.default }.isTrue()
+            config.configureDatabase(any())
         }
         confirmVerified(config)
+        assertThat(slot.captured).all {
+            isEqualToIgnoringGivenProperties(dbConfigs.foo, DatabaseConfiguration::default)
+            prop("default") { it.default }.isTrue()
+        }
     }
 
     @Test
-    fun `When given invalid name it should abort`() {
+    fun `When given invalid name it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) // baz is not a valid dbConfig
 
         every { config.listDatabasesByName() } returns mapOf(
-                noDatabase.name to noDatabase
+                dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
-        every { config.noDatabase }
         command = ConfigDatabaseSetDefaultCommand(config)
 
-        assertThrows<Abort> {
+        assertThrows<BadParameterValue> {
             command.parse(arrayOf("--name", baz))
         }
 
         verifyOrder {
             config.listDatabasesByName()
-            config.noDatabase
         }
         confirmVerified(config)
     }
@@ -81,6 +80,6 @@ class ConfigDatabaseSetDefaultCommandTest {
 
 private fun ConfigDatabaseSetDefaultCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { config.listDatabasesByName() } returns(dbConfigs.allByName)
-    every { config.noDatabase } returns noDatabase
+    every { config.noDatabase } returns(dbConfigs.noDatabase)
     command = ConfigDatabaseSetDefaultCommand(config)
 }
