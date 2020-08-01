@@ -39,6 +39,7 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     ConfigDatabaseSetCommand(
+                            useConsole = instance(),
                             view = instance(),
                             config = instance()
                     ),
