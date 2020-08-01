@@ -2,6 +2,8 @@ package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
@@ -10,6 +12,7 @@ import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.direct
 import org.kodein.di.instance
 
 class RootCommand(
@@ -21,7 +24,11 @@ class RootCommand(
     private val config: ConfigurationService by instance()
 
     init {
+        context {
+            console = direct.instance()
+        }
         config.setup()
+
     }
 
     val database: DatabaseConfiguration by option(

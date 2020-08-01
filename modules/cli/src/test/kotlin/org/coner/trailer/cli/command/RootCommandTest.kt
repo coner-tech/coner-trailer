@@ -2,17 +2,16 @@ package org.coner.trailer.cli.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
-import assertk.assertions.messageContains
+import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.output.CliktConsole
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify
+import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
@@ -36,12 +35,14 @@ class RootCommandTest {
     @TempDir
     lateinit var temp: File
 
+    lateinit var console: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
     lateinit var di: DI
 
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
+        console = StringBufferConsole()
         every { config.noDatabase } returns noDatabase
         dbConfigs = TestDatabaseConfigurations(temp)
     }
@@ -100,6 +101,11 @@ class RootCommandTest {
         assertThrows<Abort> {
             command.parse(arrayOf("stub"))
         }
+
+        assertThat(console.output).all {
+            contains("No database chosen and no default configured.")
+            contains("coner-trailer config database")
+        }
     }
 
     @Test
@@ -119,6 +125,7 @@ class RootCommandTest {
 
 private fun RootCommandTest.arrangeWithDatabases() {
     di = DI {
+        bind<CliktConsole>() with instance(console)
         bind<ConfigurationService>() with instance(config)
         bind<StubService>() with singleton { StubService(
                 databaseConfiguration = instance()
@@ -132,6 +139,7 @@ private fun RootCommandTest.arrangeWithDatabases() {
 
 private fun RootCommandTest.arrangeWithoutDatabasesCase() {
     di = DI {
+        bind<CliktConsole>() with instance(console)
         bind<ConfigurationService>() with instance(config)
         bind<StubService>() with singleton { StubService(
                 databaseConfiguration = instance()
