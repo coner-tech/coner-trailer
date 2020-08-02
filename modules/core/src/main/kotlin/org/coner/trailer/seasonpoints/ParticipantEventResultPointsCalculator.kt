@@ -1,12 +1,15 @@
 package org.coner.trailer.seasonpoints
 
 import org.coner.trailer.eventresults.ParticipantResult
+import java.util.*
 
-class ParticipantResultPointsCalculator(
-        private val didNotFinishPoints: Int? = null,
-        private val didNotStartPoints: Int? = null,
-        private val positionToPoints: Map<Int, Int>,
-        private val defaultPoints: Int
+class ParticipantEventResultPointsCalculator(
+        val id: UUID = UUID.randomUUID(),
+        val name: String,
+        val didNotFinishPoints: Int? = null,
+        val didNotStartPoints: Int? = null,
+        val positionToPoints: Map<Int, Int>,
+        val defaultPoints: Int
 ) {
     fun calculate(participantResult: ParticipantResult): Int {
         return when {

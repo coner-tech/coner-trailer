@@ -2,7 +2,7 @@ package org.coner.trailer.seasonpoints
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import org.coner.trailer.TestParticipantResultPointsCalculators
+import org.coner.trailer.TestParticipantEventResultPointsCalculators
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.mockkParticipantResult
@@ -10,7 +10,7 @@ import org.coner.trailer.eventresults.mockkResultRun
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-class ParticipantResultPointsCalculatorTest {
+class ParticipantEventResultPointsCalculatorTest {
 
     enum class LsccGroupingStyleParam(
             val participantResult: ParticipantResult,
@@ -49,7 +49,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(LsccGroupingStyleParam::class)
     fun `It should calculate points LSCC Grouping-style`(param: LsccGroupingStyleParam) {
-        val calculator = TestParticipantResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
 
         val actual = calculator.calculate(param.participantResult)
 
@@ -113,7 +113,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(LsccSpecialCupStyleParam::class)
     fun `It should calculate points LSCC Special Cup-style`(param: LsccSpecialCupStyleParam) {
-        val calculator = TestParticipantResultPointsCalculators.lsccOverallCalculator
+        val calculator = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
 
         val actual = calculator.calculate(param.participantResult)
 
@@ -193,7 +193,7 @@ class ParticipantResultPointsCalculatorTest {
     @ParameterizedTest
     @EnumSource(NlsccParam::class)
     fun `It should calculate points NLSCC-style`(param: NlsccParam) {
-        val calculator = TestParticipantResultPointsCalculators.olsccCalculator
+        val calculator = TestParticipantEventResultPointsCalculators.olsccCalculator
 
         val actual = calculator.calculate(param.participantResult)
 

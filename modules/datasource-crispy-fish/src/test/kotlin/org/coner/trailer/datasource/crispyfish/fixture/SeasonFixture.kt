@@ -1,12 +1,8 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import org.coner.crispyfish.query.CategoriesQuery
-import org.coner.crispyfish.query.HandicapsQuery
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.GroupingMapper
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
 import java.io.File
@@ -68,9 +64,9 @@ sealed class SeasonFixture(
                 name = "LSCC 2019 Simplified",
                 events = events.map { it.coreSeasonEvent },
                 seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
-                        StandardResultsTypes.competitionGrouped to TestParticipantResultPointsCalculators.lsccGroupingCalculator,
-                        StandardResultsTypes.overallRawTime to TestParticipantResultPointsCalculators.lsccOverallCalculator,
-                        StandardResultsTypes.overallHandicapTime to TestParticipantResultPointsCalculators.lsccOverallCalculator
+                        StandardResultsTypes.competitionGrouped to TestParticipantEventResultPointsCalculators.lsccGroupingCalculator,
+                        StandardResultsTypes.overallRawTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator,
+                        StandardResultsTypes.overallHandicapTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator
                 ))
         )
     }

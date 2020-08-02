@@ -1,11 +1,12 @@
 package org.coner.trailer
 
-import org.coner.trailer.seasonpoints.ParticipantResultPointsCalculator
+import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 
-object TestParticipantResultPointsCalculators {
+object TestParticipantEventResultPointsCalculators {
 
-    val lsccGroupingCalculator: ParticipantResultPointsCalculator
-        get() = ParticipantResultPointsCalculator(
+    val lsccGroupingCalculator: ParticipantEventResultPointsCalculator
+        get() = ParticipantEventResultPointsCalculator(
+                name = "lscc grouping",
                 positionToPoints = mapOf(
                         1 to 9,
                         2 to 6,
@@ -16,8 +17,9 @@ object TestParticipantResultPointsCalculators {
                 defaultPoints = 1
         )
 
-    val lsccOverallCalculator: ParticipantResultPointsCalculator
-        get() = ParticipantResultPointsCalculator(
+    val lsccOverallCalculator: ParticipantEventResultPointsCalculator
+        get() = ParticipantEventResultPointsCalculator(
+                name = "lscc overall",
                 positionToPoints = mapOf(
                         1 to 10,
                         2 to 9,
@@ -33,8 +35,9 @@ object TestParticipantResultPointsCalculators {
                 defaultPoints = 0
         )
 
-    val olsccCalculator: ParticipantResultPointsCalculator
-        get() = ParticipantResultPointsCalculator(
+    val olsccCalculator: ParticipantEventResultPointsCalculator
+        get() = ParticipantEventResultPointsCalculator(
+                name = "olscc",
                 didNotFinishPoints = 1,
                 didNotStartPoints = 0,
                 positionToPoints = mapOf(

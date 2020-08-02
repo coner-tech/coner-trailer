@@ -25,6 +25,11 @@
         </dependency>
         <dependency>
             <groupId>org.coner.trailer</groupId>
+            <artifactId>coner-trailer-datasource-snoozle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
             <artifactId>coner-trailer-datasource-crispy-fish</artifactId>
             <version>${project.version}</version>
         </dependency>

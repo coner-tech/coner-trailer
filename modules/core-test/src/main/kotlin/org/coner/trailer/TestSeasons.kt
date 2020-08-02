@@ -2,9 +2,9 @@ package org.coner.trailer
 
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
-import org.coner.trailer.TestParticipantResultPointsCalculators.lsccGroupingCalculator
-import org.coner.trailer.TestParticipantResultPointsCalculators.lsccOverallCalculator
-import org.coner.trailer.TestParticipantResultPointsCalculators.olsccCalculator
+import org.coner.trailer.TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+import org.coner.trailer.TestParticipantEventResultPointsCalculators.lsccOverallCalculator
+import org.coner.trailer.TestParticipantEventResultPointsCalculators.olsccCalculator
 
 object TestSeasons {
 

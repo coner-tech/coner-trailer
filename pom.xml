@@ -13,6 +13,7 @@
         <module>modules/datasource-crispy-fish</module>
         <module>modules/core-test</module>
         <module>modules/cli</module>
+        <module>modules/datasource-snoozle</module>
     </modules>
 
     <properties>
