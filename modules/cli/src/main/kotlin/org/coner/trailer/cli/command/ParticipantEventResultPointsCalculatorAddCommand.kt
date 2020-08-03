@@ -49,6 +49,6 @@ class ParticipantEventResultPointsCalculatorAddCommand(
                 defaultPoints = defaultPoints
         )
         service.create(create)
-        view.render(create)
+        echo(view.render(create))
     }
 }
