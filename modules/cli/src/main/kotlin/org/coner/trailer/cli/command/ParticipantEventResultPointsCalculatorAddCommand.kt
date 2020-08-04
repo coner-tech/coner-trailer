@@ -31,7 +31,9 @@ class ParticipantEventResultPointsCalculatorAddCommand(
     override val di: DI by findOrSetObject { di }
     private val service: ParticipantEventResultPointsCalculatorService by instance()
 
-    private val name: String by option().required()
+    private val name: String by option()
+            .required()
+            .validate { require(service.hasNewName(it)) { "Name already exists: $it" } }
     private val positionToPoints: List<Pair<Int, Int>> by option()
             .int()
             .pair()

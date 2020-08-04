@@ -32,6 +32,10 @@ class ParticipantEventResultPointsCalculatorService(
         resource.delete(mapper.fromCore(calculator))
     }
 
+    fun hasNewName(name: String): Boolean {
+        return loadAll().none { it.name == name }
+    }
+
     fun hasNewName(
             calculator: ParticipantEventResultPointsCalculator,
             inList: List<ParticipantEventResultPointsCalculator>

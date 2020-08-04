@@ -12,7 +12,8 @@ class ParticipantEventResultPointsCalculatorView(
         |    ID: ${model.id}
         |    Did Not Finish Points: ${model.didNotFinishPoints}
         |    Did Not Start Points: ${model.didNotStartPoints}
-        |    Position to Points: ${render(model.positionToPoints)}
+        |    Position to Points: 
+        |${render(model.positionToPoints)}
         |    Default Points: ${model.defaultPoints}
     """.trimMargin()
 

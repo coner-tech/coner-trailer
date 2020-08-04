@@ -8,7 +8,7 @@ class ConerTrailerDatabase(root: Path) : Database(root) {
 
     override val types = registerTypes {
         entity<ParticipantEventResultPointsCalculatorEntity> {
-            path = "participantEventResultPointsCalculators" / { it.id }
+            path = "participantEventResultPointsCalculators" / { it.id } + ".json"
         }
     }
 }

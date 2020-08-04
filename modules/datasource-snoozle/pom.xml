@@ -13,7 +13,7 @@
     <artifactId>coner-trailer-datasource-snoozle</artifactId>
 
     <properties>
-        <snoozle.version>0.3.3</snoozle.version>
+        <snoozle.version>0.3.4</snoozle.version>
     </properties>
 
     <dependencies>
