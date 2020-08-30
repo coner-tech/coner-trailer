@@ -41,13 +41,13 @@ class ParticipantEventResultPointsCalculatorGetCommand(
     }
 
     private val query: Query by mutuallyExclusiveOptions<Query>(
-            option("--id")
+            option("--id", help = "Get by ID")
                     .convert {
                         if (!isUuidPattern.matcher(it).matches())
                             fail("Not a UUID")
                         Query.ById(UUID.fromString(it))
                     },
-            option("--name")
+            option("--name", help = "Get by name")
                     .convert {
                         Query.ByName(it)
                     }
