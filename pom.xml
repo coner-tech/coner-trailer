@@ -14,6 +14,7 @@
         <module>modules/core-test</module>
         <module>modules/cli</module>
         <module>modules/datasource-snoozle</module>
+        <module>modules/io</module>
     </modules>
 
     <properties>

@@ -1,9 +1,11 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.cli.io.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.datasource.snoozle.ConerTrailerDatabase
-import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorMapper
+import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
+import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
+import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -14,8 +16,13 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<ConerTrailerDatabase>() with singleton { ConerTrailerDatabase(
             root = databaseConfiguration.snoozleDatabase.toPath())
     }
-    bind<ParticipantEventResultPointsCalculatorService>() with singleton { ParticipantEventResultPointsCalculatorService(
-            database = instance(),
-            mapper = ParticipantEventResultPointsCalculatorMapper()
-    ) }
+    bind<ParticipantEventResultPointsCalculatorResource>() with singleton {
+        instance<ConerTrailerDatabase>().entity<ParticipantEventResultPointsCalculatorEntity.Key, ParticipantEventResultPointsCalculatorEntity>()
+    }
+    bind<ParticipantEventResultPointsCalculatorService>() with singleton {
+        ParticipantEventResultPointsCalculatorService(
+                resource = instance(),
+                mapper = ParticipantEventResultPointsCalculatorMapper()
+        )
+    }
 }

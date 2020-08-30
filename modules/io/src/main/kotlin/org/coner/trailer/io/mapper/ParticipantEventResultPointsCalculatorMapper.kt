@@ -1,5 +1,6 @@
-package org.coner.trailer.datasource.snoozle.entity
+package org.coner.trailer.io.mapper
 
+import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
 import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 
 class ParticipantEventResultPointsCalculatorMapper {
@@ -13,7 +14,7 @@ class ParticipantEventResultPointsCalculatorMapper {
             defaultPoints = snoozle.defaultPoints
     )
 
-    fun fromCore(core: ParticipantEventResultPointsCalculator) = ParticipantEventResultPointsCalculatorEntity(
+    fun toSnoozle(core: ParticipantEventResultPointsCalculator) = ParticipantEventResultPointsCalculatorEntity(
             id = core.id,
             name = core.name,
             positionToPoints = core.positionToPoints,
