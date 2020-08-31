@@ -36,6 +36,12 @@ class ParticipantEventResultPointsCalculatorService(
                 .toList()
     }
 
+    fun update(calculator: ParticipantEventResultPointsCalculator) {
+        // TODO: prohibit update of event points calculators used for finalized events
+        // https://github.com/caeos/coner-trailer/issues/17
+        resource.update(mapper.toSnoozle(calculator))
+    }
+
     fun delete(calculator: ParticipantEventResultPointsCalculator) {
         resource.delete(mapper.toSnoozle(calculator))
     }

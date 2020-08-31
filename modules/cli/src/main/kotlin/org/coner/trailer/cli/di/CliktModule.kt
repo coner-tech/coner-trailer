@@ -66,6 +66,11 @@ val cliktModule = DI.Module("clikt") {
                             di = di,
                             useConsole = instance(),
                             view = instance()
+                    ),
+                    ParticipantEventResultPointsCalculatorSetCommand(
+                            di = di,
+                            useConsole = instance(),
+                            view = instance()
                     )
             )
     }
