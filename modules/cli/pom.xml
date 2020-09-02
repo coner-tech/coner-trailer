@@ -72,6 +72,12 @@
             <artifactId>assertk-jvm</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>coner-trailer-core-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

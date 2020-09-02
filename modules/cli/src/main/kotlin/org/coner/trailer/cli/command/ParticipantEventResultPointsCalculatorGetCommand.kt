@@ -19,8 +19,7 @@ import java.util.*
 
 class ParticipantEventResultPointsCalculatorGetCommand(
         di: DI,
-        useConsole: CliktConsole,
-        private val view: ParticipantEventResultPointsCalculatorView
+        useConsole: CliktConsole
 ) : CliktCommand(
         name = "get",
         help = "Get a participant event result points calculator"
@@ -34,6 +33,7 @@ class ParticipantEventResultPointsCalculatorGetCommand(
 
     override val di: DI by findOrSetObject { di }
     private val service: ParticipantEventResultPointsCalculatorService by instance()
+    private val view: ParticipantEventResultPointsCalculatorView by instance()
 
     sealed class Query {
         data class ById(val id: UUID) : Query()
