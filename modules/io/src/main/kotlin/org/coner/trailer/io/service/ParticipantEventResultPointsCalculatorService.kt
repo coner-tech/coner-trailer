@@ -25,9 +25,9 @@ class ParticipantEventResultPointsCalculatorService(
     fun findByName(name: String): ParticipantEventResultPointsCalculator? {
         return resource.stream()
                 .filter { it.name == name }
+                .findFirst()
                 .map(mapper::fromSnoozle)
-                .toList()
-                .singleOrNull()
+                .orElse(null)
     }
 
     fun list(): List<ParticipantEventResultPointsCalculator> {
