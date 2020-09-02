@@ -54,8 +54,7 @@ val cliktModule = DI.Module("clikt") {
             .subcommands(
                     ParticipantEventResultPointsCalculatorAddCommand(
                             di = di,
-                            useConsole = instance(),
-                            view = instance()
+                            useConsole = instance()
                     ),
                     ParticipantEventResultPointsCalculatorGetCommand(
                             di = di,
