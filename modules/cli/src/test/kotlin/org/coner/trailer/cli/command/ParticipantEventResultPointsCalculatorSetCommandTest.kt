@@ -73,6 +73,32 @@ class ParticipantEventResultPointsCalculatorSetCommandTest {
         }
         assertThat(console.output).isEqualTo(viewRendered)
     }
+
+    @Test
+    fun `It should only rename a calculator`() {
+        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { service.findById(calculator.id) } returns calculator
+        val set = calculator.copy(
+                name = "set"
+        )
+        every { service.hasNewName(set.name) } returns true
+        every { service.update(eq(set)) } answers { Unit }
+        val viewRendered = "view rendered ${set.name}"
+        every { view.render(eq(set)) } returns viewRendered
+
+        command.parse(arrayOf(
+                set.id.toString(),
+                "--name", set.name
+        ))
+
+        verifySequence {
+            service.hasNewName(set.name)
+            service.findById(set.id)
+            service.update(eq(set))
+            view.render(eq(set))
+        }
+        assertThat(console.output).isEqualTo(viewRendered)
+    }
 }
 
 private fun ParticipantEventResultPointsCalculatorSetCommandTest.arrangeCommand() {

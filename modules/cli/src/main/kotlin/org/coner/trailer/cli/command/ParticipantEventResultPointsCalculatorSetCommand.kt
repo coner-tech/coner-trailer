@@ -46,7 +46,7 @@ class ParticipantEventResultPointsCalculatorSetCommand(
     private val name: String? by option()
             .validate { require(service.hasNewName(it)) { "Name already exists: $it" } }
 
-    private val positionToPoints: List<Pair<Int, Int>>? by option()
+    private val positionToPoints: List<Pair<Int, Int>> by option()
             .int()
             .pair()
             .multiple()
@@ -82,7 +82,10 @@ class ParticipantEventResultPointsCalculatorSetCommand(
         val update = ParticipantEventResultPointsCalculator(
                 id = old.id,
                 name = name ?: old.name,
-                positionToPoints = positionToPoints?.toMap() ?: old.positionToPoints,
+                positionToPoints = positionToPoints.let { when {
+                    it.isNotEmpty() -> it.toMap()
+                    else -> old.positionToPoints
+                } },
                 didNotFinishPoints = when (val didNotFinishPoints = didNotFinishPoints) {
                     is DidNotFinishPoints.Set -> didNotFinishPoints.value
                     DidNotFinishPoints.Unset -> null
