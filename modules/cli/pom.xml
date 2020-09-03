@@ -13,7 +13,7 @@
     <artifactId>coner-trailer-cli</artifactId>
 
     <properties>
-        <clikt.version>2.8.0</clikt.version>
+        <clikt.version>3.0.0</clikt.version>
         <appdirs.version>1.2.0</appdirs.version>
     </properties>
 
@@ -47,9 +47,10 @@
             <artifactId>kodein-di-jvm</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.ajalt</groupId>
+            <groupId>com.github.ajalt.clikt</groupId>
             <artifactId>clikt</artifactId>
             <version>${clikt.version}</version>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>net.harawata</groupId>
