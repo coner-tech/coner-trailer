@@ -16,10 +16,6 @@ class PersonStandingAccumulator(
     var tie: Boolean = false
 }
 
-fun Comparator<PersonStandingAccumulator>.thenByPositionFinishCountDescending(position: Int): Comparator<PersonStandingAccumulator> {
-    return thenByDescending { it.positionToFinishCount[position] ?: 0 }
-}
-
 fun Comparator<PersonStandingAccumulator>.thenByAverageMarginOfVictoryDescending(): Comparator<PersonStandingAccumulator> {
     return thenByDescending { it.marginsOfVictory.average() }
 }
