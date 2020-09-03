@@ -6,14 +6,7 @@ import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
-import com.github.ajalt.clikt.parameters.groups.required
-import com.github.ajalt.clikt.parameters.groups.single
-import com.github.ajalt.clikt.parameters.options.convert
-import com.github.ajalt.clikt.parameters.options.option
-import org.coner.snoozle.util.isUuidPattern
 import org.coner.trailer.cli.util.clikt.toUuid
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.kodein.di.DI
 import org.kodein.di.DIAware

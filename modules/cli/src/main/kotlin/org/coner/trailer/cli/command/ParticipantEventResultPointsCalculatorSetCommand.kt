@@ -9,7 +9,6 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
-import org.coner.snoozle.util.isUuidPattern
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
