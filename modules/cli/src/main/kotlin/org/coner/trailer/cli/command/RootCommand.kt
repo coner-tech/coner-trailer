@@ -3,11 +3,10 @@ package org.coner.trailer.cli.command
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
-import org.coner.trailer.cli.di.serviceModule
+import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.kodein.di.DI
@@ -52,7 +51,7 @@ class RootCommand(
         currentContext.obj = DI {
             extend(di)
             if (database != config.noDatabase) {
-                import(serviceModule(databaseConfiguration = database))
+                import(databaseServiceModule(databaseConfiguration = database))
             }
         }
     }

@@ -26,7 +26,7 @@ class StandingsReportCreator {
     )
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): SortedMap<Grouping, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, ParticipantResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
+        val eventToCalculator: Map<SeasonEvent, ParticipantEventResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val model = event.seasonPointsCalculatorConfigurationModel
                     ?: param.season.seasonPointsCalculatorConfigurationModel
             val calculator = model.resultsTypeToCalculatorMap[param.resultsType]

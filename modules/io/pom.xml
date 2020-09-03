@@ -10,27 +10,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>coner-trailer-cli</artifactId>
-
-    <properties>
-        <clikt.version>2.8.0</clikt.version>
-        <appdirs.version>1.2.0</appdirs.version>
-    </properties>
+    <artifactId>coner-trailer-io</artifactId>
 
     <dependencies>
         <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.coner.trailer</groupId>
             <artifactId>coner-trailer-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.coner.trailer</groupId>
-            <artifactId>coner-trailer-io</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.coner.trailer</groupId>
-            <artifactId>coner-trailer-datasource-snoozle</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -39,22 +28,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.kodein.di</groupId>
-            <artifactId>kodein-di-jvm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ajalt</groupId>
-            <artifactId>clikt</artifactId>
-            <version>${clikt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.harawata</groupId>
-            <artifactId>appdirs</artifactId>
-            <version>${appdirs.version}</version>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>coner-trailer-datasource-snoozle</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -88,5 +64,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

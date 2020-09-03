@@ -5,8 +5,6 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.*
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -18,7 +16,8 @@ val cliktModule = DI.Module("clikt") {
             di = di
     )
             .subcommands(
-                    instance<ConfigCommand>()
+                    instance<ConfigCommand>(),
+                    instance<ParticipantEventResultPointsCalculatorCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -48,6 +47,31 @@ val cliktModule = DI.Module("clikt") {
                     ),
                     ConfigDatabaseRemoveCommand(
                             config = instance()
+                    )
+            )
+    }
+    bind<ParticipantEventResultPointsCalculatorCommand>() with singleton { ParticipantEventResultPointsCalculatorCommand()
+            .subcommands(
+                    ParticipantEventResultPointsCalculatorAddCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    ParticipantEventResultPointsCalculatorGetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    ParticipantEventResultPointsCalculatorListCommand(
+                            di = di,
+                            useConsole = instance(),
+                            view = instance()
+                    ),
+                    ParticipantEventResultPointsCalculatorSetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    ParticipantEventResultPointsCalculatorDeleteCommand(
+                            di = di,
+                            useConsole = instance()
                     )
             )
     }
