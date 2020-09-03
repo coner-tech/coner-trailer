@@ -1,12 +1,10 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualToIgnoringGivenProperties
-import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

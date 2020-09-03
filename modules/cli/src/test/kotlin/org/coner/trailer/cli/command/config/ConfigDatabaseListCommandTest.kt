@@ -1,6 +1,5 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
-import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import io.mockk.*

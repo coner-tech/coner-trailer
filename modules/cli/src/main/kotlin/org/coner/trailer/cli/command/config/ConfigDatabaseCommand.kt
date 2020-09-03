@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.CliktCommand
 

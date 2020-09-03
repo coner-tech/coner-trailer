@@ -1,10 +1,9 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import assertk.assertThat
 import com.github.ajalt.clikt.core.BadParameterValue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations

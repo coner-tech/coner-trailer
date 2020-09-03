@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.participanteventresultpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

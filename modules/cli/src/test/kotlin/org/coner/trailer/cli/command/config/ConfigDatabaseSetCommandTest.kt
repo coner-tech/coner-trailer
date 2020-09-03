@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -8,6 +8,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.slot
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.config.ConfigDatabaseSetCommand
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations

@@ -1,6 +1,7 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.CliktCommand
+import org.coner.trailer.cli.command.RootCommand
 
 class ConfigCommand() : CliktCommand(
         name = "config",

@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
@@ -6,7 +6,6 @@ import com.github.ajalt.clikt.core.PrintHelpMessage
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

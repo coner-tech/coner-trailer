@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.participanteventresultpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -16,9 +16,9 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 
-class ParticipantEventResultPointsCalculatorGetCommandTest {
+class ParticipantEventResultPointsCalculatorAddCommandTest {
 
-    lateinit var command: ParticipantEventResultPointsCalculatorGetCommand
+    lateinit var command: ParticipantEventResultPointsCalculatorAddCommand
 
     @MockK
     lateinit var service: ParticipantEventResultPointsCalculatorService
@@ -35,44 +35,40 @@ class ParticipantEventResultPointsCalculatorGetCommandTest {
     }
 
     @Test
-    fun `It should get calculator by id`() {
+    fun `It should create calculator`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        every { service.findById(calculator.id) } returns calculator
-        val viewRenders = "rendered ${calculator.name}"
-        every { view.render(calculator) } returns viewRenders
+        every { service.hasNewName(calculator.name) } returns true
+        every { service.create(eq(calculator)) } answers { Unit }
+        val viewRenders = "created ${calculator.id}"
+        every { view.render(eq(calculator)) } returns viewRenders
 
-        command.parse(arrayOf("--id", calculator.id.toString()))
+        command.parse(arrayOf(
+                "--id", calculator.id.toString(),
+                "--name", calculator.name,
+                "--position-to-points", "1", "9",
+                "--position-to-points", "2", "6",
+                "--position-to-points", "3", "4",
+                "--position-to-points", "4", "3",
+                "--position-to-points", "5", "2",
+                "--default-points", "1"
+        ))
 
-        assertThat(console.output).isEqualTo(viewRenders)
         verifySequence {
-            service.findById(calculator.id)
-            view.render(calculator)
+            service.hasNewName(calculator.name)
+            service.create(eq(calculator))
+            view.render(eq(calculator))
         }
-    }
-
-    @Test
-    fun `It should get calculator by name`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        every { service.findByName(calculator.name) } returns calculator
-        val viewRenders = "rendered ${calculator.id}"
-        every { view.render(calculator) } returns viewRenders
-
-        command.parse(arrayOf("--name", calculator.name))
-
         assertThat(console.output).isEqualTo(viewRenders)
-        verifySequence {
-            service.findByName(calculator.name)
-            view.render(calculator)
-        }
     }
 }
 
-private fun ParticipantEventResultPointsCalculatorGetCommandTest.arrangeCommand() {
+
+private fun ParticipantEventResultPointsCalculatorAddCommandTest.arrangeCommand() {
     val di = DI {
         bind<ParticipantEventResultPointsCalculatorService>() with instance(service)
         bind<ParticipantEventResultPointsCalculatorView>() with instance(view)
     }
-    command = ParticipantEventResultPointsCalculatorGetCommand(
+    command = ParticipantEventResultPointsCalculatorAddCommand(
             di = di,
             useConsole = console
     )

@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command
+package org.coner.trailer.cli.command.participanteventresultpointscalculator
 
 import io.mockk.MockKAnnotations
 import io.mockk.every
