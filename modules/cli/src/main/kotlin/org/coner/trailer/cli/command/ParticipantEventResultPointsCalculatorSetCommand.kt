@@ -10,6 +10,7 @@ import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.snoozle.util.isUuidPattern
+import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
@@ -37,11 +38,7 @@ class ParticipantEventResultPointsCalculatorSetCommand(
     private val view: ParticipantEventResultPointsCalculatorView by instance()
 
     private val id: UUID by argument()
-            .convert {
-                if (!isUuidPattern.matcher(it).matches())
-                    fail("Not a UUID")
-                UUID.fromString(it)
-            }
+            .convert { toUuid(it) }
 
     private val name: String? by option()
             .validate { require(service.hasNewName(it)) { "Name already exists: $it" } }

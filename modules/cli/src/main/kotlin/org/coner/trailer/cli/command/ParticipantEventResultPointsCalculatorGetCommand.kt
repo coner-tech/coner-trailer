@@ -10,6 +10,7 @@ import com.github.ajalt.clikt.parameters.groups.single
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import org.coner.snoozle.util.isUuidPattern
+import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.kodein.di.DI
@@ -43,9 +44,7 @@ class ParticipantEventResultPointsCalculatorGetCommand(
     private val query: Query by mutuallyExclusiveOptions<Query>(
             option("--id", help = "Get by ID")
                     .convert {
-                        if (!isUuidPattern.matcher(it).matches())
-                            fail("Not a UUID")
-                        Query.ById(UUID.fromString(it))
+                        Query.ById(toUuid(it))
                     },
             option("--name", help = "Get by name")
                     .convert {
