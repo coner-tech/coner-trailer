@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import org.kodein.di.DI
@@ -30,6 +31,7 @@ class ParticipantEventResultPointsCalculatorAddCommand(
     }
 
     override val di: DI by findOrSetObject { di }
+    private val constraints: ParticipantEventResultPointsCalculatorPersistConstraints by instance()
     private val service: ParticipantEventResultPointsCalculatorService by instance()
     private val view: ParticipantEventResultPointsCalculatorView by instance()
 
@@ -38,6 +40,10 @@ class ParticipantEventResultPointsCalculatorAddCommand(
             .default(UUID.randomUUID())
     private val name: String by option()
             .required()
+            .validate {
+                if (!constraints.hasUniqueName(id, it))
+                    fail("Name must be unique")
+            }
     private val positionToPoints: List<Pair<Int, Int>> by option()
             .int()
             .pair()

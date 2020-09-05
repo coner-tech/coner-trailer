@@ -46,6 +46,7 @@ class ParticipantEventResultPointsCalculatorServiceTest {
     @Test
     fun `It should create calculator`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.create(snoozleCalculator) } answers { Unit }
 
@@ -104,6 +105,7 @@ class ParticipantEventResultPointsCalculatorServiceTest {
     @Test
     fun `It should update calculators`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns mockk()
         every { resource.update(any()) } returns Unit
 

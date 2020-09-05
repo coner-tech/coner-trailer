@@ -9,12 +9,18 @@ class RankingSortMapper {
         return RankingSort(
                 id = snoozle.id,
                 name = snoozle.name,
-                steps = snoozle.steps.map { when (it.type) {
-                    RankingSortEntity.Step.Type.ScoreDescending -> RankingSort.Step.ScoreDescending
-                    RankingSortEntity.Step.Type.PositionFinishCountDescending -> RankingSort.Step.PositionFinishCountDescending(
-                            position = requireNotNull(it.paramInt1) { "${it.type} requires paramInt1 for position" }
-                    )
-                    RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending -> RankingSort.Step.AverageMarginOfVictoryDescending
+                steps = snoozle.steps.map { step -> when (step.type) {
+                    RankingSortEntity.Step.Type.ScoreDescending -> {
+                        RankingSort.Step.ScoreDescending()
+                    }
+                    RankingSortEntity.Step.Type.PositionFinishCountDescending -> {
+                        RankingSort.Step.PositionFinishCountDescending(
+                                position = requireNotNull(step.paramInt1) { "${step.type} requires paramInt1 for position" }
+                        )
+                    }
+                    RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending -> {
+                        RankingSort.Step.AverageMarginOfVictoryDescending()
+                    }
                 } }
         )
     }
@@ -24,7 +30,7 @@ class RankingSortMapper {
                 id = core.id,
                 name = core.name,
                 steps = core.steps.map { when (it) {
-                    RankingSort.Step.ScoreDescending -> {
+                    is RankingSort.Step.ScoreDescending -> {
                         RankingSortEntity.Step(
                                 type = RankingSortEntity.Step.Type.ScoreDescending
                         )
@@ -35,7 +41,7 @@ class RankingSortMapper {
                                 paramInt1 = it.position
                         )
                     }
-                    RankingSort.Step.AverageMarginOfVictoryDescending -> {
+                    is RankingSort.Step.AverageMarginOfVictoryDescending -> {
                         RankingSortEntity.Step(
                                 type = RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending
                         )

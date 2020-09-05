@@ -9,6 +9,7 @@ import io.mockk.verifySequence
 import org.coner.trailer.TestParticipantEventResultPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,6 +21,8 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
 
     lateinit var command: ParticipantEventResultPointsCalculatorAddCommand
 
+    @MockK
+    lateinit var constraints: ParticipantEventResultPointsCalculatorPersistConstraints
     @MockK
     lateinit var service: ParticipantEventResultPointsCalculatorService
     @MockK
@@ -37,6 +40,7 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
     @Test
     fun `It should create calculator`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { constraints.hasUniqueName(calculator.id, calculator.name) } returns true
         every { service.create(eq(calculator)) } answers { Unit }
         val viewRenders = "created ${calculator.id}"
         every { view.render(eq(calculator)) } returns viewRenders
@@ -63,6 +67,7 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
 
 private fun ParticipantEventResultPointsCalculatorAddCommandTest.arrangeCommand() {
     val di = DI {
+        bind<ParticipantEventResultPointsCalculatorPersistConstraints>() with instance(constraints)
         bind<ParticipantEventResultPointsCalculatorService>() with instance(service)
         bind<ParticipantEventResultPointsCalculatorView>() with instance(view)
     }

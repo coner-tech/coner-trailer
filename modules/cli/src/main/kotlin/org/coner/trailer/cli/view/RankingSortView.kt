@@ -7,17 +7,19 @@ class RankingSortView(override val console: CliktConsole) : CollectionView<Ranki
     override fun render(model: RankingSort) = """
         ${model.name}
             ID:     ${model.id}
-            Steps:  
-                    ${render(model.steps)}
+            Steps:
+        ${render(model.steps)}
     """.trimIndent()
 
     private fun render(steps: List<RankingSort.Step>): String {
         return steps.map {
             when (it) {
-                RankingSort.Step.ScoreDescending -> "Score Descending"
+                is RankingSort.Step.ScoreDescending -> "Score Descending"
                 is RankingSort.Step.PositionFinishCountDescending -> "Position (${it.position}) Finish Count"
-                RankingSort.Step.AverageMarginOfVictoryDescending -> "Average Margin of Victory Descending"
+                is RankingSort.Step.AverageMarginOfVictoryDescending -> "Average Margin of Victory Descending"
             }
-        }.joinToString(separator = console.lineSeparator) { it.prependIndent(" ".repeat(8)) }
+        }.joinToString(separator = console.lineSeparator) {
+            "- $it".prependIndent(" ".repeat(12))
+        }
     }
 }

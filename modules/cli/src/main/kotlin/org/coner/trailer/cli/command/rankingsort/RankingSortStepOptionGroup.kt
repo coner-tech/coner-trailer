@@ -11,7 +11,7 @@ sealed class RankingSortStepOptionGroup : OptionGroup() {
     abstract val step: RankingSort.Step
     object ScoreDescending : RankingSortStepOptionGroup() {
         override val step: RankingSort.Step
-            get() = RankingSort.Step.ScoreDescending
+            get() = RankingSort.Step.ScoreDescending()
     }
     class PositionFinishCountDescending : RankingSortStepOptionGroup() {
         val position: Int by option()
@@ -24,6 +24,6 @@ sealed class RankingSortStepOptionGroup : OptionGroup() {
     }
     object AverageMarginOfVictoryDescending : RankingSortStepOptionGroup() {
         override val step: RankingSort.Step
-            get() = RankingSort.Step.AverageMarginOfVictoryDescending
+            get() = RankingSort.Step.AverageMarginOfVictoryDescending(index = 0)
     }
 }

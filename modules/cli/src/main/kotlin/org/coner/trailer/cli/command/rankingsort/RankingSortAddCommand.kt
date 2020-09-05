@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.groups.*
 import com.github.ajalt.clikt.parameters.options.*
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.RankingSortView
+import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.seasonpoints.RankingSort
 import org.kodein.di.DI
@@ -29,6 +30,7 @@ class RankingSortAddCommand(
     }
 
     override val di: DI by findOrSetObject { di }
+    private val constraints: RankingSortPersistConstraints by instance()
     private val service: RankingSortService by instance()
     private val view: RankingSortView by instance()
 
@@ -37,6 +39,10 @@ class RankingSortAddCommand(
             .default(UUID.randomUUID())
     private val name: String by option()
             .required()
+            .validate {
+                if (!constraints.hasUniqueName(id, it))
+                    fail("Name must be unique")
+            }
     private val step: RankingSortStepOptionGroup by option()
             .groupSwitch(
                     "--score-descending" to RankingSortStepOptionGroup.ScoreDescending,

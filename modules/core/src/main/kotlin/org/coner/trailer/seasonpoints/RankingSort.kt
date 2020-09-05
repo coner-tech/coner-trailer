@@ -6,7 +6,7 @@ import org.coner.trailer.eventresults.Score
 import java.util.*
 import kotlin.Comparator
 
-class RankingSort(
+data class RankingSort(
         val id: UUID = UUID.randomUUID(),
         val name: String,
         val steps: List<Step>
@@ -20,11 +20,11 @@ class RankingSort(
         var builder: Comparator<PersonStandingAccumulator>? = null
         steps.forEach { step ->
             builder = when (step) {
-                Step.ScoreDescending -> builder?.thenByDescending(step.comparable)
+                is Step.ScoreDescending -> builder?.thenByDescending(step.comparable)
                         ?: compareByDescending(step.comparable)
                 is Step.PositionFinishCountDescending -> builder?.thenByDescending(step.comparable)
                         ?: compareByDescending(step.comparable)
-                Step.AverageMarginOfVictoryDescending -> builder?.thenByDescending(step.comparable)
+                is Step.AverageMarginOfVictoryDescending -> builder?.thenByDescending(step.comparable)
                         ?: compareByDescending(step.comparable)
             }
         }
@@ -34,15 +34,17 @@ class RankingSort(
     sealed class Step {
         abstract val comparable: (PersonStandingAccumulator) -> Comparable<*>
 
-        object ScoreDescending : Step() {
+        data class ScoreDescending(val index: Int? = null) : Step() {
             override val comparable: (PersonStandingAccumulator) -> Comparable<*>
                 get() = { it.score }
+
         }
-        class PositionFinishCountDescending(val position: Int) : Step() {
+        data class PositionFinishCountDescending(val position: Int) : Step() {
             override val comparable: (PersonStandingAccumulator) -> Comparable<*>
                 get() = { it.positionToFinishCount[position] ?: 0 }
+
         }
-        object AverageMarginOfVictoryDescending : Step() {
+        data class AverageMarginOfVictoryDescending(val index: Int? = null) : Step() {
             override val comparable: (PersonStandingAccumulator) -> Comparable<*>
                 get() = { it.marginsOfVictory.average() ?: Time(Score.withoutTime().value) }
         }
