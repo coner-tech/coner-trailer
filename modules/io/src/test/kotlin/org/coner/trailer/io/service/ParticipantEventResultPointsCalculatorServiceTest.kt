@@ -12,6 +12,7 @@ import io.mockk.impl.annotations.MockK
 import org.coner.trailer.TestParticipantEventResultPointsCalculators
 import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,6 +29,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
     @MockK
     lateinit var mapper: ParticipantEventResultPointsCalculatorMapper
     @MockK
+    lateinit var persistConstraints: ParticipantEventResultPointsCalculatorPersistConstraints
+    @MockK
     lateinit var snoozleCalculator: ParticipantEventResultPointsCalculatorEntity
 
     @BeforeEach
@@ -35,7 +38,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
         MockKAnnotations.init(this)
         service = ParticipantEventResultPointsCalculatorService(
                 resource = resource,
-                mapper = mapper
+                mapper = mapper,
+                persistConstraints = persistConstraints
         )
     }
 

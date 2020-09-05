@@ -6,6 +6,8 @@ import org.coner.trailer.datasource.snoozle.ConerTrailerDatabase
 import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.RankingSortResource
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
+import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.io.service.RankingSortService
@@ -22,19 +24,39 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<ParticipantEventResultPointsCalculatorResource>() with singleton {
         instance<ConerTrailerDatabase>().entity()
     }
+    bind<ParticipantEventResultPointsCalculatorMapper>() with singleton {
+        ParticipantEventResultPointsCalculatorMapper()
+    }
+    bind<ParticipantEventResultPointsCalculatorPersistConstraints>() with singleton {
+        ParticipantEventResultPointsCalculatorPersistConstraints(
+                resource = instance(),
+                mapper = instance()
+        )
+    }
     bind<ParticipantEventResultPointsCalculatorService>() with singleton {
         ParticipantEventResultPointsCalculatorService(
                 resource = instance(),
-                mapper = ParticipantEventResultPointsCalculatorMapper()
+                mapper = instance(),
+                persistConstraints = instance()
         )
     }
     bind<RankingSortResource>() with singleton {
         instance<ConerTrailerDatabase>().entity()
     }
+    bind<RankingSortMapper>() with singleton {
+        RankingSortMapper()
+    }
+    bind<RankingSortPersistConstraints>() with singleton {
+        RankingSortPersistConstraints(
+                resource = instance(),
+                mapper = instance()
+        )
+    }
     bind<RankingSortService>() with singleton {
         RankingSortService(
                 resource = instance(),
-                mapper = RankingSortMapper()
+                mapper = instance(),
+                persistConstraints = instance()
         )
     }
 }

@@ -37,7 +37,6 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
     @Test
     fun `It should create calculator`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        every { service.hasNewName(calculator.name) } returns true
         every { service.create(eq(calculator)) } answers { Unit }
         val viewRenders = "created ${calculator.id}"
         every { view.render(eq(calculator)) } returns viewRenders
@@ -54,7 +53,6 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
         ))
 
         verifySequence {
-            service.hasNewName(calculator.name)
             service.create(eq(calculator))
             view.render(eq(calculator))
         }

@@ -40,7 +40,6 @@ class ParticipantEventResultPointsCalculatorSetCommand(
             .convert { toUuid(it) }
 
     private val name: String? by option()
-            .validate { require(service.hasNewName(it)) { "Name already exists: $it" } }
 
     private val positionToPoints: List<Pair<Int, Int>> by option()
             .int()
