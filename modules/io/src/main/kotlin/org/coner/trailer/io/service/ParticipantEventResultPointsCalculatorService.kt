@@ -10,9 +10,10 @@ import kotlin.streams.toList
 class ParticipantEventResultPointsCalculatorService(
         private val resource: ParticipantEventResultPointsCalculatorResource,
         private val mapper: ParticipantEventResultPointsCalculatorMapper
-) {
+) : Service {
 
     fun create(calculator: ParticipantEventResultPointsCalculator) {
+        constrain(calculator.hasNewName()) { "Name: ${calculator.name} is not unique" }
         resource.create(mapper.toSnoozle(calculator))
     }
 
@@ -39,6 +40,7 @@ class ParticipantEventResultPointsCalculatorService(
     fun update(calculator: ParticipantEventResultPointsCalculator) {
         // TODO: prohibit update of event points calculators used for finalized events
         // https://github.com/caeos/coner-trailer/issues/17
+        constrain(calculator.hasNewName())
         resource.update(mapper.toSnoozle(calculator))
     }
 
@@ -46,7 +48,8 @@ class ParticipantEventResultPointsCalculatorService(
         resource.delete(mapper.toSnoozle(calculator))
     }
 
-    fun hasNewName(name: String): Boolean {
-        return resource.stream().noneMatch { it.name == name }
+    private fun ParticipantEventResultPointsCalculator.hasNewName(): Boolean {
+        return resource.stream()
+                .noneMatch { candidate -> candidate.name == name && candidate.id != id }
     }
 }

@@ -8,46 +8,39 @@ class RankingSortMapper {
     fun fromSnoozle(snoozle: RankingSortEntity): RankingSort {
         return RankingSort(
                 id = snoozle.id,
-                steps = mutableListOf<RankingSort.Step>().apply {
-                    snoozle.scoreDescendingSteps.forEach {
-                        set(it.index, RankingSort.Step.ScoreDescending)
-                    }
-                    snoozle.positionFinishCountDescendingSteps.forEach {
-                        set(it.index, RankingSort.Step.PositionFinishCountDescending(it.position))
-                    }
-                    snoozle.averageMarginOfVictoryDescendingSteps.forEach {
-                        set(it.index, RankingSort.Step.AverageMarginOfVictoryDescending)
-                    }
-                }
+                name = snoozle.name,
+                steps = snoozle.steps.map { when (it.type) {
+                    RankingSortEntity.Step.Type.ScoreDescending -> RankingSort.Step.ScoreDescending
+                    RankingSortEntity.Step.Type.PositionFinishCountDescending -> RankingSort.Step.PositionFinishCountDescending(
+                            position = requireNotNull(it.paramInt1) { "${it.type} requires paramInt1 for position" }
+                    )
+                    RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending -> RankingSort.Step.AverageMarginOfVictoryDescending
+                } }
         )
     }
 
     fun toSnoozle(core: RankingSort): RankingSortEntity {
         return RankingSortEntity(
                 id = core.id,
-                scoreDescendingSteps = core.steps.mapIndexedNotNull { index, step ->
-                    when (step) {
-                        is RankingSort.Step.ScoreDescending -> RankingSortEntity.IndexOnlyStep(index)
-                        else -> null
+                name = core.name,
+                steps = core.steps.map { when (it) {
+                    RankingSort.Step.ScoreDescending -> {
+                        RankingSortEntity.Step(
+                                type = RankingSortEntity.Step.Type.ScoreDescending
+                        )
                     }
-                },
-                positionFinishCountDescendingSteps = core.steps.mapIndexedNotNull { index, step ->
-                    when (step) {
-                        is RankingSort.Step.PositionFinishCountDescending -> {
-                            RankingSortEntity.PositionFinishCountDescendingStep(
-                                    index = index,
-                                    position = step.position
-                            )
-                        }
-                        else -> null
+                    is RankingSort.Step.PositionFinishCountDescending -> {
+                        RankingSortEntity.Step(
+                                type = RankingSortEntity.Step.Type.PositionFinishCountDescending,
+                                paramInt1 = it.position
+                        )
                     }
-                },
-                averageMarginOfVictoryDescendingSteps = core.steps.mapIndexedNotNull { index, step ->
-                    when (step) {
-                        is RankingSort.Step.AverageMarginOfVictoryDescending -> RankingSortEntity.IndexOnlyStep(index)
-                        else -> null
+                    RankingSort.Step.AverageMarginOfVictoryDescending -> {
+                        RankingSortEntity.Step(
+                                type = RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending
+                        )
                     }
-                }
+                } }
         )
     }
 }

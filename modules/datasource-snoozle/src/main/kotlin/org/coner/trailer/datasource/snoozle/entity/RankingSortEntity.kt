@@ -5,19 +5,20 @@ import java.util.*
 
 data class RankingSortEntity(
         val id: UUID = UUID.randomUUID(),
-        val scoreDescendingSteps: List<IndexOnlyStep>,
-        val positionFinishCountDescendingSteps: List<PositionFinishCountDescendingStep>,
-        val averageMarginOfVictoryDescendingSteps: List<IndexOnlyStep>
+        val name: String,
+        val steps: List<Step>
 ) : Entity<RankingSortEntity.Key> {
 
-    data class IndexOnlyStep(
-            val index: Int
-    )
-
-    data class PositionFinishCountDescendingStep(
-            val index: Int,
-            val position: Int
-    )
+    data class Step(
+            val type: Type,
+            val paramInt1: Int? = null
+    ) {
+        enum class Type {
+            ScoreDescending,
+            PositionFinishCountDescending,
+            AverageMarginOfVictoryDescending
+        }
+    }
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key
 }

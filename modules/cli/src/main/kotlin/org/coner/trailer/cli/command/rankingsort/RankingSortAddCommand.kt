@@ -7,7 +7,9 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.*
 import com.github.ajalt.clikt.parameters.options.*
 import org.coner.trailer.cli.util.clikt.toUuid
+import org.coner.trailer.cli.view.RankingSortView
 import org.coner.trailer.io.service.RankingSortService
+import org.coner.trailer.seasonpoints.RankingSort
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -28,6 +30,7 @@ class RankingSortAddCommand(
 
     override val di: DI by findOrSetObject { di }
     private val service: RankingSortService by instance()
+    private val view: RankingSortView by instance()
 
     private val id: UUID by option(hidden = true)
             .convert { toUuid(it) }
@@ -43,7 +46,13 @@ class RankingSortAddCommand(
             .required()
 
     override fun run() {
-
+        val create = RankingSort(
+                id = id,
+                name = name,
+                steps = listOf(step.step)
+        )
+        service.create(create)
+        echo(view.render(create))
     }
 
 

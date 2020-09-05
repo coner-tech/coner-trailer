@@ -8,6 +8,7 @@ import kotlin.Comparator
 
 class RankingSort(
         val id: UUID = UUID.randomUUID(),
+        val name: String,
         val steps: List<Step>
 ) {
 

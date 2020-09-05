@@ -128,23 +128,4 @@ class ParticipantEventResultPointsCalculatorServiceTest {
         }
     }
 
-    @Test
-    fun `It should find out if name is new`() {
-        val lsccGrouping = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val lsccOverall = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
-        every { resource.stream() } answers { Stream.of(
-                mockk { every { name } returns lsccGrouping.name },
-                mockk { every { name } returns lsccOverall.name }
-        ) }
-        every { mapper.fromSnoozle(match { it.name == lsccGrouping.name }) } returns lsccGrouping
-        every { mapper.fromSnoozle(match { it.name == lsccOverall.name }) } returns lsccOverall
-
-        val actualNotNew = service.hasNewName(lsccGrouping.name)
-        val actualNew = service.hasNewName(UUID.randomUUID().toString())
-
-        assertAll {
-            assertThat(actualNotNew, "not new case").isFalse()
-            assertThat(actualNew, "new case").isTrue()
-        }
-    }
 }
