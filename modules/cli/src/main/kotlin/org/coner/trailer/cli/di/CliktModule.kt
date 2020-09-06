@@ -96,6 +96,10 @@ val cliktModule = DI.Module("clikt") {
                     RankingSortGetCommand(
                             di = di,
                             useConsole = instance()
+                    ),
+                    RankingSortSetCommand(
+                            di = di,
+                            useConsole = instance()
                     )
             )
     }
