@@ -41,4 +41,8 @@ class RankingSortService(
                 .findFirst()
                 .orElse(null)
     }
+
+    fun delete(delete: RankingSort) {
+        resource.delete(mapper.toSnoozle(delete))
+    }
 }
