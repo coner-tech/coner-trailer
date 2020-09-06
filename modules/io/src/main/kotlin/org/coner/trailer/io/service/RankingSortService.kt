@@ -33,4 +33,12 @@ class RankingSortService(
                 .map(mapper::fromSnoozle)
                 .toList()
     }
+
+    fun findByName(name: String): RankingSort? {
+        return resource.stream()
+                .map(mapper::fromSnoozle)
+                .filter { it.name == name }
+                .findFirst()
+                .orElse(null)
+    }
 }
