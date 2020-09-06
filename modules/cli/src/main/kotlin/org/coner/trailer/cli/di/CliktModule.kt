@@ -9,6 +9,7 @@ import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.participanteventresultpointscalculator.*
 import org.coner.trailer.cli.command.rankingsort.RankingSortAddCommand
 import org.coner.trailer.cli.command.rankingsort.RankingSortCommand
+import org.coner.trailer.cli.command.rankingsort.RankingSortListCommand
 import org.coner.trailer.cli.command.rankingsort.RankingSortStepsAppendCommand
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -88,6 +89,10 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     RankingSortStepsAppendCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    RankingSortListCommand(
                             di = di,
                             useConsole = instance()
                     )

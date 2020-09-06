@@ -6,6 +6,7 @@ import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.seasonpoints.RankingSort
 import java.util.*
+import kotlin.streams.toList
 
 class RankingSortService(
         private val resource: RankingSortResource,
@@ -25,5 +26,11 @@ class RankingSortService(
 
     fun update(rankingSort: RankingSort) {
         resource.update(mapper.toSnoozle(rankingSort))
+    }
+
+    fun list(): List<RankingSort> {
+        return resource.stream()
+                .map(mapper::fromSnoozle)
+                .toList()
     }
 }
