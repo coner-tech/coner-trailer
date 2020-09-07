@@ -2,7 +2,7 @@ package org.coner.trailer.seasonpoints
 
 import org.coner.trailer.eventresults.ResultsType
 
-class CalculatorConfigurationModel(
+class SeasonPointsCalculatorConfiguration(
         val resultsTypeToCalculatorMap: Map<ResultsType, ParticipantEventResultPointsCalculator>
 ) {
 

@@ -1,6 +1,5 @@
 package org.coner.trailer
 
-import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
 import java.time.LocalDate
 import java.util.*
 

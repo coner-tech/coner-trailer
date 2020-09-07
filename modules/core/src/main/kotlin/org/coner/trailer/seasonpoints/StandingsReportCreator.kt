@@ -5,7 +5,6 @@ import org.coner.trailer.eventresults.ComprehensiveResultsReport
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.ResultsType
 import java.util.*
-import kotlin.Comparator
 
 class StandingsReportCreator {
 
@@ -27,9 +26,9 @@ class StandingsReportCreator {
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): SortedMap<Grouping, StandingsReport.Section> {
         val eventToCalculator: Map<SeasonEvent, ParticipantEventResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
-            val model = event.seasonPointsCalculatorConfigurationModel
-                    ?: param.season.seasonPointsCalculatorConfigurationModel
-            val calculator = model.resultsTypeToCalculatorMap[param.resultsType]
+            val config = event.seasonPointsCalculatorConfiguration
+                    ?: param.season.seasonPointsCalculatorConfiguration
+            val calculator = config.resultsTypeToCalculatorMap[param.resultsType]
             checkNotNull(calculator) {
                 "No season points calculator for results type: ${param.resultsType.title}"
             }

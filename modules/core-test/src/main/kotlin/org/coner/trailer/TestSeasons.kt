@@ -1,7 +1,7 @@
 package org.coner.trailer
 
 import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
+import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import org.coner.trailer.TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
 import org.coner.trailer.TestParticipantEventResultPointsCalculators.lsccOverallCalculator
 import org.coner.trailer.TestParticipantEventResultPointsCalculators.olsccCalculator
@@ -10,7 +10,7 @@ object TestSeasons {
 
     val lscc2019 = Season(
             name = "LSCC 2019",
-            seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
                     StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                     StandardResultsTypes.overallRawTime to lsccOverallCalculator,
                     StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
@@ -30,7 +30,7 @@ object TestSeasons {
 
     val lscc2019TieBreaking by lazy { Season(
             name = "LSCC 2019 Tie-Breaking",
-            seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
                     StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                     StandardResultsTypes.overallRawTime to lsccOverallCalculator,
                     StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
@@ -43,7 +43,7 @@ object TestSeasons {
 
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
-            seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
                     StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                     StandardResultsTypes.overallRawTime to lsccOverallCalculator,
                     StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
@@ -58,7 +58,7 @@ object TestSeasons {
     val olscc2019: Season
         get() = Season(
                 name = "OLSCC 2019",
-                seasonPointsCalculatorConfigurationModel = CalculatorConfigurationModel(mapOf(
+                seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
                         StandardResultsTypes.competitionGrouped to olsccCalculator,
                         StandardResultsTypes.overallRawTime to olsccCalculator,
                         StandardResultsTypes.overallHandicapTime to olsccCalculator

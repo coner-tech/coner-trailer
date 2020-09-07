@@ -58,7 +58,7 @@ object TestSeasonEvents {
     private fun points(event: Event, eventNumber: Int) = SeasonEvent(
             event = event,
             eventNumber = eventNumber,
-            seasonPointsCalculatorConfigurationModel = null,
+            seasonPointsCalculatorConfiguration = null,
             points = true
     )
 }
