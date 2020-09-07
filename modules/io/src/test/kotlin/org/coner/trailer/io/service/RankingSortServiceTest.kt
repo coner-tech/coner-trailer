@@ -5,6 +5,7 @@ import assertk.assertions.isSameAs
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
 import org.coner.trailer.datasource.snoozle.RankingSortResource
@@ -15,7 +16,9 @@ import org.coner.trailer.seasonpoints.RankingSort
 import org.coner.trailer.seasonpoints.TestRankingSorts
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(MockKExtension::class)
 class RankingSortServiceTest {
 
     lateinit var service: RankingSortService
@@ -31,7 +34,6 @@ class RankingSortServiceTest {
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         service = RankingSortService(
                 resource = resource,
                 mapper = mapper,
@@ -83,6 +85,22 @@ class RankingSortServiceTest {
         verifySequence {
             mapper.toSnoozle(rankingSort)
             resource.update(rankingSortEntity)
+        }
+    }
+
+    @Test
+    fun `It should delete ranking sort`(
+            @MockK rankingSort: RankingSort,
+            @MockK rankingSortSnoozle: RankingSortEntity
+    ) {
+        every { mapper.toSnoozle(rankingSort) } returns rankingSortSnoozle
+        every { resource.delete(rankingSortSnoozle) } answers { Unit }
+
+        service.delete(rankingSort)
+
+        verifySequence {
+            mapper.toSnoozle(rankingSort)
+            resource.delete(rankingSortSnoozle)
         }
     }
 }
