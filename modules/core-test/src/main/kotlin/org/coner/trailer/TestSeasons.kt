@@ -10,11 +10,12 @@ object TestSeasons {
 
     val lscc2019 = Season(
             name = "LSCC 2019",
-            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
-                    StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
-                    StandardResultsTypes.overallRawTime to lsccOverallCalculator,
-                    StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
-            )),
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    resultsTypeToCalculatorMap = mapOf(
+                            StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
+                            StandardResultsTypes.overallRawTime to lsccOverallCalculator,
+                            StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
+                    )),
             events = listOf(
                     TestSeasonEvents.Lscc2019.points1,
                     TestSeasonEvents.Lscc2019.points2,
@@ -30,11 +31,12 @@ object TestSeasons {
 
     val lscc2019TieBreaking by lazy { Season(
             name = "LSCC 2019 Tie-Breaking",
-            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
-                    StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
-                    StandardResultsTypes.overallRawTime to lsccOverallCalculator,
-                    StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
-            )),
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    resultsTypeToCalculatorMap = mapOf(
+                            StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
+                            StandardResultsTypes.overallRawTime to lsccOverallCalculator,
+                            StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
+                    )),
             events = listOf(
                     TestSeasonEvents.LsccTieBreaking.points1,
                     TestSeasonEvents.LsccTieBreaking.points2
@@ -43,11 +45,12 @@ object TestSeasons {
 
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
-            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
-                    StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
-                    StandardResultsTypes.overallRawTime to lsccOverallCalculator,
-                    StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
-            )),
+            seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    resultsTypeToCalculatorMap = mapOf(
+                            StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
+                            StandardResultsTypes.overallRawTime to lsccOverallCalculator,
+                            StandardResultsTypes.overallHandicapTime to lsccOverallCalculator
+                    )),
             events = listOf(
                     TestSeasonEvents.Lscc2019Simplified.points1,
                     TestSeasonEvents.Lscc2019Simplified.points2,
@@ -58,11 +61,12 @@ object TestSeasons {
     val olscc2019: Season
         get() = Season(
                 name = "OLSCC 2019",
-                seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
-                        StandardResultsTypes.competitionGrouped to olsccCalculator,
-                        StandardResultsTypes.overallRawTime to olsccCalculator,
-                        StandardResultsTypes.overallHandicapTime to olsccCalculator
-                )),
+                seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                        resultsTypeToCalculatorMap = mapOf(
+                                StandardResultsTypes.competitionGrouped to olsccCalculator,
+                                StandardResultsTypes.overallRawTime to olsccCalculator,
+                                StandardResultsTypes.overallHandicapTime to olsccCalculator
+                        )),
                 events = listOf(
 
                 )

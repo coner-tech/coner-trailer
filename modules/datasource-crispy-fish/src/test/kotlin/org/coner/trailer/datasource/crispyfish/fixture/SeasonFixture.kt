@@ -63,11 +63,12 @@ sealed class SeasonFixture(
         override val season = Season(
                 name = "LSCC 2019 Simplified",
                 events = events.map { it.coreSeasonEvent },
-                seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(mapOf(
-                        StandardResultsTypes.competitionGrouped to TestParticipantEventResultPointsCalculators.lsccGroupingCalculator,
-                        StandardResultsTypes.overallRawTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator,
-                        StandardResultsTypes.overallHandicapTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator
-                ))
+                seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                        resultsTypeToCalculatorMap = mapOf(
+                                StandardResultsTypes.competitionGrouped to TestParticipantEventResultPointsCalculators.lsccGroupingCalculator,
+                                StandardResultsTypes.overallRawTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator,
+                                StandardResultsTypes.overallHandicapTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator
+                        ))
         )
     }
 
