@@ -12,6 +12,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.config.ConfigCommand
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations

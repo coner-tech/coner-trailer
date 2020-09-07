@@ -22,7 +22,7 @@ class StandingsReportCreator {
             val season: Season,
             val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
             val takeTopEventScores: Int?,
-            val rankingSort: Comparator<PersonStandingAccumulator>
+            val rankingSort: RankingSort
     )
 
     fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): SortedMap<Grouping, StandingsReport.Section> {
@@ -74,14 +74,14 @@ class StandingsReportCreator {
         val groupingsToFinalAccumulators = groupingsToPersonStandingAccumulators.map { (grouping, peopleStandingAccumulators) ->
             val finalAccumulators = peopleStandingAccumulators.values
                     .toList()
-                    .sortedWith(param.rankingSort)
+                    .sortedWith(param.rankingSort.comparator)
             grouping to finalAccumulators
         }.toMap()
         groupingsToFinalAccumulators.forEach { (_, accumulators) ->
             accumulators.mapIndexed { index, accumulator ->
                 accumulator.position = if (index > 0) {
                     val previousAccumulator = accumulators[index - 1]
-                    val comparison = param.rankingSort.compare(accumulator, previousAccumulator)
+                    val comparison = param.rankingSort.comparator.compare(accumulator, previousAccumulator)
                     if (comparison != 0) {
                         checkNotNull(previousAccumulator.position) + 1
                     } else {

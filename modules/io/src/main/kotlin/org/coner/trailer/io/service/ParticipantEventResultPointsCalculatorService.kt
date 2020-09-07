@@ -2,6 +2,7 @@ package org.coner.trailer.io.service
 
 import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import java.util.*
@@ -9,10 +10,12 @@ import kotlin.streams.toList
 
 class ParticipantEventResultPointsCalculatorService(
         private val resource: ParticipantEventResultPointsCalculatorResource,
-        private val mapper: ParticipantEventResultPointsCalculatorMapper
-) {
+        private val mapper: ParticipantEventResultPointsCalculatorMapper,
+        private val persistConstraints: ParticipantEventResultPointsCalculatorPersistConstraints,
+) : Service {
 
     fun create(calculator: ParticipantEventResultPointsCalculator) {
+        persistConstraints.assess(calculator)
         resource.create(mapper.toSnoozle(calculator))
     }
 
@@ -37,16 +40,14 @@ class ParticipantEventResultPointsCalculatorService(
     }
 
     fun update(calculator: ParticipantEventResultPointsCalculator) {
-        // TODO: prohibit update of event points calculators used for finalized events
-        // https://github.com/caeos/coner-trailer/issues/17
+        persistConstraints.assess(calculator)
         resource.update(mapper.toSnoozle(calculator))
     }
 
     fun delete(calculator: ParticipantEventResultPointsCalculator) {
+        // TODO: prohibit deletions of event points calculators used for finalized events
+        // https://github.com/caeos/coner-trailer/issues/17
         resource.delete(mapper.toSnoozle(calculator))
     }
 
-    fun hasNewName(name: String): Boolean {
-        return resource.stream().noneMatch { it.name == name }
-    }
 }

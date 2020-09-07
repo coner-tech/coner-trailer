@@ -12,6 +12,7 @@ import io.mockk.impl.annotations.MockK
 import org.coner.trailer.TestParticipantEventResultPointsCalculators
 import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
+import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,6 +29,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
     @MockK
     lateinit var mapper: ParticipantEventResultPointsCalculatorMapper
     @MockK
+    lateinit var persistConstraints: ParticipantEventResultPointsCalculatorPersistConstraints
+    @MockK
     lateinit var snoozleCalculator: ParticipantEventResultPointsCalculatorEntity
 
     @BeforeEach
@@ -35,13 +38,15 @@ class ParticipantEventResultPointsCalculatorServiceTest {
         MockKAnnotations.init(this)
         service = ParticipantEventResultPointsCalculatorService(
                 resource = resource,
-                mapper = mapper
+                mapper = mapper,
+                persistConstraints = persistConstraints
         )
     }
 
     @Test
     fun `It should create calculator`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.create(snoozleCalculator) } answers { Unit }
 
@@ -100,6 +105,7 @@ class ParticipantEventResultPointsCalculatorServiceTest {
     @Test
     fun `It should update calculators`() {
         val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns mockk()
         every { resource.update(any()) } returns Unit
 
@@ -128,23 +134,4 @@ class ParticipantEventResultPointsCalculatorServiceTest {
         }
     }
 
-    @Test
-    fun `It should find out if name is new`() {
-        val lsccGrouping = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val lsccOverall = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
-        every { resource.stream() } answers { Stream.of(
-                mockk { every { name } returns lsccGrouping.name },
-                mockk { every { name } returns lsccOverall.name }
-        ) }
-        every { mapper.fromSnoozle(match { it.name == lsccGrouping.name }) } returns lsccGrouping
-        every { mapper.fromSnoozle(match { it.name == lsccOverall.name }) } returns lsccOverall
-
-        val actualNotNew = service.hasNewName(lsccGrouping.name)
-        val actualNew = service.hasNewName(UUID.randomUUID().toString())
-
-        assertAll {
-            assertThat(actualNotNew, "not new case").isFalse()
-            assertThat(actualNew, "new case").isTrue()
-        }
-    }
 }

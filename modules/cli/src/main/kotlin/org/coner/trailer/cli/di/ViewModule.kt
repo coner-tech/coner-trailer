@@ -2,6 +2,7 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
+import org.coner.trailer.cli.view.RankingSortView
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -12,6 +13,9 @@ val viewModule = DI.Module("view") {
             console = instance()
     ) }
     bind<ParticipantEventResultPointsCalculatorView>() with provider { ParticipantEventResultPointsCalculatorView(
+            console = instance()
+    ) }
+    bind<RankingSortView>() with provider { RankingSortView(
             console = instance()
     ) }
 }
