@@ -6,7 +6,6 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.*
-import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import org.coner.trailer.eventresults.ResultsType
@@ -57,8 +56,6 @@ class SeasonPointsCalculatorAddCommand(
                         ?: fail("No ranking sort found with name: $it")
             }
             .required()
-    private val takeTopEventScores: Int? by option()
-            .int()
 
     override fun run() {
         val resultsTypeToCalculatorMap = mutableMapOf<ResultsType, ParticipantEventResultPointsCalculator>()
@@ -78,9 +75,8 @@ class SeasonPointsCalculatorAddCommand(
         val create = SeasonPointsCalculatorConfiguration(
                 id = id,
                 name = name,
-                resultsTypeToCalculatorMap = resultsTypeToCalculatorMap,
-                rankingSort = rankingSortNamed,
-                takeTopEventScores = takeTopEventScores
+                resultsTypeToParticipantEventResultPointsCalculator = resultsTypeToCalculatorMap,
+                rankingSort = rankingSortNamed
         )
         service.create(create)
         echo(view.render(create))

@@ -20,7 +20,6 @@ val viewModule = DI.Module("view") {
             console = instance()
     ) }
     bind<SeasonPointsCalculatorConfigurationView>() with provider { SeasonPointsCalculatorConfigurationView(
-            console = instance(),
-            participantEventResultPointsCalculatorView = instance()
+            console = instance()
     ) }
 }

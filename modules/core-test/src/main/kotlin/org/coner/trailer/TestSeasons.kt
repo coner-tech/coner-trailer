@@ -6,7 +6,6 @@ object TestSeasons {
 
     val lscc2019 = Season(
             name = "LSCC 2019",
-            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
             events = listOf(
                     TestSeasonEvents.Lscc2019.points1,
                     TestSeasonEvents.Lscc2019.points2,
@@ -17,26 +16,30 @@ object TestSeasons {
                     TestSeasonEvents.Lscc2019.points7,
                     TestSeasonEvents.Lscc2019.points8,
                     TestSeasonEvents.Lscc2019.points9
-            )
+            ),
+            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+            takeScoreCountForPoints = 7
     )
 
     val lscc2019TieBreaking by lazy { Season(
             name = "LSCC 2019 Tie-Breaking",
-            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
             events = listOf(
                     TestSeasonEvents.LsccTieBreaking.points1,
                     TestSeasonEvents.LsccTieBreaking.points2
-            )
+            ),
+            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+            takeScoreCountForPoints = 2
     ) }
 
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
-            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
             events = listOf(
                     TestSeasonEvents.Lscc2019Simplified.points1,
                     TestSeasonEvents.Lscc2019Simplified.points2,
                     TestSeasonEvents.Lscc2019Simplified.points3
-            )
+            ),
+            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+            takeScoreCountForPoints = 2
     ) }
 
     val olscc2019: Season
@@ -45,7 +48,8 @@ object TestSeasons {
                 seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.olsccV1,
                 events = listOf(
 
-                )
+                ),
+                takeScoreCountForPoints = null
         )
 
 

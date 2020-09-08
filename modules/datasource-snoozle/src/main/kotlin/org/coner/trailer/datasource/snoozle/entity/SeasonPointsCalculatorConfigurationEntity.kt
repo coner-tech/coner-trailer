@@ -7,8 +7,7 @@ data class SeasonPointsCalculatorConfigurationEntity(
         val id: UUID = UUID.randomUUID(),
         val name: String,
         val resultsTypeKeyToParticipantEventResultPointsCalculatorId: Map<String, UUID>,
-        val rankingSortId: UUID,
-        val takeTopEventScores: Int?
+        val rankingSortId: UUID
 ) : Entity<SeasonPointsCalculatorConfigurationEntity.Key> {
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key

@@ -15,15 +15,14 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfiguration(
                 id = snoozle.id,
                 name = snoozle.name,
-                resultsTypeToCalculatorMap = snoozle.resultsTypeKeyToParticipantEventResultPointsCalculatorId.map { (key, value) ->
+                resultsTypeToParticipantEventResultPointsCalculator = snoozle.resultsTypeKeyToParticipantEventResultPointsCalculatorId.map { (key, value) ->
                     val resultType = checkNotNull(StandardResultsTypes.fromKey(key)) {
                         "Results type with key not found: $key"
                     }
                     val participantEventResultPointsCalculator = participantEventResultPointsCalculatorService.findById(value)
                     resultType to participantEventResultPointsCalculator
                 }.toMap(),
-                rankingSort = rankingSortService.findById(snoozle.rankingSortId),
-                takeTopEventScores = snoozle.takeTopEventScores
+                rankingSort = rankingSortService.findById(snoozle.rankingSortId)
         )
     }
 
@@ -31,9 +30,8 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfigurationEntity(
                 id = core.id,
                 name = core.name,
-                resultsTypeKeyToParticipantEventResultPointsCalculatorId = core.resultsTypeToCalculatorMap.map { it.key.key to it.value.id }.toMap(),
-                rankingSortId = core.rankingSort.id,
-                takeTopEventScores = core.takeTopEventScores
+                resultsTypeKeyToParticipantEventResultPointsCalculatorId = core.resultsTypeToParticipantEventResultPointsCalculator.map { it.key.key to it.value.id }.toMap(),
+                rankingSortId = core.rankingSort.id
         )
     }
 

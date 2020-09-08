@@ -3,8 +3,6 @@ package org.coner.trailer.datasource.crispyfish.fixture
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.GroupingMapper
-import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import java.io.File
 import java.time.LocalDate
@@ -64,7 +62,8 @@ sealed class SeasonFixture(
         override val season = Season(
                 name = "LSCC 2019 Simplified",
                 events = events.map { it.coreSeasonEvent },
-                seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019
+                seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+                takeScoreCountForPoints = 2
         )
     }
 

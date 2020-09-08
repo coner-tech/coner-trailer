@@ -29,7 +29,7 @@ class StandingsReportCreator {
         val eventToCalculator: Map<SeasonEvent, ParticipantEventResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val config = event.seasonPointsCalculatorConfiguration
                     ?: param.season.seasonPointsCalculatorConfiguration
-            val participantEventResultPointsCalculator = config.resultsTypeToCalculatorMap[param.resultsType]
+            val participantEventResultPointsCalculator = config.resultsTypeToParticipantEventResultPointsCalculator[param.resultsType]
             checkNotNull(participantEventResultPointsCalculator) {
                 "No season points calculator for results type: ${param.resultsType.title}"
             }
@@ -67,7 +67,7 @@ class StandingsReportCreator {
         groupingsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
             personToStandingAccumulators.values.forEach { accumulator ->
                 accumulator.score = accumulator.eventToPoints.values.sortedDescending()
-                        .take(param.configuration.takeTopEventScores ?: Int.MAX_VALUE)
+                        .take(param.season.takeScoreCountForPoints ?: Int.MAX_VALUE)
                         .sum()
             }
         }

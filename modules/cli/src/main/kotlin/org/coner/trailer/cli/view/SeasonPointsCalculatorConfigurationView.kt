@@ -6,8 +6,7 @@ import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 
 class SeasonPointsCalculatorConfigurationView(
-        override val console: CliktConsole,
-        private val participantEventResultPointsCalculatorView: ParticipantEventResultPointsCalculatorView
+        override val console: CliktConsole
 ) : CollectionView<SeasonPointsCalculatorConfiguration> {
 
     override fun render(model: SeasonPointsCalculatorConfiguration): String {
@@ -16,15 +15,13 @@ class SeasonPointsCalculatorConfigurationView(
             |   ID:
             |       ${model.id}
             |   Results Type Calculators:
-            |${renderResultsTypeToCalculatorMap(model.resultsTypeToCalculatorMap)}
+            |${renderResultsTypeToParticipantEventResultsCalculator(model.resultsTypeToParticipantEventResultPointsCalculator)}
             |   Ranking Sort:
             |       ${model.rankingSort.name}
-            |   Take Top Event Scores:
-            |       ${model.takeTopEventScores}
         """.trimMargin()
     }
 
-    private fun renderResultsTypeToCalculatorMap(model: Map<ResultsType, ParticipantEventResultPointsCalculator>): String {
+    private fun renderResultsTypeToParticipantEventResultsCalculator(model: Map<ResultsType, ParticipantEventResultPointsCalculator>): String {
         return model.map { """ 
             |       ${it.key.key} => ${it.value.name}
         """.trimMargin()
