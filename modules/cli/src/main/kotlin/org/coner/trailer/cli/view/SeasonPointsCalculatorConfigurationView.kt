@@ -13,15 +13,20 @@ class SeasonPointsCalculatorConfigurationView(
     override fun render(model: SeasonPointsCalculatorConfiguration): String {
         return """
             |${model.name}
-            |       ID:     ${model.id}
-            |       Results Type Calculators:
+            |   ID:
+            |       ${model.id}
+            |   Results Type Calculators:
             |${renderResultsTypeToCalculatorMap(model.resultsTypeToCalculatorMap)}
+            |   Ranking Sort:
+            |       ${model.rankingSort.name}
+            |   Take Top Event Scores:
+            |       ${model.takeTopEventScores}
         """.trimMargin()
     }
 
     private fun renderResultsTypeToCalculatorMap(model: Map<ResultsType, ParticipantEventResultPointsCalculator>): String {
         return model.map { """ 
-            |               ${it.key.key} => ${it.value.name}
+            |       ${it.key.key} => ${it.value.name}
         """.trimMargin()
         }.joinToString()
     }

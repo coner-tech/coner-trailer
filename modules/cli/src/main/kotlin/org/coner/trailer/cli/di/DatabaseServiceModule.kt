@@ -73,7 +73,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     }
     bind<SeasonPointsCalculatorConfigurationMapper>() with singleton {
         SeasonPointsCalculatorConfigurationMapper(
-                participantEventResultPointsCalculatorService = instance()
+                participantEventResultPointsCalculatorService = instance(),
+                rankingSortService = instance()
         )
     }
     bind<SeasonPointsCalculatorConfigurationService>() with singleton {

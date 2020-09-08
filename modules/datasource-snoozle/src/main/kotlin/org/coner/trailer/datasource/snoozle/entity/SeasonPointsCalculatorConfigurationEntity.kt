@@ -6,7 +6,7 @@ import java.util.*
 data class SeasonPointsCalculatorConfigurationEntity(
         val id: UUID = UUID.randomUUID(),
         val name: String,
-        val resultsTypeToCalculatorMap: Map<String, UUID>,
+        val resultsTypeKeyToParticipantEventResultPointsCalculatorId: Map<String, UUID>,
         val rankingSortId: UUID,
         val takeTopEventScores: Int?
 ) : Entity<SeasonPointsCalculatorConfigurationEntity.Key> {

@@ -29,8 +29,7 @@ class SeasonPointsStandingsTest {
                 resultsType = StandardResultsTypes.competitionGrouped,
                 season = SeasonFixture.Lscc2019Simplified.season,
                 eventToGroupedResultsReports = competitionGroupedResultsReports,
-                rankingSort = TestRankingSorts.lscc,
-                takeTopEventScores = 2
+                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified
         )
         val creator = StandingsReportCreator()
 

@@ -27,8 +27,7 @@ class StandingsReportCreatorTest {
                 eventToGroupedResultsReports = mapOf(
                         TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
                 ),
-                takeTopEventScores = 7,
-                rankingSort = TestRankingSorts.lscc
+                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -60,8 +59,7 @@ class StandingsReportCreatorTest {
                         TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveResultsReports.LsccTieBreaking.points2.groupedResultsReports.single()
 
                 ),
-                rankingSort = TestRankingSorts.lscc,
-                takeTopEventScores = 2
+                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -132,8 +130,7 @@ class StandingsReportCreatorTest {
                                 )
                         )
                 ),
-                rankingSort = TestRankingSorts.lscc,
-                takeTopEventScores = 2
+                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -154,8 +151,7 @@ class StandingsReportCreatorTest {
                 eventToGroupedResultsReports = mapOf(
                         TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()
                 ),
-                takeTopEventScores = null,
-                rankingSort = TestRankingSorts.olscc
+                configuration = TestSeasonPointsCalculatorConfigurations.olsccV1
         )
 
         val actual = creator.createGroupedStandingsSections(param)

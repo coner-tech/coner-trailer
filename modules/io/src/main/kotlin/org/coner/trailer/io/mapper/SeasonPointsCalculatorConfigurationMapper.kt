@@ -15,7 +15,7 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfiguration(
                 id = snoozle.id,
                 name = snoozle.name,
-                resultsTypeToCalculatorMap = snoozle.resultsTypeToCalculatorMap.map { (key, value) ->
+                resultsTypeToCalculatorMap = snoozle.resultsTypeKeyToParticipantEventResultPointsCalculatorId.map { (key, value) ->
                     val resultType = checkNotNull(StandardResultsTypes.fromKey(key)) {
                         "Results type with key not found: $key"
                     }
@@ -31,7 +31,7 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfigurationEntity(
                 id = core.id,
                 name = core.name,
-                resultsTypeToCalculatorMap = core.resultsTypeToCalculatorMap.map { it.key.key to it.value.id }.toMap(),
+                resultsTypeKeyToParticipantEventResultPointsCalculatorId = core.resultsTypeToCalculatorMap.map { it.key.key to it.value.id }.toMap(),
                 rankingSortId = core.rankingSort.id,
                 takeTopEventScores = core.takeTopEventScores
         )
