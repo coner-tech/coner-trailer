@@ -3,10 +3,12 @@ package org.coner.trailer.io.mapper
 import org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 
 class SeasonPointsCalculatorConfigurationMapper(
-        private val participantEventResultPointsCalculatorService: ParticipantEventResultPointsCalculatorService
+        private val participantEventResultPointsCalculatorService: ParticipantEventResultPointsCalculatorService,
+        private val rankingSortService: RankingSortService
 ) {
 
     fun fromSnoozle(snoozle: SeasonPointsCalculatorConfigurationEntity): SeasonPointsCalculatorConfiguration {
@@ -19,7 +21,9 @@ class SeasonPointsCalculatorConfigurationMapper(
                     }
                     val participantEventResultPointsCalculator = participantEventResultPointsCalculatorService.findById(value)
                     resultType to participantEventResultPointsCalculator
-                }.toMap()
+                }.toMap(),
+                rankingSort = rankingSortService.findById(snoozle.rankingSortId),
+                takeTopEventScores = snoozle.takeTopEventScores
         )
     }
 
@@ -27,7 +31,9 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfigurationEntity(
                 id = core.id,
                 name = core.name,
-                resultsTypeToCalculatorMap = core.resultsTypeToCalculatorMap.map { it.key.key to it.value.id }.toMap()
+                resultsTypeToCalculatorMap = core.resultsTypeToCalculatorMap.map { it.key.key to it.value.id }.toMap(),
+                rankingSortId = core.rankingSort.id,
+                takeTopEventScores = core.takeTopEventScores
         )
     }
 
