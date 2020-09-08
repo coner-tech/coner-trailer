@@ -8,6 +8,7 @@ import org.coner.trailer.cli.command.*
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.participanteventresultpointscalculator.*
 import org.coner.trailer.cli.command.rankingsort.*
+import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorAddCommand
 import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorCommand
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -110,6 +111,11 @@ val cliktModule = DI.Module("clikt") {
             )
     }
     bind<SeasonPointsCalculatorCommand>() with singleton { SeasonPointsCalculatorCommand()
-            .subcommands()
+            .subcommands(
+                    SeasonPointsCalculatorAddCommand(
+                            di = di,
+                            useConsole = instance()
+                    )
+            )
     }
 }
