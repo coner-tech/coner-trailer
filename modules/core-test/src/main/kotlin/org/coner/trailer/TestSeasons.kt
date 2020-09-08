@@ -11,6 +11,7 @@ object TestSeasons {
     val lscc2019 = Season(
             name = "LSCC 2019",
             seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    name = "LSCC v1",
                     resultsTypeToCalculatorMap = mapOf(
                             StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                             StandardResultsTypes.overallRawTime to lsccOverallCalculator,
@@ -32,6 +33,7 @@ object TestSeasons {
     val lscc2019TieBreaking by lazy { Season(
             name = "LSCC 2019 Tie-Breaking",
             seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    name = "LSCC v1",
                     resultsTypeToCalculatorMap = mapOf(
                             StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                             StandardResultsTypes.overallRawTime to lsccOverallCalculator,
@@ -46,6 +48,7 @@ object TestSeasons {
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
             seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                    name = "LSCC v1",
                     resultsTypeToCalculatorMap = mapOf(
                             StandardResultsTypes.competitionGrouped to lsccGroupingCalculator,
                             StandardResultsTypes.overallRawTime to lsccOverallCalculator,
@@ -62,6 +65,7 @@ object TestSeasons {
         get() = Season(
                 name = "OLSCC 2019",
                 seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                        name = "OLSCC v1",
                         resultsTypeToCalculatorMap = mapOf(
                                 StandardResultsTypes.competitionGrouped to olsccCalculator,
                                 StandardResultsTypes.overallRawTime to olsccCalculator,

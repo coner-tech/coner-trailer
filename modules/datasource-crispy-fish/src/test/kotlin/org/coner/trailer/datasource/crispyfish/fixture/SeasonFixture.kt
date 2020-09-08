@@ -64,6 +64,7 @@ sealed class SeasonFixture(
                 name = "LSCC 2019 Simplified",
                 events = events.map { it.coreSeasonEvent },
                 seasonPointsCalculatorConfiguration = SeasonPointsCalculatorConfiguration(
+                        name = "LSCC v1",
                         resultsTypeToCalculatorMap = mapOf(
                                 StandardResultsTypes.competitionGrouped to TestParticipantEventResultPointsCalculators.lsccGroupingCalculator,
                                 StandardResultsTypes.overallRawTime to TestParticipantEventResultPointsCalculators.lsccOverallCalculator,
