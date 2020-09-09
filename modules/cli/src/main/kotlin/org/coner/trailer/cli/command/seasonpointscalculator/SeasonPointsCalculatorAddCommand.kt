@@ -47,10 +47,14 @@ class SeasonPointsCalculatorAddCommand(
             .default(UUID.randomUUID())
     private val name: String by option()
             .required()
-    private val resultsTypeKeyToParticipantEventResultPointsCalculatorNamed: List<Pair<String, String>> by option()
+    private val resultsTypeKeyToParticipantEventResultPointsCalculatorNamed: List<Pair<String, String>> by option(
+            metavar = "KEY NAME..."
+    )
             .pair()
             .multiple()
-    private val rankingSortNamed: RankingSort by option()
+    private val rankingSortNamed: RankingSort by option(
+            metavar = "NAME"
+    )
             .convert {
                 rankingSortService.findByName(it)
                         ?: fail("No ranking sort found with name: $it")
