@@ -6,6 +6,7 @@ import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstr
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import java.util.*
+import kotlin.streams.toList
 
 class SeasonPointsCalculatorConfigurationService(
         private val resource: SeasonPointsCalculatorConfigurationResource,
@@ -29,5 +30,11 @@ class SeasonPointsCalculatorConfigurationService(
                 .map(mapper::fromSnoozle)
                 .findFirst()
                 .orElse(null)
+    }
+
+    fun list(): List<SeasonPointsCalculatorConfiguration> {
+        return resource.stream()
+                .map(mapper::fromSnoozle)
+                .toList()
     }
 }

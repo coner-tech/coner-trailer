@@ -11,6 +11,7 @@ import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorAddCommand
 import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorCommand
 import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorGetCommand
+import org.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorListCommand
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -118,6 +119,10 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     SeasonPointsCalculatorGetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorListCommand(
                             di = di,
                             useConsole = instance()
                     )
