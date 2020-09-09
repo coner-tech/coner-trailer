@@ -61,23 +61,22 @@ class SeasonPointsCalculatorAddCommand(
 
     override fun run() {
         val resultsTypeToCalculatorMap = mutableMapOf<ResultsType, ParticipantEventResultPointsCalculator>()
-        resultsTypeKeyToParticipantEventResultPointsCalculatorNamed.forEach { (resultsTypeKey, participantEventResultPointsCalculatorName) ->
-            val resultsType = StandardResultsTypes.fromKey(resultsTypeKey)
-            if (resultsType == null) {
-                echo("Results type with key not found: $resultsTypeKey")
-                throw Abort()
-            }
-            val participantEventResultPointsCalculator = participantEventResultPointsCalculatorService.findByName(participantEventResultPointsCalculatorName)
-            if (participantEventResultPointsCalculator == null) {
-                echo("Participant event result points calculator with name not found: $participantEventResultPointsCalculatorName")
-                throw Abort()
-            }
-            resultsTypeToCalculatorMap[resultsType] = participantEventResultPointsCalculator
-        }
         val create = SeasonPointsCalculatorConfiguration(
                 id = id,
                 name = name,
-                resultsTypeToParticipantEventResultPointsCalculator = resultsTypeToCalculatorMap,
+                resultsTypeToParticipantEventResultPointsCalculator = resultsTypeKeyToParticipantEventResultPointsCalculatorNamed.map { (resultsTypeKey, participantEventResultPointsCalculatorName) ->
+                    val resultsType = StandardResultsTypes.fromKey(resultsTypeKey)
+                    if (resultsType == null) {
+                        echo("Results type with key not found: $resultsTypeKey")
+                        throw Abort()
+                    }
+                    val participantEventResultPointsCalculator = participantEventResultPointsCalculatorService.findByName(participantEventResultPointsCalculatorName)
+                    if (participantEventResultPointsCalculator == null) {
+                        echo("Participant event result points calculator with name not found: $participantEventResultPointsCalculatorName")
+                        throw Abort()
+                    }
+                    resultsType to participantEventResultPointsCalculator
+                }.toMap(),
                 rankingSort = rankingSortNamed
         )
         service.create(create)
