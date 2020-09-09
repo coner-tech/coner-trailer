@@ -14,9 +14,9 @@ class SeasonPointsCalculatorConfigurationService(
         private val constraints: SeasonPointsCalculatorConfigurationConstraints
 ) {
 
-    fun create(seasonPointsCalculatorConfiguration: SeasonPointsCalculatorConfiguration) {
-        constraints.assess(seasonPointsCalculatorConfiguration)
-        resource.create(mapper.toSnoozle(seasonPointsCalculatorConfiguration))
+    fun create(create: SeasonPointsCalculatorConfiguration) {
+        constraints.assess(create)
+        resource.create(mapper.toSnoozle(create))
     }
 
     fun findById(id: UUID): SeasonPointsCalculatorConfiguration {
@@ -36,5 +36,10 @@ class SeasonPointsCalculatorConfigurationService(
         return resource.stream()
                 .map(mapper::fromSnoozle)
                 .toList()
+    }
+
+    fun update(update: SeasonPointsCalculatorConfiguration) {
+        constraints.assess(update)
+        resource.update(mapper.toSnoozle(update))
     }
 }

@@ -12,6 +12,7 @@ import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.coner.trailer.seasonpoints.RankingSort
+import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -33,6 +34,7 @@ class SeasonPointsCalculatorSetCommand(
 
     override val di: DI by findOrSetObject { di }
 
+    private val mapper: SeasonPointsCalculatorParameterMapper by instance()
     private val rankingSortService: RankingSortService by instance()
     private val service: SeasonPointsCalculatorConfigurationService by instance()
     private val view: SeasonPointsCalculatorConfigurationView by instance()
@@ -43,9 +45,7 @@ class SeasonPointsCalculatorSetCommand(
     private val name: String? by option()
     private val resultsTypeKeyToParticipantEventResultPointsCalculatorNamed: List<Pair<String, String>> by option(
             metavar = "KEY NAME..."
-    )
-            .pair()
-            .multiple()
+    ).pair().multiple()
     private val rankingSortNamed: RankingSort? by option(metavar = "NAME")
             .convert {
                 rankingSortService.findByName(it)
@@ -53,5 +53,17 @@ class SeasonPointsCalculatorSetCommand(
             }
 
     override fun run() {
+        val current = service.findById(id)
+        val update = SeasonPointsCalculatorConfiguration(
+                id = current.id,
+                name = name ?: current.name,
+                resultsTypeToParticipantEventResultPointsCalculator = when {
+                    resultsTypeKeyToParticipantEventResultPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToParticipantEventResultPointsCalculatorNamed)
+                    else -> current.resultsTypeToParticipantEventResultPointsCalculator
+                },
+                rankingSort = rankingSortNamed ?: current.rankingSort
+        )
+        service.update(update)
+        echo(view.render(update))
     }
 }
