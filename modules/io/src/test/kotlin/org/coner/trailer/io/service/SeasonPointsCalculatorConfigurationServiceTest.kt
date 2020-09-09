@@ -1,17 +1,23 @@
 package org.coner.trailer.io.service
 
+import assertk.assertThat
+import assertk.assertions.isSameAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import io.mockk.verify
 import io.mockk.verifySequence
 import org.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
 import org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity
 import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
+import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.util.stream.Stream
 
 @ExtendWith(MockKExtension::class)
 class SeasonPointsCalculatorConfigurationServiceTest {
@@ -50,5 +56,48 @@ class SeasonPointsCalculatorConfigurationServiceTest {
             mapper.toSnoozle(spcc)
             resource.create(spccEntity)
         }
+    }
+
+    @Test
+    fun `It should find by id`(
+            @MockK findEntity: SeasonPointsCalculatorConfigurationEntity
+    ) {
+        val find = TestSeasonPointsCalculatorConfigurations.lscc2019
+        every { resource.read(match { it.id == find.id }) } returns findEntity
+        every { mapper.fromSnoozle(findEntity) } returns find
+
+        val actual = service.findById(find.id)
+
+        verifySequence {
+            resource.read(match { it.id == find.id })
+            mapper.fromSnoozle(findEntity)
+        }
+        assertThat(actual).isSameAs(find)
+    }
+
+    @Test
+    fun `It should find by name`() {
+        val lscc2019 = TestSeasonPointsCalculatorConfigurations.lscc2019
+        val lscc2019Entity: SeasonPointsCalculatorConfigurationEntity = mockk {
+            every { name } returns lscc2019.name
+        }
+        val lscc2019SimplifiedEntity: SeasonPointsCalculatorConfigurationEntity = mockk {
+            every { name } returns TestSeasonPointsCalculatorConfigurations.lscc2019Simplified.name
+        }
+        val stream = Stream.of(lscc2019Entity, lscc2019SimplifiedEntity)
+        every { resource.stream() } returns stream
+        every { mapper.fromSnoozle(lscc2019Entity) } returns lscc2019
+
+        val actual = service.findByName(lscc2019.name)
+
+        verifySequence {
+            resource.stream()
+            lscc2019Entity.name
+            mapper.fromSnoozle(lscc2019Entity)
+        }
+        verify(exactly = 0) {
+            lscc2019SimplifiedEntity.name
+        }
+        assertThat(actual).isSameAs(lscc2019)
     }
 }
