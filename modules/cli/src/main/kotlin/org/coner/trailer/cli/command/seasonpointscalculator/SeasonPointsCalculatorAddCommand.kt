@@ -52,9 +52,7 @@ class SeasonPointsCalculatorAddCommand(
     )
             .pair()
             .multiple()
-    private val rankingSortNamed: RankingSort by option(
-            metavar = "NAME"
-    )
+    private val rankingSortNamed: RankingSort by option(metavar = "NAME")
             .convert {
                 rankingSortService.findByName(it)
                         ?: fail("No ranking sort found with name: $it")
