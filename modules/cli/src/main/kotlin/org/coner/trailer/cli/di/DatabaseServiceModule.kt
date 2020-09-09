@@ -9,6 +9,7 @@ import org.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationR
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
 import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.constraint.RankingSortPersistConstraints
+import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
@@ -77,10 +78,17 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
                 rankingSortService = instance()
         )
     }
+    bind<SeasonPointsCalculatorConfigurationConstraints>() with singleton {
+        SeasonPointsCalculatorConfigurationConstraints(
+                resource = instance(),
+                mapper = instance()
+        )
+    }
     bind<SeasonPointsCalculatorConfigurationService>() with singleton {
         SeasonPointsCalculatorConfigurationService(
                 resource = instance(),
-                mapper = instance()
+                mapper = instance(),
+                constraints = instance()
         )
     }
 }
