@@ -5,14 +5,18 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import io.mockk.verifySequence
 import org.coner.trailer.TestParticipantEventResultPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
+import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
+import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import org.coner.trailer.seasonpoints.TestRankingSorts
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +32,7 @@ class SeasonPointsCalculatorAddCommandTest {
     lateinit var command: SeasonPointsCalculatorAddCommand
 
     @MockK
-    lateinit var participantEventResultPointsCalculatorService: ParticipantEventResultPointsCalculatorService
+    lateinit var mapper: SeasonPointsCalculatorParameterMapper
     @MockK
     lateinit var rankingSortService: RankingSortService
     @MockK
@@ -49,12 +53,16 @@ class SeasonPointsCalculatorAddCommandTest {
         val create = TestSeasonPointsCalculatorConfigurations.lscc2019.copy()
         val groupingCalculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
         val overallCalculator = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
-        every { participantEventResultPointsCalculatorService.findByName(groupingCalculator.name) } returns groupingCalculator
-        every { participantEventResultPointsCalculatorService.findByName(overallCalculator.name) } returns overallCalculator
         val rankingSort = TestRankingSorts.lscc
         every { rankingSortService.findByName(rankingSort.name) } returns create.rankingSort
-        val rtktperpcn = "--results-type-key-to-participant-event-result-points-calculator-named"
+        val resultsTypeToEventPointsCalculatorNamed = listOf(
+                StandardResultsTypes.competitionGrouped.key to groupingCalculator.name,
+                StandardResultsTypes.overallRawTime.key to overallCalculator.name,
+                StandardResultsTypes.overallHandicapTime.key to overallCalculator.name
+        )
+        every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.resultsTypeToParticipantEventResultPointsCalculator
         every { service.create(eq(create)) } answers { Unit }
+        val rtktperpcn = "--results-type-key-to-participant-event-result-points-calculator-named"
         val viewRendered = "view rendered ${create.name}"
         every { view.render(create) } returns viewRendered
 
@@ -69,9 +77,7 @@ class SeasonPointsCalculatorAddCommandTest {
 
         verifySequence {
             rankingSortService.findByName(rankingSort.name)
-            participantEventResultPointsCalculatorService.findByName(groupingCalculator.name)
-            participantEventResultPointsCalculatorService.findByName(overallCalculator.name)
-            participantEventResultPointsCalculatorService.findByName(overallCalculator.name)
+            mapper.fromParameter(eq(resultsTypeToEventPointsCalculatorNamed))
             service.create(eq(create))
             view.render(create)
         }
@@ -81,7 +87,7 @@ class SeasonPointsCalculatorAddCommandTest {
 
 private fun SeasonPointsCalculatorAddCommandTest.arrangeCommand() {
     val di = DI {
-        bind<ParticipantEventResultPointsCalculatorService>() with instance(participantEventResultPointsCalculatorService)
+        bind<SeasonPointsCalculatorParameterMapper>() with instance(mapper)
         bind<RankingSortService>() with instance(rankingSortService)
         bind<SeasonPointsCalculatorConfigurationService>() with instance(service)
         bind<SeasonPointsCalculatorConfigurationView>() with instance(view)
