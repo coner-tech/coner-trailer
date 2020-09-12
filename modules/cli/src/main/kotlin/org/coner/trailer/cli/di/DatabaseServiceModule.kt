@@ -1,18 +1,17 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.datasource.snoozle.ConerTrailerDatabase
 import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.RankingSortResource
 import org.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
-import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
 import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
 import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
 import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
+import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.kodein.di.DI

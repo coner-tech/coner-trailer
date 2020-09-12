@@ -9,10 +9,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.direct
-import org.kodein.di.instance
+import org.kodein.di.*
 
 class RootCommand(
         override val di: DI
@@ -49,7 +46,7 @@ class RootCommand(
             }
         }
         currentContext.obj = DI {
-            extend(di)
+            extend(di, copy = Copy.All)
             if (database != config.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
             }
