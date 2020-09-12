@@ -2,12 +2,12 @@ package org.coner.trailer.io.mapper
 
 import org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity
 import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 
 class SeasonPointsCalculatorConfigurationMapper(
-        private val participantEventResultPointsCalculatorService: ParticipantEventResultPointsCalculatorService,
+        private val eventPointsCalculatorService: EventPointsCalculatorService,
         private val rankingSortService: RankingSortService
 ) {
 
@@ -15,12 +15,12 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfiguration(
                 id = snoozle.id,
                 name = snoozle.name,
-                resultsTypeToParticipantEventResultPointsCalculator = snoozle.resultsTypeKeyToParticipantEventResultPointsCalculatorId.map { (key, value) ->
+                resultsTypeToEventPointsCalculator = snoozle.resultsTypeKeyToEventPointsCalculatorId.map { (key, value) ->
                     val resultType = checkNotNull(StandardResultsTypes.fromKey(key)) {
                         "Results type with key not found: $key"
                     }
-                    val participantEventResultPointsCalculator = participantEventResultPointsCalculatorService.findById(value)
-                    resultType to participantEventResultPointsCalculator
+                    val eventPointsCalculator = eventPointsCalculatorService.findById(value)
+                    resultType to eventPointsCalculator
                 }.toMap(),
                 rankingSort = rankingSortService.findById(snoozle.rankingSortId)
         )
@@ -30,7 +30,7 @@ class SeasonPointsCalculatorConfigurationMapper(
         return SeasonPointsCalculatorConfigurationEntity(
                 id = core.id,
                 name = core.name,
-                resultsTypeKeyToParticipantEventResultPointsCalculatorId = core.resultsTypeToParticipantEventResultPointsCalculator.map { it.key.key to it.value.id }.toMap(),
+                resultsTypeKeyToEventPointsCalculatorId = core.resultsTypeToEventPointsCalculator.map { it.key.key to it.value.id }.toMap(),
                 rankingSortId = core.rankingSort.id
         )
     }

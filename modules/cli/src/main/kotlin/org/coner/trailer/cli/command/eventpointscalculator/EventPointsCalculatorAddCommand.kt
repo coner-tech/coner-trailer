@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command.participanteventresultpointscalculator
+package org.coner.trailer.cli.command.eventpointscalculator
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
@@ -7,21 +7,21 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.cli.util.clikt.toUuid
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
-import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
+import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
+import org.coner.trailer.io.service.EventPointsCalculatorService
+import org.coner.trailer.seasonpoints.EventPointsCalculator
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.util.*
 
-class ParticipantEventResultPointsCalculatorAddCommand(
+class EventPointsCalculatorAddCommand(
         di: DI,
         useConsole: CliktConsole
 ) : CliktCommand(
         name = "add",
-        help = "Add a participant event result points calculator"
+        help = "Add an event points calculator"
 ), DIAware {
 
     init {
@@ -31,9 +31,9 @@ class ParticipantEventResultPointsCalculatorAddCommand(
     }
 
     override val di: DI by findOrSetObject { di }
-    private val constraints: ParticipantEventResultPointsCalculatorPersistConstraints by instance()
-    private val service: ParticipantEventResultPointsCalculatorService by instance()
-    private val view: ParticipantEventResultPointsCalculatorView by instance()
+    private val constraints: EventPointsCalculatorPersistConstraints by instance()
+    private val service: EventPointsCalculatorService by instance()
+    private val view: EventPointsCalculatorView by instance()
 
     private val id: UUID by option(hidden = true)
             .convert { toUuid(it) }
@@ -53,7 +53,7 @@ class ParticipantEventResultPointsCalculatorAddCommand(
     private val defaultPoints: Int by option().int().required()
 
     override fun run() {
-        val create = ParticipantEventResultPointsCalculator(
+        val create = EventPointsCalculator(
                 id = id,
                 name = name,
                 positionToPoints = positionToPoints.toMap(),

@@ -1,42 +1,37 @@
 package org.coner.trailer.io.service
 
-import assertk.all
-import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.hasSize
-import assertk.assertions.isFalse
 import assertk.assertions.isSameAs
-import assertk.assertions.isTrue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import org.coner.trailer.TestParticipantEventResultPointsCalculators
-import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
-import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
-import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
-import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
+import org.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
+import org.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity
+import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
+import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import java.util.*
 import java.util.stream.Stream
 
-class ParticipantEventResultPointsCalculatorServiceTest {
+class EventPointsCalculatorServiceTest {
 
-    lateinit var service: ParticipantEventResultPointsCalculatorService
+    lateinit var service: EventPointsCalculatorService
 
     @MockK
-    lateinit var resource: ParticipantEventResultPointsCalculatorResource
+    lateinit var resource: EventPointsCalculatorResource
     @MockK
-    lateinit var mapper: ParticipantEventResultPointsCalculatorMapper
+    lateinit var mapper: EventPointsCalculatorMapper
     @MockK
-    lateinit var persistConstraints: ParticipantEventResultPointsCalculatorPersistConstraints
+    lateinit var persistConstraints: EventPointsCalculatorPersistConstraints
     @MockK
-    lateinit var snoozleCalculator: ParticipantEventResultPointsCalculatorEntity
+    lateinit var snoozleCalculator: EventPointsCalculatorEntity
 
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
-        service = ParticipantEventResultPointsCalculatorService(
+        service = EventPointsCalculatorService(
                 resource = resource,
                 mapper = mapper,
                 persistConstraints = persistConstraints
@@ -45,7 +40,7 @@ class ParticipantEventResultPointsCalculatorServiceTest {
 
     @Test
     fun `It should create calculator`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
         every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.create(snoozleCalculator) } answers { Unit }
@@ -60,8 +55,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
 
     @Test
     fun `It should find calculator by id`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val slot = slot<ParticipantEventResultPointsCalculatorEntity.Key>()
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val slot = slot<EventPointsCalculatorEntity.Key>()
         every { resource.read(capture(slot)) } returns snoozleCalculator
         every { mapper.fromSnoozle(snoozleCalculator) } returns calculator
 
@@ -77,8 +72,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
 
     @Test
     fun `It should find calculator by name`() {
-        val lsccGrouping = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val lsccOverall = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
+        val lsccGrouping = TestEventPointsCalculators.lsccGroupingCalculator
+        val lsccOverall = TestEventPointsCalculators.lsccOverallCalculator
         every { resource.stream() } returns Stream.of(
                 mockk { every { name } returns lsccGrouping.name },
                 mockk { every { name } returns lsccOverall.name }
@@ -104,7 +99,7 @@ class ParticipantEventResultPointsCalculatorServiceTest {
 
     @Test
     fun `It should update calculators`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
         every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns mockk()
         every { resource.update(any()) } returns Unit
@@ -119,8 +114,8 @@ class ParticipantEventResultPointsCalculatorServiceTest {
 
     @Test
     fun `It should delete calculators`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val snoozleCalculator: ParticipantEventResultPointsCalculatorEntity = mockk()
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val snoozleCalculator: EventPointsCalculatorEntity = mockk()
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.delete(snoozleCalculator) } returns Unit
 

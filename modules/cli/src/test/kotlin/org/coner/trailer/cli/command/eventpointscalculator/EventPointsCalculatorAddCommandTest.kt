@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command.participanteventresultpointscalculator
+package org.coner.trailer.cli.command.eventpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -6,27 +6,27 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
-import org.coner.trailer.TestParticipantEventResultPointsCalculators
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
-import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
+import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 
-class ParticipantEventResultPointsCalculatorAddCommandTest {
+class EventPointsCalculatorAddCommandTest {
 
-    lateinit var command: ParticipantEventResultPointsCalculatorAddCommand
+    lateinit var command: EventPointsCalculatorAddCommand
 
     @MockK
-    lateinit var constraints: ParticipantEventResultPointsCalculatorPersistConstraints
+    lateinit var constraints: EventPointsCalculatorPersistConstraints
     @MockK
-    lateinit var service: ParticipantEventResultPointsCalculatorService
+    lateinit var service: EventPointsCalculatorService
     @MockK
-    lateinit var view: ParticipantEventResultPointsCalculatorView
+    lateinit var view: EventPointsCalculatorView
 
     lateinit var console: StringBufferConsole
 
@@ -39,7 +39,7 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
 
     @Test
     fun `It should create calculator`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
         every { constraints.hasUniqueName(calculator.id, calculator.name) } returns true
         every { service.create(eq(calculator)) } answers { Unit }
         val viewRenders = "created ${calculator.id}"
@@ -65,13 +65,13 @@ class ParticipantEventResultPointsCalculatorAddCommandTest {
 }
 
 
-private fun ParticipantEventResultPointsCalculatorAddCommandTest.arrangeCommand() {
+private fun EventPointsCalculatorAddCommandTest.arrangeCommand() {
     val di = DI {
-        bind<ParticipantEventResultPointsCalculatorPersistConstraints>() with instance(constraints)
-        bind<ParticipantEventResultPointsCalculatorService>() with instance(service)
-        bind<ParticipantEventResultPointsCalculatorView>() with instance(view)
+        bind<EventPointsCalculatorPersistConstraints>() with instance(constraints)
+        bind<EventPointsCalculatorService>() with instance(service)
+        bind<EventPointsCalculatorView>() with instance(view)
     }
-    command = ParticipantEventResultPointsCalculatorAddCommand(
+    command = EventPointsCalculatorAddCommand(
             di = di,
             useConsole = console
     )

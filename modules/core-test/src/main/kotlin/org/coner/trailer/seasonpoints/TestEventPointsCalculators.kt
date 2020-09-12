@@ -1,10 +1,8 @@
-package org.coner.trailer
+package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
+object TestEventPointsCalculators {
 
-object TestParticipantEventResultPointsCalculators {
-
-    val lsccGroupingCalculator by lazy { ParticipantEventResultPointsCalculator(
+    val lsccGroupingCalculator by lazy { EventPointsCalculator(
             name = "lscc grouping",
             positionToPoints = mapOf(
                     1 to 9,
@@ -16,7 +14,7 @@ object TestParticipantEventResultPointsCalculators {
             defaultPoints = 1
     ) }
 
-    val lsccOverallCalculator by lazy { ParticipantEventResultPointsCalculator(
+    val lsccOverallCalculator by lazy { EventPointsCalculator(
             name = "lscc overall",
             positionToPoints = mapOf(
                     1 to 10,
@@ -33,7 +31,7 @@ object TestParticipantEventResultPointsCalculators {
             defaultPoints = 0
     ) }
 
-    val olsccCalculator by lazy { ParticipantEventResultPointsCalculator(
+    val olsccCalculator by lazy { EventPointsCalculator(
             name = "olscc",
             didNotFinishPoints = 1,
             didNotStartPoints = 0,

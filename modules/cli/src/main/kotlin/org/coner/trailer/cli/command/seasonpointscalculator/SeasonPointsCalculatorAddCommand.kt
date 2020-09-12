@@ -42,7 +42,7 @@ class SeasonPointsCalculatorAddCommand(
             .default(UUID.randomUUID())
     private val name: String by option()
             .required()
-    private val resultsTypeKeyToParticipantEventResultPointsCalculatorNamed: List<Pair<String, String>> by option(
+    private val resultsTypeKeyToEventPointsCalculatorNamed: List<Pair<String, String>> by option(
             metavar = "KEY NAME..."
     )
             .pair()
@@ -58,7 +58,7 @@ class SeasonPointsCalculatorAddCommand(
         val create = SeasonPointsCalculatorConfiguration(
                 id = id,
                 name = name,
-                resultsTypeToParticipantEventResultPointsCalculator = mapper.fromParameter(resultsTypeKeyToParticipantEventResultPointsCalculatorNamed),
+                resultsTypeToEventPointsCalculator = mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed),
                 rankingSort = rankingSortNamed
         )
         service.create(create)
