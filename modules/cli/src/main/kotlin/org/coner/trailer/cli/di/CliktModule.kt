@@ -129,6 +129,10 @@ val cliktModule = DI.Module("clikt") {
                     SeasonPointsCalculatorSetCommand(
                             di = di,
                             useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorDeleteCommand(
+                            di = di,
+                            useConsole = instance()
                     )
             )
     }

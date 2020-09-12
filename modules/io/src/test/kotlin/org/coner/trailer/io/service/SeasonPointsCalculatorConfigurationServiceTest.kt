@@ -100,7 +100,7 @@ class SeasonPointsCalculatorConfigurationServiceTest {
         }
         assertThat(actual).isSameAs(lscc2019)
     }
-    
+
     @Test
     fun `It should update season points calculator`(
             @MockK update: SeasonPointsCalculatorConfiguration,

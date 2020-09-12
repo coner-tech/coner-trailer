@@ -42,4 +42,8 @@ class SeasonPointsCalculatorConfigurationService(
         constraints.assess(update)
         resource.update(mapper.toSnoozle(update))
     }
+
+    fun delete(delete: SeasonPointsCalculatorConfiguration) {
+        resource.delete(mapper.toSnoozle(delete))
+    }
 }

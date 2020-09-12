@@ -1,6 +1,5 @@
 package org.coner.trailer.cli.command.seasonpointscalculator
 
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
@@ -8,13 +7,8 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.*
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import org.coner.trailer.eventresults.ResultsType
-import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import org.coner.trailer.seasonpoints.RankingSort
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import org.kodein.di.DI
