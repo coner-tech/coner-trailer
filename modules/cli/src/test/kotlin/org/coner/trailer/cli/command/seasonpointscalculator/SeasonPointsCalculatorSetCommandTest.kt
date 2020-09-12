@@ -75,4 +75,28 @@ class SeasonPointsCalculatorSetCommandTest {
         }
         assertThat(console.output).isEqualTo(viewRendered)
     }
+
+    @Test
+    fun `It should set results type to event points calculator`() {
+        val current = TestSeasonPointsCalculatorConfigurations.lscc2019
+        every { service.findById(current.id) } returns current
+        val rename = current.copy(
+                name = "rename"
+        )
+        every { service.update(eq(rename)) } answers { Unit }
+        val viewRendered = "view rendered ${rename.name}"
+        every { view.render(rename) } returns viewRendered
+
+        command.parse(arrayOf(
+                rename.id.toString(),
+                "--name", rename.name
+        ))
+
+        verifySequence {
+            service.findById(rename.id)
+            service.update(eq(rename))
+            view.render(rename)
+        }
+        assertThat(console.output).isEqualTo(viewRendered)
+    }
 }
