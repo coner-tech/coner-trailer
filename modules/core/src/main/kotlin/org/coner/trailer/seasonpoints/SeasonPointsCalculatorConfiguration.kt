@@ -6,6 +6,6 @@ import java.util.*
 data class SeasonPointsCalculatorConfiguration(
         val id: UUID = UUID.randomUUID(),
         val name: String,
-        val resultsTypeToParticipantEventResultPointsCalculator: Map<ResultsType, ParticipantEventResultPointsCalculator>,
+        val resultsTypeToEventPointsCalculator: Map<ResultsType, EventPointsCalculator>,
         val rankingSort: RankingSort
 )

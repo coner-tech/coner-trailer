@@ -1,22 +1,22 @@
-package org.coner.trailer.cli.command.participanteventresultpointscalculator
+package org.coner.trailer.cli.command.eventpointscalculator
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 
-class ParticipantEventResultPointsCalculatorListCommand(
+class EventPointsCalculatorListCommand(
         di: DI,
         useConsole: CliktConsole,
-        private val view: ParticipantEventResultPointsCalculatorView
+        private val view: EventPointsCalculatorView
 ) : CliktCommand(
         name = "list",
-        help = "List participant event result points calculators"
+        help = "List event points calculators"
 ), DIAware {
 
     init {
@@ -26,7 +26,7 @@ class ParticipantEventResultPointsCalculatorListCommand(
     }
 
     override val di: DI by findOrSetObject { di }
-    private val service: ParticipantEventResultPointsCalculatorService by instance()
+    private val service: EventPointsCalculatorService by instance()
 
     override fun run() {
         echo(view.render(service.list()))

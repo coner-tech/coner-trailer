@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.*
 import org.coner.trailer.cli.command.config.*
-import org.coner.trailer.cli.command.participanteventresultpointscalculator.*
+import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
@@ -21,7 +21,7 @@ val cliktModule = DI.Module("clikt") {
     )
             .subcommands(
                     instance<ConfigCommand>(),
-                    instance<ParticipantEventResultPointsCalculatorCommand>(),
+                    instance<EventPointsCalculatorCommand>(),
                     instance<RankingSortCommand>(),
                     instance<SeasonPointsCalculatorCommand>()
             )
@@ -56,26 +56,26 @@ val cliktModule = DI.Module("clikt") {
                     )
             )
     }
-    bind<ParticipantEventResultPointsCalculatorCommand>() with singleton { ParticipantEventResultPointsCalculatorCommand()
+    bind<EventPointsCalculatorCommand>() with singleton { EventPointsCalculatorCommand()
             .subcommands(
-                    ParticipantEventResultPointsCalculatorAddCommand(
+                    EventPointsCalculatorAddCommand(
                             di = di,
                             useConsole = instance()
                     ),
-                    ParticipantEventResultPointsCalculatorGetCommand(
+                    EventPointsCalculatorGetCommand(
                             di = di,
                             useConsole = instance()
                     ),
-                    ParticipantEventResultPointsCalculatorListCommand(
+                    EventPointsCalculatorListCommand(
                             di = di,
                             useConsole = instance(),
                             view = instance()
                     ),
-                    ParticipantEventResultPointsCalculatorSetCommand(
+                    EventPointsCalculatorSetCommand(
                             di = di,
                             useConsole = instance()
                     ),
-                    ParticipantEventResultPointsCalculatorDeleteCommand(
+                    EventPointsCalculatorDeleteCommand(
                             di = di,
                             useConsole = instance()
                     )
@@ -110,7 +110,7 @@ val cliktModule = DI.Module("clikt") {
             )
     }
     bind<SeasonPointsCalculatorParameterMapper>() with singleton { SeasonPointsCalculatorParameterMapper(
-            participantEventResultPointsCalculatorService = instance()
+            eventPointsCalculatorService = instance()
     ) }
     bind<SeasonPointsCalculatorCommand>() with singleton { SeasonPointsCalculatorCommand()
             .subcommands(

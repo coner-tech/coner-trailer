@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command.participanteventresultpointscalculator
+package org.coner.trailer.cli.command.eventpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -6,24 +6,24 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
-import org.coner.trailer.TestParticipantEventResultPointsCalculators
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 
-class ParticipantEventResultPointsCalculatorGetCommandTest {
+class EventPointsCalculatorGetCommandTest {
 
-    lateinit var command: ParticipantEventResultPointsCalculatorGetCommand
+    lateinit var command: EventPointsCalculatorGetCommand
 
     @MockK
-    lateinit var service: ParticipantEventResultPointsCalculatorService
+    lateinit var service: EventPointsCalculatorService
     @MockK
-    lateinit var view: ParticipantEventResultPointsCalculatorView
+    lateinit var view: EventPointsCalculatorView
 
     lateinit var console: StringBufferConsole
 
@@ -36,7 +36,7 @@ class ParticipantEventResultPointsCalculatorGetCommandTest {
 
     @Test
     fun `It should get calculator by id`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
         every { service.findById(calculator.id) } returns calculator
         val viewRenders = "rendered ${calculator.name}"
         every { view.render(calculator) } returns viewRenders
@@ -52,7 +52,7 @@ class ParticipantEventResultPointsCalculatorGetCommandTest {
 
     @Test
     fun `It should get calculator by name`() {
-        val calculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
         every { service.findByName(calculator.name) } returns calculator
         val viewRenders = "rendered ${calculator.id}"
         every { view.render(calculator) } returns viewRenders
@@ -67,12 +67,12 @@ class ParticipantEventResultPointsCalculatorGetCommandTest {
     }
 }
 
-private fun ParticipantEventResultPointsCalculatorGetCommandTest.arrangeCommand() {
+private fun EventPointsCalculatorGetCommandTest.arrangeCommand() {
     val di = DI {
-        bind<ParticipantEventResultPointsCalculatorService>() with instance(service)
-        bind<ParticipantEventResultPointsCalculatorView>() with instance(view)
+        bind<EventPointsCalculatorService>() with instance(service)
+        bind<EventPointsCalculatorView>() with instance(view)
     }
-    command = ParticipantEventResultPointsCalculatorGetCommand(
+    command = EventPointsCalculatorGetCommand(
             di = di,
             useConsole = console
     )

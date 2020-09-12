@@ -1,11 +1,11 @@
 package org.coner.trailer.io.mapper
 
-import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
+import org.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity
+import org.coner.trailer.seasonpoints.EventPointsCalculator
 
-class ParticipantEventResultPointsCalculatorMapper {
+class EventPointsCalculatorMapper {
 
-    fun fromSnoozle(snoozle: ParticipantEventResultPointsCalculatorEntity) = ParticipantEventResultPointsCalculator(
+    fun fromSnoozle(snoozle: EventPointsCalculatorEntity) = EventPointsCalculator(
             id = snoozle.id,
             name = snoozle.name,
             positionToPoints = snoozle.positionToPoints,
@@ -14,7 +14,7 @@ class ParticipantEventResultPointsCalculatorMapper {
             defaultPoints = snoozle.defaultPoints
     )
 
-    fun toSnoozle(core: ParticipantEventResultPointsCalculator) = ParticipantEventResultPointsCalculatorEntity(
+    fun toSnoozle(core: EventPointsCalculator) = EventPointsCalculatorEntity(
             id = core.id,
             name = core.name,
             positionToPoints = core.positionToPoints,

@@ -26,14 +26,14 @@ class StandingsReportCreator {
     fun createGroupedStandingsSections(
             param: CreateGroupedStandingsSectionsParameters
     ): SortedMap<Grouping, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, ParticipantEventResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
+        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
             val config = event.seasonPointsCalculatorConfiguration
                     ?: param.season.seasonPointsCalculatorConfiguration
-            val participantEventResultPointsCalculator = config.resultsTypeToParticipantEventResultPointsCalculator[param.resultsType]
-            checkNotNull(participantEventResultPointsCalculator) {
-                "No season points calculator for results type: ${param.resultsType.title}"
+            val eventPointsCalculator = config.resultsTypeToEventPointsCalculator[param.resultsType]
+            checkNotNull(eventPointsCalculator) {
+                "No event points calculator for results type: ${param.resultsType.title}"
             }
-            event to participantEventResultPointsCalculator
+            event to eventPointsCalculator
         }.toMap()
 
         val groupingsToPersonStandingAccumulators: MutableMap<Grouping, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()

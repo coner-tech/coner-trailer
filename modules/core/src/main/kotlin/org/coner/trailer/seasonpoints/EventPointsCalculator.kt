@@ -3,7 +3,7 @@ package org.coner.trailer.seasonpoints
 import org.coner.trailer.eventresults.ParticipantResult
 import java.util.*
 
-data class ParticipantEventResultPointsCalculator(
+data class EventPointsCalculator(
         val id: UUID = UUID.randomUUID(),
         val name: String,
         val didNotFinishPoints: Int? = null,

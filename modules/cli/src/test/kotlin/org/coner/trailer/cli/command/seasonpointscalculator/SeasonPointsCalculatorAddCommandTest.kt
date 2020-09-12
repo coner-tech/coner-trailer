@@ -5,18 +5,13 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.verifySequence
-import org.coner.trailer.TestParticipantEventResultPointsCalculators
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
-import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
 import org.coner.trailer.seasonpoints.TestRankingSorts
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach
@@ -51,8 +46,8 @@ class SeasonPointsCalculatorAddCommandTest {
     @Test
     fun `It should create a season points calculator`() {
         val create = TestSeasonPointsCalculatorConfigurations.lscc2019.copy()
-        val groupingCalculator = TestParticipantEventResultPointsCalculators.lsccGroupingCalculator
-        val overallCalculator = TestParticipantEventResultPointsCalculators.lsccOverallCalculator
+        val groupingCalculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val overallCalculator = TestEventPointsCalculators.lsccOverallCalculator
         val rankingSort = TestRankingSorts.lscc
         every { rankingSortService.findByName(rankingSort.name) } returns create.rankingSort
         val resultsTypeToEventPointsCalculatorNamed = listOf(
@@ -60,9 +55,9 @@ class SeasonPointsCalculatorAddCommandTest {
                 StandardResultsTypes.overallRawTime.key to overallCalculator.name,
                 StandardResultsTypes.overallHandicapTime.key to overallCalculator.name
         )
-        every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.resultsTypeToParticipantEventResultPointsCalculator
+        every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.resultsTypeToEventPointsCalculator
         every { service.create(eq(create)) } answers { Unit }
-        val rtktperpcn = "--results-type-key-to-participant-event-result-points-calculator-named"
+        val rtktperpcn = "--results-type-key-to-event-points-calculator-named"
         val viewRendered = "view rendered ${create.name}"
         every { view.render(create) } returns viewRendered
 

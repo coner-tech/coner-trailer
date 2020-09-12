@@ -1,13 +1,13 @@
 package org.coner.trailer.cli.view
 
 import com.github.ajalt.clikt.output.CliktConsole
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
+import org.coner.trailer.seasonpoints.EventPointsCalculator
 
-class ParticipantEventResultPointsCalculatorView(
+class EventPointsCalculatorView(
         override val console: CliktConsole
-) : CollectionView<ParticipantEventResultPointsCalculator> {
+) : CollectionView<EventPointsCalculator> {
 
-    override fun render(model: ParticipantEventResultPointsCalculator) = """
+    override fun render(model: EventPointsCalculator) = """
         |${model.name}
         |    ID: ${model.id}
         |    Did Not Finish Points: ${model.didNotFinishPoints}

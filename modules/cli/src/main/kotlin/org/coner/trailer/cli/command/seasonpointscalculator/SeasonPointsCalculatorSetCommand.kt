@@ -43,7 +43,7 @@ class SeasonPointsCalculatorSetCommand(
             .convert { toUuid(it) }
 
     private val name: String? by option()
-    private val resultsTypeKeyToParticipantEventResultPointsCalculatorNamed: List<Pair<String, String>> by option(
+    private val resultsTypeKeyToEventPointsCalculatorNamed: List<Pair<String, String>> by option(
             metavar = "KEY NAME..."
     ).pair().multiple()
     private val rankingSortNamed: RankingSort? by option(metavar = "NAME")
@@ -57,9 +57,9 @@ class SeasonPointsCalculatorSetCommand(
         val update = SeasonPointsCalculatorConfiguration(
                 id = current.id,
                 name = name ?: current.name,
-                resultsTypeToParticipantEventResultPointsCalculator = when {
-                    resultsTypeKeyToParticipantEventResultPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToParticipantEventResultPointsCalculatorNamed)
-                    else -> current.resultsTypeToParticipantEventResultPointsCalculator
+                resultsTypeToEventPointsCalculator = when {
+                    resultsTypeKeyToEventPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed)
+                    else -> current.resultsTypeToEventPointsCalculator
                 },
                 rankingSort = rankingSortNamed ?: current.rankingSort
         )

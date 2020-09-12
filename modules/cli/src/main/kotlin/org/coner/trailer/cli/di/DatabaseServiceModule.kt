@@ -2,16 +2,16 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.datasource.snoozle.ConerTrailerDatabase
-import org.coner.trailer.datasource.snoozle.ParticipantEventResultPointsCalculatorResource
+import org.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.RankingSortResource
 import org.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
-import org.coner.trailer.io.constraint.ParticipantEventResultPointsCalculatorPersistConstraints
+import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
-import org.coner.trailer.io.mapper.ParticipantEventResultPointsCalculatorMapper
+import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
+import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.kodein.di.DI
@@ -25,21 +25,21 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
             root = databaseConfiguration.snoozleDatabase.toPath())
     }
 
-    // Participant Event Result Points Calculators
-    bind<ParticipantEventResultPointsCalculatorResource>() with singleton {
+    // Event Points Calculators
+    bind<EventPointsCalculatorResource>() with singleton {
         instance<ConerTrailerDatabase>().entity()
     }
-    bind<ParticipantEventResultPointsCalculatorMapper>() with singleton {
-        ParticipantEventResultPointsCalculatorMapper()
+    bind<EventPointsCalculatorMapper>() with singleton {
+        EventPointsCalculatorMapper()
     }
-    bind<ParticipantEventResultPointsCalculatorPersistConstraints>() with singleton {
-        ParticipantEventResultPointsCalculatorPersistConstraints(
+    bind<EventPointsCalculatorPersistConstraints>() with singleton {
+        EventPointsCalculatorPersistConstraints(
                 resource = instance(),
                 mapper = instance()
         )
     }
-    bind<ParticipantEventResultPointsCalculatorService>() with singleton {
-        ParticipantEventResultPointsCalculatorService(
+    bind<EventPointsCalculatorService>() with singleton {
+        EventPointsCalculatorService(
                 resource = instance(),
                 mapper = instance(),
                 persistConstraints = instance()
@@ -73,7 +73,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     }
     bind<SeasonPointsCalculatorConfigurationMapper>() with singleton {
         SeasonPointsCalculatorConfigurationMapper(
-                participantEventResultPointsCalculatorService = instance(),
+                eventPointsCalculatorService = instance(),
                 rankingSortService = instance()
         )
     }

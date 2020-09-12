@@ -1,4 +1,4 @@
-package org.coner.trailer.cli.command.participanteventresultpointscalculator
+package org.coner.trailer.cli.command.eventpointscalculator
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
@@ -10,20 +10,20 @@ import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.cli.util.clikt.toUuid
-import org.coner.trailer.cli.view.ParticipantEventResultPointsCalculatorView
-import org.coner.trailer.io.service.ParticipantEventResultPointsCalculatorService
-import org.coner.trailer.seasonpoints.ParticipantEventResultPointsCalculator
+import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.io.service.EventPointsCalculatorService
+import org.coner.trailer.seasonpoints.EventPointsCalculator
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.util.*
 
-class ParticipantEventResultPointsCalculatorSetCommand(
+class EventPointsCalculatorSetCommand(
         di: DI,
         useConsole: CliktConsole
 ) : CliktCommand(
         name = "set",
-        help = "Set a participant event result points calculator"
+        help = "Set an event points calculator"
 ), DIAware {
 
     init {
@@ -33,8 +33,8 @@ class ParticipantEventResultPointsCalculatorSetCommand(
     }
 
     override val di: DI by findOrSetObject { di }
-    private val service: ParticipantEventResultPointsCalculatorService by instance()
-    private val view: ParticipantEventResultPointsCalculatorView by instance()
+    private val service: EventPointsCalculatorService by instance()
+    private val view: EventPointsCalculatorView by instance()
 
     private val id: UUID by argument()
             .convert { toUuid(it) }
@@ -74,7 +74,7 @@ class ParticipantEventResultPointsCalculatorSetCommand(
 
     override fun run() {
         val old = service.findById(id)
-        val update = ParticipantEventResultPointsCalculator(
+        val update = EventPointsCalculator(
                 id = old.id,
                 name = name ?: old.name,
                 positionToPoints = positionToPoints.let { when {
