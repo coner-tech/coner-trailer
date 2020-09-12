@@ -1,11 +1,12 @@
 package org.coner.trailer
 
-import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
+import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import java.util.*
 
-class Season(
+data class Season(
         val id: UUID = UUID.randomUUID(),
         val name: String,
-        val seasonPointsCalculatorConfigurationModel: CalculatorConfigurationModel,
-        val events: List<SeasonEvent>
+        val events: List<SeasonEvent>,
+        val seasonPointsCalculatorConfiguration: SeasonPointsCalculatorConfiguration,
+        val takeScoreCountForPoints: Int?
 )

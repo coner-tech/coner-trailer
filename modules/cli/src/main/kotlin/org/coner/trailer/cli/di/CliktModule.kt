@@ -8,6 +8,7 @@ import org.coner.trailer.cli.command.*
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.participanteventresultpointscalculator.*
 import org.coner.trailer.cli.command.rankingsort.*
+import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -21,7 +22,8 @@ val cliktModule = DI.Module("clikt") {
             .subcommands(
                     instance<ConfigCommand>(),
                     instance<ParticipantEventResultPointsCalculatorCommand>(),
-                    instance<RankingSortCommand>()
+                    instance<RankingSortCommand>(),
+                    instance<SeasonPointsCalculatorCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -102,6 +104,33 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     RankingSortDeleteCommand(
+                            di = di,
+                            useConsole = instance()
+                    )
+            )
+    }
+    bind<SeasonPointsCalculatorParameterMapper>() with singleton { SeasonPointsCalculatorParameterMapper(
+            participantEventResultPointsCalculatorService = instance()
+    ) }
+    bind<SeasonPointsCalculatorCommand>() with singleton { SeasonPointsCalculatorCommand()
+            .subcommands(
+                    SeasonPointsCalculatorAddCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorGetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorListCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorSetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    SeasonPointsCalculatorDeleteCommand(
                             di = di,
                             useConsole = instance()
                     )

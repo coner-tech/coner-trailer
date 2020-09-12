@@ -5,7 +5,6 @@ import org.coner.trailer.eventresults.ComprehensiveResultsReport
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.ResultsType
 import java.util.*
-import kotlin.Comparator
 
 class StandingsReportCreator {
 
@@ -21,19 +20,20 @@ class StandingsReportCreator {
             val resultsType: ResultsType,
             val season: Season,
             val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val takeTopEventScores: Int?,
-            val rankingSort: RankingSort
+            val configuration: SeasonPointsCalculatorConfiguration
     )
 
-    fun createGroupedStandingsSections(param: CreateGroupedStandingsSectionsParameters): SortedMap<Grouping, StandingsReport.Section> {
+    fun createGroupedStandingsSections(
+            param: CreateGroupedStandingsSectionsParameters
+    ): SortedMap<Grouping, StandingsReport.Section> {
         val eventToCalculator: Map<SeasonEvent, ParticipantEventResultPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
-            val model = event.seasonPointsCalculatorConfigurationModel
-                    ?: param.season.seasonPointsCalculatorConfigurationModel
-            val calculator = model.resultsTypeToCalculatorMap[param.resultsType]
-            checkNotNull(calculator) {
+            val config = event.seasonPointsCalculatorConfiguration
+                    ?: param.season.seasonPointsCalculatorConfiguration
+            val participantEventResultPointsCalculator = config.resultsTypeToParticipantEventResultPointsCalculator[param.resultsType]
+            checkNotNull(participantEventResultPointsCalculator) {
                 "No season points calculator for results type: ${param.resultsType.title}"
             }
-            event to calculator
+            event to participantEventResultPointsCalculator
         }.toMap()
 
         val groupingsToPersonStandingAccumulators: MutableMap<Grouping, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()
@@ -67,21 +67,21 @@ class StandingsReportCreator {
         groupingsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
             personToStandingAccumulators.values.forEach { accumulator ->
                 accumulator.score = accumulator.eventToPoints.values.sortedDescending()
-                        .take(param.takeTopEventScores ?: Int.MAX_VALUE)
+                        .take(param.season.takeScoreCountForPoints ?: Int.MAX_VALUE)
                         .sum()
             }
         }
         val groupingsToFinalAccumulators = groupingsToPersonStandingAccumulators.map { (grouping, peopleStandingAccumulators) ->
             val finalAccumulators = peopleStandingAccumulators.values
                     .toList()
-                    .sortedWith(param.rankingSort.comparator)
+                    .sortedWith(param.configuration.rankingSort.comparator)
             grouping to finalAccumulators
         }.toMap()
         groupingsToFinalAccumulators.forEach { (_, accumulators) ->
             accumulators.mapIndexed { index, accumulator ->
                 accumulator.position = if (index > 0) {
                     val previousAccumulator = accumulators[index - 1]
-                    val comparison = param.rankingSort.comparator.compare(accumulator, previousAccumulator)
+                    val comparison = param.configuration.rankingSort.comparator.compare(accumulator, previousAccumulator)
                     if (comparison != 0) {
                         checkNotNull(previousAccumulator.position) + 1
                     } else {

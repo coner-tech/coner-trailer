@@ -1,6 +1,6 @@
 package org.coner.trailer
 
-import org.coner.trailer.seasonpoints.CalculatorConfigurationModel
+import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import java.util.*
 
 data class SeasonEvent(
@@ -8,7 +8,7 @@ data class SeasonEvent(
         val event: Event,
         val eventNumber: Int?,
         val points: Boolean,
-        val seasonPointsCalculatorConfigurationModel: CalculatorConfigurationModel? = null
+        val seasonPointsCalculatorConfiguration: SeasonPointsCalculatorConfiguration? = null
 ) : Comparable<SeasonEvent> {
     init {
         if (points) {

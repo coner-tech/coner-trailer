@@ -4,7 +4,7 @@ import org.coner.snoozle.db.Database
 import org.coner.snoozle.db.entity.EntityResource
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEventResultPointsCalculatorEntity
 import org.coner.trailer.datasource.snoozle.entity.RankingSortEntity
-import org.coner.trailer.seasonpoints.RankingSort
+import org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity
 import java.nio.file.Path
 
 class ConerTrailerDatabase(root: Path) : Database(root) {
@@ -20,8 +20,14 @@ class ConerTrailerDatabase(root: Path) : Database(root) {
             keyFromPath = { RankingSortEntity.Key(id = uuidAt(0)) }
             keyFromEntity = { RankingSortEntity.Key(id = id) }
         }
+        entity<SeasonPointsCalculatorConfigurationEntity.Key, SeasonPointsCalculatorConfigurationEntity> {
+            path = "seasonPointsCalculatorConfigurations" / { id } + ".json"
+            keyFromPath = { SeasonPointsCalculatorConfigurationEntity.Key(id = uuidAt(0)) }
+            keyFromEntity = { SeasonPointsCalculatorConfigurationEntity.Key(id = id) }
+        }
     }
 }
 
 typealias ParticipantEventResultPointsCalculatorResource = EntityResource<ParticipantEventResultPointsCalculatorEntity.Key, ParticipantEventResultPointsCalculatorEntity>
 typealias RankingSortResource = EntityResource<RankingSortEntity.Key, RankingSortEntity>
+typealias SeasonPointsCalculatorConfigurationResource = EntityResource<SeasonPointsCalculatorConfigurationEntity.Key, SeasonPointsCalculatorConfigurationEntity>

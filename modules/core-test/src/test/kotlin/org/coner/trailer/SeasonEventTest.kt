@@ -20,7 +20,7 @@ class SeasonEventTest {
                     event = event,
                     eventNumber = null, // important
                     points = false, // important
-                    seasonPointsCalculatorConfigurationModel = null
+                    seasonPointsCalculatorConfiguration = null
             )
         }
     }
@@ -34,7 +34,7 @@ class SeasonEventTest {
                     event = event,
                     eventNumber = null, // important
                     points = true, // important
-                    seasonPointsCalculatorConfigurationModel = null
+                    seasonPointsCalculatorConfiguration = null
             )
         }
     }
