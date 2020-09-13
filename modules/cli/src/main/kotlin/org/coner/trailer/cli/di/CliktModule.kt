@@ -10,6 +10,7 @@ import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.person.PersonAddCommand
 import org.coner.trailer.cli.command.person.PersonCommand
 import org.coner.trailer.cli.command.person.PersonGetCommand
+import org.coner.trailer.cli.command.person.PersonListCommand
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
@@ -147,6 +148,10 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     PersonGetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonListCommand(
                             di = di,
                             useConsole = instance()
                     )

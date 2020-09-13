@@ -6,6 +6,7 @@ import org.coner.trailer.datasource.snoozle.entity.PersonEntity
 import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.mapper.PersonMapper
 import java.util.*
+import kotlin.streams.toList
 
 class PersonService(
         private val persistConstraints: PersonPersistConstraints,
@@ -21,6 +22,12 @@ class PersonService(
     fun findById(id: UUID): Person {
         val key = PersonEntity.Key(id = id)
         return mapper.fromSnoozle(resource.read(key))
+    }
+
+    fun list(): List<Person> {
+        return resource.stream()
+                .map(mapper::fromSnoozle)
+                .toList()
     }
 
 }

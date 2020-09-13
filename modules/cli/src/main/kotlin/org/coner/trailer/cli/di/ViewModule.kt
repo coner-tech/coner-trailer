@@ -19,5 +19,7 @@ val viewModule = DI.Module("view") {
     bind<SeasonPointsCalculatorConfigurationView>() with provider { SeasonPointsCalculatorConfigurationView(
             console = instance()
     ) }
-    bind<PersonView>() with provider { PersonView() }
+    bind<PersonView>() with provider { PersonView(
+            console = instance()
+    ) }
 }
