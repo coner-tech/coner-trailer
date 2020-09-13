@@ -27,7 +27,7 @@ sealed class SeasonFixture(
                 personFactory(TestPeople.JIMMY_MCKENZIE, "2476"),
                 personFactory(TestPeople.EUGENE_DRAKE, "2019-00057"),
                 personFactory(TestPeople.BENNETT_PANTONE, "2019-00295")
-        ).map { it.memberId to it }.toMap()
+        ).map { requireNotNull(it.memberId) to it }.toMap()
         val event1 = EventFixture(
                 groupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
