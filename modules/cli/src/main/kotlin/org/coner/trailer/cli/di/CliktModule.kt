@@ -9,6 +9,7 @@ import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.person.PersonAddCommand
 import org.coner.trailer.cli.command.person.PersonCommand
+import org.coner.trailer.cli.command.person.PersonGetCommand
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
@@ -142,6 +143,10 @@ val cliktModule = DI.Module("clikt") {
     bind<PersonCommand>() with singleton { PersonCommand(useConsole = instance())
             .subcommands(
                     PersonAddCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonGetCommand(
                             di = di,
                             useConsole = instance()
                     )
