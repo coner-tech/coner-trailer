@@ -1,17 +1,17 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.datasource.snoozle.ConerTrailerDatabase
-import org.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
-import org.coner.trailer.datasource.snoozle.RankingSortResource
-import org.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
+import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
+import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.constraint.RankingSortPersistConstraints
 import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
 import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
+import org.coner.trailer.io.mapper.PersonMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
 import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import org.coner.trailer.io.service.EventPointsCalculatorService
+import org.coner.trailer.io.service.PersonService
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.kodein.di.DI
@@ -90,4 +90,14 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
                 constraints = instance()
         )
     }
+
+    // People
+    bind<PersonResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
+    bind<PersonMapper>() with singleton { PersonMapper() }
+    bind<PersonPersistConstraints>() with singleton { PersonPersistConstraints() }
+    bind<PersonService>() with singleton { PersonService(
+            persistConstraints = instance(),
+            resource = instance(),
+            mapper = instance()
+    ) }
 }
