@@ -15,6 +15,7 @@
     <properties>
         <clikt.version>3.0.1</clikt.version>
         <appdirs.version>1.2.0</appdirs.version>
+        <asciitable.version>0.3.2</asciitable.version>
     </properties>
 
     <dependencies>
@@ -55,6 +56,11 @@
             <groupId>net.harawata</groupId>
             <artifactId>appdirs</artifactId>
             <version>${appdirs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.vandermeer</groupId>
+            <artifactId>asciitable</artifactId>
+            <version>${asciitable.version}</version>
         </dependency>
 
         <dependency>

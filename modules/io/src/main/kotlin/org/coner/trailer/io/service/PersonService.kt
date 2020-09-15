@@ -6,6 +6,7 @@ import org.coner.trailer.datasource.snoozle.entity.PersonEntity
 import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.mapper.PersonMapper
 import java.util.*
+import java.util.function.Predicate
 import kotlin.streams.toList
 
 class PersonService(
@@ -29,5 +30,73 @@ class PersonService(
                 .map(mapper::fromSnoozle)
                 .toList()
     }
+
+    fun search(filters: List<Predicate<Person>>): List<Person> {
+        return filters.fold(
+                resource.stream()
+                        .parallel()
+                        .map(mapper::fromSnoozle)
+        ) { stream, filter ->
+            stream.filter(filter)
+        }.toList()
+    }
+
+    class FilterFirstNameEquals(
+            private val firstNameEquals: String,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.firstName.equals(firstNameEquals, ignoreCase = ignoreCase)
+        }
+    }
+
+    class FilterFirstNameContains(
+            private val firstNameContains: String,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.firstName.contains(firstNameContains, ignoreCase = ignoreCase)
+        }
+    }
+
+    class FilterLastNameEquals(
+            private val lastNameEquals: String,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.lastName.equals(lastNameEquals, ignoreCase = ignoreCase)
+        }
+    }
+
+    class FilterLastNameContains(
+            private val lastNameContains: String,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.lastName.contains(lastNameContains, ignoreCase = ignoreCase)
+        }
+    }
+
+    class FilterMemberIdEquals(
+            private val memberIdEquals: String?,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.memberId?.equals(memberIdEquals, ignoreCase = ignoreCase)
+                    ?: t.memberId == memberIdEquals
+        }
+    }
+
+    class FilterMemberIdContains(
+            private val memberIdContains: String,
+            private val ignoreCase: Boolean = true
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return t.memberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
+        }
+    }
+
+
+
 
 }

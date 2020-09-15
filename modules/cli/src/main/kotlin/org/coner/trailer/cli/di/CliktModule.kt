@@ -7,10 +7,7 @@ import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.*
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
-import org.coner.trailer.cli.command.person.PersonAddCommand
-import org.coner.trailer.cli.command.person.PersonCommand
-import org.coner.trailer.cli.command.person.PersonGetCommand
-import org.coner.trailer.cli.command.person.PersonListCommand
+import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
@@ -152,6 +149,10 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     PersonListCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonSearchCommand(
                             di = di,
                             useConsole = instance()
                     )
