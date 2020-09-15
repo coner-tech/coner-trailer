@@ -63,6 +63,21 @@ object TestPeople {
             lastName = "Rowe"
     ) }
 
+    val all: List<Person> by lazy { listOf(
+            DOMINIC_ROGERS,
+            BRANDY_HUFF,
+            BRYANT_MORAN,
+            REBECCA_JACKSON,
+            ANASTASIA_RIGLER,
+            JIMMY_MCKENZIE,
+            EUGENE_DRAKE,
+            BENNETT_PANTONE,
+            TERI_POTTER,
+            HARRY_WEBSTER,
+            NORMAN_ROBINSON,
+            JOHNNIE_ROWE
+    ) }
+
     private fun factory(
             firstName: String,
             lastName: String,
