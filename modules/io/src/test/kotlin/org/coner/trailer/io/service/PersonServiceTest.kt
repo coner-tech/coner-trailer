@@ -91,11 +91,9 @@ class PersonServiceTest {
     @Test
     fun `It should search people with equals filters`() {
         val person = TestPeople.ANASTASIA_RIGLER
-        val filters = listOf(
-                PersonService.FilterFirstNameEquals(person.firstName),
-                PersonService.FilterLastNameEquals(person.lastName),
-                PersonService.FilterMemberIdEquals(person.memberId)
-        )
+        val filter = PersonService.FilterFirstNameEquals(person.firstName)
+                .and(PersonService.FilterLastNameEquals(person.lastName))
+                .and(PersonService.FilterMemberIdEquals(person.memberId))
         val realMapper = PersonMapper()
         val peopleEntities = TestPeople.all.stream()
                 .map(realMapper::toSnoozle)
@@ -107,14 +105,31 @@ class PersonServiceTest {
             TestPeople.all.single { person -> person.id == argument.id }
         }
 
-        val actual = service.search(filters)
+        val actual = service.search(filter)
 
         assertThat(actual).isEqualTo(listOf(person))
     }
 
     @Test
     fun `It should search people with contains filters`() {
-        TODO()
+        val person = TestPeople.ANASTASIA_RIGLER
+        val filter = PersonService.FilterFirstNameContains(person.firstName.substring(0..3))
+                .and(PersonService.FilterLastNameContains(person.lastName.substring(0..3)))
+                .and(PersonService.FilterMemberIdContains(person.memberId!!.substringAfter("-")))
+        val realMapper = PersonMapper()
+        val peopleEntities = TestPeople.all.stream()
+                .map(realMapper::toSnoozle)
+        every { resource.stream() } returns peopleEntities
+        every {
+            mapper.fromSnoozle(any())
+        } answers {
+            val argument: PersonEntity = this.arg(0)
+            TestPeople.all.single { person -> person.id == argument.id }
+        }
+
+        val actual = service.search(filter)
+
+        assertThat(actual).isEqualTo(listOf(person))
     }
 
 }

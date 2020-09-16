@@ -2,10 +2,7 @@ package org.coner.trailer.cli.command.person
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
-import assertk.assertions.index
-import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
+import assertk.assertions.*
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -50,8 +47,9 @@ class PersonSearchCommandTest {
     @Test
     fun `It should search with equals filters`() {
         val person = TestPeople.REBECCA_JACKSON
+        val wrongPerson = TestPeople.JIMMY_MCKENZIE
         val searchResults = listOf(person)
-        val serviceSearchSlot = slot<List<Predicate<Person>>>()
+        val serviceSearchSlot = slot<Predicate<Person>>()
         every { service.search(capture(serviceSearchSlot)) } returns searchResults
         val viewRendered = "view rendered search results"
         every { view.render(searchResults) } returns viewRendered
@@ -67,19 +65,17 @@ class PersonSearchCommandTest {
             view.render(searchResults)
         }
         assertThat(console.output, "console output").isEqualTo(viewRendered)
-        assertThat(serviceSearchSlot.captured, "service.search(arg)").all {
-            hasSize(3)
-            index(0).isInstanceOf(PersonService.FilterMemberIdEquals::class)
-            index(1).isInstanceOf(PersonService.FilterFirstNameEquals::class)
-            index(2).isInstanceOf(PersonService.FilterLastNameEquals::class)
-        }
+        val filter = serviceSearchSlot.captured
+        assertThat(filter.test(person), "filter matches person").isTrue()
+        assertThat(filter.test(wrongPerson), "filter doesn't match wrong person").isFalse()
     }
 
     @Test
     fun `It should search with contains filters`() {
         val person = TestPeople.REBECCA_JACKSON
+        val wrongPerson = TestPeople.JIMMY_MCKENZIE
         val searchResults = listOf(person)
-        val serviceSearchSlot = slot<List<Predicate<Person>>>()
+        val serviceSearchSlot = slot<Predicate<Person>>()
         every { service.search(capture(serviceSearchSlot)) } returns searchResults
         val viewRendered = "view rendered search results"
         every { view.render(searchResults) } returns viewRendered
@@ -95,11 +91,9 @@ class PersonSearchCommandTest {
             view.render(searchResults)
         }
         assertThat(console.output, "console output").isEqualTo(viewRendered)
-        assertThat(serviceSearchSlot.captured, "service.search(arg)").all {
-            hasSize(3)
-            index(0).isInstanceOf(PersonService.FilterMemberIdContains::class)
-            index(1).isInstanceOf(PersonService.FilterFirstNameContains::class)
-            index(2).isInstanceOf(PersonService.FilterLastNameContains::class)
-        }
+        val filter = serviceSearchSlot.captured
+        assertThat(filter.test(person), "filter matches person").isTrue()
+        assertThat(filter.test(wrongPerson), "filter doesn't match wrong person").isFalse()
+
     }
 }

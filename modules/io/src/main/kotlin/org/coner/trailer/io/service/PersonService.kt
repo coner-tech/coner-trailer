@@ -31,11 +31,11 @@ class PersonService(
                 .toList()
     }
 
-    fun search(filters: List<Predicate<Person>>): List<Person> {
+    fun search(filter: Predicate<Person>): List<Person> {
         return resource.stream()
                 .parallel()
                 .map(mapper::fromSnoozle)
-                .filter { person -> filters.all { it.test(person) } }
+                .filter(filter)
                 .toList()
     }
 
@@ -53,7 +53,8 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            return t.firstName.contains(firstNameContains, ignoreCase = ignoreCase)
+            val contains = t.firstName.contains(firstNameContains, ignoreCase = ignoreCase)
+            return contains
         }
     }
 
@@ -71,7 +72,8 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            return t.lastName.contains(lastNameContains, ignoreCase = ignoreCase)
+            val contains = t.lastName.contains(lastNameContains, ignoreCase = ignoreCase)
+            return contains
         }
     }
 
@@ -80,8 +82,10 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            return t.memberId?.equals(memberIdEquals, ignoreCase = ignoreCase)
-                    ?: t.memberId == memberIdEquals
+            return when (memberIdEquals) {
+                null -> t.memberId == null
+                else -> t.memberId?.equals(memberIdEquals, ignoreCase = ignoreCase) == true
+            }
         }
     }
 
@@ -90,11 +94,9 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            return t.memberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
+            val contains = t.memberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
+            return contains
         }
     }
-
-
-
 
 }

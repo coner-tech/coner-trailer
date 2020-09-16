@@ -55,7 +55,8 @@ class PersonSearchCommand(
                 lastNameEquals,
                 lastNameContains
         )
-        val search = service.search(filters)
+        val filter = filters.reduce { acc, filter -> acc.and(filter) }
+        val search = service.search(filter)
         echo(view.render(search))
     }
 }
