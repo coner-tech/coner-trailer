@@ -32,13 +32,11 @@ class PersonService(
     }
 
     fun search(filters: List<Predicate<Person>>): List<Person> {
-        return filters.fold(
-                resource.stream()
-                        .parallel()
-                        .map(mapper::fromSnoozle)
-        ) { stream, filter ->
-            stream.filter(filter)
-        }.toList()
+        return resource.stream()
+                .parallel()
+                .map(mapper::fromSnoozle)
+                .filter { person -> filters.all { it.test(person) } }
+                .toList()
     }
 
     class FilterFirstNameEquals(

@@ -1,8 +1,16 @@
 package org.coner.trailer.io.service
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isSameAs
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.slot
+import io.mockk.verifySequence
+import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.snoozle.PersonResource
+import org.coner.trailer.datasource.snoozle.entity.PersonEntity
 import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.mapper.PersonMapper
 import org.junit.jupiter.api.BeforeEach
@@ -28,23 +36,80 @@ class PersonServiceTest {
     }
 
     @Test
-    fun `It should create person`() {
-        TODO()
+    fun `It should create person`(
+            @MockK personEntity: PersonEntity
+    ) {
+        val person = TestPeople.ANASTASIA_RIGLER
+        every { persistConstraints.assess(person) } answers { Unit }
+        every { mapper.toSnoozle(person) } returns personEntity
+        every { resource.create(personEntity) } answers { Unit }
+
+        service.create(person)
+
+        verifySequence {
+            persistConstraints.assess(person)
+            mapper.toSnoozle(person)
+            resource.create(personEntity)
+        }
     }
 
     @Test
-    fun `It should find person by ID`() {
-        TODO()
+    fun `It should find person by ID`(
+            @MockK personEntity: PersonEntity
+    ) {
+        val person = TestPeople.ANASTASIA_RIGLER
+        every { resource.read(any()) } returns personEntity
+        every { mapper.fromSnoozle(any()) } returns person
+
+        val actual = service.findById(person.id)
+
+        verifySequence {
+            resource.read(match { it.id == person.id })
+            mapper.fromSnoozle(personEntity)
+        }
+        assertThat(actual).isSameAs(person)
     }
 
     @Test
     fun `It should list people`() {
-        TODO()
+        val realMapper = PersonMapper()
+        val peopleEntities = TestPeople.all.stream()
+                .map(realMapper::toSnoozle)
+        every { resource.stream() } returns peopleEntities
+        val entitySlot = slot<PersonEntity>()
+        every {
+            mapper.fromSnoozle(capture(entitySlot))
+        } answers {
+            TestPeople.all.single { it.id == entitySlot.captured.id }
+        }
+
+        val actual = service.list()
+
+        assertThat(actual).isEqualTo(TestPeople.all)
     }
 
     @Test
     fun `It should search people with equals filters`() {
-        TODO()
+        val person = TestPeople.ANASTASIA_RIGLER
+        val filters = listOf(
+                PersonService.FilterFirstNameEquals(person.firstName),
+                PersonService.FilterLastNameEquals(person.lastName),
+                PersonService.FilterMemberIdEquals(person.memberId)
+        )
+        val realMapper = PersonMapper()
+        val peopleEntities = TestPeople.all.stream()
+                .map(realMapper::toSnoozle)
+        every { resource.stream() } returns peopleEntities
+        every {
+            mapper.fromSnoozle(any())
+        } answers {
+            val argument: PersonEntity = this.arg(0)
+            TestPeople.all.single { person -> person.id == argument.id }
+        }
+
+        val actual = service.search(filters)
+
+        assertThat(actual).isEqualTo(listOf(person))
     }
 
     @Test
