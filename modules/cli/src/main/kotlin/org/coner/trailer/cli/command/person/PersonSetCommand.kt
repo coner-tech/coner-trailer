@@ -44,7 +44,10 @@ class PersonSetCommand(
         data class Set(val value: String) : MemberIdOption()
         object Unset : MemberIdOption()
     }
-    private val memberId: MemberIdOption? by option("--member-id")
+    private val memberId: MemberIdOption? by option(
+            "--member-id",
+            help = "Set the member ID to VALUE. Pass \"null\" to unset."
+    )
             .convert { when {
                 it.equals("null", ignoreCase = true) -> MemberIdOption.Unset
                 else -> MemberIdOption.Set(it)
