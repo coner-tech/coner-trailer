@@ -155,6 +155,10 @@ val cliktModule = DI.Module("clikt") {
                     PersonSearchCommand(
                             di = di,
                             useConsole = instance()
+                    ),
+                    PersonSetCommand(
+                            di = di,
+                            useConsole = instance()
                     )
             )
     }
