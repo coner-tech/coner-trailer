@@ -3,6 +3,7 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.snoozle.PersonResource
 import org.coner.trailer.datasource.snoozle.entity.PersonEntity
+import org.coner.trailer.io.constraint.PersonDeleteConstraints
 import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.mapper.PersonMapper
 import java.util.*
@@ -11,6 +12,7 @@ import kotlin.streams.toList
 
 class PersonService(
         private val persistConstraints: PersonPersistConstraints,
+        private val deleteConstraints: PersonDeleteConstraints,
         private val resource: PersonResource,
         private val mapper: PersonMapper
 ) {
@@ -42,6 +44,11 @@ class PersonService(
     fun update(person: Person) {
         persistConstraints.assess(person)
         resource.update(mapper.toSnoozle(person))
+    }
+
+    fun delete(person: Person) {
+        deleteConstraints.assess(person)
+        resource.delete(mapper.toSnoozle(person))
     }
 
     class FilterFirstNameEquals(

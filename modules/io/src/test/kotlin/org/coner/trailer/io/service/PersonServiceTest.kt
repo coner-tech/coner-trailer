@@ -11,6 +11,7 @@ import io.mockk.verifySequence
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.snoozle.PersonResource
 import org.coner.trailer.datasource.snoozle.entity.PersonEntity
+import org.coner.trailer.io.constraint.PersonDeleteConstraints
 import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.mapper.PersonMapper
 import org.junit.jupiter.api.BeforeEach
@@ -23,6 +24,7 @@ class PersonServiceTest {
     lateinit var service: PersonService
 
     @MockK lateinit var persistConstraints: PersonPersistConstraints
+    @MockK lateinit var deleteConstraints: PersonDeleteConstraints
     @MockK lateinit var mapper: PersonMapper
     @MockK lateinit var resource: PersonResource
 
@@ -30,6 +32,7 @@ class PersonServiceTest {
     fun before() {
         service = PersonService(
                 persistConstraints = persistConstraints,
+                deleteConstraints = deleteConstraints,
                 resource = resource,
                 mapper = mapper
         )
@@ -147,6 +150,24 @@ class PersonServiceTest {
             persistConstraints.assess(person)
             mapper.toSnoozle(person)
             resource.update(personEntity)
+        }
+    }
+
+    @Test
+    fun `It should delete person`(
+            @MockK personEntity: PersonEntity
+    ) {
+        val person = TestPeople.ANASTASIA_RIGLER
+        every { deleteConstraints.assess(any()) } answers { Unit }
+        every { mapper.toSnoozle(person) } returns personEntity
+        every { resource.delete(any<PersonEntity>()) } answers { Unit }
+
+        service.delete(person)
+
+        verifySequence {
+            deleteConstraints.assess(person)
+            mapper.toSnoozle(person)
+            resource.delete(personEntity)
         }
     }
 

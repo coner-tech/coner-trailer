@@ -2,10 +2,7 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.datasource.snoozle.*
-import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
-import org.coner.trailer.io.constraint.PersonPersistConstraints
-import org.coner.trailer.io.constraint.RankingSortPersistConstraints
-import org.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
+import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
 import org.coner.trailer.io.mapper.PersonMapper
 import org.coner.trailer.io.mapper.RankingSortMapper
@@ -95,8 +92,10 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<PersonResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
     bind<PersonMapper>() with singleton { PersonMapper() }
     bind<PersonPersistConstraints>() with singleton { PersonPersistConstraints() }
+    bind<PersonDeleteConstraints>() with singleton { PersonDeleteConstraints() }
     bind<PersonService>() with singleton { PersonService(
             persistConstraints = instance(),
+            deleteConstraints = instance(),
             resource = instance(),
             mapper = instance()
     ) }

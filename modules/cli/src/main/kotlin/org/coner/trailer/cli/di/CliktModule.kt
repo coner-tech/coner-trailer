@@ -159,6 +159,10 @@ val cliktModule = DI.Module("clikt") {
                     PersonSetCommand(
                             di = di,
                             useConsole = instance()
+                    ),
+                    PersonDeleteCommand(
+                            di = di,
+                            useConsole = instance()
                     )
             )
     }
