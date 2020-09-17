@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.*
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
+import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
@@ -23,7 +24,8 @@ val cliktModule = DI.Module("clikt") {
                     instance<ConfigCommand>(),
                     instance<EventPointsCalculatorCommand>(),
                     instance<RankingSortCommand>(),
-                    instance<SeasonPointsCalculatorCommand>()
+                    instance<SeasonPointsCalculatorCommand>(),
+                    instance<PersonCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -131,6 +133,34 @@ val cliktModule = DI.Module("clikt") {
                             useConsole = instance()
                     ),
                     SeasonPointsCalculatorDeleteCommand(
+                            di = di,
+                            useConsole = instance()
+                    )
+            )
+    }
+    bind<PersonCommand>() with singleton { PersonCommand(useConsole = instance())
+            .subcommands(
+                    PersonAddCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonGetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonListCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonSearchCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonSetCommand(
+                            di = di,
+                            useConsole = instance()
+                    ),
+                    PersonDeleteCommand(
                             di = di,
                             useConsole = instance()
                     )

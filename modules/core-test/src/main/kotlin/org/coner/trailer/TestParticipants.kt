@@ -164,8 +164,8 @@ object TestParticipants {
             seasonPointsEligible: Boolean = true
     ) = Participant(
             person = person,
-            firstName = person.name.split(' ').first(),
-            lastName = person.name.split(' ').last(),
+            firstName = person.firstName,
+            lastName = person.lastName,
             grouping = grouping,
             number = number,
             car = car,

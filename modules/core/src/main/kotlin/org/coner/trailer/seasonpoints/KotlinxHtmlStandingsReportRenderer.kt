@@ -68,8 +68,8 @@ class KotlinxHtmlStandingsReportRenderer {
                 a("#legend-tie") { text("*") }
             }
         }
-        td { text(standing.person.name) }
-        td { text(standing.person.memberId) }
+        td { text("${standing.person.firstName} ${standing.person.lastName}") }
+        td { text(standing.person.memberId ?: "") }
         report.pointsEvents.forEach { pointsEvent ->
             standingsReportSectionTableEventPointsCell(pointsEvent, standing)
         }

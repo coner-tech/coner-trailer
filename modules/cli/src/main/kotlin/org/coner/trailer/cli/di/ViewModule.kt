@@ -1,9 +1,6 @@
 package org.coner.trailer.cli.di
 
-import org.coner.trailer.cli.view.DatabaseConfigurationView
-import org.coner.trailer.cli.view.EventPointsCalculatorView
-import org.coner.trailer.cli.view.RankingSortView
-import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
+import org.coner.trailer.cli.view.*
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -20,6 +17,9 @@ val viewModule = DI.Module("view") {
             console = instance()
     ) }
     bind<SeasonPointsCalculatorConfigurationView>() with provider { SeasonPointsCalculatorConfigurationView(
+            console = instance()
+    ) }
+    bind<PersonView>() with provider { PersonView(
             console = instance()
     ) }
 }
