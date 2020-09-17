@@ -58,8 +58,7 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            val contains = t.firstName.contains(firstNameContains, ignoreCase = ignoreCase)
-            return contains
+            return t.firstName.contains(firstNameContains, ignoreCase = ignoreCase)
         }
     }
 
@@ -77,8 +76,7 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            val contains = t.lastName.contains(lastNameContains, ignoreCase = ignoreCase)
-            return contains
+            return t.lastName.contains(lastNameContains, ignoreCase = ignoreCase)
         }
     }
 
@@ -99,8 +97,7 @@ class PersonService(
             private val ignoreCase: Boolean = true
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
-            val contains = t.memberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
-            return contains
+            return t.memberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
         }
     }
 
