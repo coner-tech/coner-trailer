@@ -131,5 +131,23 @@ class PersonServiceTest {
 
         assertThat(actual).isEqualTo(listOf(person))
     }
+    
+    @Test
+    fun `It should update person`(
+            @MockK personEntity: PersonEntity
+    ) {
+        val person = TestPeople.ANASTASIA_RIGLER
+        every { persistConstraints.assess(any()) } answers { Unit }
+        every { mapper.toSnoozle(any()) } returns personEntity
+        every { resource.update(any()) } answers { Unit }
+
+        service.update(person)
+
+        verifySequence {
+            persistConstraints.assess(person)
+            mapper.toSnoozle(person)
+            resource.update(personEntity)
+        }
+    }
 
 }

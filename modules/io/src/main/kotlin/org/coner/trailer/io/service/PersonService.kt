@@ -39,6 +39,11 @@ class PersonService(
                 .toList()
     }
 
+    fun update(person: Person) {
+        persistConstraints.assess(person)
+        resource.update(mapper.toSnoozle(person))
+    }
+
     class FilterFirstNameEquals(
             private val firstNameEquals: String,
             private val ignoreCase: Boolean = true
