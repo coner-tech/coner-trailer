@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>coner-trailer-parent</artifactId>
+        <artifactId>parent</artifactId>
         <groupId>org.coner.trailer</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>coner-trailer-datasource-snoozle</artifactId>
+    <artifactId>datasource-snoozle</artifactId>
 
     <properties>
         <snoozle.version>0.4.1</snoozle.version>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.coner.trailer</groupId>
-            <artifactId>coner-trailer-core</artifactId>
+            <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
