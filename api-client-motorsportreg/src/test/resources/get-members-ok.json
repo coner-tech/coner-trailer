@@ -1,0 +1,65 @@
+{
+  "response": {
+    "members": [
+      {
+        "address1": "123 Not Real St",
+        "address2": "",
+        "city": "City",
+        "country": "Country",
+        "dob": "",
+        "email": "local@domain.tld",
+        "emergencyContact": "Not Me",
+        "emergencyPhone": "555-555-5555",
+        "faxNumber": "",
+        "firstName": "Rebecca",
+        "id": "identifier-rebecca-jackson",
+        "lastName": "Jackson",
+        "lastUpdate": "07/26/2020",
+        "memberEnd": "12/31/2020",
+        "memberId": 1807,
+        "mobileNumber": "+15555555555",
+        "nationality": "  ",
+        "phoneNumber": "555-555-5555",
+        "postalCode": 12345,
+        "region": "Region",
+        "regionOfRecord": "",
+        "status": "Approved",
+        "uniqueId": 123456,
+        "uri": "/members/identifier-rebecca-jackson",
+        "workNumber": ""
+      },
+      {
+        "address1": "54321 Fake Data Rd",
+        "address2": "",
+        "city": "City",
+        "country": "Country",
+        "dob": "08/01/1995",
+        "email": "firstname.lastname@vendor.com",
+        "emergencyContact": "Someone Else",
+        "emergencyPhone": "555-555-5555",
+        "faxNumber": "",
+        "firstName": "Anastasia",
+        "id": "identifier-anastasia-rigler",
+        "lastName": "Rigler",
+        "lastUpdate": "03/13/2020",
+        "memberEnd": "12/31/2020",
+        "memberId": "2019-00094",
+        "mobileNumber": "+15555555555",
+        "nationality": "Nationality",
+        "phoneNumber": "",
+        "postalCode": 54321,
+        "region": "Region",
+        "regionOfRecord": "",
+        "status": "Approved",
+        "uniqueId": 654321,
+        "uri": "/members/identifier-anastasia-rigler",
+        "workNumber": ""
+      }
+    ],
+    "recordset": {
+      "page": 1,
+      "remaining": 0,
+      "total": 2
+    }
+  }
+}
