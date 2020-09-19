@@ -9,12 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>modules/core</module>
-        <module>modules/datasource-crispy-fish</module>
-        <module>modules/core-test</module>
-        <module>modules/cli</module>
-        <module>modules/datasource-snoozle</module>
-        <module>modules/io</module>
+        <module>core</module>
+        <module>datasource-crispy-fish</module>
+        <module>core-test</module>
+        <module>cli</module>
+        <module>datasource-snoozle</module>
+        <module>io</module>
     </modules>
 
     <properties>
