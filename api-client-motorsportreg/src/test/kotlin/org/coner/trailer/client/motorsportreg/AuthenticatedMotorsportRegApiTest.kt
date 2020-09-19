@@ -82,25 +82,20 @@ class AuthenticatedMotorsportRegApiTest {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val methodDispatcher = checkNotNull(testDispatcher) { "methodDispatcher not assigned yet" }
             return when {
-                enforceBasicAuthentication(request) -> methodDispatcher.dispatch(request)
+                request.hasValidBasicAuthentication() -> methodDispatcher.dispatch(request)
                 else -> unauthorized()
             }
         }
 
         private fun unauthorized() = MockResponse().setStatus("HTTP/1.1 401 Unauthorized")
 
-        private fun enforceBasicAuthentication(request: RecordedRequest): Boolean {
-            val (requestUsername, requestPassword) = request.getHeader("Authorization")?.let { authorization ->
+        private fun RecordedRequest.hasValidBasicAuthentication(): Boolean {
+            val (requestUsername, requestPassword) = getHeader("Authorization")?.let { authorization ->
                 authorization.substringAfter("Basic ").let { encoded ->
                     Base64.getDecoder().decode(encoded)
                 }
             }?.decodeToString()?.split(":") ?: listOf(null, null)
-            val requestOrganizationId = request.getHeader("X-Organization-Id")
-            assertAll {
-                assertThat(requestUsername, "request username").isEqualTo(username)
-                assertThat(requestPassword, "request password").isEqualTo(password)
-                assertThat(requestOrganizationId, "request organization ID").isEqualTo(organizationId)
-            }
+            val requestOrganizationId = getHeader("X-Organization-Id")
             return requestUsername == username
                     && requestPassword == password
                     && requestOrganizationId == organizationId
