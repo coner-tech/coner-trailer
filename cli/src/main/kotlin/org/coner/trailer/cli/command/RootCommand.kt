@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
+import org.coner.trailer.cli.command.config.databaseNameOption
 import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
@@ -27,20 +28,15 @@ class RootCommand(
 
     }
 
-    val database: DatabaseConfiguration by option(
+    val database: DatabaseConfiguration by databaseNameOption(
+            service = config,
+            names = arrayOf("--database"),
             help = """
                 |Name of the database to use instead of the default.
                 |   Will use the default configured database if not specified. 
                 |   See: coner-trailer config database
                 """.trimMargin()
     )
-            .choice(config.listDatabasesByName().let {
-                if (it.isNotEmpty()) {
-                    it
-                } else {
-                    mapOf(config.noDatabase.name to config.noDatabase)
-                }
-            })
             .default(config.getDefaultDatabase() ?: config.noDatabase)
 
     override fun run() {
