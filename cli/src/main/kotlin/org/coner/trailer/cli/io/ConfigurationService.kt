@@ -6,6 +6,7 @@ import net.harawata.appdirs.AppDirs
 import net.harawata.appdirs.AppDirsFactory
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class ConfigurationService(
         private val configDir: Path,
@@ -13,7 +14,7 @@ class ConfigurationService(
 ) {
 
     constructor(appDirs: AppDirs, objectMapper: ObjectMapper) : this(
-            configDir = Path.of(AppDirsFactory.getInstance().getUserConfigDir("coner-trailer", "1.0", "coner")),
+            configDir = Paths.get(appDirs.getUserConfigDir("coner-trailer", "1.0", "coner")),
             objectMapper = objectMapper
     )
 
