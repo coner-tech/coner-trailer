@@ -10,7 +10,9 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.coner.crispyfish.model.RegistrationResult
-import org.coner.trailer.*
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPeople
+import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.eventresults.*

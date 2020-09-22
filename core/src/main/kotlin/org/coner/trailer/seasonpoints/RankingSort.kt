@@ -4,7 +4,6 @@ import org.coner.trailer.Time
 import org.coner.trailer.average
 import org.coner.trailer.eventresults.Score
 import java.util.*
-import kotlin.Comparator
 
 data class RankingSort(
         val id: UUID = UUID.randomUUID(),

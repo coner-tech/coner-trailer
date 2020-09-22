@@ -1,9 +1,11 @@
 package org.coner.trailer.client.motorsportreg
 
 import assertk.all
-import assertk.assertAll
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import okhttp3.mockwebserver.*
 import org.coner.trailer.client.motorsportreg.model.memberId
 import org.coner.trailer.client.motorsportreg.model.members

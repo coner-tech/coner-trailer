@@ -1,6 +1,9 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.*
+import org.coner.trailer.Participant
+import org.coner.trailer.TestGroupings
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.Time
 
 object TestGroupedResultsReports {
 

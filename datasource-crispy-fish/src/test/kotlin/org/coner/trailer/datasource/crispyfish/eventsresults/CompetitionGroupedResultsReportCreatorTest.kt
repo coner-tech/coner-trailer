@@ -2,7 +2,10 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.each
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isNotNull
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*

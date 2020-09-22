@@ -4,7 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
-import com.github.ajalt.clikt.parameters.groups.*
+import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.*
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.RankingSortView
