@@ -16,11 +16,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
+import java.nio.file.Path
 import java.util.*
 
-class ConfigDatabaseSetCommandTest {
+class ConfigDatabaseAddCommandTest {
 
-    lateinit var command: ConfigDatabaseSetCommand
+    lateinit var command: ConfigDatabaseAddCommand
 
     @MockK
     lateinit var view: DatabaseConfigurationView
@@ -28,7 +29,7 @@ class ConfigDatabaseSetCommandTest {
     lateinit var config: ConfigurationService
 
     @TempDir
-    lateinit var temp: File
+    lateinit var temp: Path
 
     lateinit var dbConfigs: TestDatabaseConfigurations
     lateinit var console: StringBufferConsole
@@ -38,7 +39,7 @@ class ConfigDatabaseSetCommandTest {
         MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
         console = StringBufferConsole()
-        command = ConfigDatabaseSetCommand(console, view, config)
+        command = ConfigDatabaseAddCommand(console, view, config)
     }
 
     @Test
@@ -54,6 +55,8 @@ class ConfigDatabaseSetCommandTest {
                 "--name", bar.name,
                 "--crispy-fish-database", bar.crispyFishDatabase.toString(),
                 "--snoozle-database", bar.snoozleDatabase.toString(),
+                "--motorsportreg-username", "${bar.motorsportReg?.username}",
+                "--motorsportreg-organization-id", "${bar.motorsportReg?.organizationId}",
                 "--default"
         ))
 

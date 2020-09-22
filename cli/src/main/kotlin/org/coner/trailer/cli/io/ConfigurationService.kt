@@ -1,66 +1,69 @@
 package org.coner.trailer.cli.io
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import net.harawata.appdirs.AppDirs
-import java.io.File
-import java.util.*
+import net.harawata.appdirs.AppDirsFactory
+import java.nio.file.Files
+import java.nio.file.Path
 
 class ConfigurationService(
-        private val appDirs: AppDirs
+        private val configDir: Path,
+        private val objectMapper: ObjectMapper
 ) {
 
-    private val configDir by lazy {
-        File(appDirs.getUserConfigDir("coner-trailer", "1.0", "coner"))
-    }
+    constructor(appDirs: AppDirs, objectMapper: ObjectMapper) : this(
+            configDir = Path.of(AppDirsFactory.getInstance().getUserConfigDir("coner-trailer", "1.0", "coner")),
+            objectMapper = objectMapper
+    )
 
-    val propertiesFile by lazy {
-        configDir.resolve("config.properties")
-    }
-
-    private fun loadProperties(): Properties {
-        return Properties().apply {
-            if (propertiesFile.exists()) {
-                load(propertiesFile.bufferedReader())
-            }
-        }
+    val configFile by lazy {
+        configDir.resolve("config.json")
     }
 
     fun setup() {
-        if (!configDir.exists()) {
-            check(configDir.mkdirs()) { "Failed to create $configDir" }
+        if (!Files.exists(configDir)) {
+            Files.createDirectories(configDir)
         }
+        check(Files.isDirectory(configDir)) { "$configDir is not a directory" }
     }
 
     val noDatabase: DatabaseConfiguration by lazy { DatabaseConfiguration(
             name = "no database",
-            crispyFishDatabase = propertiesFile.parentFile,
-            snoozleDatabase = propertiesFile.parentFile,
+            crispyFishDatabase = configDir,
+            snoozleDatabase = configDir,
+            motorsportReg = DatabaseConfiguration.MotorsportReg(
+                    username = null,
+                    organizationId = null
+            ),
             default = false
     ) }
 
-    fun configureDatabase(dbConfig: DatabaseConfiguration) {
-        val properties = loadProperties()
-        if (dbConfig.default) {
-            properties[PropertyKeys.DEFAULT_DATABASE] = dbConfig.name
+    private fun loadConfig(): Configuration {
+        return when {
+            Files.isReadable(configFile) -> objectMapper.readValue(Files.newInputStream(configFile))
+            else -> Configuration(
+                    databases = mutableMapOf(),
+                    defaultDatabaseName = null
+            )
         }
-        properties[PropertyKeys.crispyFishDatabase(dbConfig.name)] = dbConfig.crispyFishDatabase.toString()
-        properties[PropertyKeys.snoozleDatabase(dbConfig.name)] = dbConfig.snoozleDatabase.toString()
-        properties.store(propertiesFile.bufferedWriter(), null)
+    }
+
+    fun configureDatabase(dbConfig: DatabaseConfiguration) {
+        val config = loadConfig()
+        config.databases[dbConfig.name] = dbConfig
+        if (dbConfig.default) {
+            config.defaultDatabaseName = dbConfig.name
+        }
+        objectMapper.writeValue(Files.newOutputStream(configFile), config)
     }
 
     fun listDatabases(): List<DatabaseConfiguration> {
-        val properties = loadProperties()
-        return properties
-                .mapNotNull { findDatabaseNameIn(it.key) }
-                .distinct()
-                .map { name -> buildDatabaseConfiguration(name, properties) }
+        return loadConfig().databases.values.toList()
                 .sortedWith(
                         compareByDescending(DatabaseConfiguration::default)
                                 .thenByDescending(DatabaseConfiguration::name)
                 )
-                .let { actual ->
-                    if (actual.isNotEmpty()) actual
-                    else listOf(noDatabase)
-                }
     }
 
     fun listDatabasesByName() = listDatabases()
@@ -68,51 +71,14 @@ class ConfigurationService(
             .toMap()
 
     fun removeDatabase(dbConfig: DatabaseConfiguration) {
-        loadProperties().apply {
-            remove(PropertyKeys.crispyFishDatabase(dbConfig.name))
-            remove(PropertyKeys.snoozleDatabase(dbConfig.name))
-            store(propertiesFile.bufferedWriter(), null)
-        }
-    }
-
-    private fun buildDatabaseConfiguration(name: String, properties: Properties): DatabaseConfiguration {
-        val crispyFishDatabasePropertyKey = PropertyKeys.crispyFishDatabase(name)
-        val snoozleDatabasePropertyKey = PropertyKeys.snoozleDatabase(name)
-        return DatabaseConfiguration(
-                name = name,
-                crispyFishDatabase = File(
-                        properties.getProperty(crispyFishDatabasePropertyKey)
-                                ?: throw IllegalStateException("Config file has no crispy fish configuration for database $name")
-                ),
-                snoozleDatabase = File(
-                        properties.getProperty(snoozleDatabasePropertyKey)
-                                ?: throw IllegalStateException("Config file has no snoozle configuration for database $name")
-                ),
-                default = properties.getProperty(PropertyKeys.DEFAULT_DATABASE) == name
-        )
-    }
-
-    private fun findDatabaseNameIn(propertyKey: Any): String? {
-        if (propertyKey !is String || !propertyKey.startsWith("db[")) return null // not a database property
-        val lastIndexOfName = propertyKey.indexOf(']', startIndex = 3) - 1
-        return propertyKey.substring(3..lastIndexOfName)
-    }
-
-    fun getDatabase(name: String): DatabaseConfiguration? {
-        return listDatabases().singleOrNull { it.name == name }
+        val config = loadConfig()
+        config.databases.remove(dbConfig.name)
+        objectMapper.writeValue(Files.newOutputStream(configFile), config)
     }
 
     fun getDefaultDatabase() : DatabaseConfiguration? {
-        return listDatabases().singleOrNull { it.default }
-    }
-
-    private object PropertyKeys {
-
-        const val DEFAULT_DATABASE = "db.default"
-
-        fun crispyFishDatabase(name: String) = "db[$name].crispyFishDatabase"
-
-        fun snoozleDatabase(name: String) = "db[$name].snoozleDatabase"
+        val config = loadConfig()
+        return config.defaultDatabaseName?.let { config.databases[it] }
     }
 
 }

@@ -41,20 +41,20 @@ val cliktModule = DI.Module("clikt") {
                             config = instance()
                     ),
                     ConfigDatabaseGetCommand(
-                            config = instance(),
+                            service = instance(),
                             view = instance(),
                             useConsole = instance()
                     ),
-                    ConfigDatabaseSetCommand(
+                    ConfigDatabaseAddCommand(
                             useConsole = instance(),
                             view = instance(),
                             config = instance()
                     ),
                     ConfigDatabaseSetDefaultCommand(
-                            config = instance()
+                            service = instance()
                     ),
                     ConfigDatabaseRemoveCommand(
-                            config = instance()
+                            service = instance()
                     )
             )
     }

@@ -34,7 +34,13 @@ class RootCommand(
                 |   See: coner-trailer config database
                 """.trimMargin()
     )
-            .choice(config.listDatabasesByName())
+            .choice(config.listDatabasesByName().let {
+                if (it.isNotEmpty()) {
+                    it
+                } else {
+                    mapOf(config.noDatabase.name to config.noDatabase)
+                }
+            })
             .default(config.getDefaultDatabase() ?: config.noDatabase)
 
     override fun run() {

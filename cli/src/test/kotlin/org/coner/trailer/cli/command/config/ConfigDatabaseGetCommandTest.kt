@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
+import java.nio.file.Path
 import java.util.*
 
 class ConfigDatabaseGetCommandTest {
@@ -25,7 +25,7 @@ class ConfigDatabaseGetCommandTest {
     lateinit var view: DatabaseConfigurationView
 
     @TempDir
-    lateinit var temp: File
+    lateinit var temp: Path
 
     lateinit var console: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
@@ -73,7 +73,7 @@ private fun ConfigDatabaseGetCommandTest.arrangeWithTestDatabaseConfigurations()
     every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
     command = ConfigDatabaseGetCommand(
             useConsole = console,
-            config = config,
+            service = config,
             view = view
     )
 }

@@ -19,7 +19,7 @@ import org.kodein.di.singleton
 fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("service") {
     bind<DatabaseConfiguration>() with instance(databaseConfiguration)
     bind<ConerTrailerDatabase>() with singleton { ConerTrailerDatabase(
-            root = databaseConfiguration.snoozleDatabase.toPath())
+            root = databaseConfiguration.snoozleDatabase)
     }
 
     // Event Points Calculators
