@@ -5,7 +5,7 @@ import org.coner.trailer.cli.io.DatabaseConfiguration
 
 class DatabaseConfigurationView(
         override val console: CliktConsole
-) : CollectionView<DatabaseConfiguration> {
+) : BaseCollectionView<DatabaseConfiguration>() {
 
     override fun render(config: DatabaseConfiguration) = """
         |${config.name} ${if (config.default) "[Default]" else ""}

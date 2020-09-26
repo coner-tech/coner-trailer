@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import org.coner.trailer.Person
 
-class PersonView(override val console: CliktConsole) : CollectionView<Person> {
+class PersonView(override val console: CliktConsole) : BaseCollectionView<Person>() {
 
     override fun render(model: Person) = """
         ${model.firstName} ${model.lastName}

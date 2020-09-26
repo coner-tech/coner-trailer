@@ -7,7 +7,7 @@ import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 
 class SeasonPointsCalculatorConfigurationView(
         override val console: CliktConsole
-) : CollectionView<SeasonPointsCalculatorConfiguration> {
+) : BaseCollectionView<SeasonPointsCalculatorConfiguration>() {
 
     override fun render(model: SeasonPointsCalculatorConfiguration): String {
         return """

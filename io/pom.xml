@@ -32,6 +32,11 @@
             <artifactId>datasource-snoozle</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>api-client-motorsportreg</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

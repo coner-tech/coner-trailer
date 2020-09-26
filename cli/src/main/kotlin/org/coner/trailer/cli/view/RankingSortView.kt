@@ -3,7 +3,7 @@ package org.coner.trailer.cli.view
 import com.github.ajalt.clikt.output.CliktConsole
 import org.coner.trailer.seasonpoints.RankingSort
 
-class RankingSortView(override val console: CliktConsole) : CollectionView<RankingSort> {
+class RankingSortView(override val console: CliktConsole) : BaseCollectionView<RankingSort>() {
     override fun render(model: RankingSort) = """
         |${model.name}
         |    ID:     ${model.id}
