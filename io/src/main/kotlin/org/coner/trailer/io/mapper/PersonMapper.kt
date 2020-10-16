@@ -9,13 +9,23 @@ class PersonMapper {
             id = snoozle.id,
             firstName = snoozle.firstName,
             lastName = snoozle.lastName,
-            memberId = snoozle.memberId
+            clubMemberId = snoozle.clubMemberId,
+            motorsportReg = snoozle.motorsportReg?.memberId?.let {
+                Person.MotorsportRegMetadata(
+                        memberId = it
+                )
+            }
     )
 
     fun toSnoozle(core: Person): PersonEntity = PersonEntity(
             id = core.id,
             firstName = core.firstName,
             lastName = core.lastName,
-            memberId = core.memberId
+            clubMemberId = core.clubMemberId,
+            motorsportReg = core.motorsportReg?.memberId?.let {
+                PersonEntity.MotorsportRegMetadata(
+                        memberId = it
+                )
+            }
     )
 }

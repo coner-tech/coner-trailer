@@ -64,7 +64,7 @@ class ParticipantResultMapperTest {
         val result = registration.classResult
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val memberIdToPeople = mapOf(checkNotNull(expectedPerson.memberId) to expectedPerson)
+        val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
         every {
             participantMapper.map(fromRegistration = registration, withPerson = expectedPerson)
         }.returns(expectedParticipant)

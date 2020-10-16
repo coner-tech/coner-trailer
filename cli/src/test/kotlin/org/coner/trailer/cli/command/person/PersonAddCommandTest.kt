@@ -52,7 +52,7 @@ class PersonAddCommandTest {
 
         command.parse(arrayOf(
                 "--id", person.id.toString(),
-                "--member-id", "${person.memberId}",
+                "--club-member-id", "${person.clubMemberId}",
                 "--first-name", person.firstName,
                 "--last-name", person.lastName
         ))

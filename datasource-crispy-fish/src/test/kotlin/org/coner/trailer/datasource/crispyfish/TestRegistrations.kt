@@ -55,7 +55,7 @@ object TestRegistrations {
             bestRun: Int?
     ): Registration {
         return Registration(
-                memberNumber = participant.person?.memberId,
+                memberNumber = participant.person?.clubMemberId,
                 category = when (val grouping = participant.grouping) {
                     is Grouping.Singular -> null
                     is Grouping.Paired -> grouping.pair.first.let {

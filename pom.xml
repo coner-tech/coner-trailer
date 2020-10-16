@@ -16,6 +16,7 @@
         <module>datasource-snoozle</module>
         <module>io</module>
         <module>api-client-motorsportreg</module>
+        <module>datasource-motorsportreg</module>
     </modules>
 
     <properties>

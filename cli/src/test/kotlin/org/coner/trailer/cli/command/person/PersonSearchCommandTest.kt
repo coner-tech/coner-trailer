@@ -56,7 +56,7 @@ class PersonSearchCommandTest {
         every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
-                "--member-id-equals", "${person.memberId}",
+                "--club-member-id-equals", "${person.clubMemberId}",
                 "--first-name-equals", person.firstName,
                 "--last-name-equals", person.lastName
         ))
@@ -82,7 +82,7 @@ class PersonSearchCommandTest {
         every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
-                "--member-id-contains", "${person.memberId?.substring(0..3)}",
+                "--club-member-id-contains", "${person.clubMemberId?.substring(0..3)}",
                 "--first-name-contains", person.firstName.substring(0..3),
                 "--last-name-contains", person.lastName.substring(0..3)
         ))

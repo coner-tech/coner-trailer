@@ -2,6 +2,7 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi
 import org.coner.trailer.client.motorsportreg.MotorsportRegApiFactory
+import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import org.coner.trailer.io.service.MotorsportRegService
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -22,10 +23,12 @@ fun motorsportRegApiModule(
                 organizationId = organizationId
         )
     }
+    bind<MotorsportRegPersonMapper>() with singleton { MotorsportRegPersonMapper() }
     bind<MotorsportRegService>() with singleton {
         MotorsportRegService(
                 authenticatedApi = instance(),
-                personService = instance()
+                personService = instance(),
+                motorsportRegPersonMapper = instance()
         )
     }
 }

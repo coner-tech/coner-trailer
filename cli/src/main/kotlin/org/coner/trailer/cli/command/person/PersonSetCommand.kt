@@ -42,9 +42,9 @@ class PersonSetCommand(
         data class Set(val value: String) : MemberIdOption()
         object Unset : MemberIdOption()
     }
-    private val memberId: MemberIdOption? by option(
-            "--member-id",
-            help = "Set the member ID to VALUE. Pass \"null\" to unset."
+    private val clubMemberId: MemberIdOption? by option(
+            "--club-member-id",
+            help = "Set the club member ID to VALUE. Pass \"null\" to unset."
     )
             .convert { when {
                 it.equals("null", ignoreCase = true) -> MemberIdOption.Unset
@@ -52,18 +52,34 @@ class PersonSetCommand(
             } }
     private val firstName: String? by option()
     private val lastName: String? by option()
+    sealed class MotorsportRegMemberIdOption {
+        data class Set(val value: String): MotorsportRegMemberIdOption()
+        object Unset : MotorsportRegMemberIdOption()
+    }
+    private val motorsportRegMemberId: MotorsportRegMemberIdOption? by option(
+            help = "Set the motorsportreg member ID to VALUE. Pass \"null\" to unset."
+    )
+            .convert { when {
+                it.equals("null", ignoreCase = true) -> MotorsportRegMemberIdOption.Unset
+                else -> MotorsportRegMemberIdOption.Set(it)
+            } }
 
     override fun run() {
         val current = service.findById(id)
         val set = Person(
                 id = current.id,
-                memberId = when (val memberId = memberId) {
+                clubMemberId = when (val memberId = clubMemberId) {
                     is MemberIdOption.Set -> memberId.value
                     is MemberIdOption.Unset -> null
-                    null -> current.memberId
+                    null -> current.clubMemberId
                 },
                 firstName = firstName ?: current.firstName,
-                lastName = lastName ?: current.lastName
+                lastName = lastName ?: current.lastName,
+                motorsportReg = when (val motorsportRegMemberId = motorsportRegMemberId) {
+                    is MotorsportRegMemberIdOption.Set -> Person.MotorsportRegMetadata(motorsportRegMemberId.value)
+                    is MotorsportRegMemberIdOption.Unset -> null
+                    else -> current.motorsportReg
+                }
         )
         service.update(set)
         echo(view.render(set))

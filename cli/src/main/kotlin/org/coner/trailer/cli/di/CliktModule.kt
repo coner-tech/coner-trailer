@@ -10,6 +10,7 @@ import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegCommand
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberCommand
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberFetchCommand
+import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportCommand
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
@@ -173,7 +174,8 @@ val cliktModule = DI.Module("clikt") {
     bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di)
             .subcommands(MotorsportRegMemberCommand(di = di, useConsole = instance())
                     .subcommands(
-                            MotorsportRegMemberFetchCommand(di = di, useConsole = instance())
+                            MotorsportRegMemberFetchCommand(di = di, useConsole = instance()),
+                            MotorsportRegMemberImportCommand(di = di, useConsole = instance())
                     )
             )
     }

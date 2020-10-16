@@ -4,11 +4,11 @@ import java.util.*
 
 data class Person(
         val id: UUID = UUID.randomUUID(),
-        val memberId: String?,
+        val clubMemberId: String?,
         val firstName: String,
         val lastName: String,
-        val motorsportRegMetadata: MotorsportRegMetadata? = null
+        val motorsportReg: MotorsportRegMetadata? = null
 ) {
 
-    data class MotorsportRegMetadata(val id: String)
+    data class MotorsportRegMetadata(val memberId: String)
 }

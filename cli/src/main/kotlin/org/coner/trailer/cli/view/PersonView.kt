@@ -11,18 +11,20 @@ class PersonView(override val console: CliktConsole) : BaseCollectionView<Person
         ${model.firstName} ${model.lastName}
         ID:
             ${model.id}
-        Member ID:
-            ${model.memberId}
+        Club Member ID:
+            ${model.clubMemberId}
+        MotorsportReg Member ID:
+            ${model.motorsportReg?.memberId}
     """.trimIndent()
 
     override fun render(models: Collection<Person>): String {
         val at = AsciiTable()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
-        at.addRow("ID", "First Name", "Last Name", "Member ID")
+        at.addRow("ID", "First Name", "Last Name", "Club Member ID", "MotorsportReg Member ID")
         at.addRule()
         models.forEach { model ->
-            at.addRow(model.id, model.firstName, model.lastName, model.memberId)
+            at.addRow(model.id, model.firstName, model.lastName, model.clubMemberId, model.motorsportReg?.memberId)
             at.addRule()
         }
         return at.render()

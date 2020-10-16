@@ -83,9 +83,9 @@ object TestPeople {
             lastName: String,
             memberId: String? = null
     ): Person {
-        fun synthesizeMemberId() = "$firstName-$lastName".toLowerCase()
+        fun synthesizeClubMemberId() = "$firstName-$lastName".toLowerCase()
         return Person(
-                memberId = memberId ?: synthesizeMemberId(),
+                clubMemberId = memberId ?: synthesizeClubMemberId(),
                 firstName = firstName,
                 lastName = lastName
         )
