@@ -1,12 +1,12 @@
 package org.coner.trailer.cli.view
 
 import com.github.ajalt.clikt.output.CliktConsole
-import org.coner.trailer.client.motorsportreg.model.GetMembersResponse
+import org.coner.trailer.client.motorsportreg.model.Member
 
 class MotosportRegMemberView(
         override val console: CliktConsole
-) : BaseCollectionView<GetMembersResponse.Member>() {
-    override fun render(model: GetMembersResponse.Member): String {
+) : BaseCollectionView<Member>() {
+    override fun render(model: Member): String {
         return """
             ${model.firstName} ${model.lastName}
                 ID:         ${model.id}

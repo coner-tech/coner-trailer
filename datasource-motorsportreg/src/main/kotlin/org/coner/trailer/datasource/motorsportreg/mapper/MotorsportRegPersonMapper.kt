@@ -1,10 +1,10 @@
 package org.coner.trailer.datasource.motorsportreg.mapper
 
 import org.coner.trailer.Person
-import org.coner.trailer.client.motorsportreg.model.GetMembersResponse
+import org.coner.trailer.client.motorsportreg.model.Member
 
 class MotorsportRegPersonMapper {
-    fun updateCore(core: Person, motorsportRegMember: GetMembersResponse.Member): Person {
+    fun updateCore(core: Person, motorsportRegMember: Member): Person {
         return Person(
                 id = core.id,
                 clubMemberId = motorsportRegMember.memberId,
@@ -16,7 +16,7 @@ class MotorsportRegPersonMapper {
         )
     }
 
-    fun fromMotorsportReg(motorsportRegMember: GetMembersResponse.Member): Person {
+    fun fromMotorsportReg(motorsportRegMember: Member): Person {
         return Person(
                 clubMemberId = motorsportRegMember.memberId,
                 firstName = motorsportRegMember.firstName,
