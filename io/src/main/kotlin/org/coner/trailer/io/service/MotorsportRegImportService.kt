@@ -1,18 +1,17 @@
 package org.coner.trailer.io.service
 
 import org.coner.trailer.Person
-import org.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi
 import org.coner.trailer.client.motorsportreg.model.Member
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 
-class MotorsportRegService(
-        private val motorsportRegMemberService: MotorsportRegMemberService,
+class MotorsportRegImportService(
         private val personService: PersonService,
+        private val motorsportRegMemberService: MotorsportRegMemberService,
         private val motorsportRegPersonMapper: MotorsportRegPersonMapper
 ) {
 
     fun importMembersAsPeople(dry: Boolean): ImportMembersAsPeopleResult {
-        val members = motorsportRegMemberService.fetchMembers()
+        val members = motorsportRegMemberService.list()
         val motorsportRegMemberIdToMember: Map<String, Member> = members.map { it.id to it }.toMap()
         val currentPeople = personService.list()
         val updatePeople = currentPeople.mapNotNull { person ->

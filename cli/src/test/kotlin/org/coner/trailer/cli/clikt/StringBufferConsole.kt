@@ -14,8 +14,8 @@ class StringBufferConsole : CliktConsole {
 
     override fun print(text: String, error: Boolean) {
         when (error) {
-            false -> out.append(text).append(lineSeparator)
-            true -> err.append(text).append(lineSeparator)
+            false -> out.append(text)
+            true -> err.append(text)
         }
     }
 

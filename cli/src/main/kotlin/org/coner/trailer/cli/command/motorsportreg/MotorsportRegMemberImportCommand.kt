@@ -7,8 +7,7 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import org.coner.trailer.cli.view.PersonTableView
-import org.coner.trailer.cli.view.PersonView
-import org.coner.trailer.io.service.MotorsportRegService
+import org.coner.trailer.io.service.MotorsportRegImportService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -29,7 +28,7 @@ class MotorsportRegMemberImportCommand(
 
     override val di: DI by findOrSetObject { di }
 
-    private val service: MotorsportRegService by instance()
+    private val service: MotorsportRegImportService by instance()
     private val view: PersonTableView by instance()
 
     private val dryRun: Boolean by option(

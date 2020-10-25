@@ -5,18 +5,17 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
 import org.coner.trailer.cli.view.MotorsportRegMemberTableView
-import org.coner.trailer.cli.view.MotosportRegMemberView
-import org.coner.trailer.io.service.MotorsportRegService
+import org.coner.trailer.io.service.MotorsportRegMemberService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 
-class MotorsportRegMemberFetchCommand(
+class MotorsportRegMemberListCommand(
         di: DI,
         useConsole: CliktConsole
 ) : CliktCommand(
-        name = "fetch",
-        help = "Fetch (display) members from MotorsportReg"
+        name = "list",
+        help = "List members from MotorsportReg"
 ), DIAware {
 
     init {
@@ -27,11 +26,11 @@ class MotorsportRegMemberFetchCommand(
 
     override val di: DI by findOrSetObject { di }
 
-    private val service: MotorsportRegService by instance()
+    private val service: MotorsportRegMemberService by instance()
     private val view: MotorsportRegMemberTableView by instance()
 
     override fun run() {
-        val members = service.fetchMembers()
+        val members = service.list()
         echo(view.render(members))
     }
 }

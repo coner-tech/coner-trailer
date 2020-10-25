@@ -9,7 +9,7 @@ import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegCommand
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberCommand
-import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberFetchCommand
+import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberListCommand
 import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportCommand
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
@@ -174,7 +174,7 @@ val cliktModule = DI.Module("clikt") {
     bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di)
             .subcommands(MotorsportRegMemberCommand(di = di, useConsole = instance())
                     .subcommands(
-                            MotorsportRegMemberFetchCommand(di = di, useConsole = instance()),
+                            MotorsportRegMemberListCommand(di = di, useConsole = instance()),
                             MotorsportRegMemberImportCommand(di = di, useConsole = instance())
                     )
             )

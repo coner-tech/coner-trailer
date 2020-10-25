@@ -7,13 +7,11 @@ class MotorsportRegMemberService(
         private val authenticatedApi: AuthenticatedMotorsportRegApi
 ) {
 
-    fun fetchMembers(): List<Member> {
-        val membersResponse = authenticatedApi.getMembers().execute()
-        if (!membersResponse.isSuccessful) throw IllegalStateException(
-                "Failed to fetch members, response code: ${membersResponse.code()}",
-
-                )
-        return checkNotNull(membersResponse.body()) { "Failed to fetch members" }
+    fun list(): List<Member> {
+        val membersResponse = authenticatedApi.getMembers().execute().also {
+            check(it.isSuccessful) { "Failed to fetch members. ${it.code()} ${it.message()}" }
+        }
+        return checkNotNull(membersResponse.body()) { "Got members response with null body" }
                 .response
                 .members
     }
