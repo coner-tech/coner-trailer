@@ -1,7 +1,11 @@
 package org.coner.trailer.io.service
 
+import assertk.all
+import assertk.assertThat
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.TestMembers
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import org.junit.jupiter.api.BeforeEach
@@ -15,10 +19,11 @@ class MotorsportRegImportServiceTest {
 
     @MockK lateinit var personService: PersonService
     @MockK lateinit var motorsportRegMemberService: MotorsportRegMemberService
-    @MockK lateinit var motorsportRegPersonMapper: MotorsportRegPersonMapper
+    lateinit var motorsportRegPersonMapper: MotorsportRegPersonMapper
 
     @BeforeEach
     fun before() {
+        motorsportRegPersonMapper = MotorsportRegPersonMapper()
         service = MotorsportRegImportService(
                 personService = personService,
                 motorsportRegMemberService = motorsportRegMemberService,
@@ -29,11 +34,24 @@ class MotorsportRegImportServiceTest {
     @Test
     fun `It should really import members as people`() {
         val toCreate = TestMembers.BRANDY_HUFF
-        val toUpdate = TestMembers.REBECCA_JACKSON
+        val toUpdate = TestMembers.REBECCA_JACKSON.copy(
+                lastName = "Updated"
+        )
         val members = listOf(
                 toCreate,
                 toUpdate
         )
+        every { motorsportRegMemberService.list() } returns members
+        val people = listOf(
+                TestPeople.BRANDY_HUFF,
+                TestPeople.REBECCA_JACKSON
+        )
+
+        val actual = service.importMembersAsPeople(dry = false)
+
+        assertThat(actual).all {
+
+        }
         TODO()
     }
 
