@@ -27,4 +27,13 @@ class MotorsportRegPersonMapper {
         )
     }
 
+    fun fromCore(core: Person): Member? {
+        return core.motorsportReg?.let { msr -> Member(
+                id = msr.memberId,
+                firstName = core.firstName,
+                lastName = core.lastName,
+                memberId = core.clubMemberId
+        ) }
+    }
+
 }

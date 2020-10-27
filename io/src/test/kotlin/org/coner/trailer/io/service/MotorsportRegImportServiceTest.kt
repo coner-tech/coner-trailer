@@ -2,6 +2,7 @@ package org.coner.trailer.io.service
 
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.coner.trailer.client.motorsportreg.model.TestMembers
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,6 +28,12 @@ class MotorsportRegImportServiceTest {
 
     @Test
     fun `It should really import members as people`() {
+        val toCreate = TestMembers.BRANDY_HUFF
+        val toUpdate = TestMembers.REBECCA_JACKSON
+        val members = listOf(
+                toCreate,
+                toUpdate
+        )
         TODO()
     }
 

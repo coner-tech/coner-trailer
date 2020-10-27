@@ -24,7 +24,17 @@
         </dependency>
         <dependency>
             <groupId>org.coner.trailer</groupId>
+            <artifactId>core-test</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
             <artifactId>api-client-motorsportreg</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>datasource-motorsportreg</artifactId>
             <version>${project.version}</version>
         </dependency>
 
