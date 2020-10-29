@@ -2,7 +2,7 @@ package org.coner.trailer.io.service
 
 import assertk.all
 import assertk.assertThat
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.TestPeople
@@ -46,6 +46,9 @@ class MotorsportRegImportServiceTest {
                 TestPeople.BRANDY_HUFF,
                 TestPeople.REBECCA_JACKSON
         )
+        every { personService.list() } returns people
+        justRun { personService.update(any()) }
+        justRun { personService.create(any()) }
 
         val actual = service.importMembersAsPeople(dry = false)
 
