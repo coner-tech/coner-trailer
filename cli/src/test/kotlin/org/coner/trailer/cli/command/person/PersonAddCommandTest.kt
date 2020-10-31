@@ -54,7 +54,8 @@ class PersonAddCommandTest {
                 "--id", person.id.toString(),
                 "--club-member-id", "${person.clubMemberId}",
                 "--first-name", person.firstName,
-                "--last-name", person.lastName
+                "--last-name", person.lastName,
+                "--motorsportreg-member-id", "${person.motorsportReg?.memberId}"
         ))
 
         verifySequence {

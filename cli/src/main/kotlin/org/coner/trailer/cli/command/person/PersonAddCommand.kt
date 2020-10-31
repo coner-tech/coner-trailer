@@ -42,13 +42,17 @@ class PersonAddCommand(
     private val clubMemberId: String? by option()
     private val firstName: String by option().required()
     private val lastName: String by option().required()
+    private val motorsportregMemberId: String? by option()
 
     override fun run() {
         val create = Person(
                 id = id,
                 clubMemberId = clubMemberId,
                 firstName = firstName,
-                lastName = lastName
+                lastName = lastName,
+                motorsportReg = motorsportregMemberId?.let { Person.MotorsportRegMetadata(
+                        memberId = it
+                ) }
         )
         service.create(create)
         echo(view.render(create))
