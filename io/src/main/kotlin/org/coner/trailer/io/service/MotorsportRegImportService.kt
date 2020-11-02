@@ -36,6 +36,11 @@ class MotorsportRegImportService(
         )
     }
 
+    fun importSingleMemberAsPerson(motorsportRegMemberId: String, dry: Boolean): ImportMembersAsPeopleResult {
+        val member = motorsportRegMemberService.(motorsportRegMemberId)
+        TODO()
+    }
+
     data class ImportMembersAsPeopleResult(
             val updated: List<Person>,
             val created: List<Person>

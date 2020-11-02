@@ -7,9 +7,8 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import okhttp3.mockwebserver.*
-import org.coner.trailer.client.motorsportreg.model.memberId
-import org.coner.trailer.client.motorsportreg.model.members
-import org.coner.trailer.client.motorsportreg.model.response
+import org.coner.trailer.TestPeople
+import org.coner.trailer.client.motorsportreg.model.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -67,7 +66,7 @@ class AuthenticatedMotorsportRegApiTest {
         assertThat(actual, "response").all {
             code().isEqualTo(200)
             body().isNotNull().all {
-                response().members().all {
+                getMembersResponse().members().all {
                     hasSize(2)
                     index(0).all {
                         memberId().isEqualTo("1807")
@@ -76,6 +75,29 @@ class AuthenticatedMotorsportRegApiTest {
                         memberId().isEqualTo("2019-00094")
                     }
                 }
+            }
+        }
+    }
+
+    @Test
+    fun `It should get member by ID`() {
+        val mockAuthenticatedResponse = MockResponse()
+                .addHeader("Content-Type", "application/json;charset=utf-8")
+                .setStatus("HTTP/1.1 200 OK")
+                .setBody(this.javaClass.getResourceAsStream("/get-member-by-id-ok.json").bufferedReader().readText())
+        testDispatcher = QueueDispatcher().apply {
+            enqueueResponse(mockAuthenticatedResponse)
+        }
+
+        val actual = api.getMemberById(TestMembers.REBECCA_JACKSON.id).execute()
+        val actualRequest = server.takeRequest()
+
+        actualRequest.requestUrl?.pathSegments
+
+        assertThat(actual, "response").all {
+            code().isEqualTo(200)
+            body().isNotNull().all {
+                getMemberByIdResponse().member().memberId().isEqualTo("1807")
             }
         }
     }

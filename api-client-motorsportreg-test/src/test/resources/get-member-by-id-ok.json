@@ -1,0 +1,43 @@
+{
+  "response": {
+    "member": {
+      "address1": "123 Not Real St",
+      "address2": "",
+      "city": "City",
+      "country": "Country",
+      "dob": "01/01/0100",
+      "email": "local@domain.tld",
+      "emergencyContact": "Not Me",
+      "emergencyPhone": "555-555-5555",
+      "faxNumber": "",
+      "firstName": "Rebecca",
+      "id": "identifier-rebecca-jackson",
+      "image": {
+        "original": "",
+        "retina": "",
+        "standard": ""
+      },
+      "lastName": "Jackson",
+      "lastUpdate": "07/26/2020",
+      "latitude": "",
+      "longitude": "",
+      "memberEnd": "12/31/2020",
+      "memberId": 1807,
+      "mobileNumber": "+15555555555",
+      "nationality": "",
+      "phoneNumber": "555-555-5555",
+      "postalCode": 12345,
+      "profileuri": "/profiles/identifier-rebecca-jackson",
+      "region": "Region",
+      "regionOfRecord": "",
+      "status": "Approved",
+      "types": [
+        "Attendee",
+        "Autox Staff",
+        "Event Staff"
+      ],
+      "uniqueId": 123456.0,
+      "workNumber": ""
+    }
+  }
+}
