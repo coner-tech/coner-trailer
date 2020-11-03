@@ -7,10 +7,7 @@ import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
-import org.coner.trailer.cli.command.motorsportreg.MotorsportRegCommand
-import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberCommand
-import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberListCommand
-import org.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportCommand
+import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
@@ -175,7 +172,8 @@ val cliktModule = DI.Module("clikt") {
             .subcommands(MotorsportRegMemberCommand(di = di, useConsole = instance())
                     .subcommands(
                             MotorsportRegMemberListCommand(di = di, useConsole = instance()),
-                            MotorsportRegMemberImportCommand(di = di, useConsole = instance())
+                            MotorsportRegMemberImportCommand(di = di, useConsole = instance()),
+                            MotorsportRegMemberImportSingleCommand(di = di, useConsole = instance())
                     )
             )
     }

@@ -15,4 +15,15 @@ class MotorsportRegMemberService(
                 .response
                 .members
     }
+
+    fun findById(id: String): Member {
+        val memberByIdResponse = authenticatedApi.getMemberById(id).execute().also {
+            check(it.isSuccessful) { "Failed to fetch member by ID. ${it.code()} ${it.message()}"}
+        }
+        return checkNotNull(memberByIdResponse.body()) { "Got member by id response with null body" }
+                .response
+                .member
+    }
+
+
 }

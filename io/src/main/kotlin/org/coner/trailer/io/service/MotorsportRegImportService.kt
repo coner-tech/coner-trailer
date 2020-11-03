@@ -3,6 +3,7 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Person
 import org.coner.trailer.client.motorsportreg.model.Member
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
+import java.util.function.Predicate
 
 class MotorsportRegImportService(
         private val personService: PersonService,
@@ -37,8 +38,24 @@ class MotorsportRegImportService(
     }
 
     fun importSingleMemberAsPerson(motorsportRegMemberId: String, dry: Boolean): ImportMembersAsPeopleResult {
-        val member = motorsportRegMemberService.(motorsportRegMemberId)
-        TODO()
+        val member = motorsportRegMemberService.findById(motorsportRegMemberId)
+        val people = personService.search { it.motorsportReg?.memberId == motorsportRegMemberId }
+        check(people.size in 0..1) { "Expected 0 or 1 matching people. Found ${people.size} matches." }
+        val person = people.singleOrNull()
+        val update = person?.let { motorsportRegPersonMapper.updateCore(core = it, motorsportRegMember = member) }
+        val create = if (person == null) {
+            motorsportRegPersonMapper.fromMotorsportReg(motorsportRegMember = member)
+        } else {
+            null
+        }
+        if (!dry) {
+            if (update != null) personService.update(update)
+            if (create != null) personService.create(create)
+        }
+        return ImportMembersAsPeopleResult(
+                updated = update?.let { listOf(it) } ?: emptyList(),
+                created = create?.let { listOf(it) } ?: emptyList()
+        )
     }
 
     data class ImportMembersAsPeopleResult(

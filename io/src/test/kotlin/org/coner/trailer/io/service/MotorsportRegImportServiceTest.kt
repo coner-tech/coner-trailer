@@ -103,4 +103,14 @@ class MotorsportRegImportServiceTest {
             personService.list()
         }
     }
+
+    @Test
+    fun `It should import single member as person`() {
+        TODO()
+    }
+
+    @Test
+    fun `It should dry-run import single member as person`() {
+        TODO()
+    }
 }
