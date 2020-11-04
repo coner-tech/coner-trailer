@@ -2,10 +2,8 @@ package org.coner.trailer.client.motorsportreg
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
-import assertk.assertions.index
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotNull
+import assertk.assertions.*
+import okhttp3.HttpUrl
 import okhttp3.mockwebserver.*
 import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.*
@@ -61,7 +59,9 @@ class AuthenticatedMotorsportRegApiTest {
         val actual = api.getMembers().execute()
         val actualRequest = server.takeRequest()
 
-        actualRequest.requestUrl?.pathSegments
+        assertThat(actualRequest, "request").all {
+            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "members.json"))
+        }
 
         assertThat(actual, "response").all {
             code().isEqualTo(200)
@@ -81,6 +81,7 @@ class AuthenticatedMotorsportRegApiTest {
 
     @Test
     fun `It should get member by ID`() {
+        val member = TestMembers.REBECCA_JACKSON
         val mockAuthenticatedResponse = MockResponse()
                 .addHeader("Content-Type", "application/json;charset=utf-8")
                 .setStatus("HTTP/1.1 200 OK")
@@ -89,10 +90,12 @@ class AuthenticatedMotorsportRegApiTest {
             enqueueResponse(mockAuthenticatedResponse)
         }
 
-        val actual = api.getMemberById(TestMembers.REBECCA_JACKSON.id).execute()
+        val actual = api.getMemberById(member.id).execute()
         val actualRequest = server.takeRequest()
 
-        actualRequest.requestUrl?.pathSegments
+        assertThat(actualRequest, "request").all {
+            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "members", "${member.id}.json"))
+        }
 
         assertThat(actual, "response").all {
             code().isEqualTo(200)
