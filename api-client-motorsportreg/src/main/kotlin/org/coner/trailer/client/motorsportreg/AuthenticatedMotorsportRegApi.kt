@@ -4,6 +4,7 @@ import org.coner.trailer.client.motorsportreg.model.GetMemberByIdResponse
 import org.coner.trailer.client.motorsportreg.model.GetMembersResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AuthenticatedMotorsportRegApi {
@@ -12,5 +13,5 @@ interface AuthenticatedMotorsportRegApi {
     fun getMembers(): Call<GetMembersResponse>
 
     @GET("/rest/members/{id}.json")
-    fun getMemberById(@Query("id") id: String): Call<GetMemberByIdResponse>
+    fun getMemberById(@Path("id") id: String): Call<GetMemberByIdResponse>
 }

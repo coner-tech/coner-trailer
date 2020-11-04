@@ -2,10 +2,7 @@ package org.coner.trailer.io.service
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
-import assertk.assertions.index
-import assertk.assertions.isEqualTo
-import assertk.assertions.isEqualToIgnoringGivenProperties
+import assertk.assertions.*
 import created
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -14,10 +11,13 @@ import org.coner.trailer.Person
 import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.TestMembers
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
+import org.coner.trailer.lastName
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import updated
+import java.util.function.Predicate
+import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 class MotorsportRegImportServiceTest {
@@ -106,11 +106,66 @@ class MotorsportRegImportServiceTest {
 
     @Test
     fun `It should import single member as person`() {
-        TODO()
+        val toUpdate = TestMembers.BRANDY_HUFF
+        every {
+            motorsportRegMemberService.findById(toUpdate.id)
+        } returns toUpdate.copy(
+                lastName = "Updated"
+        )
+        val personSearchFilterSlot = slot<Predicate<Person>>()
+        every {
+            personService.search(capture(personSearchFilterSlot))
+        } answers {
+            TestPeople.all.stream().filter(personSearchFilterSlot.captured).toList()
+        }
+        justRun { personService.update(any()) }
+
+        val actual = service.importSingleMemberAsPerson(
+                motorsportRegMemberId = toUpdate.id,
+                dry = false
+        )
+
+        assertThat(actual).all {
+            created().isEmpty()
+            updated().all {
+                hasSize(1)
+                index(0).all {
+                    isEqualToIgnoringGivenProperties(TestPeople.BRANDY_HUFF, Person::lastName)
+                    lastName().isEqualTo("Updated")
+                }
+            }
+        }
+        verifySequence {
+            motorsportRegMemberService.findById(toUpdate.id)
+            personService.search(personSearchFilterSlot.captured)
+            personService.update(any())
+        }
     }
 
     @Test
     fun `It should dry-run import single member as person`() {
-        TODO()
+        val toCreate = TestMembers.REBECCA_JACKSON
+        every { motorsportRegMemberService.findById(toCreate.id) } returns toCreate
+        every { personService.search(any()) } returns emptyList()
+        justRun { personService.create(any()) }
+
+        val actual = service.importSingleMemberAsPerson(
+                motorsportRegMemberId = toCreate.id,
+                dry = true
+        )
+
+        assertThat(actual).all {
+            created().all {
+                hasSize(1)
+                index(0).all {
+                    isEqualToIgnoringGivenProperties(TestPeople.REBECCA_JACKSON, Person::id)
+                }
+            }
+            updated().isEmpty()
+        }
+        verifySequence {
+            motorsportRegMemberService.findById(toCreate.id)
+            personService.search(any())
+        }
     }
 }

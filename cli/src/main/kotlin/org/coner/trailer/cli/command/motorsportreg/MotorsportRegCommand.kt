@@ -17,7 +17,8 @@ class MotorsportRegCommand(
         useConsole: CliktConsole,
         di: DI
 ) : CliktCommand(
-        name = "motorsportreg"
+        name = "motorsportreg",
+        help = "Integration with MotorsportReg"
 ), DIAware {
 
     init {
