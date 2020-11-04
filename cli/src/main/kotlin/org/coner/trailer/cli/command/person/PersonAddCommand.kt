@@ -39,16 +39,20 @@ class PersonAddCommand(
     private val id: UUID by option(hidden = true)
             .convert { toUuid(it) }
             .default(UUID.randomUUID())
-    private val memberId: String? by option()
+    private val clubMemberId: String? by option()
     private val firstName: String by option().required()
     private val lastName: String by option().required()
+    private val motorsportregMemberId: String? by option()
 
     override fun run() {
         val create = Person(
                 id = id,
-                memberId = memberId,
+                clubMemberId = clubMemberId,
                 firstName = firstName,
-                lastName = lastName
+                lastName = lastName,
+                motorsportReg = motorsportregMemberId?.let { Person.MotorsportRegMetadata(
+                        memberId = it
+                ) }
         )
         service.create(create)
         echo(view.render(create))

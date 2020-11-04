@@ -1,7 +1,9 @@
 package org.coner.trailer.cli.command.person
 
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -54,7 +56,7 @@ class PersonSearchCommandTest {
         every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
-                "--member-id-equals", "${person.memberId}",
+                "--club-member-id-equals", "${person.clubMemberId}",
                 "--first-name-equals", person.firstName,
                 "--last-name-equals", person.lastName
         ))
@@ -80,7 +82,7 @@ class PersonSearchCommandTest {
         every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
-                "--member-id-contains", "${person.memberId?.substring(0..3)}",
+                "--club-member-id-contains", "${person.clubMemberId?.substring(0..3)}",
                 "--first-name-contains", person.firstName.substring(0..3),
                 "--last-name-contains", person.lastName.substring(0..3)
         ))

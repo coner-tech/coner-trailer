@@ -3,16 +3,14 @@ package org.coner.trailer.cli.command.config
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.output.CliktConsole
-import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import com.github.ajalt.clikt.parameters.types.choice
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 
 class ConfigDatabaseGetCommand(
         useConsole: CliktConsole,
-        config: ConfigurationService,
+        service: ConfigurationService,
         private val view: DatabaseConfigurationView
 ) : CliktCommand(
         name = "get",
@@ -25,10 +23,7 @@ class ConfigDatabaseGetCommand(
         }
     }
 
-    private val dbConfig: DatabaseConfiguration by option(
-            names = *arrayOf("--name")
-    )
-            .choice(config.listDatabasesByName())
+    private val dbConfig: DatabaseConfiguration by databaseNameOption(service)
             .required()
 
     override fun run() {

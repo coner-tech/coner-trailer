@@ -56,7 +56,7 @@ class PersonSetCommandTest {
         command.parse(arrayOf(
                 "${original.id}",
                 "--first-name", set.firstName,
-                "--last-name", set.lastName
+                "--last-name", set.lastName,
         ))
 
         verifySequence {
@@ -68,19 +68,19 @@ class PersonSetCommandTest {
     }
 
     @Test
-    fun `It should set a person member ID` () {
+    fun `It should set a person club member ID` () {
         val original = TestPeople.REBECCA_JACKSON
         val set = original.copy(
-                memberId = "different",
+                clubMemberId = "different",
         )
         every { service.findById(any()) } returns original
         every { service.update(any()) } answers { Unit }
-        val viewRendered = "view rendered ${set.memberId}"
+        val viewRendered = "view rendered ${set.clubMemberId}"
         every { view.render(any<Person>()) } returns viewRendered
 
         command.parse(arrayOf(
                 "${original.id}",
-                "--member-id", "${set.memberId}"
+                "--club-member-id", "${set.clubMemberId}"
         ))
 
         verifySequence {
@@ -92,19 +92,19 @@ class PersonSetCommandTest {
     }
 
     @Test
-    fun `It should unset a person member ID`() {
+    fun `It should unset a person club member ID`() {
         val original = TestPeople.REBECCA_JACKSON
         val set = original.copy(
-                memberId = null,
+                clubMemberId = null,
         )
         every { service.findById(any()) } returns original
         every { service.update(any()) } answers { Unit }
-        val viewRendered = "view rendered memberId = ${set.memberId}"
+        val viewRendered = "view rendered memberId = ${set.clubMemberId}"
         every { view.render(any<Person>()) } returns viewRendered
 
         command.parse(arrayOf(
                 "${original.id}",
-                "--member-id", "null"
+                "--club-member-id", "null"
         ))
 
         verifySequence {
@@ -115,6 +115,30 @@ class PersonSetCommandTest {
         assertThat(console.output, "console output").isEqualTo(viewRendered)
     }
 
+    @Test
+    fun `It should set a person motorsportreg member ID`() {
+        val original = TestPeople.REBECCA_JACKSON
+        val set = original.copy(
+                motorsportReg = original.motorsportReg!!.copy(
+                        memberId = "set"
+                ),
+        )
+        every { service.findById(any()) } returns original
+        every { service.update(any()) } answers { Unit }
+        val viewRendered = "view rendered memberId = ${set.clubMemberId}"
+        every { view.render(any<Person>()) } returns viewRendered
 
+        command.parse(arrayOf(
+                "${original.id}",
+                "--motorsportreg-member-id", "set"
+        ))
+
+        verifySequence {
+            service.findById(original.id)
+            service.update(eq(set))
+            view.render(eq(set))
+        }
+        assertThat(console.output, "console output").isEqualTo(viewRendered)
+    }
 
 }

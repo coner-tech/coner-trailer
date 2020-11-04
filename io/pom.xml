@@ -32,6 +32,16 @@
             <artifactId>datasource-snoozle</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>api-client-motorsportreg</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>datasource-motorsportreg</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -51,6 +61,12 @@
         <dependency>
             <groupId>org.coner.trailer</groupId>
             <artifactId>core-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>api-client-motorsportreg-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

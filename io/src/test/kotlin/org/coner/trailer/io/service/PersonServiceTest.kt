@@ -96,7 +96,7 @@ class PersonServiceTest {
         val person = TestPeople.ANASTASIA_RIGLER
         val filter = PersonService.FilterFirstNameEquals(person.firstName)
                 .and(PersonService.FilterLastNameEquals(person.lastName))
-                .and(PersonService.FilterMemberIdEquals(person.memberId))
+                .and(PersonService.FilterMemberIdEquals(person.clubMemberId))
         val realMapper = PersonMapper()
         val peopleEntities = TestPeople.all.stream()
                 .map(realMapper::toSnoozle)
@@ -118,7 +118,7 @@ class PersonServiceTest {
         val person = TestPeople.ANASTASIA_RIGLER
         val filter = PersonService.FilterFirstNameContains(person.firstName.substring(0..3))
                 .and(PersonService.FilterLastNameContains(person.lastName.substring(0..3)))
-                .and(PersonService.FilterMemberIdContains(person.memberId!!.substringAfter("-")))
+                .and(PersonService.FilterMemberIdContains(person.clubMemberId!!.substringAfter("-")))
         val realMapper = PersonMapper()
         val peopleEntities = TestPeople.all.stream()
                 .map(realMapper::toSnoozle)

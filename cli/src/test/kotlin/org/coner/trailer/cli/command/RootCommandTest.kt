@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
-import java.io.File
+import java.nio.file.Path
 
 class RootCommandTest {
 
@@ -34,7 +34,7 @@ class RootCommandTest {
     lateinit var noDatabase: DatabaseConfiguration
 
     @TempDir
-    lateinit var temp: File
+    lateinit var temp: Path
 
     lateinit var console: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations

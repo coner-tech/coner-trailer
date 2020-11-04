@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
+import java.nio.file.Path
 
 class ConfigDatabaseSetDefaultCommandTest {
 
@@ -25,7 +25,7 @@ class ConfigDatabaseSetDefaultCommandTest {
     lateinit var config: ConfigurationService
 
     @TempDir
-    lateinit var temp: File
+    lateinit var temp: Path
 
     lateinit var dbConfigs: TestDatabaseConfigurations
 

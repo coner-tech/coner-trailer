@@ -1,6 +1,9 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.*
+import org.coner.trailer.Grouping
+import org.coner.trailer.Person
+import org.coner.trailer.Season
+import org.coner.trailer.SeasonEvent
 import org.coner.trailer.eventresults.ComprehensiveResultsReport
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.ResultsType

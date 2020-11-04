@@ -5,7 +5,7 @@ import org.coner.trailer.seasonpoints.EventPointsCalculator
 
 class EventPointsCalculatorView(
         override val console: CliktConsole
-) : CollectionView<EventPointsCalculator> {
+) : BaseCollectionView<EventPointsCalculator>() {
 
     override fun render(model: EventPointsCalculator) = """
         |${model.name}

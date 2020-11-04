@@ -6,12 +6,12 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
-import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.seasonpoints.TestRankingSorts
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach

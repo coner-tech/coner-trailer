@@ -5,11 +5,11 @@ import assertk.assertions.hasSize
 import assertk.assertions.isSameAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
 import org.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity
 import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

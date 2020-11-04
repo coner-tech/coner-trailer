@@ -6,11 +6,11 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
-import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.EventPointsCalculatorView
 import org.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import org.coner.trailer.io.service.EventPointsCalculatorService
+import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI

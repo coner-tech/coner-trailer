@@ -33,9 +33,9 @@ class PersonSearchCommand(
     private val service: PersonService by instance()
     private val view: PersonView by instance()
 
-    private val memberIdEquals: PersonService.FilterMemberIdEquals? by option("--member-id-equals")
+    private val clubMemberIdEquals: PersonService.FilterMemberIdEquals? by option("--club-member-id-equals")
             .convert { PersonService.FilterMemberIdEquals(it) }
-    private val memberIdContains: PersonService.FilterMemberIdContains? by option("--member-id-contains")
+    private val clubMemberIdContains: PersonService.FilterMemberIdContains? by option("--club-member-id-contains")
             .convert { PersonService.FilterMemberIdContains(it) }
     private val firstNameEquals: PersonService.FilterFirstNameEquals? by option("--first-name-equals")
             .convert { PersonService.FilterFirstNameEquals(it) }
@@ -48,8 +48,8 @@ class PersonSearchCommand(
 
     override fun run() {
         val filters: List<Predicate<Person>> = listOfNotNull(
-                memberIdEquals,
-                memberIdContains,
+                clubMemberIdEquals,
+                clubMemberIdContains,
                 firstNameEquals,
                 firstNameContains,
                 lastNameEquals,

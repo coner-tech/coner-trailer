@@ -4,9 +4,10 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
-import org.coner.trailer.cli.command.*
+import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
+import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
@@ -25,7 +26,8 @@ val cliktModule = DI.Module("clikt") {
                     instance<EventPointsCalculatorCommand>(),
                     instance<RankingSortCommand>(),
                     instance<SeasonPointsCalculatorCommand>(),
-                    instance<PersonCommand>()
+                    instance<PersonCommand>(),
+                    instance<MotorsportRegCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -41,20 +43,20 @@ val cliktModule = DI.Module("clikt") {
                             config = instance()
                     ),
                     ConfigDatabaseGetCommand(
-                            config = instance(),
+                            service = instance(),
                             view = instance(),
                             useConsole = instance()
                     ),
-                    ConfigDatabaseSetCommand(
+                    ConfigDatabaseAddCommand(
                             useConsole = instance(),
                             view = instance(),
                             config = instance()
                     ),
                     ConfigDatabaseSetDefaultCommand(
-                            config = instance()
+                            service = instance()
                     ),
                     ConfigDatabaseRemoveCommand(
-                            config = instance()
+                            service = instance()
                     )
             )
     }
@@ -163,6 +165,15 @@ val cliktModule = DI.Module("clikt") {
                     PersonDeleteCommand(
                             di = di,
                             useConsole = instance()
+                    )
+            )
+    }
+    bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di)
+            .subcommands(MotorsportRegMemberCommand(di = di, useConsole = instance())
+                    .subcommands(
+                            MotorsportRegMemberListCommand(di = di, useConsole = instance()),
+                            MotorsportRegMemberImportCommand(di = di, useConsole = instance()),
+                            MotorsportRegMemberImportSingleCommand(di = di, useConsole = instance())
                     )
             )
     }

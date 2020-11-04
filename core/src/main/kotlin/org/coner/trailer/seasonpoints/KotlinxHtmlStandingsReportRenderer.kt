@@ -69,7 +69,7 @@ class KotlinxHtmlStandingsReportRenderer {
             }
         }
         td { text("${standing.person.firstName} ${standing.person.lastName}") }
-        td { text(standing.person.memberId ?: "") }
+        td { text(standing.person.clubMemberId ?: "") }
         report.pointsEvents.forEach { pointsEvent ->
             standingsReportSectionTableEventPointsCell(pointsEvent, standing)
         }
