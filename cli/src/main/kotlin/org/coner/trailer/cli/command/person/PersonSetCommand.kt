@@ -57,6 +57,7 @@ class PersonSetCommand(
         object Unset : MotorsportRegMemberIdOption()
     }
     private val motorsportRegMemberId: MotorsportRegMemberIdOption? by option(
+            names = arrayOf("--motorsportreg-member-id"),
             help = "Set the motorsportreg member ID to VALUE. Pass \"null\" to unset."
     )
             .convert { when {
