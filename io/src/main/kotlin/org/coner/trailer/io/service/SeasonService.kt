@@ -3,6 +3,9 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Season
 import org.coner.trailer.datasource.snoozle.SeasonResource
 import org.coner.trailer.datasource.snoozle.entity.SeasonEntity
+import org.coner.trailer.io.constraint.PersonDeleteConstraints
+import org.coner.trailer.io.constraint.PersonPersistConstraints
+import org.coner.trailer.io.constraint.SeasonPersistConstraints
 import org.coner.trailer.io.mapper.SeasonMapper
 import java.util.*
 import kotlin.streams.toList
@@ -10,10 +13,11 @@ import kotlin.streams.toList
 class SeasonService(
         private val resource: SeasonResource,
         private val mapper: SeasonMapper,
-        private val constraints: SeasonConstraints
+        private val persistConstraints: SeasonPersistConstraints,
+        private val deleteConstraints: SeasonPersistConstraints
 ) {
     fun create(create: Season) {
-        constraints.assess(create)
+        persistConstraints.assess(create)
         resource.create(mapper.toSnoozle(create))
     }
 
@@ -37,11 +41,12 @@ class SeasonService(
     }
 
     fun update(update: Season) {
-        constraints.assess(update)
+        persistConstraints.assess(update)
         resource.update(mapper.toSnoozle(update))
     }
 
     fun delete(delete: Season) {
+        deleteConstraints.assess(delete)
         resource.delete(mapper.toSnoozle(delete))
     }
 }
