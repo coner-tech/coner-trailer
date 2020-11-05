@@ -3,8 +3,6 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Season
 import org.coner.trailer.datasource.snoozle.SeasonResource
 import org.coner.trailer.datasource.snoozle.entity.SeasonEntity
-import org.coner.trailer.io.constraint.PersonDeleteConstraints
-import org.coner.trailer.io.constraint.PersonPersistConstraints
 import org.coner.trailer.io.constraint.SeasonPersistConstraints
 import org.coner.trailer.io.mapper.SeasonMapper
 import java.util.*
