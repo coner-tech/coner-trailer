@@ -25,4 +25,5 @@ val viewModule = DI.Module("view") {
     bind<PersonTableView>() with provider { PersonTableView() }
     bind<MotosportRegMemberView>() with provider { MotosportRegMemberView(console = instance()) }
     bind<MotorsportRegMemberTableView>() with provider { MotorsportRegMemberTableView() }
+    bind<SeasonView>() with provider { SeasonView() }
 }
