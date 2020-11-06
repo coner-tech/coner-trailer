@@ -8,7 +8,7 @@ class SeasonView : View<Season> {
             ${model.name}
                 ID: ${model.name}
                 Season Events: // https://github.com/caeos/coner-trailer/issues/27
-                SeasonPointsCalculatorConfiguration
+                Season Points Calculator Configuration
                     ID: ${model.seasonPointsCalculatorConfiguration.id}
                     Name: ${model.seasonPointsCalculatorConfiguration.name}
                 Take Score Count For Points: ${model.takeScoreCountForPoints}
