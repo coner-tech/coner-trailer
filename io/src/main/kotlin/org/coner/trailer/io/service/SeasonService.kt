@@ -24,12 +24,12 @@ class SeasonService(
         return mapper.toCore(resource.read(key))
     }
 
-    fun findByName(name: String): Season? {
+    fun findByName(name: String): Season {
         return resource.stream()
                 .filter { it.name == name }
                 .map(mapper::toCore)
                 .findFirst()
-                .orElse(null)
+                .orElseThrow()
     }
 
     fun list(): List<Season> {

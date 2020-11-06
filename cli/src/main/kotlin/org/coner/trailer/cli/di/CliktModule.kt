@@ -12,6 +12,7 @@ import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.season.SeasonAddCommand
 import org.coner.trailer.cli.command.season.SeasonCommand
+import org.coner.trailer.cli.command.season.SeasonGetCommand
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -181,6 +182,9 @@ val cliktModule = DI.Module("clikt") {
             )
     }
     bind<SeasonCommand>() with singleton { SeasonCommand(useConsole = instance())
-            .subcommands(SeasonAddCommand(di = di, useConsole = instance()))
+            .subcommands(
+                    SeasonAddCommand(di = di, useConsole = instance()),
+                    SeasonGetCommand(di = di, useConsole = instance())
+            )
     }
 }
