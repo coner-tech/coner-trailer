@@ -23,7 +23,7 @@ class SeasonMapper(
                 id = snoozle.id,
                 name = snoozle.name,
                 seasonEvents = emptyList(), // https://github.com/caeos/coner-trailer/issues/28
-                seasonPointsCalculatorConfiguration = seasonPointsCalculatorConfigurationService.findById(snoozle.id),
+                seasonPointsCalculatorConfiguration = seasonPointsCalculatorConfigurationService.findById(snoozle.seasonPointsCalculatorConfigurationId),
                 takeScoreCountForPoints = snoozle.takeScoreCountForPoints
         )
     }
