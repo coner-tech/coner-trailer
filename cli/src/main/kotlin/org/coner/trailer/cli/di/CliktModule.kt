@@ -184,7 +184,8 @@ val cliktModule = DI.Module("clikt") {
                     SeasonAddCommand(di = di, useConsole = instance()),
                     SeasonGetCommand(di = di, useConsole = instance()),
                     SeasonListCommand(di = di, useConsole = instance()),
-                    SeasonSetCommand(di = di, useConsole = instance())
+                    SeasonSetCommand(di = di, useConsole = instance()),
+                    SeasonDeleteCommand(di = di, useConsole = instance())
             )
     }
 }
