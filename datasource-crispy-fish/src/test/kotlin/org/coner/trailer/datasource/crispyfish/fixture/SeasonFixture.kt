@@ -61,7 +61,7 @@ sealed class SeasonFixture(
         override val events = listOf(event1, event2, event3)
         override val season = Season(
                 name = "LSCC 2019 Simplified",
-                events = events.map { it.coreSeasonEvent },
+                seasonEvents = events.map { it.coreSeasonEvent },
                 seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
                 takeScoreCountForPoints = 2
         )

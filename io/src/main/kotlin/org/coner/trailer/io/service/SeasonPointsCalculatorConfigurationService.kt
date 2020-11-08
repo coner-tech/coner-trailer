@@ -24,12 +24,12 @@ class SeasonPointsCalculatorConfigurationService(
         return mapper.fromSnoozle(resource.read(key))
     }
 
-    fun findByName(name: String): SeasonPointsCalculatorConfiguration? {
+    fun findByName(name: String): SeasonPointsCalculatorConfiguration {
         return resource.stream()
                 .filter { it.name == name }
                 .map(mapper::fromSnoozle)
                 .findFirst()
-                .orElse(null)
+                .orElseThrow { NotFoundException("No SeasonPointsCalculatorConfiguration found with name: $name") }
     }
 
     fun list(): List<SeasonPointsCalculatorConfiguration> {

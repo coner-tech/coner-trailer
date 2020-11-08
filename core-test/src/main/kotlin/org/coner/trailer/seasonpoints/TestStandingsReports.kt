@@ -161,7 +161,7 @@ object TestStandingsReports {
                                     )
                             )
                     ),
-                    pointsEvents = TestSeasons.lscc2019.events
+                    pointsEvents = TestSeasons.lscc2019.seasonEvents
             )
         }
 
@@ -225,7 +225,7 @@ object TestStandingsReports {
                                 )
                         )
                 ),
-                pointsEvents = TestSeasons.lscc2019TieBreaking.events
+                pointsEvents = TestSeasons.lscc2019TieBreaking.seasonEvents
         )
     }
 
@@ -342,7 +342,7 @@ object TestStandingsReports {
                                 )
                         )
                 ),
-                pointsEvents = TestSeasons.lscc2019Simplified.events
+                pointsEvents = TestSeasons.lscc2019Simplified.seasonEvents
         )
     }
 }

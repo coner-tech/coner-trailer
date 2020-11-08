@@ -6,7 +6,7 @@ import java.util.*
 data class Season(
         val id: UUID = UUID.randomUUID(),
         val name: String,
-        val events: List<SeasonEvent>,
+        val seasonEvents: List<SeasonEvent>,
         val seasonPointsCalculatorConfiguration: SeasonPointsCalculatorConfiguration,
         val takeScoreCountForPoints: Int?
 )

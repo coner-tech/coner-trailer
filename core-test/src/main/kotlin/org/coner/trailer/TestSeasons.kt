@@ -6,7 +6,7 @@ object TestSeasons {
 
     val lscc2019 = Season(
             name = "LSCC 2019",
-            events = listOf(
+            seasonEvents = listOf(
                     TestSeasonEvents.Lscc2019.points1,
                     TestSeasonEvents.Lscc2019.points2,
                     TestSeasonEvents.Lscc2019.points3,
@@ -23,7 +23,7 @@ object TestSeasons {
 
     val lscc2019TieBreaking by lazy { Season(
             name = "LSCC 2019 Tie-Breaking",
-            events = listOf(
+            seasonEvents = listOf(
                     TestSeasonEvents.LsccTieBreaking.points1,
                     TestSeasonEvents.LsccTieBreaking.points2
             ),
@@ -33,7 +33,7 @@ object TestSeasons {
 
     val lscc2019Simplified by lazy { Season(
             name = "LSCC 2019 Simplified",
-            events = listOf(
+            seasonEvents = listOf(
                     TestSeasonEvents.Lscc2019Simplified.points1,
                     TestSeasonEvents.Lscc2019Simplified.points2,
                     TestSeasonEvents.Lscc2019Simplified.points3
@@ -46,7 +46,7 @@ object TestSeasons {
         get() = Season(
                 name = "OLSCC 2019",
                 seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.olsccV1,
-                events = listOf(
+                seasonEvents = listOf(
 
                 ),
                 takeScoreCountForPoints = null

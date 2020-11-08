@@ -39,7 +39,7 @@ class RankingSortService(
                 .map(mapper::fromSnoozle)
                 .filter { it.name == name }
                 .findFirst()
-                .orElse(null)
+                .orElseThrow { NotFoundException("No RankingSort found with name: $name") }
     }
 
     fun delete(delete: RankingSort) {

@@ -3,14 +3,8 @@ package org.coner.trailer.cli.di
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.constraint.*
-import org.coner.trailer.io.mapper.EventPointsCalculatorMapper
-import org.coner.trailer.io.mapper.PersonMapper
-import org.coner.trailer.io.mapper.RankingSortMapper
-import org.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
-import org.coner.trailer.io.service.EventPointsCalculatorService
-import org.coner.trailer.io.service.PersonService
-import org.coner.trailer.io.service.RankingSortService
-import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
+import org.coner.trailer.io.mapper.*
+import org.coner.trailer.io.service.*
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -98,5 +92,22 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
             deleteConstraints = instance(),
             resource = instance(),
             mapper = instance()
+    ) }
+
+    // Seasons
+    bind<SeasonResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
+    bind<SeasonMapper>() with singleton { SeasonMapper(
+            seasonPointsCalculatorConfigurationService = instance()
+    ) }
+    bind<SeasonPersistConstraints>() with singleton { SeasonPersistConstraints(
+            resource = instance(),
+            mapper = instance()
+    ) }
+    bind<SeasonDeleteConstraints>() with singleton { SeasonDeleteConstraints() }
+    bind<SeasonService>() with singleton { SeasonService(
+            resource = instance(),
+            mapper = instance(),
+            persistConstraints = instance(),
+            deleteConstraints = instance()
     ) }
 }

@@ -10,6 +10,7 @@ import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.rankingsort.*
+import org.coner.trailer.cli.command.season.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -27,7 +28,8 @@ val cliktModule = DI.Module("clikt") {
                     instance<RankingSortCommand>(),
                     instance<SeasonPointsCalculatorCommand>(),
                     instance<PersonCommand>(),
-                    instance<MotorsportRegCommand>()
+                    instance<MotorsportRegCommand>(),
+                    instance<SeasonCommand>()
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -175,6 +177,15 @@ val cliktModule = DI.Module("clikt") {
                             MotorsportRegMemberImportCommand(di = di, useConsole = instance()),
                             MotorsportRegMemberImportSingleCommand(di = di, useConsole = instance())
                     )
+            )
+    }
+    bind<SeasonCommand>() with singleton { SeasonCommand(useConsole = instance())
+            .subcommands(
+                    SeasonAddCommand(di = di, useConsole = instance()),
+                    SeasonGetCommand(di = di, useConsole = instance()),
+                    SeasonListCommand(di = di, useConsole = instance()),
+                    SeasonSetCommand(di = di, useConsole = instance()),
+                    SeasonDeleteCommand(di = di, useConsole = instance())
             )
     }
 }
