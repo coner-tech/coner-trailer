@@ -6,7 +6,7 @@ class SeasonView : View<Season> {
     override fun render(model: Season): String {
         return """
             ${model.name}
-                ID: ${model.name}
+                ID: ${model.id}
                 Season Events: // https://github.com/caeos/coner-trailer/issues/27
                 Season Points Calculator Configuration
                     ID: ${model.seasonPointsCalculatorConfiguration.id}
