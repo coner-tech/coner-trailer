@@ -29,7 +29,7 @@ class SeasonService(
                 .filter { it.name == name }
                 .map(mapper::toCore)
                 .findFirst()
-                .orElseThrow()
+                .orElseThrow { NotFoundException("No Season found with name: $name") }
     }
 
     fun list(): List<Season> {

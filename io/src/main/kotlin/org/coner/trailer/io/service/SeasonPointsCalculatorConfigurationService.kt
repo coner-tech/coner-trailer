@@ -29,7 +29,7 @@ class SeasonPointsCalculatorConfigurationService(
                 .filter { it.name == name }
                 .map(mapper::fromSnoozle)
                 .findFirst()
-                .orElseThrow()
+                .orElseThrow { NotFoundException("No SeasonPointsCalculatorConfiguration found with name: $name") }
     }
 
     fun list(): List<SeasonPointsCalculatorConfiguration> {
