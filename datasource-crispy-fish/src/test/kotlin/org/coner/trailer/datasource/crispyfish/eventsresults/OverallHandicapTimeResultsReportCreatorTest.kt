@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
+import assertk.assertions.isEqualTo
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
@@ -29,11 +30,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("BS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("BS")
+                            }
+                            number().isEqualTo("177")
                         }
-                        hasNumber("177")
                     }
                     score().hasValue("39.297")
                 }
@@ -42,8 +45,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("1")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("1")
+                        }
                     }
                     score().hasValue("39.318")
                 }
@@ -52,8 +57,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
                     score().hasValue("40.031")
                 }
@@ -62,8 +69,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("1")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("1")
+                        }
                     }
                     score().hasValue("40.098")
                 }
@@ -72,8 +81,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("23")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("23")
+                        }
                     }
                     score().hasValue("40.293")
                 }
@@ -82,11 +93,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("ES")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("ES")
+                            }
+                            number().isEqualTo("58")
                         }
-                        hasNumber("58")
                     }
                     score().hasValue("41.186")
                 }
@@ -95,11 +108,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("ES")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("ES")
+                            }
+                            number().isEqualTo("18")
                         }
-                        hasNumber("18")
                     }
                     score().hasValue("41.380")
                 }
@@ -127,8 +142,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("8")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("8")
+                        }
                     }
                     score().hasValue("28.748")
                 }
@@ -137,8 +154,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("23")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("23")
+                        }
                     }
                     score().hasValue("29.925")
                 }
@@ -147,11 +166,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("BS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("BS")
+                            }
+                            number().isEqualTo("52")
                         }
-                        hasNumber("52")
                     }
                     score().hasValue("30.017")
                 }
@@ -160,8 +181,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
                     score().hasValue("30.409")
                 }
@@ -170,11 +193,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("ES")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("ES")
+                            }
+                            number().isEqualTo("18")
                         }
-                        hasNumber("18")
                     }
                     score().hasValue("30.532")
                 }
@@ -183,11 +208,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("CS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("CS")
+                            }
+                            number().isEqualTo("20")
                         }
-                        hasNumber("20")
                     }
                     score().hasDidNotFinish()
                 }
@@ -215,8 +242,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("8")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("8")
+                        }
                     }
                     score().hasValue("66.553")
                 }
@@ -225,8 +254,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("23")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("23")
+                        }
                     }
                     score().hasValue("69.253")
                 }
@@ -235,8 +266,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("1")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("1")
+                        }
                     }
                     score().hasValue("71.978")
                 }
@@ -245,8 +278,10 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
                     score().hasValue("72.120")
                 }
@@ -255,11 +290,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("BS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("BS")
+                            }
+                            number().isEqualTo("52")
                         }
-                        hasNumber("52")
                     }
                     score().hasValue("72.964")
                 }
@@ -268,11 +305,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("GS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("GS")
+                            }
+                            number().isEqualTo("58")
                         }
-                        hasNumber("58")
                     }
                     score().hasValue("78.846")
                 }
@@ -281,11 +320,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("ES")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("ES")
+                            }
+                            number().isEqualTo("18")
                         }
-                        hasNumber("18")
                     }
                     score().hasValue("79.069")
                 }
@@ -294,11 +335,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        grouping().isPaired().all {
-                            first().hasAbbreviation("NOV")
-                            second().hasAbbreviation("CS")
+                        signage().all {
+                            grouping().isPaired().all {
+                                first().hasAbbreviation("NOV")
+                                second().hasAbbreviation("CS")
+                            }
+                            number().isEqualTo("20")
                         }
-                        hasNumber("20")
                     }
                     score().hasValue("80.614")
                 }

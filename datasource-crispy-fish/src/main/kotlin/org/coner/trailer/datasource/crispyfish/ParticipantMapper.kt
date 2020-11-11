@@ -18,8 +18,10 @@ class ParticipantMapper(
                         model = fromRegistration.carModel,
                         color = fromRegistration.carColor
                 ),
-                grouping = groupingMapper.map(fromRegistration),
-                number = fromRegistration.number,
+                signage = Participant.Signage(
+                    grouping = groupingMapper.map(fromRegistration),
+                    number = fromRegistration.number
+                ),
                 seasonPointsEligible = withPerson != null
         )
     }

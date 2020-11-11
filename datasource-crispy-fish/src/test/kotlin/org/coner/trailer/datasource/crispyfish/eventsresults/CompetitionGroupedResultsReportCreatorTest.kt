@@ -2,17 +2,13 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.each
-import assertk.assertions.hasSize
-import assertk.assertions.index
-import assertk.assertions.isNotNull
+import assertk.assertions.*
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
 
 class CompetitionGroupedResultsReportCreatorTest {
-
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 1`() {
@@ -32,8 +28,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
 
                 }
@@ -42,8 +40,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("1")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("1")
+                        }
                     }
                 }
             }
@@ -54,8 +54,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("1")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("1")
+                        }
                     }
                 }
                 index(1).all {
@@ -63,23 +65,27 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        grouping().isSingular().hasAbbreviation("STR")
-                        hasNumber("23")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("STR")
+                            number().isEqualTo("23")
+                        }
                     }
                 }
             }
             resultsForGroupingAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().grouping().isPaired().first().hasAbbreviation("NOV")
+                    it.participant().signage().grouping().isPaired().first().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().second().hasAbbreviation("BS")
-                        hasNumber("177")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("BS")
+                            number().isEqualTo("177")
+                        }
                     }
                 }
                 index(1).all {
@@ -87,8 +93,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        grouping().isPaired().second().hasAbbreviation("ES")
-                        hasNumber("58")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("ES")
+                            number().isEqualTo("58")
+                        }
                     }
                 }
                 index(2).all {
@@ -96,8 +104,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().second().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("ES")
+                            number().isEqualTo("18")
+                        }
                     }
                 }
             }
@@ -123,8 +133,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
 
                 }
@@ -132,14 +144,14 @@ class CompetitionGroupedResultsReportCreatorTest {
             resultsForGroupingAbbreviation("STR").isNotNull().all {
                 hasSize(2)
                 each {
-                    it.participant().grouping().isSingular().hasAbbreviation("STR")
+                    it.participant().signage().grouping().isSingular().hasAbbreviation("STR")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        hasNumber("8")
+                        signage().number().isEqualTo("8")
                     }
                 }
                 index(1).all {
@@ -147,22 +159,24 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        hasNumber("23")
+                        signage().number().isEqualTo("23")
                     }
                 }
             }
             resultsForGroupingAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().grouping().isPaired().first().hasAbbreviation("NOV")
+                    it.participant().signage().grouping().isPaired().first().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().second().hasAbbreviation("BS")
-                        hasNumber("52")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("BS")
+                            number().isEqualTo("52")
+                        }
                     }
                 }
                 index(1).all {
@@ -170,8 +184,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().second().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("ES")
+                            number().isEqualTo("18")
+                        }
                     }
                 }
                 index(2).all {
@@ -179,8 +195,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        grouping().isPaired().second().hasAbbreviation("CS")
-                        hasNumber("20")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("CS")
+                            number().isEqualTo("20")
+                        }
                     }
                 }
             }
@@ -206,22 +224,24 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        grouping().isSingular().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().all {
+                            grouping().isSingular().hasAbbreviation("HS")
+                            number().isEqualTo("130")
+                        }
                     }
                 }
             }
             resultsForGroupingAbbreviation("STR").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().grouping().isSingular().hasAbbreviation("STR")
+                    it.participant().signage().grouping().isSingular().hasAbbreviation("STR")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        hasNumber("8")
+                        signage().number().isEqualTo("8")
                     }
                 }
                 index(1).all {
@@ -229,7 +249,7 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        hasNumber("23")
+                        signage().number().isEqualTo("23")
                     }
                 }
                 index(2).all {
@@ -237,22 +257,24 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        hasNumber("1")
+                        signage().number().isEqualTo("1")
                     }
                 }
             }
             resultsForGroupingAbbreviation("NOV").isNotNull().all {
                 hasSize(4)
                 each {
-                    it.participant().grouping().isPaired().first().hasAbbreviation("NOV")
+                    it.participant().signage().grouping().isPaired().first().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        grouping().isPaired().second().hasAbbreviation("BS")
-                        hasNumber("52")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("BS")
+                            number().isEqualTo("52")
+                        }
                     }
                 }
                 index(1).all {
@@ -260,8 +282,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        grouping().isPaired().second().hasAbbreviation("GS")
-                        hasNumber("58")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("GS")
+                            number().isEqualTo("58")
+                        }
                     }
                 }
                 index(2).all {
@@ -269,8 +293,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        grouping().isPaired().second().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("ES")
+                            number().isEqualTo("18")
+                        }
                     }
                 }
                 index(3).all {
@@ -278,8 +304,10 @@ class CompetitionGroupedResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        grouping().isPaired().second().hasAbbreviation("CS")
-                        hasNumber("20")
+                        signage().all {
+                            grouping().isPaired().second().hasAbbreviation("CS")
+                            number().isEqualTo("20")
+                        }
                     }
                 }
             }

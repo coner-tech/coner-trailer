@@ -56,7 +56,7 @@ object TestRegistrations {
     ): Registration {
         return Registration(
                 memberNumber = participant.person?.clubMemberId,
-                category = when (val grouping = participant.grouping) {
+                category = when (val grouping = participant.signage.grouping) {
                     is Grouping.Singular -> null
                     is Grouping.Paired -> grouping.pair.first.let {
                         ClassDefinition(
@@ -69,7 +69,7 @@ object TestRegistrations {
                         )
                     }
                 },
-                handicap = when (val grouping = participant.grouping) {
+                handicap = when (val grouping = participant.signage.grouping) {
                     is Grouping.Singular -> grouping.let {
                         ClassDefinition(
                                 abbreviation = it.abbreviation,
@@ -91,7 +91,7 @@ object TestRegistrations {
                         )
                     }
                 },
-                number = participant.number,
+                number = participant.signage.number,
                 firstName = participant.firstName,
                 lastName = participant.lastName,
                 carColor = participant.car.color,

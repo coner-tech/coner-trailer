@@ -66,7 +66,8 @@ class SeasonEventTest {
         val testAndTune = SeasonEvent(
                 event = Event(
                         date = LocalDate.parse("2019-02-01"), // important: after "one", before "two"
-                        name = "Test and Tune"
+                        name = "Test and Tune",
+                        crispyFish = null
                 ),
                 points = false,
                 eventNumber = null

@@ -77,8 +77,11 @@ sealed class SeasonFixture(
     val groupingMapper = GroupingMapper(
             classDefinitions = classDefinitions
     )
+
+    private fun eventFixtureFactory(): Nothing = TODO()
 }
 
 private fun personFactory(person: Person, withMemberId: String): Person {
     return person.copy(clubMemberId = withMemberId)
 }
+

@@ -38,7 +38,7 @@ class CompetitionGroupedResultsReportCreator(
     }
 
     private fun Participant.resultGrouping(): Grouping {
-        return when (val grouping = grouping) {
+        return when (val grouping = signage.grouping) {
             is Grouping.Singular -> grouping
             is Grouping.Paired -> grouping.pair.first
         }

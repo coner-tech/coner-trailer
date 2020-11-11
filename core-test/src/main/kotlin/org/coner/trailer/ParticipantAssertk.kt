@@ -13,14 +13,14 @@ fun Assert<Participant>.hasFirstName(expected: String) = firstName().isEqualTo(e
 fun Assert<Participant>.lastName() = prop("lastName") { it.lastName }
 fun Assert<Participant>.hasLastName(expected: String) = lastName().isEqualTo(expected)
 
-fun Assert<Participant>.grouping() = prop("") { it.grouping }
-fun Assert<Participant>.hasGrouping(expected: Grouping) = grouping().isEqualTo(expected)
+fun Assert<Participant>.signage() = prop("signage") { it.signage }
 
-fun Assert<Participant>.number() = prop("number") { it.number }
-fun Assert<Participant>.hasNumber(expected: String) = number().isEqualTo(expected)
+fun Assert<Participant.Signage>.grouping() = prop("grouping") { it.grouping }
+
+fun Assert<Participant.Signage>.number() = prop("number") { it.number }
+fun Assert<Participant.Signage>.hasNumber(expected: String) = number().isEqualTo(expected)
 
 fun Assert<Participant>.car() = prop("car") { it.car }
-fun Assert<Participant>.hasCar(expected: Car) = car().isEqualTo(expected)
 
 fun Assert<Participant>.seasonPointsEligible() = prop("seasonPointsEligible") { it.seasonPointsEligible }
 fun Assert<Participant>.isSeasonPointsEligible() = seasonPointsEligible().isTrue()

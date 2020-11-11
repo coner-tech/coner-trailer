@@ -166,8 +166,10 @@ object TestParticipants {
             person = person,
             firstName = person.firstName,
             lastName = person.lastName,
-            grouping = grouping,
-            number = number,
+            signage = Participant.Signage(
+                    grouping = grouping,
+                    number = number,
+            ),
             car = car,
             seasonPointsEligible = seasonPointsEligible
     )
