@@ -32,31 +32,49 @@ sealed class SeasonFixture(
                 groupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-01-01"), name = "Event 1"),
+                        event = Event(
+                                name = "Event 1",
+                                date = LocalDate.parse("2019-01-01"),
+                                crispyFish = Event.CrispyFishMetadata(
+                                        eventControlFile = "2019-01-01 event 1.ecf",
+                                        forceParticipantSignageToPerson = emptyMap()
+                                )
+                        ),
                         eventNumber = 1,
                         points = true
-                ),
-                ecfFileName = "2019-01-01 event 1.ecf"
+                )
         )
         val event2 = EventFixture(
                 groupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-02-02"), name = "Event 2"),
+                        event = Event(
+                                name = "Event 2",
+                                date = LocalDate.parse("2019-02-02"),
+                                crispyFish = Event.CrispyFishMetadata(
+                                        eventControlFile = "2019-02-02 event 2.ecf",
+                                        forceParticipantSignageToPerson = emptyMap()
+                                )
+                        ),
                         eventNumber = 2,
                         points = true
-                ),
-                ecfFileName = "2019-02-02 event 2.ecf"
+                )
         )
         val event3 = EventFixture(
                 groupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
-                        event = Event(date = LocalDate.parse("2019-03-03"), name = "Event 3"),
+                        event = Event(
+                                name = "Event 3",
+                                date = LocalDate.parse("2019-03-03"),
+                                crispyFish = Event.CrispyFishMetadata(
+                                        eventControlFile = "2019-03-03 event 3.ecf",
+                                        forceParticipantSignageToPerson = emptyMap()
+                                )
+                        ),
                         eventNumber = 3,
                         points = true
-                ),
-                ecfFileName = "2019-03-03 event 3.ecf"
+                )
         )
         override val events = listOf(event1, event2, event3)
         override val season = Season(
@@ -77,8 +95,6 @@ sealed class SeasonFixture(
     val groupingMapper = GroupingMapper(
             classDefinitions = classDefinitions
     )
-
-    private fun eventFixtureFactory(): Nothing = TODO()
 }
 
 private fun personFactory(person: Person, withMemberId: String): Person {

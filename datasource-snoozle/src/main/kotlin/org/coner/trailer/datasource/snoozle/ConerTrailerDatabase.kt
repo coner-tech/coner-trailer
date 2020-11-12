@@ -33,6 +33,11 @@ class ConerTrailerDatabase(root: Path) : Database(root) {
             keyFromPath = { SeasonEntity.Key(id = uuidAt(0)) }
             keyFromEntity = { SeasonEntity.Key(id = id) }
         }
+        entity<EventEntity.Key, EventEntity> {
+            path = "events" / { id } + ".json"
+            keyFromPath = { EventEntity.Key(id = uuidAt(0)) }
+            keyFromEntity = { EventEntity.Key(id = id) }
+        }
     }
 }
 
@@ -41,3 +46,4 @@ typealias RankingSortResource = EntityResource<RankingSortEntity.Key, RankingSor
 typealias SeasonPointsCalculatorConfigurationResource = EntityResource<SeasonPointsCalculatorConfigurationEntity.Key, SeasonPointsCalculatorConfigurationEntity>
 typealias PersonResource = EntityResource<PersonEntity.Key, PersonEntity>
 typealias SeasonResource = EntityResource<SeasonEntity.Key, SeasonEntity>
+typealias EventResource = EntityResource<EventEntity.Key, EventEntity>

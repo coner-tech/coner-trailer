@@ -15,15 +15,14 @@ class EventFixture(
         val groupingMapper: GroupingMapper,
         val memberIdToPeople: Map<String, Person>,
         val coreSeasonEvent: SeasonEvent,
-        val ecfFileName: String,
         val conePenalty: Int = 2
 ) {
     init {
-        require(ecfFileName.endsWith(".ecf"))
+        require(coreSeasonEvent.event.crispyFish?.eventControlFile?.endsWith(".ecf") == true)
     }
 
     fun eventControlFile(seasonFixture: SeasonFixture) = EventControlFile(
-            file = File(javaClass.getResource("/seasons/${seasonFixture.path}/$ecfFileName").toURI()),
+            file = File(javaClass.getResource("/seasons/${seasonFixture.path}/${coreSeasonEvent.event.crispyFish?.eventControlFile}").toURI()),
             classDefinitionFile = seasonFixture.classDefinitionFile,
             conePenalty = conePenalty,
             isTwoDayEvent = false,

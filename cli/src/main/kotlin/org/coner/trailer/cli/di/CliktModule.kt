@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.command.config.*
+import org.coner.trailer.cli.command.event.EventCommand
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
@@ -24,6 +25,7 @@ val cliktModule = DI.Module("clikt") {
     )
             .subcommands(
                     instance<ConfigCommand>(),
+                    instance<EventCommand>(),
                     instance<EventPointsCalculatorCommand>(),
                     instance<RankingSortCommand>(),
                     instance<SeasonPointsCalculatorCommand>(),
@@ -188,4 +190,5 @@ val cliktModule = DI.Module("clikt") {
                     SeasonDeleteCommand(di = di, useConsole = instance())
             )
     }
+    bind<EventCommand>() with singleton { EventCommand(useConsole = instance()) }
 }
