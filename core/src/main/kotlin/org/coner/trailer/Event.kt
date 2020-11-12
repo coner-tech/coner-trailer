@@ -11,6 +11,6 @@ class Event(
 ) {
     data class CrispyFishMetadata(
             val eventControlFile: String,
-            val forceParticipantSignageToPerson: Map<String, Person>
+            val forceParticipantSignageToPerson: Map<Participant.Signage, Person>
     )
 }

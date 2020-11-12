@@ -18,11 +18,15 @@ class ParticipantMapper(
                         model = fromRegistration.carModel,
                         color = fromRegistration.carColor
                 ),
-                signage = Participant.Signage(
-                    grouping = groupingMapper.map(fromRegistration),
-                    number = fromRegistration.number
-                ),
+                signage = toCoreSignage(fromRegistration),
                 seasonPointsEligible = withPerson != null
+        )
+    }
+
+    fun toCoreSignage(crispyFish: Registration): Participant.Signage {
+        return Participant.Signage(
+                grouping = groupingMapper.map(crispyFish),
+                number = crispyFish.number
         )
     }
 }

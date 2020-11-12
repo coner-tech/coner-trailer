@@ -16,8 +16,8 @@ class EventMapper(
                 crispyFish = snoozle.crispyFish?.let {
                     Event.CrispyFishMetadata(
                             eventControlFile = it.eventControlFile,
-                            forceParticipantSignageToPerson = it.forceParticipantSignageToPersonId.map {
-                                personService.findById()
+                            forceParticipantSignageToPerson = it.forceParticipantSignageToPersonId.map { (entitySignage, personId) ->
+                                 personService.findById(personId)
                             }
                     )
                 }

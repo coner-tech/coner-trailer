@@ -1,7 +1,6 @@
 package org.coner.trailer.datasource.snoozle.entity
 
 import org.coner.snoozle.db.entity.Entity
-import org.coner.trailer.Event
 import java.time.LocalDate
 import java.util.*
 
@@ -14,7 +13,7 @@ data class EventEntity(
 
     data class CrispyFishMetadata(
             val eventControlFile: String,
-            val forceParticipantSignageToPersonId: Map<Particip, UUID>
+            val forceParticipantSignageToPersonId: Map<ParticipantEntity.Signage, UUID>
     )
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key
