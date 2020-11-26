@@ -5,7 +5,8 @@ import org.coner.trailer.datasource.snoozle.entity.EventEntity
 import org.coner.trailer.io.service.PersonService
 
 class EventMapper(
-        private val personService: PersonService
+        private val personService: PersonService,
+        private val participantService: ParticipantService
 ) {
 
     fun toCore(snoozle: EventEntity): Event {
