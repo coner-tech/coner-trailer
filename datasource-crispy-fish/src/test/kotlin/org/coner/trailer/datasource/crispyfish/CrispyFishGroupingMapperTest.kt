@@ -7,13 +7,13 @@ import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class GroupingMapperTest {
+class CrispyFishGroupingMapperTest {
 
-    lateinit var mapper: GroupingMapper
+    lateinit var mapperCrispyFish: CrispyFishGroupingMapper
 
     @BeforeEach
     fun before() {
-        mapper = GroupingMapper(
+        mapperCrispyFish = CrispyFishGroupingMapper(
                 classDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions
         )
     }
@@ -22,7 +22,7 @@ class GroupingMapperTest {
     fun `It should map class definition`() {
         val input = TestClassDefinitions.Lscc2019.CS
 
-        val actual = mapper.map(input)
+        val actual = mapperCrispyFish.map(input)
 
         assertThat(actual).all {
             isSingular()
@@ -36,7 +36,7 @@ class GroupingMapperTest {
     fun `It should map open class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
 
-        val actual = mapper.map(input)
+        val actual = mapperCrispyFish.map(input)
 
         assertThat(actual).all {
             isSingular()
@@ -50,7 +50,7 @@ class GroupingMapperTest {
     fun `It should map paxed class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
 
-        val actual = mapper.map(input)
+        val actual = mapperCrispyFish.map(input)
 
         assertThat(actual).all {
             isPaired().all {

@@ -16,19 +16,19 @@ class ParticipantMapperTest {
     lateinit var mapper: ParticipantMapper
 
     @MockK
-    private lateinit var groupingMapper: GroupingMapper
+    private lateinit var crispyFishGroupingMapper: CrispyFishGroupingMapper
 
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
-        mapper = ParticipantMapper(groupingMapper)
+        mapper = ParticipantMapper(crispyFishGroupingMapper)
     }
 
     @Test
     fun `It should map (core) Participant from (CF) Registration and (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
         val person = TestPeople.BRANDY_HUFF
-        every { groupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
+        every { crispyFishGroupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
 
         val actual = mapper.map(inputRegistration, person)
 
@@ -39,7 +39,7 @@ class ParticipantMapperTest {
     fun `It should map (core) Participant from (CF) Registration without (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = null
-        every { groupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
+        every { crispyFishGroupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
 
         val actual = mapper.map(inputRegistration, person)
 

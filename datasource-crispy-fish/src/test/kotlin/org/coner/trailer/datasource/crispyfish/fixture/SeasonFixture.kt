@@ -2,7 +2,7 @@ package org.coner.trailer.datasource.crispyfish.fixture
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.trailer.*
-import org.coner.trailer.datasource.crispyfish.GroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import java.io.File
 import java.time.LocalDate
@@ -29,7 +29,7 @@ sealed class SeasonFixture(
                 personFactory(TestPeople.BENNETT_PANTONE, "2019-00295")
         ).map { requireNotNull(it.clubMemberId) to it }.toMap()
         val event1 = EventFixture(
-                groupingMapper = groupingMapper,
+                crispyFishGroupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
                         event = Event(
@@ -45,7 +45,7 @@ sealed class SeasonFixture(
                 )
         )
         val event2 = EventFixture(
-                groupingMapper = groupingMapper,
+                crispyFishGroupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
                         event = Event(
@@ -61,7 +61,7 @@ sealed class SeasonFixture(
                 )
         )
         val event3 = EventFixture(
-                groupingMapper = groupingMapper,
+                crispyFishGroupingMapper = groupingMapper,
                 memberIdToPeople = memberIdToPeople,
                 coreSeasonEvent = SeasonEvent(
                         event = Event(
@@ -92,7 +92,7 @@ sealed class SeasonFixture(
     val classDefinitions = classDefinitionFile.mapper().all()
     val categories = classDefinitions.filter { it.paxed }
     val handicaps = classDefinitions.filter { !it.paxed }
-    val groupingMapper = GroupingMapper(
+    val groupingMapper = CrispyFishGroupingMapper(
             classDefinitions = classDefinitions
     )
 }

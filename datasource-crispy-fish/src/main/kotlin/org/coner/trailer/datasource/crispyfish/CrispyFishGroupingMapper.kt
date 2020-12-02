@@ -4,7 +4,7 @@ import org.coner.crispyfish.model.ClassDefinition
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Grouping
 
-class GroupingMapper(
+class CrispyFishGroupingMapper(
         classDefinitions: List<ClassDefinition>
 ) {
 

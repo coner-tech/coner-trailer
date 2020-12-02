@@ -6,7 +6,7 @@ import org.coner.trailer.Participant
 import org.coner.trailer.Person
 
 class ParticipantMapper(
-        private val groupingMapper: GroupingMapper
+        private val crispyFishGroupingMapper: CrispyFishGroupingMapper
 ) {
 
     fun map(fromRegistration: Registration, withPerson: Person?): Participant {
@@ -25,7 +25,7 @@ class ParticipantMapper(
 
     fun toCoreSignage(crispyFish: Registration): Participant.Signage {
         return Participant.Signage(
-                grouping = groupingMapper.map(crispyFish),
+                grouping = crispyFishGroupingMapper.map(crispyFish),
                 number = crispyFish.number
         )
     }

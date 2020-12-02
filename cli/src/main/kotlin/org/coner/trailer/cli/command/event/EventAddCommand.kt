@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toUuid
+import org.coner.trailer.io.service.EventService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -34,6 +35,7 @@ class EventAddCommand(
     override val di: DI by findOrSetObject { di }
 
     private val dbConfig: DatabaseConfiguration by instance()
+    private val service: EventService by instance()
 
     private val id: UUID by option(hidden = true)
             .convert { toUuid(it) }
@@ -64,7 +66,7 @@ class EventAddCommand(
             }
 
     override fun run() {
-        val add = Event(
+        val create = Event(
                 id = id,
                 name = name,
                 date = date,
@@ -73,5 +75,6 @@ class EventAddCommand(
                         forceParticipantSignageToPerson = emptyMap()
                 )
         )
+        service.create(create)
     }
 }

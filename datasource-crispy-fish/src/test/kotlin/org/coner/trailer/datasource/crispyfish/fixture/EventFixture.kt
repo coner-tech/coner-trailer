@@ -6,13 +6,13 @@ import org.coner.crispyfish.filetype.staging.StagingFileAssistant
 import org.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
-import org.coner.trailer.datasource.crispyfish.GroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import java.io.File
 
 class EventFixture(
-        val groupingMapper: GroupingMapper,
+        val crispyFishGroupingMapper: CrispyFishGroupingMapper,
         val memberIdToPeople: Map<String, Person>,
         val coreSeasonEvent: SeasonEvent,
         val conePenalty: Int = 2
@@ -38,7 +38,7 @@ class EventFixture(
 
     val participantResultMapper = ParticipantResultMapper(
             participantMapper = ParticipantMapper(
-                    groupingMapper = groupingMapper
+                    groupingMapper = crispyFishGroupingMapper
             ),
             memberIdToPeople = memberIdToPeople
     )
