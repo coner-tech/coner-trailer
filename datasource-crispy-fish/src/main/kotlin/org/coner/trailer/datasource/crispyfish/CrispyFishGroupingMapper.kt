@@ -14,7 +14,7 @@ class CrispyFishGroupingMapper(
             }
             .toMap()
 
-    fun map(classDefinition: ClassDefinition): Grouping {
+    fun map(classDefinition: ClassDefinition): Grouping.Singular {
         return Grouping.Singular(
                 abbreviation = classDefinition.abbreviation,
                 name = classDefinition.name,

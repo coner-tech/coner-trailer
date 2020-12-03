@@ -13,6 +13,7 @@ data class EventEntity(
 
     data class CrispyFishMetadata(
             val eventControlFile: String,
+            val classDefinitionFile: String,
             val forceParticipantSignageToPersonId: Map<ParticipantEntity.Signage, UUID>
     )
 
