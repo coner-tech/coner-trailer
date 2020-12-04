@@ -22,7 +22,7 @@ class CrispyFishGroupingMapperTest {
     fun `It should map class definition`() {
         val input = TestClassDefinitions.Lscc2019.CS
 
-        val actual = mapperCrispyFish.map(input)
+        val actual = mapperCrispyFish.toCoreSingular(input)
 
         assertThat(actual).all {
             isSingular()
@@ -36,7 +36,7 @@ class CrispyFishGroupingMapperTest {
     fun `It should map open class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
 
-        val actual = mapperCrispyFish.map(input)
+        val actual = mapperCrispyFish.toCore(input)
 
         assertThat(actual).all {
             isSingular()
@@ -50,7 +50,7 @@ class CrispyFishGroupingMapperTest {
     fun `It should map paxed class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
 
-        val actual = mapperCrispyFish.map(input)
+        val actual = mapperCrispyFish.toCore(input)
 
         assertThat(actual).all {
             isPaired().all {

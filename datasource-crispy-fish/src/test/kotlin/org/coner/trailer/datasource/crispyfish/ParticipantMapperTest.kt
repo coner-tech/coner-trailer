@@ -28,7 +28,7 @@ class ParticipantMapperTest {
     fun `It should map (core) Participant from (CF) Registration and (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
         val person = TestPeople.BRANDY_HUFF
-        every { crispyFishGroupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
+        every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
 
         val actual = mapper.map(inputRegistration, person)
 
@@ -39,7 +39,7 @@ class ParticipantMapperTest {
     fun `It should map (core) Participant from (CF) Registration without (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = null
-        every { crispyFishGroupingMapper.map(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
+        every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
 
         val actual = mapper.map(inputRegistration, person)
 

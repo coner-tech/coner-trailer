@@ -25,7 +25,7 @@ class ParticipantMapper(
 
     fun toCoreSignage(crispyFish: Registration): Participant.Signage {
         return Participant.Signage(
-                grouping = crispyFishGroupingMapper.map(crispyFish),
+                grouping = crispyFishGroupingMapper.toCore(crispyFish),
                 number = crispyFish.number
         )
     }

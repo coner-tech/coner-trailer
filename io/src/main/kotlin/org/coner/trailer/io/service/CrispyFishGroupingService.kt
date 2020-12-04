@@ -50,7 +50,10 @@ class CrispyFishGroupingService(
         val allClassDefinitions = ClassDefinitionFile(
             file = crispyFishRoot.resolve(crispyFishClassDefinitionFile)
         ).mapper().all()
-        return allClassDefinitions.map(mapper::map)
+        val context = CrispyFishGroupingMapper.Context(allClassDefinitions)
+        return allClassDefinitions.map {
+            mapper.toCoreSingular(context = context, classDefinition = it)
+        }
     }
 
 }
