@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.command.config.*
+import org.coner.trailer.cli.command.event.EventAddCommand
 import org.coner.trailer.cli.command.event.EventCommand
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
@@ -17,7 +18,9 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
+import kotlin.io.path.ExperimentalPathApi
 
+@OptIn(ExperimentalPathApi::class)
 val cliktModule = DI.Module("clikt") {
     bind<CliktConsole>() with singleton { defaultCliktConsole() }
     bind<CliktCommand>() with singleton { RootCommand(
@@ -31,7 +34,7 @@ val cliktModule = DI.Module("clikt") {
                     instance<SeasonPointsCalculatorCommand>(),
                     instance<PersonCommand>(),
                     instance<MotorsportRegCommand>(),
-                    instance<SeasonCommand>()
+                    instance<SeasonCommand>(),
             )
     }
     bind<ConfigCommand>() with singleton { ConfigCommand()
@@ -190,5 +193,9 @@ val cliktModule = DI.Module("clikt") {
                     SeasonDeleteCommand(di = di, useConsole = instance())
             )
     }
-    bind<EventCommand>() with singleton { EventCommand(useConsole = instance()) }
+    bind<EventCommand>() with singleton { EventCommand(useConsole = instance())
+            .subcommands(
+                    EventAddCommand(di = di, useConsole = instance())
+            )
+    }
 }

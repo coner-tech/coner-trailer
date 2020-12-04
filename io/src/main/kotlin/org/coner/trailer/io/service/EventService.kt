@@ -3,14 +3,17 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.snoozle.EventResource
 import org.coner.trailer.datasource.snoozle.entity.EventEntity
+import org.coner.trailer.io.constraint.EventDeleteConstraints
+import org.coner.trailer.io.constraint.EventPersistConstraints
 import org.coner.trailer.io.mapper.EventMapper
 import java.util.*
+import kotlin.streams.toList
 
 class EventService(
-        private val resource: EventResource,
-        private val mapper: EventMapper,
-        private val persistConstraints: EventPersistConstraints,
-        private val deleteConstraints: EventDeleteConstraints
+    private val resource: EventResource,
+    private val mapper: EventMapper,
+    private val persistConstraints: EventPersistConstraints,
+    private val deleteConstraints: EventDeleteConstraints
 ) {
 
     fun create(create: Event) {

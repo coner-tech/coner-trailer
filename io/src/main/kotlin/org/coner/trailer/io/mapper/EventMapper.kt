@@ -15,16 +15,26 @@ class EventMapper(
 ) {
 
     fun toCore(snoozle: EventEntity): Event {
+        val allSingularGroupings by lazy { crispyFishGroupingService.loadAllSingulars(
+            crispyFishClassDefinitionFile = requireNotNull(snoozle.crispyFish).classDefinitionFile
+        ) }
         return Event(
             id = snoozle.id,
             name = snoozle.name,
             date = snoozle.date,
-            crispyFish = Event.CrispyFishMetadata(
-                eventControlFile = snoozle.crispyFish.eventControlFile,
-                forceParticipantSignageToPerson = snoozle.crispyFish.forceParticipantSignageToPersonId.map { (entitySignage, personId) ->
+            crispyFish = snoozle.crispyFish?.let { Event.CrispyFishMetadata(
+                eventControlFile = it.eventControlFile,
+                classDefinitionFile = it.classDefinitionFile,
+                forceParticipantSignageToPerson = it.forceParticipantSignageToPersonId.map { (entitySignage, personId) ->
                     val grouping = when (entitySignage.grouping.type) {
-                        GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular()
-                        GroupingContainer.Type.PAIR -> crispyFishGroupingService.findPaired()
+                        GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular(
+                            allSingulars = allSingularGroupings,
+                            abbreviation = requireNotNull(entitySignage.grouping.singular)
+                        )
+                        GroupingContainer.Type.PAIR -> crispyFishGroupingService.findPaired(
+                            allSingulars = allSingularGroupings,
+                            abbreviations = requireNotNull(entitySignage.grouping.pair)
+                        )
                     }
                     val person = personService.findById(personId)
                     val signage = Participant.Signage(
@@ -33,7 +43,7 @@ class EventMapper(
                     )
                     signage to person
                 }.toMap()
-            )
+            ) }
         )
     }
 
@@ -42,18 +52,27 @@ class EventMapper(
             id = core.id,
             name = core.name,
             date = core.date,
-            crispyFish = EventEntity.CrispyFishMetadata(
-                eventControlFile = core.crispyFish.eventControlFile,
-                classDefinitionFile = core.crispyFish.classDefinitionFile,
-                forceParticipantSignageToPersonId = core.crispyFish.forceParticipantSignageToPerson.map { (coreSignage, corePerson) ->
-                    val grouping = crispyFishGroupingService.
+            crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
+                eventControlFile = it.eventControlFile,
+                classDefinitionFile = it.classDefinitionFile,
+                forceParticipantSignageToPersonId = it.forceParticipantSignageToPerson.map { (coreSignage, corePerson) ->
+                    val grouping = when (val grouping = coreSignage.grouping) {
+                        is Grouping.Singular -> GroupingContainer(
+                            type = GroupingContainer.Type.SINGULAR,
+                            singular = grouping.abbreviation
+                        )
+                        is Grouping.Paired -> GroupingContainer(
+                            type = GroupingContainer.Type.PAIR,
+                            pair = grouping.pair.first.abbreviation to grouping.pair.second.abbreviation
+                        )
+                    }
                     val signage = ParticipantEntity.Signage(
                         grouping = grouping,
                         number = coreSignage.number
                     )
                     signage to corePerson.id
                 }.toMap()
-            )
+            ) }
         )
     }
 

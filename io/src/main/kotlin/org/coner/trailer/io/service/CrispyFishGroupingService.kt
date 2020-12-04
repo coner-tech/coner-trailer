@@ -11,21 +11,39 @@ class CrispyFishGroupingService(
 ) {
 
     fun findSingular(
-        crispyFishClassDefinitionFile: String,
-        abbreviation: String,
-        allSingulars: List<Grouping.Singular> = loadAllSingulars(crispyFishClassDefinitionFile)
+        allSingulars: List<Grouping.Singular>,
+        abbreviation: String
     ) : Grouping.Singular {
         return allSingulars.single { it.abbreviation == abbreviation }
+    }
+
+    fun findSingular(
+        crispyFishClassDefinitionFile: String,
+        abbreviation: String
+    ) : Grouping.Singular {
+        return findSingular(
+            allSingulars = loadAllSingulars(crispyFishClassDefinitionFile),
+            abbreviation = abbreviation
+        )
+    }
+
+    fun findPaired(
+        abbreviations: Pair<String, String>,
+        allSingulars: List<Grouping.Singular>
+    ) : Grouping.Paired {
+        val first = allSingulars.single { it.abbreviation == abbreviations.first }
+        val second = allSingulars.single { it.abbreviation == abbreviations.second }
+        return Grouping.Paired(pair = first to second)
     }
 
     fun findPaired(
         crispyFishClassDefinitionFile: String,
         abbreviations: Pair<String, String>,
-        allSingulars: List<Grouping.Singular> = loadAllSingulars(crispyFishClassDefinitionFile)
     ) : Grouping.Paired {
-        val first = allSingulars.single { it.abbreviation == abbreviations.first }
-        val second = allSingulars.single { it.abbreviation == abbreviations.second }
-        return Grouping.Paired(pair = first to second)
+        return findPaired(
+            allSingulars = loadAllSingulars(crispyFishClassDefinitionFile),
+            abbreviations = abbreviations
+        )
     }
 
     fun loadAllSingulars(crispyFishClassDefinitionFile: String): List<Grouping.Singular> {

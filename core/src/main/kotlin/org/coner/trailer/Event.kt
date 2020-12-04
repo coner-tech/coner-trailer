@@ -7,7 +7,7 @@ class Event(
         val id: UUID = UUID.randomUUID(),
         val name: String,
         val date: LocalDate,
-        val crispyFish: CrispyFishMetadata
+        val crispyFish: CrispyFishMetadata?
 ) {
     data class CrispyFishMetadata(
             val eventControlFile: String,

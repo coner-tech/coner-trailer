@@ -1,6 +1,7 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
@@ -110,4 +111,28 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
             persistConstraints = instance(),
             deleteConstraints = instance()
     ) }
+
+    // Events
+    bind<EventResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
+    bind<EventMapper>() with singleton { EventMapper(
+        personService = instance(),
+        crispyFishGroupingService = instance()
+    ) }
+    bind<EventPersistConstraints>() with singleton { EventPersistConstraints(
+        resource = instance()
+    ) }
+    bind<EventDeleteConstraints>() with singleton { EventDeleteConstraints() }
+    bind<EventService>() with singleton { EventService(
+        resource = instance(),
+        mapper = instance(),
+        persistConstraints = instance(),
+        deleteConstraints = instance()
+    ) }
+
+    // Groupings
+    bind<CrispyFishGroupingService>() with singleton { CrispyFishGroupingService(
+        crispyFishRoot = databaseConfiguration.crispyFishDatabase.toFile(),
+        mapper = instance()
+    ) }
+    bind<CrispyFishGroupingMapper>() with singleton { TODO() }
 }
