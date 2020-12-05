@@ -16,7 +16,7 @@ class EventView : View<Event> {
             Crispy Fish:
                     Event Control File:     ${model.crispyFish?.eventControlFile}
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
-                    Force Signage To Person:${renderForceSignageToPerson(model)}
+                    Force Participants:     ${renderForceSignageToPerson(model)}
     """.trimIndent()
 
     private fun renderForceSignageToPerson(model: Event): String {

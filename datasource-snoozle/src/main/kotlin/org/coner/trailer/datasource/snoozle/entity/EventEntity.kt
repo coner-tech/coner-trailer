@@ -14,7 +14,12 @@ data class EventEntity(
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
-            val forceParticipantSignageToPersonId: Map<ParticipantEntity.Signage, UUID>
+            val forceParticipants: List<ForceParticipant>
+    )
+
+    data class ForceParticipant(
+        val signage: ParticipantEntity.Signage,
+        val personId: UUID
     )
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key

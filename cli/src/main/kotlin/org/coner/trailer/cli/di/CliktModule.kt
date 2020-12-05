@@ -8,6 +8,7 @@ import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.event.EventAddCommand
 import org.coner.trailer.cli.command.event.EventCommand
+import org.coner.trailer.cli.command.event.EventGetCommand
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
@@ -195,7 +196,8 @@ val cliktModule = DI.Module("clikt") {
     }
     bind<EventCommand>() with singleton { EventCommand(useConsole = instance())
             .subcommands(
-                    EventAddCommand(di = di, useConsole = instance())
+                    EventAddCommand(di = di, useConsole = instance()),
+                    EventGetCommand(di = di, useConsole = instance())
             )
     }
 }
