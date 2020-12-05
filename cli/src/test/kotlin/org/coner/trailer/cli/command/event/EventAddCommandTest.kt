@@ -1,6 +1,7 @@
 package org.coner.trailer.cli.command.event
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.Abort
@@ -130,7 +131,7 @@ class EventAddCommandTest {
         }
 
         confirmVerified(service, view)
-        assertThat(console.output).isEmpty()
+        assertThat(console.output).contains("Event Control File must")
     }
 
     @Test
@@ -151,7 +152,7 @@ class EventAddCommandTest {
         }
 
         confirmVerified(service, view)
-        assertThat(console.output).isEmpty()
+        assertThat(console.output).contains("Class Definition File must")
     }
 
 }

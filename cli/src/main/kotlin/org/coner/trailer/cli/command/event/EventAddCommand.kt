@@ -95,11 +95,11 @@ class EventAddCommand(
     override fun run() {
         crispyFish?.also {
             if (!it.eventControlFile.startsWith(dbConfig.crispyFishDatabase)) {
-                println("Event Control File must be within the crispy fish database")
+                echo("Event Control File must be within the crispy fish database")
                 throw Abort()
             }
             if (!it.classDefinitionFile.startsWith(dbConfig.crispyFishDatabase)) {
-                println("Class Definition File must be within the crispy fish database")
+                echo("Class Definition File must be within the crispy fish database")
                 throw Abort()
             }
         }
