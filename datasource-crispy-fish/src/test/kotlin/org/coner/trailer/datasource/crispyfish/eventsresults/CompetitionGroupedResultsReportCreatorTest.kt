@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
@@ -14,10 +15,13 @@ class CompetitionGroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 1`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event1
-
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = event.registrations(season)
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)
@@ -118,11 +122,13 @@ class CompetitionGroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 2`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event2
-        val registrations = event.registrations(season)
-
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = registrations
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)
@@ -209,11 +215,13 @@ class CompetitionGroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event3
-        val registrations = event.registrations(season)
-
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = registrations
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)

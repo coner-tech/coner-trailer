@@ -10,11 +10,15 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.coner.crispyfish.model.RegistrationResult
+import org.coner.trailer.TestEvents
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPeople
 import org.coner.trailer.Time
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
+import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
+import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -41,18 +45,23 @@ class ParticipantResultMapperTest {
         // indicates a registration for which no result is available
         val noRegistrationResult = RegistrationResult(time = "", position = null)
         val registration = TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(
-                rawResult = noRegistrationResult,
-                paxResult = noRegistrationResult,
-                classResult = noRegistrationResult
+            rawResult = noRegistrationResult,
+            paxResult = noRegistrationResult,
+            classResult = noRegistrationResult
         )
         val participantResultMapper = ParticipantResultMapper(
-                participantMapper,
-                memberIdToPeople = emptyMap()
+            participantMapper,
+            memberIdToPeople = emptyMap()
+        )
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
+            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
         )
 
         val actual = participantResultMapper.toCore(
-                cfRegistration = registration,
-                cfResult = noRegistrationResult
+            context = context,
+            cfRegistration = registration,
+            cfResult = noRegistrationResult
         )
 
         assertThat(actual).isNull()
@@ -65,30 +74,39 @@ class ParticipantResultMapperTest {
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
+            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
+        )
         every {
-            participantMapper.toCore(fromRegistration = registration, withPerson = expectedPerson)
+            participantMapper.toCore(
+                context = context,
+                fromRegistration = registration,
+                withPerson = expectedPerson
+            )
         }.returns(expectedParticipant)
         val expectedScoredRuns = listOf(
-                ResultRun(time = Time("52.749")),
-                ResultRun(time = Time("53.175")),
-                ResultRun(time = Time("52.130")),
-                ResultRun(time = Time("52.117")),
-                ResultRun(time = Time("51.408"), personalBest = true)
+            ResultRun(time = Time("52.749")),
+            ResultRun(time = Time("53.175")),
+            ResultRun(time = Time("52.130")),
+            ResultRun(time = Time("52.117")),
+            ResultRun(time = Time("51.408"), personalBest = true)
         )
         every {
             ResultRunMapper.map(
-                    crispyFishRegistrationRuns = registration.runs,
-                    crispyFishRegistrationBestRun = registration.bestRun
+                crispyFishRegistrationRuns = registration.runs,
+                crispyFishRegistrationBestRun = registration.bestRun
             )
         }.returns(expectedScoredRuns)
         val participantResultMapper = ParticipantResultMapper(
-                participantMapper,
-                memberIdToPeople
+            participantMapper,
+            memberIdToPeople
         )
 
         val actual = participantResultMapper.toCore(
-                cfRegistration = registration,
-                cfResult = result
+            context = context,
+            cfRegistration = registration,
+            cfResult = result
         )
 
         assertThat(actual).isNotNull().all {

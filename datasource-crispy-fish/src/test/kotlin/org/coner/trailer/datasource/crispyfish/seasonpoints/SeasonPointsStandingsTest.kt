@@ -7,6 +7,7 @@ import assertk.assertions.index
 import assertk.assertions.key
 import org.coner.trailer.TestGroupings
 import org.coner.trailer.TestPeople
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -21,9 +22,11 @@ class SeasonPointsStandingsTest {
         val seasonFixture = SeasonFixture.Lscc2019Simplified
         val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
             val creator = CompetitionGroupedResultsReportCreator(eventFixture.participantResultMapper)
-            eventFixture.coreSeasonEvent to creator.createFromRegistrationData(
-                    crispyFishRegistrations = eventFixture.registrations(seasonFixture)
+            val context = CrispyFishEventMappingContext(
+                allClassDefinitions = seasonFixture.classDefinitions,
+                allRegistrations = eventFixture.registrations(seasonFixture)
             )
+            eventFixture.coreSeasonEvent to creator.createFromRegistrationData(context)
         }.toMap()
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 resultsType = StandardResultsTypes.competitionGrouped,

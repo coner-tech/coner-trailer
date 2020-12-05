@@ -95,9 +95,7 @@ sealed class SeasonFixture(
     val classDefinitions = classDefinitionFile.mapper().all()
     val categories = classDefinitions.filter { it.paxed }
     val handicaps = classDefinitions.filter { !it.paxed }
-    val groupingMapper = CrispyFishGroupingMapper(
-        classDefinitions = classDefinitions
-    )
+    val groupingMapper = CrispyFishGroupingMapper()
 }
 
 private fun personFactory(person: Person, withMemberId: String): Person {

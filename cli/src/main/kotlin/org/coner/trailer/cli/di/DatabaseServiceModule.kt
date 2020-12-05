@@ -134,5 +134,5 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishRoot = databaseConfiguration.crispyFishDatabase.toFile(),
         mapper = instance()
     ) }
-    bind<CrispyFishGroupingMapper>() with singleton { TODO() }
+    bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
 }

@@ -2,6 +2,7 @@ package org.coner.trailer.io.service
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.trailer.Grouping
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import java.io.File
 
@@ -50,7 +51,10 @@ class CrispyFishGroupingService(
         val allClassDefinitions = ClassDefinitionFile(
             file = crispyFishRoot.resolve(crispyFishClassDefinitionFile)
         ).mapper().all()
-        val context = CrispyFishGroupingMapper.Context(allClassDefinitions)
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = allClassDefinitions,
+            allRegistrations = emptyList()
+        )
         return allClassDefinitions.map {
             mapper.toCoreSingular(context = context, classDefinition = it)
         }

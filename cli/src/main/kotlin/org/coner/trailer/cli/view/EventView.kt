@@ -16,24 +16,28 @@ class EventView : View<Event> {
             Crispy Fish:
                     Event Control File:     ${model.crispyFish?.eventControlFile}
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
-                    Force Signage To Person: 
-                        ${renderForceSignageToPerson(model)}
+                    Force Signage To Person:${renderForceSignageToPerson(model)}
     """.trimIndent()
 
     private fun renderForceSignageToPerson(model: Event): String {
-        val at = AsciiTable()
-        at.renderer.cwc = CWC_LongestLine()
-        at.addRow("Signage", "Person ID")
-        model.crispyFish?.forceParticipantSignageToPerson?.forEach { (signage: Participant.Signage, person: Person) ->
-            val grouping = when (val grouping = signage.grouping) {
-                is Grouping.Singular -> grouping.abbreviation
-                is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"
+        val content = if (model.crispyFish?.forceParticipantSignageToPerson?.isNotEmpty() == true) {
+            val at = AsciiTable()
+            at.renderer.cwc = CWC_LongestLine()
+            at.addRow("Signage", "Person ID")
+            model.crispyFish?.forceParticipantSignageToPerson?.forEach { (signage: Participant.Signage, person: Person) ->
+                val grouping = when (val grouping = signage.grouping) {
+                    is Grouping.Singular -> grouping.abbreviation
+                    is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"
+                }
+                at.addRow("$grouping ${signage.number}", "${person.id}")
             }
-            at.addRow("$grouping ${signage.number}", "${person.id}")
+            at.render()
+        } else {
+            "Empty"
         }
         return buildString {
             appendLine()
-            append(at.render())
+            append(content)
         }.prependIndent(" ".repeat(24))
     }
 

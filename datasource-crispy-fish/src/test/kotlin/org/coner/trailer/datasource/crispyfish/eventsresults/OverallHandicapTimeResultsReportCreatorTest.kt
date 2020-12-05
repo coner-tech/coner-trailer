@@ -6,6 +6,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
@@ -16,10 +17,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 1`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event1
-
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = event.registrations(season)
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)
@@ -127,11 +131,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 2`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event2
-        val registrations = event.registrations(season)
-
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = registrations
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)
@@ -227,11 +233,13 @@ class OverallHandicapTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified
         val event = season.event3
-        val registrations = event.registrations(season)
-
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper).createFromRegistrationData(
-                crispyFishRegistrations = registrations
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = season.classDefinitions,
+            allRegistrations = event.registrations(season)
         )
+
+        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)

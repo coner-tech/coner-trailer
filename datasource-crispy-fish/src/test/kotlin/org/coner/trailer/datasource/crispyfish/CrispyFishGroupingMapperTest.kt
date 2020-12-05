@@ -9,12 +9,16 @@ import org.junit.jupiter.api.Test
 
 class CrispyFishGroupingMapperTest {
 
-    lateinit var mapperCrispyFish: CrispyFishGroupingMapper
+    lateinit var mapper: CrispyFishGroupingMapper
+
+    lateinit var context: CrispyFishEventMappingContext
 
     @BeforeEach
     fun before() {
-        mapperCrispyFish = CrispyFishGroupingMapper(
-                classDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions
+        mapper = CrispyFishGroupingMapper()
+        context = CrispyFishEventMappingContext(
+            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
+            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
         )
     }
 
@@ -22,7 +26,8 @@ class CrispyFishGroupingMapperTest {
     fun `It should map class definition`() {
         val input = TestClassDefinitions.Lscc2019.CS
 
-        val actual = mapperCrispyFish.toCoreSingular(input)
+
+        val actual = mapper.toCoreSingular(context, input)
 
         assertThat(actual).all {
             isSingular()
@@ -36,7 +41,7 @@ class CrispyFishGroupingMapperTest {
     fun `It should map open class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
 
-        val actual = mapperCrispyFish.toCore(input)
+        val actual = mapper.toCore(context, input)
 
         assertThat(actual).all {
             isSingular()
@@ -50,7 +55,7 @@ class CrispyFishGroupingMapperTest {
     fun `It should map paxed class registrations`() {
         val input = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
 
-        val actual = mapperCrispyFish.toCore(input)
+        val actual = mapper.toCore(context, input)
 
         assertThat(actual).all {
             isPaired().all {

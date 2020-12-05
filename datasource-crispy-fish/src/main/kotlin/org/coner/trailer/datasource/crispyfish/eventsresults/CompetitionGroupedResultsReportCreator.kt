@@ -3,37 +3,39 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.StandardResultsTypes
 
 class CompetitionGroupedResultsReportCreator(
-        private val participantResultMapper: ParticipantResultMapper
+    private val participantResultMapper: ParticipantResultMapper
 ) {
 
     fun createFromRegistrationData(
-            crispyFishRegistrations: List<Registration>
+        context: CrispyFishEventMappingContext
     ) : GroupedResultsReport {
-        val results = crispyFishRegistrations
-                .mapNotNull {
-                    participantResultMapper.toCore(
-                            cfRegistration = it,
-                            cfResult = it.classResult
-                    )
-                }
+        val results = context.allRegistrations
+            .mapNotNull {
+                participantResultMapper.toCore(
+                    context = context,
+                    cfRegistration = it,
+                    cfResult = it.classResult
+                )
+            }
         return GroupedResultsReport(
-                type = StandardResultsTypes.competitionGrouped,
-                groupingsToResultsMap = results
-                        .sortedBy { it.score.value }
-                        .groupBy { it.participant.resultGrouping() }
-                        .map { (grouping, results) ->
-                            grouping to results.mapIndexed { index, participantResult ->
-                                participantResult.copy(
-                                        position = index + 1
-                                )
-                            }
-                        }
-                        .toMap()
-                        .toSortedMap()
+            type = StandardResultsTypes.competitionGrouped,
+            groupingsToResultsMap = results
+                .sortedBy { it.score.value }
+                .groupBy { it.participant.resultGrouping() }
+                .map { (grouping, results) ->
+                    grouping to results.mapIndexed { index, participantResult ->
+                        participantResult.copy(
+                            position = index + 1
+                        )
+                    }
+                }
+                .toMap()
+                .toSortedMap()
         )
     }
 

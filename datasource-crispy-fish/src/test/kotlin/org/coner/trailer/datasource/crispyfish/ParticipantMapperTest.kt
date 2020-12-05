@@ -8,12 +8,15 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ParticipantMapperTest {
 
     lateinit var mapper: ParticipantMapper
+
+    lateinit var context: CrispyFishEventMappingContext
 
     @MockK
     private lateinit var crispyFishGroupingMapper: CrispyFishGroupingMapper
@@ -22,15 +25,19 @@ class ParticipantMapperTest {
     fun before() {
         MockKAnnotations.init(this)
         mapper = ParticipantMapper(crispyFishGroupingMapper)
+        context = CrispyFishEventMappingContext(
+            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
+            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
+        )
     }
 
     @Test
     fun `It should map (core) Participant from (CF) Registration and (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
         val person = TestPeople.BRANDY_HUFF
-        every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
+        every { crispyFishGroupingMapper.toCore(context, inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
 
-        val actual = mapper.toCore(inputRegistration, person)
+        val actual = mapper.toCore(context, inputRegistration, person)
 
         assertThat(actual).isDataClassEqualTo(TestParticipants.Lscc2019Points1.BRANDY_HUFF)
     }
@@ -39,9 +46,9 @@ class ParticipantMapperTest {
     fun `It should map (core) Participant from (CF) Registration without (core) Person`() {
         val inputRegistration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = null
-        every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
+        every { crispyFishGroupingMapper.toCore(context, inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
 
-        val actual = mapper.toCore(inputRegistration, person)
+        val actual = mapper.toCore(context, inputRegistration, person)
 
         assertThat(actual).all {
             isEqualToIgnoringGivenProperties(
