@@ -1,7 +1,10 @@
 package org.coner.trailer.cli.command.event
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.Abort
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -15,6 +18,7 @@ import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
@@ -22,6 +26,7 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 
 
@@ -37,8 +42,9 @@ class EventAddCommandTest {
 
     lateinit var console: StringBufferConsole
 
-    @TempDir lateinit var crispyFishDatabase: Path
-    @TempDir lateinit var notCrispyFishDatabase: Path
+    @TempDir lateinit var root: Path
+    lateinit var crispyFishDatabase: Path
+    lateinit var notCrispyFishDatabase: Path
 
     @BeforeEach
     fun before() {
@@ -51,6 +57,8 @@ class EventAddCommandTest {
             },
             useConsole = console
         )
+        crispyFishDatabase = root.resolve("crispy-fish").createDirectory()
+        notCrispyFishDatabase = root.resolve("not-crispy-fish").createDirectory()
     }
 
     @Test
@@ -106,12 +114,44 @@ class EventAddCommandTest {
 
     @Test
     fun `It should not create event with crispy fish event control file outside of database`() {
-        TODO()
+        val eventControlFile = notCrispyFishDatabase.resolve("event.ecf").createFile()
+        val classDefinitionFile = crispyFishDatabase.resolve("class.def").createFile()
+        val create = TestEvents.Lscc2019.points1
+        every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
+
+        assertThrows<Abort> {
+            command.parse(arrayOf(
+                "--id", "${create.id}",
+                "--name", create.name,
+                "--date", "${create.date}",
+                "--crispy-fish-event-control-file", "$eventControlFile",
+                "--crispy-fish-class-definition-file", "$classDefinitionFile"
+            ))
+        }
+
+        confirmVerified(service, view)
+        assertThat(console.output).isEmpty()
     }
 
     @Test
     fun `It should not create event with crispy fish class definition file outside of database`() {
-        TODO()
+        val eventControlFile = crispyFishDatabase.resolve("event.ecf").createFile()
+        val classDefinitionFile = notCrispyFishDatabase.resolve("class.def").createFile()
+        val create = TestEvents.Lscc2019.points1
+        every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
+
+        assertThrows<Abort> {
+            command.parse(arrayOf(
+                "--id", "${create.id}",
+                "--name", create.name,
+                "--date", "${create.date}",
+                "--crispy-fish-event-control-file", "$eventControlFile",
+                "--crispy-fish-class-definition-file", "$classDefinitionFile"
+            ))
+        }
+
+        confirmVerified(service, view)
+        assertThat(console.output).isEmpty()
     }
 
 }
