@@ -7,7 +7,7 @@ import org.coner.trailer.Grouping
 class CrispyFishGroupingMapper {
 
     fun toCoreSingular(
-        context: Context,
+        context: CrispyFishEventMappingContext,
         classDefinition: ClassDefinition): Grouping.Singular {
         return Grouping.Singular(
                 abbreviation = classDefinition.abbreviation,
@@ -18,7 +18,7 @@ class CrispyFishGroupingMapper {
     }
 
     fun toCore(
-        context: Context,
+        context: CrispyFishEventMappingContext,
         fromRegistration: Registration
     ): Grouping {
         val category = fromRegistration.category
@@ -29,13 +29,5 @@ class CrispyFishGroupingMapper {
         } else {
             toCoreSingular(context, fromRegistration.handicap)
         }
-    }
-
-    class Context(allClassDefinitions: List<ClassDefinition>) {
-        internal val classDefinitionAbbreviationToSort: Map<String, Int> = allClassDefinitions
-            .mapIndexed { index, classDefinition ->
-                classDefinition.abbreviation to index
-            }
-            .toMap()
     }
 }

@@ -50,7 +50,7 @@ class ParticipantResultMapperTest {
                 memberIdToPeople = emptyMap()
         )
 
-        val actual = participantResultMapper.map(
+        val actual = participantResultMapper.toCore(
                 cfRegistration = registration,
                 cfResult = noRegistrationResult
         )
@@ -66,7 +66,7 @@ class ParticipantResultMapperTest {
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
         every {
-            participantMapper.map(fromRegistration = registration, withPerson = expectedPerson)
+            participantMapper.toCore(fromRegistration = registration, withPerson = expectedPerson)
         }.returns(expectedParticipant)
         val expectedScoredRuns = listOf(
                 ResultRun(time = Time("52.749")),
@@ -86,7 +86,7 @@ class ParticipantResultMapperTest {
                 memberIdToPeople
         )
 
-        val actual = participantResultMapper.map(
+        val actual = participantResultMapper.toCore(
                 cfRegistration = registration,
                 cfResult = result
         )

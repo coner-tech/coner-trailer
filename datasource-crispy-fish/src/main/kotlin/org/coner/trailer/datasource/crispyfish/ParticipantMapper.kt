@@ -9,7 +9,11 @@ class ParticipantMapper(
         private val crispyFishGroupingMapper: CrispyFishGroupingMapper
 ) {
 
-    fun map(fromRegistration: Registration, withPerson: Person?): Participant {
+    fun toCore(
+        context: CrispyFishEventMappingContext,
+        fromRegistration: Registration,
+        withPerson: Person?
+    ): Participant {
         return Participant(
                 person = withPerson,
                 firstName = fromRegistration.firstName,
@@ -18,14 +22,17 @@ class ParticipantMapper(
                         model = fromRegistration.carModel,
                         color = fromRegistration.carColor
                 ),
-                signage = toCoreSignage(fromRegistration),
+                signage = toCoreSignage(context, fromRegistration),
                 seasonPointsEligible = withPerson != null
         )
     }
 
-    fun toCoreSignage(crispyFish: Registration): Participant.Signage {
+    fun toCoreSignage(context: CrispyFishEventMappingContext, crispyFish: Registration): Participant.Signage {
         return Participant.Signage(
-                grouping = crispyFishGroupingMapper.toCore(crispyFish),
+                grouping = crispyFishGroupingMapper.toCore(
+                    context = context,
+                    fromRegistration = crispyFish
+                ),
                 number = crispyFish.number
         )
     }

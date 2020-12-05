@@ -15,7 +15,7 @@ class CompetitionGroupedResultsReportCreator(
     ) : GroupedResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    participantResultMapper.map(
+                    participantResultMapper.toCore(
                             cfRegistration = it,
                             cfResult = it.classResult
                     )

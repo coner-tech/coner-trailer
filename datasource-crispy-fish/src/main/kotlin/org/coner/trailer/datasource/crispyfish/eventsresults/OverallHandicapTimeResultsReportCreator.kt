@@ -13,7 +13,7 @@ class OverallHandicapTimeResultsReportCreator(
     ) : OverallResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    participantResultMapper.map(
+                    participantResultMapper.toCore(
                             cfRegistration = it,
                             cfResult = it.paxResult
                     )

@@ -30,7 +30,7 @@ class ParticipantMapperTest {
         val person = TestPeople.BRANDY_HUFF
         every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
 
-        val actual = mapper.map(inputRegistration, person)
+        val actual = mapper.toCore(inputRegistration, person)
 
         assertThat(actual).isDataClassEqualTo(TestParticipants.Lscc2019Points1.BRANDY_HUFF)
     }
@@ -41,7 +41,7 @@ class ParticipantMapperTest {
         val person = null
         every { crispyFishGroupingMapper.toCore(inputRegistration) }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
 
-        val actual = mapper.map(inputRegistration, person)
+        val actual = mapper.toCore(inputRegistration, person)
 
         assertThat(actual).all {
             isEqualToIgnoringGivenProperties(

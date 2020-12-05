@@ -13,7 +13,7 @@ class OverallRawTimeResultsReportCreator(
     ) : OverallResultsReport {
         val results = crispyFishRegistrations
                 .mapNotNull {
-                    participantResultMapper.map(
+                    participantResultMapper.toCore(
                             cfRegistration = it,
                             cfResult = it.rawResult
                     )
