@@ -3,7 +3,7 @@ package org.coner.trailer
 import java.time.LocalDate
 import java.util.*
 
-class Event(
+data class Event(
         val id: UUID = UUID.randomUUID(),
         val name: String,
         val date: LocalDate,
