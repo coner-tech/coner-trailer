@@ -15,18 +15,11 @@ import org.kodein.di.instance
 import java.util.*
 
 class EventGetCommand(
-    di: DI,
-    useConsole: CliktConsole
+    di: DI
 ) : CliktCommand(
     name = "get",
     help = "Get an Event"
 ), DIAware {
-
-    init {
-        context {
-            console = useConsole
-        }
-    }
 
     override val di: DI by findOrSetObject { di }
 

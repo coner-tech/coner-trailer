@@ -11,18 +11,11 @@ import org.kodein.di.DIAware
 import org.kodein.di.instance
 
 class EventListCommand(
-    di: DI,
-    useConsole: CliktConsole
+    di: DI
 ) : CliktCommand(
     name = "list",
     help = "List Events"
 ), DIAware {
-
-    init {
-        context {
-            console = useConsole
-        }
-    }
 
     override val di: DI by findOrSetObject { di }
 

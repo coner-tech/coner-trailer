@@ -2,9 +2,9 @@ package org.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.contains
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.Abort
+import com.github.ajalt.clikt.core.context
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -41,7 +41,7 @@ class EventAddCommandTest {
     @MockK lateinit var service: EventService
     @MockK lateinit var view: EventView
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
 
     @TempDir lateinit var root: Path
     lateinit var crispyFishDatabase: Path
@@ -49,15 +49,18 @@ class EventAddCommandTest {
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
+        testConsole = StringBufferConsole()
         command = EventAddCommand(
             di = DI {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
                 bind<EventView>() with instance(view)
-            },
-            useConsole = console
-        )
+            }
+        ).apply {
+            context {
+                console = testConsole
+            }
+        }
         crispyFishDatabase = root.resolve("crispy-fish").createDirectory()
         notCrispyFishDatabase = root.resolve("not-crispy-fish").createDirectory()
     }
@@ -79,7 +82,7 @@ class EventAddCommandTest {
             service.create(eq(create))
             view.render(eq(create))
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
@@ -110,7 +113,7 @@ class EventAddCommandTest {
             service.create(eq(create))
             view.render(eq(create))
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
@@ -131,7 +134,7 @@ class EventAddCommandTest {
         }
 
         confirmVerified(service, view)
-        assertThat(console.output).contains("Event Control File must")
+        assertThat(testConsole.output).contains("Event Control File must")
     }
 
     @Test
@@ -152,7 +155,7 @@ class EventAddCommandTest {
         }
 
         confirmVerified(service, view)
-        assertThat(console.output).contains("Class Definition File must")
+        assertThat(testConsole.output).contains("Class Definition File must")
     }
 
 }

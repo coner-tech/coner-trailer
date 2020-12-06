@@ -27,18 +27,11 @@ import kotlin.io.path.extension
 
 @ExperimentalPathApi
 class EventAddCommand(
-    di: DI,
-    useConsole: CliktConsole
+    di: DI
 ) : CliktCommand(
     name = "add",
     help = "Add an Event"
 ), DIAware {
-
-    init {
-        context {
-            console = useConsole
-        }
-    }
 
     override val di: DI by findOrSetObject { di }
 
