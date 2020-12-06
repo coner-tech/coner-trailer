@@ -1,9 +1,7 @@
 package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import org.coner.trailer.cli.view.EventTableView
 import org.coner.trailer.io.service.EventService
 import org.kodein.di.DI

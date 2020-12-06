@@ -1,9 +1,7 @@
 package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.coner.trailer.cli.util.clikt.toUuid
