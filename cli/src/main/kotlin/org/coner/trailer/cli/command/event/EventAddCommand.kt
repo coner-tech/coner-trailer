@@ -12,6 +12,7 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.io.service.EventService
@@ -45,13 +46,7 @@ class EventAddCommand(
     private val name: String by option()
         .required()
     private val date: LocalDate by option()
-        .convert {
-            try {
-                LocalDate.parse(it)
-            } catch (dtpe: DateTimeParseException) {
-                fail("Invalid date format")
-            }
-        }
+        .convert { toLocalDate(it) }
         .required()
 
     class CrispyFishOptions : OptionGroup() {
