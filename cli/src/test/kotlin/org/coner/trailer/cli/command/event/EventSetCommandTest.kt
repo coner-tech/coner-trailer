@@ -74,7 +74,7 @@ class EventSetCommandTest {
         val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
         val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
         every { dbConfig.crispyFishDatabase } returns crispyFish
-        every { service.findById(set.id) } returns original
+        every { service.findById(original.id) } returns original
         justRun { service.update(eq(set)) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
@@ -98,6 +98,21 @@ class EventSetCommandTest {
 
     @Test
     fun `It should keep event properties for options not passed`() {
-        TODO()
+        val original = TestEvents.Lscc2019.points1
+        every { service.findById(original.id) } returns original
+        justRun { service.update(eq(original)) }
+        val viewRendered = "view rendered set event named: ${original.name}"
+        every { view.render(eq(original)) } returns viewRendered
+
+        command.parse(arrayOf(
+            "${original.id}",
+        ))
+
+        verifySequence {
+            service.findById(original.id)
+            service.update(eq(original))
+            view.render(eq(original))
+        }
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 }
