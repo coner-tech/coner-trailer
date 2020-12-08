@@ -68,7 +68,7 @@ class EventSetCommandTest {
             crispyFish = Event.CrispyFishMetadata(
                 eventControlFile = "set-event-control-file.ecf",
                 classDefinitionFile = "set-class-definition-file.ecf",
-                forceParticipantSignageToPerson = emptyMap()
+                forceParticipants = emptyMap()
             )
         )
         val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()

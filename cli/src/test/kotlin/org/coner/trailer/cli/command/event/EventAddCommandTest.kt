@@ -93,7 +93,7 @@ class EventAddCommandTest {
             crispyFish = Event.CrispyFishMetadata(
                 eventControlFile = crispyFishDatabase.relativize(eventControlFile).toString(),
                 classDefinitionFile = crispyFishDatabase.relativize(classDefinitionFile).toString(),
-                forceParticipantSignageToPerson = emptyMap()
+                forceParticipants = emptyMap()
             )
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase

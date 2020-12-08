@@ -25,7 +25,7 @@ class EventMapper(
             crispyFish = snoozle.crispyFish?.let { Event.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,
-                forceParticipantSignageToPerson = it.forceParticipants.map { force ->
+                forceParticipants = it.forceParticipants.map { force ->
                     val grouping = when (force.signage.grouping.type) {
                         GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular(
                             allSingulars = allSingularGroupings,
@@ -55,7 +55,7 @@ class EventMapper(
             crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,
-                forceParticipants = it.forceParticipantSignageToPerson.map { (coreSignage, corePerson) ->
+                forceParticipants = it.forceParticipants.map { (coreSignage, corePerson) ->
                     val grouping = when (val grouping = coreSignage.grouping) {
                         is Grouping.Singular -> GroupingContainer(
                             type = GroupingContainer.Type.SINGULAR,

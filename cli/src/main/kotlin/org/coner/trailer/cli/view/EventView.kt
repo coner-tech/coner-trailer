@@ -20,11 +20,11 @@ class EventView : View<Event> {
     """.trimIndent()
 
     private fun renderForceSignageToPerson(model: Event): String {
-        val content = if (model.crispyFish?.forceParticipantSignageToPerson?.isNotEmpty() == true) {
+        val content = if (model.crispyFish?.forceParticipants?.isNotEmpty() == true) {
             val at = AsciiTable()
             at.renderer.cwc = CWC_LongestLine()
             at.addRow("Signage", "Person ID")
-            model.crispyFish?.forceParticipantSignageToPerson?.forEach { (signage: Participant.Signage, person: Person) ->
+            model.crispyFish?.forceParticipants?.forEach { (signage: Participant.Signage, person: Person) ->
                 val grouping = when (val grouping = signage.grouping) {
                     is Grouping.Singular -> grouping.abbreviation
                     is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"

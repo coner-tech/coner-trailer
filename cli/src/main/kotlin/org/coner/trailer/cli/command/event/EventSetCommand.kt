@@ -45,14 +45,18 @@ class EventSetCommand(
         )
     sealed class CrispyFishOptions : OptionGroup() {
         class Set : CrispyFishOptions() {
-            val eventControlFile: Path? by option().path(
+            val eventControlFile: Path? by option(
+                help = "Set crispy fish event control file (use with \"--crispy-fish set\")"
+            ).path(
                 mustExist = true,
                 mustBeReadable = true,
                 canBeFile = true,
                 canBeDir = false,
                 canBeSymlink = false
             )
-            val classDefinitionFile: Path? by option().path(
+            val classDefinitionFile: Path? by option(
+                help = "Set crispy fish class definition file (use with \"--crispy-fish set\")"
+            ).path(
                 mustExist = true,
                 mustBeReadable = true,
                 canBeFile = true,
@@ -77,7 +81,7 @@ class EventSetCommand(
                         classDefinitionFile = crispyFishOptions.classDefinitionFile?.let {
                             dbConfig.crispyFishDatabase.relativize(it).toString()
                         } ?: requireNotNull(event.crispyFish?.classDefinitionFile) { "Missing --class-definition-file" },
-                        forceParticipantSignageToPerson = event.crispyFish?.forceParticipantSignageToPerson
+                        forceParticipants = event.crispyFish?.forceParticipants
                             ?: emptyMap()
                     )
                 }

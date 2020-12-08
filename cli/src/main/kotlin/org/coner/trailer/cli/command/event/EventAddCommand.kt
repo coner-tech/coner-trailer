@@ -2,12 +2,9 @@ package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
-import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
@@ -21,7 +18,6 @@ import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.nio.file.Path
 import java.time.LocalDate
-import java.time.format.DateTimeParseException
 import java.util.*
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.extension
@@ -99,7 +95,7 @@ class EventAddCommand(
                 Event.CrispyFishMetadata(
                     eventControlFile = dbConfig.crispyFishDatabase.relativize(it.eventControlFile).toString(),
                     classDefinitionFile = dbConfig.crispyFishDatabase.relativize(it.classDefinitionFile).toString(),
-                    forceParticipantSignageToPerson = emptyMap()
+                    forceParticipants = emptyMap()
                 )
             }
         )
