@@ -10,6 +10,8 @@ import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.trailer.Event
 import org.coner.trailer.TestEvents
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
@@ -112,6 +114,44 @@ class EventSetCommandTest {
             service.findById(original.id)
             service.update(eq(original))
             view.render(eq(original))
+        }
+        assertThat(testConsole.output).isEqualTo(viewRendered)
+    }
+
+    @Test
+    fun `It should append crispy fish force participants`() {
+        val original = TestEvents.Lscc2019.points1
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val set = original.copy(
+            crispyFish = Event.CrispyFishMetadata(
+                eventControlFile = "set-event-control-file.ecf",
+                classDefinitionFile = "set-class-definition-file.ecf",
+                forceParticipants = mapOf(
+                    participant.signage to TestPeople.REBECCA_JACKSON
+                )
+            )
+        )
+        val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
+        val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
+        every { dbConfig.crispyFishDatabase } returns crispyFish
+        every { service.findById(original.id) } returns original
+        justRun { service.update(eq(set)) }
+        val viewRendered = "view rendered set event named: ${set.name}"
+        every { view.render(set) } returns viewRendered
+
+        command.parse(arrayOf(
+            "${original.id}",
+            "--crispy-fish", "set",
+            "--event-control-file", "$setEventControlFile",
+            "--class-definition-file", "$setClassDefinitionFile",
+            "--force-participants", "append",
+            TODO()
+        ))
+
+        verifySequence {
+            service.findById(original.id)
+            service.update(eq(set))
+            view.render(eq(set))
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
