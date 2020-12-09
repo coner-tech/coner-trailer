@@ -119,20 +119,23 @@ class EventSetCommandTest {
     }
 
     @Test
-    fun `It should append crispy fish force participants`() {
-        val original = TestEvents.Lscc2019.points1
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val set = original.copy(
+    fun `It should add crispy fish force participants`() {
+        val original = TestEvents.Lscc2019.points1.copy(
             crispyFish = Event.CrispyFishMetadata(
-                eventControlFile = "set-event-control-file.ecf",
-                classDefinitionFile = "set-class-definition-file.ecf",
+                eventControlFile = "event-control-file.ecf",
+                classDefinitionFile = "class-definition-file.ecf",
+                forceParticipants = emptyMap()
+            )
+        )
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val person = TestPeople.REBECCA_JACKSON
+        val set = original.copy(
+            crispyFish = original.crispyFish!!.copy(
                 forceParticipants = mapOf(
-                    participant.signage to TestPeople.REBECCA_JACKSON
+                    participant.signage to person
                 )
             )
         )
-        val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
-        val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
         every { dbConfig.crispyFishDatabase } returns crispyFish
         every { service.findById(original.id) } returns original
         justRun { service.update(eq(set)) }
@@ -142,10 +145,11 @@ class EventSetCommandTest {
         command.parse(arrayOf(
             "${original.id}",
             "--crispy-fish", "set",
-            "--event-control-file", "$setEventControlFile",
-            "--class-definition-file", "$setClassDefinitionFile",
             "--force-participants", "append",
-            TODO()
+            "--type", "singular",
+            "--abbreviation-singular", "HS",
+            "--number", "1",
+            "--person-id", "${participant.person}"
         ))
 
         verifySequence {

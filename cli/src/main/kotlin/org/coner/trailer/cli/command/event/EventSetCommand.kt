@@ -4,19 +4,22 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import com.github.ajalt.clikt.parameters.groups.OptionGroup
-import com.github.ajalt.clikt.parameters.groups.groupChoice
+import com.github.ajalt.clikt.parameters.groups.*
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.pair
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
+import org.coner.trailer.Participant
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.service.PersonService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -35,6 +38,8 @@ class EventSetCommand(
 
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
+    private val groupingService: CrispyFishGroupingService by instance()
+    private val personService: PersonService by instance()
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -65,46 +70,90 @@ class EventSetCommand(
                 canBeDir = false,
                 canBeSymlink = false
             )
-            val forceParticipants: ForceParticipantsOptionGroup? by option()
-                .groupChoice(
-                    "append" to
-                )
         }
         object Unset : CrispyFishOptions()
     }
 
-    class ForceParticipantsOptionGroup : OptionGroup() {
-        val type: String by option()
-            .groupChoice(
-                "singular" to Singular(),
-                "paired" to Paired()
+    val forceParticipants: ForceParticipantsOptionGroup? by option()
+        .groupChoice(
+            "add" to ForceParticipantsOptionGroup.Add(),
+            "remove" to ForceParticipantsOptionGroup.Remove()
+        )
+
+    sealed class ForceParticipantsOptionGroup : OptionGroup() {
+        val type: TypeChoice by option()
+            .choice(
+                "singular" to TypeChoice.SINGULAR,
+                "paired" to TypeChoice.PAIRED
             )
             .required()
+        val abbreviationSingular: String? by option()
+        val abbreviationPaired: Pair<String, String>? by option().pair()
+        val number: String by option().required()
+        val personId: UUID by option()
+            .convert { toUuid(it) }
+            .required()
 
+        enum class TypeChoice {
+            SINGULAR,
+            PAIRED
+        }
 
+        class Add : ForceParticipantsOptionGroup()
+        class Remove : ForceParticipantsOptionGroup()
     }
 
     override fun run() {
         val event = service.findById(id)
+        val crispyFishPhaseOne = when (val crispyFishOptions = crispyFish) {
+            is CrispyFishOptions.Set -> {
+                Event.CrispyFishMetadata(
+                    eventControlFile = crispyFishOptions.eventControlFile?.let {
+                        dbConfig.crispyFishDatabase.relativize(it).toString()
+                    } ?: requireNotNull(event.crispyFish?.eventControlFile) { "Missing --event-control-file" },
+                    classDefinitionFile = crispyFishOptions.classDefinitionFile?.let {
+                        dbConfig.crispyFishDatabase.relativize(it).toString()
+                    } ?: requireNotNull(event.crispyFish?.classDefinitionFile) { "Missing --class-definition-file" },
+                    forceParticipants = event.crispyFish?.forceParticipants ?: emptyMap()
+                )
+            }
+            is CrispyFishOptions.Unset -> null
+            else -> event.crispyFish
+        }
+        val crispyFishPhaseTwo = if (crispyFish is CrispyFishOptions.Set) {
+            when (val forceParticipantsOptions = forceParticipants) {
+                is ForceParticipantsOptionGroup.Add -> {
+                    requireNotNull(crispyFishPhaseOne).copy(
+                        forceParticipants = crispyFishPhaseOne.forceParticipants
+                            .toMutableMap()
+                            .apply {
+                                val grouping = when (forceParticipantsOptions.type) {
+                                    ForceParticipantsOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
+                                        crispyFishClassDefinitionFile = crispyFishPhaseOne.classDefinitionFile,
+                                        abbreviation = requireNotNull(forceParticipantsOptions.abbreviationSingular) {
+                                            "Missing --abbreviation-singular"
+                                        }
+                                    )
+                                }
+                                val signage = Participant.Signage(
+                                    grouping = grouping,
+                                    number = forceParticipantsOptions.number
+                                )
+                                val person = TODO()
+                            }
+                    )
+                }
+                is ForceParticipantsOptionGroup.Remove -> {
+
+                }
+            }
+        } else {
+            crispyFishPhaseOne
+        }
         val set = event.copy(
             name = name ?: event.name,
             date = date ?: event.date,
-            crispyFish = when (val crispyFishOptions = crispyFish) {
-                is CrispyFishOptions.Set -> {
-                    Event.CrispyFishMetadata(
-                        eventControlFile = crispyFishOptions.eventControlFile?.let {
-                            dbConfig.crispyFishDatabase.relativize(it).toString()
-                        } ?: requireNotNull(event.crispyFish?.eventControlFile) { "Missing --event-control-file" },
-                        classDefinitionFile = crispyFishOptions.classDefinitionFile?.let {
-                            dbConfig.crispyFishDatabase.relativize(it).toString()
-                        } ?: requireNotNull(event.crispyFish?.classDefinitionFile) { "Missing --class-definition-file" },
-                        forceParticipants = event.crispyFish?.forceParticipants
-                            ?: emptyMap()
-                    )
-                }
-                is CrispyFishOptions.Unset -> null
-                else -> event.crispyFish
-            }
+            crispyFish = crispyFishPhaseOne
         )
         service.update(set)
         echo(view.render(set))
