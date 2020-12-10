@@ -95,7 +95,7 @@ class EventAddCommand(
                 Event.CrispyFishMetadata(
                     eventControlFile = dbConfig.crispyFishDatabase.relativize(it.eventControlFile).toString(),
                     classDefinitionFile = dbConfig.crispyFishDatabase.relativize(it.classDefinitionFile).toString(),
-                    forceParticipants = emptyMap()
+                    forcePeople = emptyMap()
                 )
             }
         )

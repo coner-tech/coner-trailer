@@ -14,7 +14,7 @@ data class EventEntity(
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
-            val forceParticipants: List<ForceParticipant>
+            val forcePeople: List<ForceParticipant>
     )
 
     data class ForceParticipant(

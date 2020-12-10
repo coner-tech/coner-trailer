@@ -45,9 +45,13 @@ class EventSetCommand(
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
-    private val name: String? by option()
-    private val date: LocalDate? by option().convert { toLocalDate(it) }
-    private val crispyFish: CrispyFishOptions? by option()
+    private val name: String? by option(help = "Name of the Event")
+    private val date: LocalDate? by option(
+        help = "Date of the Event"
+    ).convert { toLocalDate(it) }
+    private val crispyFish: CrispyFishOptions? by option(
+        help = "Whether to set or unset the crispy fish metadata. Must use \"set\" in conjunction with any crispy-fish-related properties."
+    )
         .groupChoice(
             "set" to CrispyFishOptions.Set(),
             "unset" to CrispyFishOptions.Unset
@@ -76,33 +80,46 @@ class EventSetCommand(
         object Unset : CrispyFishOptions()
     }
 
-    val forceParticipants: ForceParticipantsOptionGroup? by option()
+    private val forcePerson: ForcePersonOptionGroup? by option(
+        help = "Add or remove a \"force person\" override record. Only use with \"--crispy-fish set\"."
+    )
         .groupChoice(
-            "add" to ForceParticipantsOptionGroup.Add(),
-            "remove" to ForceParticipantsOptionGroup.Remove()
+            "add" to ForcePersonOptionGroup.Add(),
+            "remove" to ForcePersonOptionGroup.Remove()
         )
 
-    sealed class ForceParticipantsOptionGroup : OptionGroup() {
-        val type: TypeChoice by option()
-            .choice(
-                "singular" to TypeChoice.SINGULAR,
-                "paired" to TypeChoice.PAIRED
-            )
-            .required()
-        val abbreviationSingular: String? by option()
-        val abbreviationPaired: Pair<String, String>? by option().pair()
-        val number: String by option().required()
-        val personId: UUID by option()
-            .convert { toUuid(it) }
-            .required()
+    sealed class ForcePersonOptionGroup(prefix: String) : OptionGroup() {
+        val groupingType: TypeChoice by option(
+            names = arrayOf("--$prefix-grouping-type"),
+            help = "Grouping singular (CS) vs paired (NOV CS)"
+        ).choice(
+            "singular" to TypeChoice.SINGULAR,
+            "paired" to TypeChoice.PAIRED
+        ).required()
+        val groupingAbbreviationSingular: String? by option(
+            names = arrayOf("--$prefix-grouping-abbreviation-singular"),
+            help = "Abbreviation of singular grouping (CS)"
+        )
+        val groupingAbbreviationPaired: Pair<String, String>? by option(
+            names = arrayOf("--$prefix-grouping-abbreviation-paired"),
+            help = "Abbreviation of paired grouping (NOV CS)"
+        ).pair()
+        val number: String by option(
+            names = arrayOf("--$prefix-number"),
+            help = "Number of the participant"
+        ).required()
+        val personId: UUID by option(
+            names = arrayOf("--$prefix-person-id"),
+            help = "Person ID to force onto participant whose registration matches the given signage"
+        ).convert { toUuid(it) }.required()
 
         enum class TypeChoice {
             SINGULAR,
             PAIRED
         }
 
-        class Add : ForceParticipantsOptionGroup()
-        class Remove : ForceParticipantsOptionGroup()
+        class Add : ForcePersonOptionGroup(prefix = "add")
+        class Remove : ForcePersonOptionGroup(prefix = "remove")
     }
 
     override fun run() {
@@ -116,55 +133,57 @@ class EventSetCommand(
                     classDefinitionFile = crispyFishOptions.classDefinitionFile?.let {
                         dbConfig.crispyFishDatabase.relativize(it).toString()
                     } ?: requireNotNull(event.crispyFish?.classDefinitionFile) { "Missing --class-definition-file" },
-                    forceParticipants = event.crispyFish?.forceParticipants ?: emptyMap()
+                    forcePeople = event.crispyFish?.forcePeople ?: emptyMap()
                 )
             }
             is CrispyFishOptions.Unset -> null
             else -> event.crispyFish
         }
-        private fun buildMapEntryPair(forceParticipantsOptions: ForceParticipantsOptionGroup): Pair<Participant.Signage, Person> {
-            val grouping = when (forceParticipantsOptions.type) {
-                ForceParticipantsOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
-                    crispyFishClassDefinitionFile = crispyFishPhaseOne.classDefinitionFile,
-                    abbreviation = requireNotNull(forceParticipantsOptions.abbreviationSingular) {
-                        "Missing --abbreviation-singular"
+        fun buildForcePersonPair(
+            forcePersonOptions: ForcePersonOptionGroup
+        ): Pair<Participant.Signage, Person> {
+            val grouping = when (forcePersonOptions.groupingType) {
+                ForcePersonOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
+                    crispyFishClassDefinitionFile = requireNotNull(crispyFishPhaseOne).classDefinitionFile,
+                    abbreviation = requireNotNull(forcePersonOptions.groupingAbbreviationSingular) {
+                        "Missing --[add|remove]-grouping-abbreviation-singular"
                     }
                 )
-                ForceParticipantsOptionGroup.TypeChoice.PAIRED -> groupingService.findPaired(
+                ForcePersonOptionGroup.TypeChoice.PAIRED -> groupingService.findPaired(
                     crispyFishClassDefinitionFile = requireNotNull(crispyFishPhaseOne).classDefinitionFile,
-                    abbreviations = requireNotNull(forceParticipantsOptions.abbreviationPaired) {
-                        "Missing --abbreviation-paired"
+                    abbreviations = requireNotNull(forcePersonOptions.groupingAbbreviationPaired) {
+                        "Missing --[add|remove]-grouping-abbreviation-paired"
                     }
                 )
             }
             val signage = Participant.Signage(
                 grouping = grouping,
-                number = forceParticipantsOptions.number
+                number = forcePersonOptions.number
             )
-            val person = personService.findById(forceParticipantsOptions.personId)
+            val person = personService.findById(forcePersonOptions.personId)
             return signage to person
         }
         val crispyFishPhaseTwo = if (crispyFish is CrispyFishOptions.Set) {
-            when (val forceParticipantsOptions = forceParticipants) {
-                is ForceParticipantsOptionGroup.Add -> {
+            when (val forceParticipantsOptions = forcePerson) {
+                is ForcePersonOptionGroup.Add -> {
                     requireNotNull(crispyFishPhaseOne).copy(
-                        forceParticipants = crispyFishPhaseOne.forceParticipants
+                        forcePeople = crispyFishPhaseOne.forcePeople
                             .toMutableMap()
                             .apply {
-                                val pair = buildMapEntryPair(forceParticipantsOptions)
+                                val pair = buildForcePersonPair(forceParticipantsOptions)
                                 put(pair.first, pair.second)
                             }
                     )
                 }
-                is ForceParticipantsOptionGroup.Remove -> {
+                is ForcePersonOptionGroup.Remove -> {
                     requireNotNull(crispyFishPhaseOne).copy(
-                        forceParticipants = crispyFishPhaseOne.forceParticipants
+                        forcePeople = crispyFishPhaseOne.forcePeople
                             .toMutableMap()
                             .apply {
-                                val (signage, person) = buildMapEntryPair(forceParticipantsOptions)
+                                val (signage, person) = buildForcePersonPair(forceParticipantsOptions)
                                 val actual = get(signage)
                                 if (actual?.id != person.id) {
-                                    echo("Person ID given in options doesn't match force participant record by signage")
+                                    echo("Person ID given in options doesn't match force person record's signage")
                                     throw Abort()
                                 }
                                 remove(signage)

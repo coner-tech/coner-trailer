@@ -9,13 +9,16 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.trailer.Event
+import org.coner.trailer.Grouping
 import org.coner.trailer.TestEvents
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -37,6 +40,8 @@ class EventSetCommandTest {
 
     @MockK lateinit var dbConfig: DatabaseConfiguration
     @MockK lateinit var service: EventService
+    @MockK lateinit var groupingService: CrispyFishGroupingService
+    @MockK lateinit var personService: PersonService
     @MockK lateinit var view: EventView
 
     lateinit var testConsole: StringBufferConsole
@@ -52,6 +57,8 @@ class EventSetCommandTest {
             di = DI {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
+                bind<CrispyFishGroupingService>() with instance(groupingService)
+                bind<PersonService>() with instance(personService)
                 bind<EventView>() with instance(view)
             }
         ).apply {
@@ -70,7 +77,7 @@ class EventSetCommandTest {
             crispyFish = Event.CrispyFishMetadata(
                 eventControlFile = "set-event-control-file.ecf",
                 classDefinitionFile = "set-class-definition-file.ecf",
-                forceParticipants = emptyMap()
+                forcePeople = emptyMap()
             )
         )
         val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
@@ -124,20 +131,31 @@ class EventSetCommandTest {
             crispyFish = Event.CrispyFishMetadata(
                 eventControlFile = "event-control-file.ecf",
                 classDefinitionFile = "class-definition-file.ecf",
-                forceParticipants = emptyMap()
+                forcePeople = emptyMap()
             )
         )
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val person = TestPeople.REBECCA_JACKSON
         val set = original.copy(
             crispyFish = original.crispyFish!!.copy(
-                forceParticipants = mapOf(
+                forcePeople = mapOf(
                     participant.signage to person
                 )
             )
         )
+        val classDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile)
+            .createFile()
+            .let {
+                crispyFish.relativize(it).toString()
+            }
+
         every { dbConfig.crispyFishDatabase } returns crispyFish
         every { service.findById(original.id) } returns original
+        every { groupingService.findSingular(
+            crispyFishClassDefinitionFile = classDefinitionFile,
+            abbreviation = "HS"
+        ) } returns participant.signage.grouping as Grouping.Singular
+        every { personService.findById(person.id) }
         justRun { service.update(eq(set)) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
@@ -145,15 +163,20 @@ class EventSetCommandTest {
         command.parse(arrayOf(
             "${original.id}",
             "--crispy-fish", "set",
-            "--force-participants", "append",
-            "--type", "singular",
-            "--abbreviation-singular", "HS",
-            "--number", "1",
-            "--person-id", "${participant.person}"
+            "--force-person", "add",
+            "--add-grouping-type", "singular",
+            "--add-grouping-abbreviation-singular", "HS",
+            "--add-number", "1",
+            "--add-person-id", "${person.id}"
         ))
 
         verifySequence {
             service.findById(original.id)
+            groupingService.findSingular(
+                crispyFishClassDefinitionFile = classDefinitionFile,
+                abbreviation = "HS"
+            )
+            personService.findById(person.id)
             service.update(eq(set))
             view.render(eq(set))
         }
