@@ -1,5 +1,6 @@
 package org.coner.trailer.cli.command.event
 
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
@@ -13,6 +14,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
 import org.coner.trailer.Participant
+import org.coner.trailer.Person
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
@@ -120,6 +122,28 @@ class EventSetCommand(
             is CrispyFishOptions.Unset -> null
             else -> event.crispyFish
         }
+        private fun buildMapEntryPair(forceParticipantsOptions: ForceParticipantsOptionGroup): Pair<Participant.Signage, Person> {
+            val grouping = when (forceParticipantsOptions.type) {
+                ForceParticipantsOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
+                    crispyFishClassDefinitionFile = crispyFishPhaseOne.classDefinitionFile,
+                    abbreviation = requireNotNull(forceParticipantsOptions.abbreviationSingular) {
+                        "Missing --abbreviation-singular"
+                    }
+                )
+                ForceParticipantsOptionGroup.TypeChoice.PAIRED -> groupingService.findPaired(
+                    crispyFishClassDefinitionFile = requireNotNull(crispyFishPhaseOne).classDefinitionFile,
+                    abbreviations = requireNotNull(forceParticipantsOptions.abbreviationPaired) {
+                        "Missing --abbreviation-paired"
+                    }
+                )
+            }
+            val signage = Participant.Signage(
+                grouping = grouping,
+                number = forceParticipantsOptions.number
+            )
+            val person = personService.findById(forceParticipantsOptions.personId)
+            return signage to person
+        }
         val crispyFishPhaseTwo = if (crispyFish is CrispyFishOptions.Set) {
             when (val forceParticipantsOptions = forceParticipants) {
                 is ForceParticipantsOptionGroup.Add -> {
@@ -127,25 +151,27 @@ class EventSetCommand(
                         forceParticipants = crispyFishPhaseOne.forceParticipants
                             .toMutableMap()
                             .apply {
-                                val grouping = when (forceParticipantsOptions.type) {
-                                    ForceParticipantsOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
-                                        crispyFishClassDefinitionFile = crispyFishPhaseOne.classDefinitionFile,
-                                        abbreviation = requireNotNull(forceParticipantsOptions.abbreviationSingular) {
-                                            "Missing --abbreviation-singular"
-                                        }
-                                    )
-                                }
-                                val signage = Participant.Signage(
-                                    grouping = grouping,
-                                    number = forceParticipantsOptions.number
-                                )
-                                val person = TODO()
+                                val pair = buildMapEntryPair(forceParticipantsOptions)
+                                put(pair.first, pair.second)
                             }
                     )
                 }
                 is ForceParticipantsOptionGroup.Remove -> {
-
+                    requireNotNull(crispyFishPhaseOne).copy(
+                        forceParticipants = crispyFishPhaseOne.forceParticipants
+                            .toMutableMap()
+                            .apply {
+                                val (signage, person) = buildMapEntryPair(forceParticipantsOptions)
+                                val actual = get(signage)
+                                if (actual?.id != person.id) {
+                                    echo("Person ID given in options doesn't match force participant record by signage")
+                                    throw Abort()
+                                }
+                                remove(signage)
+                            }
+                    )
                 }
+                else -> crispyFishPhaseOne
             }
         } else {
             crispyFishPhaseOne
@@ -153,7 +179,7 @@ class EventSetCommand(
         val set = event.copy(
             name = name ?: event.name,
             date = date ?: event.date,
-            crispyFish = crispyFishPhaseOne
+            crispyFish = crispyFishPhaseTwo
         )
         service.update(set)
         echo(view.render(set))
