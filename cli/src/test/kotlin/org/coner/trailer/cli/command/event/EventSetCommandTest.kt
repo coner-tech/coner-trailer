@@ -155,7 +155,7 @@ class EventSetCommandTest {
             crispyFishClassDefinitionFile = classDefinitionFile,
             abbreviation = "HS"
         ) } returns participant.signage.grouping as Grouping.Singular
-        every { personService.findById(person.id) }
+        every { personService.findById(person.id) } returns person
         justRun { service.update(eq(set)) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
