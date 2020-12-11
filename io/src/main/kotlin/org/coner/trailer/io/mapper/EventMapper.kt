@@ -15,35 +15,42 @@ class EventMapper(
 ) {
 
     fun toCore(snoozle: EventEntity): Event {
-        val allSingularGroupings by lazy { crispyFishGroupingService.loadAllSingulars(
-            crispyFishClassDefinitionFile = requireNotNull(snoozle.crispyFish).classDefinitionFile
-        ) }
         return Event(
             id = snoozle.id,
             name = snoozle.name,
             date = snoozle.date,
-            crispyFish = snoozle.crispyFish?.let { Event.CrispyFishMetadata(
-                eventControlFile = it.eventControlFile,
-                classDefinitionFile = it.classDefinitionFile,
-                forcePeople = it.forcePeople.map { force ->
-                    val grouping = when (force.signage.grouping.type) {
-                        GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular(
-                            allSingulars = allSingularGroupings,
-                            abbreviation = requireNotNull(force.signage.grouping.singular)
-                        )
-                        GroupingContainer.Type.PAIR -> crispyFishGroupingService.findPaired(
-                            allSingulars = allSingularGroupings,
-                            abbreviations = requireNotNull(force.signage.grouping.pair)
-                        )
-                    }
-                    val person = personService.findById(force.personId)
-                    val signage = Participant.Signage(
-                        grouping = grouping,
-                        number = force.signage.number
+            crispyFish = snoozle.crispyFish?.let {
+                val phaseOne = Event.CrispyFishMetadata(
+                    eventControlFile = it.eventControlFile,
+                    classDefinitionFile = it.classDefinitionFile,
+                    forcePeople = emptyMap()
+                )
+                val allSingularGroupings by lazy {
+                    crispyFishGroupingService.loadAllSingulars(
+                        crispyFish = phaseOne
                     )
-                    signage to person
-                }.toMap()
-            ) }
+                }
+                phaseOne.copy(
+                    forcePeople = it.forcePeople.map { force ->
+                        val grouping = when (force.signage.grouping.type) {
+                            GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular(
+                                allSingulars = allSingularGroupings,
+                                abbreviation = requireNotNull(force.signage.grouping.singular)
+                            )
+                            GroupingContainer.Type.PAIR -> crispyFishGroupingService.findPaired(
+                                allSingulars = allSingularGroupings,
+                                abbreviations = requireNotNull(force.signage.grouping.pair)
+                            )
+                        }
+                        val person = personService.findById(force.personId)
+                        val signage = Participant.Signage(
+                            grouping = grouping,
+                            number = force.signage.number
+                        )
+                        signage to person
+                    }.toMap()
+                )
+            }
         )
     }
 

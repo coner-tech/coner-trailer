@@ -197,7 +197,9 @@ val cliktModule = DI.Module("clikt") {
                     EventAddCommand(di = di),
                     EventGetCommand(di = di),
                     EventListCommand(di = di),
-                    EventSetCommand(di = di)
+                    EventSetCommand(di = di),
+                    EventCrispyFishForcePersonAddCommand(di = di),
+                    EventCrispyFishForcePersonRemoveCommand(di = di)
             )
     }
 }
