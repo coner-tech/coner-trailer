@@ -66,7 +66,7 @@ class EventMapper(
                             pair = grouping.pair.first.abbreviation to grouping.pair.second.abbreviation
                         )
                     }
-                    EventEntity.ForceParticipant(
+                    EventEntity.ForcePerson(
                         signage = ParticipantEntity.Signage(
                             grouping = grouping,
                             number = coreSignage.number

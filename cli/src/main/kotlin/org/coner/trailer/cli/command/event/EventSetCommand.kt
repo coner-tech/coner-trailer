@@ -8,9 +8,6 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.*
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.pair
-import com.github.ajalt.clikt.parameters.options.required
-import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
 import org.coner.trailer.Participant
@@ -80,51 +77,9 @@ class EventSetCommand(
         object Unset : CrispyFishOptions()
     }
 
-    private val forcePerson: ForcePersonOptionGroup? by option(
-        help = "Add or remove a \"force person\" override record. Only use with \"--crispy-fish set\"."
-    )
-        .groupChoice(
-            "add" to ForcePersonOptionGroup.Add(),
-            "remove" to ForcePersonOptionGroup.Remove()
-        )
-
-    sealed class ForcePersonOptionGroup(prefix: String) : OptionGroup() {
-        val groupingType: TypeChoice by option(
-            names = arrayOf("--$prefix-grouping-type"),
-            help = "Grouping singular (CS) vs paired (NOV CS)"
-        ).choice(
-            "singular" to TypeChoice.SINGULAR,
-            "paired" to TypeChoice.PAIRED
-        ).required()
-        val groupingAbbreviationSingular: String? by option(
-            names = arrayOf("--$prefix-grouping-abbreviation-singular"),
-            help = "Abbreviation of singular grouping (CS)"
-        )
-        val groupingAbbreviationPaired: Pair<String, String>? by option(
-            names = arrayOf("--$prefix-grouping-abbreviation-paired"),
-            help = "Abbreviation of paired grouping (NOV CS)"
-        ).pair()
-        val number: String by option(
-            names = arrayOf("--$prefix-number"),
-            help = "Number of the participant"
-        ).required()
-        val personId: UUID by option(
-            names = arrayOf("--$prefix-person-id"),
-            help = "Person ID to force onto participant whose registration matches the given signage"
-        ).convert { toUuid(it) }.required()
-
-        enum class TypeChoice {
-            SINGULAR,
-            PAIRED
-        }
-
-        class Add : ForcePersonOptionGroup(prefix = "add")
-        class Remove : ForcePersonOptionGroup(prefix = "remove")
-    }
-
     override fun run() {
         val event = service.findById(id)
-        val crispyFishPhaseOne = when (val crispyFishOptions = crispyFish) {
+        val crispyFish = when (val crispyFishOptions = crispyFish) {
             is CrispyFishOptions.Set -> {
                 Event.CrispyFishMetadata(
                     eventControlFile = crispyFishOptions.eventControlFile?.let {
@@ -139,66 +94,10 @@ class EventSetCommand(
             is CrispyFishOptions.Unset -> null
             else -> event.crispyFish
         }
-        fun buildForcePersonPair(
-            forcePersonOptions: ForcePersonOptionGroup
-        ): Pair<Participant.Signage, Person> {
-            val grouping = when (forcePersonOptions.groupingType) {
-                ForcePersonOptionGroup.TypeChoice.SINGULAR -> groupingService.findSingular(
-                    crispyFishClassDefinitionFile = requireNotNull(crispyFishPhaseOne).classDefinitionFile,
-                    abbreviation = requireNotNull(forcePersonOptions.groupingAbbreviationSingular) {
-                        "Missing --[add|remove]-grouping-abbreviation-singular"
-                    }
-                )
-                ForcePersonOptionGroup.TypeChoice.PAIRED -> groupingService.findPaired(
-                    crispyFishClassDefinitionFile = requireNotNull(crispyFishPhaseOne).classDefinitionFile,
-                    abbreviations = requireNotNull(forcePersonOptions.groupingAbbreviationPaired) {
-                        "Missing --[add|remove]-grouping-abbreviation-paired"
-                    }
-                )
-            }
-            val signage = Participant.Signage(
-                grouping = grouping,
-                number = forcePersonOptions.number
-            )
-            val person = personService.findById(forcePersonOptions.personId)
-            return signage to person
-        }
-        val crispyFishPhaseTwo = if (crispyFish is CrispyFishOptions.Set) {
-            when (val forceParticipantsOptions = forcePerson) {
-                is ForcePersonOptionGroup.Add -> {
-                    requireNotNull(crispyFishPhaseOne).copy(
-                        forcePeople = crispyFishPhaseOne.forcePeople
-                            .toMutableMap()
-                            .apply {
-                                val pair = buildForcePersonPair(forceParticipantsOptions)
-                                put(pair.first, pair.second)
-                            }
-                    )
-                }
-                is ForcePersonOptionGroup.Remove -> {
-                    requireNotNull(crispyFishPhaseOne).copy(
-                        forcePeople = crispyFishPhaseOne.forcePeople
-                            .toMutableMap()
-                            .apply {
-                                val (signage, person) = buildForcePersonPair(forceParticipantsOptions)
-                                val actual = get(signage)
-                                if (actual?.id != person.id) {
-                                    echo("Person ID given in options doesn't match force person record's signage")
-                                    throw Abort()
-                                }
-                                remove(signage)
-                            }
-                    )
-                }
-                else -> crispyFishPhaseOne
-            }
-        } else {
-            crispyFishPhaseOne
-        }
         val set = event.copy(
             name = name ?: event.name,
             date = date ?: event.date,
-            crispyFish = crispyFishPhaseTwo
+            crispyFish = crispyFish ?: event.crispyFish
         )
         service.update(set)
         echo(view.render(set))

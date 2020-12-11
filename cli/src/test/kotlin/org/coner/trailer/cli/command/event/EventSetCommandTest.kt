@@ -152,7 +152,7 @@ class EventSetCommandTest {
         every { dbConfig.crispyFishDatabase } returns crispyFish
         every { service.findById(original.id) } returns original
         every { groupingService.findSingular(
-            crispyFishClassDefinitionFile = classDefinitionFile,
+            classDefinitionFile = classDefinitionFile,
             abbreviation = "HS"
         ) } returns participant.signage.grouping as Grouping.Singular
         every { personService.findById(person.id) } returns person
@@ -173,7 +173,7 @@ class EventSetCommandTest {
         verifySequence {
             service.findById(original.id)
             groupingService.findSingular(
-                crispyFishClassDefinitionFile = classDefinitionFile,
+                classDefinitionFile = classDefinitionFile,
                 abbreviation = "HS"
             )
             personService.findById(person.id)

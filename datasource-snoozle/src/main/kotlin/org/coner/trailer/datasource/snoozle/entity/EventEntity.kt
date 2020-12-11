@@ -14,10 +14,10 @@ data class EventEntity(
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
-            val forcePeople: List<ForceParticipant>
+            val forcePeople: List<ForcePerson>
     )
 
-    data class ForceParticipant(
+    data class ForcePerson(
         val signage: ParticipantEntity.Signage,
         val personId: UUID
     )

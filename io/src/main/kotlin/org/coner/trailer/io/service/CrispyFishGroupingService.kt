@@ -1,6 +1,7 @@
 package org.coner.trailer.io.service
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
+import org.coner.trailer.Event
 import org.coner.trailer.Grouping
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
@@ -19,18 +20,18 @@ class CrispyFishGroupingService(
     }
 
     fun findSingular(
-        crispyFishClassDefinitionFile: String,
+        crispyFish: Event.CrispyFishMetadata,
         abbreviation: String
     ) : Grouping.Singular {
         return findSingular(
-            allSingulars = loadAllSingulars(crispyFishClassDefinitionFile),
+            allSingulars = loadAllSingulars(crispyFish),
             abbreviation = abbreviation
         )
     }
 
     fun findPaired(
-        abbreviations: Pair<String, String>,
-        allSingulars: List<Grouping.Singular>
+        allSingulars: List<Grouping.Singular>,
+        abbreviations: Pair<String, String>
     ) : Grouping.Paired {
         val first = allSingulars.single { it.abbreviation == abbreviations.first }
         val second = allSingulars.single { it.abbreviation == abbreviations.second }
@@ -38,18 +39,18 @@ class CrispyFishGroupingService(
     }
 
     fun findPaired(
-        crispyFishClassDefinitionFile: String,
+        crispyFish: Event.CrispyFishMetadata,
         abbreviations: Pair<String, String>,
     ) : Grouping.Paired {
         return findPaired(
-            allSingulars = loadAllSingulars(crispyFishClassDefinitionFile),
+            allSingulars = loadAllSingulars(crispyFish),
             abbreviations = abbreviations
         )
     }
 
-    fun loadAllSingulars(crispyFishClassDefinitionFile: String): List<Grouping.Singular> {
+    fun loadAllSingulars(crispyFish: Event.CrispyFishMetadata): List<Grouping.Singular> {
         val allClassDefinitions = ClassDefinitionFile(
-            file = crispyFishRoot.resolve(crispyFishClassDefinitionFile)
+            file = crispyFishRoot.resolve(crispyFish.classDefinitionFile)
         ).mapper().all()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = allClassDefinitions,
