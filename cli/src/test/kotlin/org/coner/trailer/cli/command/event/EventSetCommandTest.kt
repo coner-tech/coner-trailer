@@ -9,10 +9,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.trailer.Event
-import org.coner.trailer.Grouping
 import org.coner.trailer.TestEvents
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView

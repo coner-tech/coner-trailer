@@ -37,8 +37,6 @@ class EventSetCommand(
 
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
-    private val groupingService: CrispyFishGroupingService by instance()
-    private val personService: PersonService by instance()
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
