@@ -7,14 +7,27 @@ class EventCrispyFishForcePersonService(
     private val personService: PersonService
 ) {
 
-    fun verify(
-        context: CrispyFishEventMappingContext
+    fun verifyRegistrations(
+        context: CrispyFishEventMappingContext,
+        failureCallback: EventCrispyFishForcePersonVerificationFailureCallback?
     ) {
         val clubMemberIdToPeople: Map<String?, List<Person>> = personService.list()
             .groupBy { it.clubMemberId }
         for (registration in context.allRegistrations) {
+            val memberNumber = registration.memberNumber
+            if (memberNumber.isNullOrEmpty()) {
+                failureCallback?.onRegistrationWithoutMemberNumber(registration)
+                continue
+            }
             val peopleWithMemberId = clubMemberIdToPeople[registration.memberNumber]
-            TODO("handle single person with member ID, or multiple people, or none")
+            if (peopleWithMemberId == null) {
+                failureCallback?.onPersonWithClubMemberIdNotFound(registration)
+                continue
+            }
+            if (peopleWithMemberId.size > 1) {
+                failureCallback?.onMultiplePeopleWithClubMemberIdFound(registration)
+                continue
+            }
         }
     }
 }
