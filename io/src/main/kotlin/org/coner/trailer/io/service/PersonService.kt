@@ -1,5 +1,6 @@
 package org.coner.trailer.io.service
 
+import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.snoozle.PersonResource
 import org.coner.trailer.datasource.snoozle.entity.PersonEntity
@@ -39,6 +40,19 @@ class PersonService(
                 .map(mapper::fromSnoozle)
                 .filter(filter)
                 .toList()
+    }
+
+    fun searchByNameFrom(registration: Registration): List<Person> {
+        val filter = FilterFirstNameEquals(registration.firstName, ignoreCase = true)
+            .and(FilterLastNameEquals(registration.lastName, ignoreCase = true))
+        return search(filter)
+            .sortedWith(compareBy(Person::lastName).thenBy(Person::firstName))
+    }
+
+    fun searchByClubMemberIdFrom(registration: Registration): List<Person> {
+        val filter = FilterMemberIdEquals(registration.memberNumber, ignoreCase = true)
+        return search(filter)
+            .sortedWith(compareBy(Person::lastName).thenBy(Person::firstName))
     }
 
     fun update(person: Person) {

@@ -126,7 +126,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         resource = instance(),
         mapper = instance(),
         persistConstraints = instance(),
-        deleteConstraints = instance()
+        deleteConstraints = instance(),
+        eventCrispyFishForcePersonVerification = instance()
     ) }
 
     // Groupings

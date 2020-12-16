@@ -68,7 +68,7 @@ class EventAddCommandTest {
     @Test
     fun `It should create event`() {
         val create = TestEvents.Lscc2019.points1
-        justRun { service.create(eq(create)) }
+        justRun { service.create(eq(create), null, any()) }
         val viewRendered = "view rendered ${create.id}"
         every { view.render(create) } returns viewRendered
 
@@ -79,7 +79,11 @@ class EventAddCommandTest {
         ))
 
         verifySequence {
-            service.create(eq(create))
+            service.create(
+                create = eq(create),
+                context = null,
+                eventCrispyFishForcePersonVerificationFailureCallback = any()
+            )
             view.render(eq(create))
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
@@ -97,7 +101,7 @@ class EventAddCommandTest {
             )
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
-        justRun { service.create(eq(create)) }
+        justRun { service.create(eq(create), any(), any()) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(eq(create)) } returns viewRendered
 
@@ -110,7 +114,11 @@ class EventAddCommandTest {
         ))
 
         verifySequence {
-            service.create(eq(create))
+            service.create(
+                create = eq(create),
+                context = any(),
+                eventCrispyFishForcePersonVerificationFailureCallback = any()
+            )
             view.render(eq(create))
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)

@@ -7,6 +7,7 @@ import org.coner.trailer.datasource.snoozle.entity.EventEntity
 import org.coner.trailer.io.constraint.EventDeleteConstraints
 import org.coner.trailer.io.constraint.EventPersistConstraints
 import org.coner.trailer.io.mapper.EventMapper
+import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
 import java.util.*
 import kotlin.streams.toList
 
@@ -15,19 +16,21 @@ class EventService(
     private val mapper: EventMapper,
     private val persistConstraints: EventPersistConstraints,
     private val deleteConstraints: EventDeleteConstraints,
-    private val eventCrispyFishForcePersonService: EventCrispyFishForcePersonService
+    private val eventCrispyFishForcePersonVerification: EventCrispyFishForcePersonVerification
 ) {
 
     fun create(
         create: Event,
-        context: CrispyFishEventMappingContext,
-        eventCrispyFishForcePersonVerificationFailureCallback: EventCrispyFishForcePersonVerificationFailureCallback
+        context: CrispyFishEventMappingContext?,
+        eventCrispyFishForcePersonVerificationFailureCallback: EventCrispyFishForcePersonVerification.FailureCallback?
     ) {
         persistConstraints.assess(create)
-        eventCrispyFishForcePersonService.verifyRegistrations(
-            context = context,
-            failureCallback = eventCrispyFishForcePersonVerificationFailureCallback
-        )
+        if (create.crispyFish != null) {
+            eventCrispyFishForcePersonVerification.verifyRegistrations(
+                context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
+                failureCallback = eventCrispyFishForcePersonVerificationFailureCallback
+            )
+        }
         resource.create(mapper.toSnoozle(create))
     }
 
