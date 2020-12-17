@@ -70,6 +70,7 @@ class EventAddCommand(
                 mustExist = true,
                 canBeFile = true,
                 canBeDir = false,
+                canBeSymlink = false,
                 mustBeReadable = true
             )
             .required()
@@ -83,6 +84,7 @@ class EventAddCommand(
                 mustExist = true,
                 canBeFile = true,
                 canBeDir = false,
+                canBeSymlink = false,
                 mustBeReadable = true
             )
             .required()
