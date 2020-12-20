@@ -16,8 +16,10 @@ import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -42,6 +44,7 @@ class EventAddCommandTest {
     @MockK lateinit var service: EventService
     @MockK lateinit var view: EventView
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
+    @MockK lateinit var crispyFishVerification: EventCrispyFishForcePersonVerification
 
     lateinit var testConsole: StringBufferConsole
 
@@ -58,6 +61,7 @@ class EventAddCommandTest {
                 bind<EventService>() with instance(service)
                 bind<EventView>() with instance(view)
                 bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
+                bind<EventCrispyFishForcePersonVerification>() with instance(crispyFishVerification)
             }
         ).apply {
             context {
@@ -93,17 +97,28 @@ class EventAddCommandTest {
     }
 
     @Test
-    fun `It should create event with crispy fish metadata`() {
+    fun `It should create event with crispy fish metadata`(
+        @MockK context: CrispyFishEventMappingContext
+    ) {
         val eventControlFile = crispyFishDatabase.resolve("event.ecf").createFile()
         val classDefinitionFile = crispyFishDatabase.resolve("class.def").createFile()
+        val crispyFish = Event.CrispyFishMetadata(
+            eventControlFile = crispyFishDatabase.relativize(eventControlFile).toString(),
+            classDefinitionFile = crispyFishDatabase.relativize(classDefinitionFile).toString(),
+            forcePeople = emptyMap()
+        )
         val create = TestEvents.Lscc2019.points1.copy(
-            crispyFish = Event.CrispyFishMetadata(
-                eventControlFile = crispyFishDatabase.relativize(eventControlFile).toString(),
-                classDefinitionFile = crispyFishDatabase.relativize(classDefinitionFile).toString(),
-                forcePeople = emptyMap()
-            )
+            crispyFish = crispyFish
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
+        every { crispyFishEventMappingContextService.load(
+            eventControlFilePath = eventControlFile,
+            classDefinitionFilePath = classDefinitionFile
+        ) } returns context
+        justRun { crispyFishVerification.verifyRegistrations(
+            context = context,
+            failureCallback = any()
+        ) }
         justRun { service.create(eq(create), any(), any()) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(eq(create)) } returns viewRendered
@@ -117,6 +132,10 @@ class EventAddCommandTest {
         ))
 
         verifySequence {
+            crispyFishEventMappingContextService.load(
+                eventControlFilePath = eventControlFile,
+                classDefinitionFilePath = classDefinitionFile
+            )
             service.create(
                 create = eq(create),
                 context = any(),
