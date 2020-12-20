@@ -17,6 +17,7 @@ class EventCrispyFishForcePersonVerification(
         val clubMemberIdToPeople: Map<String?, List<Person>> = personService.list()
             .groupBy { it.clubMemberId }
         for (registration in context.allRegistrations) {
+            TODO("check force people")
             val memberNumber = registration.memberNumber
             if (memberNumber.isNullOrEmpty()) {
                 failureCallback?.onRegistrationWithoutMemberNumber(registration)
