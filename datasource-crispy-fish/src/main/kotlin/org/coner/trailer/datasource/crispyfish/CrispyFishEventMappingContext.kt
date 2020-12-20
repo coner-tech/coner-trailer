@@ -2,6 +2,7 @@ package org.coner.trailer.datasource.crispyfish
 
 import org.coner.crispyfish.model.ClassDefinition
 import org.coner.crispyfish.model.Registration
+import java.nio.file.Path
 
 class CrispyFishEventMappingContext(
     allClassDefinitions: List<ClassDefinition>,
@@ -12,4 +13,11 @@ class CrispyFishEventMappingContext(
             classDefinition.abbreviation to index
         }
         .toMap()
+
+    data class Key(
+        val eventControlFile: Path,
+        val classDefinitionFile: Path
+    ) {
+
+    }
 }

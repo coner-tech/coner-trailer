@@ -22,6 +22,7 @@ import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
@@ -48,6 +49,7 @@ class EventAddCommand(
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
     private val view: EventView by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val personService: PersonService by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
     private val crispyFishVerification: EventCrispyFishForcePersonVerification by instance()
@@ -107,16 +109,26 @@ class EventAddCommand(
                 throw Abort()
             }
         }
-        val crispyFish = crispyFishOptions?.let { assembleCrispyFish(it) }
+        val crispyFishPair = crispyFishOptions?.let { options ->
+            val context = crispyFishEventMappingContextService.load(
+                    eventControlFilePath = options.eventControlFile,
+                    classDefinitionFilePath = options.classDefinitionFile
+                )
+            val crispyFish = assembleCrispyFish(
+                options = options,
+                context = context
+            )
+            crispyFish to context
+        }
         val create = Event(
             id = id,
             name = name,
             date = date,
-            crispyFish = crispyFish
+            crispyFish = crispyFishPair?.first
         )
         service.create(
             create = create,
-            context = crispyFishOptions?.let { buildCrispyFishContext(it) },
+            context = crispyFishPair?.second,
             eventCrispyFishForcePersonVerificationFailureCallback = object : EventCrispyFishForcePersonVerification.FailureCallback {
                 override fun onRegistrationWithoutMemberNumber(registration: Registration) {
                     fail(registration)
@@ -140,27 +152,15 @@ class EventAddCommand(
         echo(view.render(create))
     }
 
-    private fun buildCrispyFishContext(options: CrispyFishOptions): CrispyFishEventMappingContext {
-        val classDefinitionFile = ClassDefinitionFile(options.classDefinitionFile.toFile())
-        val eventControlFile = EventControlFile(
-            file = options.eventControlFile.toFile(),
-            classDefinitionFile = classDefinitionFile,
-            isTwoDayEvent = false,
-            conePenalty = 2
-        )
-        return CrispyFishEventMappingContext(
-            allClassDefinitions = classDefinitionFile.mapper().all(),
-            allRegistrations = eventControlFile.queryRegistrations()
-        )
-    }
-
-    private fun assembleCrispyFish(options: CrispyFishOptions): Event.CrispyFishMetadata {
+    private fun assembleCrispyFish(
+        options: CrispyFishOptions,
+        context: CrispyFishEventMappingContext
+    ): Event.CrispyFishMetadata {
         val initial = Event.CrispyFishMetadata(
             eventControlFile = dbConfig.crispyFishDatabase.relativize(options.eventControlFile).toString(),
             classDefinitionFile = dbConfig.crispyFishDatabase.relativize(options.classDefinitionFile).toString(),
             forcePeople = emptyMap()
         )
-        val context = buildCrispyFishContext(options)
         val forcePeople = mutableMapOf<Participant.Signage, Person>()
         crispyFishVerification.verifyRegistrations(context, object  : EventCrispyFishForcePersonVerification.FailureCallback {
 
@@ -239,10 +239,6 @@ class EventAddCommand(
         return initial.copy(
             forcePeople = forcePeople
         )
-    }
-
-    private fun filterPeopleByClubMemberId(registration: Registration): Predicate<Person> {
-        return PersonService.FilterMemberIdEquals(registration.memberNumber, ignoreCase = true)
     }
 
 }

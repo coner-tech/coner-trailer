@@ -16,6 +16,7 @@ import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,6 +41,7 @@ class EventAddCommandTest {
     @MockK lateinit var dbConfig: DatabaseConfiguration
     @MockK lateinit var service: EventService
     @MockK lateinit var view: EventView
+    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
 
     lateinit var testConsole: StringBufferConsole
 
@@ -55,6 +57,7 @@ class EventAddCommandTest {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
                 bind<EventView>() with instance(view)
+                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             }
         ).apply {
             context {
