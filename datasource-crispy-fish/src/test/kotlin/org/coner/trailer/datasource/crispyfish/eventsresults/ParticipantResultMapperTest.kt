@@ -10,14 +10,12 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.coner.crispyfish.model.RegistrationResult
-import org.coner.trailer.TestEvents
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPeople
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
-import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.AfterEach
@@ -27,7 +25,7 @@ import org.junit.jupiter.api.Test
 class ParticipantResultMapperTest {
 
     @MockK
-    private lateinit var participantMapper: ParticipantMapper
+    private lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
 
     @BeforeEach
     fun before() {
@@ -50,7 +48,7 @@ class ParticipantResultMapperTest {
             classResult = noRegistrationResult
         )
         val participantResultMapper = ParticipantResultMapper(
-            participantMapper,
+            crispyFishParticipantMapper,
             memberIdToPeople = emptyMap()
         )
         val context = CrispyFishEventMappingContext(
@@ -79,7 +77,7 @@ class ParticipantResultMapperTest {
             allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
         )
         every {
-            participantMapper.toCore(
+            crispyFishParticipantMapper.toCore(
                 context = context,
                 fromRegistration = registration,
                 withPerson = expectedPerson
@@ -99,7 +97,7 @@ class ParticipantResultMapperTest {
             )
         }.returns(expectedScoredRuns)
         val participantResultMapper = ParticipantResultMapper(
-            participantMapper,
+            crispyFishParticipantMapper,
             memberIdToPeople
         )
 

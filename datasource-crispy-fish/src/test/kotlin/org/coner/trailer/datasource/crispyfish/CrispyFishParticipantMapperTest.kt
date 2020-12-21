@@ -12,9 +12,9 @@ import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ParticipantMapperTest {
+class CrispyFishParticipantMapperTest {
 
-    lateinit var mapper: ParticipantMapper
+    lateinit var mapper: CrispyFishParticipantMapper
 
     lateinit var context: CrispyFishEventMappingContext
 
@@ -24,7 +24,7 @@ class ParticipantMapperTest {
     @BeforeEach
     fun before() {
         MockKAnnotations.init(this)
-        mapper = ParticipantMapper(crispyFishGroupingMapper)
+        mapper = CrispyFishParticipantMapper(crispyFishGroupingMapper)
         context = CrispyFishEventMappingContext(
             allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
             allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)

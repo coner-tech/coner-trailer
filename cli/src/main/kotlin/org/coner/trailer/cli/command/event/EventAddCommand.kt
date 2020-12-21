@@ -8,8 +8,6 @@ import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
-import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import org.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Participant
@@ -21,7 +19,7 @@ import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
@@ -32,7 +30,6 @@ import org.kodein.di.instance
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
-import java.util.function.Predicate
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.extension
 
@@ -53,7 +50,7 @@ class EventAddCommand(
     private val personService: PersonService by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
     private val crispyFishVerification: EventCrispyFishForcePersonVerification by instance()
-    private val crispyFishParticipantMapper: ParticipantMapper by instance()
+    private val crispyFishParticipantMapper: CrispyFishParticipantMapper by instance()
     private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
 
     private val id: UUID by option(hidden = true)

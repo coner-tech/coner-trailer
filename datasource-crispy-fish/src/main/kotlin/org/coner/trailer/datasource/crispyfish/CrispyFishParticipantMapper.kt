@@ -5,7 +5,7 @@ import org.coner.trailer.Car
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 
-class ParticipantMapper(
+class CrispyFishParticipantMapper(
         private val crispyFishGroupingMapper: CrispyFishGroupingMapper
 ) {
 

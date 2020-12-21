@@ -4,11 +4,11 @@ import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
 
 class ParticipantResultMapper(
-    private val participantMapper: ParticipantMapper,
+    private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
     private val memberIdToPeople: Map<String, Person>
 ) {
 
@@ -29,7 +29,7 @@ class ParticipantResultMapper(
                 cfResult = cfResult,
                 scoredRuns = scoredRuns
             ),
-            participant = participantMapper.toCore(
+            participant = crispyFishParticipantMapper.toCore(
                 context = context,
                 fromRegistration = cfRegistration,
                 withPerson = memberIdToPeople[cfRegistration.memberNumber]

@@ -7,7 +7,7 @@ import org.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
-import org.coner.trailer.datasource.crispyfish.ParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import java.io.File
 
@@ -37,7 +37,7 @@ class EventFixture(
     ).query()
 
     val participantResultMapper = ParticipantResultMapper(
-            participantMapper = ParticipantMapper(
+            participantMapper = CrispyFishParticipantMapper(
                     crispyFishGroupingMapper = crispyFishGroupingMapper
             ),
             memberIdToPeople = memberIdToPeople
