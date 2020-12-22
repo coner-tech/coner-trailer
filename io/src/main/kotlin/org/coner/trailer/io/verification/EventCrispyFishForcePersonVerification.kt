@@ -30,7 +30,7 @@ class EventCrispyFishForcePersonVerification(
             }
             val memberNumber = registration.memberNumber
             if (memberNumber.isNullOrEmpty()) {
-                failureCallback?.onRegistrationWithoutMemberNumber(registration)
+                failureCallback?.onRegistrationWithoutClubMemberId(registration)
                 success = false
                 continue
             }
@@ -53,7 +53,7 @@ class EventCrispyFishForcePersonVerification(
 
 
     interface FailureCallback {
-        fun onRegistrationWithoutMemberNumber(registration: Registration)
+        fun onRegistrationWithoutClubMemberId(registration: Registration)
         fun onPersonWithClubMemberIdNotFound(registration: Registration)
         fun onMultiplePeopleWithClubMemberIdFound(registration: Registration)
     }

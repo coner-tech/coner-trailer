@@ -127,7 +127,7 @@ class EventAddCommand(
             create = create,
             context = crispyFishPair?.second,
             eventCrispyFishForcePersonVerificationFailureCallback = object : EventCrispyFishForcePersonVerification.FailureCallback {
-                override fun onRegistrationWithoutMemberNumber(registration: Registration) {
+                override fun onRegistrationWithoutClubMemberId(registration: Registration) {
                     fail(registration)
                 }
 
@@ -161,7 +161,7 @@ class EventAddCommand(
         val forcePeople = mutableMapOf<Participant.Signage, Person>()
         crispyFishVerification.verifyRegistrations(context, initial.forcePeople, object  : EventCrispyFishForcePersonVerification.FailureCallback {
 
-            override fun onRegistrationWithoutMemberNumber(registration: Registration) {
+            override fun onRegistrationWithoutClubMemberId(registration: Registration) {
                 echo("Found registration without club member ID")
                 echo(crispyFishRegistrationView.render(registration))
                 val suggestions = personService.searchByNameFrom(registration)
