@@ -25,9 +25,10 @@ class EventService(
         eventCrispyFishForcePersonVerificationFailureCallback: EventCrispyFishForcePersonVerification.FailureCallback?
     ) {
         persistConstraints.assess(create)
-        if (create.crispyFish != null) {
+        create.crispyFish?.also {
             eventCrispyFishForcePersonVerification.verifyRegistrations(
                 context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
+                forcePeople = it.forcePeople,
                 failureCallback = eventCrispyFishForcePersonVerificationFailureCallback
             )
         }

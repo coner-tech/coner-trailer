@@ -37,7 +37,7 @@ class EventFixture(
     ).query()
 
     val participantResultMapper = ParticipantResultMapper(
-            participantMapper = CrispyFishParticipantMapper(
+            crispyFishParticipantMapper = CrispyFishParticipantMapper(
                     crispyFishGroupingMapper = crispyFishGroupingMapper
             ),
             memberIdToPeople = memberIdToPeople

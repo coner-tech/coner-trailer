@@ -159,7 +159,7 @@ class EventAddCommand(
             forcePeople = emptyMap()
         )
         val forcePeople = mutableMapOf<Participant.Signage, Person>()
-        crispyFishVerification.verifyRegistrations(context, object  : EventCrispyFishForcePersonVerification.FailureCallback {
+        crispyFishVerification.verifyRegistrations(context, initial.forcePeople, object  : EventCrispyFishForcePersonVerification.FailureCallback {
 
             override fun onRegistrationWithoutMemberNumber(registration: Registration) {
                 echo("Found registration without club member ID")

@@ -117,6 +117,7 @@ class EventAddCommandTest {
         ) } returns context
         justRun { crispyFishVerification.verifyRegistrations(
             context = context,
+            forcePeople = crispyFish.forcePeople,
             failureCallback = any()
         ) }
         justRun { service.create(eq(create), any(), any()) }
