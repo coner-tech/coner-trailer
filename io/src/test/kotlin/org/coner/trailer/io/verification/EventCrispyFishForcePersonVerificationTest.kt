@@ -28,4 +28,19 @@ class EventCrispyFishForcePersonVerificationTest {
     fun `It should verify sufficiently uniquely identifiable people's registrations`() {
         TODO()
     }
+
+    @Test
+    fun `It should fail when registration lacks club member ID`() {
+        TODO()
+    }
+
+    @Test
+    fun `It should fail when person with registration's club member ID is not found`() {
+        TODO()
+    }
+
+    @Test
+    fun `It should fail when there are multiple people with registration's club member ID`() {
+        TODO()
+    }
 }
