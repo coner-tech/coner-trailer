@@ -25,7 +25,7 @@ class EventCrispyFishForcePersonVerificationTest {
     }
 
     @Test
-    fun `It should verify sufficiently uniquely identifiable people's registrations`() {
+    fun `It should pass registrations with forced people`() {
         TODO()
     }
 
