@@ -6,6 +6,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
@@ -36,8 +37,41 @@ class EventCrispyFishForcePersonVerificationTest {
         @MockK context: CrispyFishEventMappingContext,
         @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
     ) {
-        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+            memberNumber = null
+        )
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
+            person = null
+        )
+        val person = TestPeople.REBECCA_JACKSON
+        val forcePeople = mapOf(participant.signage to person)
+        val allRegistrations = listOf(registration)
+        every { context.allRegistrations } returns allRegistrations
+        every { personService.list() } returns listOf(person)
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        } returns participant.signage
+
+        assertDoesNotThrow {
+            verification.verifyRegistrations(
+                context = context,
+                forcePeople = forcePeople,
+                failureCallback = failureCallback
+            )
+        }
+
+        verifySequence {
+            personService.list()
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        }
+    }
+
         val person = checkNotNull(participant.person)
         val forcePeople = mapOf(participant.signage to person)
         val allRegistrations = listOf(registration)
