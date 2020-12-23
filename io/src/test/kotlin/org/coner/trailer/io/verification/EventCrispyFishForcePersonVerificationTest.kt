@@ -3,8 +3,11 @@ package org.coner.trailer.io.verification
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.crispyfish.model.Registration
+import org.coner.trailer.Participant
+import org.coner.trailer.Person
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -14,6 +17,7 @@ import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
@@ -72,8 +76,19 @@ class EventCrispyFishForcePersonVerificationTest {
         }
     }
 
-        val person = checkNotNull(participant.person)
-        val forcePeople = mapOf(participant.signage to person)
+    @Test
+    fun `It should fail when registration lacks club member ID`(
+        @MockK context: CrispyFishEventMappingContext,
+        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+    ) {
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+            memberNumber = null
+        )
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
+            person = null
+        )
+        val person = TestPeople.REBECCA_JACKSON
+        val forcePeople = emptyMap<Participant.Signage, Person>()
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns listOf(person)
@@ -83,8 +98,9 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
+        justRun { failureCallback.onRegistrationWithoutClubMemberId(registration) }
 
-        assertDoesNotThrow {
+        assertThrows<VerificationException> {
             verification.verifyRegistrations(
                 context = context,
                 forcePeople = forcePeople,
@@ -98,12 +114,8 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
+            failureCallback.onRegistrationWithoutClubMemberId(registration)
         }
-    }
-
-    @Test
-    fun `It should fail when registration lacks club member ID`() {
-        TODO()
     }
 
     @Test
