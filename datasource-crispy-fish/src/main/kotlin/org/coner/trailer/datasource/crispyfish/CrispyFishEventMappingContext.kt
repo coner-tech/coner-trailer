@@ -17,7 +17,5 @@ class CrispyFishEventMappingContext(
     data class Key(
         val eventControlFile: Path,
         val classDefinitionFile: Path
-    ) {
-
-    }
+    )
 }

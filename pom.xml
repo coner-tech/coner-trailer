@@ -18,6 +18,7 @@
         <module>api-client-motorsportreg</module>
         <module>datasource-motorsportreg</module>
         <module>api-client-motorsportreg-test</module>
+        <module>datasource-crispy-fish-test</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package org.coner.trailer.datasource.crispyfish.eventsresults
+package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
@@ -15,7 +15,8 @@ import org.coner.trailer.TestPeople
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.datasource.crispyfish.TestRegistrations
+import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.AfterEach
@@ -42,7 +43,7 @@ class ParticipantResultMapperTest {
     fun `It should map (core) ParticipantResult? to null when (CF) RegistrationResult position is null`() {
         // indicates a registration for which no result is available
         val noRegistrationResult = RegistrationResult(time = "", position = null)
-        val registration = TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(
+        val registration = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(
             rawResult = noRegistrationResult,
             paxResult = noRegistrationResult,
             classResult = noRegistrationResult
@@ -67,7 +68,7 @@ class ParticipantResultMapperTest {
 
     @Test
     fun `It should map (core) ParticipantResult from (CF) Registration, arbitrary RegistrationResult, and Map of MemberId to People`() {
-        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val registration = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val result = registration.classResult
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON

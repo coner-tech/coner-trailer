@@ -1,11 +1,18 @@
 package org.coner.trailer.io.verification
 
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verifySequence
+import org.coner.crispyfish.model.Registration
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
@@ -25,8 +32,39 @@ class EventCrispyFishForcePersonVerificationTest {
     }
 
     @Test
-    fun `It should pass registrations with forced people`() {
-        TODO()
+    fun `It should pass registrations with forced people`(
+        @MockK context: CrispyFishEventMappingContext,
+        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+    ) {
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val person = checkNotNull(participant.person)
+        val forcePeople = mapOf(participant.signage to person)
+        val allRegistrations = listOf(registration)
+        every { context.allRegistrations } returns allRegistrations
+        every { personService.list() } returns listOf(person)
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        } returns participant.signage
+
+        assertDoesNotThrow {
+            verification.verifyRegistrations(
+                context = context,
+                forcePeople = forcePeople,
+                failureCallback = failureCallback
+            )
+        }
+
+        verifySequence {
+            personService.list()
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        }
     }
 
     @Test

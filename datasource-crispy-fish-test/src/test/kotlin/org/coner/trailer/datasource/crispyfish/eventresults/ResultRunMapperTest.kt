@@ -1,9 +1,10 @@
-package org.coner.trailer.datasource.crispyfish.eventsresults
+package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isTrue
 import org.coner.crispyfish.model.RegistrationRun
+import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
 
@@ -17,9 +18,9 @@ class ResultRunMapperTest {
         )
 
         val actual = ResultRunMapper.map(
-                crispyFishRegistrationRun = run, // Run #2
-                crispyFishRegistrationRunIndex = 1, // Run #2
-                crispyFishRegistrationBestRun = 3 // Run #3
+            crispyFishRegistrationRun = run, // Run #2
+            crispyFishRegistrationRunIndex = 1, // Run #2
+            crispyFishRegistrationBestRun = 3 // Run #3
         )
 
         assertThat(actual).all {
@@ -36,9 +37,9 @@ class ResultRunMapperTest {
         )
 
         val actual = ResultRunMapper.map(
-                crispyFishRegistrationRun = run,
-                crispyFishRegistrationRunIndex = 1,
-                crispyFishRegistrationBestRun = 3
+            crispyFishRegistrationRun = run,
+            crispyFishRegistrationRunIndex = 1,
+            crispyFishRegistrationBestRun = 3
         )
 
         assertThat(actual).hasCones(3)
@@ -52,9 +53,9 @@ class ResultRunMapperTest {
         )
 
         val actual = ResultRunMapper.map(
-                crispyFishRegistrationRun = run,
-                crispyFishRegistrationRunIndex = 1,
-                crispyFishRegistrationBestRun = 3
+            crispyFishRegistrationRun = run,
+            crispyFishRegistrationRunIndex = 1,
+            crispyFishRegistrationBestRun = 3
         )
 
         assertThat(actual).didNotFinish().isTrue()
@@ -68,9 +69,9 @@ class ResultRunMapperTest {
         )
 
         val actual = ResultRunMapper.map(
-                crispyFishRegistrationRun = run,
-                crispyFishRegistrationRunIndex = 1,
-                crispyFishRegistrationBestRun = 3
+            crispyFishRegistrationRun = run,
+            crispyFishRegistrationRunIndex = 1,
+            crispyFishRegistrationBestRun = 3
         )
 
         assertThat(actual).disqualified().isTrue()

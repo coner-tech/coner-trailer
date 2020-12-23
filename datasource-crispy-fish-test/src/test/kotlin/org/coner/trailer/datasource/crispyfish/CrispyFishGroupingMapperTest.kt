@@ -39,7 +39,7 @@ class CrispyFishGroupingMapperTest {
 
     @Test
     fun `It should map open class registrations`() {
-        val input = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val input = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
 
         val actual = mapper.toCore(context, input)
 
@@ -53,7 +53,7 @@ class CrispyFishGroupingMapperTest {
 
     @Test
     fun `It should map paxed class registrations`() {
-        val input = TestRegistrations.Lscc2019Points1.BRANDY_HUFF
+        val input = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.BRANDY_HUFF
 
         val actual = mapper.toCore(context, input)
 
