@@ -119,8 +119,42 @@ class EventCrispyFishForcePersonVerificationTest {
     }
 
     @Test
-    fun `It should fail when person with registration's club member ID is not found`() {
-        TODO()
+    fun `It should fail when person with registration's club member ID is not found`(
+        @MockK context: CrispyFishEventMappingContext,
+        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+    ) {
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
+            person = null
+        )
+        val forcePeople = emptyMap<Participant.Signage, Person>()
+        val allRegistrations = listOf(registration)
+        every { context.allRegistrations } returns allRegistrations
+        every { personService.list() } returns emptyList()
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        } returns participant.signage
+        justRun { failureCallback.onPersonWithClubMemberIdNotFound(registration) }
+
+        assertThrows<VerificationException> {
+            verification.verifyRegistrations(
+                context = context,
+                forcePeople = forcePeople,
+                failureCallback = failureCallback
+            )
+        }
+
+        verifySequence {
+            personService.list()
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+            failureCallback.onPersonWithClubMemberIdNotFound(registration)
+        }
     }
 
     @Test
