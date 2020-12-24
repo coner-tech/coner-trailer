@@ -158,7 +158,67 @@ class EventCrispyFishForcePersonVerificationTest {
     }
 
     @Test
-    fun `It should fail when there are multiple people with registration's club member ID`() {
-        TODO()
+    fun `It should fail when there are multiple people with registration's club member ID`(
+        @MockK context: CrispyFishEventMappingContext,
+        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+    ) {
+        val registrations = listOf(
+            TestRegistrations.Lscc2019Points1.REBECCA_JACKSON,
+            TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(
+                memberNumber = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.memberNumber
+            )
+        )
+        val participants = listOf(
+            TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
+                person = null
+            ),
+            TestParticipants.Lscc2019Points1.BRANDY_HUFF.copy(
+                person = null
+            )
+        )
+        val people = listOf(
+            TestPeople.REBECCA_JACKSON,
+            TestPeople.BRANDY_HUFF.copy(
+                clubMemberId = TestPeople.REBECCA_JACKSON.clubMemberId
+            )
+        )
+        val forcePeople = emptyMap<Participant.Signage, Person>()
+        every { context.allRegistrations } returns registrations
+        every { personService.list() } returns people
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registrations[0]
+            )
+        } returns participants[0].signage
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registrations[1]
+            )
+        } returns participants[1].signage
+        justRun { failureCallback.onMultiplePeopleWithClubMemberIdFound(any()) }
+
+        assertThrows<VerificationException> {
+            verification.verifyRegistrations(
+                context = context,
+                forcePeople = forcePeople,
+                failureCallback = failureCallback
+            )
+        }
+
+        verifySequence {
+            personService.list()
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registrations[0]
+            )
+            failureCallback.onMultiplePeopleWithClubMemberIdFound(registrations[0])
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registrations[1]
+            )
+            failureCallback.onMultiplePeopleWithClubMemberIdFound(registrations[1])
+        }
     }
 }
