@@ -29,4 +29,5 @@ val viewModule = DI.Module("view") {
     bind<SeasonTableView>() with provider { SeasonTableView() }
     bind<EventView>() with provider { EventView() }
     bind<EventTableView>() with provider { EventTableView() }
+    bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
 }

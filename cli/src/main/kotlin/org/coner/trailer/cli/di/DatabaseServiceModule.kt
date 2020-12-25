@@ -2,15 +2,20 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
+import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
+import kotlin.io.path.ExperimentalPathApi
 
+@OptIn(ExperimentalPathApi::class)
 fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("service") {
     bind<DatabaseConfiguration>() with instance(databaseConfiguration)
     bind<ConerTrailerDatabase>() with singleton { ConerTrailerDatabase(
@@ -128,6 +133,18 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         persistConstraints = instance(),
         deleteConstraints = instance(),
         eventCrispyFishForcePersonVerification = instance()
+    ) }
+    bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints() }
+    bind<CrispyFishPersonMapper>() with singleton { CrispyFishPersonMapper() }
+    bind<CrispyFishParticipantMapper>() with singleton { CrispyFishParticipantMapper(
+        crispyFishGroupingMapper = instance()
+    ) }
+    bind<EventCrispyFishForcePersonVerification>() with singleton { EventCrispyFishForcePersonVerification(
+        personService = instance(),
+        crispyFishParticipantMapper = instance()
+    ) }
+    bind<CrispyFishEventMappingContextService>() with singleton { CrispyFishEventMappingContextService(
+        loadConstraints = instance()
     ) }
 
     // Groupings

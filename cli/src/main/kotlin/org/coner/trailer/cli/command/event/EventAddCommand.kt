@@ -55,12 +55,12 @@ class EventAddCommand(
 
     private val id: UUID by option(hidden = true)
         .convert { toUuid(it) }
-        .default(UUID.randomUUID())
+        .prompt(default = "${UUID.randomUUID()}")
     private val name: String by option()
-        .required()
+        .prompt()
     private val date: LocalDate by option()
         .convert { toLocalDate(it) }
-        .required()
+        .prompt()
 
     class CrispyFishOptions : OptionGroup() {
 
@@ -169,14 +169,14 @@ class EventAddCommand(
             }
 
             override fun onPersonWithClubMemberIdNotFound(registration: Registration) {
-                echo("Registration club member ID did not match any people")
+                echo("Found registration with club member ID that didn't match any people")
                 echo(crispyFishRegistrationView.render(registration))
                 val suggestions = personService.searchByNameFrom(registration)
                 handleAmbiguousRegistration(registration, suggestions)
             }
 
             override fun onMultiplePeopleWithClubMemberIdFound(registration: Registration) {
-                echo("Registration with club member ID matched multiple people")
+                echo("Found registration with club member ID that matched multiple people")
                 echo(crispyFishRegistrationView.render(registration))
                 val suggestions = personService.searchByClubMemberIdFrom(registration)
                 handleAmbiguousRegistration(registration, suggestions)
