@@ -4,14 +4,16 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isDataClassEqualTo
 import assertk.assertions.isEqualToIgnoringGivenProperties
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(MockKExtension::class)
 class CrispyFishParticipantMapperTest {
 
     lateinit var mapper: CrispyFishParticipantMapper
@@ -23,7 +25,6 @@ class CrispyFishParticipantMapperTest {
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         mapper = CrispyFishParticipantMapper(crispyFishGroupingMapper)
         context = CrispyFishEventMappingContext(
             allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
@@ -49,7 +50,7 @@ class CrispyFishParticipantMapperTest {
 
     @Test
     fun `It should map (core) Participant from (CF) Registration without (core) Person`() {
-        val inputRegistration = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val inputRegistration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = null
         every {
             crispyFishGroupingMapper.toCore(

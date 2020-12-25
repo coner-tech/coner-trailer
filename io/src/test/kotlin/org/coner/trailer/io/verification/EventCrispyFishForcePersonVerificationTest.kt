@@ -5,7 +5,6 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 import org.coner.trailer.TestParticipants
