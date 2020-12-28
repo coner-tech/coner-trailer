@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
+import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.crispyfish.model.Registration
@@ -72,7 +73,7 @@ class EventAddCommand(
                 canBeSymlink = false,
                 mustBeReadable = true
             )
-            .required()
+            .prompt()
             .validate {
                 if (it.extension != "ecf") {
                     fail("Must be a .ecf file")
@@ -86,27 +87,25 @@ class EventAddCommand(
                 canBeSymlink = false,
                 mustBeReadable = true
             )
-            .required()
+            .prompt()
             .validate {
                 if (it.extension != "def") {
                     fail("Must be a .def file")
                 }
             }
     }
-    private val crispyFishOptions: CrispyFishOptions? by CrispyFishOptions().cooccurring()
+    private val crispyFishOptions: CrispyFishOptions by CrispyFishOptions()
 
     override fun run() {
-        crispyFishOptions?.also {
-            if (!it.eventControlFile.startsWith(dbConfig.crispyFishDatabase)) {
-                echo("Event Control File must be within the crispy fish database")
-                throw Abort()
-            }
-            if (!it.classDefinitionFile.startsWith(dbConfig.crispyFishDatabase)) {
-                echo("Class Definition File must be within the crispy fish database")
-                throw Abort()
-            }
+        if (!crispyFishOptions.eventControlFile.startsWith(dbConfig.crispyFishDatabase)) {
+            echo("Event Control File must be within the crispy fish database")
+            throw Abort()
         }
-        val crispyFishPair = crispyFishOptions?.let { options ->
+        if (!crispyFishOptions.classDefinitionFile.startsWith(dbConfig.crispyFishDatabase)) {
+            echo("Class Definition File must be within the crispy fish database")
+            throw Abort()
+        }
+        val crispyFishPair = crispyFishOptions.let { options ->
             val context = crispyFishEventMappingContextService.load(
                     eventControlFilePath = options.eventControlFile,
                     classDefinitionFilePath = options.classDefinitionFile
@@ -121,11 +120,11 @@ class EventAddCommand(
             id = id,
             name = name,
             date = date,
-            crispyFish = crispyFishPair?.first
+            crispyFish = crispyFishPair.first
         )
         service.create(
             create = create,
-            context = crispyFishPair?.second,
+            context = crispyFishPair.second,
             eventCrispyFishForcePersonVerificationFailureCallback = object : EventCrispyFishForcePersonVerification.FailureCallback {
                 override fun onRegistrationWithoutClubMemberId(registration: Registration) {
                     fail(registration)
@@ -194,11 +193,11 @@ class EventAddCommand(
                 val abort = suggestions.size + 4
                 val person = requireNotNull(prompt(
                     text = """
-                    ${if (suggestionsOutput.isNotEmpty()) suggestionsOutput else "No suggestions"}    
-                    $providePersonId: Provide person ID
-                    $createNewPerson: Create new person from registration
-                    $abort: Abort
-                    """.trimIndent(),
+                    |${if (suggestionsOutput.isNotEmpty()) suggestionsOutput else "No suggestions"}    
+                    |$providePersonId: Provide person ID
+                    |$createNewPerson: Create new person from registration
+                    |$abort: Abort
+                    """.trimMargin(),
                     promptSuffix = "",
                     convert = { input ->
                         val decision = input.toIntOrNull()
