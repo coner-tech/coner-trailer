@@ -144,6 +144,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishParticipantMapper = instance()
     ) }
     bind<CrispyFishEventMappingContextService>() with singleton { CrispyFishEventMappingContextService(
+        crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
         loadConstraints = instance()
     ) }
 

@@ -9,6 +9,7 @@ import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
 class CrispyFishEventMappingContextService(
+    private val crispyFishDatabase: Path,
     private val loadConstraints: CrispyFishLoadConstraints
 ) {
 
@@ -17,13 +18,13 @@ class CrispyFishEventMappingContextService(
         classDefinitionFilePath: Path
     ): CrispyFishEventMappingContext {
         val key = CrispyFishEventMappingContext.Key(
-            eventControlFile = eventControlFilePath,
-            classDefinitionFile = classDefinitionFilePath
+            eventControlFile = crispyFishDatabase.resolve(eventControlFilePath),
+            classDefinitionFile = crispyFishDatabase.resolve(classDefinitionFilePath)
         )
         loadConstraints.assess(key)
-        val classDefinitionFile = ClassDefinitionFile(classDefinitionFilePath.toFile())
+        val classDefinitionFile = ClassDefinitionFile(key.classDefinitionFile.toFile())
         val eventControlFile = EventControlFile(
-            file = eventControlFilePath.toFile(),
+            file = key.eventControlFile.toFile(),
             classDefinitionFile = classDefinitionFile,
             isTwoDayEvent = false,
             conePenalty = 2
