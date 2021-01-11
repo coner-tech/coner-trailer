@@ -8,6 +8,7 @@ data class EventEntity(
         val id: UUID,
         val name: String,
         val date: LocalDate,
+        val lifecycle: String,
         val crispyFish: CrispyFishMetadata?
 ) : Entity<EventEntity.Key> {
 

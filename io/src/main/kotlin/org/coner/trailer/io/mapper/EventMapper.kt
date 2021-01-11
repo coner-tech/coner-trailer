@@ -19,6 +19,7 @@ class EventMapper(
             id = snoozle.id,
             name = snoozle.name,
             date = snoozle.date,
+            lifecycle = Event.Lifecycle.valueOf(snoozle.lifecycle),
             crispyFish = snoozle.crispyFish?.let {
                 val phaseOne = Event.CrispyFishMetadata(
                     eventControlFile = it.eventControlFile,
@@ -59,6 +60,7 @@ class EventMapper(
             id = core.id,
             name = core.name,
             date = core.date,
+            lifecycle = core.lifecycle.toString(),
             crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,

@@ -20,18 +20,9 @@ class EventService(
 ) {
 
     fun create(
-        create: Event,
-        context: CrispyFishEventMappingContext?,
-        eventCrispyFishForcePersonVerificationFailureCallback: EventCrispyFishForcePersonVerification.FailureCallback?
+        create: Event
     ) {
         persistConstraints.assess(create)
-        create.crispyFish?.also {
-            eventCrispyFishForcePersonVerification.verifyRegistrations(
-                context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
-                forcePeople = it.forcePeople,
-                failureCallback = eventCrispyFishForcePersonVerificationFailureCallback
-            )
-        }
         resource.create(mapper.toSnoozle(create))
     }
 
@@ -54,8 +45,32 @@ class EventService(
                 .toList()
     }
 
-    fun update(update: Event) {
+    /**
+     * Persist an updated Event.
+     *
+     * @param[update] Event to persist
+     * @param[context] CrispyFishEventMappingContext the full mapping context for the event. Only required when lifecycle >= ACTIVE
+     * @param[eventCrispyFishForcePersonVerificationFailureCallback] Failure callback for crispy fish force person verification
+     */
+    fun update(
+        update: Event,
+        context: CrispyFishEventMappingContext?,
+        eventCrispyFishForcePersonVerificationFailureCallback: EventCrispyFishForcePersonVerification.FailureCallback?
+    ) {
         persistConstraints.assess(update)
+        val doCrispyFishForceVerification = when (update.lifecycle) {
+            Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> false
+            Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> true
+        }
+        if (doCrispyFishForceVerification) {
+            update.crispyFish?.also {
+                eventCrispyFishForcePersonVerification.verifyRegistrations(
+                    context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
+                    forcePeople = it.forcePeople,
+                    failureCallback = eventCrispyFishForcePersonVerificationFailureCallback
+                )
+            }
+        }
         resource.update(mapper.toSnoozle(update))
     }
 

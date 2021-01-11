@@ -17,10 +17,10 @@ class SeasonEventTest {
 
         assertDoesNotThrow {
             SeasonEvent(
-                    event = event,
-                    eventNumber = null, // important
-                    points = false, // important
-                    seasonPointsCalculatorConfiguration = null
+                event = event,
+                eventNumber = null, // important
+                points = false, // important
+                seasonPointsCalculatorConfiguration = null
             )
         }
     }
@@ -31,10 +31,10 @@ class SeasonEventTest {
 
         assertThrows<IllegalArgumentException> {
             SeasonEvent(
-                    event = event,
-                    eventNumber = null, // important
-                    points = true, // important
-                    seasonPointsCalculatorConfiguration = null
+                event = event,
+                eventNumber = null, // important
+                points = true, // important
+                seasonPointsCalculatorConfiguration = null
             )
         }
     }
@@ -64,13 +64,14 @@ class SeasonEventTest {
     fun `It should compare SeasonEvents without eventNumbers`() {
         val one = TestSeasonEvents.Lscc2019Simplified.points1
         val testAndTune = SeasonEvent(
-                event = Event(
-                        name = "Test and Tune", // important: after "one", before "two"
-                        date = LocalDate.parse("2019-02-01"),
-                        crispyFish = null
-                ),
-                points = false,
-                eventNumber = null
+            event = Event(
+                name = "Test and Tune", // important: after "one", before "two"
+                date = LocalDate.parse("2019-02-01"),
+                lifecycle = Event.Lifecycle.FINAL,
+                crispyFish = null
+            ),
+            points = false,
+            eventNumber = null
         )
         val two = TestSeasonEvents.Lscc2019Simplified.points2
 

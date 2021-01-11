@@ -5,7 +5,6 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
-import com.github.ajalt.clikt.parameters.groups.cooccurring
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
@@ -56,12 +55,12 @@ class EventAddCommand(
 
     private val id: UUID by option(hidden = true)
         .convert { toUuid(it) }
-        .prompt(default = "${UUID.randomUUID()}")
+        .required()
     private val name: String by option()
-        .prompt()
+        .required()
     private val date: LocalDate by option()
         .convert { toLocalDate(it) }
-        .prompt()
+        .required()
 
     class CrispyFishOptions : OptionGroup() {
 
@@ -73,7 +72,7 @@ class EventAddCommand(
                 canBeSymlink = false,
                 mustBeReadable = true
             )
-            .prompt()
+            .required()
             .validate {
                 if (it.extension != "ecf") {
                     fail("Must be a .ecf file")
@@ -87,7 +86,7 @@ class EventAddCommand(
                 canBeSymlink = false,
                 mustBeReadable = true
             )
-            .prompt()
+            .required()
             .validate {
                 if (it.extension != "def") {
                     fail("Must be a .def file")
@@ -120,31 +119,10 @@ class EventAddCommand(
             id = id,
             name = name,
             date = date,
+            lifecycle = Event.Lifecycle.CREATE,
             crispyFish = crispyFishPair.first
         )
-        service.create(
-            create = create,
-            context = crispyFishPair.second,
-            eventCrispyFishForcePersonVerificationFailureCallback = object : EventCrispyFishForcePersonVerification.FailureCallback {
-                override fun onRegistrationWithoutClubMemberId(registration: Registration) {
-                    fail(registration)
-                }
-
-                override fun onPersonWithClubMemberIdNotFound(registration: Registration) {
-                    fail(registration)
-                }
-
-                override fun onMultiplePeopleWithClubMemberIdFound(registration: Registration) {
-                    fail(registration)
-                }
-
-                private fun fail(registration: Registration) {
-                    echo("Verification failed on registration:")
-                    echo(crispyFishRegistrationView.render(registration))
-                    throw Abort()
-                }
-            }
-        )
+        service.create(create)
         echo(view.render(create))
     }
 

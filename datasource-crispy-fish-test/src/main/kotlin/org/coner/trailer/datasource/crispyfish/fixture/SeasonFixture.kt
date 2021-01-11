@@ -35,6 +35,7 @@ sealed class SeasonFixture(
                 event = Event(
                     name = "Event 1",
                     date = LocalDate.parse("2019-01-01"),
+                    lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-01-01 event 1.ecf",
                         classDefinitionFile = "lscc2019.def",
@@ -52,6 +53,7 @@ sealed class SeasonFixture(
                 event = Event(
                     name = "Event 2",
                     date = LocalDate.parse("2019-02-02"),
+                    lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-02-02 event 2.ecf",
                         classDefinitionFile = "lscc2019.def",
@@ -69,6 +71,7 @@ sealed class SeasonFixture(
                 event = Event(
                     name = "Event 3",
                     date = LocalDate.parse("2019-03-03"),
+                    lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-03-03 event 3.ecf",
                         classDefinitionFile = "lscc2019.def",
