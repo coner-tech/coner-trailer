@@ -2,6 +2,7 @@ package org.coner.trailer.io.service
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.crispyfish.filetype.ecf.EventControlFile
+import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import java.nio.file.Path
@@ -14,22 +15,11 @@ class CrispyFishEventMappingContextService(
 ) {
 
     fun load(
-        eventControlFilePathRelative: Path? = null,
-        eventControlFilePathAbsolute: Path? = null,
-        classDefinitionFilePathRelative: Path? = null,
-        classDefinitionFilePathAbsolute: Path? = null
+        eventCrispyFishMetadata: Event.CrispyFishMetadata,
     ): CrispyFishEventMappingContext {
         val key = CrispyFishEventMappingContext.Key(
-            eventControlFile = eventControlFilePathRelative?.let { crispyFishDatabase.resolve(it) }
-                ?: eventControlFilePathAbsolute
-                ?: throw IllegalArgumentException(
-                    "Both relative and absolute eventControlFilePath arguments must not be null"
-                ),
-            classDefinitionFile = classDefinitionFilePathRelative?.let { crispyFishDatabase.resolve(it) }
-                ?: classDefinitionFilePathAbsolute
-                ?: throw IllegalArgumentException(
-                    "Both relative and absolute classDefinitionFilePath arguments must not be null"
-                )
+            eventControlFile = crispyFishDatabase.resolve(eventCrispyFishMetadata.eventControlFile),
+            classDefinitionFile = crispyFishDatabase.resolve(eventCrispyFishMetadata.classDefinitionFile)
         )
         loadConstraints.assess(key)
         val classDefinitionFile = ClassDefinitionFile(key.classDefinitionFile.toFile())
