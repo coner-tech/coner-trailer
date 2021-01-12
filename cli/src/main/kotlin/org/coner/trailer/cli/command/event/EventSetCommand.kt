@@ -14,14 +14,18 @@ import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDate
 import java.util.*
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class EventSetCommand(
     di: DI
 ) : CliktCommand(
@@ -33,6 +37,7 @@ class EventSetCommand(
 
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -100,7 +105,14 @@ class EventSetCommand(
             lifecycle = lifecycle ?: event.lifecycle,
             crispyFish = crispyFish ?: event.crispyFish
         )
-        service.update(set)
+        service.update(
+            update = set,
+            context = set.crispyFish?.let { crispyFishEventMappingContextService.load(
+                eventControlFilePath = Paths.get(it.eventControlFile),
+                classDefinitionFilePath = Paths.get(it.classDefinitionFile)
+            ) },
+            eventCrispyFishForcePersonVerificationFailureCallback = null
+        )
         echo(view.render(set))
     }
 }

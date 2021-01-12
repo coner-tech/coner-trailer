@@ -13,14 +13,18 @@ import org.coner.trailer.cli.command.grouping.GroupingOption
 import org.coner.trailer.cli.command.grouping.groupingOption
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
+import java.nio.file.Paths
 import java.util.*
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class EventCrispyFishForcePersonAddCommand(
     di: DI
 ) : CliktCommand(
@@ -33,6 +37,7 @@ class EventCrispyFishForcePersonAddCommand(
     private val service: EventService by instance()
     private val groupingService: CrispyFishGroupingService by instance()
     private val personService: PersonService by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -66,7 +71,15 @@ class EventCrispyFishForcePersonAddCommand(
                 }
             )
         )
-        service.update(set)
+        val context = crispyFishEventMappingContextService.load(
+            classDefinitionFilePath = Paths.get(set.crispyFish!!.classDefinitionFile),
+            eventControlFilePath = Paths.get(set.crispyFish!!.eventControlFile)
+        )
+        service.update(
+            update = set,
+            context = context,
+            eventCrispyFishForcePersonVerificationFailureCallback = null
+        )
         echo(view.render(set))
     }
 }

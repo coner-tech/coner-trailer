@@ -14,12 +14,22 @@ class CrispyFishEventMappingContextService(
 ) {
 
     fun load(
-        eventControlFilePath: Path,
-        classDefinitionFilePath: Path
+        eventControlFilePathRelative: Path? = null,
+        eventControlFilePathAbsolute: Path? = null,
+        classDefinitionFilePathRelative: Path? = null,
+        classDefinitionFilePathAbsolute: Path? = null
     ): CrispyFishEventMappingContext {
         val key = CrispyFishEventMappingContext.Key(
-            eventControlFile = crispyFishDatabase.resolve(eventControlFilePath),
-            classDefinitionFile = crispyFishDatabase.resolve(classDefinitionFilePath)
+            eventControlFile = eventControlFilePathRelative?.let { crispyFishDatabase.resolve(it) }
+                ?: eventControlFilePathAbsolute
+                ?: throw IllegalArgumentException(
+                    "Both relative and absolute eventControlFilePath arguments must not be null"
+                ),
+            classDefinitionFile = classDefinitionFilePathRelative?.let { crispyFishDatabase.resolve(it) }
+                ?: classDefinitionFilePathAbsolute
+                ?: throw IllegalArgumentException(
+                    "Both relative and absolute classDefinitionFilePath arguments must not be null"
+                )
         )
         loadConstraints.assess(key)
         val classDefinitionFile = ClassDefinitionFile(key.classDefinitionFile.toFile())

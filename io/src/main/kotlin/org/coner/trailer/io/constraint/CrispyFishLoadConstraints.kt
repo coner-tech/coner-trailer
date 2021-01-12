@@ -9,7 +9,9 @@ import kotlin.io.path.isReadable
 import kotlin.io.path.isRegularFile
 
 @ExperimentalPathApi
-class CrispyFishLoadConstraints : Constraint<CrispyFishEventMappingContext.Key>() {
+class CrispyFishLoadConstraints(
+    private val crispyFishDatabase: Path
+) : Constraint<CrispyFishEventMappingContext.Key>() {
 
     override fun assess(candidate: CrispyFishEventMappingContext.Key) {
         assess(candidate.classDefinitionFile, "classDefinitionFile")
@@ -31,6 +33,9 @@ class CrispyFishLoadConstraints : Constraint<CrispyFishEventMappingContext.Key>(
         }
         constrain(candidate.isReadable()) {
             "$subject must be readable"
+        }
+        constrain(candidate.startsWith(crispyFishDatabase)) {
+            "$subject must be within crispy fish database"
         }
     }
 

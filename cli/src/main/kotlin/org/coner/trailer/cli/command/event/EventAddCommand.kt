@@ -96,18 +96,10 @@ class EventAddCommand(
     private val crispyFishOptions: CrispyFishOptions by CrispyFishOptions()
 
     override fun run() {
-        if (!crispyFishOptions.eventControlFile.startsWith(dbConfig.crispyFishDatabase)) {
-            echo("Event Control File must be within the crispy fish database")
-            throw Abort()
-        }
-        if (!crispyFishOptions.classDefinitionFile.startsWith(dbConfig.crispyFishDatabase)) {
-            echo("Class Definition File must be within the crispy fish database")
-            throw Abort()
-        }
         val crispyFishPair = crispyFishOptions.let { options ->
             val context = crispyFishEventMappingContextService.load(
-                    eventControlFilePath = options.eventControlFile,
-                    classDefinitionFilePath = options.classDefinitionFile
+                    eventControlFilePathAbsolute = options.eventControlFile,
+                    classDefinitionFilePathAbsolute = options.classDefinitionFile
                 )
             val crispyFish = assembleCrispyFish(
                 options = options,

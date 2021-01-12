@@ -75,7 +75,7 @@ class EventAddCommandTest {
     @Test
     fun `It should create event`() {
         val create = TestEvents.Lscc2019.points1
-        justRun { service.create(eq(create), null, any()) }
+        justRun { service.create(eq(create)) }
         val viewRendered = "view rendered ${create.id}"
         every { view.render(create) } returns viewRendered
 
@@ -87,9 +87,7 @@ class EventAddCommandTest {
 
         verifySequence {
             service.create(
-                create = eq(create),
-                context = null,
-                eventCrispyFishForcePersonVerificationFailureCallback = any()
+                create = eq(create)
             )
             view.render(eq(create))
         }
@@ -120,7 +118,7 @@ class EventAddCommandTest {
             forcePeople = crispyFish.forcePeople,
             failureCallback = any()
         ) }
-        justRun { service.create(eq(create), any(), any()) }
+        justRun { service.create(eq(create)) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(eq(create)) } returns viewRendered
 
@@ -138,9 +136,7 @@ class EventAddCommandTest {
                 classDefinitionFilePath = classDefinitionFile
             )
             service.create(
-                create = eq(create),
-                context = any(),
-                eventCrispyFishForcePersonVerificationFailureCallback = any()
+                create = eq(create)
             )
             view.render(eq(create))
         }
