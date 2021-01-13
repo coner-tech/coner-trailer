@@ -13,6 +13,8 @@ import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
@@ -39,6 +41,7 @@ class EventSetCommandTest {
     @MockK lateinit var service: EventService
     @MockK lateinit var groupingService: CrispyFishGroupingService
     @MockK lateinit var personService: PersonService
+    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var view: EventView
 
     lateinit var testConsole: StringBufferConsole
@@ -56,6 +59,7 @@ class EventSetCommandTest {
                 bind<EventService>() with instance(service)
                 bind<CrispyFishGroupingService>() with instance(groupingService)
                 bind<PersonService>() with instance(personService)
+                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
                 bind<EventView>() with instance(view)
             }
         ).apply {
@@ -66,22 +70,30 @@ class EventSetCommandTest {
     }
 
     @Test
-    fun `It should set event properties`() {
+    fun `It should set event properties`(
+        @MockK context: CrispyFishEventMappingContext
+    ) {
         val original = TestEvents.Lscc2019.points1
+        val setCrispyFish = Event.CrispyFishMetadata(
+            eventControlFile = "set-event-control-file.ecf",
+            classDefinitionFile = "set-class-definition-file.ecf",
+            forcePeople = emptyMap()
+        )
         val set = original.copy(
             name = "It should set event properties",
             date = LocalDate.parse("2020-12-07"),
-            crispyFish = Event.CrispyFishMetadata(
-                eventControlFile = "set-event-control-file.ecf",
-                classDefinitionFile = "set-class-definition-file.ecf",
-                forcePeople = emptyMap()
-            )
+            crispyFish = setCrispyFish
         )
         val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
         val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
         every { dbConfig.crispyFishDatabase } returns crispyFish
         every { service.findById(original.id) } returns original
-        justRun { service.update(eq(set)) }
+        every { crispyFishEventMappingContextService.load(setCrispyFish) } returns context
+        justRun { service.update(
+            update = set,
+            context = context,
+            eventCrispyFishForcePersonVerificationFailureCallback = null
+        ) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
 
@@ -96,8 +108,12 @@ class EventSetCommandTest {
 
         verifySequence {
             service.findById(original.id)
-            service.update(eq(set))
-            view.render(eq(set))
+            service.update(
+                update = set,
+                context = context,
+                eventCrispyFishForcePersonVerificationFailureCallback = null
+            )
+            view.render(set)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
@@ -106,7 +122,13 @@ class EventSetCommandTest {
     fun `It should keep event properties for options not passed`() {
         val original = TestEvents.Lscc2019.points1
         every { service.findById(original.id) } returns original
-        justRun { service.update(eq(original)) }
+        justRun {
+            service.update(
+                update = original,
+                context = null,
+                eventCrispyFishForcePersonVerificationFailureCallback = null
+            )
+        }
         val viewRendered = "view rendered set event named: ${original.name}"
         every { view.render(eq(original)) } returns viewRendered
 
@@ -116,8 +138,12 @@ class EventSetCommandTest {
 
         verifySequence {
             service.findById(original.id)
-            service.update(eq(original))
-            view.render(eq(original))
+            service.update(
+                update = original,
+                context = null,
+                eventCrispyFishForcePersonVerificationFailureCallback = null
+            )
+            view.render(original)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

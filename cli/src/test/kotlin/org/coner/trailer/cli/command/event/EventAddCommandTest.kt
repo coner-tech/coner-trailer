@@ -43,8 +43,6 @@ class EventAddCommandTest {
     @MockK lateinit var dbConfig: DatabaseConfiguration
     @MockK lateinit var service: EventService
     @MockK lateinit var view: EventView
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var crispyFishVerification: EventCrispyFishForcePersonVerification
 
     lateinit var testConsole: StringBufferConsole
 
@@ -60,8 +58,6 @@ class EventAddCommandTest {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
                 bind<EventView>() with instance(view)
-                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-                bind<EventCrispyFishForcePersonVerification>() with instance(crispyFishVerification)
             }
         ).apply {
             context {
@@ -73,29 +69,7 @@ class EventAddCommandTest {
     }
 
     @Test
-    fun `It should create event`() {
-        val create = TestEvents.Lscc2019.points1
-        justRun { service.create(eq(create)) }
-        val viewRendered = "view rendered ${create.id}"
-        every { view.render(create) } returns viewRendered
-
-        command.parse(arrayOf(
-            "--id", "${create.id}",
-            "--name", create.name,
-            "--date", "${create.date}",
-        ))
-
-        verifySequence {
-            service.create(
-                create = eq(create)
-            )
-            view.render(eq(create))
-        }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
-    }
-
-    @Test
-    fun `It should create event with crispy fish metadata`(
+    fun `It should create event`(
         @MockK context: CrispyFishEventMappingContext
     ) {
         val eventControlFile = crispyFishDatabase.resolve("event.ecf").createFile()
@@ -106,19 +80,11 @@ class EventAddCommandTest {
             forcePeople = emptyMap()
         )
         val create = TestEvents.Lscc2019.points1.copy(
-            crispyFish = crispyFish
+            crispyFish = crispyFish,
+            lifecycle = Event.Lifecycle.CREATE
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
-        every { crispyFishEventMappingContextService.load(
-            eventControlFilePath = eventControlFile,
-            classDefinitionFilePath = classDefinitionFile
-        ) } returns context
-        justRun { crispyFishVerification.verifyRegistrations(
-            context = context,
-            forcePeople = crispyFish.forcePeople,
-            failureCallback = any()
-        ) }
-        justRun { service.create(eq(create)) }
+        justRun { service.create(create) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(eq(create)) } returns viewRendered
 
@@ -131,58 +97,12 @@ class EventAddCommandTest {
         ))
 
         verifySequence {
-            crispyFishEventMappingContextService.load(
-                eventControlFilePath = eventControlFile,
-                classDefinitionFilePath = classDefinitionFile
-            )
             service.create(
                 create = eq(create)
             )
             view.render(eq(create))
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
-    }
-
-    @Test
-    fun `It should not create event with crispy fish event control file outside of database`() {
-        val eventControlFile = notCrispyFishDatabase.resolve("event.ecf").createFile()
-        val classDefinitionFile = crispyFishDatabase.resolve("class.def").createFile()
-        val create = TestEvents.Lscc2019.points1
-        every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
-
-        assertThrows<Abort> {
-            command.parse(arrayOf(
-                "--id", "${create.id}",
-                "--name", create.name,
-                "--date", "${create.date}",
-                "--crispy-fish-event-control-file", "$eventControlFile",
-                "--crispy-fish-class-definition-file", "$classDefinitionFile"
-            ))
-        }
-
-        confirmVerified(service, view)
-        assertThat(testConsole.output).contains("Event Control File must")
-    }
-
-    @Test
-    fun `It should not create event with crispy fish class definition file outside of database`() {
-        val eventControlFile = crispyFishDatabase.resolve("event.ecf").createFile()
-        val classDefinitionFile = notCrispyFishDatabase.resolve("class.def").createFile()
-        val create = TestEvents.Lscc2019.points1
-        every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
-
-        assertThrows<Abort> {
-            command.parse(arrayOf(
-                "--id", "${create.id}",
-                "--name", create.name,
-                "--date", "${create.date}",
-                "--crispy-fish-event-control-file", "$eventControlFile",
-                "--crispy-fish-class-definition-file", "$classDefinitionFile"
-            ))
-        }
-
-        confirmVerified(service, view)
-        assertThat(testConsole.output).contains("Class Definition File must")
     }
 
 }

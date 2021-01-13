@@ -12,6 +12,8 @@ import org.coner.trailer.*
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.grouping.GroupingOption
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
@@ -21,7 +23,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishForcePersonAddCommandTest {
 
@@ -30,6 +34,7 @@ class EventCrispyFishForcePersonAddCommandTest {
     @MockK lateinit var service: EventService
     @MockK lateinit var groupingService: CrispyFishGroupingService
     @MockK lateinit var personService: PersonService
+    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var view: EventView
 
     lateinit var testConsole: StringBufferConsole
@@ -42,6 +47,7 @@ class EventCrispyFishForcePersonAddCommandTest {
                 bind<EventService>() with instance(service)
                 bind<CrispyFishGroupingService>() with instance(groupingService)
                 bind<PersonService>() with instance(personService)
+                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
                 bind<EventView>() with instance(view)
             }
         ).apply {
@@ -52,7 +58,9 @@ class EventCrispyFishForcePersonAddCommandTest {
     }
 
     @Test
-    fun `It should add a force person`() {
+    fun `It should add a force person`(
+        @MockK context: CrispyFishEventMappingContext
+    ) {
         val crispyFish = Event.CrispyFishMetadata(
             eventControlFile = "irrelevant",
             classDefinitionFile = "irrelevant",
@@ -75,7 +83,12 @@ class EventCrispyFishForcePersonAddCommandTest {
                 forcePeople = mapOf(signage to person)
             )
         )
-        justRun { service.update(set) }
+        every { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
+        justRun { service.update(
+            update = set,
+            context = context,
+            eventCrispyFishForcePersonVerificationFailureCallback = null
+        ) }
         val viewRender = "view rendered"
         every { view.render(set) } returns viewRender
 
@@ -91,7 +104,11 @@ class EventCrispyFishForcePersonAddCommandTest {
             service.findById(event.id)
             groupingService.findSingular(crispyFish, grouping.abbreviation)
             personService.findById(person.id)
-            service.update(set)
+            service.update(
+                update = set,
+                context = context,
+                eventCrispyFishForcePersonVerificationFailureCallback = null
+            )
             view.render(set)
         }
         assertThat(testConsole.output).isEqualTo(viewRender)

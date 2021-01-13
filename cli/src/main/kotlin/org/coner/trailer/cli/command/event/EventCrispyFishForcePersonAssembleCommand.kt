@@ -38,11 +38,6 @@ class EventCrispyFishForcePersonAssembleCommand(
             echo("Selected Event lacks Crispy Fish Metadata")
             throw Abort()
         }
-        val eventControlFilePath = dbConfig.crispyFishDatabase.resolve(crispyFish.eventControlFile)
-        val classDefinitionFilePath = dbConfig.crispyFishDatabase.resolve(crispyFish.classDefinitionFile)
-        val context = crispyFishEventMappingContextService.load(
-            eventControlFilePath = eventControlFilePath,
-            classDefinitionFilePath = classDefinitionFilePath
-        )
+        val context = crispyFishEventMappingContextService.load(crispyFish)
     }
 }

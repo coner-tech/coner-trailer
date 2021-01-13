@@ -134,7 +134,9 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         deleteConstraints = instance(),
         eventCrispyFishForcePersonVerification = instance()
     ) }
-    bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints() }
+    bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints(
+        crispyFishDatabase = databaseConfiguration.crispyFishDatabase
+    ) }
     bind<CrispyFishPersonMapper>() with singleton { CrispyFishPersonMapper() }
     bind<CrispyFishParticipantMapper>() with singleton { CrispyFishParticipantMapper(
         crispyFishGroupingMapper = instance()

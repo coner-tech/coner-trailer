@@ -46,12 +46,6 @@ class EventAddCommand(
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
     private val view: EventView by instance()
-    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val personService: PersonService by instance()
-    private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
-    private val crispyFishVerification: EventCrispyFishForcePersonVerification by instance()
-    private val crispyFishParticipantMapper: CrispyFishParticipantMapper by instance()
-    private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
 
     private val id: UUID by option(hidden = true)
         .convert { toUuid(it) }
@@ -96,115 +90,108 @@ class EventAddCommand(
     private val crispyFishOptions: CrispyFishOptions by CrispyFishOptions()
 
     override fun run() {
-        val crispyFishPair = crispyFishOptions.let { options ->
-            val context = crispyFishEventMappingContextService.load(
-                    eventControlFilePathAbsolute = options.eventControlFile,
-                    classDefinitionFilePathAbsolute = options.classDefinitionFile
-                )
-            val crispyFish = assembleCrispyFish(
-                options = options,
-                context = context
-            )
-            crispyFish to context
-        }
         val create = Event(
             id = id,
             name = name,
             date = date,
             lifecycle = Event.Lifecycle.CREATE,
-            crispyFish = crispyFishPair.first
+            crispyFish = Event.CrispyFishMetadata(
+                eventControlFile = dbConfig.crispyFishDatabase.relativize(crispyFishOptions.eventControlFile).toString(),
+                classDefinitionFile = dbConfig.crispyFishDatabase.relativize(crispyFishOptions.classDefinitionFile).toString(),
+                forcePeople = emptyMap() // out of scope for add command
+            )
         )
         service.create(create)
         echo(view.render(create))
     }
 
-    private fun assembleCrispyFish(
-        options: CrispyFishOptions,
-        context: CrispyFishEventMappingContext
-    ): Event.CrispyFishMetadata {
-        val initial = Event.CrispyFishMetadata(
-            eventControlFile = dbConfig.crispyFishDatabase.relativize(options.eventControlFile).toString(),
-            classDefinitionFile = dbConfig.crispyFishDatabase.relativize(options.classDefinitionFile).toString(),
-            forcePeople = emptyMap()
-        )
-        val forcePeople = mutableMapOf<Participant.Signage, Person>()
-        crispyFishVerification.verifyRegistrations(context, initial.forcePeople, object  : EventCrispyFishForcePersonVerification.FailureCallback {
-
-            override fun onRegistrationWithoutClubMemberId(registration: Registration) {
-                echo("Found registration without club member ID")
-                echo(crispyFishRegistrationView.render(registration))
-                val suggestions = personService.searchByNameFrom(registration)
-                handleAmbiguousRegistration(registration, suggestions)
-            }
-
-            override fun onPersonWithClubMemberIdNotFound(registration: Registration) {
-                echo("Found registration with club member ID that didn't match any people")
-                echo(crispyFishRegistrationView.render(registration))
-                val suggestions = personService.searchByNameFrom(registration)
-                handleAmbiguousRegistration(registration, suggestions)
-            }
-
-            override fun onMultiplePeopleWithClubMemberIdFound(registration: Registration) {
-                echo("Found registration with club member ID that matched multiple people")
-                echo(crispyFishRegistrationView.render(registration))
-                val suggestions = personService.searchByClubMemberIdFrom(registration)
-                handleAmbiguousRegistration(registration, suggestions)
-            }
-
-            private fun handleAmbiguousRegistration(
-                registration: Registration,
-                suggestions: List<Person>
-            ) {
-                val suggestionsOutput = suggestions.mapIndexed { index, person ->
-                    "$index: ${person.firstName} ${person.lastName} (${person.id})"
-                }.joinToString(separator = currentContext.console.lineSeparator)
-                val providePersonId = suggestions.size + 1
-                val createNewPerson = suggestions.size + 3
-                val abort = suggestions.size + 4
-                val person = requireNotNull(prompt(
-                    text = """
-                    |${if (suggestionsOutput.isNotEmpty()) suggestionsOutput else "No suggestions"}    
-                    |$providePersonId: Provide person ID
-                    |$createNewPerson: Create new person from registration
-                    |$abort: Abort
-                    """.trimMargin(),
-                    promptSuffix = "",
-                    convert = { input ->
-                        val decision = input.toIntOrNull()
-                        when {
-                            suggestions.isNotEmpty()
-                                    && decision != null
-                                    && decision in suggestions.indices -> suggestions[decision]
-                            decision == providePersonId -> promptPersonId()
-                            decision == createNewPerson -> createNewPerson(registration)
-                            decision == abort -> throw Abort()
-                            else -> throw UsageError("Not a valid choice: $input")
-                        }
-                    }
-                )) { "Failed to convert input to person" }
-                val signage = crispyFishParticipantMapper.toCoreSignage(context, registration)
-                forcePeople[signage] = person
-            }
-
-            private fun promptPersonId(): Person {
-                return checkNotNull(prompt("Person ID") { input ->
-                    val personId = runCatching { UUID.fromString(input) }.getOrNull()
-                        ?: throw UsageError("Invalid person ID format: $input")
-                    runCatching { personService.findById(personId) }.getOrNull()
-                        ?: throw UsageError("No person found with ID: $input")
-                }) { "Failed to convert input to person" }
-            }
-            
-            private fun createNewPerson(registration: Registration): Person {
-                val motorsportRegMemberId = prompt("MotorsportReg Member ID")
-                val person = crispyFishPersonMapper.toCore(registration, motorsportRegMemberId)
-                personService.create(person)
-                return person
-            }
-        })
-        return initial.copy(
-            forcePeople = forcePeople
-        )
-    }
+//    private fun assembleCrispyFish(
+//        options: CrispyFishOptions,
+//        context: CrispyFishEventMappingContext
+//    ): Event.CrispyFishMetadata {
+//        val initial = Event.CrispyFishMetadata(
+//            eventControlFile = dbConfig.crispyFishDatabase.relativize(options.eventControlFile).toString(),
+//            classDefinitionFile = dbConfig.crispyFishDatabase.relativize(options.classDefinitionFile).toString(),
+//            forcePeople = emptyMap()
+//        )
+//        val forcePeople = mutableMapOf<Participant.Signage, Person>()
+//        crispyFishVerification.verifyRegistrations(context, initial.forcePeople, object  : EventCrispyFishForcePersonVerification.FailureCallback {
+//
+//            override fun onRegistrationWithoutClubMemberId(registration: Registration) {
+//                echo("Found registration without club member ID")
+//                echo(crispyFishRegistrationView.render(registration))
+//                val suggestions = personService.searchByNameFrom(registration)
+//                handleAmbiguousRegistration(registration, suggestions)
+//            }
+//
+//            override fun onPersonWithClubMemberIdNotFound(registration: Registration) {
+//                echo("Found registration with club member ID that didn't match any people")
+//                echo(crispyFishRegistrationView.render(registration))
+//                val suggestions = personService.searchByNameFrom(registration)
+//                handleAmbiguousRegistration(registration, suggestions)
+//            }
+//
+//            override fun onMultiplePeopleWithClubMemberIdFound(registration: Registration) {
+//                echo("Found registration with club member ID that matched multiple people")
+//                echo(crispyFishRegistrationView.render(registration))
+//                val suggestions = personService.searchByClubMemberIdFrom(registration)
+//                handleAmbiguousRegistration(registration, suggestions)
+//            }
+//
+//            private fun handleAmbiguousRegistration(
+//                registration: Registration,
+//                suggestions: List<Person>
+//            ) {
+//                val suggestionsOutput = suggestions.mapIndexed { index, person ->
+//                    "$index: ${person.firstName} ${person.lastName} (${person.id})"
+//                }.joinToString(separator = currentContext.console.lineSeparator)
+//                val providePersonId = suggestions.size + 1
+//                val createNewPerson = suggestions.size + 3
+//                val abort = suggestions.size + 4
+//                val person = requireNotNull(prompt(
+//                    text = """
+//                    |${if (suggestionsOutput.isNotEmpty()) suggestionsOutput else "No suggestions"}
+//                    |$providePersonId: Provide person ID
+//                    |$createNewPerson: Create new person from registration
+//                    |$abort: Abort
+//                    """.trimMargin(),
+//                    promptSuffix = "",
+//                    convert = { input ->
+//                        val decision = input.toIntOrNull()
+//                        when {
+//                            suggestions.isNotEmpty()
+//                                    && decision != null
+//                                    && decision in suggestions.indices -> suggestions[decision]
+//                            decision == providePersonId -> promptPersonId()
+//                            decision == createNewPerson -> createNewPerson(registration)
+//                            decision == abort -> throw Abort()
+//                            else -> throw UsageError("Not a valid choice: $input")
+//                        }
+//                    }
+//                )) { "Failed to convert input to person" }
+//                val signage = crispyFishParticipantMapper.toCoreSignage(context, registration)
+//                forcePeople[signage] = person
+//            }
+//
+//            private fun promptPersonId(): Person {
+//                return checkNotNull(prompt("Person ID") { input ->
+//                    val personId = runCatching { UUID.fromString(input) }.getOrNull()
+//                        ?: throw UsageError("Invalid person ID format: $input")
+//                    runCatching { personService.findById(personId) }.getOrNull()
+//                        ?: throw UsageError("No person found with ID: $input")
+//                }) { "Failed to convert input to person" }
+//            }
+//
+//            private fun createNewPerson(registration: Registration): Person {
+//                val motorsportRegMemberId = prompt("MotorsportReg Member ID")
+//                val person = crispyFishPersonMapper.toCore(registration, motorsportRegMemberId)
+//                personService.create(person)
+//                return person
+//            }
+//        })
+//        return initial.copy(
+//            forcePeople = forcePeople
+//        )
+//    }
 
 }

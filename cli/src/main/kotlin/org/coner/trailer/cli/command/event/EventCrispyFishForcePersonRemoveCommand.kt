@@ -65,22 +65,18 @@ class EventCrispyFishForcePersonRemoveCommand(
             number = number
         )
         val person = personService.findById(personId)
-        val set = event.copy(
-            crispyFish = crispyFish.copy(
-                forcePeople = crispyFish.forcePeople.toMutableMap().apply {
-                    val foundPerson = get(signage)
-                    if (person.id != foundPerson?.id) {
-                        echo("Person ID given in options doesn't match force person record's signage")
-                        throw Abort()
-                    }
-                    remove(signage)
+        val setCrispyFish = crispyFish.copy(
+            forcePeople = crispyFish.forcePeople.toMutableMap().apply {
+                val foundPerson = get(signage)
+                if (person.id != foundPerson?.id) {
+                    echo("Person ID given in options doesn't match force person record's signage")
+                    throw Abort()
                 }
-            )
+                remove(signage)
+            }
         )
-        val context = crispyFishEventMappingContextService.load(
-            classDefinitionFilePath = Paths.get(set.crispyFish!!.classDefinitionFile),
-            eventControlFilePath = Paths.get(set.crispyFish!!.eventControlFile)
-        )
+        val set = event.copy(crispyFish = setCrispyFish)
+        val context = crispyFishEventMappingContextService.load(setCrispyFish)
         service.update(
             update = set,
             context = context,

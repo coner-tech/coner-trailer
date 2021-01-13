@@ -64,17 +64,13 @@ class EventCrispyFishForcePersonAddCommand(
             number = number
         )
         val person = personService.findById(personId)
-        val set = event.copy(
-            crispyFish = crispyFish.copy(
-                forcePeople = crispyFish.forcePeople.toMutableMap().apply {
-                    put(signage, person)
-                }
-            )
+        val setCrispyFish = crispyFish.copy(
+            forcePeople = crispyFish.forcePeople.toMutableMap().apply {
+                put(signage, person)
+            }
         )
-        val context = crispyFishEventMappingContextService.load(
-            classDefinitionFilePath = Paths.get(set.crispyFish!!.classDefinitionFile),
-            eventControlFilePath = Paths.get(set.crispyFish!!.eventControlFile)
-        )
+        val set = event.copy(crispyFish = setCrispyFish)
+        val context = crispyFishEventMappingContextService.load(setCrispyFish)
         service.update(
             update = set,
             context = context,
