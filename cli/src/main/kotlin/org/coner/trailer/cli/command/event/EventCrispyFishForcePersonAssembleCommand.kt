@@ -81,34 +81,32 @@ class EventCrispyFishForcePersonAssembleCommand(
                 registration: Registration,
                 suggestions: List<Person>
             ) {
-                val suggestionsOutput = suggestions.mapIndexed { index, person ->
-                    "$index: ${person.firstName} ${person.lastName} (${person.id})"
-                }.joinToString(separator = currentContext.console.lineSeparator)
-                val providePersonId = suggestions.size
-                val createNewPerson = suggestions.size + 1
-                val abort = suggestions.size + 2
-                val person = requireNotNull(prompt(
-                    text = """
-                    |${if (suggestionsOutput.isNotEmpty()) suggestionsOutput else "No suggestions"}
-                    |$providePersonId: Provide person ID
-                    |$createNewPerson: Create new person from registration
-                    |$abort: Abort
-                    |
-                    """.trimMargin(),
-                    promptSuffix = "",
-                    convert = { input ->
-                        val decision = input.toIntOrNull()
-                        when {
-                            suggestions.isNotEmpty()
-                                    && decision != null
-                                    && decision in suggestions.indices -> suggestions[decision]
-                            decision == providePersonId -> promptPersonId()
-                            decision == createNewPerson -> createNewPerson(registration)
-                            decision == abort -> throw Abort()
-                            else -> throw UsageError("Not a valid choice: $input")
-                        }
+                echo("Specify force signage to person")
+                if (suggestions.isNotEmpty()) {
+                    suggestions.forEachIndexed { index, person ->
+                        echo("$index: ${person.firstName} ${person.lastName} (${person.id})")
                     }
-                )) { "Failed to convert input to person" }
+                } else {
+                    echo("No people suggestions available. Have people been imported from membership records?")
+                }
+                val providePersonId = suggestions.size
+                echo("$providePersonId: Provide person ID")
+                val createNewPerson = suggestions.size + 1
+                echo("$createNewPerson: Create new person from registration")
+                val abort = suggestions.size + 2
+                echo("$abort: Abort")
+                val person = prompt(text = "Choice", convert = { input ->
+                    val decision = input.toIntOrNull()
+                    when {
+                        suggestions.isNotEmpty()
+                                && decision != null
+                                && decision in suggestions.indices -> suggestions[decision]
+                        decision == providePersonId -> promptPersonId()
+                        decision == createNewPerson -> createNewPerson(registration)
+                        decision == abort -> null
+                        else -> throw UsageError("Not a valid choice: $input")
+                    }
+                } ) ?: throw Abort()
                 val signage = crispyFishParticipantMapper.toCoreSignage(context, registration)
                 forcePeople[signage] = person
             }
