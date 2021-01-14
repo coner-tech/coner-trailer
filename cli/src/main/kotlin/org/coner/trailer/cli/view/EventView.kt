@@ -23,7 +23,9 @@ class EventView : View<Event> {
         val content = if (model.crispyFish?.forcePeople?.isNotEmpty() == true) {
             val at = AsciiTable()
             at.renderer.cwc = CWC_LongestLine()
+            at.addRule()
             at.addRow("Signage", "Person ID")
+            at.addRule()
             model.crispyFish?.forcePeople?.forEach { (signage: Participant.Signage, person: Person) ->
                 val grouping = when (val grouping = signage.grouping) {
                     is Grouping.Singular -> grouping.abbreviation
@@ -31,6 +33,7 @@ class EventView : View<Event> {
                 }
                 at.addRow("$grouping ${signage.number}", "${person.id}")
             }
+            at.addRule()
             at.render()
         } else {
             "Empty"
