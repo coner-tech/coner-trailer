@@ -15,7 +15,7 @@ class EventCrispyFishForcePersonVerification(
     fun verifyRegistrations(
         context: CrispyFishEventMappingContext,
         forcePeople: Map<Participant.Signage, Person>,
-        failureCallback: FailureCallback?
+        callback: Callback?
     ) {
         var success = true
         val clubMemberIdToPeople: Map<String?, List<Person>> = personService.list()
@@ -28,22 +28,25 @@ class EventCrispyFishForcePersonVerification(
             if (forcePeople[signage] != null) {
                 continue
             }
+            success = false
             val memberNumber = registration.memberNumber
             if (memberNumber.isNullOrEmpty()) {
-                failureCallback?.onRegistrationWithoutClubMemberId(registration)
-                success = false
+                callback?.onRegistrationWithoutClubMemberId(registration)
                 continue
             }
             val peopleWithMemberId = clubMemberIdToPeople[registration.memberNumber]
-            if (peopleWithMemberId == null) {
-                failureCallback?.onPersonWithClubMemberIdNotFound(registration)
-                success = false
-                continue
-            }
-            if (peopleWithMemberId.size > 1) {
-                failureCallback?.onMultiplePeopleWithClubMemberIdFound(registration)
-                success = false
-                continue
+            when {
+                peopleWithMemberId == null -> callback?.onPersonWithClubMemberIdNotFound(registration)
+                peopleWithMemberId.size > 1 -> callback?.onMultiplePeopleWithClubMemberIdFound(registration)
+                peopleWithMemberId.size == 1 -> {
+                    val personWithMemberId = peopleWithMemberId.single()
+                    if (registration.firstName == personWithMemberId.firstName
+                        && registration.lastName == personWithMemberId.lastName) {
+                        callback?.onUnforcedExactMatchFound(registration, personWithMemberId)
+                    } else {
+                        callback?.onRegistrationWithClubMemberIdFound(registration, personWithMemberId)
+                    }
+                }
             }
         }
         if (!success) {
@@ -52,7 +55,9 @@ class EventCrispyFishForcePersonVerification(
     }
 
 
-    interface FailureCallback {
+    interface Callback {
+        fun onUnforcedExactMatchFound(registration: Registration, person: Person)
+        fun onRegistrationWithClubMemberIdFound(registration: Registration, person: Person)
         fun onRegistrationWithoutClubMemberId(registration: Registration)
         fun onPersonWithClubMemberIdNotFound(registration: Registration)
         fun onMultiplePeopleWithClubMemberIdFound(registration: Registration)

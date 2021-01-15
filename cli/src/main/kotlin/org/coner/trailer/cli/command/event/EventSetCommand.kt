@@ -20,7 +20,6 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.time.LocalDate
 import java.util.*
 import kotlin.io.path.ExperimentalPathApi
@@ -108,7 +107,7 @@ class EventSetCommand(
         service.update(
             update = set,
             context = set.crispyFish?.let { crispyFishEventMappingContextService.load(it) },
-            eventCrispyFishForcePersonVerificationFailureCallback = null
+            eventCrispyFishForcePersonVerificationCallback = null
         )
         echo(view.render(set))
     }

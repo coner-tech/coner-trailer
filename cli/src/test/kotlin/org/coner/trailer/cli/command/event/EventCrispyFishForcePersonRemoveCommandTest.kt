@@ -87,7 +87,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
         }
         val viewRender = "view rendered"
@@ -108,7 +108,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
             view.render(set)
         }

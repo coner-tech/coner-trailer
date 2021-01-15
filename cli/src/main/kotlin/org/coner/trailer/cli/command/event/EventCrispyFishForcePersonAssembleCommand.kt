@@ -7,10 +7,8 @@ import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.coner.crispyfish.model.Registration
-import org.coner.trailer.Event
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
-import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
@@ -55,9 +53,18 @@ class EventCrispyFishForcePersonAssembleCommand(
         }
         val context = crispyFishEventMappingContextService.load(crispyFish)
         val forcePeople = mutableMapOf<Participant.Signage, Person>()
+        val unforcedExactMatches = mutableListOf<Pair<Registration, Person>>()
         try {
 
-            crispyFishVerification.verifyRegistrations(context, crispyFish.forcePeople, object  : EventCrispyFishForcePersonVerification.FailureCallback {
+            crispyFishVerification.verifyRegistrations(context, crispyFish.forcePeople, object  : EventCrispyFishForcePersonVerification.Callback {
+
+                override fun onUnforcedExactMatchFound(registration: Registration, person: Person) {
+                    
+                }
+
+                override fun onRegistrationWithClubMemberIdFound(registration: Registration, person: Person) {
+                    TODO("Not yet implemented")
+                }
 
                 override fun onRegistrationWithoutClubMemberId(registration: Registration) {
                     enter()
@@ -154,7 +161,7 @@ class EventCrispyFishForcePersonAssembleCommand(
         service.update(
             update = update,
             context = context,
-            eventCrispyFishForcePersonVerificationFailureCallback = null
+            eventCrispyFishForcePersonVerificationCallback = null
         )
     }
 }

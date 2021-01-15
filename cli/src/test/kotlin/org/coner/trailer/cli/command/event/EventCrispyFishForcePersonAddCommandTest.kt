@@ -10,7 +10,6 @@ import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.trailer.*
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.command.grouping.GroupingOption
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
@@ -87,7 +86,7 @@ class EventCrispyFishForcePersonAddCommandTest {
         justRun { service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationFailureCallback = null
+            eventCrispyFishForcePersonVerificationCallback = null
         ) }
         val viewRender = "view rendered"
         every { view.render(set) } returns viewRender
@@ -107,7 +106,7 @@ class EventCrispyFishForcePersonAddCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
             view.render(set)
         }

@@ -38,7 +38,7 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should pass registrations with forced people`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+        @MockK callback: EventCrispyFishForcePersonVerification.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
             memberNumber = null
@@ -62,7 +62,7 @@ class EventCrispyFishForcePersonVerificationTest {
             verification.verifyRegistrations(
                 context = context,
                 forcePeople = forcePeople,
-                failureCallback = failureCallback
+                callback = callback
             )
         }
 
@@ -78,7 +78,7 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should fail when registration lacks club member ID`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+        @MockK callback: EventCrispyFishForcePersonVerification.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
             memberNumber = null
@@ -97,13 +97,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
-        justRun { failureCallback.onRegistrationWithoutClubMemberId(registration) }
+        justRun { callback.onRegistrationWithoutClubMemberId(registration) }
 
         assertThrows<VerificationException> {
             verification.verifyRegistrations(
                 context = context,
                 forcePeople = forcePeople,
-                failureCallback = failureCallback
+                callback = callback
             )
         }
 
@@ -113,14 +113,14 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
-            failureCallback.onRegistrationWithoutClubMemberId(registration)
+            callback.onRegistrationWithoutClubMemberId(registration)
         }
     }
 
     @Test
     fun `It should fail when person with registration's club member ID is not found`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+        @MockK callback: EventCrispyFishForcePersonVerification.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
@@ -136,13 +136,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
-        justRun { failureCallback.onPersonWithClubMemberIdNotFound(registration) }
+        justRun { callback.onPersonWithClubMemberIdNotFound(registration) }
 
         assertThrows<VerificationException> {
             verification.verifyRegistrations(
                 context = context,
                 forcePeople = forcePeople,
-                failureCallback = failureCallback
+                callback = callback
             )
         }
 
@@ -152,14 +152,14 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
-            failureCallback.onPersonWithClubMemberIdNotFound(registration)
+            callback.onPersonWithClubMemberIdNotFound(registration)
         }
     }
 
     @Test
     fun `It should fail when there are multiple people with registration's club member ID`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK failureCallback: EventCrispyFishForcePersonVerification.FailureCallback
+        @MockK callback: EventCrispyFishForcePersonVerification.Callback
     ) {
         val registrations = listOf(
             TestRegistrations.Lscc2019Points1.REBECCA_JACKSON,
@@ -196,13 +196,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registrations[1]
             )
         } returns participants[1].signage
-        justRun { failureCallback.onMultiplePeopleWithClubMemberIdFound(any()) }
+        justRun { callback.onMultiplePeopleWithClubMemberIdFound(any()) }
 
         assertThrows<VerificationException> {
             verification.verifyRegistrations(
                 context = context,
                 forcePeople = forcePeople,
-                failureCallback = failureCallback
+                callback = callback
             )
         }
 
@@ -212,12 +212,12 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registrations[0]
             )
-            failureCallback.onMultiplePeopleWithClubMemberIdFound(registrations[0])
+            callback.onMultiplePeopleWithClubMemberIdFound(registrations[0])
             crispyFishParticipantMapper.toCoreSignage(
                 context = context,
                 crispyFish = registrations[1]
             )
-            failureCallback.onMultiplePeopleWithClubMemberIdFound(registrations[1])
+            callback.onMultiplePeopleWithClubMemberIdFound(registrations[1])
         }
     }
 }

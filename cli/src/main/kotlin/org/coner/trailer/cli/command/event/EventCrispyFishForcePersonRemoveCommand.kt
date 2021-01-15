@@ -21,7 +21,6 @@ import org.coner.trailer.io.service.PersonService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
-import java.nio.file.Paths
 import java.util.*
 import kotlin.io.path.ExperimentalPathApi
 
@@ -80,7 +79,7 @@ class EventCrispyFishForcePersonRemoveCommand(
         service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationFailureCallback = null
+            eventCrispyFishForcePersonVerificationCallback = null
         )
         echo(view.render(set))
     }

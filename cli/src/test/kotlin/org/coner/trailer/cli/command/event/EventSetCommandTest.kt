@@ -92,7 +92,7 @@ class EventSetCommandTest {
         justRun { service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationFailureCallback = null
+            eventCrispyFishForcePersonVerificationCallback = null
         ) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
@@ -111,7 +111,7 @@ class EventSetCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
             view.render(set)
         }
@@ -126,7 +126,7 @@ class EventSetCommandTest {
             service.update(
                 update = original,
                 context = null,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
         }
         val viewRendered = "view rendered set event named: ${original.name}"
@@ -141,7 +141,7 @@ class EventSetCommandTest {
             service.update(
                 update = original,
                 context = null,
-                eventCrispyFishForcePersonVerificationFailureCallback = null
+                eventCrispyFishForcePersonVerificationCallback = null
             )
             view.render(original)
         }
