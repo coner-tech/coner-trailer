@@ -13,8 +13,15 @@ data class Event(
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
-            val forcePeople: Map<Participant.Signage, Person>
-    )
+            val peopleMap: Map<PersonMappingKey, Person>
+    ) {
+
+        data class PersonMappingKey(
+            val signage: Participant.Signage,
+            val firstName: String,
+            val lastName: String
+        )
+    }
 
     enum class Lifecycle {
         CREATE,

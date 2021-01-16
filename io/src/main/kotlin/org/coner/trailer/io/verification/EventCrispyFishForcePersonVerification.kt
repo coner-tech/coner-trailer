@@ -1,6 +1,7 @@
 package org.coner.trailer.io.verification
 
 import org.coner.crispyfish.model.Registration
+import org.coner.trailer.Event
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -14,7 +15,7 @@ class EventCrispyFishForcePersonVerification(
 
     fun verifyRegistrations(
         context: CrispyFishEventMappingContext,
-        forcePeople: Map<Participant.Signage, Person>,
+        peopleMap: Map<Event.CrispyFishMetadata.PersonMappingKey, Person>,
         callback: Callback?
     ) {
         var success = true
@@ -25,7 +26,12 @@ class EventCrispyFishForcePersonVerification(
                 context = context,
                 crispyFish = registration
             )
-            if (forcePeople[signage] != null) {
+            val key = Event.CrispyFishMetadata.PersonMappingKey(
+                signage = signage,
+                firstName = registration.firstName,
+                lastName = registration.lastName
+            )
+            if (peopleMap[key] != null) {
                 continue
             }
             success = false

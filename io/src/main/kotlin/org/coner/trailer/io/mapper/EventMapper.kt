@@ -24,7 +24,7 @@ class EventMapper(
                 val phaseOne = Event.CrispyFishMetadata(
                     eventControlFile = it.eventControlFile,
                     classDefinitionFile = it.classDefinitionFile,
-                    forcePeople = emptyMap()
+                    peopleMap = emptyMap()
                 )
                 val allSingularGroupings by lazy {
                     crispyFishGroupingService.loadAllSingulars(
@@ -32,7 +32,7 @@ class EventMapper(
                     )
                 }
                 phaseOne.copy(
-                    forcePeople = it.forcePeople.map { force ->
+                    peopleMap = it.peopleMap.map { force ->
                         val grouping = when (force.signage.grouping.type) {
                             GroupingContainer.Type.SINGULAR -> crispyFishGroupingService.findSingular(
                                 allSingulars = allSingularGroupings,
@@ -48,7 +48,12 @@ class EventMapper(
                             grouping = grouping,
                             number = force.signage.number
                         )
-                        signage to person
+                        val key = Event.CrispyFishMetadata.PersonMappingKey(
+                            signage = signage,
+                            firstName = force.firstName,
+                            lastName = force.lastName,
+                        )
+                        key to person
                     }.toMap()
                 )
             }
@@ -64,8 +69,8 @@ class EventMapper(
             crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,
-                forcePeople = it.forcePeople.map { (coreSignage, corePerson) ->
-                    val grouping = when (val grouping = coreSignage.grouping) {
+                peopleMap = it.peopleMap.map { (key, value) ->
+                    val grouping = when (val grouping = key.signage.grouping) {
                         is Grouping.Singular -> GroupingContainer(
                             type = GroupingContainer.Type.SINGULAR,
                             singular = grouping.abbreviation
@@ -75,12 +80,14 @@ class EventMapper(
                             pair = grouping.pair.first.abbreviation to grouping.pair.second.abbreviation
                         )
                     }
-                    EventEntity.ForcePerson(
+                    EventEntity.PersonMapEntry(
                         signage = ParticipantEntity.Signage(
                             grouping = grouping,
-                            number = coreSignage.number
+                            number = key.signage.number
                         ),
-                        personId = corePerson.id
+                        firstName = key.firstName,
+                        lastName = key.lastName,
+                        personId = value.id
                     )
                 }
             ) }

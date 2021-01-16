@@ -59,7 +59,7 @@ class EventCrispyFishForcePersonAssembleCommand(
             crispyFishVerification.verifyRegistrations(context, crispyFish.forcePeople, object  : EventCrispyFishForcePersonVerification.Callback {
 
                 override fun onUnforcedExactMatchFound(registration: Registration, person: Person) {
-                    
+
                 }
 
                 override fun onRegistrationWithClubMemberIdFound(registration: Registration, person: Person) {

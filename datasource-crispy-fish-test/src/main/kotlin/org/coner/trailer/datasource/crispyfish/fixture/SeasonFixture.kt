@@ -39,7 +39,7 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-01-01 event 1.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        forcePeople = emptyMap()
+                        peopleMap = emptyMap()
                     )
                 ),
                 eventNumber = 1,
@@ -57,7 +57,7 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-02-02 event 2.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        forcePeople = emptyMap()
+                        peopleMap = emptyMap()
                     )
                 ),
                 eventNumber = 2,
@@ -75,7 +75,7 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-03-03 event 3.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        forcePeople = emptyMap()
+                        peopleMap = emptyMap()
                     )
                 ),
                 eventNumber = 3,
