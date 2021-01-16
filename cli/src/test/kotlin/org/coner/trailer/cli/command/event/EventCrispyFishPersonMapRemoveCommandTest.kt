@@ -26,9 +26,9 @@ import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishForcePersonRemoveCommandTest {
+class EventCrispyFishPersonMapRemoveCommandTest {
 
-    lateinit var command: EventCrispyFishForcePersonRemoveCommand
+    lateinit var command: EventCrispyFishPersonMapRemoveCommand
 
     @MockK lateinit var service: EventService
     @MockK lateinit var groupingService: CrispyFishGroupingService
@@ -41,7 +41,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        command = EventCrispyFishForcePersonRemoveCommand(
+        command = EventCrispyFishPersonMapRemoveCommand(
             di = DI {
                 bind<EventService>() with instance(service)
                 bind<CrispyFishGroupingService>() with instance(groupingService)
@@ -66,10 +66,15 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             grouping = grouping,
             number = "1"
         )
+        val key = Event.CrispyFishMetadata.PeopleMapKey(
+            signage = signage,
+            firstName = person.firstName,
+            lastName = person.lastName
+        )
         val crispyFish = Event.CrispyFishMetadata(
             eventControlFile = "irrelevant",
             classDefinitionFile = "irrelevant",
-            forcePeople = mapOf(signage to person)
+            peopleMap = mapOf(key to person)
         )
         val event = TestEvents.Lscc2019.points1.copy(
             crispyFish = crispyFish
@@ -79,7 +84,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
         every { personService.findById(person.id) } returns person
         val set = event.copy(
             crispyFish = crispyFish.copy(
-                forcePeople = emptyMap()
+                peopleMap = emptyMap()
             )
         )
         every { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
@@ -87,7 +92,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
         }
         val viewRender = "view rendered"
@@ -98,6 +103,8 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             "--grouping", "singular",
             "--abbreviation-singular", signage.grouping.abbreviation,
             "--number", signage.number,
+            "--first-name", person.firstName,
+            "--last-name", person.lastName,
             "--person-id", "${person.id}"
         ))
 
@@ -108,7 +115,7 @@ class EventCrispyFishForcePersonRemoveCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
             view.render(set)
         }

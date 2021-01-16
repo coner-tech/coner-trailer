@@ -48,7 +48,7 @@ class EventMapper(
                             grouping = grouping,
                             number = force.signage.number
                         )
-                        val key = Event.CrispyFishMetadata.PersonMappingKey(
+                        val key = Event.CrispyFishMetadata.PeopleMapKey(
                             signage = signage,
                             firstName = force.firstName,
                             lastName = force.lastName,

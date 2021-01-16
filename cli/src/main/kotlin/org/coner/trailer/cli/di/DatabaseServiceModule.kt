@@ -8,7 +8,7 @@ import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
-import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
+import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -141,7 +141,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<CrispyFishParticipantMapper>() with singleton { CrispyFishParticipantMapper(
         crispyFishGroupingMapper = instance()
     ) }
-    bind<EventCrispyFishForcePersonVerification>() with singleton { EventCrispyFishForcePersonVerification(
+    bind<EventCrispyFishPersonMapVerifier>() with singleton { EventCrispyFishPersonMapVerifier(
         personService = instance(),
         crispyFishParticipantMapper = instance()
     ) }

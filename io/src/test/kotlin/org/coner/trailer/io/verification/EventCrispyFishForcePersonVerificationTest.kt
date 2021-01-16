@@ -5,10 +5,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import org.coner.trailer.Participant
-import org.coner.trailer.Person
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPeople
+import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
@@ -22,14 +19,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishForcePersonVerificationTest {
 
-    lateinit var verification: EventCrispyFishForcePersonVerification
+    lateinit var verifier: EventCrispyFishPersonMapVerifier
 
     @MockK lateinit var personService: PersonService
     @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
 
     @BeforeEach
     fun before() {
-        verification = EventCrispyFishForcePersonVerification(
+        verifier = EventCrispyFishPersonMapVerifier(
             personService = personService,
             crispyFishParticipantMapper = crispyFishParticipantMapper
         )
@@ -38,7 +35,7 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should pass registrations with forced people`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK callback: EventCrispyFishForcePersonVerification.Callback
+        @MockK callback: EventCrispyFishPersonMapVerifier.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
             memberNumber = null
@@ -47,7 +44,8 @@ class EventCrispyFishForcePersonVerificationTest {
             person = null
         )
         val person = TestPeople.REBECCA_JACKSON
-        val forcePeople = mapOf(participant.signage to person)
+        val key = Event.CrispyFishMetadata.PeopleMapKey(participant.signage, registration.firstName, registration.lastName)
+        val forcePeople = mapOf(key to person)
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns listOf(person)
@@ -59,9 +57,9 @@ class EventCrispyFishForcePersonVerificationTest {
         } returns participant.signage
 
         assertDoesNotThrow {
-            verification.verifyRegistrations(
+            verifier.verify(
                 context = context,
-                forcePeople = forcePeople,
+                peopleMap = forcePeople,
                 callback = callback
             )
         }
@@ -78,7 +76,7 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should fail when registration lacks club member ID`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK callback: EventCrispyFishForcePersonVerification.Callback
+        @MockK callback: EventCrispyFishPersonMapVerifier.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
             memberNumber = null
@@ -87,7 +85,7 @@ class EventCrispyFishForcePersonVerificationTest {
             person = null
         )
         val person = TestPeople.REBECCA_JACKSON
-        val forcePeople = emptyMap<Participant.Signage, Person>()
+        val peopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns listOf(person)
@@ -100,9 +98,9 @@ class EventCrispyFishForcePersonVerificationTest {
         justRun { callback.onRegistrationWithoutClubMemberId(registration) }
 
         assertThrows<VerificationException> {
-            verification.verifyRegistrations(
+            verifier.verify(
                 context = context,
-                forcePeople = forcePeople,
+                peopleMap = peopleMap,
                 callback = callback
             )
         }
@@ -120,13 +118,13 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should fail when person with registration's club member ID is not found`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK callback: EventCrispyFishForcePersonVerification.Callback
+        @MockK callback: EventCrispyFishPersonMapVerifier.Callback
     ) {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
             person = null
         )
-        val forcePeople = emptyMap<Participant.Signage, Person>()
+        val peopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns emptyList()
@@ -139,9 +137,9 @@ class EventCrispyFishForcePersonVerificationTest {
         justRun { callback.onPersonWithClubMemberIdNotFound(registration) }
 
         assertThrows<VerificationException> {
-            verification.verifyRegistrations(
+            verifier.verify(
                 context = context,
-                forcePeople = forcePeople,
+                peopleMap = peopleMap,
                 callback = callback
             )
         }
@@ -159,7 +157,7 @@ class EventCrispyFishForcePersonVerificationTest {
     @Test
     fun `It should fail when there are multiple people with registration's club member ID`(
         @MockK context: CrispyFishEventMappingContext,
-        @MockK callback: EventCrispyFishForcePersonVerification.Callback
+        @MockK callback: EventCrispyFishPersonMapVerifier.Callback
     ) {
         val registrations = listOf(
             TestRegistrations.Lscc2019Points1.REBECCA_JACKSON,
@@ -181,7 +179,7 @@ class EventCrispyFishForcePersonVerificationTest {
                 clubMemberId = TestPeople.REBECCA_JACKSON.clubMemberId
             )
         )
-        val forcePeople = emptyMap<Participant.Signage, Person>()
+        val peopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
         every { context.allRegistrations } returns registrations
         every { personService.list() } returns people
         every {
@@ -199,9 +197,9 @@ class EventCrispyFishForcePersonVerificationTest {
         justRun { callback.onMultiplePeopleWithClubMemberIdFound(any()) }
 
         assertThrows<VerificationException> {
-            verification.verifyRegistrations(
+            verifier.verify(
                 context = context,
-                forcePeople = forcePeople,
+                peopleMap = peopleMap,
                 callback = callback
             )
         }

@@ -1,11 +1,8 @@
 package org.coner.trailer.cli.command.event
 
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.context
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -17,12 +14,9 @@ import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
@@ -77,7 +71,7 @@ class EventAddCommandTest {
         val crispyFish = Event.CrispyFishMetadata(
             eventControlFile = crispyFishDatabase.relativize(eventControlFile).toString(),
             classDefinitionFile = crispyFishDatabase.relativize(classDefinitionFile).toString(),
-            forcePeople = emptyMap()
+            peopleMap = emptyMap()
         )
         val create = TestEvents.Lscc2019.points1.copy(
             crispyFish = crispyFish,

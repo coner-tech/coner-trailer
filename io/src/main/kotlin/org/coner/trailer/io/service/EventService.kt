@@ -7,7 +7,7 @@ import org.coner.trailer.datasource.snoozle.entity.EventEntity
 import org.coner.trailer.io.constraint.EventDeleteConstraints
 import org.coner.trailer.io.constraint.EventPersistConstraints
 import org.coner.trailer.io.mapper.EventMapper
-import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
+import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
 import java.util.*
 import kotlin.streams.toList
 
@@ -16,7 +16,7 @@ class EventService(
     private val mapper: EventMapper,
     private val persistConstraints: EventPersistConstraints,
     private val deleteConstraints: EventDeleteConstraints,
-    private val eventCrispyFishForcePersonVerification: EventCrispyFishForcePersonVerification
+    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
 ) {
 
     fun create(
@@ -50,12 +50,12 @@ class EventService(
      *
      * @param[update] Event to persist
      * @param[context] CrispyFishEventMappingContext the full mapping context for the event. Only required when lifecycle >= ACTIVE
-     * @param[eventCrispyFishForcePersonVerificationCallback] Failure callback for crispy fish force person verification
+     * @param[eventCrispyFishPersonMapVerifierCallback] Failure callback for crispy fish force person verification
      */
     fun update(
         update: Event,
         context: CrispyFishEventMappingContext?,
-        eventCrispyFishForcePersonVerificationCallback: EventCrispyFishForcePersonVerification.Callback?
+        eventCrispyFishPersonMapVerifierCallback: EventCrispyFishPersonMapVerifier.Callback?
     ) {
         persistConstraints.assess(update)
         val doCrispyFishForceVerification = when (update.lifecycle) {
@@ -64,10 +64,10 @@ class EventService(
         }
         if (doCrispyFishForceVerification) {
             update.crispyFish?.also {
-                eventCrispyFishForcePersonVerification.verifyRegistrations(
+                eventCrispyFishPersonMapVerifier.verify(
                     context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
-                    forcePeople = it.forcePeople,
-                    callback = eventCrispyFishForcePersonVerificationCallback
+                    peopleMap = it.peopleMap,
+                    callback = eventCrispyFishPersonMapVerifierCallback
                 )
             }
         }

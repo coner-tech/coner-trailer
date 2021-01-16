@@ -1,5 +1,6 @@
 package org.coner.trailer.cli.command.event
 
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
@@ -8,6 +9,7 @@ import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import org.coner.trailer.Event
 import org.coner.trailer.Participant
 import org.coner.trailer.cli.command.grouping.GroupingOption
 import org.coner.trailer.cli.command.grouping.groupingOption
@@ -24,11 +26,11 @@ import java.util.*
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class EventCrispyFishForcePersonAddCommand(
+class EventCrispyFishPersonMapRemoveCommand(
     di: DI
 ) : CliktCommand(
-    name = "crispy-fish-force-person-add",
-    help = "Add a Crispy Fish Force Person entry"
+    name = "crispy-fish-person-map-add",
+    help = "Remove a Crispy Fish Person Map entry"
 ), DIAware {
 
     override val di: DI by findOrSetObject { di }
@@ -42,6 +44,8 @@ class EventCrispyFishForcePersonAddCommand(
     private val id: UUID by argument().convert { toUuid(it) }
     private val grouping: GroupingOption by groupingOption().required()
     private val number: String by option().required()
+    private val firstName: String by option().required()
+    private val lastName: String by option().required()
     private val personId: UUID by option().convert { toUuid(it) }.required()
 
     override fun run() {
@@ -63,9 +67,22 @@ class EventCrispyFishForcePersonAddCommand(
             number = number
         )
         val person = personService.findById(personId)
+        val key = Event.CrispyFishMetadata.PeopleMapKey(
+            signage = signage,
+            firstName = firstName,
+            lastName = lastName
+        )
         val setCrispyFish = crispyFish.copy(
-            forcePeople = crispyFish.forcePeople.toMutableMap().apply {
-                put(signage, person)
+            peopleMap = crispyFish.peopleMap.toMutableMap().apply {
+                val removed = remove(key)
+                if (removed == null) {
+                    echo("Key not found")
+                    throw Abort()
+                }
+                if (removed.id != person.id) {
+                    echo("Key was assigned to a different person ID. Aborting!")
+                    throw Abort()
+                }
             }
         )
         val set = event.copy(crispyFish = setCrispyFish)
@@ -73,7 +90,7 @@ class EventCrispyFishForcePersonAddCommand(
         service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationCallback = null
+            eventCrispyFishPersonMapVerifierCallback = null
         )
         echo(view.render(set))
     }

@@ -1,29 +1,17 @@
 package org.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
-import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
-import org.coner.trailer.Participant
-import org.coner.trailer.Person
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
-import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.EventView
-import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.io.service.PersonService
-import org.coner.trailer.io.verification.EventCrispyFishForcePersonVerification
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -98,7 +86,7 @@ class EventAddCommand(
             crispyFish = Event.CrispyFishMetadata(
                 eventControlFile = dbConfig.crispyFishDatabase.relativize(crispyFishOptions.eventControlFile).toString(),
                 classDefinitionFile = dbConfig.crispyFishDatabase.relativize(crispyFishOptions.classDefinitionFile).toString(),
-                forcePeople = emptyMap() // out of scope for add command
+                peopleMap = emptyMap() // out of scope for add command
             )
         )
         service.create(create)

@@ -4,7 +4,6 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import org.coner.trailer.Event
 import org.coner.trailer.Grouping
-import org.coner.trailer.Participant
 import org.coner.trailer.Person
 
 class EventView : View<Event> {
@@ -16,22 +15,22 @@ class EventView : View<Event> {
             Crispy Fish:
                     Event Control File:     ${model.crispyFish?.eventControlFile}
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
-                    Force People:           ${renderForcePeople(model)}
+                    People Map:             ${renderPeopleMap(model)}
     """.trimIndent()
 
-    private fun renderForcePeople(model: Event): String {
-        val content = if (model.crispyFish?.forcePeople?.isNotEmpty() == true) {
+    private fun renderPeopleMap(model: Event): String {
+        val content = if (model.crispyFish?.peopleMap?.isNotEmpty() == true) {
             val at = AsciiTable()
             at.renderer.cwc = CWC_LongestLine()
             at.addRule()
             at.addRow("Signage", "Person ID")
             at.addRule()
-            model.crispyFish?.forcePeople?.forEach { (signage: Participant.Signage, person: Person) ->
-                val grouping = when (val grouping = signage.grouping) {
+            model.crispyFish?.peopleMap?.forEach { (key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) ->
+                val grouping = when (val grouping = key.signage.grouping) {
                     is Grouping.Singular -> grouping.abbreviation
                     is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"
                 }
-                at.addRow("$grouping ${signage.number}", "${person.id}")
+                at.addRow("$grouping ${key.signage.number}", "${person.id}")
             }
             at.addRule()
             at.render()

@@ -92,7 +92,7 @@ class EventSetCommand(
                     classDefinitionFile = crispyFishOptions.classDefinitionFile?.let {
                         dbConfig.crispyFishDatabase.relativize(it).toString()
                     } ?: requireNotNull(event.crispyFish?.classDefinitionFile) { "Missing --class-definition-file" },
-                    forcePeople = event.crispyFish?.forcePeople ?: emptyMap()
+                    peopleMap = event.crispyFish?.peopleMap ?: emptyMap()
                 )
             }
             is CrispyFishOptions.Unset -> null
@@ -107,7 +107,7 @@ class EventSetCommand(
         service.update(
             update = set,
             context = set.crispyFish?.let { crispyFishEventMappingContextService.load(it) },
-            eventCrispyFishForcePersonVerificationCallback = null
+            eventCrispyFishPersonMapVerifierCallback = null
         )
         echo(view.render(set))
     }

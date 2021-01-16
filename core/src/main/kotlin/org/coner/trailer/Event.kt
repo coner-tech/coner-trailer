@@ -13,10 +13,10 @@ data class Event(
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
-            val peopleMap: Map<PersonMappingKey, Person>
+            val peopleMap: Map<PeopleMapKey, Person>
     ) {
 
-        data class PersonMappingKey(
+        data class PeopleMapKey(
             val signage: Participant.Signage,
             val firstName: String,
             val lastName: String

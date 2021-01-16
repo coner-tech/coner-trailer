@@ -26,9 +26,9 @@ import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishForcePersonAddCommandTest {
+class EventCrispyFishPersonMapAddCommandTest {
 
-    lateinit var command: EventCrispyFishForcePersonAddCommand
+    lateinit var command: EventCrispyFishPersonMapAddCommand
 
     @MockK lateinit var service: EventService
     @MockK lateinit var groupingService: CrispyFishGroupingService
@@ -41,7 +41,7 @@ class EventCrispyFishForcePersonAddCommandTest {
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        command = EventCrispyFishForcePersonAddCommand(
+        command = EventCrispyFishPersonMapAddCommand(
             di = DI {
                 bind<EventService>() with instance(service)
                 bind<CrispyFishGroupingService>() with instance(groupingService)
@@ -63,7 +63,7 @@ class EventCrispyFishForcePersonAddCommandTest {
         val crispyFish = Event.CrispyFishMetadata(
             eventControlFile = "irrelevant",
             classDefinitionFile = "irrelevant",
-            forcePeople = emptyMap()
+            peopleMap = emptyMap()
         )
         val event = TestEvents.Lscc2019.points1.copy(
             crispyFish = crispyFish
@@ -74,19 +74,24 @@ class EventCrispyFishForcePersonAddCommandTest {
             grouping = grouping,
             number = "1"
         )
+        val key = Event.CrispyFishMetadata.PeopleMapKey(
+            signage = signage,
+            firstName = person.firstName,
+            lastName = person.lastName
+        )
         every { service.findById(event.id) } returns event
         every { groupingService.findSingular(crispyFish, grouping.abbreviation) } returns grouping
         every { personService.findById(person.id) } returns person
         val set = event.copy(
             crispyFish = crispyFish.copy(
-                forcePeople = mapOf(signage to person)
+                peopleMap = mapOf(key to person)
             )
         )
         every { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
         justRun { service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationCallback = null
+            eventCrispyFishPersonMapVerifierCallback = null
         ) }
         val viewRender = "view rendered"
         every { view.render(set) } returns viewRender
@@ -96,6 +101,8 @@ class EventCrispyFishForcePersonAddCommandTest {
             "--grouping", "singular",
             "--abbreviation-singular", signage.grouping.abbreviation,
             "--number", signage.number,
+            "--first-name", person.firstName,
+            "--last-name", person.lastName,
             "--person-id", "${person.id}"
         ))
 
@@ -106,7 +113,7 @@ class EventCrispyFishForcePersonAddCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
             view.render(set)
         }

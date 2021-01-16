@@ -77,7 +77,7 @@ class EventSetCommandTest {
         val setCrispyFish = Event.CrispyFishMetadata(
             eventControlFile = "set-event-control-file.ecf",
             classDefinitionFile = "set-class-definition-file.ecf",
-            forcePeople = emptyMap()
+            peopleMap = emptyMap()
         )
         val set = original.copy(
             name = "It should set event properties",
@@ -92,7 +92,7 @@ class EventSetCommandTest {
         justRun { service.update(
             update = set,
             context = context,
-            eventCrispyFishForcePersonVerificationCallback = null
+            eventCrispyFishPersonMapVerifierCallback = null
         ) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
@@ -111,7 +111,7 @@ class EventSetCommandTest {
             service.update(
                 update = set,
                 context = context,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
             view.render(set)
         }
@@ -126,7 +126,7 @@ class EventSetCommandTest {
             service.update(
                 update = original,
                 context = null,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
         }
         val viewRendered = "view rendered set event named: ${original.name}"
@@ -141,7 +141,7 @@ class EventSetCommandTest {
             service.update(
                 update = original,
                 context = null,
-                eventCrispyFishForcePersonVerificationCallback = null
+                eventCrispyFishPersonMapVerifierCallback = null
             )
             view.render(original)
         }
