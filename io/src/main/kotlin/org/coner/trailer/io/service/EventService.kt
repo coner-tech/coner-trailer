@@ -1,6 +1,8 @@
 package org.coner.trailer.io.service
 
+import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
+import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.snoozle.EventResource
 import org.coner.trailer.datasource.snoozle.entity.EventEntity
@@ -50,24 +52,22 @@ class EventService(
      *
      * @param[update] Event to persist
      * @param[context] CrispyFishEventMappingContext the full mapping context for the event. Only required when lifecycle >= ACTIVE
-     * @param[eventCrispyFishPersonMapVerifierCallback] Failure callback for crispy fish force person verification
      */
     fun update(
         update: Event,
-        context: CrispyFishEventMappingContext?,
-        eventCrispyFishPersonMapVerifierCallback: EventCrispyFishPersonMapVerifier.Callback?
+        context: CrispyFishEventMappingContext?
     ) {
         persistConstraints.assess(update)
-        val doCrispyFishForceVerification = when (update.lifecycle) {
-            Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> false
-            Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> true
+        val allowUnmappedCrispyFishPeople = when (update.lifecycle) {
+            Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> true
+            Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> false
         }
-        if (doCrispyFishForceVerification) {
-            update.crispyFish?.also {
+        if (!allowUnmappedCrispyFishPeople) {
+            update.crispyFish?.also { crispyFish ->
                 eventCrispyFishPersonMapVerifier.verify(
                     context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
-                    peopleMap = it.peopleMap,
-                    callback = eventCrispyFishPersonMapVerifierCallback
+                    peopleMap = crispyFish.peopleMap,
+                    callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
                 )
             }
         }

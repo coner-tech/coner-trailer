@@ -80,8 +80,7 @@ class EventCrispyFishPersonMapAddCommand(
         val context = crispyFishEventMappingContextService.load(setCrispyFish)
         service.update(
             update = set,
-            context = context,
-            eventCrispyFishPersonMapVerifierCallback = null
+            context = context
         )
         echo(view.render(set))
     }
