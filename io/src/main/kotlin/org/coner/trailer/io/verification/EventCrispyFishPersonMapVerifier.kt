@@ -27,27 +27,29 @@ class EventCrispyFishPersonMapVerifier(
                 firstName = registration.firstName,
                 lastName = registration.lastName
             )
-            if (peopleMap[key] != null) {
-                return@map Outcome.Mapped(peopleMap[key])
-            }
-            val memberNumber = registration.memberNumber
-            if (memberNumber.isNullOrEmpty()) {
-                return@map Outcome.NotMapped.WithoutClubMemberId(registration)
-            }
-            val peopleWithMemberId = clubMemberIdToPeople[registration.memberNumber]
-            return@map when {
-                peopleWithMemberId == null -> Outcome.NotMapped.WithClubMemberIdNotFound(registration)
-                peopleWithMemberId.size > 1 -> Outcome.NotMapped.MultiplePeopleWithClubMemberId(registration, peopleWithMemberId)
-                peopleWithMemberId.size == 1 -> {
-                    val personWithMemberId = peopleWithMemberId.single()
-                    if (registration.firstName == personWithMemberId.firstName
-                        && registration.lastName == personWithMemberId.lastName) {
-                        Outcome.NotMapped.WithExactMatch(registration, personWithMemberId)
-                    } else {
-                        Outcome.NotMapped.WithClubMemberIdMatchButNameMismatch(registration, personWithMemberId)
-                    }
+            val mappedPerson = peopleMap[key]
+            if (mappedPerson != null) {
+                Outcome.Mapped(registration, mappedPerson)
+            } else {
+                val memberNumber = registration.memberNumber
+                if (memberNumber.isNullOrEmpty()) {
+                    Outcome.NotMapped.WithoutClubMemberId(registration)
                 }
-                else -> throw IllegalStateException()
+                val peopleWithMemberId = clubMemberIdToPeople[registration.memberNumber]
+                when {
+                    peopleWithMemberId == null -> Outcome.NotMapped.WithClubMemberIdNotFound(registration)
+                    peopleWithMemberId.size > 1 -> Outcome.NotMapped.MultiplePeopleWithClubMemberId(registration, peopleWithMemberId)
+                    peopleWithMemberId.size == 1 -> {
+                        val personWithMemberId = peopleWithMemberId.single()
+                        if (registration.firstName == personWithMemberId.firstName
+                            && registration.lastName == personWithMemberId.lastName) {
+                            Outcome.NotMapped.WithExactMatch(registration, personWithMemberId)
+                        } else {
+                            Outcome.NotMapped.WithClubMemberIdMatchButNameMismatch(registration, personWithMemberId)
+                        }
+                    }
+                    else -> throw IllegalStateException()
+                }
             }
         }
     }
@@ -58,7 +60,7 @@ class EventCrispyFishPersonMapVerifier(
             data class WithExactMatch(val registration: Registration, val person: Person) : NotMapped()
             data class WithoutClubMemberId(val registration: Registration) : NotMapped()
             data class WithClubMemberIdNotFound(val registration: Registration) : NotMapped()
-            data class MultiplePeopleWithClubMemberId(val registration: Registration, val peopleWithClubMemberId: List<Person>)
+            data class MultiplePeopleWithClubMemberId(val registration: Registration, val peopleWithClubMemberId: List<Person>) : NotMapped()
             data class WithClubMemberIdMatchButNameMismatch(val registration: Registration, val person: Person) : NotMapped()
         }
     }
