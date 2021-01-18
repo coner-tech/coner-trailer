@@ -106,8 +106,7 @@ class EventSetCommand(
         )
         service.update(
             update = set,
-            context = set.crispyFish?.let { crispyFishEventMappingContextService.load(it) },
-            eventCrispyFishPersonMapVerifierCallback = null
+            context = set.crispyFish?.let { crispyFishEventMappingContextService.load(it) }
         )
         echo(view.render(set))
     }

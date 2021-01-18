@@ -11,6 +11,7 @@ import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
+import org.coner.trailer.cli.view.PersonView
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
@@ -39,6 +40,7 @@ class EventCrispyFishPersonMapAssembleCommand(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
+    private val personView: PersonView by instance()
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper by instance()
     private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
 
@@ -53,20 +55,15 @@ class EventCrispyFishPersonMapAssembleCommand(
         }
         val context = crispyFishEventMappingContextService.load(crispyFish)
         val peopleMap = mutableMapOf<Event.CrispyFishMetadata.PeopleMapKey, Person>()
-        val unforcedExactMatches = mutableListOf<Pair<Registration, Person>>()
         try {
 
             eventCrispyFishPersonMapVerifier.verify(context, crispyFish.peopleMap, object  : EventCrispyFishPersonMapVerifier.Callback {
 
-                override fun onUnforcedExactMatchFound(registration: Registration, person: Person) {
-
+                override fun onMapped(registration: Registration, person: Person) {
+                    // no-op
                 }
 
-                override fun onRegistrationWithClubMemberIdFound(registration: Registration, person: Person) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onRegistrationWithoutClubMemberId(registration: Registration) {
+                override fun onUnmappedClubMemberIdNull(registration: Registration) {
                     enter()
                     echo("Found registration without club member ID")
                     echo(crispyFishRegistrationView.render(registration))
@@ -75,7 +72,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     exit()
                 }
 
-                override fun onPersonWithClubMemberIdNotFound(registration: Registration) {
+                override fun onUnmappedClubMemberIdNotFound(registration: Registration) {
                     enter()
                     echo("Found registration with club member ID that didn't match any people")
                     echo(crispyFishRegistrationView.render(registration))
@@ -84,12 +81,50 @@ class EventCrispyFishPersonMapAssembleCommand(
                     exit()
                 }
 
-                override fun onMultiplePeopleWithClubMemberIdFound(registration: Registration) {
+                override fun onUnmappedClubMemberIdAmbiguous(
+                    registration: Registration,
+                    peopleWithClubMemberId: List<Person>
+                ) {
                     enter()
                     echo("Found registration with club member ID that matched multiple people")
                     echo(crispyFishRegistrationView.render(registration))
-                    val suggestions = personService.searchByClubMemberIdFrom(registration)
-                    handleAmbiguousRegistration(registration, suggestions)
+                    handleAmbiguousRegistration(registration, peopleWithClubMemberId)
+                    exit()
+                }
+
+                override fun onUnmappedClubMemberIdMatchButNameMismatch(registration: Registration, person: Person) {
+                    enter()
+                    echo("Found registration with club member ID match but name mismatch")
+                    echo(crispyFishRegistrationView.render(registration))
+                    handleAmbiguousRegistration(registration, listOf(person))
+                    exit()
+                }
+
+                override fun onUnmappedExactMatch(registration: Registration, person: Person) {
+                    enter()
+                    val key = Event.CrispyFishMetadata.PeopleMapKey(
+                        signage = crispyFishParticipantMapper.toCoreSignage(
+                            context = context,
+                            crispyFish = registration
+                        ),
+                        firstName = registration.firstName,
+                        lastName = registration.lastName
+                    )
+                    echo("Found unmapped registration with exact club member and name match.")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Auto-mapping to person:")
+                    echo(personView.render(person))
+                    peopleMap[key] = person
+                    exit()
+                }
+
+                override fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) {
+                    enter()
+                    echo("Found unused mapping. Ignoring.")
+                    echo("Signage: ${key.signage}")
+                    echo("Name: ${key.firstName} ${key.lastName}")
+                    echo("Person:")
+                    echo(personView.render(person))
                     exit()
                 }
 
@@ -165,8 +200,7 @@ class EventCrispyFishPersonMapAssembleCommand(
         )
         service.update(
             update = update,
-            context = context,
-            eventCrispyFishPersonMapVerifierCallback = null
+            context = context
         )
     }
 }

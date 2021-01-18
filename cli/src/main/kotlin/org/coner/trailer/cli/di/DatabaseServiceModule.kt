@@ -132,7 +132,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         mapper = instance(),
         persistConstraints = instance(),
         deleteConstraints = instance(),
-        eventCrispyFishForcePersonVerification = instance()
+        eventCrispyFishPersonMapVerifier = instance()
     ) }
     bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints(
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase

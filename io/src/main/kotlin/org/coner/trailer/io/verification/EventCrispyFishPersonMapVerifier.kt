@@ -64,11 +64,11 @@ class EventCrispyFishPersonMapVerifier(
 
     interface Callback {
         fun onMapped(registration: Registration, person: Person)
-        fun onUnmappedExactMatch(registration: Registration, person: Person)
         fun onUnmappedClubMemberIdNull(registration: Registration)
         fun onUnmappedClubMemberIdNotFound(registration: Registration)
         fun onUnmappedClubMemberIdAmbiguous(registration: Registration, peopleWithClubMemberId: List<Person>)
         fun onUnmappedClubMemberIdMatchButNameMismatch(registration: Registration, person: Person)
+        fun onUnmappedExactMatch(registration: Registration, person: Person)
         fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person)
     }
 
