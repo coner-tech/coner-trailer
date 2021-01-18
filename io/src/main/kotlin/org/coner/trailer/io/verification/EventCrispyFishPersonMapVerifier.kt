@@ -18,7 +18,7 @@ class EventCrispyFishPersonMapVerifier(
         callback: Callback
     ) {
         val clubMemberIdToPeople: Map<String?, List<Person>> = personService.list().groupBy { it.clubMemberId }
-        val usedKeys = mutableSetOf<Event.CrispyFishMetadata.PeopleMapKey>()
+        val usedKeys = hashSetOf<Event.CrispyFishMetadata.PeopleMapKey>()
         for (registration in context.allRegistrations) {
             val signage = crispyFishParticipantMapper.toCoreSignage(
                 context = context,
@@ -55,10 +55,10 @@ class EventCrispyFishPersonMapVerifier(
                     else -> throw IllegalStateException()
                 }
             }
-            val unusedMappings = peopleMap.filter { !usedKeys.contains(it.key) }
-            for (unusedMapping in unusedMappings) {
-                callback.onUnused(unusedMapping.key, unusedMapping.value)
-            }
+        }
+        val unusedMappings = peopleMap.filter { !usedKeys.contains(it.key) }
+        for (unusedMapping in unusedMappings) {
+            callback.onUnused(unusedMapping.key, unusedMapping.value)
         }
     }
 

@@ -60,7 +60,19 @@ class EventCrispyFishPersonMapAssembleCommand(
             eventCrispyFishPersonMapVerifier.verify(context, crispyFish.peopleMap, object  : EventCrispyFishPersonMapVerifier.Callback {
 
                 override fun onMapped(registration: Registration, person: Person) {
-                    // no-op
+                    enter()
+                    echo("Found mapping. Reusing")
+                    echo("Registration:")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Person:")
+                    echo(personView.render(person))
+                    val key = Event.CrispyFishMetadata.PeopleMapKey(
+                        signage = crispyFishParticipantMapper.toCoreSignage(context, registration),
+                        firstName = registration.firstName,
+                        lastName = registration.lastName
+                    )
+                    peopleMap[key] = person
+                    exit()
                 }
 
                 override fun onUnmappedClubMemberIdNull(registration: Registration) {
