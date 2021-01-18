@@ -5,15 +5,16 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import org.coner.trailer.*
+import org.coner.trailer.Event
+import org.coner.trailer.Person
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
@@ -55,14 +56,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
+        justRun { callback.onMapped(registration, person) }
 
-        assertDoesNotThrow {
-            verifier.verify(
-                context = context,
-                peopleMap = forcePeople,
-                callback = callback
-            )
-        }
+        verifier.verify(
+            context = context,
+            peopleMap = forcePeople,
+            callback = callback
+        )
 
         verifySequence {
             personService.list()
@@ -70,6 +70,7 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
+            callback.onMapped(registration, person)
         }
     }
 
@@ -95,15 +96,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
-        justRun { callback.onRegistrationWithoutClubMemberId(registration) }
+        justRun { callback.onUnmappedClubMemberIdNull(registration) }
 
-        assertThrows<VerificationException> {
-            verifier.verify(
-                context = context,
-                peopleMap = peopleMap,
-                callback = callback
-            )
-        }
+        verifier.verify(
+            context = context,
+            peopleMap = peopleMap,
+            callback = callback
+        )
 
         verifySequence {
             personService.list()
@@ -111,7 +110,7 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
-            callback.onRegistrationWithoutClubMemberId(registration)
+            callback.onUnmappedClubMemberIdNull(registration)
         }
     }
 
@@ -134,15 +133,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registration
             )
         } returns participant.signage
-        justRun { callback.onPersonWithClubMemberIdNotFound(registration) }
+        justRun { callback.onUnmappedClubMemberIdNotFound(registration) }
 
-        assertThrows<VerificationException> {
-            verifier.verify(
-                context = context,
-                peopleMap = peopleMap,
-                callback = callback
-            )
-        }
+        verifier.verify(
+            context = context,
+            peopleMap = peopleMap,
+            callback = callback
+        )
 
         verifySequence {
             personService.list()
@@ -150,7 +147,7 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registration
             )
-            callback.onPersonWithClubMemberIdNotFound(registration)
+            callback.onUnmappedClubMemberIdNotFound(registration)
         }
     }
 
@@ -194,15 +191,13 @@ class EventCrispyFishForcePersonVerificationTest {
                 crispyFish = registrations[1]
             )
         } returns participants[1].signage
-        justRun { callback.onMultiplePeopleWithClubMemberIdFound(any()) }
+        justRun { callback.onUnmappedClubMemberIdAmbiguous(any(), any()) }
 
-        assertThrows<VerificationException> {
-            verifier.verify(
-                context = context,
-                peopleMap = peopleMap,
-                callback = callback
-            )
-        }
+        verifier.verify(
+            context = context,
+            peopleMap = peopleMap,
+            callback = callback
+        )
 
         verifySequence {
             personService.list()
@@ -210,12 +205,12 @@ class EventCrispyFishForcePersonVerificationTest {
                 context = context,
                 crispyFish = registrations[0]
             )
-            callback.onMultiplePeopleWithClubMemberIdFound(registrations[0])
+            callback.onUnmappedClubMemberIdAmbiguous(registrations[0], people)
             crispyFishParticipantMapper.toCoreSignage(
                 context = context,
                 crispyFish = registrations[1]
             )
-            callback.onMultiplePeopleWithClubMemberIdFound(registrations[1])
+            callback.onUnmappedClubMemberIdAmbiguous(registrations[1], people)
         }
     }
 }

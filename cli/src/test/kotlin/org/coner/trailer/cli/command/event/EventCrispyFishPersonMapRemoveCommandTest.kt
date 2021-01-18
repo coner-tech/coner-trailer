@@ -91,8 +91,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
         justRun {
             service.update(
                 update = set,
-                context = context,
-                eventCrispyFishPersonMapVerifierCallback = null
+                context = context
             )
         }
         val viewRender = "view rendered"
@@ -114,8 +113,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
             personService.findById(person.id)
             service.update(
                 update = set,
-                context = context,
-                eventCrispyFishPersonMapVerifierCallback = null
+                context = context
             )
             view.render(set)
         }

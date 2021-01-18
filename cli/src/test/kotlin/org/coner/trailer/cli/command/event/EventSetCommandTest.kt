@@ -91,8 +91,7 @@ class EventSetCommandTest {
         every { crispyFishEventMappingContextService.load(setCrispyFish) } returns context
         justRun { service.update(
             update = set,
-            context = context,
-            eventCrispyFishPersonMapVerifierCallback = null
+            context = context
         ) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(set) } returns viewRendered
@@ -110,8 +109,7 @@ class EventSetCommandTest {
             service.findById(original.id)
             service.update(
                 update = set,
-                context = context,
-                eventCrispyFishPersonMapVerifierCallback = null
+                context = context
             )
             view.render(set)
         }
@@ -125,8 +123,7 @@ class EventSetCommandTest {
         justRun {
             service.update(
                 update = original,
-                context = null,
-                eventCrispyFishPersonMapVerifierCallback = null
+                context = null
             )
         }
         val viewRendered = "view rendered set event named: ${original.name}"
@@ -140,8 +137,7 @@ class EventSetCommandTest {
             service.findById(original.id)
             service.update(
                 update = original,
-                context = null,
-                eventCrispyFishPersonMapVerifierCallback = null
+                context = null
             )
             view.render(original)
         }
