@@ -1,5 +1,6 @@
 package org.coner.trailer.io.verification
 
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -263,5 +264,33 @@ class EventCrispyFishPersonMapVerifierTest {
             crispyFishParticipantMapper.toCoreSignage(context, registration)
             callback.onUnmappedExactMatch(registration, person)
         }
+    }
+
+    @Test
+    fun `When there is an unused mapping, it should invoke onUnused`() {
+        val person = TestPeople.REBECCA_JACKSON
+        every { personService.list() } returns emptyList()
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        every { context.allRegistrations } returns emptyList()
+        val key = Event.CrispyFishMetadata.PeopleMapKey(
+            signage = participant.signage,
+            firstName = registration.firstName,
+            lastName = registration.lastName
+        )
+        val peopleMap: Map<Event.CrispyFishMetadata.PeopleMapKey, Person> = mapOf(key to person)
+        justRun { callback.onUnused(key, person) }
+
+        verifier.verify(
+            context = context,
+            peopleMap = peopleMap,
+            callback = callback
+        )
+
+        verifySequence {
+            personService.list()
+            callback.onUnused(key, person)
+        }
+        confirmVerified(crispyFishParticipantMapper)
     }
 }
