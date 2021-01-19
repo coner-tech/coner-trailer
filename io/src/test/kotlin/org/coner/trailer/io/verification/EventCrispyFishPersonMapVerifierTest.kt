@@ -243,6 +243,25 @@ class EventCrispyFishPersonMapVerifierTest {
 
     @Test
     fun `When no person mapped and registration club member ID and first and last name matches single person, it should invoke onUnmappedExactMatch`() {
-        TODO()
+        val person = TestPeople.REBECCA_JACKSON
+        every { personService.list() } returns listOf(person)
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        every { context.allRegistrations } returns listOf(registration)
+        every { crispyFishParticipantMapper.toCoreSignage(context, registration) } returns participant.signage
+        val peopleMap: Map<Event.CrispyFishMetadata.PeopleMapKey, Person> = emptyMap()
+        justRun { callback.onUnmappedExactMatch(registration, person) }
+
+        verifier.verify(
+            context = context,
+            peopleMap = peopleMap,
+            callback = callback
+        )
+
+        verifySequence {
+            personService.list()
+            crispyFishParticipantMapper.toCoreSignage(context, registration)
+            callback.onUnmappedExactMatch(registration, person)
+        }
     }
 }
