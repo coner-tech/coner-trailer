@@ -206,51 +206,24 @@ class EventCrispyFishPersonMapVerifierTest {
     }
 
     @Test
-    fun `When no person mapped and registration club member ID matches person but first or last name don't, it should invoke onUnmappedClubMemberIdMatchButNameMismatch`() {
+    fun `When no person mapped and registration matches a club member ID but not first or last name, it should invoke onUnmappedClubMemberIdMatchButNameMismatch`() {
         val people = listOf(
             TestPeople.REBECCA_JACKSON,
-            TestPeople.REBECCA_JACKSON.copy(firstName = "Not Rebecca"),
-            TestPeople.REBECCA_JACKSON.copy(firstName = "Also Not Rebecca")
+            TestPeople.BRANDY_HUFF
         )
         every { personService.list() } returns people
         val participants = listOf(
-            TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
-                signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.copy(
-                    number = "1"
-                )
-            ),
-            TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
-                firstName = "Not Rebecca",
-                signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.copy(
-                    number = "2"
-                )
-            ),
-            TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
-                firstName = "Also Not Rebecca",
-                signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.copy(
-                    number = "3"
-                )
-            )
+            TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+            TestParticipants.Lscc2019Points1.BRANDY_HUFF
         )
         val registrations = listOf(
-            TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
-                number = "1"
-            ),
-            TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
-                firstName = "Not Rebecca",
-                number = "2"
-            ),
-            TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
-                lastName = "Not Jackson",
-                number = "3"
-            )
+            TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(firstName = "Not Rebecca"),
+            TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(firstName = "Not Brandy")
         )
         every { context.allRegistrations } returns registrations
         every { crispyFishParticipantMapper.toCoreSignage(context, registrations[0]) } returns participants[0].signage
         every { crispyFishParticipantMapper.toCoreSignage(context, registrations[1]) } returns participants[1].signage
-        every { crispyFishParticipantMapper.toCoreSignage(context, registrations[2]) } returns participants[2].signage
         val peopleMap: Map<Event.CrispyFishMetadata.PeopleMapKey, Person> = emptyMap()
-        justRun { callback.onUnmappedExactMatch(registrations[0], people[0]) }
         justRun { callback.onUnmappedClubMemberIdMatchButNameMismatch(any(), any()) }
 
         verifier.verify(
@@ -262,11 +235,9 @@ class EventCrispyFishPersonMapVerifierTest {
         verifySequence {
             personService.list()
             crispyFishParticipantMapper.toCoreSignage(context, registrations[0])
-            callback.onUnmappedExactMatch(registrations[0], people[0])
+            callback.onUnmappedClubMemberIdMatchButNameMismatch(registrations[0], people[0])
             crispyFishParticipantMapper.toCoreSignage(context, registrations[1])
             callback.onUnmappedClubMemberIdMatchButNameMismatch(registrations[1], people[1])
-            crispyFishParticipantMapper.toCoreSignage(context, registrations[2])
-            callback.onUnmappedClubMemberIdMatchButNameMismatch(registrations[2], people[2])
         }
     }
 
