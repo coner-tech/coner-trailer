@@ -1,11 +1,17 @@
 package org.coner.trailer.cli.command.event
 
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import org.coner.crispyfish.model.Registration
+import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.PersonView
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
@@ -51,6 +57,72 @@ class EventCrispyFishPersonMapAssembleCommandTest {
 
     @Test
     fun `It should assemble person map`() {
-        TODO()
+        val eventCrispyFish = requireNotNull(TestEvents.Lscc2019.points1.crispyFish).copy(
+            peopleMap = emptyMap()
+        )
+        val event = TestEvents.Lscc2019.points1.copy(
+            crispyFish = eventCrispyFish
+        )
+        every { service.findById(event.id) } returns event
+        val unmappedClubMemberIdNull = TestRegistrations.unmappedClubMemberIdNull()
+        val unmappedClubMemberIdNotFound = TestRegistrations.unmappedClubMemberIdNotFound()
+        val unmappedClubMemberIdAmbiguous = TestRegistrations.unmappedClubMemberIdAmbiguous()
+        val unmappedClubMemberIdMatchButNameMismatch = TestRegistrations.unmappedClubMemberIdMatchButNameMismatch()
+        val unmappedExactMatch = TestRegistrations.unmappedExactMatch()
+        val context = CrispyFishEventMappingContext(
+            allClassDefinitions = mockk(),
+            allRegistrations = listOf(
+                unmappedClubMemberIdNull,
+                unmappedClubMemberIdNotFound,
+                unmappedClubMemberIdAmbiguous,
+                unmappedClubMemberIdMatchButNameMismatch,
+                unmappedExactMatch
+            )
+        )
+        every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        TODO("Lots of mocking left to do")
+
+        command.parse(arrayOf("${event.id}"))
+
+
     }
+
 }
+
+private fun TestRegistrations.mapped() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+    firstName = "Mapped",
+    lastName = "Mapped",
+    number = "0",
+    memberNumber = "Mapped"
+)
+
+private fun TestRegistrations.unmappedClubMemberIdNull() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+    firstName = "Unmapped",
+    lastName = "ClubMemberIdNull",
+    number = "1",
+    memberNumber = null
+)
+
+private fun TestRegistrations.unmappedClubMemberIdNotFound() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+    firstName = "Unmapped",
+    lastName = "ClubMemberIdNotFound",
+    number = "2",
+    memberNumber = "WillNotBeFound"
+)
+
+private fun TestRegistrations.unmappedClubMemberIdAmbiguous() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+    firstName = "Unmapped",
+    lastName = "ClubMemberIdAmbiguous",
+    number = "3",
+    memberNumber = "Ambiguous"
+)
+
+private fun TestRegistrations.unmappedClubMemberIdMatchButNameMismatch() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
+    firstName = "Unmapped",
+    lastName = "ClubMemberIdMatchButNameMismatch",
+    number = "4",
+    memberNumber = "Match"
+)
+
+private fun TestRegistrations.unmappedExactMatch() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy()
+
