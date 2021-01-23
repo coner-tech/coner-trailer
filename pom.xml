@@ -25,6 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.4.21</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <kotlinx.coroutines.version>1.4.2</kotlinx.coroutines.version>
         <kotlinx.html.version>0.7.1</kotlinx.html.version>
         <kodein.version>7.0.0</kodein.version>
         <okhttp3.version>4.9.0</okhttp3.version>
@@ -53,6 +54,11 @@
                 <groupId>org.jetbrains.kotlinx</groupId>
                 <artifactId>kotlinx-html-jvm</artifactId>
                 <version>${kotlinx.html.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-core</artifactId>
+                <version>${kotlinx.coroutines.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.kodein.di</groupId>

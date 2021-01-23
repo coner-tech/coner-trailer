@@ -1,18 +1,15 @@
 package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.output.CliktConsole
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
+import io.mockk.justRun
 import io.mockk.slot
+import io.mockk.verifySequence
+import kotlinx.coroutines.*
 import org.awaitility.Awaitility
-import org.coner.crispyfish.model.Registration
-import org.coner.trailer.Event
-import org.coner.trailer.Person
-import org.coner.trailer.TestEvents
-import org.coner.trailer.TestPeople
+import org.coner.trailer.*
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.PersonView
@@ -24,20 +21,25 @@ import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
+import kotlin.coroutines.CoroutineContext
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishPersonMapAssembleCommandTest {
-    
+class EventCrispyFishPersonMapAssembleCommandTest
+    : CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Default + Job()
+
     lateinit var command: EventCrispyFishPersonMapAssembleCommand
-    
+
     @MockK lateinit var service: EventService
     @MockK lateinit var personService: PersonService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
@@ -46,7 +48,7 @@ class EventCrispyFishPersonMapAssembleCommandTest {
     @MockK lateinit var crispyFishPersonMapper: CrispyFishPersonMapper
 
     lateinit var useConsole: StringBufferConsole
-    
+
     @BeforeEach
     fun before() {
         useConsole = StringBufferConsole()
@@ -93,17 +95,36 @@ class EventCrispyFishPersonMapAssembleCommandTest {
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()
         every {
             eventCrispyFishPersonMapVerifier.verify(context, eventCrispyFish.peopleMap, capture(callbackSlot))
-        } answers {
+        } answers  {
             val callback = callbackSlot.captured
-//            callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull)
-//            Awaitility.await()
-//                .until { useConsole.output.endsWith("> ") }
-//            useConsole.writeInput("0")
+            async { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
+            Awaitility.await().until { useConsole.output.endsWith(">") }
+            useConsole.writeInput("0")
+        }
+        val signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage
+        every {
+            crispyFishParticipantMapper.toCoreSignage(context, unmappedClubMemberIdNull)
+        } returns signage
+        val update = event.copy(
+            crispyFish = eventCrispyFish.copy(
+                peopleMap = mapOf(
+                    Event.CrispyFishMetadata.PeopleMapKey(
+                        signage = signage,
+                        firstName = unmappedClubMemberIdNull.firstName,
+                        lastName = unmappedClubMemberIdNull.lastName
+                    ) to person
+                )
+            )
+        )
+        justRun { service.update(update, context) }
+
+        runBlocking {
+            command.parse(arrayOf("${event.id}"))
         }
 
-        command.parse(arrayOf("${event.id}"))
-
-
+        verifySequence {
+            service.update(update, context)
+        }
     }
 
 }

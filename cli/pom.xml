@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.coner.trailer</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
