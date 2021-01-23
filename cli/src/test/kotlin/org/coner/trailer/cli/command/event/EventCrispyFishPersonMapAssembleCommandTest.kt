@@ -97,9 +97,10 @@ class EventCrispyFishPersonMapAssembleCommandTest
             eventCrispyFishPersonMapVerifier.verify(context, eventCrispyFish.peopleMap, capture(callbackSlot))
         } answers  {
             val callback = callbackSlot.captured
-            async { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
+            launch { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
             Awaitility.await().until { useConsole.output.endsWith(">") }
             useConsole.writeInput("0")
+            Awaitility.await().until { useConsole.output.endsWith("<<<") }
         }
         val signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage
         every {
@@ -123,6 +124,7 @@ class EventCrispyFishPersonMapAssembleCommandTest
         }
 
         verifySequence {
+            service.findById(event.id)
             service.update(update, context)
         }
     }
