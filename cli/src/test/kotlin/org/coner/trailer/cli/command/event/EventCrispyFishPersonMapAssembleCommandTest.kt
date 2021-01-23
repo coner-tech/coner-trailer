@@ -106,6 +106,13 @@ class EventCrispyFishPersonMapAssembleCommandTest
         every {
             crispyFishParticipantMapper.toCoreSignage(context, unmappedClubMemberIdNull)
         } returns signage
+
+        justRun { service.update(any(), context) }
+
+        runBlocking {
+            command.parse(arrayOf("${event.id}"))
+        }
+
         val update = event.copy(
             crispyFish = eventCrispyFish.copy(
                 peopleMap = mapOf(
@@ -117,12 +124,6 @@ class EventCrispyFishPersonMapAssembleCommandTest
                 )
             )
         )
-        justRun { service.update(update, context) }
-
-        runBlocking {
-            command.parse(arrayOf("${event.id}"))
-        }
-
         verifySequence {
             service.findById(event.id)
             service.update(update, context)
