@@ -7,8 +7,10 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.slot
+import org.awaitility.Awaitility
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
+import org.coner.trailer.Person
 import org.coner.trailer.TestEvents
 import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
@@ -76,6 +78,13 @@ class EventCrispyFishPersonMapAssembleCommandTest {
         )
         every { service.findById(event.id) } returns event
         val unmappedClubMemberIdNull = TestRegistrations.unmappedClubMemberIdNull()
+        val person = Person(
+            clubMemberId = null,
+            firstName = unmappedClubMemberIdNull.firstName,
+            lastName = unmappedClubMemberIdNull.lastName,
+            motorsportReg = null
+        )
+        every { personService.searchByNameFrom(unmappedClubMemberIdNull) } returns listOf(person)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = emptyList(),
             allRegistrations = listOf(unmappedClubMemberIdNull)
@@ -86,8 +95,10 @@ class EventCrispyFishPersonMapAssembleCommandTest {
             eventCrispyFishPersonMapVerifier.verify(context, eventCrispyFish.peopleMap, capture(callbackSlot))
         } answers {
             val callback = callbackSlot.captured
-            callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull)
-            useConsole.output
+//            callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull)
+//            Awaitility.await()
+//                .until { useConsole.output.endsWith("> ") }
+//            useConsole.writeInput("0")
         }
 
         command.parse(arrayOf("${event.id}"))
