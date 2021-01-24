@@ -32,12 +32,6 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
 
-      - name: Maven Verify
-        run: ./mvnw verify -DCI=true
-
-      - name: Code Coverage
-        run: bash <(curl -s https://codecov.io/bash)
-
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -45,3 +39,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Maven Verify
+        run: ./mvnw verify -DCI=true
+
+      - name: Code Coverage
+        run: bash <(curl -s https://codecov.io/bash)
