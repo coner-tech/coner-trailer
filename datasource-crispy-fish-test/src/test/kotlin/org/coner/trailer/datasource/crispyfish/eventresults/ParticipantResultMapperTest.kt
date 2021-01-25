@@ -22,11 +22,15 @@ import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 class ParticipantResultMapperTest {
 
     @MockK
     private lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
+
+    @TempDir lateinit var fixtureRoot: Path
 
     @BeforeEach
     fun before() {
@@ -52,9 +56,10 @@ class ParticipantResultMapperTest {
             crispyFishParticipantMapper,
             memberIdToPeople = emptyMap()
         )
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
-            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
-            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
+            allClassDefinitions = seasonFixture.classDefinitions,
+            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
         )
 
         val actual = participantResultMapper.toCore(
@@ -73,9 +78,10 @@ class ParticipantResultMapperTest {
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
-            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
-            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
+            allClassDefinitions = seasonFixture.classDefinitions,
+            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
         )
         every {
             crispyFishParticipantMapper.toCore(

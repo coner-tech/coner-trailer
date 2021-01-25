@@ -10,6 +10,8 @@ import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
 class CrispyFishGroupingServiceTest {
@@ -17,11 +19,12 @@ class CrispyFishGroupingServiceTest {
     lateinit var service: CrispyFishGroupingService
 
     lateinit var seasonFixture: SeasonFixture
+    @TempDir lateinit var fixtureRoot: Path
 
     @BeforeEach
     fun before() {
         val mapper = CrispyFishGroupingMapper()
-        seasonFixture = SeasonFixture.Lscc2019Simplified
+        seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishGroupingService(
             crispyFishRoot = seasonFixture.classDefinitionFile.file.parentFile,
             mapper = mapper

@@ -6,6 +6,8 @@ import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 class CrispyFishGroupingMapperTest {
 
@@ -13,12 +15,16 @@ class CrispyFishGroupingMapperTest {
 
     lateinit var context: CrispyFishEventMappingContext
 
+    @TempDir
+    lateinit var fixtureRoot: Path
+
     @BeforeEach
     fun before() {
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         mapper = CrispyFishGroupingMapper()
         context = CrispyFishEventMappingContext(
-            allClassDefinitions = SeasonFixture.Lscc2019Simplified.classDefinitions,
-            allRegistrations = SeasonFixture.Lscc2019Simplified.event1.registrations(SeasonFixture.Lscc2019Simplified)
+            allClassDefinitions = seasonFixture.classDefinitions,
+            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
         )
     }
 

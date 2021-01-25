@@ -1,13 +1,13 @@
 package org.coner.trailer.io.service
 
-import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
-import assertk.assertions.index
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
@@ -16,10 +16,11 @@ class CrispyFishEventMappingContextServiceTest {
     lateinit var service: CrispyFishEventMappingContextService
 
     lateinit var fixture: SeasonFixture
+    @TempDir lateinit var fixtureRoot: Path
 
     @BeforeEach
     fun before() {
-        fixture = SeasonFixture.Lscc2019Simplified
+        fixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val crispyFishDatabase = fixture.classDefinitionFile.file.parentFile.toPath()
         service = CrispyFishEventMappingContextService(
             crispyFishDatabase = crispyFishDatabase,

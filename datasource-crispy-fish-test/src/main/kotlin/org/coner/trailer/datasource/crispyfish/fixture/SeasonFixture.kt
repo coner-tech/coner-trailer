@@ -4,17 +4,24 @@ import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
-import java.io.File
+import java.nio.file.Path
 import java.time.LocalDate
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
+import kotlin.io.path.writeText
 
+@OptIn(ExperimentalPathApi::class)
 sealed class SeasonFixture(
+    val temp: Path,
     val path: String,
     val classDefinitionFixture: ClassDefinitionFixture
 ) {
     abstract val events: List<EventFixture>
     abstract val memberIdToPeople: Map<String, Person>
     abstract val season: Season
-    object Lscc2019Simplified : SeasonFixture(
+    class Lscc2019Simplified(temp: Path) : SeasonFixture(
+        temp = temp,
         path = "lscc-2019-simplified",
         classDefinitionFixture = ClassDefinitionFixture("lscc2019.def")
     ) {
@@ -91,9 +98,20 @@ sealed class SeasonFixture(
         )
     }
 
-    val classDefinitionFile = ClassDefinitionFile(
-        file = File(javaClass.getResource("/seasons/$path/${classDefinitionFixture.fileName}").toURI())
-    )
+    val classDefinitionFile: ClassDefinitionFile
+
+    init {
+        javaClass.getResourceAsStream("/seasons/$path/${classDefinitionFixture.fileName}").use {
+            val text = it.bufferedReader().readText()
+            val path = temp.resolve("seasons/$path/${classDefinitionFixture.fileName}")
+            path.parent.createDirectories()
+            path.createFile()
+            path.writeText(text)
+            classDefinitionFile = ClassDefinitionFile(
+                file = path.toFile()
+            )
+        }
+    }
 
     val classDefinitions = classDefinitionFile.mapper().all()
     val categories = classDefinitions.filter { it.paxed }

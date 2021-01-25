@@ -10,12 +10,16 @@ import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResul
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 class OverallRawTimeResultsReportCreatorTest {
 
+    @TempDir lateinit var fixtureRoot: Path
+
     @Test
     fun `It should create from registration data for LSCC 2019 event 1`() {
-        val season = SeasonFixture.Lscc2019Simplified
+        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
@@ -128,7 +132,7 @@ class OverallRawTimeResultsReportCreatorTest {
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 2`() {
-        val season = SeasonFixture.Lscc2019Simplified
+        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
@@ -231,7 +235,7 @@ class OverallRawTimeResultsReportCreatorTest {
 
     @Test
     fun `It should create from registration data for LSCC 2019 event 3`() {
-        val season = SeasonFixture.Lscc2019Simplified
+        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,

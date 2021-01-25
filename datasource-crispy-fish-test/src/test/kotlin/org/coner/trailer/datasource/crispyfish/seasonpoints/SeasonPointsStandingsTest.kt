@@ -14,12 +14,16 @@ import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.hasSameIdAs
 import org.coner.trailer.seasonpoints.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 class SeasonPointsStandingsTest {
 
+    @TempDir lateinit var fixtureRoot: Path
+
     @Test
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
-        val seasonFixture = SeasonFixture.Lscc2019Simplified
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
             val creator = CompetitionGroupedResultsReportCreator(eventFixture.participantResultMapper)
             val context = CrispyFishEventMappingContext(
@@ -30,7 +34,7 @@ class SeasonPointsStandingsTest {
         }.toMap()
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 resultsType = StandardResultsTypes.competitionGrouped,
-                season = SeasonFixture.Lscc2019Simplified.season,
+                season = seasonFixture.season,
                 eventToGroupedResultsReports = competitionGroupedResultsReports,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified
         )
