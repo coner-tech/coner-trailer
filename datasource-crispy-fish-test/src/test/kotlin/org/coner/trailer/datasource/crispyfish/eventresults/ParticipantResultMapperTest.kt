@@ -24,7 +24,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class ParticipantResultMapperTest {
 
     @MockK
@@ -59,7 +61,7 @@ class ParticipantResultMapperTest {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
+            allRegistrations = seasonFixture.event1.registrations()
         )
 
         val actual = participantResultMapper.toCore(
@@ -81,7 +83,7 @@ class ParticipantResultMapperTest {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
+            allRegistrations = seasonFixture.event1.registrations()
         )
         every {
             crispyFishParticipantMapper.toCore(

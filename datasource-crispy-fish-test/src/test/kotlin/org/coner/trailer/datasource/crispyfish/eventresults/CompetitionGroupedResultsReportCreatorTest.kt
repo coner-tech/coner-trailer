@@ -11,7 +11,9 @@ import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class CompetitionGroupedResultsReportCreatorTest {
 
     @TempDir lateinit var fixtureRoot: Path
@@ -22,7 +24,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val event = season.event1
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(season)
+            allRegistrations = event.registrations()
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
@@ -129,7 +131,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val event = season.event2
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(season)
+            allRegistrations = event.registrations()
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
@@ -222,7 +224,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val event = season.event3
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(season)
+            allRegistrations = event.registrations()
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)

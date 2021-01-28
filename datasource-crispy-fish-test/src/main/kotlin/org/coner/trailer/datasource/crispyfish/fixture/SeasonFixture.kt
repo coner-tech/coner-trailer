@@ -36,6 +36,8 @@ sealed class SeasonFixture(
             personFactory(TestPeople.BENNETT_PANTONE, "2019-00295")
         ).map { requireNotNull(it.clubMemberId) to it }.toMap()
         val event1 = EventFixture(
+            seasonFixture = this,
+            temp = temp,
             crispyFishGroupingMapper = groupingMapper,
             memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(
@@ -54,6 +56,8 @@ sealed class SeasonFixture(
             )
         )
         val event2 = EventFixture(
+            seasonFixture = this,
+            temp = temp,
             crispyFishGroupingMapper = groupingMapper,
             memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(
@@ -72,6 +76,8 @@ sealed class SeasonFixture(
             )
         )
         val event3 = EventFixture(
+            seasonFixture = this,
+            temp = temp,
             crispyFishGroupingMapper = groupingMapper,
             memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(

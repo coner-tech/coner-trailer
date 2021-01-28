@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class CrispyFishParticipantMapperTest {
 
@@ -34,7 +36,7 @@ class CrispyFishParticipantMapperTest {
         mapper = CrispyFishParticipantMapper(crispyFishGroupingMapper)
         context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations(seasonFixture)
+            allRegistrations = seasonFixture.event1.registrations()
         )
     }
 

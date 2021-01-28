@@ -16,7 +16,9 @@ import org.coner.trailer.seasonpoints.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class SeasonPointsStandingsTest {
 
     @TempDir lateinit var fixtureRoot: Path
@@ -28,7 +30,7 @@ class SeasonPointsStandingsTest {
             val creator = CompetitionGroupedResultsReportCreator(eventFixture.participantResultMapper)
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
-                allRegistrations = eventFixture.registrations(seasonFixture)
+                allRegistrations = eventFixture.registrations()
             )
             eventFixture.coreSeasonEvent to creator.createFromRegistrationData(context)
         }.toMap()
