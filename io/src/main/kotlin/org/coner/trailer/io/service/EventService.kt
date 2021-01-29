@@ -47,6 +47,75 @@ class EventService(
                 .toList()
     }
 
+    fun check(
+        check: Event,
+        context: CrispyFishEventMappingContext?
+    ): CheckResult {
+        val checkCrispyFish = checkNotNull(check.crispyFish)
+        val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
+        val unmappedClubMemberIdNotFoundRegistrations = mutableListOf<Registration>()
+        val unmappedClubMemberIdAmbiguousRegistrations = mutableListOf<Registration>()
+        val unmappedClubMemberIdMatchButNameMismatchRegistrations = mutableListOf<Registration>()
+        val unmappedExactMatchRegistrations = mutableListOf<Registration>()
+        val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
+        eventCrispyFishPersonMapVerifier.verify(
+            context = requireNotNull(context) { "Missing crispy fish event mapping context" },
+            peopleMap = checkCrispyFish.peopleMap,
+            callback = object : EventCrispyFishPersonMapVerifier.Callback {
+                override fun onMapped(registration: Registration, person: Person) {
+                    // no-op
+                }
+
+                override fun onUnmappedClubMemberIdNull(registration: Registration) {
+                    unmappedClubMemberIdNullRegistrations += registration
+                }
+
+                override fun onUnmappedClubMemberIdNotFound(registration: Registration) {
+                    unmappedClubMemberIdNotFoundRegistrations += registration
+                }
+
+                override fun onUnmappedClubMemberIdAmbiguous(
+                    registration: Registration,
+                    peopleWithClubMemberId: List<Person>
+                ) {
+                    unmappedClubMemberIdAmbiguousRegistrations += registration
+                }
+
+                override fun onUnmappedClubMemberIdMatchButNameMismatch(
+                    registration: Registration,
+                    person: Person
+                ) {
+                    unmappedClubMemberIdMatchButNameMismatchRegistrations += registration
+                }
+
+                override fun onUnmappedExactMatch(registration: Registration, person: Person) {
+                    unmappedExactMatchRegistrations += registration
+                }
+
+                override fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) {
+                    unusedPeopleMapKeys += key
+                }
+            }
+        )
+        return CheckResult(
+            unmappedClubMemberIdNullRegistrations = unmappedClubMemberIdNullRegistrations,
+            unmappedClubMemberIdNotFoundRegistrations = unmappedClubMemberIdNotFoundRegistrations,
+            unmappedClubMemberIdAmbiguousRegistrations = unmappedClubMemberIdAmbiguousRegistrations,
+            unmappedClubMemberIdMatchButNameMismatchRegistrations = unmappedClubMemberIdMatchButNameMismatchRegistrations,
+            unmappedExactMatchRegistrations = unmappedExactMatchRegistrations,
+            unusedPeopleMapKeys = unusedPeopleMapKeys
+        )
+    }
+
+    class CheckResult(
+        val unmappedClubMemberIdNullRegistrations: List<Registration>,
+        val unmappedClubMemberIdNotFoundRegistrations: List<Registration>,
+        val unmappedClubMemberIdAmbiguousRegistrations: List<Registration>,
+        val unmappedClubMemberIdMatchButNameMismatchRegistrations: List<Registration>,
+        val unmappedExactMatchRegistrations: List<Registration>,
+        val unusedPeopleMapKeys: List<Event.CrispyFishMetadata.PeopleMapKey>
+    )
+
     /**
      * Persist an updated Event.
      *
@@ -62,14 +131,14 @@ class EventService(
             Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> true
             Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> false
         }
+        check(update, context)
         if (!allowUnmappedCrispyFishPeople) {
-            update.crispyFish?.also { crispyFish ->
-                eventCrispyFishPersonMapVerifier.verify(
-                    context = requireNotNull(context) { "Must provide context for events with crispy fish metadata" },
-                    peopleMap = crispyFish.peopleMap,
-                    callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
-                )
-            }
+            val updateCrispyFish = checkNotNull(update.crispyFish) { "crispy fish metadata is required for lifecycle ${update.lifecycle}" }
+            eventCrispyFishPersonMapVerifier.verify(
+                context = checkNotNull(context) { "crispy fish event mapping context is required" },
+                peopleMap = updateCrispyFish.peopleMap,
+                callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
+            )
         }
         resource.update(mapper.toSnoozle(update))
     }
