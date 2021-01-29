@@ -34,41 +34,32 @@ class EventCheckCommand(di: DI) : CliktCommand(
 
     override fun run() {
         val check = service.findById(id)
-        service.check(check, )
-        val crispyFish = check.crispyFish
-        if (crispyFish != null) {
-            val context = crispyFishEventMappingContextService.load(crispyFish)
-            val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
-            val unmappedClubMemberIdNotFoundRegistrations = mutableListOf<Registration>()
-            val unmappedClubMemberIdAmbiguousRegistrations = mutableListOf<Registration>()
-            val unmappedClubMemberIdMatchButNameMismatchRegistrations = mutableListOf<Registration>()
-            val unmappedExactMatchRegistrations = mutableListOf<Registration>()
-            val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
-
-            if (unmappedClubMemberIdNullRegistrations.isNotEmpty()) {
-                echo("Found unmapped registration(s) with club member ID null:")
-                echo(registrationTableView.render(unmappedClubMemberIdNullRegistrations))
-            }
-            if (unmappedClubMemberIdNotFoundRegistrations.isNotEmpty()) {
-                echo("Found unmapped registration(s) with club member ID not found:")
-                echo(registrationTableView.render(unmappedClubMemberIdNotFoundRegistrations))
-            }
-            if (unmappedClubMemberIdAmbiguousRegistrations.isNotEmpty()) {
-                echo("Found unmapped registration(s) with club member ID ambiguous:")
-                echo(registrationTableView.render(unmappedClubMemberIdAmbiguousRegistrations))
-            }
-            if (unmappedClubMemberIdMatchButNameMismatchRegistrations.isNotEmpty()) {
-                echo("Found unmapped registration(s) with club member ID match but name mismatch:")
-                echo(registrationTableView.render(unmappedClubMemberIdMatchButNameMismatchRegistrations))
-            }
-            if (unmappedExactMatchRegistrations.isNotEmpty()) {
-                echo("Found unmapped registration(s) with exact matching people:")
-                echo(registrationTableView.render(unmappedExactMatchRegistrations))
-            }
-            if (unusedPeopleMapKeys.isNotEmpty()) {
-                echo("Found unused people map keys:")
-                echo(peopleMapKeyTableView.render(unusedPeopleMapKeys))
-            }
+        val checkCrispyFish = checkNotNull(check.crispyFish) { "Event is missing Crispy Fish Metadata" }
+        val context = crispyFishEventMappingContextService.load(checkCrispyFish)
+        val result = service.check(check, context)
+        if (result.unmappedClubMemberIdNullRegistrations.isNotEmpty()) {
+            echo("Found unmapped registration(s) with club member ID null:")
+            echo(registrationTableView.render(result.unmappedClubMemberIdNullRegistrations))
+        }
+        if (result.unmappedClubMemberIdNotFoundRegistrations.isNotEmpty()) {
+            echo("Found unmapped registration(s) with club member ID not found:")
+            echo(registrationTableView.render(result.unmappedClubMemberIdNotFoundRegistrations))
+        }
+        if (result.unmappedClubMemberIdAmbiguousRegistrations.isNotEmpty()) {
+            echo("Found unmapped registration(s) with club member ID ambiguous:")
+            echo(registrationTableView.render(result.unmappedClubMemberIdAmbiguousRegistrations))
+        }
+        if (result.unmappedClubMemberIdMatchButNameMismatchRegistrations.isNotEmpty()) {
+            echo("Found unmapped registration(s) with club member ID match but name mismatch:")
+            echo(registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations))
+        }
+        if (result.unmappedExactMatchRegistrations.isNotEmpty()) {
+            echo("Found unmapped registration(s) with exact matching people:")
+            echo(registrationTableView.render(result.unmappedExactMatchRegistrations))
+        }
+        if (result.unusedPeopleMapKeys.isNotEmpty()) {
+            echo("Found unused people map keys:")
+            echo(peopleMapKeyTableView.render(result.unusedPeopleMapKeys))
         }
     }
 }

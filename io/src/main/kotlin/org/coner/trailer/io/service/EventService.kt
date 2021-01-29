@@ -49,7 +49,7 @@ class EventService(
 
     fun check(
         check: Event,
-        context: CrispyFishEventMappingContext?
+        context: CrispyFishEventMappingContext
     ): CheckResult {
         val checkCrispyFish = checkNotNull(check.crispyFish)
         val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
@@ -59,7 +59,7 @@ class EventService(
         val unmappedExactMatchRegistrations = mutableListOf<Registration>()
         val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
         eventCrispyFishPersonMapVerifier.verify(
-            context = requireNotNull(context) { "Missing crispy fish event mapping context" },
+            context = context,
             peopleMap = checkCrispyFish.peopleMap,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {
                 override fun onMapped(registration: Registration, person: Person) {
@@ -131,7 +131,6 @@ class EventService(
             Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> true
             Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> false
         }
-        check(update, context)
         if (!allowUnmappedCrispyFishPeople) {
             val updateCrispyFish = checkNotNull(update.crispyFish) { "crispy fish metadata is required for lifecycle ${update.lifecycle}" }
             eventCrispyFishPersonMapVerifier.verify(
