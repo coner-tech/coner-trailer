@@ -2,6 +2,7 @@ package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.context
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import org.coner.trailer.cli.view.PeopleMapKeyTableView
@@ -9,12 +10,14 @@ import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
+@ExtendWith(MockKExtension::class)
 class EventCheckCommandTest {
 
     lateinit var command: EventCheckCommand
