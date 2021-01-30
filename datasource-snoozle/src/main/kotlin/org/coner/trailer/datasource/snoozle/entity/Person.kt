@@ -1,7 +1,6 @@
 package org.coner.trailer.datasource.snoozle.entity
 
 import org.coner.snoozle.db.entity.Entity
-import org.coner.trailer.Person
 import java.util.*
 
 data class PersonEntity(

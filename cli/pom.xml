@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.coner.trailer</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
@@ -88,6 +92,17 @@
             <groupId>org.coner.trailer</groupId>
             <artifactId>api-client-motorsportreg-test</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>datasource-crispy-fish-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility-kotlin</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
