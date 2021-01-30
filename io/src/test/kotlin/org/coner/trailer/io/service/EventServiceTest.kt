@@ -7,7 +7,9 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.Event
+import org.coner.trailer.Person
 import org.coner.trailer.TestEvents
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.snoozle.EventResource
 import org.coner.trailer.datasource.snoozle.entity.EventEntity
 import org.coner.trailer.io.constraint.EventDeleteConstraints
@@ -102,6 +104,42 @@ class EventServiceTest {
 
         assertThat(actual).hasSize(3)
         verify(exactly = 3) { mapper.toCore(any()) }
+    }
+
+    @Test
+    fun `It should check event`() {
+        val checkCrispyFishPeopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
+        val checkCrispyFish: Event.CrispyFishMetadata = mockk {
+            every { peopleMap } returns checkCrispyFishPeopleMap
+        }
+        val check: Event = mockk {
+            every { crispyFish } returns checkCrispyFish
+        }
+        val context: CrispyFishEventMappingContext = mockk()
+        val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
+        every { eventCrispyFishPersonMapVerifier.verify(
+            context = context,
+            peopleMap = checkCrispyFishPeopleMap,
+            callback = capture(callbackSlot)
+        ) } answers {
+            val callback = callbackSlot.captured
+            callback.onMapped(registration = mockk(), person = mockk())
+            repeat(2) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
+            repeat(3) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
+            repeat(4) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
+            repeat(5) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
+            repeat(6) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
+            repeat(7) { callback.onUnused(key = mockk(), person = mockk()) }
+        }
+
+        val actual = service.check(check = check, context = context)
+
+        assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(2)
+        assertThat(actual.unmappedClubMemberIdNotFoundRegistrations).hasSize(3)
+        assertThat(actual.unmappedClubMemberIdAmbiguousRegistrations).hasSize(4)
+        assertThat(actual.unmappedClubMemberIdMatchButNameMismatchRegistrations).hasSize(5)
+        assertThat(actual.unmappedExactMatchRegistrations).hasSize(6)
+        assertThat(actual.unusedPeopleMapKeys).hasSize(7)
     }
 
     @Test
