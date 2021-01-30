@@ -192,7 +192,7 @@ val cliktModule = DI.Module("clikt") {
                     SeasonDeleteCommand(di = di, useConsole = instance())
             )
     }
-    bind<EventCommand>() with singleton { EventCommand(useConsole = instance())
+    bind<EventCommand>() with singleton { EventCommand()
             .subcommands(
                     EventAddCommand(di = di),
                     EventGetCommand(di = di),
