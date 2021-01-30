@@ -19,6 +19,7 @@ import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -131,6 +132,20 @@ class EventCheckCommandTest {
 
     @Test
     fun `It should throw when event is missing crispy fish metadata`() {
-        TODO()
+        val checkId = UUID.randomUUID()
+        val check: Event = mockk {
+            every { id } returns checkId
+            every { crispyFish } returns null
+        }
+        every { service.findById(checkId) } returns check
+
+        assertThrows<IllegalStateException> {
+            command.parse(arrayOf("$checkId"))
+        }
+
+        verifySequence {
+            service.findById(checkId)
+        }
+        assertThat(useConsole.output).isEmpty()
     }
 }
