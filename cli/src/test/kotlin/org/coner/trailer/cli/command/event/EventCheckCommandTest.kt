@@ -3,6 +3,7 @@ package org.coner.trailer.cli.command.event
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -99,7 +100,33 @@ class EventCheckCommandTest {
 
     @Test
     fun `It should check event and finish silently if there are no problems`() {
-        TODO()
+        val checkId = UUID.randomUUID()
+        val checkCrispyFish: Event.CrispyFishMetadata = mockk()
+        val check: Event = mockk {
+            every { id } returns checkId
+            every { crispyFish } returns checkCrispyFish
+        }
+        val context: CrispyFishEventMappingContext = mockk()
+        val result = EventService.CheckResult(
+            unmappedClubMemberIdNullRegistrations = emptyList(),
+            unmappedClubMemberIdNotFoundRegistrations = emptyList(),
+            unmappedClubMemberIdAmbiguousRegistrations = emptyList(),
+            unmappedClubMemberIdMatchButNameMismatchRegistrations = emptyList(),
+            unmappedExactMatchRegistrations = emptyList(),
+            unusedPeopleMapKeys = emptyList()
+        )
+        every { service.findById(checkId) } returns check
+        every { crispyFishEventMappingContextService.load(checkCrispyFish) } returns context
+        every { service.check(check, context) } returns result
+
+        command.parse(arrayOf("$checkId"))
+
+        verifySequence {
+            service.findById(checkId)
+            crispyFishEventMappingContextService.load(checkCrispyFish)
+            service.check(check, context)
+        }
+        assertThat(useConsole.output).isEmpty()
     }
 
     @Test
