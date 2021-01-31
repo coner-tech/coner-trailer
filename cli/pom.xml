@@ -149,10 +149,33 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>init-native-image-merge-directory</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/native-image</directory>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.outputDirectory}/META-INF/native-image</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>native-image-agent-event-list</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
@@ -160,10 +183,11 @@
                         <configuration>
                             <executable>java</executable>
                             <arguments>
-                                <argument>-agentlib:native-image-agent=config-output-dir=${project.build.outputDirectory}/META-INF/native-image</argument>
+                                <argument>-agentlib:native-image-agent=config-merge-dir=${project.build.outputDirectory}/META-INF/native-image</argument>
                                 <argument>-jar</argument>
                                 <argument>${project.build.directory}/cli-1.0-SNAPSHOT-shaded.jar</argument>
-                                <argument>--help</argument>
+                                <argument>event</argument>
+                                <argument>list</argument>
                             </arguments>
                         </configuration>
                     </execution>
