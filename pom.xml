@@ -20,8 +20,6 @@
         <module>datasource-motorsportreg</module>
         <module>io</module>
         <module>cli</module>
-        <module>cli-jvm</module>
-        <!-- cli-native excluded by default, see profile: native -->
     </modules>
 
     <properties>
@@ -197,13 +195,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>native</id>
-            <modules>
-                <module>cli-native</module>
-            </modules>
         </profile>
     </profiles>
 
