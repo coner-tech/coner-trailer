@@ -57,7 +57,7 @@ jobs:
 
       - name: Install native-image component
         run: |
-          ${{ matrix.gu-binary }} install native-image
+          gu install native-image
 
       - name: Maven Verify
         run: ./mvnw -P cli-native verify -DCI=true
