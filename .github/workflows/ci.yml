@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven Verify
-        run: ./mvnw verify -DCI=true
+        run: ./mvnw -P ci verify
 
       - name: Code Coverage
         run: bash <(curl -s https://codecov.io/bash)
@@ -60,7 +60,7 @@ jobs:
           gu install native-image
 
       - name: Maven Verify
-        run: ./mvnw -P cli-native verify -DCI=true
+        run: ./mvnw -P ci,cli-native verify
 
       - name: Cache Maven dependencies
         uses: actions/cache@v2

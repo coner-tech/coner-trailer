@@ -13,7 +13,7 @@ import org.kodein.di.*
 class RootCommand(
         override val di: DI
 ) : CliktCommand(
-        name = "coner-trailer"
+        name = "coner-trailer-cli"
 ), DIAware {
 
     private val config: ConfigurationService by instance()
