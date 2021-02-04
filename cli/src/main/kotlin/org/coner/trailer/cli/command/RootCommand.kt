@@ -23,7 +23,6 @@ class RootCommand(
             console = direct.instance()
         }
         config.setup()
-
     }
 
     val database: DatabaseConfiguration by databaseNameOption(

@@ -9,6 +9,8 @@ import org.coner.trailer.cli.util.ConerTrailerCliRunner
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
@@ -17,9 +19,17 @@ class ConerTrailerCliIT {
 
     lateinit var runner: ConerTrailerCliRunner
 
+    @TempDir lateinit var configDir: Path
+    @TempDir lateinit var snoozleDir: Path
+    @TempDir lateinit var crispyFishDir: Path
+
     @BeforeAll
     fun beforeAll() {
-        runner = ConerTrailerCliRunner()
+        runner = ConerTrailerCliRunner(
+            configDir = configDir,
+            snoozleDir = snoozleDir,
+            crispyFishDir = crispyFishDir
+        )
     }
 
     @Test
