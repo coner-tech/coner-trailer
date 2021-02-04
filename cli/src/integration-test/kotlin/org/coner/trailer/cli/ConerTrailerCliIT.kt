@@ -3,23 +3,26 @@ package org.coner.trailer.cli
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.startsWith
+import org.coner.trailer.cli.util.ConerTrailerCliRunner
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConerTrailerCliIT {
 
-    lateinit var executeApp: String
+    lateinit var runner: ConerTrailerCliRunner
 
     @BeforeAll
     fun beforeAll() {
-        executeApp = System.getProperty("execute-app")
+        runner = ConerTrailerCliRunner()
     }
 
     @Test
     fun `It should print help`() {
-        val process = Runtime.getRuntime().exec("$executeApp --help")
+        val process = runner.exec("--help")
         val reader = process.inputStream.bufferedReader()
         process.waitFor()
 

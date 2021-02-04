@@ -169,7 +169,9 @@
                         <include>**/*IT.java</include>
                     </includes>
                     <systemPropertyVariables>
-                        <execute-app>java -jar ${project.build.directory}/${project.build.finalName}-shaded.jar</execute-app>
+                        <coner-trailer-cli.command.0>java</coner-trailer-cli.command.0>
+                        <coner-trailer-cli.command.1>-jar</coner-trailer-cli.command.1>
+                        <coner-trailer-cli.command.2>${project.build.directory}/${project.build.finalName}-shaded.jar</coner-trailer-cli.command.2>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
@@ -253,7 +255,9 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
                             <systemPropertyVariables>
-                                <execute-app>${project.build.directory}/coner-trailer-cli</execute-app>
+                                <coner-trailer-cli.command.0>${project.build.directory}/coner-trailer-cli</coner-trailer-cli.command.0>
+                                <coner-trailer-cli.command.1></coner-trailer-cli.command.1>
+                                <coner-trailer-cli.command.2></coner-trailer-cli.command.2>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
