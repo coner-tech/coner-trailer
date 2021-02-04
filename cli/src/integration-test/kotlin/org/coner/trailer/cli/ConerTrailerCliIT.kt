@@ -1,7 +1,9 @@
 package org.coner.trailer.cli
 
+import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNullOrEmpty
 import assertk.assertions.startsWith
 import org.coner.trailer.cli.util.ConerTrailerCliRunner
 import org.junit.jupiter.api.BeforeAll
@@ -23,12 +25,15 @@ class ConerTrailerCliIT {
     @Test
     fun `It should print help`() {
         val process = runner.exec("--help")
-        val reader = process.inputStream.bufferedReader()
         process.waitFor()
 
-        val output = reader.readText()
+        val output = process.inputStream.bufferedReader().use { it.readText() }
+        val error = process.errorStream.bufferedReader().use { it.readText() }
 
-        assertThat(process.exitValue(), "exit value").isEqualTo(0)
-        assertThat(output, "output").startsWith("Usage: coner-trailer-cli")
+        assertAll {
+            assertThat(process.exitValue(), "exit value").isEqualTo(0)
+            assertThat(output, "output").startsWith("Usage: coner-trailer-cli")
+            assertThat(error, "error").isNullOrEmpty()
+        }
     }
 }

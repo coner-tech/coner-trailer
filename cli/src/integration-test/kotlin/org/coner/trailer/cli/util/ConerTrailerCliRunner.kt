@@ -17,7 +17,7 @@ class ConerTrailerCliRunner {
                     System.getProperty("${baseProperty}.1"),
                     System.getProperty("${baseProperty}.2")
                 )
-                    .filter { it.isNotEmpty() }
+                    .filter { it != "ignore" }
                     .toTypedArray()
             } catch (t: Throwable) {
                 null
@@ -34,11 +34,11 @@ class ConerTrailerCliRunner {
         fromSystemProperties()
             ?: fromResolvedShadedJarPath()
             ?: throw IllegalStateException("Unable to build baseCommand. Missing BOTH system properties AND shaded jar)")
-
     }
 
     fun exec(vararg args: String): Process {
         val command = buildCommand(*args)
+        println("command: ${command.joinToString(", ")}")
         return Runtime.getRuntime().exec(command)
     }
 

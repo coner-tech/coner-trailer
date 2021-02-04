@@ -256,8 +256,8 @@
                         <configuration>
                             <systemPropertyVariables>
                                 <coner-trailer-cli.command.0>${project.build.directory}/coner-trailer-cli</coner-trailer-cli.command.0>
-                                <coner-trailer-cli.command.1></coner-trailer-cli.command.1>
-                                <coner-trailer-cli.command.2></coner-trailer-cli.command.2>
+                                <coner-trailer-cli.command.1>ignore</coner-trailer-cli.command.1>
+                                <coner-trailer-cli.command.2>ignore</coner-trailer-cli.command.2>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
