@@ -2,10 +2,11 @@ package org.coner.trailer.cli.command.config
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.MockKAnnotations
+import com.github.ajalt.clikt.core.context
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
@@ -13,6 +14,7 @@ import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -20,6 +22,7 @@ import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
+@ExtendWith(MockKExtension::class)
 class ConfigDatabaseListCommandTest {
 
     lateinit var command: ConfigDatabaseListCommand
@@ -33,20 +36,20 @@ class ConfigDatabaseListCommandTest {
     lateinit var temp: Path
 
     lateinit var dbConfigs: TestDatabaseConfigurations
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
-        console = StringBufferConsole()
+        testConsole = StringBufferConsole()
         command = ConfigDatabaseListCommand(
             di = DI {
                 bind<ConfigurationService>() with instance(service)
                 bind<DatabaseConfigurationView>() with instance(view)
             },
-            useConsole = console
-        )
+        ).context {
+            console = testConsole
+        }
     }
 
     @Test
@@ -64,8 +67,6 @@ class ConfigDatabaseListCommandTest {
             service.listDatabases()
             view.render(dbConfigs.all)
         }
-        confirmVerified(view, service)
-        val actualOutput = console.output
-        assertThat(actualOutput).isEqualTo(output)
+        assertThat(testConsole.output, "console output").isEqualTo(output)
     }
 }

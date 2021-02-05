@@ -19,18 +19,11 @@ import org.kodein.di.instance
 import java.nio.file.Path
 
 class ConfigDatabaseAddCommand(
-    di: DI,
-    useConsole: CliktConsole,
+    di: DI
 ) : CliktCommand(
         name = "add",
         help = "Add database configuration"
 ), DIAware {
-
-    init {
-        context {
-            console = useConsole
-        }
-    }
 
     override val di: DI by findOrSetObject { di }
     private val view: DatabaseConfigurationView by instance()

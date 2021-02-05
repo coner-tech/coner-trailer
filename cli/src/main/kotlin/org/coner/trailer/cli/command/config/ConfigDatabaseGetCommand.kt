@@ -14,18 +14,11 @@ import org.kodein.di.direct
 import org.kodein.di.instance
 
 class ConfigDatabaseGetCommand(
-    di: DI,
-    useConsole: CliktConsole
+    di: DI
 ) : CliktCommand(
     name = "get",
     help = "Get database configuration"
 ), DIAware {
-
-    init {
-        context {
-            console = useConsole
-        }
-    }
 
     override val di: DI by findOrSetObject { di }
     private val service: ConfigurationService by instance()

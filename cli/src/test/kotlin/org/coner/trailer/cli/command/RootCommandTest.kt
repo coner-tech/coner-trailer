@@ -10,6 +10,8 @@ import com.github.ajalt.clikt.output.CliktConsole
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
 import io.mockk.verify
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.config.ConfigCommand
@@ -20,10 +22,12 @@ import org.coner.trailer.cli.service.StubService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import java.nio.file.Path
 
+@ExtendWith(MockKExtension::class)
 class RootCommandTest {
 
     lateinit var command: RootCommand
@@ -42,10 +46,10 @@ class RootCommandTest {
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         console = StringBufferConsole()
         every { config.noDatabase } returns noDatabase
         dbConfigs = TestDatabaseConfigurations(temp)
+        command = RootCommand(di)
     }
 
     @Test
@@ -146,14 +150,13 @@ private fun RootCommandTest.arrangeWithoutDatabasesCase() {
                 databaseConfiguration = instance()
         ) }
     }
-    every { config.setup() }.answers { Unit }
+    justRun { config.setup() }
     every { config.listDatabasesByName() }.answers { mapOf(
             noDatabase.name to noDatabase
     ) }
     every { config.getDefaultDatabase() }.returns(null)
-    command = RootCommand(di)
-            .subcommands(
-                    ConfigCommand(),
-                    StubCommand(di)
-            )
+    command.subcommands(
+        ConfigCommand(),
+        StubCommand(di)
+    )
 }

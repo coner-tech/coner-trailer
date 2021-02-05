@@ -1,21 +1,28 @@
 package org.coner.trailer.cli.command.config
 
+import assertk.assertThat
+import assertk.assertions.contains
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.PrintHelpMessage
+import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import java.nio.file.Path
 
+@ExtendWith(MockKExtension::class)
 class ConfigDatabaseRemoveCommandTest {
 
     lateinit var command: ConfigDatabaseRemoveCommand
@@ -23,78 +30,54 @@ class ConfigDatabaseRemoveCommandTest {
     @MockK
     lateinit var service: ConfigurationService
 
+    lateinit var testConsole: StringBufferConsole
+
     @TempDir
     lateinit var temp: Path
 
     lateinit var dbConfigs: TestDatabaseConfigurations
 
+
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
+        testConsole = StringBufferConsole()
+        command = ConfigDatabaseRemoveCommand(
+            di = DI {
+                bind<ConfigurationService>() with instance(service)
+            }
+        ).context {
+            console = testConsole
+        }
     }
 
     @Test
     fun `When given valid name option it should remove named database`() {
         arrangeWithTestDatabaseConfigurations()
-        every { service.removeDatabase(any()) } answers { Unit }
+        justRun { service.removeDatabase(any()) }
 
-        command.parse(arrayOf("--name", "foo"))
+        command.parse(arrayOf("foo"))
 
-        verifyOrder {
+        verifySequence {
             service.listDatabasesByName()
-            service.noDatabase
             service.removeDatabase(dbConfigs.foo)
         }
-        confirmVerified(service)
     }
 
     @Test
     fun `When given invalid name option it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) // baz is not a valid dbConfig
-
         arrangeWithTestDatabaseConfigurations()
 
-        assertThrows<BadParameterValue> {
-            command.parse(arrayOf("--name", "baz"))
-        }
-        verify {
-            service.listDatabasesByName()
-        }
-        confirmVerified(service)
-    }
-
-    @Test
-    fun `When no databases exist it should still print its help`() {
-        every { service.listDatabasesByName() } returns mapOf(
-                dbConfigs.noDatabase.name to dbConfigs.noDatabase
-        )
-
-        assertThrows<PrintHelpMessage> {
-            command.parse(arrayOf("--help"))
-        }
-
-        verify { service.listDatabasesByName() }
-        confirmVerified(service)
-    }
-
-    @Test
-    fun `When no databases exist it should not remove anything`() {
-        every { service.listDatabasesByName() } returns mapOf(
-                dbConfigs.noDatabase.name to dbConfigs.noDatabase
-        )
-        every { service.noDatabase } returns dbConfigs.noDatabase
-
         assertThrows<Abort> {
-            command.parse(arrayOf("--name", dbConfigs.noDatabase.name))
+            command.parse(arrayOf("baz"))
         }
 
-        verifyOrder {
+        verifySequence {
             service.listDatabasesByName()
-            service.noDatabase
         }
-        confirmVerified(service)
+        assertThat(testConsole.output, "console output").contains("No database found with name")
     }
 }
 
@@ -102,9 +85,4 @@ class ConfigDatabaseRemoveCommandTest {
 private fun ConfigDatabaseRemoveCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { service.listDatabasesByName() }.returns(dbConfigs.allByName)
     every { service.noDatabase }.returns(dbConfigs.noDatabase)
-    command = ConfigDatabaseRemoveCommand(
-        di = DI {
-            bind<ConfigurationService>() with instance(service)
-        }
-    )
 }

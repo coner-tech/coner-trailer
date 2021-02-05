@@ -26,21 +26,11 @@ val cliktModule = DI.Module("clikt") {
         // Config commands
         bind<ConfigCommand>() with singleton { ConfigCommand() }
         bind<ConfigDatabaseCommand>() with singleton { ConfigDatabaseCommand() }
-        bind<ConfigDatabaseListCommand>() with singleton {
-                ConfigDatabaseListCommand(di = di, useConsole = instance())
-        }
-        bind<ConfigDatabaseGetCommand>() with singleton {
-                ConfigDatabaseGetCommand(di = di, useConsole = instance())
-        }
-        bind<ConfigDatabaseAddCommand>() with singleton {
-                ConfigDatabaseAddCommand(di = di, useConsole = instance())
-        }
-        bind<ConfigDatabaseSetDefaultCommand>() with singleton {
-                ConfigDatabaseSetDefaultCommand(di = di)
-        }
-        bind<ConfigDatabaseRemoveCommand>() with singleton {
-                ConfigDatabaseRemoveCommand(di = di)
-        }
+        bind<ConfigDatabaseListCommand>() with singleton { ConfigDatabaseListCommand(di = di) }
+        bind<ConfigDatabaseGetCommand>() with singleton { ConfigDatabaseGetCommand(di = di) }
+        bind<ConfigDatabaseAddCommand>() with singleton { ConfigDatabaseAddCommand(di = di) }
+        bind<ConfigDatabaseSetDefaultCommand>() with singleton { ConfigDatabaseSetDefaultCommand(di = di) }
+        bind<ConfigDatabaseRemoveCommand>() with singleton { ConfigDatabaseRemoveCommand(di = di) }
 
         // Event Points Calculator commands
         bind<EventPointsCalculatorCommand>() with singleton { EventPointsCalculatorCommand() }

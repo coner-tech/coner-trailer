@@ -5,21 +5,25 @@ import assertk.assertThat
 import assertk.assertions.isEqualToIgnoringGivenProperties
 import assertk.assertions.isTrue
 import assertk.assertions.prop
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import java.nio.file.Path
 
+@ExtendWith(MockKExtension::class)
 class ConfigDatabaseSetDefaultCommandTest {
 
     lateinit var command: ConfigDatabaseSetDefaultCommand
@@ -34,25 +38,27 @@ class ConfigDatabaseSetDefaultCommandTest {
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
+        command = ConfigDatabaseSetDefaultCommand(
+            di = DI {
+                bind<ConfigurationService>() with instance(service)
+            }
+        )
     }
 
     @Test
     fun `When given valid name it should set default`() {
         arrangeWithTestDatabaseConfigurations()
         val slot = slot<DatabaseConfiguration>()
-        every { service.configureDatabase(capture(slot)) } answers { Unit }
+        justRun { service.configureDatabase(capture(slot)) }
 
-        command.parse(arrayOf("--name", "foo"))
+        command.parse(arrayOf("foo"))
 
-        verifyOrder {
+        verifySequence {
             service.listDatabasesByName()
-            service.noDatabase
             service.configureDatabase(any())
         }
-        confirmVerified(service)
-        assertThat(slot.captured).all {
+        assertThat(slot.captured, "database configured as default").all {
             isEqualToIgnoringGivenProperties(dbConfigs.foo, DatabaseConfiguration::default)
             prop("default") { it.default }.isTrue()
         }
@@ -62,28 +68,21 @@ class ConfigDatabaseSetDefaultCommandTest {
     fun `When given invalid name it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) // baz is not a valid dbConfig
-
         every { service.listDatabasesByName() } returns mapOf(
                 dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
 
-        assertThrows<BadParameterValue> {
-            command.parse(arrayOf("--name", baz))
+        assertThrows<Abort> {
+            command.parse(arrayOf(baz))
         }
 
-        verifyOrder {
+        verifySequence {
             service.listDatabasesByName()
         }
-        confirmVerified(service)
     }
 }
 
 private fun ConfigDatabaseSetDefaultCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { service.listDatabasesByName() } returns(dbConfigs.allByName)
     every { service.noDatabase } returns(dbConfigs.noDatabase)
-    command = ConfigDatabaseSetDefaultCommand(
-        di = DI {
-            bind<ConfigurationService>() with instance(service)
-        }
-    )
 }

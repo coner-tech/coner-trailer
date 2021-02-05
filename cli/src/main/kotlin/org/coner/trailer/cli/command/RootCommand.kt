@@ -30,7 +30,7 @@ class RootCommand(override val di: DI) : CliktCommand(
             canBeSymlink = false
         )
 
-    private val databaseName: String? by option(
+    private val database: String? by option(
         help = """
                 |Name of the database to use instead of the default.
                 |   Will use the default configured database if not specified. 
@@ -47,7 +47,7 @@ class RootCommand(override val di: DI) : CliktCommand(
                 ?: ConfigurationServiceArgument.Default
         )
         config.setup()
-        val database = databaseName?.let { config.listDatabasesByName()[it] }
+        val database = database?.let { config.listDatabasesByName()[it] }
             ?: config.getDefaultDatabase()
             ?: config.noDatabase
         currentContext.invokedSubcommand?.also { subcommand ->
