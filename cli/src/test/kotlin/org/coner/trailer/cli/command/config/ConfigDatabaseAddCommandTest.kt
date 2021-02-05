@@ -15,6 +15,9 @@ import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
@@ -25,7 +28,7 @@ class ConfigDatabaseAddCommandTest {
     @MockK
     lateinit var view: DatabaseConfigurationView
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
 
     @TempDir
     lateinit var temp: Path
@@ -38,13 +41,19 @@ class ConfigDatabaseAddCommandTest {
         MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
         console = StringBufferConsole()
-        command = ConfigDatabaseAddCommand(console, view, config)
+        command = ConfigDatabaseAddCommand(
+            di = DI {
+                bind<DatabaseConfigurationView>() with instance(view)
+                bind<ConfigurationService>() with instance(service)
+            },
+            useConsole = console
+        )
     }
 
     @Test
     fun `When given with all arguments it should configure and display`() {
         val configSlot = slot<DatabaseConfiguration>()
-        every { config.configureDatabase(capture(configSlot)) } answers { Unit }
+        every { service.configureDatabase(capture(configSlot)) } answers { Unit }
         val render = "bar => ${UUID.randomUUID()}"
         val bar = dbConfigs.bar
         val viewSlot = slot<DatabaseConfiguration>()
@@ -60,7 +69,7 @@ class ConfigDatabaseAddCommandTest {
         ))
 
         verifySequence {
-            config.configureDatabase(eq(bar))
+            service.configureDatabase(eq(bar))
             view.render(eq(bar))
         }
         val actualOutput = console.output

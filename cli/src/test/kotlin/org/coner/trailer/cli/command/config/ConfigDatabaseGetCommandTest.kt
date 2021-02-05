@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
@@ -20,7 +23,7 @@ class ConfigDatabaseGetCommandTest {
     lateinit var command: ConfigDatabaseGetCommand
 
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
     @MockK
     lateinit var view: DatabaseConfigurationView
 
@@ -46,10 +49,10 @@ class ConfigDatabaseGetCommandTest {
         command.parse(arrayOf("--name", "foo"))
 
         verifyOrder {
-            config.listDatabasesByName()
+            service.listDatabasesByName()
             view.render(dbConfigs.foo)
         }
-        confirmVerified(config, view)
+        confirmVerified(service, view)
         assertThat(console.output.contains(render))
     }
 
@@ -64,16 +67,18 @@ class ConfigDatabaseGetCommandTest {
             command.parse(arrayOf("--name", baz))
         }
 
-        verify { config.listDatabasesByName() }
-        confirmVerified(config, view)
+        verify { service.listDatabasesByName() }
+        confirmVerified(service, view)
     }
 }
 
 private fun ConfigDatabaseGetCommandTest.arrangeWithTestDatabaseConfigurations() {
-    every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
+    every { service.listDatabasesByName() }.returns(dbConfigs.allByName)
     command = ConfigDatabaseGetCommand(
-            useConsole = console,
-            service = config,
-            view = view
+        di = DI {
+            bind<ConfigurationService>() with instance(service)
+            bind<DatabaseConfigurationView>() with instance(view)
+        },
+        useConsole = console
     )
 }

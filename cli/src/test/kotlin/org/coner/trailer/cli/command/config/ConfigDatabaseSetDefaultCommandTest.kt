@@ -15,6 +15,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 
 class ConfigDatabaseSetDefaultCommandTest {
@@ -22,7 +25,7 @@ class ConfigDatabaseSetDefaultCommandTest {
     lateinit var command: ConfigDatabaseSetDefaultCommand
 
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
 
     @TempDir
     lateinit var temp: Path
@@ -39,16 +42,16 @@ class ConfigDatabaseSetDefaultCommandTest {
     fun `When given valid name it should set default`() {
         arrangeWithTestDatabaseConfigurations()
         val slot = slot<DatabaseConfiguration>()
-        every { config.configureDatabase(capture(slot)) } answers { Unit }
+        every { service.configureDatabase(capture(slot)) } answers { Unit }
 
         command.parse(arrayOf("--name", "foo"))
 
         verifyOrder {
-            config.listDatabasesByName()
-            config.noDatabase
-            config.configureDatabase(any())
+            service.listDatabasesByName()
+            service.noDatabase
+            service.configureDatabase(any())
         }
-        confirmVerified(config)
+        confirmVerified(service)
         assertThat(slot.captured).all {
             isEqualToIgnoringGivenProperties(dbConfigs.foo, DatabaseConfiguration::default)
             prop("default") { it.default }.isTrue()
@@ -60,24 +63,27 @@ class ConfigDatabaseSetDefaultCommandTest {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) // baz is not a valid dbConfig
 
-        every { config.listDatabasesByName() } returns mapOf(
+        every { service.listDatabasesByName() } returns mapOf(
                 dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
-        command = ConfigDatabaseSetDefaultCommand(config)
 
         assertThrows<BadParameterValue> {
             command.parse(arrayOf("--name", baz))
         }
 
         verifyOrder {
-            config.listDatabasesByName()
+            service.listDatabasesByName()
         }
-        confirmVerified(config)
+        confirmVerified(service)
     }
 }
 
 private fun ConfigDatabaseSetDefaultCommandTest.arrangeWithTestDatabaseConfigurations() {
-    every { config.listDatabasesByName() } returns(dbConfigs.allByName)
-    every { config.noDatabase } returns(dbConfigs.noDatabase)
-    command = ConfigDatabaseSetDefaultCommand(config)
+    every { service.listDatabasesByName() } returns(dbConfigs.allByName)
+    every { service.noDatabase } returns(dbConfigs.noDatabase)
+    command = ConfigDatabaseSetDefaultCommand(
+        di = DI {
+            bind<ConfigurationService>() with instance(service)
+        }
+    )
 }

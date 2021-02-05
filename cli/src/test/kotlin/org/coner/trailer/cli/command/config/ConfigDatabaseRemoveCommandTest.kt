@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 
 class ConfigDatabaseRemoveCommandTest {
@@ -18,7 +21,7 @@ class ConfigDatabaseRemoveCommandTest {
     lateinit var command: ConfigDatabaseRemoveCommand
 
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
 
     @TempDir
     lateinit var temp: Path
@@ -34,16 +37,16 @@ class ConfigDatabaseRemoveCommandTest {
     @Test
     fun `When given valid name option it should remove named database`() {
         arrangeWithTestDatabaseConfigurations()
-        every { config.removeDatabase(any()) } answers { Unit }
+        every { service.removeDatabase(any()) } answers { Unit }
 
         command.parse(arrayOf("--name", "foo"))
 
         verifyOrder {
-            config.listDatabasesByName()
-            config.noDatabase
-            config.removeDatabase(dbConfigs.foo)
+            service.listDatabasesByName()
+            service.noDatabase
+            service.removeDatabase(dbConfigs.foo)
         }
-        confirmVerified(config)
+        confirmVerified(service)
     }
 
     @Test
@@ -57,49 +60,51 @@ class ConfigDatabaseRemoveCommandTest {
             command.parse(arrayOf("--name", "baz"))
         }
         verify {
-            config.listDatabasesByName()
+            service.listDatabasesByName()
         }
-        confirmVerified(config)
+        confirmVerified(service)
     }
 
     @Test
     fun `When no databases exist it should still print its help`() {
-        every { config.listDatabasesByName() } returns mapOf(
+        every { service.listDatabasesByName() } returns mapOf(
                 dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
-        command = ConfigDatabaseRemoveCommand(config)
 
         assertThrows<PrintHelpMessage> {
             command.parse(arrayOf("--help"))
         }
 
-        verify { config.listDatabasesByName() }
-        confirmVerified(config)
+        verify { service.listDatabasesByName() }
+        confirmVerified(service)
     }
 
     @Test
     fun `When no databases exist it should not remove anything`() {
-        every { config.listDatabasesByName() } returns mapOf(
+        every { service.listDatabasesByName() } returns mapOf(
                 dbConfigs.noDatabase.name to dbConfigs.noDatabase
         )
-        every { config.noDatabase } returns dbConfigs.noDatabase
-        command = ConfigDatabaseRemoveCommand(config)
+        every { service.noDatabase } returns dbConfigs.noDatabase
 
         assertThrows<Abort> {
             command.parse(arrayOf("--name", dbConfigs.noDatabase.name))
         }
 
         verifyOrder {
-            config.listDatabasesByName()
-            config.noDatabase
+            service.listDatabasesByName()
+            service.noDatabase
         }
-        confirmVerified(config)
+        confirmVerified(service)
     }
 }
 
 
 private fun ConfigDatabaseRemoveCommandTest.arrangeWithTestDatabaseConfigurations() {
-    every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
-    every { config.noDatabase }.returns(dbConfigs.noDatabase)
-    command = ConfigDatabaseRemoveCommand(config)
+    every { service.listDatabasesByName() }.returns(dbConfigs.allByName)
+    every { service.noDatabase }.returns(dbConfigs.noDatabase)
+    command = ConfigDatabaseRemoveCommand(
+        di = DI {
+            bind<ConfigurationService>() with instance(service)
+        }
+    )
 }

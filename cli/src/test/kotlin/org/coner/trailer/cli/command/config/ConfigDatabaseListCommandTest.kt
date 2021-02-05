@@ -14,6 +14,9 @@ import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
@@ -22,7 +25,7 @@ class ConfigDatabaseListCommandTest {
     lateinit var command: ConfigDatabaseListCommand
 
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
     @MockK
     lateinit var view: DatabaseConfigurationView
 
@@ -37,12 +40,18 @@ class ConfigDatabaseListCommandTest {
         MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
         console = StringBufferConsole()
-        command = ConfigDatabaseListCommand(console, view, config)
+        command = ConfigDatabaseListCommand(
+            di = DI {
+                bind<ConfigurationService>() with instance(service)
+                bind<DatabaseConfigurationView>() with instance(view)
+            },
+            useConsole = console
+        )
     }
 
     @Test
     fun `It should list databases`() {
-        every { config.listDatabases() } returns dbConfigs.all
+        every { service.listDatabases() } returns dbConfigs.all
         val output = """
             foo => ${UUID.randomUUID()}
             bar => ${UUID.randomUUID()}
@@ -52,10 +61,10 @@ class ConfigDatabaseListCommandTest {
         command.parse(emptyArray())
 
         verifySequence {
-            config.listDatabases()
+            service.listDatabases()
             view.render(dbConfigs.all)
         }
-        confirmVerified(view, config)
+        confirmVerified(view, service)
         val actualOutput = console.output
         assertThat(actualOutput).isEqualTo(output)
     }

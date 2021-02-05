@@ -2,20 +2,17 @@ package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
-import org.coner.trailer.cli.command.config.databaseNameOption
+import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.kodein.di.*
 import java.nio.file.Path
 
-class RootCommand() : CliktCommand(
+class RootCommand(override val di: DI) : CliktCommand(
     name = "coner-trailer-cli"
-) {
+), DIAware {
 
     private val configDir: Path? by option(
         help = """
@@ -33,7 +30,7 @@ class RootCommand() : CliktCommand(
             canBeSymlink = false
         )
 
-    private val databaseName: String by option(
+    private val databaseName: String? by option(
         help = """
                 |Name of the database to use instead of the default.
                 |   Will use the default configured database if not specified. 
@@ -41,11 +38,18 @@ class RootCommand() : CliktCommand(
                 """.trimMargin()
     )
 
+    private val configurationServiceFactory: (ConfigurationServiceArgument) -> ConfigurationService by factory()
+
     override fun run() {
         // TODO: first-run setup
-        val rootDi = DI {
-
-        }
+        val config = configurationServiceFactory(
+            configDir?.let { ConfigurationServiceArgument.Override(it) }
+                ?: ConfigurationServiceArgument.Default
+        )
+        config.setup()
+        val database = databaseName?.let { config.listDatabasesByName()[it] }
+            ?: config.getDefaultDatabase()
+            ?: config.noDatabase
         currentContext.invokedSubcommand?.also { subcommand ->
             if (database == config.noDatabase && subcommand !is PermitNoDatabaseChosen) {
                 echo("No database chosen and no default configured. See: coner-trailer config database")
@@ -55,6 +59,7 @@ class RootCommand() : CliktCommand(
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
             if (database != config.noDatabase) {
+                bind<ConfigurationService>(overrides = true) with instance(config)
                 import(databaseServiceModule(databaseConfiguration = database))
             }
         }
