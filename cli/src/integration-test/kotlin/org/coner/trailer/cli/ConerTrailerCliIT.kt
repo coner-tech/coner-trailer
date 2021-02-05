@@ -46,4 +46,9 @@ class ConerTrailerCliIT {
             assertThat(error, "error").isNullOrEmpty()
         }
     }
+
+    @Test
+    fun `It should add a database config`() {
+
+    }
 }
