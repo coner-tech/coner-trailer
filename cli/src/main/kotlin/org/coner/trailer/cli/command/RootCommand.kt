@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
+import org.coner.trailer.cli.di.ConfigurationServiceFactory
 import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.io.ConfigurationService
 import org.kodein.di.*
@@ -38,28 +39,28 @@ class RootCommand(override val di: DI) : CliktCommand(
                 """.trimMargin()
     )
 
-    private val configurationServiceFactory: (ConfigurationServiceArgument) -> ConfigurationService by factory()
+    private val serviceFactory: ConfigurationServiceFactory by factory()
 
     override fun run() {
         // TODO: first-run setup
-        val config = configurationServiceFactory(
+        val service = serviceFactory(
             configDir?.let { ConfigurationServiceArgument.Override(it) }
                 ?: ConfigurationServiceArgument.Default
         )
-        config.setup()
-        val database = database?.let { config.listDatabasesByName()[it] }
-            ?: config.getDefaultDatabase()
-            ?: config.noDatabase
+        service.setup()
+        val database = database?.let { service.listDatabasesByName()[it] }
+            ?: service.getDefaultDatabase()
+            ?: service.noDatabase
         currentContext.invokedSubcommand?.also { subcommand ->
-            if (database == config.noDatabase && subcommand !is PermitNoDatabaseChosen) {
+            if (database == service.noDatabase && subcommand !is PermitNoDatabaseChosen) {
                 echo("No database chosen and no default configured. See: coner-trailer config database")
                 throw Abort()
             }
         }
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
-            if (database != config.noDatabase) {
-                bind<ConfigurationService>(overrides = true) with instance(config)
+            if (database != service.noDatabase) {
+                bind<ConfigurationService>(overrides = true) with instance(service)
                 import(databaseServiceModule(databaseConfiguration = database))
             }
         }

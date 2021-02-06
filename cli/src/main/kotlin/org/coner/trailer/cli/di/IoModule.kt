@@ -30,3 +30,4 @@ sealed class ConfigurationServiceArgument {
     object Default : ConfigurationServiceArgument()
     data class Override(val configDir: Path) : ConfigurationServiceArgument()
 }
+typealias ConfigurationServiceFactory = (ConfigurationServiceArgument) -> ConfigurationService

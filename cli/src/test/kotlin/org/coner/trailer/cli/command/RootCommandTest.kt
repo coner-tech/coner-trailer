@@ -7,14 +7,12 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktConsole
-import io.mockk.MockKAnnotations
-import io.mockk.every
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.*
+import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.verify
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.config.ConfigCommand
+import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
@@ -32,31 +30,31 @@ class RootCommandTest {
 
     lateinit var command: RootCommand
 
-    @RelaxedMockK
-    lateinit var config: ConfigurationService
-    @RelaxedMockK
-    lateinit var noDatabase: DatabaseConfiguration
+    @MockK lateinit var serviceFactory: (ConfigurationServiceArgument) -> ConfigurationService
+    @MockK lateinit var service: ConfigurationService
+    @MockK lateinit var noDatabase: DatabaseConfiguration
 
     @TempDir
     lateinit var temp: Path
 
     lateinit var console: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
-    lateinit var di: DI
+
+    lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
 
     @BeforeEach
     fun before() {
         console = StringBufferConsole()
-        every { config.noDatabase } returns noDatabase
+        serviceArgumentSlot = slot()
+        every { serviceFactory(capture(slot())) } returns service
+        every { service.noDatabase } returns noDatabase
         dbConfigs = TestDatabaseConfigurations(temp)
-        command = RootCommand(di)
     }
 
     @Test
     fun `When given --database with existing database name it should use it`() {
         arrangeWithDatabases()
-        // foo exists
-        every { config.listDatabasesByName()}.returns(dbConfigs.allByName)
+        every { service.listDatabasesByName()}.returns(dbConfigs.allByName)
 
         command.parse(arrayOf("--database", "foo"))
 
@@ -91,7 +89,7 @@ class RootCommandTest {
 
         command.parse(emptyArray())
 
-        verify { config.getDefaultDatabase() }
+        verify { service.getDefaultDatabase() }
         assertThat(command.currentContext.obj)
                 .isNotNull()
                 .isInstanceOf(DI::class)
@@ -126,37 +124,34 @@ class RootCommandTest {
                     assertThrows<DI.NotFoundException> { di.direct.instance<DatabaseConfiguration>() }
                 }
     }
+
+    @Test
+    fun `When not passed --config-dir, it should use default ConfigurationService`() {
+        TODO()
+    }
+
+    @Test
+    fun `When passed --config-dir, it should use override ConfigurationService`() {
+        TODO()
+    }
 }
 
 private fun RootCommandTest.arrangeWithDatabases() {
-    di = DI {
-        bind<CliktConsole>() with instance(console)
-        bind<ConfigurationService>() with instance(config)
-        bind<StubService>() with singleton { StubService(
-                databaseConfiguration = instance()
-        ) }
-    }
-    every { config.setup() }.answers { Unit }
-    every { config.listDatabasesByName() }.answers { dbConfigs.allByName }
-    every { config.getDefaultDatabase() }.returns(dbConfigs.bar)
-    command = RootCommand(di)
+    justRun { service.setup() }
+    every { service.listDatabasesByName() } answers { dbConfigs.allByName }
+    every { service.getDefaultDatabase() } returns(dbConfigs.bar)
+    command = RootCommand(DI {
+        bind<ConfigurationService>() with factory { service }
+    })
 }
 
 private fun RootCommandTest.arrangeWithoutDatabasesCase() {
-    di = DI {
-        bind<CliktConsole>() with instance(console)
-        bind<ConfigurationService>() with instance(config)
-        bind<StubService>() with singleton { StubService(
-                databaseConfiguration = instance()
-        ) }
-    }
-    justRun { config.setup() }
-    every { config.listDatabasesByName() }.answers { mapOf(
+    justRun { service.setup() }
+    every { service.listDatabasesByName() } answers { mapOf(
             noDatabase.name to noDatabase
     ) }
-    every { config.getDefaultDatabase() }.returns(null)
-    command.subcommands(
-        ConfigCommand(),
-        StubCommand(di)
-    )
+    every { service.getDefaultDatabase() } returns null
+    command = RootCommand(DI {
+        bind<ConfigurationService>() with factory { service }
+    })
 }
