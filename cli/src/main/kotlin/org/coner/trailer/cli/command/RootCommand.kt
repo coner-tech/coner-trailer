@@ -72,8 +72,8 @@ class RootCommand(override val di: DI) : CliktCommand(
         }
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
+            bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
-                bind<ConfigurationService>() with instance(service)
                 import(databaseServiceModule(databaseConfiguration = database))
             }
         }

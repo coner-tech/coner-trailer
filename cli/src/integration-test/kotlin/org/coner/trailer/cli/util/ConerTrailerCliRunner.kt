@@ -41,23 +41,22 @@ class ConerTrailerCliRunner(
             ?: throw IllegalStateException("Unable to build baseCommand. Missing BOTH system properties AND shaded jar)")
     }
 
+
     fun exec(vararg args: String): Process {
-        val command = buildCommand(*args)
-        println("command: ${command.joinToString(", ")}")
-        return Runtime.getRuntime().exec(command)
-    }
-
-    fun execConfigured(vararg args: String): Process {
-        val execArgs = mutableListOf("--config-dir", "$configDir")
-            .apply { addAll(args) }
+        val commandArray = baseCommand.toMutableList()
+            .apply {
+                addAll(arrayOf("--config-dir", "$configDir"))
+                addAll(args)
+            }
             .toTypedArray()
-        return exec(*execArgs)
+        println("command: ${commandArray.joinToString(", ")}")
+        return Runtime.getRuntime().exec(commandArray)
     }
 
-    fun execConfigureDatabaseAdd(testName: String): Process {
+    fun execConfigureDatabaseAdd(databaseName: String): Process {
         return exec(
             "config", "database", "add",
-            "--name", testName,
+            "--name", databaseName,
             "--crispy-fish-database", "$crispyFishDir",
             "--snoozle-database", "$snoozleDir",
             "--motorsportreg-username", "motorsportreg-username",
@@ -66,9 +65,4 @@ class ConerTrailerCliRunner(
         )
     }
 
-    private fun buildCommand(vararg args: String): Array<String> {
-        return baseCommand.toMutableList()
-            .apply { addAll(args) }
-            .toTypedArray()
-    }
 }
