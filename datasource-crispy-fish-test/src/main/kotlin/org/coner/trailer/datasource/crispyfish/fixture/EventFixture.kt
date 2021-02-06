@@ -26,8 +26,8 @@ class EventFixture(
     val conePenalty: Int = 2
 ) {
 
-    private val ecfPath: Path
-    private val rggPath: Path
+    val ecfPath: Path
+    val rggPath: Path
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.endsWith(".ecf") == true)

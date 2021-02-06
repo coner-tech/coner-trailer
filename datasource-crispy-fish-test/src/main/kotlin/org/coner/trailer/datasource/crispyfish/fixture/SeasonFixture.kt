@@ -104,6 +104,7 @@ sealed class SeasonFixture(
         )
     }
 
+    val classDefinitionPath: Path
     val classDefinitionFile: ClassDefinitionFile
 
     init {
@@ -113,6 +114,7 @@ sealed class SeasonFixture(
             path.parent.createDirectories()
             path.createFile()
             path.writeText(text)
+            classDefinitionPath = path
             classDefinitionFile = ClassDefinitionFile(
                 file = path.toFile()
             )
