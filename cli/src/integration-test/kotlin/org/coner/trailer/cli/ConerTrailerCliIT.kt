@@ -62,4 +62,35 @@ class ConerTrailerCliIT {
             assertThat(error, "error").isEmpty()
         }
     }
+
+    @Test
+    fun `It should make a motorsportreg request with wrong credentials and get an unauthorized response`() {
+        val databaseName = "motorsportreg-wrong-credentials"
+        runner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
+
+        val process = runner.exec(
+            "motorsportreg", "member", "list",
+            environment = arrayOf(
+                "MOTORSPORTREG_ORGANIZATION_ID=wrong",
+                "MOTORSPORTREG_USERNAME=wrong",
+                "MOTORSPORTREG_PASSWORD=wrong"
+            )
+        )
+        process.waitFor()
+
+        val error = process.errorStream.bufferedReader().readText()
+        assertAll {
+            assertThat(process.exitValue(), "exit value").isNotEqualTo(0)
+            assertThat(error, "error").all {
+                contains("Failed to fetch members", ignoreCase = true)
+                contains("401")
+            }
+        }
+    }
+}
+
+private fun Process.waitForSuccess() {
+    val commandLine = info().commandLine().get()
+    val exitCode = waitFor()
+    assertThat(exitCode, "exit code of: $commandLine").isEqualTo(0)
 }

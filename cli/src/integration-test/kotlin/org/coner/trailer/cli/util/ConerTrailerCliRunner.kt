@@ -1,5 +1,7 @@
 package org.coner.trailer.cli.util
 
+import org.junit.platform.commons.logging.Logger
+import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.ExperimentalPathApi
@@ -12,6 +14,8 @@ class ConerTrailerCliRunner(
     private val snoozleDir: Path,
     private val crispyFishDir: Path
 ) {
+
+    private val logger: Logger = LoggerFactory.getLogger(ConerTrailerCliRunner::class.java)
 
     private val baseCommand: Array<String> by lazy {
         fun fromSystemProperties(): Array<String>? {
@@ -42,15 +46,15 @@ class ConerTrailerCliRunner(
     }
 
 
-    fun exec(vararg args: String): Process {
+    fun exec(vararg args: String, environment: Array<String> = emptyArray()): Process {
         val commandArray = baseCommand.toMutableList()
             .apply {
                 addAll(arrayOf("--config-dir", "$configDir"))
                 addAll(args)
             }
             .toTypedArray()
-        println("command: ${commandArray.joinToString(", ")}")
-        return Runtime.getRuntime().exec(commandArray)
+        logger.info { commandArray.joinToString(" ") }
+        return Runtime.getRuntime().exec(commandArray, environment)
     }
 
     fun execConfigureDatabaseAdd(databaseName: String): Process {
@@ -61,7 +65,8 @@ class ConerTrailerCliRunner(
             "--snoozle-database", "$snoozleDir",
             "--motorsportreg-username", "motorsportreg-username",
             "--motorsportreg-organization-id", "motorsportreg-organization-id",
-            "--default"
+            "--default",
+            environment = emptyArray()
         )
     }
 
