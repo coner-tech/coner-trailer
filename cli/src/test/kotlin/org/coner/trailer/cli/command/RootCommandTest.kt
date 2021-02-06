@@ -24,7 +24,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createDirectory
 
+@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class RootCommandTest {
 
@@ -47,12 +50,15 @@ class RootCommandTest {
     fun before() {
         testConsole = StringBufferConsole()
         serviceArgumentSlot = slot()
-        every { serviceFactory(capture(slot())) } returns service
         every { service.noDatabase } returns noDatabase
+        justRun { service.setup() }
         justRun { stubService.doSomething() }
         dbConfigs = TestDatabaseConfigurations(temp)
         val di = DI {
-            bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument -> service }
+            bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
+                serviceArgumentSlot.captured = csa
+                service
+            }
             bind<StubService>() with instance(stubService)
         }
         command = RootCommand(di).context {
@@ -146,25 +152,43 @@ class RootCommandTest {
 
     @Test
     fun `When not passed --config-dir, it should use default ConfigurationService`() {
-        TODO()
+        arrangeWithDatabases()
+
+        command.parse(arrayOf("stub"))
+        val actualServiceArgument = serviceArgumentSlot.captured
+
+        assertThat(actualServiceArgument, "service factory argument")
+            .isSameAs(ConfigurationServiceArgument.Default)
     }
 
     @Test
     fun `When passed --config-dir, it should use override ConfigurationService`() {
-        TODO()
+        arrangeWithDatabases()
+        val overrideConfigDir = temp.resolve("override-config-dir").apply {
+            createDirectory()
+        }
+
+        command.parse(arrayOf(
+            "--config-dir", "$overrideConfigDir",
+            "stub"
+        ))
+        val actualServiceArgument = serviceArgumentSlot.captured
+
+        assertThat(actualServiceArgument, "service factory argument")
+            .isInstanceOf(ConfigurationServiceArgument.Override::class)
+            .prop("configDir", ConfigurationServiceArgument.Override::configDir)
+            .isEqualTo(overrideConfigDir)
     }
-}
 
-private fun RootCommandTest.arrangeWithDatabases() {
-    justRun { service.setup() }
-    every { service.listDatabasesByName() } answers { dbConfigs.allByName }
-    every { service.getDefaultDatabase() } returns(dbConfigs.bar)
-}
+    private fun arrangeWithDatabases() {
+        every { service.listDatabasesByName() } answers { dbConfigs.allByName }
+        every { service.getDefaultDatabase() } returns(dbConfigs.bar)
+    }
 
-private fun RootCommandTest.arrangeWithoutDatabasesCase() {
-    justRun { service.setup() }
-    every { service.listDatabasesByName() } answers { mapOf(
+    private fun arrangeWithoutDatabasesCase() {
+        every { service.listDatabasesByName() } answers { mapOf(
             noDatabase.name to noDatabase
-    ) }
-    every { service.getDefaultDatabase() } returns null
+        ) }
+        every { service.getDefaultDatabase() } returns null
+    }
 }
