@@ -35,7 +35,7 @@ class RootCommand(override val di: DI) : CliktCommand(
         help = """
                 |Name of the database to use instead of the default.
                 |   Will use the default configured database if not specified. 
-                |   See: coner-trailer config database
+                |   See: coner-trailer-cli config database
                 """.trimMargin()
     )
 
@@ -43,24 +43,37 @@ class RootCommand(override val di: DI) : CliktCommand(
 
     override fun run() {
         // TODO: first-run setup
-        val service = serviceFactory(
+        val service: ConfigurationService = serviceFactory(
             configDir?.let { ConfigurationServiceArgument.Override(it) }
                 ?: ConfigurationServiceArgument.Default
         )
         service.setup()
-        val database = database?.let { service.listDatabasesByName()[it] }
+        val database = database?.let {
+            val database = service.listDatabasesByName()[it]
+            if (database == null) {
+                echo(
+                    message = "Database not found",
+                    err = true
+                )
+                throw Abort()
+            }
+            database
+        }
             ?: service.getDefaultDatabase()
             ?: service.noDatabase
         currentContext.invokedSubcommand?.also { subcommand ->
             if (database == service.noDatabase && subcommand !is PermitNoDatabaseChosen) {
-                echo("No database chosen and no default configured. See: coner-trailer config database")
+                echo(
+                    message = "No database chosen and no default configured. See: coner-trailer-cli config database",
+                    err = true
+                )
                 throw Abort()
             }
         }
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
             if (database != service.noDatabase) {
-                bind<ConfigurationService>(overrides = true) with instance(service)
+                bind<ConfigurationService>() with instance(service)
                 import(databaseServiceModule(databaseConfiguration = database))
             }
         }

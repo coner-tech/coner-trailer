@@ -5,8 +5,8 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
+import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.subcommands
-import com.github.ajalt.clikt.output.CliktConsole
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -33,22 +33,35 @@ class RootCommandTest {
     @MockK lateinit var serviceFactory: (ConfigurationServiceArgument) -> ConfigurationService
     @MockK lateinit var service: ConfigurationService
     @MockK lateinit var noDatabase: DatabaseConfiguration
+    @MockK lateinit var stubService: StubService
 
     @TempDir
     lateinit var temp: Path
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
 
     lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
+        testConsole = StringBufferConsole()
         serviceArgumentSlot = slot()
         every { serviceFactory(capture(slot())) } returns service
         every { service.noDatabase } returns noDatabase
+        justRun { stubService.doSomething() }
         dbConfigs = TestDatabaseConfigurations(temp)
+        val di = DI {
+            bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument -> service }
+            bind<StubService>() with instance(stubService)
+        }
+        command = RootCommand(di).context {
+            console = testConsole
+        }
+        command.subcommands(
+            StubCommand(di),
+            ConfigCommand()
+        )
     }
 
     @Test
@@ -56,7 +69,10 @@ class RootCommandTest {
         arrangeWithDatabases()
         every { service.listDatabasesByName()}.returns(dbConfigs.allByName)
 
-        command.parse(arrayOf("--database", "foo"))
+        command.parse(arrayOf(
+            "--database", "foo",
+            "stub"
+        ))
 
         assertThat(command.currentContext.obj)
                 .isNotNull()
@@ -70,13 +86,16 @@ class RootCommandTest {
         arrangeWithDatabases()
         // baz does not exist
 
-        val actual = assertThrows<BadParameterValue> {
-            command.parse(arrayOf("--database", "baz"))
+        val actual = assertThrows<Abort> {
+            command.parse(arrayOf(
+                "--database", "baz",
+                "stub"
+            ))
         }
 
-        assertThat(actual).all {
-            messageContains("--database")
-            messageContains("baz")
+        assertThat(testConsole.error).all {
+            contains("Database not found")
+            doesNotContain("baz")
         }
     }
 
@@ -87,7 +106,7 @@ class RootCommandTest {
                 .values
                 .single { it.default }
 
-        command.parse(emptyArray())
+        command.parse(arrayOf("stub"))
 
         verify { service.getDefaultDatabase() }
         assertThat(command.currentContext.obj)
@@ -105,9 +124,9 @@ class RootCommandTest {
             command.parse(arrayOf("stub"))
         }
 
-        assertThat(console.output).all {
+        assertThat(testConsole.error).all {
             contains("No database chosen and no default configured.")
-            contains("coner-trailer config database")
+            contains("coner-trailer-cli config database")
         }
     }
 
@@ -140,9 +159,6 @@ private fun RootCommandTest.arrangeWithDatabases() {
     justRun { service.setup() }
     every { service.listDatabasesByName() } answers { dbConfigs.allByName }
     every { service.getDefaultDatabase() } returns(dbConfigs.bar)
-    command = RootCommand(DI {
-        bind<ConfigurationService>() with factory { service }
-    })
 }
 
 private fun RootCommandTest.arrangeWithoutDatabasesCase() {
@@ -151,7 +167,4 @@ private fun RootCommandTest.arrangeWithoutDatabasesCase() {
             noDatabase.name to noDatabase
     ) }
     every { service.getDefaultDatabase() } returns null
-    command = RootCommand(DI {
-        bind<ConfigurationService>() with factory { service }
-    })
 }
