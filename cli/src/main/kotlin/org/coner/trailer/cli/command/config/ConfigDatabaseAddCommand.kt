@@ -2,6 +2,7 @@ package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
@@ -12,22 +13,21 @@ import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.DatabaseConfigurationView
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.instance
 import java.nio.file.Path
 
 class ConfigDatabaseAddCommand(
-        useConsole: CliktConsole,
-        private val view: DatabaseConfigurationView,
-        private val config: ConfigurationService
+    di: DI
 ) : CliktCommand(
         name = "add",
         help = "Add database configuration"
-) {
+), DIAware {
 
-    init {
-        context {
-            console = useConsole
-        }
-    }
+    override val di: DI by findOrSetObject { di }
+    private val view: DatabaseConfigurationView by instance()
+    private val service: ConfigurationService by instance()
 
     private val name: String by option().required()
     private val crispyFishDatabase: Path by option()
@@ -65,7 +65,7 @@ class ConfigDatabaseAddCommand(
                 ),
                 default = default
         )
-        config.configureDatabase(dbConfig)
+        service.configureDatabase(dbConfig)
         echo(view.render(dbConfig))
     }
 }

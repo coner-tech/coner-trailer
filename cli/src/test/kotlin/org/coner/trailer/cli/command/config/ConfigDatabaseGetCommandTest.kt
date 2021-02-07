@@ -1,9 +1,13 @@
 package org.coner.trailer.cli.command.config
 
 import assertk.assertThat
+import assertk.assertions.contains
+import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.BadParameterValue
+import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
@@ -11,30 +15,42 @@ import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
+@ExtendWith(MockKExtension::class)
 class ConfigDatabaseGetCommandTest {
 
     lateinit var command: ConfigDatabaseGetCommand
 
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
     @MockK
     lateinit var view: DatabaseConfigurationView
 
     @TempDir
     lateinit var temp: Path
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
-        console = StringBufferConsole()
+        testConsole = StringBufferConsole()
         dbConfigs = TestDatabaseConfigurations(temp)
+        command = ConfigDatabaseGetCommand(
+            di = DI {
+                bind<ConfigurationService>() with instance(service)
+                bind<DatabaseConfigurationView>() with instance(view)
+            }
+        ).context {
+            console = testConsole
+        }
     }
 
     @Test
@@ -43,14 +59,14 @@ class ConfigDatabaseGetCommandTest {
         val render = "view.render(foo) => ${UUID.randomUUID()}"
         every { view.render(dbConfigs.foo) }.returns(render)
 
-        command.parse(arrayOf("--name", "foo"))
+        command.parse(arrayOf("foo"))
 
         verifyOrder {
-            config.listDatabasesByName()
+            service.listDatabasesByName()
             view.render(dbConfigs.foo)
         }
-        confirmVerified(config, view)
-        assertThat(console.output.contains(render))
+        confirmVerified(service, view)
+        assertThat(testConsole.output.contains(render))
     }
 
     @Test
@@ -60,20 +76,17 @@ class ConfigDatabaseGetCommandTest {
 
         arrangeWithTestDatabaseConfigurations()
 
-        assertThrows<BadParameterValue> {
-            command.parse(arrayOf("--name", baz))
+        assertThrows<Abort> {
+            command.parse(arrayOf(baz))
         }
 
-        verify { config.listDatabasesByName() }
-        confirmVerified(config, view)
+        verify { service.listDatabasesByName() }
+        confirmVerified(service, view)
+        assertThat(testConsole.output).contains("No database found with name")
     }
 }
 
 private fun ConfigDatabaseGetCommandTest.arrangeWithTestDatabaseConfigurations() {
-    every { config.listDatabasesByName() }.returns(dbConfigs.allByName)
-    command = ConfigDatabaseGetCommand(
-            useConsole = console,
-            service = config,
-            view = view
-    )
+    every { service.listDatabasesByName() }.returns(dbConfigs.allByName)
+
 }

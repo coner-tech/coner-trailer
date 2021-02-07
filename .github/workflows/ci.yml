@@ -15,8 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  jvm-build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     strategy:
@@ -41,7 +40,32 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven Verify
-        run: ./mvnw verify -DCI=true
+        run: ./mvnw -P ci verify
 
       - name: Code Coverage
         run: bash <(curl -s https://codecov.io/bash)
+
+  native-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Graalvm
+        id: setup-graalvm
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: '21.0.0.java11'
+
+      - name: Install native-image component
+        run: |
+          gu install native-image
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Maven Verify
+        run: ./mvnw -P ci,cli-native verify

@@ -1,6 +1,5 @@
 package org.coner.trailer.cli.di
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
@@ -21,188 +20,131 @@ import kotlin.io.path.ExperimentalPathApi
 
 @OptIn(ExperimentalPathApi::class)
 val cliktModule = DI.Module("clikt") {
-    bind<CliktConsole>() with singleton { defaultCliktConsole() }
-    bind<CliktCommand>() with singleton { RootCommand(
-            di = di
-    )
-            .subcommands(
-                    instance<ConfigCommand>(),
-                    instance<EventCommand>(),
-                    instance<EventPointsCalculatorCommand>(),
-                    instance<RankingSortCommand>(),
-                    instance<SeasonPointsCalculatorCommand>(),
-                    instance<PersonCommand>(),
-                    instance<MotorsportRegCommand>(),
-                    instance<SeasonCommand>(),
-            )
-    }
-    bind<ConfigCommand>() with singleton { ConfigCommand()
-            .subcommands(
-                    instance<ConfigDatabaseCommand>()
-            )
-    }
-    bind<ConfigDatabaseCommand>() with singleton { ConfigDatabaseCommand()
-            .subcommands(
-                    ConfigDatabaseListCommand(
-                            useConsole = instance(),
-                            view = instance(),
-                            config = instance()
-                    ),
-                    ConfigDatabaseGetCommand(
-                            service = instance(),
-                            view = instance(),
-                            useConsole = instance()
-                    ),
-                    ConfigDatabaseAddCommand(
-                            useConsole = instance(),
-                            view = instance(),
-                            config = instance()
-                    ),
-                    ConfigDatabaseSetDefaultCommand(
-                            service = instance()
-                    ),
-                    ConfigDatabaseRemoveCommand(
-                            service = instance()
-                    )
-            )
-    }
-    bind<EventPointsCalculatorCommand>() with singleton { EventPointsCalculatorCommand()
-            .subcommands(
-                    EventPointsCalculatorAddCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    EventPointsCalculatorGetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    EventPointsCalculatorListCommand(
-                            di = di,
-                            useConsole = instance(),
-                            view = instance()
-                    ),
-                    EventPointsCalculatorSetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    EventPointsCalculatorDeleteCommand(
-                            di = di,
-                            useConsole = instance()
-                    )
-            )
-    }
-    bind<RankingSortCommand>() with singleton { RankingSortCommand()
-            .subcommands(
-                    RankingSortAddCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    RankingSortStepsAppendCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    RankingSortListCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    RankingSortGetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    RankingSortSetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    RankingSortDeleteCommand(
-                            di = di,
-                            useConsole = instance()
-                    )
-            )
-    }
-    bind<SeasonPointsCalculatorParameterMapper>() with singleton { SeasonPointsCalculatorParameterMapper(
-            eventPointsCalculatorService = instance()
-    ) }
-    bind<SeasonPointsCalculatorCommand>() with singleton { SeasonPointsCalculatorCommand()
-            .subcommands(
-                    SeasonPointsCalculatorAddCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    SeasonPointsCalculatorGetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    SeasonPointsCalculatorListCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    SeasonPointsCalculatorSetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    SeasonPointsCalculatorDeleteCommand(
-                            di = di,
-                            useConsole = instance()
-                    )
-            )
-    }
-    bind<PersonCommand>() with singleton { PersonCommand(useConsole = instance())
-            .subcommands(
-                    PersonAddCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    PersonGetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    PersonListCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    PersonSearchCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    PersonSetCommand(
-                            di = di,
-                            useConsole = instance()
-                    ),
-                    PersonDeleteCommand(
-                            di = di,
-                            useConsole = instance()
-                    )
-            )
-    }
-    bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di)
-            .subcommands(MotorsportRegMemberCommand(di = di, useConsole = instance())
-                    .subcommands(
-                            MotorsportRegMemberListCommand(di = di, useConsole = instance()),
-                            MotorsportRegMemberImportCommand(di = di, useConsole = instance()),
-                            MotorsportRegMemberImportSingleCommand(di = di, useConsole = instance())
-                    )
-            )
-    }
-    bind<SeasonCommand>() with singleton { SeasonCommand(useConsole = instance())
-            .subcommands(
-                    SeasonAddCommand(di = di, useConsole = instance()),
-                    SeasonGetCommand(di = di, useConsole = instance()),
-                    SeasonListCommand(di = di, useConsole = instance()),
-                    SeasonSetCommand(di = di, useConsole = instance()),
-                    SeasonDeleteCommand(di = di, useConsole = instance())
-            )
-    }
-    bind<EventCommand>() with singleton { EventCommand()
-            .subcommands(
-                    EventAddCommand(di = di),
-                    EventGetCommand(di = di),
-                    EventListCommand(di = di),
-                    EventSetCommand(di = di),
-                    EventCrispyFishPersonMapAssembleCommand(di = di),
-                    EventCrispyFishPersonMapAddCommand(di = di),
-                    EventCrispyFishPersonMapRemoveCommand(di = di),
-                    EventCheckCommand(di = di),
-                    EventDeleteCommand(di = di)
-            )
-    }
+        bind<CliktConsole>() with singleton { defaultCliktConsole() }
+        bind<RootCommand>() with singleton { RootCommand(di = di) }
+
+        // Config commands
+        bind<ConfigCommand>() with singleton { ConfigCommand() }
+        bind<ConfigDatabaseCommand>() with singleton { ConfigDatabaseCommand() }
+        bind<ConfigDatabaseListCommand>() with singleton { ConfigDatabaseListCommand(di = di) }
+        bind<ConfigDatabaseGetCommand>() with singleton { ConfigDatabaseGetCommand(di = di) }
+        bind<ConfigDatabaseAddCommand>() with singleton { ConfigDatabaseAddCommand(di = di) }
+        bind<ConfigDatabaseSetDefaultCommand>() with singleton { ConfigDatabaseSetDefaultCommand(di = di) }
+        bind<ConfigDatabaseRemoveCommand>() with singleton { ConfigDatabaseRemoveCommand(di = di) }
+
+        // Event Points Calculator commands
+        bind<EventPointsCalculatorCommand>() with singleton { EventPointsCalculatorCommand() }
+        bind<EventPointsCalculatorAddCommand>() with singleton {
+                EventPointsCalculatorAddCommand(di = di, useConsole = instance())
+        }
+        bind<EventPointsCalculatorGetCommand>() with singleton {
+                EventPointsCalculatorGetCommand(di = di, useConsole = instance())
+        }
+        bind<EventPointsCalculatorListCommand>() with singleton {
+                EventPointsCalculatorListCommand(di = di, useConsole = instance(), view = instance())
+        }
+        bind<EventPointsCalculatorSetCommand>() with singleton {
+                EventPointsCalculatorSetCommand(di = di, useConsole = instance())
+        }
+        bind<EventPointsCalculatorDeleteCommand>() with singleton {
+                EventPointsCalculatorDeleteCommand(di = di, useConsole = instance())
+        }
+
+        // Ranking Sort commands
+        bind<RankingSortCommand>() with singleton { RankingSortCommand() }
+        bind<RankingSortAddCommand>() with singleton {
+                RankingSortAddCommand(di = di, useConsole = instance())
+        }
+        bind<RankingSortDeleteCommand>() with singleton {
+                RankingSortDeleteCommand(di = di, useConsole = instance())
+        }
+        bind<RankingSortGetCommand>() with singleton {
+                RankingSortGetCommand(di = di, useConsole = instance())
+        }
+        bind<RankingSortListCommand>() with singleton {
+                RankingSortListCommand(di = di, useConsole = instance())
+        }
+        bind<RankingSortSetCommand>() with singleton {
+                RankingSortSetCommand(di = di, useConsole = instance())
+        }
+        bind<RankingSortStepsAppendCommand>() with singleton {
+                RankingSortStepsAppendCommand(di = di, useConsole = instance())
+        }
+
+        // Season Points Calculator commands
+        bind<SeasonPointsCalculatorParameterMapper>() with singleton { SeasonPointsCalculatorParameterMapper(
+                eventPointsCalculatorService = instance()
+        ) }
+        bind<SeasonPointsCalculatorCommand>() with singleton { SeasonPointsCalculatorCommand() }
+        bind<SeasonPointsCalculatorAddCommand>() with singleton {
+                SeasonPointsCalculatorAddCommand(di = di, useConsole = instance())
+        }
+        bind<SeasonPointsCalculatorGetCommand>() with singleton {
+                SeasonPointsCalculatorGetCommand(di = di, useConsole = instance())
+        }
+        bind<SeasonPointsCalculatorListCommand>() with singleton {
+                SeasonPointsCalculatorListCommand(di = di, useConsole = instance())
+        }
+        bind<SeasonPointsCalculatorSetCommand>() with singleton {
+                SeasonPointsCalculatorSetCommand(di = di, useConsole = instance())
+        }
+        bind<SeasonPointsCalculatorDeleteCommand>() with singleton {
+                SeasonPointsCalculatorDeleteCommand(di = di, useConsole = instance())
+        }
+
+        // Person commands
+        bind<PersonCommand>() with singleton { PersonCommand(useConsole = instance()) }
+        bind<PersonAddCommand>() with singleton {
+                PersonAddCommand(di = di, useConsole = instance())
+        }
+        bind<PersonGetCommand>() with singleton {
+                PersonGetCommand(di = di, useConsole = instance())
+        }
+        bind<PersonListCommand>() with singleton {
+                PersonListCommand(di = di, useConsole = instance())
+        }
+        bind<PersonSearchCommand>() with singleton {
+                PersonSearchCommand(di = di, useConsole = instance())
+        }
+        bind<PersonSetCommand>() with singleton {
+                PersonSetCommand(di = di, useConsole = instance())
+        }
+        bind<PersonDeleteCommand>() with singleton {
+                PersonDeleteCommand(di = di, useConsole = instance())
+        }
+
+        // MotorsportReg commands
+        bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di) }
+        bind<MotorsportRegMemberCommand>() with singleton {
+                MotorsportRegMemberCommand(di = di, useConsole = instance())
+        }
+        bind<MotorsportRegMemberListCommand>() with singleton {
+                MotorsportRegMemberListCommand(di = di, useConsole = instance())
+        }
+        bind<MotorsportRegMemberImportCommand>() with singleton {
+                MotorsportRegMemberImportCommand(di = di, useConsole = instance())
+        }
+        bind<MotorsportRegMemberImportSingleCommand>() with singleton {
+                MotorsportRegMemberImportSingleCommand(di = di, useConsole = instance())
+        }
+
+        // Season commands
+        bind<SeasonCommand>() with singleton { SeasonCommand(useConsole = instance()) }
+        bind<SeasonAddCommand>() with singleton { SeasonAddCommand(di = di, useConsole = instance()) }
+        bind<SeasonGetCommand>() with singleton { SeasonGetCommand(di = di, useConsole = instance()) }
+        bind<SeasonListCommand>() with singleton { SeasonListCommand(di = di, useConsole = instance()) }
+        bind<SeasonDeleteCommand>() with singleton { SeasonDeleteCommand(di = di, useConsole = instance()) }
+        bind<SeasonSetCommand>() with singleton { SeasonSetCommand(di = di, useConsole = instance()) }
+
+        // Event commands
+        bind<EventCommand>() with singleton { EventCommand() }
+        bind<EventAddCommand>() with singleton { EventAddCommand(di = di) }
+        bind<EventCheckCommand>() with singleton { EventCheckCommand(di = di) }
+        bind<EventCrispyFishPersonMapAddCommand>() with singleton { EventCrispyFishPersonMapAddCommand(di = di) }
+        bind<EventCrispyFishPersonMapAssembleCommand>() with singleton { EventCrispyFishPersonMapAssembleCommand(di = di) }
+        bind<EventCrispyFishPersonMapRemoveCommand>() with singleton { EventCrispyFishPersonMapRemoveCommand(di = di) }
+        bind<EventDeleteCommand>() with singleton { EventDeleteCommand(di = di) }
+        bind<EventGetCommand>() with singleton { EventGetCommand(di = di) }
+        bind<EventListCommand>() with singleton { EventListCommand(di = di) }
+        bind<EventSetCommand>() with singleton { EventSetCommand(di = di) }
 }

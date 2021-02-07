@@ -8,6 +8,7 @@
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>core</module>
         <module>core-test</module>
@@ -36,6 +37,7 @@
         <mockk.version>1.10.0</mockk.version>
         <jsoup.version>1.13.1</jsoup.version>
         <awaitility.version>4.0.3</awaitility.version>
+        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -130,12 +132,28 @@
                     </executions>
 
                     <configuration>
-                        <jvmTarget>1.8</jvmTarget>
+                        <jvmTarget>11</jvmTarget>
+                        <javaParameters>true</javaParameters>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.22.2</version>
                 </plugin>
             </plugins>
@@ -144,13 +162,7 @@
 
     <profiles>
         <profile>
-            <id>CI</id>
-            <activation>
-                <property>
-                    <name>CI</name>
-                    <value>true</value>
-                </property>
-            </activation>
+            <id>ci</id>
             <build>
                 <plugins>
                     <plugin>

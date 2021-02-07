@@ -12,11 +12,6 @@ class ConfigurationService(
         private val objectMapper: ObjectMapper
 ) {
 
-    constructor(appDirs: AppDirs, objectMapper: ObjectMapper) : this(
-            configDir = Paths.get(appDirs.getUserConfigDir("coner-trailer", "1.0", "coner")),
-            objectMapper = objectMapper
-    )
-
     val configFile by lazy {
         configDir.resolve("config.json")
     }

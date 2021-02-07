@@ -2,11 +2,10 @@ package org.coner.trailer.cli.command.config
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import com.github.ajalt.clikt.core.context
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.slot
-import io.mockk.verifySequence
+import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.io.ConfigurationService
 import org.coner.trailer.cli.io.DatabaseConfiguration
@@ -14,10 +13,15 @@ import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
 
+@ExtendWith(MockKExtension::class)
 class ConfigDatabaseAddCommandTest {
 
     lateinit var command: ConfigDatabaseAddCommand
@@ -25,26 +29,32 @@ class ConfigDatabaseAddCommandTest {
     @MockK
     lateinit var view: DatabaseConfigurationView
     @MockK
-    lateinit var config: ConfigurationService
+    lateinit var service: ConfigurationService
 
     @TempDir
     lateinit var temp: Path
 
     lateinit var dbConfigs: TestDatabaseConfigurations
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
         dbConfigs = TestDatabaseConfigurations(temp)
-        console = StringBufferConsole()
-        command = ConfigDatabaseAddCommand(console, view, config)
+        testConsole = StringBufferConsole()
+        command = ConfigDatabaseAddCommand(
+            di = DI {
+                bind<DatabaseConfigurationView>() with instance(view)
+                bind<ConfigurationService>() with instance(service)
+            }
+        ).context {
+            console = testConsole
+        }
     }
 
     @Test
     fun `When given with all arguments it should configure and display`() {
         val configSlot = slot<DatabaseConfiguration>()
-        every { config.configureDatabase(capture(configSlot)) } answers { Unit }
+        justRun { service.configureDatabase(capture(configSlot)) }
         val render = "bar => ${UUID.randomUUID()}"
         val bar = dbConfigs.bar
         val viewSlot = slot<DatabaseConfiguration>()
@@ -60,12 +70,11 @@ class ConfigDatabaseAddCommandTest {
         ))
 
         verifySequence {
-            config.configureDatabase(eq(bar))
+            service.configureDatabase(eq(bar))
             view.render(eq(bar))
         }
-        val actualOutput = console.output
         val actualDbConfig = configSlot.captured
         assertThat(actualDbConfig).isEqualTo(bar)
-        assertThat(actualOutput).isEqualTo(render)
+        assertThat(testConsole.output, "console output").isEqualTo(render)
     }
 }
