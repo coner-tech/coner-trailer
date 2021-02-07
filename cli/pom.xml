@@ -169,9 +169,8 @@
                         <include>**/*IT.java</include>
                     </includes>
                     <systemPropertyVariables>
-                        <coner-trailer-cli.command.0>java</coner-trailer-cli.command.0>
-                        <coner-trailer-cli.command.1>-jar</coner-trailer-cli.command.1>
-                        <coner-trailer-cli.command.2>${project.build.directory}/${project.build.finalName}-shaded.jar</coner-trailer-cli.command.2>
+                        <coner-trailer-cli.argument-factory>shaded-jar</coner-trailer-cli.argument-factory>
+                        <coner-trailer-cli.shaded-jar>${project.build.directory}/${project.build.finalName}-shaded.jar</coner-trailer-cli.shaded-jar>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
@@ -253,13 +252,21 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <systemPropertyVariables>
-                                <coner-trailer-cli.command.0>${project.build.directory}/coner-trailer-cli</coner-trailer-cli.command.0>
-                                <coner-trailer-cli.command.1>ignore</coner-trailer-cli.command.1>
-                                <coner-trailer-cli.command.2>ignore</coner-trailer-cli.command.2>
-                            </systemPropertyVariables>
-                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <coner-trailer-cli.argument-factory>native-image</coner-trailer-cli.argument-factory>
+                                        <coner-trailer-cli.native-image>${project.build.directory}/coner-trailer-cli</coner-trailer-cli.native-image>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

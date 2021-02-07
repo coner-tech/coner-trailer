@@ -6,6 +6,8 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.util.ConerTrailerCliRunner
+import org.coner.trailer.cli.util.NativeImageArgumentFactory
+import org.coner.trailer.cli.util.ShadedJarArgumentFactory
 import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
@@ -15,25 +17,30 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.function.BiPredicate
-import kotlin.io.path.ExperimentalPathApi
-import kotlin.io.path.extension
-import kotlin.io.path.nameWithoutExtension
-import kotlin.io.path.readText
+import kotlin.io.path.*
 import kotlin.streams.toList
 
 @ExperimentalPathApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConerTrailerCliIT {
 
     lateinit var runner: ConerTrailerCliRunner
 
-    @TempDir lateinit var configDir: Path
-    @TempDir lateinit var snoozleDir: Path
-    @TempDir lateinit var crispyFishDir: Path
+    @TempDir lateinit var testDir: Path
+    lateinit var configDir: Path
+    lateinit var snoozleDir: Path
+    lateinit var crispyFishDir: Path
 
     @BeforeEach
     fun before() {
+        configDir = testDir.resolve("config").apply { createDirectory() }
+        snoozleDir = testDir.resolve("snoozle").apply { createDirectory() }
+        crispyFishDir = testDir.resolve("crispy-fish").apply { createDirectory() }
         runner = ConerTrailerCliRunner(
+            processArgumentFactory = when (System.getProperty("coner-trailer-cli.argument-factory", "shaded-jar")) {
+                "shaded-jar" -> ShadedJarArgumentFactory()
+                "native-image" -> NativeImageArgumentFactory()
+                else -> throw IllegalStateException("Unknown argument factory")
+            },
             configDir = configDir,
             snoozleDir = snoozleDir,
             crispyFishDir = crispyFishDir
