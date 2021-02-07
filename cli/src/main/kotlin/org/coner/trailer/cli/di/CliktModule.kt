@@ -147,4 +147,8 @@ val cliktModule = DI.Module("clikt") {
         bind<EventGetCommand>() with singleton { EventGetCommand(di = di) }
         bind<EventListCommand>() with singleton { EventListCommand(di = di) }
         bind<EventSetCommand>() with singleton { EventSetCommand(di = di) }
+
+        // Event Results commands
+        bind<EventResultsCommand>() with singleton { EventResultsCommand() }
+        bind<EventResultsOverallCommand>() with singleton { EventResultsOverallCommand(di = di) }
 }
