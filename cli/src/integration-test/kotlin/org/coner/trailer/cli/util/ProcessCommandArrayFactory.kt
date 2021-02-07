@@ -1,6 +1,6 @@
 package org.coner.trailer.cli.util
 
-interface ProcessArgumentFactory {
+interface ProcessCommandArrayFactory {
 
     fun build() : Array<String>
 }
