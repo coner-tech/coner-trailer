@@ -212,6 +212,13 @@
                                     <goal>report-integration</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>merge-jacoco-reports</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>merge</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
