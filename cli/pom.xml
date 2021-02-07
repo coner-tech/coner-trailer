@@ -192,6 +192,7 @@
 
             <properties>
                 <graalvm.version>21.0.0</graalvm.version>
+                <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
             </properties>
             <dependencies>
                 <dependency>
@@ -240,7 +241,7 @@
                         </executions>
                         <configuration>
                             <skip>false</skip>
-                            <imageName>coner-trailer-cli</imageName>
+                            <imageName>${native-image.filename}</imageName>
                             <buildArgs>
                                 --no-fallback
                                 --allow-incomplete-classpath
@@ -262,7 +263,7 @@
                                 <configuration>
                                     <systemPropertyVariables>
                                         <coner-trailer-cli.argument-factory>native-image</coner-trailer-cli.argument-factory>
-                                        <coner-trailer-cli.native-image>${project.build.directory}/coner-trailer-cli</coner-trailer-cli.native-image>
+                                        <coner-trailer-cli.native-image>${project.build.directory}/${native-image.filename}</coner-trailer-cli.native-image>
                                     </systemPropertyVariables>
                                 </configuration>
                             </execution>
