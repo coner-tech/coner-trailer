@@ -1,18 +1,22 @@
 package org.coner.trailer.cli.di
 
+import org.coner.trailer.Event
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.CrispyFishOverallResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.snoozle.*
+import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import org.kodein.di.*
 import kotlin.io.path.ExperimentalPathApi
 
 @OptIn(ExperimentalPathApi::class)
@@ -149,6 +153,20 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
         loadConstraints = instance()
     ) }
+    bind<CrispyFishOverallResultsReportCreator>() with factory { resultsType: ResultsType ->
+        when (resultsType) {
+            StandardResultsTypes.overallRawTime -> OverallRawTimeResultsReportCreator(
+                participantResultMapper = instance()
+            )
+            StandardResultsTypes.overallHandicapTime -> OverallHandicapTimeResultsReportCreator(
+                participantResultMapper = instance()
+            )
+            else -> throw IllegalArgumentException("")
+        }
+    }
+    bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
+        crispyFishParticipantMapper = instance()
+    ) }
 
     // Groupings
     bind<CrispyFishGroupingService>() with singleton { CrispyFishGroupingService(
@@ -156,4 +174,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         mapper = instance()
     ) }
     bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
+
 }
+
+typealias CrispyFishOverallResultsReportCreatorFactory = (ResultsType) -> CrispyFishOverallResultsReportCreator

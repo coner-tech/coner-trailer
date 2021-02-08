@@ -2,6 +2,7 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
+import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 import org.coner.trailer.eventresults.Score
@@ -14,7 +15,7 @@ object ScoreMapper {
             cfRegistration: Registration,
             cfResult: RegistrationResult,
             scoredRuns: List<ResultRun>
-    ): Score {
+    ): Score? {
         fun synthesizePenaltyTime(penalty: Score.Penalty): Score {
             val bestRun = scoredRuns.singleOrNull { it.personalBest }
             val bestRunTime = bestRun?.time ?: return Score.withoutTime()
@@ -29,9 +30,10 @@ object ScoreMapper {
         }
         return when {
             cfResult.hasValidTime() -> Score(BigDecimal(cfResult.time))
+            cfResult.hasDisqualified()
+                    || cfRegistration.runs.all { it.penalty == RegistrationRun.Penalty.Disqualified } -> synthesizePenaltyTime(Score.Penalty.Disqualified)
             cfResult.hasDidNotFinish() -> synthesizePenaltyTime(Score.Penalty.DidNotFinish)
-            cfResult.hasDisqualified() -> synthesizePenaltyTime(Score.Penalty.Disqualified)
-            else -> Score.withoutTime()
+            else -> null
         }
     }
 

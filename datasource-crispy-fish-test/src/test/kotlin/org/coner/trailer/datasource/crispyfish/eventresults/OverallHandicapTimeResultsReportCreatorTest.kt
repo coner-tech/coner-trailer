@@ -30,7 +30,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
         )
 
         val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)
@@ -144,7 +144,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
         )
 
         val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)
@@ -246,7 +246,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
         )
 
         val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.overallHandicapTime)

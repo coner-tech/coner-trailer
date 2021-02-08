@@ -21,7 +21,6 @@ class EventFixture(
     private val seasonFixture: SeasonFixture,
     private val temp: Path,
     val crispyFishGroupingMapper: CrispyFishGroupingMapper,
-    val memberIdToPeople: Map<String, Person>,
     val coreSeasonEvent: SeasonEvent,
     val conePenalty: Int = 2
 ) {
@@ -65,8 +64,7 @@ class EventFixture(
     val participantResultMapper = ParticipantResultMapper(
         crispyFishParticipantMapper = CrispyFishParticipantMapper(
             crispyFishGroupingMapper = crispyFishGroupingMapper
-        ),
-        memberIdToPeople = memberIdToPeople
+        )
     )
 
 }

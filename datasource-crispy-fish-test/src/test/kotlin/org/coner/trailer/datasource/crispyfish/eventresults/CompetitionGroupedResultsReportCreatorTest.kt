@@ -28,7 +28,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)
@@ -135,7 +135,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)
@@ -228,7 +228,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.competitionGrouped)

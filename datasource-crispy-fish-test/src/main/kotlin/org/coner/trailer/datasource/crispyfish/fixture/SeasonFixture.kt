@@ -1,6 +1,7 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
 import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
+import org.coner.crispyfish.model.Registration
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
@@ -18,28 +19,16 @@ sealed class SeasonFixture(
     val classDefinitionFixture: ClassDefinitionFixture
 ) {
     abstract val events: List<EventFixture>
-    abstract val memberIdToPeople: Map<String, Person>
     abstract val season: Season
     class Lscc2019Simplified(temp: Path) : SeasonFixture(
         temp = temp,
         path = "lscc-2019-simplified",
         classDefinitionFixture = ClassDefinitionFixture("lscc2019.def")
     ) {
-        override val memberIdToPeople = listOf(
-            personFactory(TestPeople.DOMINIC_ROGERS, "2019-00061"),
-            personFactory(TestPeople.BRANDY_HUFF, "2019-00080"),
-            personFactory(TestPeople.BRYANT_MORAN, "2019-00125"),
-            personFactory(TestPeople.REBECCA_JACKSON, "1807"),
-            personFactory(TestPeople.ANASTASIA_RIGLER, "2019-00094"),
-            personFactory(TestPeople.JIMMY_MCKENZIE, "2476"),
-            personFactory(TestPeople.EUGENE_DRAKE, "2019-00057"),
-            personFactory(TestPeople.BENNETT_PANTONE, "2019-00295")
-        ).map { requireNotNull(it.clubMemberId) to it }.toMap()
         val event1 = EventFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
-            memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 1",
@@ -48,7 +37,15 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-01-01 event 1.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        peopleMap = emptyMap()
+                        peopleMap = mapOf(
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.EUGENE_DRAKE, TestPeople.EUGENE_DRAKE),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE, TestPeople.JIMMY_MCKENZIE),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF, TestPeople.BRANDY_HUFF),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.BRYANT_MORAN, TestPeople.BRYANT_MORAN),
+                            peopleMapping(TestParticipants.Lscc2019Points1Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS)
+                        )
                     )
                 ),
                 eventNumber = 1,
@@ -59,7 +56,6 @@ sealed class SeasonFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
-            memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 2",
@@ -68,7 +64,14 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-02-02 event 2.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        peopleMap = emptyMap()
+                        peopleMap = mapOf(
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.JIMMY_MCKENZIE, TestPeople.JIMMY_MCKENZIE),
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF, TestPeople.BRANDY_HUFF),
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS),
+                            peopleMapping(TestParticipants.Lscc2019Points2Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
+                        )
                     )
                 ),
                 eventNumber = 2,
@@ -79,7 +82,6 @@ sealed class SeasonFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
-            memberIdToPeople = memberIdToPeople,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 3",
@@ -88,7 +90,16 @@ sealed class SeasonFixture(
                     crispyFish = Event.CrispyFishMetadata(
                         eventControlFile = "2019-03-03 event 3.ecf",
                         classDefinitionFile = "lscc2019.def",
-                        peopleMap = emptyMap()
+                        peopleMap = mapOf(
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.JIMMY_MCKENZIE, TestPeople.JIMMY_MCKENZIE),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.EUGENE_DRAKE, TestPeople.EUGENE_DRAKE),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF, TestPeople.BRANDY_HUFF),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.BRYANT_MORAN, TestPeople.BRYANT_MORAN),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS),
+                            peopleMapping(TestParticipants.Lscc2019Points3Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
+                        )
                     )
                 ),
                 eventNumber = 3,
@@ -131,3 +142,11 @@ private fun personFactory(person: Person, withMemberId: String): Person {
     return person.copy(clubMemberId = withMemberId)
 }
 
+private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {
+    val key = Event.CrispyFishMetadata.PeopleMapKey(
+        signage = testParticipant.signage,
+        firstName = testParticipant.firstName,
+        lastName = testParticipant.lastName
+    )
+    return key to person
+}
