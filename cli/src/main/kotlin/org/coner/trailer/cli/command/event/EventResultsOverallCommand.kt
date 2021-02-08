@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.CrispyFishOverallResultsReportCreatorFactory
+import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.OverallResultsReportTableView
 import org.coner.trailer.eventresults.KotlinxHtmlOverallResultsReportRenderer
@@ -40,6 +41,7 @@ class EventResultsOverallCommand(
     private val crispyFishOverallResultsReportCreatorFactory: CrispyFishOverallResultsReportCreatorFactory by factory()
     private val reportTableView: OverallResultsReportTableView by instance()
     private val reportHtmlRenderer: KotlinxHtmlOverallResultsReportRenderer by instance()
+    private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
     enum class Report(
@@ -55,9 +57,9 @@ class EventResultsOverallCommand(
             "crispy-fish-handicap" to Report.CrispyFishHandicap
         )
         .required()
-    enum class Format {
-        TEXT,
-        HTML
+    enum class Format(val extension: String) {
+        TEXT("txt"),
+        HTML("html")
     }
     private val format: Format by option()
         .choice(
@@ -65,18 +67,19 @@ class EventResultsOverallCommand(
             "html" to Format.HTML
         )
         .default(Format.TEXT)
-    sealed class Output {
-        object Console : Output()
-        class File(val destination: Path) : Output()
+    sealed class Output(name: String) : OptionGroup(name) {
+        object Console : Output("Console Output")
+        class File : Output("File Output") {
+            val destination: Path? by option()
+                .path(canBeFile = true, canBeDir = true)
+        }
     }
-    private val output: Output by mutuallyExclusiveOptions(
-        option("--console", help = "Output to console")
-            .flag()
-            .convert { Output.Console },
-        option("--file", help = "Output to file")
-            .path(canBeFile = true, canBeDir = false, mustBeWritable = true)
-            .convert { Output.File(it) }
-    ).default(Output.Console)
+    private val output: Output by option()
+        .groupSwitch(
+            "--console" to Output.Console,
+            "--file" to Output.File()
+        )
+        .defaultByName("--console")
 
     override fun run() {
         val event = eventService.findById(id)
@@ -98,7 +101,15 @@ class EventResultsOverallCommand(
         }
         when (val output = output) {
             Output.Console -> echo(render)
-            is Output.File -> output.destination.writeText(render)
+            is Output.File -> {
+                val actualDestination = fileOutputResolver.forEventResults(
+                    event = event,
+                    type = reportChoice.resultsType,
+                    defaultExtension = format.extension,
+                    path = output.destination
+                )
+                actualDestination.writeText(render)
+            }
         }
 
     }

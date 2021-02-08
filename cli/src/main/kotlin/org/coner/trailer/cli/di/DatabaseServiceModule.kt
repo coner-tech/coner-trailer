@@ -1,7 +1,7 @@
 package org.coner.trailer.cli.di
 
-import org.coner.trailer.Event
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
@@ -10,6 +10,7 @@ import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTime
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.snoozle.*
+import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.constraint.*
@@ -175,6 +176,11 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
     bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
 
+
+    bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
+        eventResultsReportFileNameGenerator = instance()
+    ) }
+    bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }
 }
 
 typealias CrispyFishOverallResultsReportCreatorFactory = (ResultsType) -> CrispyFishOverallResultsReportCreator
