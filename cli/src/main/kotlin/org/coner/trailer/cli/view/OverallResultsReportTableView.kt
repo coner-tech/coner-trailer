@@ -10,7 +10,7 @@ class OverallResultsReportTableView : View<OverallResultsReport> {
         val at = AsciiTable()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
-        at.addRow("Pos.", "Handicap", "#", "Name", "Car Model", model.type.timeColumnHeading)
+        at.addRow("Pos.", "Handicap", "#", "Name", "Car Model", model.type.scoreColumnHeading)
         at.addRule()
         for (result in model.participantResults) {
             at.addRow(
@@ -19,24 +19,11 @@ class OverallResultsReportTableView : View<OverallResultsReport> {
                 result.participant.signage.number,
                 "${result.participant.firstName} ${result.participant.lastName}",
                 result.participant.car.model,
-                result.timeColumnValue
+                result.scoreColumnValue
             )
             at.addRule()
         }
         return at.render()
     }
 
-    private val ParticipantResult.timeColumnValue: String
-        get() = when(score.penalty) {
-            Score.Penalty.DidNotFinish -> "DNF"
-            Score.Penalty.Disqualified -> "DSQ"
-            else -> this.score.value.toString()
-        }
-
-    private val ResultsType.timeColumnHeading: String
-        get() = when (this) {
-            StandardResultsTypes.overallRawTime -> "Raw Time"
-            StandardResultsTypes.overallHandicapTime -> "Handicap Time"
-            else -> throw UnsupportedOperationException("Cannot render this results type")
-        }
 }

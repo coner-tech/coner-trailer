@@ -22,4 +22,11 @@ data class ParticipantResult(
             else -> null
         }
     }
+
+    val scoreColumnValue: String
+        get() = when(score.penalty) {
+            Score.Penalty.DidNotFinish -> "DNF"
+            Score.Penalty.Disqualified -> "DSQ"
+            else -> this.score.value.toString()
+        }
 }
