@@ -4,14 +4,19 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import com.github.ajalt.clikt.parameters.groups.*
-import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.groups.defaultByName
+import com.github.ajalt.clikt.parameters.groups.groupSwitch
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
-import org.coner.trailer.cli.di.CrispyFishOverallResultsReportCreatorFactory
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.OverallResultsReportTableView
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.eventresults.KotlinxHtmlOverallResultsReportRenderer
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -19,7 +24,6 @@ import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.factory
 import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
@@ -38,7 +42,8 @@ class EventResultsOverallCommand(
 
     private val eventService: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val crispyFishOverallResultsReportCreatorFactory: CrispyFishOverallResultsReportCreatorFactory by factory()
+    private val crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
+    private val crispyFishOverallHandicapTimeResultsReportCreator: OverallHandicapTimeResultsReportCreator by instance()
     private val reportTableView: OverallResultsReportTableView by instance()
     private val reportHtmlRenderer: KotlinxHtmlOverallResultsReportRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
@@ -87,11 +92,15 @@ class EventResultsOverallCommand(
         val resultsReport = when {
             reportChoice.crispyFish -> {
                 val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
-                crispyFishOverallResultsReportCreatorFactory(reportChoice.resultsType)
-                    .createFromRegistrationData(
-                        eventCrispyFishMetadata = eventCrispyFish,
-                        context = crispyFishEventMappingContextService.load(eventCrispyFish)
-                    )
+                val reportCreator = when (reportChoice.resultsType) {
+                    StandardResultsTypes.overallRawTime -> crispyFishOverallRawTimeResultsReportCreator
+                    StandardResultsTypes.overallHandicapTime -> crispyFishOverallHandicapTimeResultsReportCreator
+                    else -> throw IllegalArgumentException()
+                }
+                reportCreator.createFromRegistrationData(
+                    eventCrispyFishMetadata = eventCrispyFish,
+                    context = crispyFishEventMappingContextService.load(eventCrispyFish)
+                )
             }
             else -> throw UnsupportedOperationException()
         }

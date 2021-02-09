@@ -154,17 +154,6 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
         loadConstraints = instance()
     ) }
-    bind<CrispyFishOverallResultsReportCreator>() with factory { resultsType: ResultsType ->
-        when (resultsType) {
-            StandardResultsTypes.overallRawTime -> OverallRawTimeResultsReportCreator(
-                participantResultMapper = instance()
-            )
-            StandardResultsTypes.overallHandicapTime -> OverallHandicapTimeResultsReportCreator(
-                participantResultMapper = instance()
-            )
-            else -> throw IllegalArgumentException("")
-        }
-    }
     bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
         crispyFishParticipantMapper = instance()
     ) }
@@ -182,5 +171,3 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
     bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }
 }
-
-typealias CrispyFishOverallResultsReportCreatorFactory = (ResultsType) -> CrispyFishOverallResultsReportCreator
