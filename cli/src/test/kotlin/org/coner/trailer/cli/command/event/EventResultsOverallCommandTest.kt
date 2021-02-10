@@ -16,7 +16,7 @@ import org.coner.trailer.cli.view.OverallResultsReportTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.eventresults.KotlinxHtmlOverallResultsReportRenderer
+import org.coner.trailer.eventresults.render.OverallResultsReportRenderer
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -44,7 +44,7 @@ class EventResultsOverallCommandTest {
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
     @MockK lateinit var crispyFishOverallHandicapTimeResultsReportCreator: OverallHandicapTimeResultsReportCreator
     @MockK lateinit var reportTableView: OverallResultsReportTableView
-    @MockK lateinit var reportHtmlRenderer: KotlinxHtmlOverallResultsReportRenderer
+    @MockK lateinit var reportHtmlRenderer: OverallResultsReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -60,7 +60,7 @@ class EventResultsOverallCommandTest {
             bind<OverallRawTimeResultsReportCreator>() with instance(crispyFishOverallRawTimeResultsReportCreator)
             bind<OverallHandicapTimeResultsReportCreator>() with instance(crispyFishOverallHandicapTimeResultsReportCreator)
             bind<OverallResultsReportTableView>() with instance(reportTableView)
-            bind<KotlinxHtmlOverallResultsReportRenderer>() with instance(reportHtmlRenderer)
+            bind<OverallResultsReportRenderer>() with instance(reportHtmlRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole

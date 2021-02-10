@@ -1,7 +1,7 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
-import org.coner.trailer.eventresults.KotlinxHtmlOverallResultsReportRenderer
+import org.coner.trailer.eventresults.render.OverallResultsReportRenderer
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -34,5 +34,5 @@ val viewModule = DI.Module("view") {
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
     bind<OverallResultsReportTableView>() with provider { OverallResultsReportTableView() }
-    bind<KotlinxHtmlOverallResultsReportRenderer>() with provider { KotlinxHtmlOverallResultsReportRenderer() }
+    bind<OverallResultsReportRenderer>() with provider { OverallResultsReportRenderer() }
 }
