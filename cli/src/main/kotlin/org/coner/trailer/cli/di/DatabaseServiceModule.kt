@@ -158,6 +158,14 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishParticipantMapper = instance()
     ) }
 
+    // Event Results
+    bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(
+        participantResultMapper = instance()
+    ) }
+    bind<OverallHandicapTimeResultsReportCreator>() with singleton { OverallHandicapTimeResultsReportCreator(
+        participantResultMapper = instance()
+    ) }
+
     // Groupings
     bind<CrispyFishGroupingService>() with singleton { CrispyFishGroupingService(
         crispyFishRoot = databaseConfiguration.crispyFishDatabase.toFile(),
