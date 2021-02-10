@@ -154,11 +154,11 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
         loadConstraints = instance()
     ) }
+
+    // Event Results
     bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
         crispyFishParticipantMapper = instance()
     ) }
-
-    // Event Results
     bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(
         participantResultMapper = instance()
     ) }
