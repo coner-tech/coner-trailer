@@ -22,12 +22,12 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections for LSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.competitionGrouped,
-                season = TestSeasons.lscc2019,
-                eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
-                ),
-                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
+            resultsType = StandardResultsTypes.competitionGrouped,
+            season = TestSeasons.lscc2019,
+            eventToGroupedResultsReports = mapOf(
+                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
+            ),
+            configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -52,14 +52,14 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should create grouped standings sections with LSCC 2019-style tie breaking`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.competitionGrouped,
-                season = TestSeasons.lscc2019,
-                eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveResultsReports.LsccTieBreaking.points1.groupedResultsReports.single(),
-                        TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveResultsReports.LsccTieBreaking.points2.groupedResultsReports.single()
+            resultsType = StandardResultsTypes.competitionGrouped,
+            season = TestSeasons.lscc2019,
+            eventToGroupedResultsReports = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveResultsReports.LsccTieBreaking.points1.groupedResultsReports.single(),
+                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveResultsReports.LsccTieBreaking.points2.groupedResultsReports.single()
 
-                ),
-                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
+            ),
+            configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -101,36 +101,38 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should exclude participants not eligible for season points`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.competitionGrouped,
-                season = TestSeasons.lscc2019,
-                eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
-                                type = StandardResultsTypes.competitionGrouped,
-                                groupingsToResultsMap = sortedMapOf(
-                                        TestGroupings.Lscc2019.HS to listOf(
-                                                ParticipantResult(
-                                                        position = 1,
-                                                        score = Score("0.000"),
-                                                        participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
-                                                                seasonPointsEligible = false // only value relevant to test
-                                                        ),
-                                                        scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
-                                                        marginOfVictory = null,
-                                                        marginOfLoss = null
-                                                ),
-                                                ParticipantResult( // to make sure eligible are included
-                                                        position = 2,
-                                                        score = Score("0.000"),
-                                                        participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
-                                                        scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
-                                                        marginOfVictory = null,
-                                                        marginOfLoss = null
-                                                )
-                                        )
-                                )
+            resultsType = StandardResultsTypes.competitionGrouped,
+            season = TestSeasons.lscc2019,
+            eventToGroupedResultsReports = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
+                    type = StandardResultsTypes.competitionGrouped,
+                    groupingsToResultsMap = sortedMapOf(
+                        TestGroupings.Lscc2019.HS to listOf(
+                            ParticipantResult(
+                                position = 1,
+                                score = Score("0.000"),
+                                participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
+                                    seasonPointsEligible = false // only value relevant to test
+                                ),
+                                scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
+                                marginOfVictory = null,
+                                marginOfLoss = null,
+                                resultsType = StandardResultsTypes.competitionGrouped
+                            ),
+                            ParticipantResult( // to make sure eligible are included
+                                position = 2,
+                                score = Score("0.000"),
+                                participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                                scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
+                                marginOfVictory = null,
+                                marginOfLoss = null,
+                                resultsType = StandardResultsTypes.competitionGrouped
+                            )
                         )
-                ),
-                configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
+                    )
+                )
+            ),
+            configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
 
         val actual = creator.createGroupedStandingsSections(param)
@@ -146,12 +148,12 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections for OLSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.competitionGrouped,
-                season = TestSeasons.olscc2019,
-                eventToGroupedResultsReports = mapOf(
-                        TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()
-                ),
-                configuration = TestSeasonPointsCalculatorConfigurations.olsccV1
+            resultsType = StandardResultsTypes.competitionGrouped,
+            season = TestSeasons.olscc2019,
+            eventToGroupedResultsReports = mapOf(
+                TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()
+            ),
+            configuration = TestSeasonPointsCalculatorConfigurations.olsccV1
         )
 
         val actual = creator.createGroupedStandingsSections(param)

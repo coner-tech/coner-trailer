@@ -9,7 +9,8 @@ data class ParticipantResult(
         val participant: Participant,
         val marginOfVictory: Time?,
         val marginOfLoss: Time?,
-        val scoredRuns: List<ResultRun>
+        val scoredRuns: List<ResultRun>,
+        val resultsType: ResultsType
 ) {
 
     init {

@@ -7,6 +7,7 @@ import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
+import org.coner.trailer.eventresults.ResultsType
 
 class ParticipantResultMapper(
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper
@@ -16,7 +17,8 @@ class ParticipantResultMapper(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
-        cfResult: RegistrationResult
+        cfResult: RegistrationResult,
+        resultsType: ResultsType
     ): ParticipantResult? {
         val cfResultPosition = cfResult.position ?: return null
         val scoredRuns = ResultRunMapper.map(
@@ -45,7 +47,8 @@ class ParticipantResultMapper(
             ),
             scoredRuns = scoredRuns,
             marginOfLoss = null,
-            marginOfVictory = null
+            marginOfVictory = null,
+            resultsType = resultsType
         )
     }
 

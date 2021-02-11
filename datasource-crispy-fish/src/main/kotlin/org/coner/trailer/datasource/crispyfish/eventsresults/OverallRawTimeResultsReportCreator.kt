@@ -13,18 +13,20 @@ class OverallRawTimeResultsReportCreator(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
+        val resultsType = StandardResultsTypes.overallRawTime
         val results = context.allRegistrations
             .mapNotNull {
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = it,
-                    cfResult = it.rawResult
+                    cfResult = it.rawResult,
+                    resultsType = resultsType
                 )
             }
             .sortedBy { it.position }
         return OverallResultsReport(
-            type = StandardResultsTypes.overallRawTime,
+            type = resultsType,
             participantResults = results
         )
     }

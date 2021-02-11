@@ -17,7 +17,7 @@ import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.OverallResultsReportTableView
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.eventresults.render.OverallResultsReportRenderer
+import org.coner.trailer.render.OverallResultsReportRenderer
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService

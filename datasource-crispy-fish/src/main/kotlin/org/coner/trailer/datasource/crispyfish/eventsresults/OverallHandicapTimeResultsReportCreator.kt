@@ -13,18 +13,20 @@ class OverallHandicapTimeResultsReportCreator(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
+        val resultsType = StandardResultsTypes.overallHandicapTime
         val results = context.allRegistrations
             .mapNotNull {
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = it,
-                    cfResult = it.paxResult
+                    cfResult = it.paxResult,
+                    resultsType = resultsType
                 )
             }
             .sortedBy { it.position }
         return OverallResultsReport(
-            type = StandardResultsTypes.overallHandicapTime,
+            type = resultsType,
             participantResults = results
         )
     }
