@@ -9,12 +9,13 @@ class StandaloneReportRenderer : Renderer {
 
     fun renderEventResults(event: Event, resultsReport: ResultsReport, resultsPartial: HtmlBlockTag.() -> Unit) = createHTML()
         .html {
+            fun titleText() = "${resultsReport.type.title} - ${event.name} - ${event.date}"
             head {
-                title { + "${resultsReport.type.title} - ${event.name} - ${event.date}" }
+                title { + titleText() }
             }
             body {
                 id = "standalone-event-results"
-                h1 { + "${resultsReport.type.title} - ${event.name} - ${event.date}" }
+                h1 { + titleText() }
                 resultsPartial(this)
             }
         }

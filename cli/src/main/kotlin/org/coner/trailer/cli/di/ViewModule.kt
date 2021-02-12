@@ -2,6 +2,7 @@ package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
 import org.coner.trailer.render.OverallResultsReportRenderer
+import org.coner.trailer.render.StandaloneReportRenderer
 import org.coner.trailer.render.standardOverallResultsReportColumns
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -38,4 +39,5 @@ val viewModule = DI.Module("view") {
     bind<OverallResultsReportRenderer>() with provider { OverallResultsReportRenderer(
         columns = standardOverallResultsReportColumns
     ) }
+    bind<StandaloneReportRenderer>() with provider { StandaloneReportRenderer() }
 }

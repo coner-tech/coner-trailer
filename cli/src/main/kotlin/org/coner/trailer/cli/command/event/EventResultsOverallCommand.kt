@@ -22,6 +22,7 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.render.StandaloneReportRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -45,7 +46,8 @@ class EventResultsOverallCommand(
     private val crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
     private val crispyFishOverallHandicapTimeResultsReportCreator: OverallHandicapTimeResultsReportCreator by instance()
     private val reportTableView: OverallResultsReportTableView by instance()
-    private val reportHtmlRenderer: OverallResultsReportRenderer by instance()
+    private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
+    private val standaloneReportRenderer: StandaloneReportRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -106,7 +108,11 @@ class EventResultsOverallCommand(
         }
         val render = when (format) {
             Format.TEXT -> reportTableView.render(resultsReport)
-            Format.HTML -> reportHtmlRenderer.render(resultsReport)
+            Format.HTML -> standaloneReportRenderer.renderEventResults(
+                event = event,
+                resultsReport = resultsReport,
+                resultsPartial = reportHtmlPartialRenderer.partial(resultsReport)
+            )
         }
         when (val output = output) {
             Output.Console -> echo(render)

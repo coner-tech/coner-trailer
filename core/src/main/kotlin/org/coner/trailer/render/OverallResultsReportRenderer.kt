@@ -9,10 +9,13 @@ class OverallResultsReportRenderer(
 ) : Renderer {
 
     fun render(report: OverallResultsReport): String = createHTML()
-        .apply { partial(report)() }
-        .toString()
+        .html {
+            body {
+                partial(report)()
+            }
+        }
 
-    fun partial(report: OverallResultsReport): TagConsumer<*>.() -> Unit = {
+    fun partial(report: OverallResultsReport): HtmlBlockTag.() -> Unit = {
         div {
             id = "overall-results-report"
             table {
