@@ -106,7 +106,7 @@ class EventResultsOverallCommand(
         }
         val render = when (format) {
             Format.TEXT -> reportTableView.render(resultsReport)
-            Format.HTML -> reportHtmlRenderer.renderContentOnly(resultsReport)
+            Format.HTML -> reportHtmlRenderer.render(resultsReport)
         }
         when (val output = output) {
             Output.Console -> echo(render)

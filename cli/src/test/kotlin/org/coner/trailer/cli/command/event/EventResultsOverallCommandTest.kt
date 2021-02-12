@@ -117,7 +117,7 @@ class EventResultsOverallCommandTest {
             context = context
         ) } returns resultsReport
         val render = "<html>"
-        every { reportHtmlRenderer.renderContentOnly(resultsReport) } returns render
+        every { reportHtmlRenderer.render(resultsReport) } returns render
         val actualDestination = output.resolve("handicap.html")
         every { fileOutputResolver.forEventResults(
             event = event,
@@ -143,7 +143,7 @@ class EventResultsOverallCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            reportHtmlRenderer.renderContentOnly(resultsReport)
+            reportHtmlRenderer.render(resultsReport)
             fileOutputResolver.forEventResults(
                 event = event,
                 type = StandardResultsTypes.overallHandicapTime,

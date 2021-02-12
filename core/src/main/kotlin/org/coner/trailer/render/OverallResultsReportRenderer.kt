@@ -8,8 +8,12 @@ class OverallResultsReportRenderer(
     private val columns: List<OverallResultsReportColumn>
 ) : Renderer {
 
-    fun renderContentOnly(report: OverallResultsReport) = createHTML()
-        .div {
+    fun render(report: OverallResultsReport): String = createHTML()
+        .apply { partial(report)() }
+        .toString()
+
+    fun partial(report: OverallResultsReport): TagConsumer<*>.() -> Unit = {
+        div {
             id = "overall-results-report"
             table {
                 caption { text(report.type.title) }
@@ -27,4 +31,5 @@ class OverallResultsReportRenderer(
                 }
             }
         }
+    }
 }
