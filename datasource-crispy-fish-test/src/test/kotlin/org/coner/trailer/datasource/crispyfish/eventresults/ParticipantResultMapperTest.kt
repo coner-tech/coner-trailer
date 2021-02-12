@@ -68,8 +68,7 @@ class ParticipantResultMapperTest {
             eventCrispyFishMetadata = eventCrispyFishMetadata,
             context = context,
             cfRegistration = registration,
-            cfResult = noRegistrationResult,
-            resultsType = StandardResultsTypes.overallRawTime
+            cfResult = noRegistrationResult
         )
 
         assertThat(actual).isNull()
@@ -128,8 +127,7 @@ class ParticipantResultMapperTest {
             eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
             cfRegistration = registration,
-            cfResult = result,
-            resultsType = StandardResultsTypes.competitionGrouped
+            cfResult = result
         )
 
         assertThat(actual).isNotNull().all {

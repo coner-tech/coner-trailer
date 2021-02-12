@@ -18,8 +18,7 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 marginOfVictory = null,
                 marginOfLoss = null,
-                scoredRuns = emptyList(),
-                resultsType = StandardResultsTypes.competitionGrouped
+                scoredRuns = emptyList()
             )
         }
     }
@@ -34,8 +33,7 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 marginOfVictory = null,
                 marginOfLoss = null,
-                scoredRuns = emptyList(),
-                resultsType = StandardResultsTypes.competitionGrouped
+                scoredRuns = emptyList()
             )
         }
     }

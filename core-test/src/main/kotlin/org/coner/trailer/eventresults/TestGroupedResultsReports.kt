@@ -40,8 +40,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.802"),
-                                                marginOfLoss = Time("0.045"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.045")
                                         ),
                                         ParticipantResult(
                                                 position = 9,
@@ -68,8 +67,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.203"),
-                                                marginOfLoss = Time("0.489"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.489")
                                         ),
                                         ParticipantResult(
                                                 position = 11,
@@ -96,8 +94,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.079"),
-                                                marginOfLoss = Time("0.043"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.043")
                                         )
                                 ),
                                 TestGroupings.Lscc2019.STR to listOf(
@@ -125,8 +122,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.830"),
-                                                marginOfLoss = Time("1.401"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("1.401")
                                         ),
                                         ParticipantResult(
                                                 position = 4,
@@ -153,8 +149,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.633"),
-                                                marginOfLoss = Time("0.349"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.349")
                                         )
                                 ),
                                 TestGroupings.Lscc2019.GS to listOf(
@@ -182,8 +177,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.916"),
-                                                marginOfLoss = Time("0.379"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.379")
                                         ),
                                         ParticipantResult(
                                                 position = 3,
@@ -208,8 +202,7 @@ object TestGroupedResultsReports {
                                                         )
                                                 ),
                                                 marginOfVictory = Time("0.453"),
-                                                marginOfLoss = Time("0.916"),
-                                                resultsType = StandardResultsTypes.competitionGrouped
+                                                marginOfLoss = Time("0.916")
                                         )
                                 )
                         )
@@ -285,8 +278,7 @@ object TestGroupedResultsReports {
                 score = Score("0.000"),
                 scoredRuns = listOf(ResultRun(time = Time("0.000"), personalBest = true)),
                 marginOfLoss = null,
-                marginOfVictory = null,
-                resultsType = StandardResultsTypes.competitionGrouped
+                marginOfVictory = null
         )
     }
 

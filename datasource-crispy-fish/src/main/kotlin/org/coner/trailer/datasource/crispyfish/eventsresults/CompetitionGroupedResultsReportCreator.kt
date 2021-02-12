@@ -15,15 +15,13 @@ class CompetitionGroupedResultsReportCreator(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : GroupedResultsReport {
-        val resultsType = StandardResultsTypes.competitionGrouped
         val results = context.allRegistrations
             .mapNotNull {
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = it,
-                    cfResult = it.classResult,
-                    resultsType = resultsType
+                    cfResult = it.classResult
                 )
             }
         return GroupedResultsReport(

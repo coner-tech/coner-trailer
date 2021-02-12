@@ -116,8 +116,7 @@ class StandingsReportCreatorTest {
                                 ),
                                 scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
                                 marginOfVictory = null,
-                                marginOfLoss = null,
-                                resultsType = StandardResultsTypes.competitionGrouped
+                                marginOfLoss = null
                             ),
                             ParticipantResult( // to make sure eligible are included
                                 position = 2,
@@ -125,8 +124,7 @@ class StandingsReportCreatorTest {
                                 participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
                                 scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
                                 marginOfVictory = null,
-                                marginOfLoss = null,
-                                resultsType = StandardResultsTypes.competitionGrouped
+                                marginOfLoss = null
                             )
                         )
                     )

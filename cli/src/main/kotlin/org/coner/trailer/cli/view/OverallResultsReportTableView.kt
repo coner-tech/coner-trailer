@@ -3,8 +3,9 @@ package org.coner.trailer.cli.view
 import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import org.coner.trailer.eventresults.*
+import org.coner.trailer.render.Renderer
 
-class OverallResultsReportTableView : View<OverallResultsReport> {
+class OverallResultsReportTableView : View<OverallResultsReport>, Renderer {
 
     override fun render(model: OverallResultsReport): String {
         val at = AsciiTable()
@@ -19,7 +20,7 @@ class OverallResultsReportTableView : View<OverallResultsReport> {
                 result.participant.signage.number,
                 "${result.participant.firstName} ${result.participant.lastName}",
                 result.participant.car.model,
-                result.scoreColumnValue
+                renderScoreColumnValue(result)
             )
             at.addRule()
         }

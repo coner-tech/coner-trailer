@@ -9,8 +9,7 @@ data class ParticipantResult(
         val participant: Participant,
         val marginOfVictory: Time?,
         val marginOfLoss: Time?,
-        val scoredRuns: List<ResultRun>,
-        val resultsType: ResultsType
+        val scoredRuns: List<ResultRun>
 ) {
 
     init {
@@ -23,11 +22,4 @@ data class ParticipantResult(
             else -> null
         }
     }
-
-    val scoreColumnValue: String
-        get() = when(score.penalty) {
-            Score.Penalty.DidNotFinish -> "DNF"
-            Score.Penalty.Disqualified -> "DSQ"
-            else -> this.score.value.toString()
-        }
 }

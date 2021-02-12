@@ -2,15 +2,16 @@ package org.coner.trailer.render
 
 import kotlinx.html.*
 import org.coner.trailer.eventresults.ParticipantResult
+import org.coner.trailer.eventresults.ResultsType
 
 interface OverallResultsReportColumn : Renderer {
 
-    val header: TR.() -> Unit
+    val header: TR.(ResultsType) -> Unit
 
     val data: TR.(ParticipantResult) -> Unit
 
     class Position : OverallResultsReportColumn {
-        override val header: TR.() -> Unit = {
+        override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("position")
                 scope = ThScope.col
@@ -26,7 +27,7 @@ interface OverallResultsReportColumn : Renderer {
     }
 
     class Signage : OverallResultsReportColumn {
-        override val header: TR.() -> Unit = {
+        override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage")
                 scope = ThScope.col
@@ -38,8 +39,34 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
 
+    class SignageClass : OverallResultsReportColumn {
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("signage", "signage-category-handicap")
+                scope = ThScope.col
+                text("Class")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td { text(it.participant.signage.grouping.abbreviation) }
+        }
+    }
+
+    class SignageNumber : OverallResultsReportColumn {
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("signage", "signage-number")
+                scope = ThScope.col
+                text("Number")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td { text(it.participant.signage.number) }
+        }
+    }
+
     class Name : OverallResultsReportColumn {
-        override val header: TR.() -> Unit = {
+        override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("name")
                 scope = ThScope.col
@@ -51,7 +78,7 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
     class CarModel : OverallResultsReportColumn {
-        override val header: TR.() -> Unit = {
+        override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("car-model")
                 scope = ThScope.col
@@ -63,15 +90,15 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
     class Score : OverallResultsReportColumn {
-        override val header: TR.() -> Unit = {
+        override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("score")
                 scope = ThScope.col
-                text("Score")
+                text(it.scoreColumnHeading)
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.resultsType.title) }
+            td { text(renderScoreColumnValue(it)) }
         }
     }
 }

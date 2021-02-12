@@ -17,8 +17,7 @@ class ParticipantResultMapper(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
-        cfResult: RegistrationResult,
-        resultsType: ResultsType
+        cfResult: RegistrationResult
     ): ParticipantResult? {
         val cfResultPosition = cfResult.position ?: return null
         val scoredRuns = ResultRunMapper.map(
@@ -47,8 +46,7 @@ class ParticipantResultMapper(
             ),
             scoredRuns = scoredRuns,
             marginOfLoss = null,
-            marginOfVictory = null,
-            resultsType = resultsType
+            marginOfVictory = null
         )
     }
 
