@@ -35,9 +35,8 @@ class EventAddCommand(
     private val service: EventService by instance()
     private val view: EventView by instance()
 
-    private val id: UUID by option(hidden = true)
+    private val id: UUID? by option(hidden = true)
         .convert { toUuid(it) }
-        .required()
     private val name: String by option()
         .required()
     private val date: LocalDate by option()
@@ -79,7 +78,7 @@ class EventAddCommand(
 
     override fun run() {
         val create = Event(
-            id = id,
+            id = id ?: UUID.randomUUID(),
             name = name,
             date = date,
             lifecycle = Event.Lifecycle.CREATE,
