@@ -25,7 +25,7 @@ class EventResultsReportFileNameGeneratorTest {
             extension = "txt"
         )
 
-        val expected = "2019-03-03 2019 lscc points event #1 overall-raw-time.txt"
+        val expected = "2019-03-03 2019 lscc points event #1 raw.txt"
         assertThat(actual).isEqualTo(expected)
     }
 }

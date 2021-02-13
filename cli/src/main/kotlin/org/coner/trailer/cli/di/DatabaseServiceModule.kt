@@ -5,14 +5,11 @@ import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.CrispyFishOverallResultsReportCreator
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
-import org.coner.trailer.eventresults.ResultsType
-import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
@@ -162,7 +159,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(
         participantResultMapper = instance()
     ) }
-    bind<OverallHandicapTimeResultsReportCreator>() with singleton { OverallHandicapTimeResultsReportCreator(
+    bind<OverallPaxTimeResultsReportCreator>() with singleton { OverallPaxTimeResultsReportCreator(
         participantResultMapper = instance()
     ) }
 

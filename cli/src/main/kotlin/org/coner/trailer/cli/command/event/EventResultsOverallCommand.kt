@@ -15,7 +15,7 @@ import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.OverallResultsReportTableView
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.render.OverallResultsReportRenderer
 import org.coner.trailer.eventresults.ResultsType
@@ -44,7 +44,7 @@ class EventResultsOverallCommand(
     private val eventService: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val crispyFishRawResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
-    private val crispyFishPaxResultsReportCreator: OverallHandicapTimeResultsReportCreator by instance()
+    private val crispyFishPaxResultsReportCreator: OverallPaxTimeResultsReportCreator by instance()
     private val reportTableView: OverallResultsReportTableView by instance()
     private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
     private val standaloneReportRenderer: StandaloneReportRenderer by instance()

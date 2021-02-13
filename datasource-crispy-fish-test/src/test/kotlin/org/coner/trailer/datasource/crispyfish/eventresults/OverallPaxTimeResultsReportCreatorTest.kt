@@ -7,7 +7,7 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
@@ -16,7 +16,7 @@ import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class OverallHandicapTimeResultsReportCreatorTest {
+class OverallPaxTimeResultsReportCreatorTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
@@ -29,7 +29,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -143,7 +143,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -245,7 +245,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {

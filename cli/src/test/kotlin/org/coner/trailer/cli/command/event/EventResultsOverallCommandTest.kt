@@ -8,13 +8,14 @@ import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import kotlinx.html.HtmlBlockTag
 import org.coner.trailer.Event
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.view.OverallResultsReportTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.render.OverallResultsReportRenderer
 import org.coner.trailer.eventresults.OverallResultsReport
@@ -22,6 +23,7 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.render.StandaloneReportRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -42,9 +44,10 @@ class EventResultsOverallCommandTest {
     @MockK lateinit var eventService: EventService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
-    @MockK lateinit var crispyFishOverallHandicapTimeResultsReportCreator: OverallHandicapTimeResultsReportCreator
+    @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
     @MockK lateinit var reportTableView: OverallResultsReportTableView
-    @MockK lateinit var reportHtmlRenderer: OverallResultsReportRenderer
+    @MockK lateinit var reportHtmlPartialRenderer: OverallResultsReportRenderer
+    @MockK lateinit var standaloneReportRenderer: StandaloneReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -58,9 +61,10 @@ class EventResultsOverallCommandTest {
             bind<EventService>() with instance(eventService)
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawTimeResultsReportCreator>() with instance(crispyFishOverallRawTimeResultsReportCreator)
-            bind<OverallHandicapTimeResultsReportCreator>() with instance(crispyFishOverallHandicapTimeResultsReportCreator)
+            bind<OverallPaxTimeResultsReportCreator>() with instance(crispyFishOverallPaxTimeResultsReportCreator)
             bind<OverallResultsReportTableView>() with instance(reportTableView)
-            bind<OverallResultsReportRenderer>() with instance(reportHtmlRenderer)
+            bind<OverallResultsReportRenderer>() with instance(reportHtmlPartialRenderer)
+            bind<StandaloneReportRenderer>() with instance(standaloneReportRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -112,13 +116,19 @@ class EventResultsOverallCommandTest {
         val resultsReport = mockk<OverallResultsReport>()
         val context = mockk<CrispyFishEventMappingContext>()
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
-        every { crispyFishOverallHandicapTimeResultsReportCreator.createFromRegistrationData(
+        every { crispyFishOverallPaxTimeResultsReportCreator.createFromRegistrationData(
             eventCrispyFishMetadata = eventCrispyFish,
             context = context
         ) } returns resultsReport
         val render = "<html>"
-        every { reportHtmlRenderer.render(resultsReport) } returns render
-        val actualDestination = output.resolve("handicap.html")
+        val resultsPartial: HtmlBlockTag.() -> Unit = mockk()
+        every { reportHtmlPartialRenderer.partial(resultsReport) } returns resultsPartial
+        every { standaloneReportRenderer.renderEventResults(
+            event = event,
+            resultsReport = resultsReport,
+            resultsPartial = resultsPartial
+        ) } returns render
+        val actualDestination = output.resolve("pax.html")
         every { fileOutputResolver.forEventResults(
             event = event,
             type = StandardResultsTypes.pax,
@@ -128,7 +138,7 @@ class EventResultsOverallCommandTest {
 
         command.parse(arrayOf(
             "${event.id}",
-            "--report", "crispy-fish-handicap",
+            "--report", "crispy-fish-pax",
             "--format", "html",
             "--file", "--destination", "$output"
         ))
@@ -139,11 +149,16 @@ class EventResultsOverallCommandTest {
         }
         verifySequence {
             eventService.findById(event.id)
-            crispyFishOverallHandicapTimeResultsReportCreator.createFromRegistrationData(
+            crispyFishOverallPaxTimeResultsReportCreator.createFromRegistrationData(
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            reportHtmlRenderer.render(resultsReport)
+            reportHtmlPartialRenderer.partial(resultsReport)
+            standaloneReportRenderer.renderEventResults(
+                event = event,
+                resultsReport = resultsReport,
+                resultsPartial = resultsPartial
+            )
             fileOutputResolver.forEventResults(
                 event = event,
                 type = StandardResultsTypes.pax,

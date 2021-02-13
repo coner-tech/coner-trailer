@@ -5,7 +5,7 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.StandardResultsTypes
 
-class OverallHandicapTimeResultsReportCreator(
+class OverallPaxTimeResultsReportCreator(
     private val participantResultMapper: ParticipantResultMapper
 ) : CrispyFishOverallResultsReportCreator {
 
