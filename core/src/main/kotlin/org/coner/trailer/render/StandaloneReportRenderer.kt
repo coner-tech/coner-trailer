@@ -1,13 +1,14 @@
 package org.coner.trailer.render
 
 import kotlinx.html.*
-import kotlinx.html.stream.createHTML
+import kotlinx.html.dom.createHTMLDocument
+import kotlinx.html.dom.serialize
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ResultsReport
 
 class StandaloneReportRenderer : Renderer {
 
-    fun renderEventResults(event: Event, resultsReport: ResultsReport, resultsPartial: HtmlBlockTag.() -> Unit) = createHTML()
+    fun renderEventResults(event: Event, resultsReport: ResultsReport, resultsPartial: HtmlBlockTag.() -> Unit): String = createHTMLDocument()
         .html {
             fun titleText() = "${resultsReport.type.title} - ${event.name} - ${event.date}"
             head {
@@ -18,5 +19,5 @@ class StandaloneReportRenderer : Renderer {
                 h1 { + titleText() }
                 resultsPartial(this)
             }
-        }
+        }.serialize()
 }
