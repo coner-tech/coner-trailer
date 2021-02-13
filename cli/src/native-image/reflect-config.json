@@ -46,6 +46,14 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"java.io.ObjectInputStream"
 },
 {
@@ -109,6 +117,9 @@
 },
 {
   "name":"java.nio.file.Path"
+},
+{
+  "name":"java.security.AccessController"
 },
 {
   "name":"java.security.AlgorithmParametersSpi"

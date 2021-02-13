@@ -93,13 +93,10 @@ class ConerTrailerCliIT {
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
 
-        command.parse(args(
-            "event", "add",
-            "--id", "${event.id}",
-            "--name", event.name,
-            "--date", "${event.date}",
-            "--crispy-fish-event-control-file", "${seasonFixture.event1.ecfPath}",
-            "--crispy-fish-class-definition-file", "${seasonFixture.classDefinitionPath}"
+        command.parse(appArgumentBuilder.buildEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ))
 
         assertAll {
