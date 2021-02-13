@@ -10,13 +10,16 @@ class StandaloneReportRenderer : Renderer {
 
     fun renderEventResults(event: Event, resultsReport: ResultsReport, resultsPartial: HtmlBlockTag.() -> Unit): String = createHTMLDocument()
         .html {
-            fun titleText() = "${resultsReport.type.title} - ${event.name} - ${event.date}"
+            fun titleText() = "${event.name} - ${event.date} - ${resultsReport.type.title}"
             head {
+                bootstrapMetaViewport()
+                bootstrapLinkCss()
                 title { + titleText() }
             }
             body {
                 id = "standalone-event-results"
-                h1 { + titleText() }
+                classes = setOf("container-md")
+                h1 { + event.name }
                 resultsPartial(this)
             }
         }.serialize()

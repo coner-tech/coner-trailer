@@ -2,8 +2,7 @@ package org.coner.trailer.render
 
 val standardOverallResultsReportColumns = listOf(
     OverallResultsReportColumn.Position(),
-    OverallResultsReportColumn.SignageClass(),
-    OverallResultsReportColumn.SignageNumber(),
+    OverallResultsReportColumn.Signage(),
     OverallResultsReportColumn.Name(),
     OverallResultsReportColumn.CarModel(),
     OverallResultsReportColumn.Score()
