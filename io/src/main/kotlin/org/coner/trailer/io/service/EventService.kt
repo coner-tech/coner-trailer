@@ -43,8 +43,9 @@ class EventService(
 
     fun list(): List<Event> {
         return resource.stream()
-                .map(mapper::toCore)
-                .toList()
+            .map(mapper::toCore)
+            .sorted(compareBy(Event::date))
+            .toList()
     }
 
     fun check(

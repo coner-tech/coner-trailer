@@ -1,7 +1,9 @@
 package org.coner.trailer.io.service
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -97,12 +99,26 @@ class EventServiceTest {
 
     @Test
     fun `It should list events`() {
-        every { resource.stream() } returns Stream.of(mockk(), mockk(), mockk())
-        every { mapper.toCore(any()) } returns mockk()
+        val events = listOf(
+            TestEvents.Lscc2019Simplified.points1,
+            TestEvents.Lscc2019Simplified.points2,
+            TestEvents.Lscc2019Simplified.points3
+        )
+        every { resource.stream() } returns Stream.of(
+            mockk { every { name } returns events[0].name },
+            mockk { every { name } returns events[1].name },
+            mockk { every { name } returns events[2].name }
+        )
+        every { mapper.toCore(match { it.name == events[0].name }) } returns events[0]
+        every { mapper.toCore(match { it.name == events[1].name }) } returns events[1]
+        every { mapper.toCore(match { it.name == events[2].name }) } returns events[2]
 
         val actual = service.list()
 
-        assertThat(actual).hasSize(3)
+        assertThat(actual).all {
+            hasSize(3)
+            isEqualTo(events)
+        }
         verify(exactly = 3) { mapper.toCore(any()) }
     }
 
