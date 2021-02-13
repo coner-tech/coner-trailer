@@ -32,7 +32,7 @@ class OverallRawTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallRawTime)
+            hasType(StandardResultsTypes.raw)
             participantResults().all {
                 hasSize(7)
                 index(0).all {
@@ -145,7 +145,7 @@ class OverallRawTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallRawTime)
+            hasType(StandardResultsTypes.raw)
             participantResults().all {
                 hasSize(6)
                 index(0).all {
@@ -248,7 +248,7 @@ class OverallRawTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallRawTime)
+            hasType(StandardResultsTypes.raw)
             participantResults().all {
                 hasSize(8)
                 index(0).all {

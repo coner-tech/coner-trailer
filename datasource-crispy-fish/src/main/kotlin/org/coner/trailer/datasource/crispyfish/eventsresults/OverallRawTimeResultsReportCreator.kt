@@ -24,7 +24,7 @@ class OverallRawTimeResultsReportCreator(
             }
             .sortedBy { it.position }
         return OverallResultsReport(
-            type = StandardResultsTypes.overallRawTime,
+            type = StandardResultsTypes.raw,
             participantResults = results
         )
     }

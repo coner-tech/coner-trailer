@@ -7,9 +7,9 @@ object TestSeasonPointsCalculatorConfigurations {
     val lscc2019 = SeasonPointsCalculatorConfiguration(
             name = "LSCC 2019",
             resultsTypeToEventPointsCalculator = mapOf(
-                    StandardResultsTypes.competitionGrouped to TestEventPointsCalculators.lsccGroupingCalculator,
-                    StandardResultsTypes.overallRawTime to TestEventPointsCalculators.lsccOverallCalculator,
-                    StandardResultsTypes.overallHandicapTime to TestEventPointsCalculators.lsccOverallCalculator
+                    StandardResultsTypes.grouped to TestEventPointsCalculators.lsccGroupingCalculator,
+                    StandardResultsTypes.raw to TestEventPointsCalculators.lsccOverallCalculator,
+                    StandardResultsTypes.pax to TestEventPointsCalculators.lsccOverallCalculator
             ),
             rankingSort = TestRankingSorts.lscc,
     )
@@ -17,9 +17,9 @@ object TestSeasonPointsCalculatorConfigurations {
     val lscc2019Simplified = SeasonPointsCalculatorConfiguration(
             name = "LSCC 2019 Simplified",
             resultsTypeToEventPointsCalculator = mapOf(
-                    StandardResultsTypes.competitionGrouped to TestEventPointsCalculators.lsccGroupingCalculator,
-                    StandardResultsTypes.overallRawTime to TestEventPointsCalculators.lsccOverallCalculator,
-                    StandardResultsTypes.overallHandicapTime to TestEventPointsCalculators.lsccOverallCalculator
+                    StandardResultsTypes.grouped to TestEventPointsCalculators.lsccGroupingCalculator,
+                    StandardResultsTypes.raw to TestEventPointsCalculators.lsccOverallCalculator,
+                    StandardResultsTypes.pax to TestEventPointsCalculators.lsccOverallCalculator
             ),
             rankingSort = TestRankingSorts.lscc,
     )
@@ -27,9 +27,9 @@ object TestSeasonPointsCalculatorConfigurations {
     val olsccV1 = SeasonPointsCalculatorConfiguration(
             name = "OLSCC v1",
             resultsTypeToEventPointsCalculator = mapOf(
-                    StandardResultsTypes.competitionGrouped to TestEventPointsCalculators.olsccCalculator,
-                    StandardResultsTypes.overallRawTime to TestEventPointsCalculators.olsccCalculator,
-                    StandardResultsTypes.overallHandicapTime to TestEventPointsCalculators.olsccCalculator
+                    StandardResultsTypes.grouped to TestEventPointsCalculators.olsccCalculator,
+                    StandardResultsTypes.raw to TestEventPointsCalculators.olsccCalculator,
+                    StandardResultsTypes.pax to TestEventPointsCalculators.olsccCalculator
             ),
             rankingSort = TestRankingSorts.olscc
     )

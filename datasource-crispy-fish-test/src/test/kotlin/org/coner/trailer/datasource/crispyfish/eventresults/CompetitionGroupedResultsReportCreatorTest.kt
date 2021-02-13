@@ -31,7 +31,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.competitionGrouped)
+            hasType(StandardResultsTypes.grouped)
             resultsForGroupingAbbreviation("HS").isNotNull().all {
                 hasSize(2)
                 index(0).all {
@@ -138,7 +138,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.competitionGrouped)
+            hasType(StandardResultsTypes.grouped)
             resultsForGroupingAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {
@@ -231,7 +231,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.competitionGrouped)
+            hasType(StandardResultsTypes.grouped)
             resultsForGroupingAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {

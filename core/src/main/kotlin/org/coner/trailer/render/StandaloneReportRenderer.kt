@@ -19,7 +19,7 @@ class StandaloneReportRenderer : Renderer {
             body {
                 id = "standalone-event-results"
                 classes = setOf("container-md")
-                h1 { + event.name }
+                h2 { + event.name }
                 resultsPartial(this)
             }
         }.serialize()

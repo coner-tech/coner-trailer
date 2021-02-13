@@ -24,7 +24,7 @@ class OverallHandicapTimeResultsReportCreator(
             }
             .sortedBy { it.position }
         return OverallResultsReport(
-            type = StandardResultsTypes.overallHandicapTime,
+            type = StandardResultsTypes.pax,
             participantResults = results
         )
     }

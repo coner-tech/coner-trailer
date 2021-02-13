@@ -22,7 +22,7 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections for LSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.competitionGrouped,
+            resultsType = StandardResultsTypes.grouped,
             season = TestSeasons.lscc2019,
             eventToGroupedResultsReports = mapOf(
                 TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
@@ -52,7 +52,7 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should create grouped standings sections with LSCC 2019-style tie breaking`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.competitionGrouped,
+            resultsType = StandardResultsTypes.grouped,
             season = TestSeasons.lscc2019,
             eventToGroupedResultsReports = mapOf(
                 TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveResultsReports.LsccTieBreaking.points1.groupedResultsReports.single(),
@@ -101,11 +101,11 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should exclude participants not eligible for season points`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.competitionGrouped,
+            resultsType = StandardResultsTypes.grouped,
             season = TestSeasons.lscc2019,
             eventToGroupedResultsReports = mapOf(
                 TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
-                    type = StandardResultsTypes.competitionGrouped,
+                    type = StandardResultsTypes.grouped,
                     groupingsToResultsMap = sortedMapOf(
                         TestGroupings.Lscc2019.HS to listOf(
                             ParticipantResult(
@@ -146,7 +146,7 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections for OLSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.competitionGrouped,
+            resultsType = StandardResultsTypes.grouped,
             season = TestSeasons.olscc2019,
             eventToGroupedResultsReports = mapOf(
                 TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()

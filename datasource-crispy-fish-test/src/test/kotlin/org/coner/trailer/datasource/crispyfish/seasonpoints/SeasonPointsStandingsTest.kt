@@ -35,7 +35,7 @@ class SeasonPointsStandingsTest {
             eventFixture.coreSeasonEvent to creator.createFromRegistrationData(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
         }.toMap()
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.competitionGrouped,
+                resultsType = StandardResultsTypes.grouped,
                 season = seasonFixture.season,
                 eventToGroupedResultsReports = competitionGroupedResultsReports,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified

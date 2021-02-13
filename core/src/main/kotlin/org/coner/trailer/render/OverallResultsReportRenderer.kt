@@ -20,7 +20,7 @@ class OverallResultsReportRenderer(
     fun partial(report: OverallResultsReport): HtmlBlockTag.() -> Unit = {
         id = "overall-results-report"
         table {
-            classes = setOf("table", "table-striped")
+            classes = setOf("table", "table-striped", "caption-top")
             caption { text(report.type.title) }
             thead {
                 tr {

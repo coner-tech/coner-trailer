@@ -33,7 +33,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(7)
                 index(0).all {
@@ -147,7 +147,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(6)
                 index(0).all {
@@ -249,7 +249,7 @@ class OverallHandicapTimeResultsReportCreatorTest {
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(8)
                 index(0).all {

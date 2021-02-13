@@ -43,8 +43,8 @@ class EventResultsOverallCommand(
 
     private val eventService: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
-    private val crispyFishOverallHandicapTimeResultsReportCreator: OverallHandicapTimeResultsReportCreator by instance()
+    private val crispyFishRawResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
+    private val crispyFishPaxResultsReportCreator: OverallHandicapTimeResultsReportCreator by instance()
     private val reportTableView: OverallResultsReportTableView by instance()
     private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
     private val standaloneReportRenderer: StandaloneReportRenderer by instance()
@@ -55,13 +55,13 @@ class EventResultsOverallCommand(
         val resultsType: ResultsType,
         val crispyFish: Boolean = false
     ) {
-        CrispyFishRaw(resultsType = StandardResultsTypes.overallRawTime, crispyFish = true),
-        CrispyFishHandicap(resultsType = StandardResultsTypes.overallHandicapTime, crispyFish = true)
+        CrispyFishRaw(resultsType = StandardResultsTypes.raw, crispyFish = true),
+        CrispyFishPax(resultsType = StandardResultsTypes.pax, crispyFish = true)
     }
     private val report: Report by option()
         .choice(
             "crispy-fish-raw" to Report.CrispyFishRaw,
-            "crispy-fish-handicap" to Report.CrispyFishHandicap
+            "crispy-fish-pax" to Report.CrispyFishPax
         )
         .required()
     enum class Format(val extension: String) {
@@ -95,8 +95,8 @@ class EventResultsOverallCommand(
             reportChoice.crispyFish -> {
                 val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
                 val reportCreator = when (reportChoice.resultsType) {
-                    StandardResultsTypes.overallRawTime -> crispyFishOverallRawTimeResultsReportCreator
-                    StandardResultsTypes.overallHandicapTime -> crispyFishOverallHandicapTimeResultsReportCreator
+                    StandardResultsTypes.raw -> crispyFishRawResultsReportCreator
+                    StandardResultsTypes.pax -> crispyFishPaxResultsReportCreator
                     else -> throw IllegalArgumentException()
                 }
                 reportCreator.createFromRegistrationData(
@@ -126,6 +126,5 @@ class EventResultsOverallCommand(
                 actualDestination.writeText(render)
             }
         }
-
     }
 }

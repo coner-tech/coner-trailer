@@ -2,27 +2,27 @@ package org.coner.trailer.eventresults
 
 object StandardResultsTypes {
 
-    val overallRawTime = ResultsType(
-        key = "overall-raw-time",
-        title = "Overall Raw-Time Results",
+    val raw = ResultsType(
+        key = "raw",
+        title = "Raw Results",
         scoreColumnHeading = "Raw Time"
     )
-    val overallHandicapTime = ResultsType(
-        key = "overall-handicap-time",
-        title = "Overall Handicap-Time Results",
-        scoreColumnHeading = "Handicap Time"
+    val pax = ResultsType(
+        key = "pax",
+        title = "PAX Results",
+        scoreColumnHeading = "PAX Time"
     )
-    val competitionGrouped = ResultsType(
-        key = "competition-grouped",
-        title = "Competition Grouped Results",
+    val grouped = ResultsType(
+        key = "grouped",
+        title = "Grouped Results",
         scoreColumnHeading = "Time"
     )
 
     fun fromKey(key: String): ResultsType? {
         return when (key) {
-            overallRawTime.key -> overallRawTime
-            overallHandicapTime.key -> overallHandicapTime
-            competitionGrouped.key -> competitionGrouped
+            raw.key -> raw
+            pax.key -> pax
+            grouped.key -> grouped
             else -> null
         }
     }

@@ -21,7 +21,7 @@ class EventResultsReportFileNameGeneratorTest {
 
         val actual = generator.build(
             event = event,
-            type = StandardResultsTypes.overallRawTime,
+            type = StandardResultsTypes.raw,
             extension = "txt"
         )
 

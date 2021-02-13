@@ -121,7 +121,7 @@ class EventResultsOverallCommandTest {
         val actualDestination = output.resolve("handicap.html")
         every { fileOutputResolver.forEventResults(
             event = event,
-            type = StandardResultsTypes.overallHandicapTime,
+            type = StandardResultsTypes.pax,
             defaultExtension = "html",
             path = output
         ) } returns actualDestination
@@ -146,7 +146,7 @@ class EventResultsOverallCommandTest {
             reportHtmlRenderer.render(resultsReport)
             fileOutputResolver.forEventResults(
                 event = event,
-                type = StandardResultsTypes.overallHandicapTime,
+                type = StandardResultsTypes.pax,
                 defaultExtension = "html",
                 path = output
             )
