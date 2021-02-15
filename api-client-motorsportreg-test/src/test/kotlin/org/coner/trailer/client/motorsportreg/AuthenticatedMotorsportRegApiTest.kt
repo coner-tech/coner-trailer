@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.*
+import org.coner.trailer.TestEvents
 import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.*
 import org.junit.jupiter.api.AfterEach
@@ -103,6 +104,23 @@ class AuthenticatedMotorsportRegApiTest {
                 getMemberByIdResponse().member().memberId().isEqualTo("1807")
             }
         }
+    }
+
+    @Test
+    fun `It should get event assignments`() {
+        val event = TestEvents.Lscc2019.points1
+        val mockAuthenticatedResponse = MockResponse()
+            .addHeader("Content-Type", "application/json;charset=utf-8")
+            .setStatus("Http/1.1 200 OK")
+            .setBody(javaClass.getResourceAsStream("/get-event-assignments-ok.json").bufferedReader().readText())
+        testDispatcher = QueueDispatcher().apply {
+            enqueueResponse(mockAuthenticatedResponse)
+        }
+
+        val actual = api.getEventAssignments("${event.id}").execute()
+        val actualRequest = server.takeRequest()
+
+        TODO("assert request and response")
     }
 
     inner class BaseDispatcher : Dispatcher() {
