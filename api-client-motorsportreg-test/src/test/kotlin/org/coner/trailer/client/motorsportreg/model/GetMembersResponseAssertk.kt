@@ -13,3 +13,6 @@ fun Assert<Member>.id() = prop("id") { it.id }
 fun Assert<Member>.memberId() = prop("memberId") { it.memberId }
 fun Assert<Member>.firstName() = prop("firstName") { it.firstName }
 fun Assert<Member>.lastName() = prop("lastName") { it.lastName }
+
+fun Assert<GetEventAssignmentsResponse>.getEventAssignmentsResponse() = prop("response") { it.response }
+fun Assert<GetEventAssignmentsResponse.Response>.assignments() = prop("assignments") { it.assignments }

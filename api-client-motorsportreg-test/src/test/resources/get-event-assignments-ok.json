@@ -1,0 +1,162 @@
+{
+  "response": {
+    "assignments": [
+      {
+        "attendeeId": "rebecca-jackson-attendee-id",
+        "city": "City",
+        "class": "Class",
+        "classId": "class-identifier",
+        "classModifier": "",
+        "classModifierId": "",
+        "classModifierShort": "",
+        "classShort": "CLS",
+        "color": "Yes",
+        "data": "{}",
+        "firstName": "Rebecca",
+        "group": "Autox Open group",
+        "groupId": "group-identifier",
+        "groupShort": "GRP",
+        "id": "rebecca-jackson-assignment-0",
+        "instructorFirstName": "",
+        "instructorLastName": "",
+        "instructorprofileuri": "",
+        "instructoruri": "",
+        "lastName": "Jackson",
+        "make": "Make",
+        "memberId": 1807,
+        "memberuri": "/members/rebecca-jackson-member-id",
+        "model": "Model",
+        "profileuri": "/profiles/rebecca-jackson-profile-id",
+        "region": "Region",
+        "segment": "Day 1",
+        "segmenturi": "/events/test-event-id/segments/day-1-segment-id",
+        "sponsor": "",
+        "status": "On Hold",
+        "tireBrand": "Tire Brand",
+        "transponder": "",
+        "types": [
+          {
+            "id": 1,
+            "name": "Attendee"
+          },
+          {
+            "id": 4,
+            "name": "Event Staff"
+          },
+          {
+            "id": 8,
+            "name": "Autox Staff"
+          }
+        ],
+        "vehicleNumber": 8,
+        "vehiclestatus": "Pending",
+        "vehicleuri": "/members/rebecca-jackson-member-id/vehicles/vehicle-id",
+        "year": 2002
+      },
+      {
+        "attendeeId": "rebecca-jackson-attendee-id",
+        "city": "City",
+        "class": "Class",
+        "classId": "class-identifier",
+        "classModifier": "",
+        "classModifierId": "",
+        "classModifierShort": "",
+        "classShort": "CLS",
+        "color": "Yes",
+        "data": "{}",
+        "firstName": "Rebecca",
+        "group": "Autox Open group",
+        "groupId": "group-identifier",
+        "groupShort": "GRP",
+        "id": "rebecca-jackson-assignment-id-1",
+        "instructorFirstName": "",
+        "instructorLastName": "",
+        "instructorprofileuri": "",
+        "instructoruri": "",
+        "lastName": "Jackson",
+        "make": "Make",
+        "memberId": 1807,
+        "memberuri": "/members/rebecca-jackson-member-id",
+        "model": "Model",
+        "profileuri": "/profiles/rebecca-jackson-profile-id",
+        "region": "Region",
+        "segment": "Day 2",
+        "segmenturi": "/events/test-event-id/segments/day-2-segment-id",
+        "sponsor": "",
+        "status": "On Hold",
+        "tireBrand": "Tire Brand",
+        "transponder": "",
+        "types": [
+          {
+            "id": 1,
+            "name": "Attendee"
+          },
+          {
+            "id": 4,
+            "name": "Event Staff"
+          },
+          {
+            "id": 8,
+            "name": "Autox Staff"
+          }
+        ],
+        "vehicleNumber": 8,
+        "vehiclestatus": "Pending",
+        "vehicleuri": "/members/rebecca-jackson-member-id/vehicles/vehicle-id",
+        "year": 2002
+      },
+      {
+        "attendeeId": "rebecca-jackson-attendee-id",
+        "city": "City",
+        "class": "",
+        "classId": "",
+        "classModifier": "",
+        "classModifierId": "",
+        "classModifierShort": "",
+        "classShort": "",
+        "color": "",
+        "data": "{}",
+        "firstName": "Rebecca",
+        "group": "AutoX Instructors group",
+        "groupId": "3825463D-AFC6-B0BE-9F160FAE40118A62",
+        "groupShort": "AutoX Instructor",
+        "id": "rebecca-jackson-assignment-id-2",
+        "instructorFirstName": "",
+        "instructorLastName": "",
+        "instructorprofileuri": "",
+        "instructoruri": "",
+        "lastName": "Jackson",
+        "make": "",
+        "memberId": 1807,
+        "memberuri": "/members/rebecca-jackson-member-id",
+        "model": "",
+        "profileuri": "/profiles/rebecca-jackson-profile-id",
+        "region": "Region",
+        "segment": "Instructors",
+        "segmenturi": "/events/test-event-id/segments/instructors-segment-id",
+        "sponsor": "",
+        "status": "On Hold",
+        "tireBrand": "",
+        "transponder": "",
+        "types": [
+          {
+            "id": 1,
+            "name": "Attendee"
+          },
+          {
+            "id": 4,
+            "name": "Event Staff"
+          },
+          {
+            "id": 8,
+            "name": "Autox Staff"
+          }
+        ],
+        "vehicleNumber": "",
+        "vehiclestatus": "Pending",
+        "vehicleuri": "/members/rebecca-jackson-member-id/vehicles/",
+        "year": ""
+      }
+    ]
+  }
+}

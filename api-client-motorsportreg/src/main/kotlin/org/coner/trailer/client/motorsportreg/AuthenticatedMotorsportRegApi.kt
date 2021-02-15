@@ -16,6 +16,6 @@ interface AuthenticatedMotorsportRegApi {
     @GET("/rest/members/{id}.json")
     fun getMemberById(@Path("id") id: String): Call<GetMemberByIdResponse>
 
-    @GET("/rest/events/{eventId}/assignments")
-    fun getEventAssignments(eventId: String): Call<GetEventAssignmentsResponse>
+    @GET("/rest/events/{eventId}/assignments.json")
+    fun getEventAssignments(@Path("eventId") eventId: String): Call<GetEventAssignmentsResponse>
 }

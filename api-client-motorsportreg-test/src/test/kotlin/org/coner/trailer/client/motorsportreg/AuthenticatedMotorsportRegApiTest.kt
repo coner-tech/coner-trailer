@@ -111,7 +111,7 @@ class AuthenticatedMotorsportRegApiTest {
         val event = TestEvents.Lscc2019.points1
         val mockAuthenticatedResponse = MockResponse()
             .addHeader("Content-Type", "application/json;charset=utf-8")
-            .setStatus("Http/1.1 200 OK")
+            .setStatus("HTTP/1.1 200 OK")
             .setBody(javaClass.getResourceAsStream("/get-event-assignments-ok.json").bufferedReader().readText())
         testDispatcher = QueueDispatcher().apply {
             enqueueResponse(mockAuthenticatedResponse)
@@ -120,7 +120,15 @@ class AuthenticatedMotorsportRegApiTest {
         val actual = api.getEventAssignments("${event.id}").execute()
         val actualRequest = server.takeRequest()
 
-        TODO("assert request and response")
+        assertThat(actualRequest, "request").all {
+            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "events", "${event.id}", "assignments.json"))
+        }
+        assertThat(actual, "response").all {
+            code().isEqualTo(200)
+            body().isNotNull().all {
+                getEventAssignmentsResponse().assignments().isEqualTo(TestAssignments.TestEvent.ALL_REBECCA_JACKSON)
+            }
+        }
     }
 
     inner class BaseDispatcher : Dispatcher() {
