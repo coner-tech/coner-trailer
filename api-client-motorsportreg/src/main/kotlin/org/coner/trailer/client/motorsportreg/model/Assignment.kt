@@ -1,6 +1,7 @@
 package org.coner.trailer.client.motorsportreg.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.net.URI
 
 data class Assignment(
     val id: String,
@@ -29,5 +30,14 @@ data class Assignment(
     @JsonProperty("segmenturi") val segmentUri: String,
     @JsonProperty("profileuri") val profileUri: String,
     @JsonProperty("memberId") val clubMemberId: String,
-    @JsonProperty("memberuri") val motorsportRegMemberUri: String
-)
+    @JsonProperty("memberuri") val motorsportRegMemberUri: String?
+) {
+
+    val motorsportRegMemberId: String
+        get() {
+            return URI(checkNotNull(motorsportRegMemberUri))
+                .path.split('/').let { path ->
+                    path[path.indexOf("members") + 1]
+                }
+        }
+}

@@ -79,10 +79,14 @@ class EventSetCommandTest {
             classDefinitionFile = "set-class-definition-file.ecf",
             peopleMap = emptyMap()
         )
+        val setMotorsportReg = Event.MotorsportRegMetadata(
+            id = "motorsportreg-event-id"
+        )
         val set = original.copy(
             name = "It should set event properties",
             date = LocalDate.parse("2020-12-07"),
-            crispyFish = setCrispyFish
+            crispyFish = setCrispyFish,
+            motorsportReg = setMotorsportReg
         )
         val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
         val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
@@ -90,11 +94,11 @@ class EventSetCommandTest {
         every { service.findById(original.id) } returns original
         every { crispyFishEventMappingContextService.load(setCrispyFish) } returns context
         justRun { service.update(
-            update = set,
-            context = context
+            update = any(),
+            context = any()
         ) }
         val viewRendered = "view rendered set event named: ${set.name}"
-        every { view.render(set) } returns viewRendered
+        every { view.render(any()) } returns viewRendered
 
         command.parse(arrayOf(
             "${original.id}",
@@ -102,7 +106,9 @@ class EventSetCommandTest {
             "--date", "${set.date}",
             "--crispy-fish", "set",
             "--event-control-file", "$setEventControlFile",
-            "--class-definition-file", "$setClassDefinitionFile"
+            "--class-definition-file", "$setClassDefinitionFile",
+            "--motorsportreg", "set",
+            "--msr-event-id", setMotorsportReg.id
         ))
 
         verifySequence {

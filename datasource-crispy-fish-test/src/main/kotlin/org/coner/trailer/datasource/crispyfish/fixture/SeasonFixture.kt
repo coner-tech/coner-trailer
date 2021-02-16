@@ -46,7 +46,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points1Simplified.BRYANT_MORAN, TestPeople.BRYANT_MORAN),
                             peopleMapping(TestParticipants.Lscc2019Points1Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS)
                         )
-                    )
+                    ),
+                    motorsportReg = null
                 ),
                 eventNumber = 1,
                 points = true
@@ -72,7 +73,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points2Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS),
                             peopleMapping(TestParticipants.Lscc2019Points2Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
                         )
-                    )
+                    ),
+                    motorsportReg = null
                 ),
                 eventNumber = 2,
                 points = true
@@ -100,7 +102,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points3Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS),
                             peopleMapping(TestParticipants.Lscc2019Points3Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
                         )
-                    )
+                    ),
+                    motorsportReg = null
                 ),
                 eventNumber = 3,
                 points = true
@@ -136,10 +139,6 @@ sealed class SeasonFixture(
     val categories = classDefinitions.filter { it.paxed }
     val handicaps = classDefinitions.filter { !it.paxed }
     val groupingMapper = CrispyFishGroupingMapper()
-}
-
-private fun personFactory(person: Person, withMemberId: String): Person {
-    return person.copy(clubMemberId = withMemberId)
 }
 
 private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {

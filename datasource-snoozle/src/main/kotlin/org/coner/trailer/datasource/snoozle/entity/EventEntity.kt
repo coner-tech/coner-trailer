@@ -9,7 +9,8 @@ data class EventEntity(
         val name: String,
         val date: LocalDate,
         val lifecycle: String,
-        val crispyFish: CrispyFishMetadata?
+        val crispyFish: CrispyFishMetadata?,
+        val motorsportReg: MotorsportRegMetadata?
 ) : Entity<EventEntity.Key> {
 
     data class CrispyFishMetadata(
@@ -23,6 +24,10 @@ data class EventEntity(
         val firstName: String,
         val lastName: String,
         val personId: UUID
+    )
+
+    data class MotorsportRegMetadata(
+        val id: String
     )
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key

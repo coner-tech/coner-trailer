@@ -18,7 +18,8 @@ class EventService(
     private val mapper: EventMapper,
     private val persistConstraints: EventPersistConstraints,
     private val deleteConstraints: EventDeleteConstraints,
-    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier,
+    private val motorsportRegEventService: MotorsportRegEventService
 ) {
 
     fun create(

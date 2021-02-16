@@ -34,6 +34,7 @@ class EventServiceTest {
     @MockK lateinit var persistConstraints: EventPersistConstraints
     @MockK lateinit var deleteConstraints: EventDeleteConstraints
     @MockK lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+    @MockK lateinit var motorsportRegEventService: MotorsportRegEventService
 
     @BeforeEach
     fun before() {
@@ -42,7 +43,8 @@ class EventServiceTest {
             mapper = mapper,
             persistConstraints = persistConstraints,
             deleteConstraints = deleteConstraints,
-            eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier
+            eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier,
+            motorsportRegEventService = motorsportRegEventService
         )
     }
 

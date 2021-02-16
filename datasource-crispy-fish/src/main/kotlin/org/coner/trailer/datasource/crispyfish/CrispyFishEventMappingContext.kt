@@ -5,7 +5,7 @@ import org.coner.crispyfish.model.Registration
 import java.nio.file.Path
 
 class CrispyFishEventMappingContext(
-    allClassDefinitions: List<ClassDefinition>,
+    val allClassDefinitions: List<ClassDefinition>,
     val allRegistrations: List<Registration>
 ) {
     val classDefinitionAbbreviationToSort: Map<String, Int> = allClassDefinitions

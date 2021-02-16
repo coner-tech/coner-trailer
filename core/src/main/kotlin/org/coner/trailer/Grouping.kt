@@ -26,6 +26,14 @@ sealed class Grouping(
             sort = pair.first.sort
     )
 
+    companion object {
+        val UNKNOWN = Singular(
+            abbreviation = "UNKNOWN",
+            name = "Unknown",
+            sort = Integer.MIN_VALUE
+        )
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Grouping) return false

@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.*
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
@@ -81,6 +82,23 @@ class EventSetCommand(
         object Unset : CrispyFishOptions()
     }
 
+    private val motorsportReg: MotorsportRegOptions? by option(
+        help = "Whether to set or unset the motorsportreg metadata. Must use \"set\" in conjunction with any motorsportreg-related properties.",
+        names = arrayOf("--motorsportreg")
+    )
+        .groupChoice(
+            "set" to MotorsportRegOptions.Set(),
+            "unset" to MotorsportRegOptions.Unset
+        )
+    sealed class MotorsportRegOptions : OptionGroup() {
+        class Set : MotorsportRegOptions() {
+            val msrEventId: String by option(
+                help = "Set the MotorsportReg Event ID (use with \"--motorsportreg set\")"
+            ).required()
+        }
+        object Unset : MotorsportRegOptions()
+    }
+
     override fun run() {
         val event = service.findById(id)
         val crispyFish = when (val crispyFishOptions = crispyFish) {
@@ -98,11 +116,19 @@ class EventSetCommand(
             is CrispyFishOptions.Unset -> null
             else -> event.crispyFish
         }
+        val motorsportReg = when (val motorsportRegOptions = motorsportReg) {
+            is MotorsportRegOptions.Set -> Event.MotorsportRegMetadata(
+                id = motorsportRegOptions.msrEventId
+            )
+            MotorsportRegOptions.Unset -> null
+            else -> event.motorsportReg
+        }
         val set = event.copy(
             name = name ?: event.name,
             date = date ?: event.date,
             lifecycle = lifecycle ?: event.lifecycle,
-            crispyFish = crispyFish ?: event.crispyFish
+            crispyFish = crispyFish ?: event.crispyFish,
+            motorsportReg = motorsportReg
         )
         service.update(
             update = set,

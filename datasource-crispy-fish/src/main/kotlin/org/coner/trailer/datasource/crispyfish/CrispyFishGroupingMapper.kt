@@ -30,4 +30,5 @@ class CrispyFishGroupingMapper {
             toCoreSingular(context, fromRegistration.handicap)
         }
     }
+
 }
