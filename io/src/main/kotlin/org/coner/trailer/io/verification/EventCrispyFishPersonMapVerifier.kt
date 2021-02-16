@@ -4,20 +4,45 @@ import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.io.mapper.MotorsportRegParticipantMapper
+import org.coner.trailer.io.service.CrispyFishGroupingService
+import org.coner.trailer.io.service.MotorsportRegEventService
+import org.coner.trailer.io.service.MotorsportRegPeopleMapService
 import org.coner.trailer.io.service.PersonService
 
 class EventCrispyFishPersonMapVerifier(
     private val personService: PersonService,
-    private val crispyFishParticipantMapper: CrispyFishParticipantMapper
+    private val motorsportRegPeopleMapService: MotorsportRegPeopleMapService,
+    private val motorsportRegEventService: MotorsportRegEventService,
+    private val motorsportRegParticipantMapper: MotorsportRegParticipantMapper,
+    private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
+    private val crispyFishGroupingService: CrispyFishGroupingService
 ) {
 
     fun verify(
+        event: Event,
         context: CrispyFishEventMappingContext,
         peopleMap: Map<Event.CrispyFishMetadata.PeopleMapKey, Person>,
         callback: Callback
     ) {
         val clubMemberIdToPeople: Map<String?, List<Person>> = personService.list().groupBy { it.clubMemberId }
+        val msrAttendees = event.motorsportReg?.id?.let { motorsportRegEventService.fetchAssignments(it) } ?: emptyList()
+        val groupingsByAbbreviation = event.crispyFish?.let { crispyFishGroupingService.loadAllSingularGroupingsByAbbreviation(it) } ?: emptyMap()
+        val msrParticipants = msrAttendees.map { motorsportRegParticipantMapper.toCore(
+            groupingsByAbbreviation = groupingsByAbbreviation,
+            motorsportRegAssignment = it
+        ) }
+        TODO("extract to MotorsportRegPeopleMapService")
+        val msrPeopleMap = msrParticipants.map {
+            val peopleMapKey = Event.CrispyFishMetadata.PeopleMapKey(
+                signage = it.signage,
+                firstName = it.firstName,
+                lastName = it.lastName
+            )
+            peopleMapKey to it.person
+        }.toMap()
         val usedKeys = hashSetOf<Event.CrispyFishMetadata.PeopleMapKey>()
         for (registration in context.allRegistrations) {
             val signage = crispyFishParticipantMapper.toCoreSignage(
