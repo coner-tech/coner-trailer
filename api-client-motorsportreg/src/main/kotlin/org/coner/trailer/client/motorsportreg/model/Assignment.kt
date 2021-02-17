@@ -33,11 +33,10 @@ data class Assignment(
     @JsonProperty("memberuri") val motorsportRegMemberUri: String?
 ) {
 
-    val motorsportRegMemberId: String
-        get() {
-            return URI(checkNotNull(motorsportRegMemberUri))
-                .path.split('/').let { path ->
-                    path[path.indexOf("members") + 1]
-                }
-        }
+    val motorsportRegMemberId: String by lazy {
+        URI(checkNotNull(motorsportRegMemberUri))
+            .path.split('/').let { path ->
+                path[path.indexOf("members") + 1]
+            }
+    }
 }

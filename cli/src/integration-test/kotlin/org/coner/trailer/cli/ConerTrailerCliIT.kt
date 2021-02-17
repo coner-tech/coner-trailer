@@ -85,7 +85,6 @@ class ConerTrailerCliIT {
         }
     }
 
-
     @Test
     fun `It should add an event`() {
         val databaseName = "event-and-prerequisites"

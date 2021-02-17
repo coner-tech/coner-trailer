@@ -76,6 +76,7 @@ class RootCommand(override val di: DI) : CliktCommand(
             if (database != service.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
             }
+            TODO("enable motorsportreg")
         }
     }
 

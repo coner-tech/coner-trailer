@@ -10,6 +10,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
+import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.CrispyFishRegistrationTableView
@@ -57,12 +58,15 @@ class EventCheckCommandTest {
     fun `It should check event and report all problems`() {
         val checkId = UUID.randomUUID()
         val checkCrispyFish: Event.CrispyFishMetadata = mockk()
+        val checkMotorsportReg: Event.MotorsportRegMetadata = mockk()
         val check: Event = mockk {
             every { id } returns checkId
             every { crispyFish } returns checkCrispyFish
+            every { motorsportReg } returns checkMotorsportReg
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
             unmappedClubMemberIdNullRegistrations = listOf(mockk()),
             unmappedClubMemberIdNotFoundRegistrations = listOf(mockk()),
             unmappedClubMemberIdAmbiguousRegistrations = listOf(mockk()),
@@ -82,6 +86,7 @@ class EventCheckCommandTest {
             service.findById(checkId)
             crispyFishEventMappingContextService.load(checkCrispyFish)
             service.check(check, context)
+            registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
             registrationTableView.render(result.unmappedClubMemberIdNullRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdNotFoundRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdAmbiguousRegistrations)
@@ -109,6 +114,7 @@ class EventCheckCommandTest {
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappedMotorsportRegPersonMatches = emptyList(),
             unmappedClubMemberIdNullRegistrations = emptyList(),
             unmappedClubMemberIdNotFoundRegistrations = emptyList(),
             unmappedClubMemberIdAmbiguousRegistrations = emptyList(),

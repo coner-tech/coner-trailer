@@ -3,21 +3,18 @@ package org.coner.trailer.io.mapper
 import org.coner.trailer.Car
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
+import org.coner.trailer.Person
 import org.coner.trailer.client.motorsportreg.model.Assignment
-import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.io.service.PersonService
 
-class MotorsportRegParticipantMapper(
-    private val personService: PersonService,
-    private val crispyFishGroupingMapper: CrispyFishGroupingMapper
-) {
+class MotorsportRegParticipantMapper {
 
     fun toCore(
+        peopleByMotorsportRegMemberId: Map<String, Person>,
         groupingsByAbbreviation: Map<String, Grouping.Singular>,
         motorsportRegAssignment: Assignment
     ): Participant {
-        val person = personService.searchByMotorsportRegMemberIdFrom(assignment = motorsportRegAssignment)
+        val person = peopleByMotorsportRegMemberId[motorsportRegAssignment.motorsportRegMemberId]
         return Participant(
             person = person,
             firstName = motorsportRegAssignment.firstName,

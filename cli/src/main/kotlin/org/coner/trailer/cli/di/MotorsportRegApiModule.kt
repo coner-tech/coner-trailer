@@ -5,6 +5,7 @@ import org.coner.trailer.client.motorsportreg.MotorsportRegApiFactory
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import org.coner.trailer.io.service.MotorsportRegImportService
 import org.coner.trailer.io.service.MotorsportRegMemberService
+import org.coner.trailer.io.service.MotorsportRegPeopleMapService
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -35,4 +36,9 @@ fun motorsportRegApiModule(
                 motorsportRegPersonMapper = instance()
         )
     }
+    bind<MotorsportRegPeopleMapService>() with singleton { MotorsportRegPeopleMapService(
+        motorsportRegEventService = instance(),
+        motorsportRegParticipantMapper = instance(),
+        crispyFishGroupingService = instance()
+    ) }
 }

@@ -134,7 +134,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         mapper = instance(),
         persistConstraints = instance(),
         deleteConstraints = instance(),
-        eventCrispyFishPersonMapVerifier = instance()
+        eventCrispyFishPersonMapVerifier = instance(),
+        motorsportRegEventService = instance()
     ) }
     bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints(
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase
@@ -145,7 +146,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
     bind<EventCrispyFishPersonMapVerifier>() with singleton { EventCrispyFishPersonMapVerifier(
         personService = instance(),
-        crispyFishParticipantMapper = instance()
+        crispyFishParticipantMapper = instance(),
+        motorsportRegPeopleMapService = instance()
     ) }
     bind<CrispyFishEventMappingContextService>() with singleton { CrispyFishEventMappingContextService(
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase,

@@ -127,37 +127,42 @@ class EventServiceTest {
     @Test
     fun `It should check event`() {
         val checkCrispyFishPeopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
-        val checkCrispyFish: Event.CrispyFishMetadata = mockk {
-            every { peopleMap } returns checkCrispyFishPeopleMap
-        }
+        val msrEventId = "msr-event-id"
         val check: Event = mockk {
-            every { crispyFish } returns checkCrispyFish
+            every { crispyFish } returns mockk {
+                every { peopleMap } returns checkCrispyFishPeopleMap
+            }
+            every { motorsportReg } returns mockk {
+                every { id } returns msrEventId
+            }
         }
         val context: CrispyFishEventMappingContext = mockk()
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
         every { eventCrispyFishPersonMapVerifier.verify(
+            event = check,
             context = context,
-            peopleMap = checkCrispyFishPeopleMap,
             callback = capture(callbackSlot)
         ) } answers {
             val callback = callbackSlot.captured
-            callback.onMapped(registration = mockk(), person = mockk())
-            repeat(2) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
-            repeat(3) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
-            repeat(4) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
-            repeat(5) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
-            repeat(6) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
-            repeat(7) { callback.onUnused(key = mockk(), person = mockk()) }
+            callback.onMapped(registration = mockk(), entry = mockk())
+            repeat(2) { callback.onUnmappedMotorsportRegPersonExactMatch(registration = mockk(), entry = mockk()) }
+            repeat(3) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
+            repeat(4) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
+            repeat(5) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
+            repeat(6) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
+            repeat(7) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
+            repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
 
         val actual = service.check(check = check, context = context)
 
-        assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(2)
-        assertThat(actual.unmappedClubMemberIdNotFoundRegistrations).hasSize(3)
-        assertThat(actual.unmappedClubMemberIdAmbiguousRegistrations).hasSize(4)
-        assertThat(actual.unmappedClubMemberIdMatchButNameMismatchRegistrations).hasSize(5)
-        assertThat(actual.unmappedExactMatchRegistrations).hasSize(6)
-        assertThat(actual.unusedPeopleMapKeys).hasSize(7)
+        assertThat(actual.unmappedMotorsportRegPersonMatches).hasSize(2)
+        assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(3)
+        assertThat(actual.unmappedClubMemberIdNotFoundRegistrations).hasSize(4)
+        assertThat(actual.unmappedClubMemberIdAmbiguousRegistrations).hasSize(5)
+        assertThat(actual.unmappedClubMemberIdMatchButNameMismatchRegistrations).hasSize(6)
+        assertThat(actual.unmappedExactMatchRegistrations).hasSize(7)
+        assertThat(actual.unusedPeopleMapKeys).hasSize(8)
     }
 
     @Test

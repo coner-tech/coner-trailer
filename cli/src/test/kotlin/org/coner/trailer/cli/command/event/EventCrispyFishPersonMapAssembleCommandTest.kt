@@ -94,7 +94,11 @@ class EventCrispyFishPersonMapAssembleCommandTest
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()
         every {
-            eventCrispyFishPersonMapVerifier.verify(context, eventCrispyFish.peopleMap, capture(callbackSlot))
+            eventCrispyFishPersonMapVerifier.verify(
+                event = event,
+                context = context,
+                callback = capture(callbackSlot)
+            )
         } answers  {
             val callback = callbackSlot.captured
             launch { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
