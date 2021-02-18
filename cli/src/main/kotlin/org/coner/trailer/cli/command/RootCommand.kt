@@ -2,12 +2,18 @@ package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.groups.cooccurring
+import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.di.ConfigurationServiceFactory
 import org.coner.trailer.cli.di.databaseServiceModule
+import org.coner.trailer.cli.di.motorsportRegApiModule
 import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import org.kodein.di.*
 import java.nio.file.Path
 
@@ -38,6 +44,21 @@ class RootCommand(override val di: DI) : CliktCommand(
                 |   See: coner-trailer-cli config database
                 """.trimMargin()
     )
+    private val motorsportReg: MotorsportRegCredentials? by MotorsportRegCredentials()
+    class MotorsportRegCredentials : OptionGroup() {
+        val username: String? by option(
+            envvar = "MOTORSPORTREG_USERNAME",
+            names = arrayOf("--motorsportreg-username")
+        )
+        val password: String? by option(
+            envvar = "MOTORSPORTREG_PASSWORD",
+            names = arrayOf("--motorsportreg-password")
+        )
+        val organizationId: String? by option(
+            envvar = "MOTORSPORTREG_ORGANIZATION_ID",
+            names = arrayOf("--motorsportreg-organization-id")
+        )
+    }
 
     private val serviceFactory: ConfigurationServiceFactory by factory()
 
@@ -70,13 +91,28 @@ class RootCommand(override val di: DI) : CliktCommand(
                 throw Abort()
             }
         }
+        val msrCredentials: MotorsportRegBasicCredentials? = motorsportReg?.password?.let { msrPassword ->
+            val msrUsername = motorsportReg?.username ?: database.motorsportReg?.username
+            val msrOrganizationId = motorsportReg?.organizationId ?: database.motorsportReg?.organizationId
+            if (msrUsername != null && msrOrganizationId != null) {
+                MotorsportRegBasicCredentials(
+                    username = msrUsername,
+                    password = msrPassword,
+                    organizationId = msrOrganizationId
+                )
+            } else null
+        }
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
             bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
+                if (msrCredentials != null) {
+                    import(motorsportRegApiModule(credentials = msrCredentials))
+                } else {
+                    TODO("throw if any subcommand requires motorsportreg api")
+                }
             }
-            TODO("enable motorsportreg")
         }
     }
 

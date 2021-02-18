@@ -31,10 +31,6 @@ class MotorsportRegCommand(
 
     private val dbConfig: DatabaseConfiguration by instance()
 
-    private val username: String? by option(envvar = "MOTORSPORTREG_USERNAME")
-    private val password: String? by option(envvar = "MOTORSPORTREG_PASSWORD")
-    private val organizationId: String? by option(envvar = "MOTORSPORTREG_ORGANIZATION_ID")
-
     override fun run() {
         val msrConfig = dbConfig.motorsportReg
         val username = this.username
