@@ -76,11 +76,12 @@ class ConerTrailerCliIT {
 
         assertThrows<IllegalStateException> {
             command.parse(args(
+                "--motorsportreg-username", "wrong",
+                "--motorsportreg-password", "wrong",
+                "--motorsportreg-organization-id", "wrong",
                 "motorsportreg",
-                "--organization-id", "wrong",
-                "--username", "wrong",
-                "--password", "wrong",
-                "member", "list"
+                "member",
+                "list"
             ))
         }
     }

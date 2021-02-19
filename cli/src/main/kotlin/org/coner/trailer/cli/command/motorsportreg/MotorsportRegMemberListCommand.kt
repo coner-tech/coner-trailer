@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.output.CliktConsole
+import org.coner.trailer.cli.command.RequiresMotorsportRegAuthentication
 import org.coner.trailer.cli.view.MotorsportRegMemberTableView
 import org.coner.trailer.io.service.MotorsportRegMemberService
 import org.kodein.di.DI
@@ -16,7 +17,7 @@ class MotorsportRegMemberListCommand(
 ) : CliktCommand(
         name = "list",
         help = "List members from MotorsportReg"
-), DIAware {
+), RequiresMotorsportRegAuthentication, DIAware {
 
     init {
         context {

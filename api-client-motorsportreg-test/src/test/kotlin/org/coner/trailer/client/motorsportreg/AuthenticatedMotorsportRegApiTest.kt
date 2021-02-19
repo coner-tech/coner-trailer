@@ -21,9 +21,11 @@ class AuthenticatedMotorsportRegApiTest {
 
     var testDispatcher: Dispatcher? = null
 
-    val username = "foo"
-    val password = "bar"
-    val organizationId = "fake-organization-id"
+    val credentials = MotorsportRegBasicCredentials(
+        username = "foo",
+        password = "bar",
+        organizationId = "fake-organization-id"
+    )
 
     @BeforeEach
     fun before() {
@@ -31,14 +33,8 @@ class AuthenticatedMotorsportRegApiTest {
             dispatcher = BaseDispatcher()
             start()
         }
-        api = MotorsportRegApiFactory(
-                url = server.url("/").toString()
-        )
-                .authenticatedBasic(
-                        username = username,
-                        password = password,
-                        organizationId = organizationId
-                )
+        api = MotorsportRegApiFactory(url = server.url("/").toString())
+                .authenticatedBasic(credentials)
     }
 
     @AfterEach
@@ -149,9 +145,9 @@ class AuthenticatedMotorsportRegApiTest {
                 }
             }?.decodeToString()?.split(":") ?: listOf(null, null)
             val requestOrganizationId = getHeader("X-Organization-Id")
-            return requestUsername == username
-                    && requestPassword == password
-                    && requestOrganizationId == organizationId
+            return requestUsername == credentials.username
+                    && requestPassword == credentials.password
+                    && requestOrganizationId == credentials.organizationId
         }
     }
 }

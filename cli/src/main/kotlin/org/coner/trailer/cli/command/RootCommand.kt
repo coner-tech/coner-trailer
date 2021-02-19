@@ -2,11 +2,10 @@ package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
-import com.github.ajalt.clikt.parameters.groups.cooccurring
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.di.ConfigurationServiceFactory
@@ -91,37 +90,51 @@ class RootCommand(override val di: DI) : CliktCommand(
                 throw Abort()
             }
         }
-        val msrCredentials: MotorsportRegBasicCredentials? = motorsportReg?.password?.let { msrPassword ->
-            val msrUsername = motorsportReg?.username ?: database.motorsportReg?.username
-            val msrOrganizationId = motorsportReg?.organizationId ?: database.motorsportReg?.organizationId
-            if (msrUsername != null && msrOrganizationId != null) {
-                MotorsportRegBasicCredentials(
-                    username = msrUsername,
-                    password = msrPassword,
-                    organizationId = msrOrganizationId
-                )
-            } else null
-        }
         currentContext.obj = DI {
             extend(di, copy = Copy.All)
             bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
-                if (msrCredentials != null) {
+                val requiresMotorsportRegAuthentication = findRequiresMotorsportRegAuthentication()
+                if (requiresMotorsportRegAuthentication) {
+                    val msrCredentials = MotorsportRegBasicCredentials(
+                        username = motorsportReg?.username
+                            ?: database.motorsportReg?.username
+                            ?: prompt(
+                                text = "MotorsportReg Username"
+                            ) {
+                                if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Username")
+                            }!!,
+                        password = motorsportReg?.password
+                            ?: prompt(
+                                text = "MotorsportReg Password",
+                                hideInput = true
+                            ) {
+                              if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Password")
+                            }!!,
+                        organizationId = motorsportReg?.organizationId
+                            ?: database.motorsportReg?.organizationId
+                            ?: prompt(
+                                text = "MotorsportReg Organization ID"
+                            ) {
+                                if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Organization ID")
+                            }!!
+                    )
                     import(motorsportRegApiModule(credentials = msrCredentials))
-                } else {
-                    TODO("throw if any subcommand requires motorsportreg api")
                 }
             }
         }
     }
 
-    /**
-     * Direct subcommands may implement this to bypass the requirement to choose a database.
-     *
-     * This comes into play when no database exists yet (during a first-run, etc), or no
-     * default is available and no choice was made.
-     */
-    interface PermitNoDatabaseChosen
+    private fun findRequiresMotorsportRegAuthentication(): Boolean {
+        var subcommand = currentContext.invokedSubcommand
+        while (subcommand != null) {
+            if (subcommand is RequiresMotorsportRegAuthentication) {
+                return true
+            }
+            subcommand = subcommand.currentContext.invokedSubcommand
+        }
+        return false
+    }
 
 }
