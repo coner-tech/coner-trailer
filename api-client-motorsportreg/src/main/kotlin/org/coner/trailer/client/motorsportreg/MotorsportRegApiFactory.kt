@@ -12,9 +12,20 @@ class MotorsportRegApiFactory(
 ) {
 
     fun authenticatedBasic(
+        credentialsSupplier: () -> MotorsportRegBasicCredentials
+    ): AuthenticatedMotorsportRegApi {
+        val basicAuthenticationInterceptor = BasicAuthenticationInterceptor(credentialsSupplier = credentialsSupplier)
+        return create(basicAuthenticationInterceptor)
+    }
+
+    fun authenticatedBasic(
         credentials: MotorsportRegBasicCredentials
     ): AuthenticatedMotorsportRegApi {
         val basicAuthenticationInterceptor = BasicAuthenticationInterceptor(credentials = credentials)
+        return create(basicAuthenticationInterceptor)
+    }
+
+    private fun create(basicAuthenticationInterceptor: BasicAuthenticationInterceptor): AuthenticatedMotorsportRegApi {
         val client = OkHttpClient.Builder()
             .addNetworkInterceptor(basicAuthenticationInterceptor)
             .build()

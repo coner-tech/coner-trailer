@@ -25,8 +25,6 @@ class IntegrationTestAppArgumentBuilder(
             "--name", databaseName,
             "--crispy-fish-database", "$crispyFishDir",
             "--snoozle-database", "$snoozleDir",
-            "--motorsportreg-username", "motorsportreg-username",
-            "--motorsportreg-organization-id", "motorsportreg-organization-id",
             "--default",
         )
     }

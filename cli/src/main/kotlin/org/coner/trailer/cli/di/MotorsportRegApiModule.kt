@@ -4,6 +4,7 @@ import org.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi
 import org.coner.trailer.client.motorsportreg.MotorsportRegApiFactory
 import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
+import org.coner.trailer.io.mapper.MotorsportRegParticipantMapper
 import org.coner.trailer.io.service.MotorsportRegEventService
 import org.coner.trailer.io.service.MotorsportRegImportService
 import org.coner.trailer.io.service.MotorsportRegMemberService
@@ -19,7 +20,7 @@ fun motorsportRegApiModule(
     credentialSupplier: () -> MotorsportRegBasicCredentials
 ) = DI.Module("motorsportRegApi") {
     bind<AuthenticatedMotorsportRegApi>() with singleton {
-        factory.authenticatedBasic(credentials = credentialSupplier())
+        factory.authenticatedBasic(credentialsSupplier = credentialSupplier)
     }
     bind<MotorsportRegPersonMapper>() with singleton { MotorsportRegPersonMapper() }
     bind<MotorsportRegMemberService>() with singleton { MotorsportRegMemberService(
@@ -40,4 +41,5 @@ fun motorsportRegApiModule(
     bind<MotorsportRegEventService>() with singleton { MotorsportRegEventService(
         authenticatedApi = instance()
     ) }
+    bind<MotorsportRegParticipantMapper>() with singleton { MotorsportRegParticipantMapper() }
 }
