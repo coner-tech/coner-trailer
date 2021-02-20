@@ -271,6 +271,12 @@
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
 },
 {
+  "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
