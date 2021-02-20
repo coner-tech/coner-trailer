@@ -12,6 +12,7 @@ import org.coner.trailer.cli.di.ConfigurationServiceFactory
 import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.di.motorsportRegApiModule
 import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import org.kodein.di.*
 import java.nio.file.Path
@@ -95,46 +96,34 @@ class RootCommand(override val di: DI) : CliktCommand(
             bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
-                val requiresMotorsportRegAuthentication = findRequiresMotorsportRegAuthentication()
-                if (requiresMotorsportRegAuthentication) {
-                    val msrCredentials = MotorsportRegBasicCredentials(
-                        username = motorsportReg?.username
-                            ?: database.motorsportReg?.username
-                            ?: prompt(
-                                text = "MotorsportReg Username"
-                            ) {
-                                if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Username")
-                            }!!,
-                        password = motorsportReg?.password
-                            ?: prompt(
-                                text = "MotorsportReg Password",
-                                hideInput = true
-                            ) {
-                              if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Password")
-                            }!!,
-                        organizationId = motorsportReg?.organizationId
-                            ?: database.motorsportReg?.organizationId
-                            ?: prompt(
-                                text = "MotorsportReg Organization ID"
-                            ) {
-                                if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Organization ID")
-                            }!!
-                    )
-                    import(motorsportRegApiModule(credentials = msrCredentials))
-                }
+                import(motorsportRegApiModule { assembleMotorsportRegBasicCredentials(database) })
             }
         }
     }
 
-    private fun findRequiresMotorsportRegAuthentication(): Boolean {
-        var subcommand = currentContext.invokedSubcommand
-        while (subcommand != null) {
-            if (subcommand is RequiresMotorsportRegAuthentication) {
-                return true
-            }
-            subcommand = subcommand.currentContext.invokedSubcommand
-        }
-        return false
+    private fun assembleMotorsportRegBasicCredentials(database: DatabaseConfiguration): MotorsportRegBasicCredentials {
+        return MotorsportRegBasicCredentials(
+            username = motorsportReg?.username
+                ?: database.motorsportReg?.username
+                ?: prompt(
+                    text = "MotorsportReg Username"
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Username")
+                }!!,
+            password = motorsportReg?.password
+                ?: prompt(
+                    text = "MotorsportReg Password",
+                    hideInput = true
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Password")
+                }!!,
+            organizationId = motorsportReg?.organizationId
+                ?: database.motorsportReg?.organizationId
+                ?: prompt(
+                    text = "MotorsportReg Organization ID"
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Organization ID")
+                }!!
+        )
     }
-
 }

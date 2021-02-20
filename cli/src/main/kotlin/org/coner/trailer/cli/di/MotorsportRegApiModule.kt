@@ -4,6 +4,7 @@ import org.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi
 import org.coner.trailer.client.motorsportreg.MotorsportRegApiFactory
 import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import org.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
+import org.coner.trailer.io.service.MotorsportRegEventService
 import org.coner.trailer.io.service.MotorsportRegImportService
 import org.coner.trailer.io.service.MotorsportRegMemberService
 import org.coner.trailer.io.service.MotorsportRegPeopleMapService
@@ -15,10 +16,10 @@ import org.kodein.di.singleton
 private val factory = MotorsportRegApiFactory()
 
 fun motorsportRegApiModule(
-    credentials: MotorsportRegBasicCredentials
+    credentialSupplier: () -> MotorsportRegBasicCredentials
 ) = DI.Module("motorsportRegApi") {
     bind<AuthenticatedMotorsportRegApi>() with singleton {
-        factory.authenticatedBasic(credentials = credentials)
+        factory.authenticatedBasic(credentials = credentialSupplier())
     }
     bind<MotorsportRegPersonMapper>() with singleton { MotorsportRegPersonMapper() }
     bind<MotorsportRegMemberService>() with singleton { MotorsportRegMemberService(
@@ -35,5 +36,8 @@ fun motorsportRegApiModule(
         motorsportRegEventService = instance(),
         motorsportRegParticipantMapper = instance(),
         crispyFishGroupingService = instance()
+    ) }
+    bind<MotorsportRegEventService>() with singleton { MotorsportRegEventService(
+        authenticatedApi = instance()
     ) }
 }
