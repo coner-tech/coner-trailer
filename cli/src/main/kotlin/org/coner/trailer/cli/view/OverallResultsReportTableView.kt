@@ -11,13 +11,12 @@ class OverallResultsReportTableView : View<OverallResultsReport>, Renderer {
         val at = AsciiTable()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
-        at.addRow("Pos.", "Handicap", "#", "Name", "Car Model", model.type.scoreColumnHeading)
+        at.addRow("Pos.", "Signage", "Name", "Car Model", model.type.scoreColumnHeading)
         at.addRule()
         for (result in model.participantResults) {
             at.addRow(
                 result.position,
-                result.participant.signage.handicap.abbreviation,
-                result.participant.signage.number,
+                render(result.participant.signage),
                 "${result.participant.firstName} ${result.participant.lastName}",
                 result.participant.car.model,
                 renderScoreColumnValue(result)
