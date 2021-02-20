@@ -238,6 +238,24 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"org.coner.trailer.client.motorsportreg.model.Assignment",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"org.coner.trailer.client.motorsportreg.model.GetMembersResponse",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
