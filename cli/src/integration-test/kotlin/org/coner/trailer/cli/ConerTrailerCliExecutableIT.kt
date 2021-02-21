@@ -111,13 +111,10 @@ class ConerTrailerCliExecutableIT {
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
 
-        val process = processRunner.exec(
-            "event", "add",
-            "--id", "${event.id}",
-            "--name", event.name,
-            "--date", "${event.date}",
-            "--crispy-fish-event-control-file", "${seasonFixture.event1.ecfPath}",
-            "--crispy-fish-class-definition-file", "${seasonFixture.classDefinitionPath}"
+        val process = processRunner.execEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         )
         process.waitFor()
 
@@ -139,6 +136,39 @@ class ConerTrailerCliExecutableIT {
         assertThat(eventEntity.readText(), "persisted event entity").all {
             contains("${event.id}")
             contains(event.name)
+        }
+    }
+
+    @Test
+    fun `It should print event raw results in HTML format`() {
+        val databaseName = "print-event-raw-results-html"
+        processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
+        val event = TestEvents.Lscc2019Simplified.points1
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        processRunner.execEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ).waitForSuccess()
+
+        val process = processRunner.execEventResultsOverall(
+            event = event,
+            report = "crispy-fish-raw",
+            format = "html",
+            output = "console"
+        )
+        process.waitFor()
+
+        val output = process.inputStream.bufferedReader().readText()
+        val error = process.errorStream.bufferedReader().readText()
+        assertAll {
+            assertThat(process.exitValue(), "exit value").isEqualTo(0)
+            assertThat(output, "output").all {
+                contains("<html>")
+                contains("Raw")
+                contains("</html>")
+            }
+            assertThat(error, "error").isEmpty()
         }
     }
 

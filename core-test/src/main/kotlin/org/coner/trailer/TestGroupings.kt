@@ -9,6 +9,11 @@ object TestGroupings {
             name = "B Street",
             sort = 3
         ) }
+        val CS by lazy { Grouping.Singular(
+            abbreviation = "CS",
+            name = "C Street",
+             sort = 4
+        ) }
         val ES by lazy { Grouping.Singular(
             abbreviation = "ES",
             name = "E Street",

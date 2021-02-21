@@ -7,7 +7,7 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallHandicapTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
@@ -16,7 +16,7 @@ import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class OverallHandicapTimeResultsReportCreatorTest {
+class OverallPaxTimeResultsReportCreatorTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
@@ -29,11 +29,11 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(7)
                 index(0).all {
@@ -143,11 +143,11 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(6)
                 index(0).all {
@@ -245,11 +245,11 @@ class OverallHandicapTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallHandicapTimeResultsReportCreator(event.participantResultMapper)
-            .createFromRegistrationData(context)
+        val actual = OverallPaxTimeResultsReportCreator(event.participantResultMapper)
+            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
-            hasType(StandardResultsTypes.overallHandicapTime)
+            hasType(StandardResultsTypes.pax)
             participantResults().all {
                 hasSize(8)
                 index(0).all {

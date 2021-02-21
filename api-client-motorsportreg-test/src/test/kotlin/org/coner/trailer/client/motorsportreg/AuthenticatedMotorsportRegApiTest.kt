@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.*
+import org.coner.trailer.TestEvents
 import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.*
 import org.junit.jupiter.api.AfterEach
@@ -20,9 +21,11 @@ class AuthenticatedMotorsportRegApiTest {
 
     var testDispatcher: Dispatcher? = null
 
-    val username = "foo"
-    val password = "bar"
-    val organizationId = "fake-organization-id"
+    val credentials = MotorsportRegBasicCredentials(
+        username = "foo",
+        password = "bar",
+        organizationId = "fake-organization-id"
+    )
 
     @BeforeEach
     fun before() {
@@ -30,14 +33,8 @@ class AuthenticatedMotorsportRegApiTest {
             dispatcher = BaseDispatcher()
             start()
         }
-        api = MotorsportRegApiFactory(
-                url = server.url("/").toString()
-        )
-                .authenticatedBasic(
-                        username = username,
-                        password = password,
-                        organizationId = organizationId
-                )
+        api = MotorsportRegApiFactory(url = server.url("/").toString())
+                .authenticatedBasic(credentials)
     }
 
     @AfterEach
@@ -105,6 +102,31 @@ class AuthenticatedMotorsportRegApiTest {
         }
     }
 
+    @Test
+    fun `It should get event assignments`() {
+        val event = TestEvents.Lscc2019.points1
+        val mockAuthenticatedResponse = MockResponse()
+            .addHeader("Content-Type", "application/json;charset=utf-8")
+            .setStatus("HTTP/1.1 200 OK")
+            .setBody(javaClass.getResourceAsStream("/get-event-assignments-ok.json").bufferedReader().readText())
+        testDispatcher = QueueDispatcher().apply {
+            enqueueResponse(mockAuthenticatedResponse)
+        }
+
+        val actual = api.getEventAssignments("${event.id}").execute()
+        val actualRequest = server.takeRequest()
+
+        assertThat(actualRequest, "request").all {
+            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "events", "${event.id}", "assignments.json"))
+        }
+        assertThat(actual, "response").all {
+            code().isEqualTo(200)
+            body().isNotNull().all {
+                getEventAssignmentsResponse().assignments().isEqualTo(TestAssignments.TestEvent.ALL_REBECCA_JACKSON)
+            }
+        }
+    }
+
     inner class BaseDispatcher : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val methodDispatcher = checkNotNull(testDispatcher) { "methodDispatcher not assigned yet" }
@@ -123,9 +145,9 @@ class AuthenticatedMotorsportRegApiTest {
                 }
             }?.decodeToString()?.split(":") ?: listOf(null, null)
             val requestOrganizationId = getHeader("X-Organization-Id")
-            return requestUsername == username
-                    && requestPassword == password
-                    && requestOrganizationId == organizationId
+            return requestUsername == credentials.username
+                    && requestPassword == credentials.password
+                    && requestOrganizationId == credentials.organizationId
         }
     }
 }

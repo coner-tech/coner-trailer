@@ -46,6 +46,14 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"java.io.ObjectInputStream"
 },
 {
@@ -109,6 +117,9 @@
 },
 {
   "name":"java.nio.file.Path"
+},
+{
+  "name":"java.security.AccessController"
 },
 {
   "name":"java.security.AlgorithmParametersSpi"
@@ -227,6 +238,24 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"org.coner.trailer.client.motorsportreg.model.Assignment",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"org.coner.trailer.client.motorsportreg.model.GetMembersResponse",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
@@ -258,6 +287,12 @@
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",

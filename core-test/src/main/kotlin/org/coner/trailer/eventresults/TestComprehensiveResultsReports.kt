@@ -8,11 +8,11 @@ object TestComprehensiveResultsReports {
             get() = ComprehensiveResultsReport(
                     overallResultsReports = listOf(
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallRawTime,
+                                    type = StandardResultsTypes.raw,
                                     participantResults = listOf()
                             ),
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallHandicapTime,
+                                    type = StandardResultsTypes.pax,
                                     participantResults = listOf()
                             )
                     ),
@@ -25,11 +25,11 @@ object TestComprehensiveResultsReports {
             get() = ComprehensiveResultsReport(
                     overallResultsReports = listOf(
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallRawTime,
+                                    type = StandardResultsTypes.raw,
                                     participantResults = emptyList()
                             ),
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallHandicapTime,
+                                    type = StandardResultsTypes.pax,
                                     participantResults = emptyList()
                             )
                     ),
@@ -38,11 +38,11 @@ object TestComprehensiveResultsReports {
         val points2: ComprehensiveResultsReport get() = ComprehensiveResultsReport(
                 overallResultsReports = listOf(
                         OverallResultsReport(
-                                type = StandardResultsTypes.overallRawTime,
+                                type = StandardResultsTypes.raw,
                                 participantResults = emptyList()
                         ),
                         OverallResultsReport(
-                                type = StandardResultsTypes.overallHandicapTime,
+                                type = StandardResultsTypes.pax,
                                 participantResults = emptyList()
                         )
                 ),
@@ -56,11 +56,11 @@ object TestComprehensiveResultsReports {
             get() = ComprehensiveResultsReport(
                     overallResultsReports = listOf(
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallRawTime,
+                                    type = StandardResultsTypes.raw,
                                     participantResults = listOf()
                             ),
                             OverallResultsReport(
-                                    type = StandardResultsTypes.overallHandicapTime,
+                                    type = StandardResultsTypes.pax,
                                     participantResults = listOf()
                             )
                     ),

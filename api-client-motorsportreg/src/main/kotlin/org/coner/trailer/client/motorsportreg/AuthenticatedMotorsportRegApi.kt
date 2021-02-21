@@ -1,5 +1,6 @@
 package org.coner.trailer.client.motorsportreg
 
+import org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse
 import org.coner.trailer.client.motorsportreg.model.GetMemberByIdResponse
 import org.coner.trailer.client.motorsportreg.model.GetMembersResponse
 import retrofit2.Call
@@ -14,4 +15,7 @@ interface AuthenticatedMotorsportRegApi {
 
     @GET("/rest/members/{id}.json")
     fun getMemberById(@Path("id") id: String): Call<GetMemberByIdResponse>
+
+    @GET("/rest/events/{eventId}/assignments.json")
+    fun getEventAssignments(@Path("eventId") eventId: String): Call<GetEventAssignmentsResponse>
 }

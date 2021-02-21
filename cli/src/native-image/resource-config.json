@@ -15,5 +15,5 @@
     {"pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"}, 
     {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"}
   ]},
-  "bundles":[]
+  "bundles":[{"name":"com.sun.org.apache.xml.internal.serializer.HTMLEntities"}]
 }

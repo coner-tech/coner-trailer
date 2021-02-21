@@ -13,12 +13,12 @@ class ParticipantResultTest {
     fun `Its constructor should throw when position is invalid`(param: Int) {
         assertThrows<IllegalArgumentException> {
             ParticipantResult(
-                    position = param,
-                    score = Score("0.000"),
-                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                    marginOfVictory = null,
-                    marginOfLoss = null,
-                    scoredRuns = emptyList()
+                position = param,
+                score = Score("0.000"),
+                participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
+                marginOfVictory = null,
+                marginOfLoss = null,
+                scoredRuns = emptyList()
             )
         }
     }
@@ -28,12 +28,12 @@ class ParticipantResultTest {
     fun `Its constructor should not throw when position is valid`(param: Int) {
         assertDoesNotThrow {
             ParticipantResult(
-                    position = param,
-                    score = Score("0.000"),
-                    participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                    marginOfVictory = null,
-                    marginOfLoss = null,
-                    scoredRuns = emptyList()
+                position = param,
+                score = Score("0.000"),
+                participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
+                marginOfVictory = null,
+                marginOfLoss = null,
+                scoredRuns = emptyList()
             )
         }
     }

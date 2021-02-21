@@ -56,7 +56,8 @@ class EventMapper(
                         key to person
                     }.toMap()
                 )
-            }
+            },
+            motorsportReg = snoozle.motorsportReg?.let { Event.MotorsportRegMetadata(id = it.id) }
         )
     }
 
@@ -90,7 +91,8 @@ class EventMapper(
                         personId = value.id
                     )
                 }
-            ) }
+            ) },
+            motorsportReg = core.motorsportReg?.let { EventEntity.MotorsportRegMetadata(id = it.id) }
         )
     }
 

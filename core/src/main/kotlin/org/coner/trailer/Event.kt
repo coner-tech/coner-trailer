@@ -8,7 +8,8 @@ data class Event(
     val name: String,
     val date: LocalDate,
     val lifecycle: Lifecycle,
-    val crispyFish: CrispyFishMetadata?
+    val crispyFish: CrispyFishMetadata?,
+    val motorsportReg: MotorsportRegMetadata?
 ) {
     data class CrispyFishMetadata(
             val eventControlFile: String,
@@ -22,6 +23,10 @@ data class Event(
             val lastName: String
         )
     }
+
+    data class MotorsportRegMetadata(
+        val id: String
+    )
 
     enum class Lifecycle {
         CREATE,

@@ -2,12 +2,18 @@ package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.UsageError
+import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.di.ConfigurationServiceFactory
 import org.coner.trailer.cli.di.databaseServiceModule
+import org.coner.trailer.cli.di.motorsportRegApiModule
 import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import org.kodein.di.*
 import java.nio.file.Path
 
@@ -38,6 +44,21 @@ class RootCommand(override val di: DI) : CliktCommand(
                 |   See: coner-trailer-cli config database
                 """.trimMargin()
     )
+    private val motorsportReg: MotorsportRegCredentials? by MotorsportRegCredentials()
+    class MotorsportRegCredentials : OptionGroup() {
+        val username: String? by option(
+            envvar = "MOTORSPORTREG_USERNAME",
+            names = arrayOf("--motorsportreg-username")
+        )
+        val password: String? by option(
+            envvar = "MOTORSPORTREG_PASSWORD",
+            names = arrayOf("--motorsportreg-password")
+        )
+        val organizationId: String? by option(
+            envvar = "MOTORSPORTREG_ORGANIZATION_ID",
+            names = arrayOf("--motorsportreg-organization-id")
+        )
+    }
 
     private val serviceFactory: ConfigurationServiceFactory by factory()
 
@@ -75,16 +96,34 @@ class RootCommand(override val di: DI) : CliktCommand(
             bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
                 import(databaseServiceModule(databaseConfiguration = database))
+                import(motorsportRegApiModule { assembleMotorsportRegBasicCredentials(database) })
             }
         }
     }
 
-    /**
-     * Direct subcommands may implement this to bypass the requirement to choose a database.
-     *
-     * This comes into play when no database exists yet (during a first-run, etc), or no
-     * default is available and no choice was made.
-     */
-    interface PermitNoDatabaseChosen
-
+    private fun assembleMotorsportRegBasicCredentials(database: DatabaseConfiguration): MotorsportRegBasicCredentials {
+        return MotorsportRegBasicCredentials(
+            username = motorsportReg?.username
+                ?: database.motorsportReg?.username
+                ?: prompt(
+                    text = "MotorsportReg Username"
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Username")
+                }!!,
+            password = motorsportReg?.password
+                ?: prompt(
+                    text = "MotorsportReg Password",
+                    hideInput = true
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Password")
+                }!!,
+            organizationId = motorsportReg?.organizationId
+                ?: database.motorsportReg?.organizationId
+                ?: prompt(
+                    text = "MotorsportReg Organization ID"
+                ) {
+                    if (it.isNotBlank()) it else throw UsageError("Missing MotorsportReg Organization ID")
+                }!!
+        )
+    }
 }

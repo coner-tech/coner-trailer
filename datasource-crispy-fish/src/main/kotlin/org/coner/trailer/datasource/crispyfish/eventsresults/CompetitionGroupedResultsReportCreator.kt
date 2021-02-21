@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
-import org.coner.crispyfish.model.Registration
+import org.coner.trailer.Event
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -12,18 +12,20 @@ class CompetitionGroupedResultsReportCreator(
 ) {
 
     fun createFromRegistrationData(
+        eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : GroupedResultsReport {
         val results = context.allRegistrations
             .mapNotNull {
                 participantResultMapper.toCore(
+                    eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = it,
                     cfResult = it.classResult
                 )
             }
         return GroupedResultsReport(
-            type = StandardResultsTypes.competitionGrouped,
+            type = StandardResultsTypes.grouped,
             groupingsToResultsMap = results
                 .sortedBy { it.score.value }
                 .groupBy { it.participant.resultGrouping() }

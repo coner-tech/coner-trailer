@@ -73,28 +73,31 @@ class EventAddCommandTest {
             classDefinitionFile = crispyFishDatabase.relativize(classDefinitionFile).toString(),
             peopleMap = emptyMap()
         )
+        val motorsportReg = Event.MotorsportRegMetadata(
+            id = "motorsportreg-event-id"
+        )
         val create = TestEvents.Lscc2019.points1.copy(
             crispyFish = crispyFish,
+            motorsportReg = motorsportReg,
             lifecycle = Event.Lifecycle.CREATE
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
-        justRun { service.create(create) }
+        justRun { service.create(any()) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
-        every { view.render(eq(create)) } returns viewRendered
+        every { view.render(any()) } returns viewRendered
 
         command.parse(arrayOf(
             "--id", "${create.id}",
             "--name", create.name,
             "--date", "${create.date}",
             "--crispy-fish-event-control-file", "$eventControlFile",
-            "--crispy-fish-class-definition-file", "$classDefinitionFile"
+            "--crispy-fish-class-definition-file", "$classDefinitionFile",
+            "--motorsportreg-event-id", motorsportReg.id
         ))
 
         verifySequence {
-            service.create(
-                create = eq(create)
-            )
-            view.render(eq(create))
+            service.create(create = create)
+            view.render(create)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

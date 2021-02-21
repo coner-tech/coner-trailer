@@ -2,6 +2,7 @@ package org.coner.trailer.io.service
 
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Person
+import org.coner.trailer.client.motorsportreg.model.Assignment
 import org.coner.trailer.datasource.snoozle.PersonResource
 import org.coner.trailer.datasource.snoozle.entity.PersonEntity
 import org.coner.trailer.io.constraint.PersonDeleteConstraints
@@ -53,6 +54,13 @@ class PersonService(
         val filter = FilterMemberIdEquals(registration.memberNumber, ignoreCase = true)
         return search(filter)
             .sortedWith(compareBy(Person::lastName).thenBy(Person::firstName))
+    }
+
+    fun searchByMotorsportRegMemberIdFrom(assignment: Assignment): Person? {
+        val filter = FilterMotorsportRegMemberIdEquals(assignment.motorsportRegMemberId)
+        return search(filter)
+            .sortedWith(compareBy(Person::lastName).thenBy(Person::firstName))
+            .firstOrNull()
     }
 
     fun update(person: Person) {
@@ -119,6 +127,14 @@ class PersonService(
     ) : Predicate<Person> {
         override fun test(t: Person): Boolean {
             return t.clubMemberId?.contains(memberIdContains, ignoreCase = ignoreCase) == true
+        }
+    }
+
+    class FilterMotorsportRegMemberIdEquals(
+        private val motorsportRegMemberId: String
+    ) : Predicate<Person> {
+        override fun test(t: Person): Boolean {
+            return motorsportRegMemberId.equals(t.motorsportReg?.memberId, ignoreCase = true)
         }
     }
 

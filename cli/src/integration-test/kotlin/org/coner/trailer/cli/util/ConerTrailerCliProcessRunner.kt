@@ -1,5 +1,8 @@
 package org.coner.trailer.cli.util
 
+import org.coner.trailer.Event
+import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
+import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
@@ -26,8 +29,37 @@ class ConerTrailerCliProcessRunner(
 
     fun execConfigureDatabaseAdd(databaseName: String): Process {
         return exec(
-            *appArgumentBuilder.buildConfigureDatabaseAdd(databaseName),
-            environment = emptyArray()
+            *appArgumentBuilder.buildConfigureDatabaseAdd(databaseName)
+        )
+    }
+
+    fun execEventAddCrispyFish(
+        event: Event,
+        crispyFishEventControlFile: Path,
+        crispyFishClassDefinitionFile: Path
+    ): Process {
+        return exec(
+            *appArgumentBuilder.buildEventAddCrispyFish(
+                event = event,
+                crispyFishEventControlFile = crispyFishEventControlFile,
+                crispyFishClassDefinitionFile = crispyFishClassDefinitionFile
+            )
+        )
+    }
+
+    fun execEventResultsOverall(
+        event: Event,
+        report: String,
+        format: String? = null,
+        output: String? = null,
+    ): Process {
+        return exec(
+            *appArgumentBuilder.buildEventResultsOverall(
+                event = event,
+                report = report,
+                format = format,
+                output = output
+            )
         )
     }
 

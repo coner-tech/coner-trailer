@@ -1,7 +1,12 @@
 package org.coner.trailer.cli.util
 
+import org.coner.trailer.Event
+import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
+import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class IntegrationTestAppArgumentBuilder(
     private val configDir: Path,
     private val snoozleDir: Path,
@@ -20,9 +25,38 @@ class IntegrationTestAppArgumentBuilder(
             "--name", databaseName,
             "--crispy-fish-database", "$crispyFishDir",
             "--snoozle-database", "$snoozleDir",
-            "--motorsportreg-username", "motorsportreg-username",
-            "--motorsportreg-organization-id", "motorsportreg-organization-id",
             "--default",
+        )
+    }
+
+    fun buildEventAddCrispyFish(
+        event: Event,
+        crispyFishEventControlFile: Path,
+        crispyFishClassDefinitionFile: Path
+    ): Array<String> {
+        return build(
+            "event", "add",
+            "--id", "${event.id}",
+            "--name", event.name,
+            "--date", "${event.date}",
+            "--crispy-fish-event-control-file", "$crispyFishEventControlFile",
+            "--crispy-fish-class-definition-file", "$crispyFishClassDefinitionFile"
+        )
+    }
+
+    fun buildEventResultsOverall(
+        event: Event,
+        report: String,
+        format: String? = null,
+        output: String? = null,
+    ): Array<String> {
+        return build(
+            *mutableListOf("event", "results", "overall").apply {
+                add("${event.id}")
+                addAll(arrayOf("--report", report))
+                addAll(format?.let { arrayOf("--$format") } ?: emptyArray())
+                if (output != null) add("--$output")
+            }.toTypedArray()
         )
     }
 }

@@ -61,4 +61,8 @@ class CrispyFishGroupingService(
         }
     }
 
+    fun loadAllSingularGroupingsByAbbreviation(crispyFish: Event.CrispyFishMetadata): Map<String, Grouping.Singular> {
+        return loadAllSingulars(crispyFish).associateBy { it.abbreviation }
+    }
+
 }

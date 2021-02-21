@@ -1,18 +1,20 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.snoozle.*
+import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import org.kodein.di.*
 import kotlin.io.path.ExperimentalPathApi
 
 @OptIn(ExperimentalPathApi::class)
@@ -132,7 +134,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         mapper = instance(),
         persistConstraints = instance(),
         deleteConstraints = instance(),
-        eventCrispyFishPersonMapVerifier = instance()
+        eventCrispyFishPersonMapVerifier = instance(),
+        motorsportRegEventService = instance()
     ) }
     bind<CrispyFishLoadConstraints>() with singleton { CrispyFishLoadConstraints(
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase
@@ -143,11 +146,23 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
     bind<EventCrispyFishPersonMapVerifier>() with singleton { EventCrispyFishPersonMapVerifier(
         personService = instance(),
-        crispyFishParticipantMapper = instance()
+        crispyFishParticipantMapper = instance(),
+        motorsportRegPeopleMapService = instance()
     ) }
     bind<CrispyFishEventMappingContextService>() with singleton { CrispyFishEventMappingContextService(
         crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
         loadConstraints = instance()
+    ) }
+
+    // Event Results
+    bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
+        crispyFishParticipantMapper = instance()
+    ) }
+    bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(
+        participantResultMapper = instance()
+    ) }
+    bind<OverallPaxTimeResultsReportCreator>() with singleton { OverallPaxTimeResultsReportCreator(
+        participantResultMapper = instance()
     ) }
 
     // Groupings
@@ -156,4 +171,10 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         mapper = instance()
     ) }
     bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
+
+
+    bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
+        eventResultsReportFileNameGenerator = instance()
+    ) }
+    bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }
 }

@@ -76,15 +76,15 @@ class ConerTrailerCliIT {
 
         assertThrows<IllegalStateException> {
             command.parse(args(
+                "--motorsportreg-username", "wrong",
+                "--motorsportreg-password", "wrong",
+                "--motorsportreg-organization-id", "wrong",
                 "motorsportreg",
-                "--organization-id", "wrong",
-                "--username", "wrong",
-                "--password", "wrong",
-                "member", "list"
+                "member",
+                "list"
             ))
         }
     }
-
 
     @Test
     fun `It should add an event`() {
@@ -93,13 +93,10 @@ class ConerTrailerCliIT {
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
 
-        command.parse(args(
-            "event", "add",
-            "--id", "${event.id}",
-            "--name", event.name,
-            "--date", "${event.date}",
-            "--crispy-fish-event-control-file", "${seasonFixture.event1.ecfPath}",
-            "--crispy-fish-class-definition-file", "${seasonFixture.classDefinitionPath}"
+        command.parse(appArgumentBuilder.buildEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ))
 
         assertAll {

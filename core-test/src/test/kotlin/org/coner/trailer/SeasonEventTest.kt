@@ -68,7 +68,8 @@ class SeasonEventTest {
                 name = "Test and Tune", // important: after "one", before "two"
                 date = LocalDate.parse("2019-02-01"),
                 lifecycle = Event.Lifecycle.FINAL,
-                crispyFish = null
+                crispyFish = null,
+                motorsportReg = null
             ),
             points = false,
             eventNumber = null

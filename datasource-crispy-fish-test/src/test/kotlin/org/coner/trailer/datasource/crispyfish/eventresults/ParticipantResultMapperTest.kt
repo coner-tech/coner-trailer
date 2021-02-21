@@ -4,12 +4,10 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockkObject
-import io.mockk.unmockkAll
 import org.coner.crispyfish.model.RegistrationResult
+import org.coner.trailer.Event
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPeople
 import org.coner.trailer.Time
@@ -55,16 +53,19 @@ class ParticipantResultMapperTest {
             classResult = noRegistrationResult
         )
         val participantResultMapper = ParticipantResultMapper(
-            crispyFishParticipantMapper,
-            memberIdToPeople = emptyMap()
+            crispyFishParticipantMapper
         )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
             allRegistrations = seasonFixture.event1.registrations()
         )
+        val eventCrispyFishMetadata: Event.CrispyFishMetadata = mockk() {
+            every { peopleMap } returns emptyMap()
+        }
 
         val actual = participantResultMapper.toCore(
+            eventCrispyFishMetadata = eventCrispyFishMetadata,
             context = context,
             cfRegistration = registration,
             cfResult = noRegistrationResult
@@ -79,7 +80,13 @@ class ParticipantResultMapperTest {
         val result = registration.classResult
         val expectedPerson = TestPeople.REBECCA_JACKSON
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
+        val usePeopleMap = mapOf(
+            Event.CrispyFishMetadata.PeopleMapKey(
+                signage = expectedParticipant.signage,
+                firstName = expectedParticipant.firstName,
+                lastName = expectedPerson.lastName
+            ) to expectedPerson
+        )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
@@ -92,6 +99,12 @@ class ParticipantResultMapperTest {
                 withPerson = expectedPerson
             )
         }.returns(expectedParticipant)
+        every {
+            crispyFishParticipantMapper.toCoreSignage(
+                context = context,
+                crispyFish = registration
+            )
+        } returns expectedParticipant.signage
         val expectedScoredRuns = listOf(
             ResultRun(time = Time("52.749")),
             ResultRun(time = Time("53.175")),
@@ -105,12 +118,13 @@ class ParticipantResultMapperTest {
                 crispyFishRegistrationBestRun = registration.bestRun
             )
         }.returns(expectedScoredRuns)
-        val participantResultMapper = ParticipantResultMapper(
-            crispyFishParticipantMapper,
-            memberIdToPeople
-        )
+        val participantResultMapper = ParticipantResultMapper(crispyFishParticipantMapper)
+        val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
+            every { peopleMap } returns usePeopleMap
+        }
 
         val actual = participantResultMapper.toCore(
+            eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
             cfRegistration = registration,
             cfResult = result

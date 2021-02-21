@@ -114,9 +114,8 @@ val cliktModule = DI.Module("clikt") {
         }
 
         // MotorsportReg commands
-        bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand(useConsole = instance(), di = di) }
-        bind<MotorsportRegMemberCommand>() with singleton {
-                MotorsportRegMemberCommand(di = di, useConsole = instance())
+        bind<MotorsportRegCommand>() with singleton { MotorsportRegCommand() }
+        bind<MotorsportRegMemberCommand>() with singleton { MotorsportRegMemberCommand()
         }
         bind<MotorsportRegMemberListCommand>() with singleton {
                 MotorsportRegMemberListCommand(di = di, useConsole = instance())
@@ -147,4 +146,8 @@ val cliktModule = DI.Module("clikt") {
         bind<EventGetCommand>() with singleton { EventGetCommand(di = di) }
         bind<EventListCommand>() with singleton { EventListCommand(di = di) }
         bind<EventSetCommand>() with singleton { EventSetCommand(di = di) }
+
+        // Event Results commands
+        bind<EventResultsCommand>() with singleton { EventResultsCommand() }
+        bind<EventResultsOverallCommand>() with singleton { EventResultsOverallCommand(di = di) }
 }

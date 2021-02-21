@@ -1,7 +1,9 @@
 package org.coner.trailer.io.service
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -32,6 +34,7 @@ class EventServiceTest {
     @MockK lateinit var persistConstraints: EventPersistConstraints
     @MockK lateinit var deleteConstraints: EventDeleteConstraints
     @MockK lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+    @MockK lateinit var motorsportRegEventService: MotorsportRegEventService
 
     @BeforeEach
     fun before() {
@@ -40,7 +43,8 @@ class EventServiceTest {
             mapper = mapper,
             persistConstraints = persistConstraints,
             deleteConstraints = deleteConstraints,
-            eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier
+            eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier,
+            motorsportRegEventService = motorsportRegEventService
         )
     }
 
@@ -97,49 +101,68 @@ class EventServiceTest {
 
     @Test
     fun `It should list events`() {
-        every { resource.stream() } returns Stream.of(mockk(), mockk(), mockk())
-        every { mapper.toCore(any()) } returns mockk()
+        val events = listOf(
+            TestEvents.Lscc2019Simplified.points1,
+            TestEvents.Lscc2019Simplified.points2,
+            TestEvents.Lscc2019Simplified.points3
+        )
+        every { resource.stream() } returns Stream.of(
+            mockk { every { name } returns events[0].name },
+            mockk { every { name } returns events[1].name },
+            mockk { every { name } returns events[2].name }
+        )
+        every { mapper.toCore(match { it.name == events[0].name }) } returns events[0]
+        every { mapper.toCore(match { it.name == events[1].name }) } returns events[1]
+        every { mapper.toCore(match { it.name == events[2].name }) } returns events[2]
 
         val actual = service.list()
 
-        assertThat(actual).hasSize(3)
+        assertThat(actual).all {
+            hasSize(3)
+            isEqualTo(events)
+        }
         verify(exactly = 3) { mapper.toCore(any()) }
     }
 
     @Test
     fun `It should check event`() {
         val checkCrispyFishPeopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
-        val checkCrispyFish: Event.CrispyFishMetadata = mockk {
-            every { peopleMap } returns checkCrispyFishPeopleMap
-        }
+        val msrEventId = "msr-event-id"
         val check: Event = mockk {
-            every { crispyFish } returns checkCrispyFish
+            every { crispyFish } returns mockk {
+                every { peopleMap } returns checkCrispyFishPeopleMap
+            }
+            every { motorsportReg } returns mockk {
+                every { id } returns msrEventId
+            }
         }
         val context: CrispyFishEventMappingContext = mockk()
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
         every { eventCrispyFishPersonMapVerifier.verify(
+            event = check,
             context = context,
-            peopleMap = checkCrispyFishPeopleMap,
             callback = capture(callbackSlot)
         ) } answers {
             val callback = callbackSlot.captured
-            callback.onMapped(registration = mockk(), person = mockk())
-            repeat(2) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
-            repeat(3) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
-            repeat(4) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
-            repeat(5) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
-            repeat(6) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
-            repeat(7) { callback.onUnused(key = mockk(), person = mockk()) }
+            callback.onMapped(registration = mockk(), entry = mockk())
+            repeat(2) { callback.onUnmappedMotorsportRegPersonExactMatch(registration = mockk(), entry = mockk()) }
+            repeat(3) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
+            repeat(4) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
+            repeat(5) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
+            repeat(6) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
+            repeat(7) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
+            repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
 
         val actual = service.check(check = check, context = context)
 
-        assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(2)
-        assertThat(actual.unmappedClubMemberIdNotFoundRegistrations).hasSize(3)
-        assertThat(actual.unmappedClubMemberIdAmbiguousRegistrations).hasSize(4)
-        assertThat(actual.unmappedClubMemberIdMatchButNameMismatchRegistrations).hasSize(5)
-        assertThat(actual.unmappedExactMatchRegistrations).hasSize(6)
-        assertThat(actual.unusedPeopleMapKeys).hasSize(7)
+        assertThat(actual.unmappedMotorsportRegPersonMatches).hasSize(2)
+        assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(3)
+        assertThat(actual.unmappedClubMemberIdNotFoundRegistrations).hasSize(4)
+        assertThat(actual.unmappedClubMemberIdAmbiguousRegistrations).hasSize(5)
+        assertThat(actual.unmappedClubMemberIdMatchButNameMismatchRegistrations).hasSize(6)
+        assertThat(actual.unmappedExactMatchRegistrations).hasSize(7)
+        assertThat(actual.unusedPeopleMapKeys).hasSize(8)
     }
 
     @Test

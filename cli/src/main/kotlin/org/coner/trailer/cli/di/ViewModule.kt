@@ -1,6 +1,9 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
+import org.coner.trailer.render.OverallResultsReportRenderer
+import org.coner.trailer.render.StandaloneReportRenderer
+import org.coner.trailer.render.standardOverallResultsReportColumns
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -32,4 +35,9 @@ val viewModule = DI.Module("view") {
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
+    bind<OverallResultsReportTableView>() with provider { OverallResultsReportTableView() }
+    bind<OverallResultsReportRenderer>() with provider { OverallResultsReportRenderer(
+        columns = standardOverallResultsReportColumns
+    ) }
+    bind<StandaloneReportRenderer>() with provider { StandaloneReportRenderer() }
 }

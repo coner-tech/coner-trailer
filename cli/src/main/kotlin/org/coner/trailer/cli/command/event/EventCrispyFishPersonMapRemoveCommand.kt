@@ -29,7 +29,7 @@ import kotlin.io.path.ExperimentalPathApi
 class EventCrispyFishPersonMapRemoveCommand(
     di: DI
 ) : CliktCommand(
-    name = "crispy-fish-person-map-add",
+    name = "crispy-fish-person-map-remove",
     help = "Remove a Crispy Fish Person Map entry"
 ), DIAware {
 
