@@ -7,8 +7,8 @@ data class ParticipantResult(
         val position: Int,
         val score: Score,
         val participant: Participant,
-        val marginOfVictory: Time?,
-        val marginOfLoss: Time?,
+        val diffFirst: Time?,
+        val diffPrev: Time?,
         val scoredRuns: List<ResultRun>
 ) {
 

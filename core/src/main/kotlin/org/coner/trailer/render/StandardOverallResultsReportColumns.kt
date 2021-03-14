@@ -5,5 +5,7 @@ val standardOverallResultsReportColumns = listOf(
     OverallResultsReportColumn.Signage(),
     OverallResultsReportColumn.Name(),
     OverallResultsReportColumn.CarModel(),
-    OverallResultsReportColumn.Score()
+    OverallResultsReportColumn.Score(),
+    OverallResultsReportColumn.DiffFirst(),
+    OverallResultsReportColumn.DiffPrevious()
 )

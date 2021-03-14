@@ -101,4 +101,28 @@ interface OverallResultsReportColumn : Renderer {
             td { text(renderScoreColumnValue(it)) }
         }
     }
+    class DiffFirst : OverallResultsReportColumn {
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("diff", "diff-first")
+                scope = ThScope.col
+                text("Diff. - 1st")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td { text(render(it.diffFirst)) }
+        }
+    }
+    class DiffPrevious : OverallResultsReportColumn {
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("diff", "diff-previous")
+                scope = ThScope.col
+                text("Diff. - Prev.")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td { text(render(it.diffPrev)) }
+        }
+    }
 }

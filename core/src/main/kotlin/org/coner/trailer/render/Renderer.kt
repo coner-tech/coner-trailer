@@ -2,6 +2,7 @@ package org.coner.trailer.render
 
 import kotlinx.html.*
 import org.coner.trailer.Participant
+import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.Score
 
@@ -14,6 +15,7 @@ interface Renderer {
         Score.Penalty.Disqualified -> "DSQ"
         else -> participantResult.score.value.toString()
     }
+    fun render(time: Time?) = time?.value?.toString() ?: ""
 
     fun HEAD.bootstrapMetaViewport() {
         meta(name = "viewport", content = "width=device-width, initial-scale=1")
