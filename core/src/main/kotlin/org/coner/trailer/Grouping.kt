@@ -18,12 +18,12 @@ sealed class Grouping(
     )
 
     class Paired(
-            val pair: Pair<Grouping?, Grouping?>,
+            val pair: Pair<Grouping, Grouping>,
             groupingsAsList: List<Grouping?> = pair.toList()
     ) : Grouping(
             abbreviation = groupingsAsList.joinToString(separator = " ") { it?.abbreviation ?: "" }.trim(),
             name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
-            sort = pair.first?.sort
+            sort = pair.first.sort
     )
 
     companion object {

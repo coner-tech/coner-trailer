@@ -2,11 +2,12 @@ package org.coner.trailer.client.motorsportreg
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
-import okhttp3.HttpUrl
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import okhttp3.mockwebserver.*
 import org.coner.trailer.TestEvents
-import org.coner.trailer.TestPeople
 import org.coner.trailer.client.motorsportreg.model.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

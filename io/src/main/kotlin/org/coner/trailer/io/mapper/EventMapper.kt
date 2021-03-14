@@ -70,7 +70,7 @@ class EventMapper(
             crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,
-                peopleMap = it.peopleMap.map { (key, value) ->
+                peopleMap = it.peopleMap.mapNotNull { (key, value) ->
                     val grouping = when (val grouping = key.signage.grouping) {
                         is Grouping.Singular -> GroupingContainer(
                             type = GroupingContainer.Type.SINGULAR,
@@ -80,6 +80,7 @@ class EventMapper(
                             type = GroupingContainer.Type.PAIR,
                             pair = grouping.pair.first.abbreviation to grouping.pair.second.abbreviation
                         )
+//                        else -> null
                     }
                     EventEntity.PersonMapEntry(
                         signage = ParticipantEntity.Signage(

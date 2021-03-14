@@ -37,13 +37,12 @@ class ParticipantResultMapperTest {
 
     @TempDir lateinit var fixtureRoot: Path
     @MockK lateinit var resultRunMapper: ResultRunMapper
-    @MockK lateinit var scoreMapper: ScoreMapper
 
     @BeforeEach
     fun before() {
         mapper = ParticipantResultMapper(
             resultRunMapper = resultRunMapper,
-            scoreMapper = scoreMapper,
+            scoreMapper = ScoreMapper(),
             crispyFishParticipantMapper = crispyFishParticipantMapper
         )
     }

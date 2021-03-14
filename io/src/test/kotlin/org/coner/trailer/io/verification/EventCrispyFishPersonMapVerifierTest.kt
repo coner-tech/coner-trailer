@@ -43,7 +43,11 @@ class EventCrispyFishPersonMapVerifierTest {
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.copy(
             person = null
         )
-        val key = Event.CrispyFishMetadata.PeopleMapKey(participant.signage, registration.firstName, registration.lastName)
+        val key = Event.CrispyFishMetadata.PeopleMapKey(
+            signage = requireNotNull(participant.signage),
+            firstName = requireNotNull(registration.firstName),
+            lastName = requireNotNull(registration.lastName)
+        )
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns mapOf(key to person)
@@ -57,7 +61,7 @@ class EventCrispyFishPersonMapVerifierTest {
                 context = context,
                 crispyFish = registration
             )
-        } returns participant.signage
+        } returns requireNotNull(participant.signage)
         justRun { callback.onMapped(any(), any()) }
 
         verifier.verify(
@@ -84,12 +88,12 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns listOf(registration)
         val crossReference = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = participant.signage,
-            firstName = participant.firstName,
-            lastName = participant.lastName
+            signage = requireNotNull(participant.signage),
+            firstName = requireNotNull(participant.firstName),
+            lastName = requireNotNull(participant.lastName)
         ) to person
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns mapOf(crossReference)
-        every { crispyFishParticipantMapper.toCoreSignage(context, registration) } returns participant.signage
+        every { crispyFishParticipantMapper.toCoreSignage(context, registration) } returns requireNotNull(participant.signage)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -133,7 +137,7 @@ class EventCrispyFishPersonMapVerifierTest {
                 context = context,
                 crispyFish = registration
             )
-        } returns participant.signage
+        } returns requireNotNull(participant.signage)
         justRun { callback.onUnmappedClubMemberIdNull(any()) }
 
         verifier.verify(
@@ -172,7 +176,7 @@ class EventCrispyFishPersonMapVerifierTest {
                 context = context,
                 crispyFish = registration
             )
-        } returns participant.signage
+        } returns requireNotNull(participant.signage)
         justRun { callback.onUnmappedClubMemberIdNotFound(any()) }
 
         verifier.verify(
@@ -226,13 +230,13 @@ class EventCrispyFishPersonMapVerifierTest {
                 context = context,
                 crispyFish = registrations[0]
             )
-        } returns participants[0].signage
+        } returns requireNotNull(participants[0].signage)
         every {
             crispyFishParticipantMapper.toCoreSignage(
                 context = context,
                 crispyFish = registrations[1]
             )
-        } returns participants[1].signage
+        } returns requireNotNull(participants[1].signage)
         justRun { callback.onUnmappedClubMemberIdAmbiguous(any(), any()) }
 
         verifier.verify(
@@ -273,8 +277,8 @@ class EventCrispyFishPersonMapVerifierTest {
         )
         every { context.allRegistrations } returns registrations
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
-        every { crispyFishParticipantMapper.toCoreSignage(context, registrations[0]) } returns participants[0].signage
-        every { crispyFishParticipantMapper.toCoreSignage(context, registrations[1]) } returns participants[1].signage
+        every { crispyFishParticipantMapper.toCoreSignage(context, registrations[0]) } returns requireNotNull(participants[0].signage)
+        every { crispyFishParticipantMapper.toCoreSignage(context, registrations[1]) } returns requireNotNull(participants[1].signage)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -305,7 +309,7 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns listOf(registration)
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
-        every { crispyFishParticipantMapper.toCoreSignage(context, registration) } returns participant.signage
+        every { crispyFishParticipantMapper.toCoreSignage(context, registration) } returns requireNotNull(participant.signage)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -334,9 +338,9 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns emptyList()
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = participant.signage,
-            firstName = registration.firstName,
-            lastName = registration.lastName
+            signage = requireNotNull(participant.signage),
+            firstName = requireNotNull(registration.firstName),
+            lastName = requireNotNull(registration.lastName)
         )
         val event: Event = mockk {
             every { crispyFish } returns mockk {

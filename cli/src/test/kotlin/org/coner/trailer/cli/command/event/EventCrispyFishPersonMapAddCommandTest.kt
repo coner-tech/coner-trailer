@@ -98,8 +98,8 @@ class EventCrispyFishPersonMapAddCommandTest {
         command.parse(arrayOf(
             "${event.id}",
             "--grouping", "singular",
-            "--abbreviation-singular", signage.grouping.abbreviation,
-            "--number", signage.number,
+            "--abbreviation-singular", signage.grouping!!.abbreviation,
+            "--number", signage.number!!,
             "--first-name", person.firstName,
             "--last-name", person.lastName,
             "--person-id", "${person.id}"
