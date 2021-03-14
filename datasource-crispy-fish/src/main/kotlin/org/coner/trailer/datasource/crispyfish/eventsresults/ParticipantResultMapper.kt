@@ -3,13 +3,13 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.Event
-import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
-import org.coner.trailer.eventresults.ResultsType
 
 class ParticipantResultMapper(
+    private val resultRunMapper: ResultRunMapper,
+    private val scoreMapper: ScoreMapper,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper
 ) {
 
@@ -19,8 +19,8 @@ class ParticipantResultMapper(
         cfRegistration: Registration,
         cfResult: RegistrationResult
     ): ParticipantResult? {
-        val cfResultPosition = cfResult.position ?: return null
-        val scoredRuns = ResultRunMapper.map(
+        val cfResultPosition = cfResult.position
+        val scoredRuns = resultRunMapper.map(
             crispyFishRegistrationRuns = cfRegistration.runs,
             crispyFishRegistrationBestRun = cfRegistration.bestRun
         )
@@ -29,12 +29,12 @@ class ParticipantResultMapper(
                 context = context,
                 crispyFish = cfRegistration
             ),
-            firstName = cfRegistration.firstName,
-            lastName = cfRegistration.lastName
+            firstName = cfRegistration.firstName ?: return null,
+            lastName = cfRegistration.lastName ?: return null
         )
         return ParticipantResult(
             position = cfResultPosition,
-            score = ScoreMapper.map(
+            score = scoreMapper.map(
                 cfRegistration = cfRegistration,
                 cfResult = cfResult,
                 scoredRuns = scoredRuns

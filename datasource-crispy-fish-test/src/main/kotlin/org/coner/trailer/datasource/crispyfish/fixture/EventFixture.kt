@@ -9,6 +9,8 @@ import org.coner.trailer.SeasonEvent
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
@@ -62,6 +64,8 @@ class EventFixture(
     ).query()
 
     val participantResultMapper = ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(),
+        scoreMapper = ScoreMapper(),
         crispyFishParticipantMapper = CrispyFishParticipantMapper(
             crispyFishGroupingMapper = crispyFishGroupingMapper
         )

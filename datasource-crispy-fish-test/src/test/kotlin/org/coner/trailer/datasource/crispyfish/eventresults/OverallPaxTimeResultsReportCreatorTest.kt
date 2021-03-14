@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
@@ -41,10 +42,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             number().isEqualTo("177")
                         }
@@ -56,7 +57,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("1")
                         }
@@ -68,7 +69,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             number().isEqualTo("130")
                         }
@@ -80,7 +81,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             number().isEqualTo("1")
                         }
@@ -92,7 +93,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("23")
                         }
@@ -104,10 +105,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             number().isEqualTo("58")
                         }
@@ -119,10 +120,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             number().isEqualTo("18")
                         }
@@ -155,7 +156,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("8")
                         }
@@ -167,7 +168,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("23")
                         }
@@ -179,10 +180,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             number().isEqualTo("52")
                         }
@@ -194,7 +195,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             number().isEqualTo("130")
                         }
@@ -206,10 +207,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             number().isEqualTo("18")
                         }
@@ -221,10 +222,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("CS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("CS")
                             }
                             number().isEqualTo("20")
                         }
@@ -257,7 +258,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("8")
                         }
@@ -269,7 +270,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("23")
                         }
@@ -281,7 +282,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             number().isEqualTo("1")
                         }
@@ -293,7 +294,7 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             number().isEqualTo("130")
                         }
@@ -305,10 +306,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             number().isEqualTo("52")
                         }
@@ -320,10 +321,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("GS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("GS")
                             }
                             number().isEqualTo("58")
                         }
@@ -335,10 +336,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             number().isEqualTo("18")
                         }
@@ -350,10 +351,10 @@ class OverallPaxTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("CS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("CS")
                             }
                             number().isEqualTo("20")
                         }

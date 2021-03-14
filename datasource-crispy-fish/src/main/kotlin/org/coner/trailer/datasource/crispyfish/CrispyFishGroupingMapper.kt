@@ -8,19 +8,22 @@ class CrispyFishGroupingMapper {
 
     fun toCoreSingular(
         context: CrispyFishEventMappingContext,
-        classDefinition: ClassDefinition): Grouping.Singular {
-        return Grouping.Singular(
+        classDefinition: ClassDefinition?
+    ): Grouping.Singular? {
+        return classDefinition?.let {
+            Grouping.Singular(
                 abbreviation = classDefinition.abbreviation,
                 name = classDefinition.name,
                 sort = context.classDefinitionAbbreviationToSort[classDefinition.abbreviation]
-                        ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition")
-        )
+                    ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition")
+            )
+        }
     }
 
     fun toCore(
         context: CrispyFishEventMappingContext,
         fromRegistration: Registration
-    ): Grouping {
+    ): Grouping? {
         val category = fromRegistration.category
         return if (category != null) {
             val first = toCoreSingular(context, category)

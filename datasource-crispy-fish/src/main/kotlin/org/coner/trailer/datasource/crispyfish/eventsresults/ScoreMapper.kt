@@ -9,7 +9,7 @@ import org.coner.trailer.eventresults.Score
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-object ScoreMapper {
+class ScoreMapper {
 
     fun map(
             cfRegistration: Registration,

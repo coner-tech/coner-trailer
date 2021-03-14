@@ -48,7 +48,7 @@ interface OverallResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.signage.grouping.abbreviation) }
+            td { text(it.participant.signage?.grouping?.abbreviation ?: "") }
         }
     }
 
@@ -61,7 +61,7 @@ interface OverallResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.signage.number) }
+            td { text(it.participant.signage?.number ?: "") }
         }
     }
 
@@ -86,7 +86,7 @@ interface OverallResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.car.model) }
+            td { text(it.participant.car.model ?: "") }
         }
     }
     class Score : OverallResultsReportColumn {

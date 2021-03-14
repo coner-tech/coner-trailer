@@ -14,14 +14,14 @@ class OverallRawTimeResultsReportCreator(
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
         val results = context.allRegistrations
-            .mapNotNull {
+            .mapNotNull { registration -> registration.rawResult?.let { rawResult ->
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
-                    cfRegistration = it,
-                    cfResult = it.rawResult,
+                    cfRegistration = registration,
+                    cfResult = rawResult,
                 )
-            }
+            } }
             .sortedBy { it.position }
         return OverallResultsReport(
             type = StandardResultsTypes.raw,

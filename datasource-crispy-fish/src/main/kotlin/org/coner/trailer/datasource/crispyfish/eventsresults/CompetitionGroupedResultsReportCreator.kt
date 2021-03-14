@@ -16,35 +16,36 @@ class CompetitionGroupedResultsReportCreator(
         context: CrispyFishEventMappingContext
     ) : GroupedResultsReport {
         val results = context.allRegistrations
-            .mapNotNull {
+            .mapNotNull { registration -> registration.classResult?.let { classResult ->
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
-                    cfRegistration = it,
-                    cfResult = it.classResult
+                    cfRegistration = registration,
+                    cfResult = classResult
                 )
-            }
+            } }
         return GroupedResultsReport(
             type = StandardResultsTypes.grouped,
             groupingsToResultsMap = results
                 .sortedBy { it.score.value }
                 .groupBy { it.participant.resultGrouping() }
-                .map { (grouping, results) ->
-                    grouping to results.mapIndexed { index, participantResult ->
+                .mapNotNull { (grouping, results) -> grouping?.let { groupingNotNull ->
+                    groupingNotNull to results.mapIndexed { index, participantResult ->
                         participantResult.copy(
                             position = index + 1
                         )
                     }
-                }
+                } }
                 .toMap()
                 .toSortedMap()
         )
     }
 
-    private fun Participant.resultGrouping(): Grouping {
-        return when (val grouping = signage.grouping) {
+    private fun Participant.resultGrouping(): Grouping? {
+        return when (val grouping = signage?.grouping) {
             is Grouping.Singular -> grouping
             is Grouping.Paired -> grouping.pair.first
+            else -> null
         }
     }
 

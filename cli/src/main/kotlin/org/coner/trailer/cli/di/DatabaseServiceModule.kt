@@ -5,9 +5,7 @@ import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.*
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
 import org.coner.trailer.io.constraint.*
@@ -155,7 +153,11 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
 
     // Event Results
+    bind<ResultRunMapper>() with singleton { ResultRunMapper() }
+    bind<ScoreMapper>() with singleton { ScoreMapper() }
     bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
+        resultRunMapper = instance(),
+        scoreMapper = instance(),
         crispyFishParticipantMapper = instance()
     ) }
     bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(

@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
+import assertk.assertions.isNotNull
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
@@ -40,7 +41,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("1")
                         }
@@ -52,10 +53,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             hasNumber("177")
                         }
@@ -67,7 +68,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("23")
                         }
@@ -79,7 +80,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             hasNumber("130")
                         }
@@ -91,7 +92,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             hasNumber("1")
                         }
@@ -103,10 +104,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             hasNumber("58")
                         }
@@ -118,10 +119,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             hasNumber("18")
                         }
@@ -153,7 +154,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("8")
                         }
@@ -165,7 +166,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("23")
                         }
@@ -177,10 +178,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             hasNumber("52")
                         }
@@ -192,10 +193,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             hasNumber("18")
                         }
@@ -207,7 +208,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             hasNumber("130")
                         }
@@ -219,10 +220,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("CS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("CS")
 
                             }
                             hasNumber("20")
@@ -256,7 +257,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("8")
                         }
@@ -268,7 +269,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("23")
                         }
@@ -280,7 +281,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("STR")
                             hasNumber("1")
                         }
@@ -292,10 +293,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("BS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("BS")
                             }
                             hasNumber("52")
                         }
@@ -307,7 +308,7 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isSingular().hasAbbreviation("HS")
                             hasNumber("130")
                         }
@@ -319,10 +320,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("CS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("CS")
                             }
                             hasNumber("20")
                         }
@@ -334,10 +335,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("GS")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("GS")
                             }
                             hasNumber("58")
                         }
@@ -349,10 +350,10 @@ class OverallRawTimeResultsReportCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().all {
+                        signage().isNotNull().all {
                             grouping().isPaired().all {
-                                first().hasAbbreviation("NOV")
-                                second().hasAbbreviation("ES")
+                                first().isNotNull().hasAbbreviation("NOV")
+                                second().isNotNull().hasAbbreviation("ES")
                             }
                             hasNumber("18")
                         }

@@ -14,14 +14,14 @@ class OverallPaxTimeResultsReportCreator(
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
         val results = context.allRegistrations
-            .mapNotNull {
+            .mapNotNull { registration -> registration.paxResult?.let { paxResult ->
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
-                    cfRegistration = it,
-                    cfResult = it.paxResult,
+                    cfRegistration = registration,
+                    cfResult = paxResult,
                 )
-            }
+            } }
             .sortedBy { it.position }
         return OverallResultsReport(
             type = StandardResultsTypes.pax,

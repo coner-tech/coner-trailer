@@ -110,7 +110,7 @@ class StandingsReportCreator {
                     }.toList()
                 }.toMap()
         return sectionStandings
-                .map { (grouping, standings) ->
+                .mapNotNull { (grouping, standings) -> grouping
                     grouping to StandingsReport.Section(
                             title = grouping.abbreviation,
                             standings = standings

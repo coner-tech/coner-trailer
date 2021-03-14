@@ -310,23 +310,24 @@ object TestParticipants {
             )
         }
     }
-    
+
     private fun factory(
-            person: Person,
-            grouping: Grouping,
-            number: String,
-            car: Car,
-            seasonPointsEligible: Boolean = true
+        person: Person,
+        grouping: Grouping,
+        number: String,
+        car: Car,
+        seasonPointsEligible: Boolean = true
     ) = Participant(
-            person = person,
-            firstName = person.firstName,
-            lastName = person.lastName,
-            signage = Participant.Signage(
-                    grouping = grouping,
-                    number = number,
-            ),
-            car = car,
-            seasonPointsEligible = seasonPointsEligible
+        person = person,
+        firstName = person.firstName,
+        lastName = person.lastName,
+        signage = Participant.Signage(
+            grouping = grouping,
+            number = number,
+        ),
+        car = car,
+        seasonPointsEligible = seasonPointsEligible,
+        sponsor = null
     )
 
 }

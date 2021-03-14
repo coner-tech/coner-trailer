@@ -6,9 +6,17 @@ import assertk.assertions.isTrue
 import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.eventresults.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ResultRunMapperTest {
+    
+    lateinit var mapper: ResultRunMapper
+    
+    @BeforeEach
+    fun before() {
+        mapper = ResultRunMapper()
+    }
 
     @Test
     fun `It should map (core) ResultRun from clean but not best`() {
@@ -17,7 +25,7 @@ class ResultRunMapperTest {
                 penalty = null
         )
 
-        val actual = ResultRunMapper.map(
+        val actual = mapper.map(
             crispyFishRegistrationRun = run, // Run #2
             crispyFishRegistrationRunIndex = 1, // Run #2
             crispyFishRegistrationBestRun = 3 // Run #3
@@ -36,7 +44,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.Cone(3)
         )
 
-        val actual = ResultRunMapper.map(
+        val actual = mapper.map(
             crispyFishRegistrationRun = run,
             crispyFishRegistrationRunIndex = 1,
             crispyFishRegistrationBestRun = 3
@@ -52,7 +60,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.DidNotFinish
         )
 
-        val actual = ResultRunMapper.map(
+        val actual = mapper.map(
             crispyFishRegistrationRun = run,
             crispyFishRegistrationRunIndex = 1,
             crispyFishRegistrationBestRun = 3
@@ -68,7 +76,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.Disqualified
         )
 
-        val actual = ResultRunMapper.map(
+        val actual = mapper.map(
             crispyFishRegistrationRun = run,
             crispyFishRegistrationRunIndex = 1,
             crispyFishRegistrationBestRun = 3

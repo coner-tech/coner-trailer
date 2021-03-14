@@ -6,7 +6,7 @@ import org.coner.trailer.Participant
 import org.coner.trailer.Person
 
 class CrispyFishParticipantMapper(
-        private val crispyFishGroupingMapper: CrispyFishGroupingMapper
+    private val crispyFishGroupingMapper: CrispyFishGroupingMapper
 ) {
 
     fun toCore(
@@ -15,25 +15,26 @@ class CrispyFishParticipantMapper(
         withPerson: Person?
     ): Participant {
         return Participant(
-                person = withPerson,
-                firstName = fromRegistration.firstName,
-                lastName = fromRegistration.lastName,
-                car = Car(
-                        model = fromRegistration.carModel,
-                        color = fromRegistration.carColor
-                ),
-                signage = toCoreSignage(context, fromRegistration),
-                seasonPointsEligible = withPerson != null
+            person = withPerson,
+            firstName = fromRegistration.firstName,
+            lastName = fromRegistration.lastName,
+            car = Car(
+                model = fromRegistration.carModel,
+                color = fromRegistration.carColor
+            ),
+            signage = toCoreSignage(context, fromRegistration),
+            seasonPointsEligible = withPerson != null,
+            sponsor = fromRegistration.sponsor
         )
     }
 
     fun toCoreSignage(context: CrispyFishEventMappingContext, crispyFish: Registration): Participant.Signage {
         return Participant.Signage(
-                grouping = crispyFishGroupingMapper.toCore(
-                    context = context,
-                    fromRegistration = crispyFish
-                ),
-                number = crispyFish.number
+            grouping = crispyFishGroupingMapper.toCore(
+                context = context,
+                fromRegistration = crispyFish
+            ),
+            number = crispyFish.number
         )
     }
 }

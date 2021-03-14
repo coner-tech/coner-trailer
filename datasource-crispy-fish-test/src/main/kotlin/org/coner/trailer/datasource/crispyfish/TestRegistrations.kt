@@ -56,20 +56,22 @@ object TestRegistrations {
     ): Registration {
         return Registration(
             memberNumber = participant.person?.clubMemberId,
-            category = when (val grouping = participant.signage.grouping) {
+            membershipExpires = null,
+            category = when (val grouping = participant.signage?.grouping) {
                 is Grouping.Singular -> null
-                is Grouping.Paired -> grouping.pair.first.let {
+                is Grouping.Paired -> grouping.pair.first?.let { category ->
                     ClassDefinition(
-                        abbreviation = it.abbreviation,
-                        name = it.name,
+                        abbreviation = category.abbreviation,
+                        name = category.name,
                         groupName = "not supported",
                         paxed = true,
                         paxFactor = BigDecimal.ONE, // not supported
                         exclude = false // not supported
                     )
                 }
+                else -> null
             },
-            handicap = when (val grouping = participant.signage.grouping) {
+            handicap = when (val grouping = participant.signage?.grouping) {
                 is Grouping.Singular -> grouping.let {
                     ClassDefinition(
                         abbreviation = it.abbreviation,
@@ -80,27 +82,54 @@ object TestRegistrations {
                         exclude = false // not supported
                     )
                 }
-                is Grouping.Paired -> grouping.pair.second.let {
+                is Grouping.Paired -> grouping.pair.second?.let { handicap ->
                     ClassDefinition(
-                        abbreviation = it.abbreviation,
-                        name = it.name,
+                        abbreviation = handicap.abbreviation,
+                        name = handicap.name,
                         groupName = "not supported",
                         paxed = false,
                         paxFactor = BigDecimal.ONE, // not supported
                         exclude = false // not supported
                     )
                 }
+                else -> null
             },
-            number = participant.signage.number,
+            number = participant.signage?.number,
             firstName = participant.firstName,
             lastName = participant.lastName,
             carColor = participant.car.color,
             carModel = participant.car.model,
-            rawResult = rawResult ?: RegistrationResult("", null),
-            paxResult = paxResult ?: RegistrationResult("", null),
-            classResult = classResult ?: RegistrationResult("", null),
+            rawResult = rawResult,
+            paxResult = paxResult,
+            classResult = classResult,
             runs = runs ?: emptyList(),
-            bestRun = bestRun
+            bestRun = bestRun,
+            sponsor = participant.sponsor,
+
+            // unsupported properties
+            tireBrand = null,
+            tireSize = null,
+            region = null,
+            gridNumber = null,
+            dateOfBirth = null,
+            age = null,
+            registered = true,
+            registeredCheckedIn = true,
+            checkIn = true,
+            onlineRegistration = true,
+            paid = true,
+            feeType = null,
+            paymentMethod = null,
+            paymentAmount = null,
+            annualTech = false,
+            annualWaiver = false,
+            rookie = false,
+            runHeat = null,
+            workHeat = null,
+            workAssignment = null,
+            classResultDiff = null,
+            classResultFromFirst = null,
+            custom = emptyMap()
         )
     }
 }

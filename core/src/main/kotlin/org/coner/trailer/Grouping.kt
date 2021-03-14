@@ -5,7 +5,7 @@ import java.util.*
 sealed class Grouping(
         val abbreviation: String,
         val name: String,
-        val sort: Int
+        val sort: Int?
 ) : Comparable<Grouping> {
     class Singular(
             abbreviation: String,
@@ -18,12 +18,12 @@ sealed class Grouping(
     )
 
     class Paired(
-            val pair: Pair<Grouping, Grouping>,
-            groupingsAsList: List<Grouping> = pair.toList()
+            val pair: Pair<Grouping?, Grouping?>,
+            groupingsAsList: List<Grouping?> = pair.toList()
     ) : Grouping(
-            abbreviation = groupingsAsList.joinToString(separator = " ") { it.abbreviation },
-            name = groupingsAsList.joinToString(separator = ", ") { it.name },
-            sort = pair.first.sort
+            abbreviation = groupingsAsList.joinToString(separator = " ") { it?.abbreviation ?: "" }.trim(),
+            name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
+            sort = pair.first?.sort
     )
 
     companion object {

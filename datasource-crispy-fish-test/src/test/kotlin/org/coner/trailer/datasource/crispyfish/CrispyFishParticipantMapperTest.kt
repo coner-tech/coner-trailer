@@ -49,7 +49,7 @@ class CrispyFishParticipantMapperTest {
                 context,
                 inputRegistration
             )
-        }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage.grouping)
+        }.returns(TestParticipants.Lscc2019Points1.BRANDY_HUFF.signage!!.grouping)
 
         val actual = mapper.toCore(context, inputRegistration, person)
 
@@ -65,7 +65,7 @@ class CrispyFishParticipantMapperTest {
                 context,
                 inputRegistration
             )
-        }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage.grouping)
+        }.returns(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage!!.grouping)
 
         val actual = mapper.toCore(context, inputRegistration, person)
 
