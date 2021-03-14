@@ -52,21 +52,19 @@ class EventCrispyFishPersonMapAddCommand(
         val crispyFish = checkNotNull(event.crispyFish) {
             "Event must have crispy fish defined already"
         }
-        val signage = Participant.Signage(
-            grouping = when (val grouping = grouping) {
-                is GroupingOption.Singular -> groupingService.findSingular(
-                    crispyFish = crispyFish,
-                    abbreviation = grouping.abbreviationSingular
-                )
-                is GroupingOption.Paired -> groupingService.findPaired(
-                    crispyFish = crispyFish,
-                    abbreviations = grouping.abbreviationsPaired
-                )
-            },
-            number = number
-        )
+        val grouping = when (val grouping = grouping) {
+            is GroupingOption.Singular -> groupingService.findSingular(
+                crispyFish = crispyFish,
+                abbreviation = grouping.abbreviationSingular
+            )
+            is GroupingOption.Paired -> groupingService.findPaired(
+                crispyFish = crispyFish,
+                abbreviations = grouping.abbreviationsPaired
+            )
+        }
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = signage,
+            grouping = grouping,
+            number = number,
             firstName = firstName,
             lastName = lastName
         )

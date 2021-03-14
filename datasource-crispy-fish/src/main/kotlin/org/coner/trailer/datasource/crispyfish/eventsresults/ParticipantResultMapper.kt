@@ -24,11 +24,13 @@ class ParticipantResultMapper(
             crispyFishRegistrationRuns = cfRegistration.runs,
             crispyFishRegistrationBestRun = cfRegistration.bestRun
         )
+        val coreSignage = crispyFishParticipantMapper.toCoreSignage(
+            context = context,
+            crispyFish = cfRegistration
+        )
         val peopleMapKey = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = crispyFishParticipantMapper.toCoreSignage(
-                context = context,
-                crispyFish = cfRegistration
-            ),
+            grouping = coreSignage.grouping ?: return null,
+            number = coreSignage.number ?: return null,
             firstName = cfRegistration.firstName ?: return null,
             lastName = cfRegistration.lastName ?: return null
         )

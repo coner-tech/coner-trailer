@@ -13,7 +13,7 @@ class PeopleMapKeyTableView : View<Collection<Event.CrispyFishMetadata.PeopleMap
         at.addRow("Signage", "First Name", "Last Name")
         at.addRule()
         for (key in model) {
-            at.addRow(key.signage.grouping.abbreviation, key.firstName, key.lastName)
+            at.addRow(key.grouping.abbreviation, key.firstName, key.lastName)
             at.addRule()
         }
         return at.render()

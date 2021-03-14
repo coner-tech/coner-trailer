@@ -13,9 +13,10 @@ internal fun Registration.renderSignage(): String {
 
 internal fun renderSignage(
     category: ClassDefinition?,
-    handicap: ClassDefinition,
-    number: String
-) = when {
-    category != null -> "${category.abbreviation} ${handicap.abbreviation} $number"
-    else -> "${handicap.abbreviation} $number"
+    handicap: ClassDefinition?,
+    number: String?
+): String {
+    val categoryAbbreviation = category?.abbreviation ?: ""
+    val handicapAbbreviation = handicap?.abbreviation ?: ""
+    return "$categoryAbbreviation $handicapAbbreviation $number".trim()
 }

@@ -54,6 +54,7 @@ class EventService(
         context: CrispyFishEventMappingContext
     ): CheckResult {
         val unmappedMotorsportRegPersonMatches = mutableListOf<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>()
+        val unmappable = mutableListOf<Registration>()
         val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
         val unmappedClubMemberIdNotFoundRegistrations = mutableListOf<Registration>()
         val unmappedClubMemberIdAmbiguousRegistrations = mutableListOf<Registration>()
@@ -76,6 +77,22 @@ class EventService(
                     entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>
                 ) {
                     unmappedMotorsportRegPersonMatches += registration to entry
+                }
+
+                override fun onUnmappableFirstNameNull(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableLastNameNull(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableGrouping(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableNumber(registration: Registration) {
+                    unmappable += registration
                 }
 
                 override fun onUnmappedClubMemberIdNull(registration: Registration) {
@@ -110,6 +127,7 @@ class EventService(
             }
         )
         return CheckResult(
+            unmappable = unmappable,
             unmappedMotorsportRegPersonMatches = unmappedMotorsportRegPersonMatches,
             unmappedClubMemberIdNullRegistrations = unmappedClubMemberIdNullRegistrations,
             unmappedClubMemberIdNotFoundRegistrations = unmappedClubMemberIdNotFoundRegistrations,
@@ -121,6 +139,7 @@ class EventService(
     }
 
     class CheckResult(
+        val unmappable: List<Registration>,
         val unmappedMotorsportRegPersonMatches: List<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>,
         val unmappedClubMemberIdNullRegistrations: List<Registration>,
         val unmappedClubMemberIdNotFoundRegistrations: List<Registration>,

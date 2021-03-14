@@ -82,8 +82,8 @@ class EventCrispyFishPersonMapAssembleCommandTest
         val unmappedClubMemberIdNull = TestRegistrations.unmappedClubMemberIdNull()
         val person = Person(
             clubMemberId = null,
-            firstName = unmappedClubMemberIdNull.firstName,
-            lastName = unmappedClubMemberIdNull.lastName,
+            firstName = checkNotNull(unmappedClubMemberIdNull.firstName),
+            lastName = checkNotNull(unmappedClubMemberIdNull.lastName),
             motorsportReg = null
         )
         every { personService.searchByNameFrom(unmappedClubMemberIdNull) } returns listOf(person)
@@ -106,7 +106,7 @@ class EventCrispyFishPersonMapAssembleCommandTest
             useConsole.writeInput("0")
             Awaitility.await().until { useConsole.output.endsWith("<<<") }
         }
-        val signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage
+        val signage = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage)
         every {
             crispyFishParticipantMapper.toCoreSignage(context, unmappedClubMemberIdNull)
         } returns signage
@@ -121,9 +121,10 @@ class EventCrispyFishPersonMapAssembleCommandTest
             crispyFish = eventCrispyFish.copy(
                 peopleMap = mapOf(
                     Event.CrispyFishMetadata.PeopleMapKey(
-                        signage = signage,
-                        firstName = unmappedClubMemberIdNull.firstName,
-                        lastName = unmappedClubMemberIdNull.lastName
+                        grouping = checkNotNull(signage.grouping),
+                        number = checkNotNull(signage.number),
+                        firstName = checkNotNull(unmappedClubMemberIdNull.firstName),
+                        lastName = checkNotNull(unmappedClubMemberIdNull.lastName)
                     ) to person
                 )
             )

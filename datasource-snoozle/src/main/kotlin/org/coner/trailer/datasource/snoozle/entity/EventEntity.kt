@@ -5,18 +5,18 @@ import java.time.LocalDate
 import java.util.*
 
 data class EventEntity(
-        val id: UUID,
-        val name: String,
-        val date: LocalDate,
-        val lifecycle: String,
-        val crispyFish: CrispyFishMetadata?,
-        val motorsportReg: MotorsportRegMetadata?
+    val id: UUID,
+    val name: String,
+    val date: LocalDate,
+    val lifecycle: String,
+    val crispyFish: CrispyFishMetadata?,
+    val motorsportReg: MotorsportRegMetadata?
 ) : Entity<EventEntity.Key> {
 
     data class CrispyFishMetadata(
-            val eventControlFile: String,
-            val classDefinitionFile: String,
-            val peopleMap: List<PersonMapEntry>
+        val eventControlFile: String,
+        val classDefinitionFile: String,
+        val peopleMap: List<PersonMapEntry>
     )
 
     data class PersonMapEntry(

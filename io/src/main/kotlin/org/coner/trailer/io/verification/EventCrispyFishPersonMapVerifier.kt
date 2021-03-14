@@ -33,14 +33,35 @@ class EventCrispyFishPersonMapVerifier(
         ) }
         val usedKeys = hashSetOf<Event.CrispyFishMetadata.PeopleMapKey>()
         for (registration in context.allRegistrations) {
+            val firstName = registration.firstName
+            if (firstName == null) {
+                callback.onUnmappableFirstNameNull(registration)
+                continue
+            }
+            val lastName = registration.lastName
+            if (lastName == null) {
+                callback.onUnmappableLastNameNull(registration)
+                continue
+            }
             val signage = crispyFishParticipantMapper.toCoreSignage(
                 context = context,
                 crispyFish = registration
             )
+            val grouping = signage.grouping
+            if (grouping == null) {
+                callback.onUnmappableGrouping(registration)
+                continue
+            }
+            val number = signage.number
+            if (number == null) {
+                callback.onUnmappableNumber(registration)
+                continue
+            }
             val key = Event.CrispyFishMetadata.PeopleMapKey(
-                signage = signage,
-                firstName = registration.firstName,
-                lastName = registration.lastName
+                grouping = grouping,
+                number = number,
+                firstName = firstName,
+                lastName = lastName
             )
             val mappedPerson = event.crispyFish?.peopleMap?.get(key)
             if (mappedPerson != null) {
@@ -100,6 +121,10 @@ class EventCrispyFishPersonMapVerifier(
     interface Callback {
         fun onMapped(registration: Registration, entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>)
         fun onUnmappedMotorsportRegPersonExactMatch(registration: Registration, entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>)
+        fun onUnmappableFirstNameNull(registration: Registration)
+        fun onUnmappableLastNameNull(registration: Registration)
+        fun onUnmappableGrouping(registration: Registration)
+        fun onUnmappableNumber(registration: Registration)
         fun onUnmappedClubMemberIdNull(registration: Registration)
         fun onUnmappedClubMemberIdNotFound(registration: Registration)
         fun onUnmappedClubMemberIdAmbiguous(registration: Registration, peopleWithClubMemberId: List<Person>)
@@ -121,6 +146,22 @@ class EventCrispyFishPersonMapVerifier(
             registration: Registration,
             entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>
         ) {
+            throw VerificationException()
+        }
+
+        override fun onUnmappableFirstNameNull(registration: Registration) {
+            throw VerificationException()
+        }
+
+        override fun onUnmappableLastNameNull(registration: Registration) {
+            throw VerificationException()
+        }
+
+        override fun onUnmappableGrouping(registration: Registration) {
+            throw VerificationException()
+        }
+
+        override fun onUnmappableNumber(registration: Registration) {
             throw VerificationException()
         }
 

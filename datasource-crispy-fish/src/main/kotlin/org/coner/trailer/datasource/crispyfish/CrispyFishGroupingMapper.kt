@@ -8,16 +8,14 @@ class CrispyFishGroupingMapper {
 
     fun toCoreSingular(
         context: CrispyFishEventMappingContext,
-        classDefinition: ClassDefinition?
-    ): Grouping.Singular? {
-        return classDefinition?.let {
-            Grouping.Singular(
-                abbreviation = classDefinition.abbreviation,
-                name = classDefinition.name,
-                sort = context.classDefinitionAbbreviationToSort[classDefinition.abbreviation]
-                    ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition")
-            )
-        }
+        classDefinition: ClassDefinition
+    ): Grouping.Singular {
+        return Grouping.Singular(
+            abbreviation = classDefinition.abbreviation,
+            name = classDefinition.name,
+            sort = context.classDefinitionAbbreviationToSort[classDefinition.abbreviation]
+                ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition")
+        )
     }
 
     fun toCore(
@@ -25,12 +23,13 @@ class CrispyFishGroupingMapper {
         fromRegistration: Registration
     ): Grouping? {
         val category = fromRegistration.category
-        return if (category != null) {
-            val first = toCoreSingular(context, category)
-            val second = toCoreSingular(context, fromRegistration.handicap)
-            Grouping.Paired(first to second)
-        } else {
-            toCoreSingular(context, fromRegistration.handicap)
+        val handicap = fromRegistration.handicap
+        return when {
+            category != null && handicap != null -> Grouping.Paired(
+                toCoreSingular(context, category) to toCoreSingular(context, handicap)
+            )
+            handicap != null -> toCoreSingular(context, handicap)
+            else -> null
         }
     }
 

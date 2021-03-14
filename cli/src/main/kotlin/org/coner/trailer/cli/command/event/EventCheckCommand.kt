@@ -37,6 +37,10 @@ class EventCheckCommand(di: DI) : CliktCommand(
         val checkCrispyFish = checkNotNull(check.crispyFish) { "Event is missing Crispy Fish Metadata" }
         val context = crispyFishEventMappingContextService.load(checkCrispyFish)
         val result = service.check(check, context)
+        if (result.unmappable.isNotEmpty()) {
+            echo("Found unmappable registration(s):")
+            echo(registrationTableView.render(result.unmappable))
+        }
         if (result.unmappedMotorsportRegPersonMatches.isNotEmpty()) {
             echo("Found unmapped registration(s) with cross-reference to person via motorsportreg assignments:")
             echo(registrationTableView.render(result.unmappedMotorsportRegPersonMatches.map { it.first }))

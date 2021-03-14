@@ -55,7 +55,7 @@ class EventCheckCommandTest {
     }
 
     @Test
-    fun `It should check event and report all problems`() {
+    fun `It should check event and report fixable problems`() {
         val checkId = UUID.randomUUID()
         val checkCrispyFish: Event.CrispyFishMetadata = mockk()
         val checkMotorsportReg: Event.MotorsportRegMetadata = mockk()
@@ -66,6 +66,7 @@ class EventCheckCommandTest {
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
             unmappedClubMemberIdNullRegistrations = listOf(mockk()),
             unmappedClubMemberIdNotFoundRegistrations = listOf(mockk()),
@@ -114,6 +115,7 @@ class EventCheckCommandTest {
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = emptyList(),
             unmappedClubMemberIdNullRegistrations = emptyList(),
             unmappedClubMemberIdNotFoundRegistrations = emptyList(),

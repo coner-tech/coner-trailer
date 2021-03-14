@@ -14,6 +14,11 @@ data class Participant(
         val grouping: Grouping?,
         val number: String?
     ) {
+        val category: Grouping?
+            get() = when (val grouping = grouping) {
+                is Grouping.Paired -> grouping.pair.first
+                else -> null
+            }
         val handicap: Grouping?
             get() = when (val grouping = grouping) {
                 is Grouping.Singular -> grouping

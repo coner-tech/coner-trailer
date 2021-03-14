@@ -44,7 +44,8 @@ class EventCrispyFishPersonMapVerifierTest {
             person = null
         )
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = requireNotNull(participant.signage),
+            grouping = requireNotNull(participant.signage?.grouping),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(registration.firstName),
             lastName = requireNotNull(registration.lastName)
         )
@@ -88,7 +89,8 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns listOf(registration)
         val crossReference = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = requireNotNull(participant.signage),
+            grouping = requireNotNull(participant.signage?.grouping),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(participant.firstName),
             lastName = requireNotNull(participant.lastName)
         ) to person
@@ -338,7 +340,8 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns emptyList()
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = requireNotNull(participant.signage),
+            grouping = requireNotNull(participant.signage?.grouping),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(registration.firstName),
             lastName = requireNotNull(registration.lastName)
         )

@@ -143,7 +143,8 @@ sealed class SeasonFixture(
 
 private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {
     val key = Event.CrispyFishMetadata.PeopleMapKey(
-        signage = requireNotNull(testParticipant.signage),
+        grouping = requireNotNull(testParticipant.signage?.grouping),
+        number = requireNotNull(testParticipant.signage?.number),
         firstName = requireNotNull(testParticipant.firstName),
         lastName = requireNotNull(testParticipant.lastName)
     )

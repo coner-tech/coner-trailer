@@ -62,12 +62,10 @@ class EventCrispyFishPersonMapRemoveCommandTest {
     ) {
         val person = TestPeople.REBECCA_JACKSON
         val grouping = TestGroupings.Lscc2019.HS
-        val signage = Participant.Signage(
-            grouping = grouping,
-            number = "1"
-        )
+        val number = "1"
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            signage = signage,
+            grouping = grouping,
+            number = number,
             firstName = person.firstName,
             lastName = person.lastName
         )
@@ -100,8 +98,8 @@ class EventCrispyFishPersonMapRemoveCommandTest {
         command.parse(arrayOf(
             "${event.id}",
             "--grouping", "singular",
-            "--abbreviation-singular", signage.grouping.abbreviation,
-            "--number", signage.number,
+            "--abbreviation-singular", grouping.abbreviation,
+            "--number", number,
             "--first-name", person.firstName,
             "--last-name", person.lastName,
             "--person-id", "${person.id}"

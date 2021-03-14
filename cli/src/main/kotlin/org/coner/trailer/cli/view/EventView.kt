@@ -28,11 +28,11 @@ class EventView : View<Event> {
             at.addRow("Signage", "Person ID")
             at.addRule()
             model.crispyFish?.peopleMap?.forEach { (key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) ->
-                val grouping = when (val grouping = key.signage.grouping) {
+                val grouping = when (val grouping = key.grouping) {
                     is Grouping.Singular -> grouping.abbreviation
                     is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"
                 }
-                at.addRow("$grouping ${key.signage.number}", "${person.id}")
+                at.addRow("$grouping ${key.number}", "${person.id}")
             }
             at.addRule()
             at.render()

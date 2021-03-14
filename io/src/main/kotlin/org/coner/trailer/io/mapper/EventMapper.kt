@@ -44,12 +44,9 @@ class EventMapper(
                             )
                         }
                         val person = personService.findById(force.personId)
-                        val signage = Participant.Signage(
-                            grouping = grouping,
-                            number = force.signage.number
-                        )
                         val key = Event.CrispyFishMetadata.PeopleMapKey(
-                            signage = signage,
+                            grouping = grouping,
+                            number = force.signage.number,
                             firstName = force.firstName,
                             lastName = force.lastName,
                         )
@@ -70,8 +67,9 @@ class EventMapper(
             crispyFish = core.crispyFish?.let { EventEntity.CrispyFishMetadata(
                 eventControlFile = it.eventControlFile,
                 classDefinitionFile = it.classDefinitionFile,
-                peopleMap = it.peopleMap.mapNotNull { (key, value) ->
-                    val grouping = when (val grouping = key.signage.grouping) {
+                peopleMap = it.peopleMap.map { (key, value) ->
+                    val number = key.number
+                    val grouping = when (val grouping = key.grouping) {
                         is Grouping.Singular -> GroupingContainer(
                             type = GroupingContainer.Type.SINGULAR,
                             singular = grouping.abbreviation
@@ -80,12 +78,11 @@ class EventMapper(
                             type = GroupingContainer.Type.PAIR,
                             pair = grouping.pair.first.abbreviation to grouping.pair.second.abbreviation
                         )
-//                        else -> null
                     }
                     EventEntity.PersonMapEntry(
                         signage = ParticipantEntity.Signage(
                             grouping = grouping,
-                            number = key.signage.number
+                            number = number
                         ),
                         firstName = key.firstName,
                         lastName = key.lastName,

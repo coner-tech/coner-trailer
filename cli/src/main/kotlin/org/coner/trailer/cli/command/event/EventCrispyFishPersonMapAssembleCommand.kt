@@ -74,6 +74,42 @@ class EventCrispyFishPersonMapAssembleCommand(
                     exit()
                 }
 
+                override fun onUnmappableFirstNameNull(registration: Registration) {
+                    enter()
+                    echo("Found unmappable registration with null first name.")
+                    echo("Registration:")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Aborting! Use event check subcommand for comprehensive checks, and fix the crispy fish registration file before assembling the person map.")
+                    throw Abort()
+                }
+
+                override fun onUnmappableLastNameNull(registration: Registration) {
+                    enter()
+                    echo("Found unmappable registration with null last name.")
+                    echo("Registration:")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Aborting! Use event check subcommand for comprehensive checks, and fix the crispy fish registration file before assembling the person map.")
+                    throw Abort()
+                }
+
+                override fun onUnmappableGrouping(registration: Registration) {
+                    enter()
+                    echo("Found unmappable registration with null grouping.")
+                    echo("Registration:")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Aborting! Use event check subcommand for comprehensive checks, and fix the crispy fish registration file before assembling the person map.")
+                    throw Abort()
+                }
+
+                override fun onUnmappableNumber(registration: Registration) {
+                    enter()
+                    echo("Found unmappable registration with null number.")
+                    echo("Registration:")
+                    echo(crispyFishRegistrationView.render(registration))
+                    echo("Aborting! Use event check subcommand for comprehensive checks, and fix the crispy fish registration file before assembling the person map.")
+                    throw Abort()
+                }
+
                 override fun onUnmappedMotorsportRegPersonExactMatch(
                     registration: Registration,
                     entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>
@@ -128,13 +164,15 @@ class EventCrispyFishPersonMapAssembleCommand(
 
                 override fun onUnmappedExactMatch(registration: Registration, person: Person) {
                     enter()
+                    val signage = crispyFishParticipantMapper.toCoreSignage(
+                        context = context,
+                        crispyFish = registration
+                    )
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
-                        signage = crispyFishParticipantMapper.toCoreSignage(
-                            context = context,
-                            crispyFish = registration
-                        ),
-                        firstName = registration.firstName,
-                        lastName = registration.lastName
+                        grouping = checkNotNull(signage.grouping),
+                        number = checkNotNull(signage.number),
+                        firstName = checkNotNull(registration.firstName),
+                        lastName = checkNotNull(registration.lastName)
                     )
                     echo("Found unmapped registration with exact club member and name match.")
                     echo(crispyFishRegistrationView.render(registration))
@@ -147,7 +185,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                 override fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) {
                     enter()
                     echo("Found unused mapping. Ignoring.")
-                    echo("Signage: ${key.signage}")
+                    echo("Signage: ${key.grouping.abbreviation} ${key.number}")
                     echo("Name: ${key.firstName} ${key.lastName}")
                     echo("Person:")
                     echo(personView.render(person))
@@ -190,9 +228,10 @@ class EventCrispyFishPersonMapAssembleCommand(
                     } ) ?: throw Abort()
                     val signage = crispyFishParticipantMapper.toCoreSignage(context, registration)
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
-                        signage = signage,
-                        firstName = registration.firstName,
-                        lastName = registration.lastName
+                        grouping = checkNotNull(signage.grouping),
+                        number = checkNotNull(signage.number),
+                        firstName = checkNotNull(registration.firstName),
+                        lastName = checkNotNull(registration.lastName)
                     )
                     peopleMap[key] = person
                 }

@@ -13,7 +13,12 @@ class CrispyFishRegistrationTableView : View<Collection<Registration>> {
         at.addRow("First Name", "Last Name", "Signage", "Club Member ID")
         at.addRule()
         for (registration in model) {
-            at.addRow(registration.firstName, registration.lastName, registration.renderSignage(), registration.memberNumber ?: "")
+            at.addRow(
+                registration.firstName ?: "",
+                registration.lastName ?: "",
+                registration.renderSignage(),
+                registration.memberNumber ?: ""
+            )
             at.addRule()
         }
         return at.render()

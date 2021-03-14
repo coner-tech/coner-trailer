@@ -44,8 +44,10 @@ class PersonService(
     }
 
     fun searchByNameFrom(registration: Registration): List<Person> {
-        val filter = FilterFirstNameEquals(registration.firstName, ignoreCase = true)
-            .and(FilterLastNameEquals(registration.lastName, ignoreCase = true))
+        val firstName = registration.firstName ?: return emptyList()
+        val lastName = registration.lastName ?: return emptyList()
+        val filter = FilterFirstNameEquals(firstName, ignoreCase = true)
+            .and(FilterLastNameEquals(lastName, ignoreCase = true))
         return search(filter)
             .sortedWith(compareBy(Person::lastName).thenBy(Person::firstName))
     }

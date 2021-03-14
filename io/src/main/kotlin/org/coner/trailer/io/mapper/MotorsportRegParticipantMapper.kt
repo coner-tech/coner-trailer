@@ -27,7 +27,8 @@ class MotorsportRegParticipantMapper {
                 groupingsByAbbreviation = groupingsByAbbreviation,
                 motorsportRegAssignment = motorsportRegAssignment
             ),
-            seasonPointsEligible = true
+            seasonPointsEligible = true,
+            sponsor = motorsportRegAssignment.sponsor
         )
     }
 

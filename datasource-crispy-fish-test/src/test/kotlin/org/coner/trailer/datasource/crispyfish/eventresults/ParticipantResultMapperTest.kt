@@ -55,7 +55,8 @@ class ParticipantResultMapperTest {
         val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val usePeopleMap = mapOf(
             Event.CrispyFishMetadata.PeopleMapKey(
-                signage = requireNotNull(expectedParticipant.signage),
+                grouping = requireNotNull(expectedParticipant.signage?.grouping),
+                number = requireNotNull(expectedParticipant.signage?.number),
                 firstName = requireNotNull(expectedParticipant.firstName),
                 lastName = requireNotNull(expectedPerson.lastName)
             ) to expectedPerson
