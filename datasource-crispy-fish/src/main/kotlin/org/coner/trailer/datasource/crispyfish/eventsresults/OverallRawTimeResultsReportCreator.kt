@@ -25,7 +25,13 @@ class OverallRawTimeResultsReportCreator(
             .sortedBy { it.position }
         return OverallResultsReport(
             type = StandardResultsTypes.raw,
-            participantResults = results
+            participantResults = results.mapIndexed { index, result ->
+                participantResultMapper.toCoreRanked(
+                    sortedResults = results,
+                    index = index,
+                    result = result
+                )
+            }
         )
     }
 }

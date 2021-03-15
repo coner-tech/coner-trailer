@@ -107,8 +107,8 @@ class ParticipantResultMapperTest {
             hasPosition(3)
             hasParticipant(expectedParticipant)
             hasScoredRuns(expectedScoredRuns)
-            marginOfLoss().isNull() // not supported
-            marginOfVictory().isNull() // not supported
+            diffFirst().isNull() // not calculated here
+            diffPrevious().isNull() // not calculated here
         }
     }
 }

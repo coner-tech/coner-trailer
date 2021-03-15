@@ -122,7 +122,7 @@ interface OverallResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(render(it.diffPrev)) }
+            td { text(render(it.diffPrevious)) }
         }
     }
 }

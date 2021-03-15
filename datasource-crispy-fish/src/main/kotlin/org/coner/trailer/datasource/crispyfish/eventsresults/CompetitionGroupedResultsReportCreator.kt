@@ -30,9 +30,11 @@ class CompetitionGroupedResultsReportCreator(
                 .sortedBy { it.score.value }
                 .groupBy { it.participant.resultGrouping() }
                 .mapNotNull { (grouping, results) -> grouping?.let { groupingNotNull ->
-                    groupingNotNull to results.mapIndexed { index, participantResult ->
-                        participantResult.copy(
-                            position = index + 1
+                    groupingNotNull to results.mapIndexed { index, result ->
+                        participantResultMapper.toCoreRanked(
+                            sortedResults = results,
+                            index = index,
+                            result = result
                         )
                     }
                 } }

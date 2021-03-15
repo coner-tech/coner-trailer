@@ -39,8 +39,8 @@ object TestGroupedResultsReports {
                                                                 time = Time("49.436")
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.802"),
-                                                marginOfLoss = Time("0.045")
+                                                diffPrevious = Time("0.045"),
+                                                diffFirst = Time("1.483")
                                         ),
                                         ParticipantResult(
                                                 position = 9,
@@ -66,8 +66,8 @@ object TestGroupedResultsReports {
                                                                 time = Time("53.074")
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.203"),
-                                                marginOfLoss = Time("0.489")
+                                                diffFirst = Time("3.320"),
+                                                diffPrevious = Time("0.489")
                                         ),
                                         ParticipantResult(
                                                 position = 11,
@@ -93,8 +93,8 @@ object TestGroupedResultsReports {
                                                                 personalBest = true
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.079"),
-                                                marginOfLoss = Time("0.043")
+                                                diffFirst = Time("3.566"),
+                                                diffPrevious = Time("0.043")
                                         )
                                 ),
                                 TestGroupings.Lscc2019.STR to listOf(
@@ -121,8 +121,8 @@ object TestGroupedResultsReports {
                                                                 personalBest = true
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.830"),
-                                                marginOfLoss = Time("1.401")
+                                                diffFirst = Time("1.401"),
+                                                diffPrevious = Time("1.401")
                                         ),
                                         ParticipantResult(
                                                 position = 4,
@@ -148,8 +148,8 @@ object TestGroupedResultsReports {
                                                                 personalBest = true
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.633"),
-                                                marginOfLoss = Time("0.349")
+                                                diffFirst = Time("2.580"),
+                                                diffPrevious = Time("0.349")
                                         )
                                 ),
                                 TestGroupings.Lscc2019.GS to listOf(
@@ -176,8 +176,8 @@ object TestGroupedResultsReports {
                                                                 personalBest = true
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.916"),
-                                                marginOfLoss = Time("0.379")
+                                                diffFirst = Time("0.379"),
+                                                diffPrevious = Time("0.379")
                                         ),
                                         ParticipantResult(
                                                 position = 3,
@@ -201,8 +201,8 @@ object TestGroupedResultsReports {
                                                                 personalBest = true
                                                         )
                                                 ),
-                                                marginOfVictory = Time("0.453"),
-                                                marginOfLoss = Time("0.916")
+                                                diffFirst = Time("1.295"),
+                                                diffPrevious = Time("0.916")
                                         )
                                 )
                         )
@@ -277,8 +277,8 @@ object TestGroupedResultsReports {
                 // below properties irrelevant to test:
                 score = Score("0.000"),
                 scoredRuns = listOf(ResultRun(time = Time("0.000"), personalBest = true)),
-                marginOfLoss = null,
-                marginOfVictory = null
+                diffFirst = null,
+                diffPrevious = null
         )
     }
 

@@ -25,7 +25,13 @@ class OverallPaxTimeResultsReportCreator(
             .sortedBy { it.position }
         return OverallResultsReport(
             type = StandardResultsTypes.pax,
-            participantResults = results
+            participantResults = results.mapIndexed { index, result ->
+                participantResultMapper.toCoreRanked(
+                    sortedResults = results,
+                    index = index,
+                    result = result
+                )
+            }
         )
     }
 }

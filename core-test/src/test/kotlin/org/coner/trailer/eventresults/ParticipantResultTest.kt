@@ -16,8 +16,8 @@ class ParticipantResultTest {
                 position = param,
                 score = Score("0.000"),
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                marginOfVictory = null,
-                marginOfLoss = null,
+                diffFirst = null,
+                diffPrevious = null,
                 scoredRuns = emptyList()
             )
         }
@@ -31,8 +31,8 @@ class ParticipantResultTest {
                 position = param,
                 score = Score("0.000"),
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                marginOfVictory = null,
-                marginOfLoss = null,
+                diffFirst = null,
+                diffPrevious = null,
                 scoredRuns = emptyList()
             )
         }

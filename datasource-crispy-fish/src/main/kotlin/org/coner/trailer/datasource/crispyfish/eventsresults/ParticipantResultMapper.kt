@@ -3,6 +3,7 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.Event
+import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
@@ -19,7 +20,6 @@ class ParticipantResultMapper(
         cfRegistration: Registration,
         cfResult: RegistrationResult
     ): ParticipantResult? {
-        val cfResultPosition = cfResult.position
         val scoredRuns = resultRunMapper.map(
             crispyFishRegistrationRuns = cfRegistration.runs,
             crispyFishRegistrationBestRun = cfRegistration.bestRun
@@ -35,7 +35,6 @@ class ParticipantResultMapper(
             lastName = cfRegistration.lastName ?: return null
         )
         return ParticipantResult(
-            position = cfResultPosition,
             score = scoreMapper.map(
                 cfRegistration = cfRegistration,
                 cfResult = cfResult,
@@ -47,8 +46,26 @@ class ParticipantResultMapper(
                 withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
             ),
             scoredRuns = scoredRuns,
-            marginOfLoss = null,
-            marginOfVictory = null
+            // positions and diffs are calculated in toCoreRanked after sorting by score
+            position = Int.MAX_VALUE,
+            diffFirst = null,
+            diffPrevious = null
+        )
+    }
+
+    fun toCoreRanked(sortedResults: List<ParticipantResult>, index: Int, result: ParticipantResult): ParticipantResult {
+        return result.copy(
+            position = index + 1,
+            diffFirst = when {
+                index == 0 -> null
+                result.score.penalty != null -> null
+                else -> Time(result.score.value - sortedResults[0].score.value)
+            },
+            diffPrevious = when {
+                index == 0 -> null
+                result.score.penalty != null -> null
+                else -> Time(result.score.value - sortedResults[index - 1].score.value)
+            }
         )
     }
 

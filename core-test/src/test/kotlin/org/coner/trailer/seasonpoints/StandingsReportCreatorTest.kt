@@ -115,16 +115,16 @@ class StandingsReportCreatorTest {
                                     seasonPointsEligible = false // only value relevant to test
                                 ),
                                 scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
-                                marginOfVictory = null,
-                                marginOfLoss = null
+                                diffPrevious = null,
+                                diffFirst = null
                             ),
                             ParticipantResult( // to make sure eligible are included
                                 position = 2,
                                 score = Score("0.000"),
                                 participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
                                 scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
-                                marginOfVictory = null,
-                                marginOfLoss = null
+                                diffFirst = null,
+                                diffPrevious = null
                             )
                         )
                     )
