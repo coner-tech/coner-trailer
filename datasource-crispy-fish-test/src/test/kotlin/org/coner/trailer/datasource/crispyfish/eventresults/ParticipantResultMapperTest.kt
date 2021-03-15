@@ -111,4 +111,9 @@ class ParticipantResultMapperTest {
             diffPrevious().isNull() // not calculated here
         }
     }
+
+    @Test
+    fun `It should calculate ranking-related properties of ParticipantResult`() {
+        TODO()
+    }
 }
