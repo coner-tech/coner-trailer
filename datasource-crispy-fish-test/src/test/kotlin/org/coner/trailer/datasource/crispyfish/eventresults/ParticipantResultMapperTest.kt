@@ -2,6 +2,7 @@ package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import io.mockk.every
@@ -114,6 +115,54 @@ class ParticipantResultMapperTest {
 
     @Test
     fun `It should calculate ranking-related properties of ParticipantResult`() {
-        TODO()
+        val sortedResults = listOf(
+            ParticipantResult(
+                score = Score("34.567"),
+                participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
+                scoredRuns = listOf(ResultRun(Time("34.567"), personalBest = true)),
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null
+            ),
+            ParticipantResult(
+                score = Score("45.678"),
+                participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
+                scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null
+            ),
+            ParticipantResult(
+                score = Score("56.789"),
+                participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
+                scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null
+            )
+        )
+
+        val actual = sortedResults.mapIndexed { index, result ->
+            mapper.toCoreRanked(sortedResults, index, result)
+        }
+
+        val expected = listOf(
+            sortedResults[0].copy(
+                position = 1,
+                diffFirst = null,
+                diffPrevious = null
+            ),
+            sortedResults[1].copy(
+                position = 2,
+                diffFirst = Time("11.111"),
+                diffPrevious = Time("11.111")
+            ),
+            sortedResults[2].copy(
+                position = 3,
+                diffFirst = Time("22.222"),
+                diffPrevious = Time("11.111")
+            )
+        )
+        assertThat(actual).isEqualTo(expected)
     }
 }
