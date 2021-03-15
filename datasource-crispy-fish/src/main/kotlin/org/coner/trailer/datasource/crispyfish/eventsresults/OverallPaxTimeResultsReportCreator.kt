@@ -22,7 +22,7 @@ class OverallPaxTimeResultsReportCreator(
                     cfResult = paxResult,
                 )
             } }
-            .sortedBy { it.position }
+            .sortedBy { it.score }
         return OverallResultsReport(
             type = StandardResultsTypes.pax,
             participantResults = results.mapIndexed { index, result ->

@@ -22,7 +22,7 @@ class OverallRawTimeResultsReportCreator(
                     cfResult = rawResult,
                 )
             } }
-            .sortedBy { it.position }
+            .sortedBy { it.score }
         return OverallResultsReport(
             type = StandardResultsTypes.raw,
             participantResults = results.mapIndexed { index, result ->

@@ -6,7 +6,7 @@ import java.math.BigDecimal
 data class Score constructor(
         val value: BigDecimal,
         val penalty: Penalty? = null
-) {
+) : Comparable<Score> {
 
     constructor(
             value: String,
@@ -43,4 +43,7 @@ data class Score constructor(
 
     }
 
+    override fun compareTo(other: Score): Int {
+        return value.compareTo(other.value)
+    }
 }

@@ -27,7 +27,7 @@ class CompetitionGroupedResultsReportCreator(
         return GroupedResultsReport(
             type = StandardResultsTypes.grouped,
             groupingsToResultsMap = results
-                .sortedBy { it.score.value }
+                .sortedBy { it.score }
                 .groupBy { it.participant.resultGrouping() }
                 .mapNotNull { (grouping, results) -> grouping?.let { groupingNotNull ->
                     groupingNotNull to results.mapIndexed { index, result ->

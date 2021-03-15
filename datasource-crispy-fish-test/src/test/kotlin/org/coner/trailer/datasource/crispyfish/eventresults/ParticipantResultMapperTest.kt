@@ -104,9 +104,9 @@ class ParticipantResultMapperTest {
         )
 
         assertThat(actual).isNotNull().all {
-            hasPosition(3)
             hasParticipant(expectedParticipant)
             hasScoredRuns(expectedScoredRuns)
+            hasPosition(Int.MAX_VALUE) // not calculated here
             diffFirst().isNull() // not calculated here
             diffPrevious().isNull() // not calculated here
         }
