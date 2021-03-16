@@ -26,9 +26,9 @@ class ResultRunMapperTest {
         )
 
         val actual = mapper.map(
-            crispyFishRegistrationRun = run, // Run #2
-            crispyFishRegistrationRunIndex = 1, // Run #2
-            crispyFishRegistrationBestRun = 3 // Run #3
+            cfRegistrationRun = run, // Run #2
+            cfRegistrationRunIndex = 1, // Run #2
+            cfRegistrationBestRun = 3 // Run #3
         )
 
         assertThat(actual).all {
@@ -45,9 +45,9 @@ class ResultRunMapperTest {
         )
 
         val actual = mapper.map(
-            crispyFishRegistrationRun = run,
-            crispyFishRegistrationRunIndex = 1,
-            crispyFishRegistrationBestRun = 3
+            cfRegistrationRun = run,
+            cfRegistrationRunIndex = 1,
+            cfRegistrationBestRun = 3
         )
 
         assertThat(actual).hasCones(3)
@@ -61,9 +61,9 @@ class ResultRunMapperTest {
         )
 
         val actual = mapper.map(
-            crispyFishRegistrationRun = run,
-            crispyFishRegistrationRunIndex = 1,
-            crispyFishRegistrationBestRun = 3
+            cfRegistrationRun = run,
+            cfRegistrationRunIndex = 1,
+            cfRegistrationBestRun = 3
         )
 
         assertThat(actual).didNotFinish().isTrue()
@@ -77,9 +77,9 @@ class ResultRunMapperTest {
         )
 
         val actual = mapper.map(
-            crispyFishRegistrationRun = run,
-            crispyFishRegistrationRunIndex = 1,
-            crispyFishRegistrationBestRun = 3
+            cfRegistrationRun = run,
+            cfRegistrationRunIndex = 1,
+            cfRegistrationBestRun = 3
         )
 
         assertThat(actual).disqualified().isTrue()

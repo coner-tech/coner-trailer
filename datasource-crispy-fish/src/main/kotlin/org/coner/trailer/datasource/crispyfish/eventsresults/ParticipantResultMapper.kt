@@ -35,7 +35,7 @@ class ParticipantResultMapper(
             lastName = cfRegistration.lastName ?: return null
         )
         return ParticipantResult(
-            score = scoreMapper.map(
+            score = scoreMapper.toScore(
                 cfRegistration = cfRegistration,
                 cfResult = cfResult,
                 scoredRuns = scoredRuns

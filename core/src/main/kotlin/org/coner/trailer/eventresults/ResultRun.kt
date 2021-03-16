@@ -8,5 +8,6 @@ data class ResultRun(
         val didNotFinish: Boolean = false,
         val disqualified: Boolean = false,
         val rerun: Boolean = false,
-        val personalBest: Boolean = false
+        val personalBest: Boolean = false,
+        val score: Score
 )

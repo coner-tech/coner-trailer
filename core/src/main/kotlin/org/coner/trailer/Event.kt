@@ -1,5 +1,6 @@
 package org.coner.trailer
 
+import org.coner.trailer.eventresults.ScoringPolicy
 import java.time.LocalDate
 import java.util.*
 
@@ -9,7 +10,8 @@ data class Event(
     val date: LocalDate,
     val lifecycle: Lifecycle,
     val crispyFish: CrispyFishMetadata?,
-    val motorsportReg: MotorsportRegMetadata?
+    val motorsportReg: MotorsportRegMetadata?,
+    val scoringPolicy: ScoringPolicy
 ) {
     data class CrispyFishMetadata(
             val eventControlFile: String,

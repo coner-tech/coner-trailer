@@ -4,32 +4,37 @@ import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 
-class ResultRunMapper {
+class ResultRunMapper(
+    private val scoreMapper: ScoreMapper
+) {
 
     fun map(
-            crispyFishRegistrationRun: RegistrationRun,
-            crispyFishRegistrationRunIndex: Int,
-            crispyFishRegistrationBestRun: Int?
+        cfRegistrationRun: RegistrationRun,
+        cfRegistrationRunIndex: Int,
+        cfRegistrationBestRun: Int?
     ): ResultRun {
         return ResultRun(
-                time = mapTime(crispyFishRegistrationRun),
-                cones = mapCones(crispyFishRegistrationRun),
-                didNotFinish = mapDidNotFinish(crispyFishRegistrationRun),
-                disqualified = mapDisqualified(crispyFishRegistrationRun),
-                rerun = false, // no re-runs reported from crispy fish registration result
-                personalBest = crispyFishRegistrationRunIndex + 1 == crispyFishRegistrationBestRun
+            time = mapTime(cfRegistrationRun),
+            cones = mapCones(cfRegistrationRun),
+            didNotFinish = mapDidNotFinish(cfRegistrationRun),
+            disqualified = mapDisqualified(cfRegistrationRun),
+            rerun = false, // no re-runs reported from crispy fish registration result
+            personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
+            score = scoreMapper.toScore(
+                cfRegistrationRun = cfRegistrationRun
+            )
         )
     }
 
     fun map(
-            crispyFishRegistrationRuns: List<RegistrationRun>,
-            crispyFishRegistrationBestRun: Int?
+        crispyFishRegistrationRuns: List<RegistrationRun>,
+        crispyFishRegistrationBestRun: Int?
     ): List<ResultRun> {
         return crispyFishRegistrationRuns.mapIndexed { index, registrationRun ->
             map(
-                    crispyFishRegistrationRun = registrationRun,
-                    crispyFishRegistrationRunIndex = index,
-                    crispyFishRegistrationBestRun = crispyFishRegistrationBestRun
+                cfRegistrationRun = registrationRun,
+                cfRegistrationRunIndex = index,
+                cfRegistrationBestRun = crispyFishRegistrationBestRun
             )
         }
     }
