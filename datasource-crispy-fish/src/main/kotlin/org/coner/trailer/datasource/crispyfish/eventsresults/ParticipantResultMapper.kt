@@ -7,6 +7,7 @@ import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
+import org.coner.trailer.Policy
 
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
@@ -15,12 +16,14 @@ class ParticipantResultMapper(
 ) {
 
     fun toCore(
+        corePolicy: Policy,
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
         cfResult: RegistrationResult
     ): ParticipantResult? {
-        val scoredRuns = resultRunMapper.map(
+        val scoredRuns = resultRunMapper.toCore(
+            corePolicy = corePolicy,
             crispyFishRegistrationRuns = cfRegistration.runs,
             crispyFishRegistrationBestRun = cfRegistration.bestRun
         )

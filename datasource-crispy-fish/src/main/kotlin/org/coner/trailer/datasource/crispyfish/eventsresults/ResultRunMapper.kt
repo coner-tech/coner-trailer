@@ -3,38 +3,43 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
+import org.coner.trailer.Policy
 
 class ResultRunMapper(
     private val scoreMapper: ScoreMapper
 ) {
 
-    fun map(
+    fun toCore(
         cfRegistrationRun: RegistrationRun,
         cfRegistrationRunIndex: Int,
-        cfRegistrationBestRun: Int?
+        cfRegistrationBestRun: Int?,
+        corePolicy: Policy
     ): ResultRun {
         return ResultRun(
             time = mapTime(cfRegistrationRun),
             cones = mapCones(cfRegistrationRun),
             didNotFinish = mapDidNotFinish(cfRegistrationRun),
             disqualified = mapDisqualified(cfRegistrationRun),
-            rerun = false, // no re-runs reported from crispy fish registration result
+            rerun = false, // no re-runs reported in crispy fish registration file
             personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
             score = scoreMapper.toScore(
-                cfRegistrationRun = cfRegistrationRun
+                cfRegistrationRun = cfRegistrationRun,
+                corePolicy = corePolicy
             )
         )
     }
 
-    fun map(
+    fun toCore(
         crispyFishRegistrationRuns: List<RegistrationRun>,
-        crispyFishRegistrationBestRun: Int?
+        crispyFishRegistrationBestRun: Int?,
+        corePolicy: Policy
     ): List<ResultRun> {
         return crispyFishRegistrationRuns.mapIndexed { index, registrationRun ->
-            map(
+            toCore(
                 cfRegistrationRun = registrationRun,
                 cfRegistrationRunIndex = index,
-                cfRegistrationBestRun = crispyFishRegistrationBestRun
+                cfRegistrationBestRun = crispyFishRegistrationBestRun,
+                corePolicy = corePolicy
             )
         }
     }

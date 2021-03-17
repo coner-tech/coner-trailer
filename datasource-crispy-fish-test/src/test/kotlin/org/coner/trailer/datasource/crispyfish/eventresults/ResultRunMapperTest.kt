@@ -1,8 +1,6 @@
 package org.coner.trailer.datasource.crispyfish.eventresults
 
-import assertk.all
 import assertk.assertThat
-import assertk.assertions.isTrue
 import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.eventresults.*
@@ -25,7 +23,7 @@ class ResultRunMapperTest {
                 penalty = null
         )
 
-        val actual = mapper.map(
+        val actual = mapper.toCore(
             cfRegistrationRun = run, // Run #2
             cfRegistrationRunIndex = 1, // Run #2
             cfRegistrationBestRun = 3 // Run #3
@@ -44,7 +42,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.Cone(3)
         )
 
-        val actual = mapper.map(
+        val actual = mapper.toCore(
             cfRegistrationRun = run,
             cfRegistrationRunIndex = 1,
             cfRegistrationBestRun = 3
@@ -60,7 +58,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.DidNotFinish
         )
 
-        val actual = mapper.map(
+        val actual = mapper.toCore(
             cfRegistrationRun = run,
             cfRegistrationRunIndex = 1,
             cfRegistrationBestRun = 3
@@ -76,7 +74,7 @@ class ResultRunMapperTest {
                 penalty = RegistrationRun.Penalty.Disqualified
         )
 
-        val actual = mapper.map(
+        val actual = mapper.toCore(
             cfRegistrationRun = run,
             cfRegistrationRunIndex = 1,
             cfRegistrationBestRun = 3

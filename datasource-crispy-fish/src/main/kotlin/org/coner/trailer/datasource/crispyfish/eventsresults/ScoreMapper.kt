@@ -6,7 +6,7 @@ import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 import org.coner.trailer.eventresults.Score
-import org.coner.trailer.eventresults.ScoringPolicy
+import org.coner.trailer.Policy
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -40,13 +40,18 @@ class ScoreMapper {
 
     fun toScore(
         cfRegistrationRun: RegistrationRun,
-        coreScoringPolicy: ScoringPolicy
+        corePolicy: Policy
     ) : Score? {
         val time = Time(cfRegistrationRun.time ?: return null)
-        when (val penalty = cfRegistrationRun.penalty) {
-            is RegistrationRun.Penalty.Cone -> Score.withPenalty(time, Score.Penalty.Cone(coreScoringPolicy, penalty.count))
-            else -> TODO()
+        val penalty = when (val cfPenalty = cfRegistrationRun.penalty) {
+            is RegistrationRun.Penalty.Cone -> Score.Penalty.Cone(corePolicy, cfPenalty.count)
+            RegistrationRun.Penalty.DidNotFinish -> Score.Penalty.DidNotFinish
+            RegistrationRun.Penalty.Disqualified -> Score.Penalty.Disqualified
+            RegistrationRun.Penalty.Unknown -> Score.Penalty.Unknown
+            null -> null
         }
+        return penalty?.let { Score.withPenalty(time, it) }
+            ?: Score.clean(time)
     }
 
     private fun RegistrationResult.hasValidTime() = Time.pattern.matcher(time).matches()

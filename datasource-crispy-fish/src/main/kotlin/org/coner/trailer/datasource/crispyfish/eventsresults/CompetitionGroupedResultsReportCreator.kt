@@ -5,6 +5,7 @@ import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.GroupedResultsReport
+import org.coner.trailer.Policy
 import org.coner.trailer.eventresults.StandardResultsTypes
 
 class CompetitionGroupedResultsReportCreator(
@@ -12,12 +13,14 @@ class CompetitionGroupedResultsReportCreator(
 ) {
 
     fun createFromRegistrationData(
+        corePolicy: Policy,
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : GroupedResultsReport {
         val results = context.allRegistrations
             .mapNotNull { registration -> registration.classResult?.let { classResult ->
                 participantResultMapper.toCore(
+                    corePolicy = corePolicy,
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = registration,

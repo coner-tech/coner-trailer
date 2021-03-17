@@ -88,7 +88,7 @@ class ParticipantResultMapperTest {
             ResultRun(time = Time("51.408"), personalBest = true)
         )
         every {
-            resultRunMapper.map(
+            resultRunMapper.toCore(
                 crispyFishRegistrationRuns = registration.runs,
                 crispyFishRegistrationBestRun = registration.bestRun
             )
