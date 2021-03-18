@@ -22,11 +22,6 @@ class ParticipantResultMapper(
         cfRegistration: Registration,
         cfResult: RegistrationResult
     ): ParticipantResult? {
-        val scoredRuns = resultRunMapper.toCore(
-            corePolicy = corePolicy,
-            crispyFishRegistrationRuns = cfRegistration.runs,
-            crispyFishRegistrationBestRun = cfRegistration.bestRun
-        )
         val coreSignage = crispyFishParticipantMapper.toCoreSignage(
             context = context,
             crispyFish = cfRegistration
@@ -37,17 +32,24 @@ class ParticipantResultMapper(
             firstName = cfRegistration.firstName ?: return null,
             lastName = cfRegistration.lastName ?: return null
         )
+        val participant = crispyFishParticipantMapper.toCore(
+            context = context,
+            fromRegistration = cfRegistration,
+            withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
+        )
+        val scoredRuns = resultRunMapper.toCore(
+            corePolicy = corePolicy,
+            coreParticipant = participant,
+            crispyFishRegistrationRuns = cfRegistration.runs,
+            crispyFishRegistrationBestRun = cfRegistration.bestRun
+        )
         return ParticipantResult(
             score = scoreMapper.toScore(
                 cfRegistration = cfRegistration,
                 cfResult = cfResult,
                 scoredRuns = scoredRuns
             ) ?: return null,
-            participant = crispyFishParticipantMapper.toCore(
-                context = context,
-                fromRegistration = cfRegistration,
-                withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
-            ),
+            participant = participant,
             scoredRuns = scoredRuns,
             // positions and diffs are calculated in toCoreRanked after sorting by score
             position = Int.MAX_VALUE,

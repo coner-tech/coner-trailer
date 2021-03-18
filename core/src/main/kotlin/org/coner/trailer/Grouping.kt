@@ -1,36 +1,48 @@
 package org.coner.trailer
 
+import java.math.BigDecimal
 import java.util.*
 
 sealed class Grouping(
-        val abbreviation: String,
-        val name: String,
-        val sort: Int?
+    val abbreviation: String,
+    val name: String,
+    val sort: Int?,
+    val paxed: Boolean,
+    val paxFactor: BigDecimal?
 ) : Comparable<Grouping> {
     class Singular(
-            abbreviation: String,
-            name: String,
-            sort: Int
+        abbreviation: String,
+        name: String,
+        sort: Int,
+        paxed: Boolean,
+        paxFactor: BigDecimal?
     ) : Grouping(
-            abbreviation = abbreviation,
-            name = name,
-            sort = sort
+        abbreviation = abbreviation,
+        name = name,
+        sort = sort,
+        paxed = paxed,
+        paxFactor = paxFactor
     )
 
     class Paired(
-            val pair: Pair<Grouping, Grouping>,
-            groupingsAsList: List<Grouping?> = pair.toList()
+        val pair: Pair<Grouping, Grouping>,
+        groupingsAsList: List<Grouping?> = pair.toList(),
     ) : Grouping(
-            abbreviation = groupingsAsList.joinToString(separator = " ") { it?.abbreviation ?: "" }.trim(),
-            name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
-            sort = pair.first.sort
+        abbreviation = groupingsAsList.joinToString(separator = " ") { it?.abbreviation ?: "" }.trim(),
+        name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
+        sort = pair.first.sort,
+        paxed = pair.first.paxed || pair.second.paxed,
+        paxFactor = pair.first.paxFactor?.multiply(pair.second.paxFactor)?.setScale(3)
+            ?: pair.second.paxFactor
     )
 
     companion object {
         val UNKNOWN = Singular(
             abbreviation = "UNKNOWN",
             name = "Unknown",
-            sort = Integer.MIN_VALUE
+            sort = Integer.MIN_VALUE,
+            paxed = false,
+            paxFactor = null
         )
     }
 

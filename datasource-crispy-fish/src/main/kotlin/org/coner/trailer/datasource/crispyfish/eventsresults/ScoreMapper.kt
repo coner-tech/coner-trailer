@@ -3,6 +3,7 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.crispyfish.model.RegistrationRun
+import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 import org.coner.trailer.eventresults.Score
@@ -40,7 +41,8 @@ class ScoreMapper {
 
     fun toScore(
         cfRegistrationRun: RegistrationRun,
-        corePolicy: Policy
+        corePolicy: Policy,
+        coreParticipant: Participant
     ) : Score? {
         val time = Time(cfRegistrationRun.time ?: return null)
         val penalty = when (val cfPenalty = cfRegistrationRun.penalty) {
@@ -50,6 +52,7 @@ class ScoreMapper {
             RegistrationRun.Penalty.Unknown -> Score.Penalty.Unknown
             null -> null
         }
+        TODO("appropriately score raw or pax")
         return penalty?.let { Score.withPenalty(time, it) }
             ?: Score.clean(time)
     }

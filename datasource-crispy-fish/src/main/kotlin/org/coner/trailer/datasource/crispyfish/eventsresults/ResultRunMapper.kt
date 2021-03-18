@@ -1,6 +1,7 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.crispyfish.model.RegistrationRun
+import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 import org.coner.trailer.Policy
@@ -13,7 +14,8 @@ class ResultRunMapper(
         cfRegistrationRun: RegistrationRun,
         cfRegistrationRunIndex: Int,
         cfRegistrationBestRun: Int?,
-        corePolicy: Policy
+        corePolicy: Policy,
+        coreParticipant: Participant
     ): ResultRun {
         return ResultRun(
             time = mapTime(cfRegistrationRun),
@@ -30,16 +32,18 @@ class ResultRunMapper(
     }
 
     fun toCore(
+        corePolicy: Policy,
         crispyFishRegistrationRuns: List<RegistrationRun>,
         crispyFishRegistrationBestRun: Int?,
-        corePolicy: Policy
+        coreParticipant: Participant
     ): List<ResultRun> {
         return crispyFishRegistrationRuns.mapIndexed { index, registrationRun ->
             toCore(
                 cfRegistrationRun = registrationRun,
                 cfRegistrationRunIndex = index,
                 cfRegistrationBestRun = crispyFishRegistrationBestRun,
-                corePolicy = corePolicy
+                corePolicy = corePolicy,
+                coreParticipant = coreParticipant
             )
         }
     }

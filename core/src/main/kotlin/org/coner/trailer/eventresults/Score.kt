@@ -29,11 +29,15 @@ data class Score constructor(
             return Score(value = penalty.floor + time.value, penalty = penalty)
         }
 
+        fun withPenalty(time: String, penalty: Penalty): Score = withPenalty(Time(time), penalty)
+
         fun withoutTime() = Score(value = BigDecimal.valueOf(Penalty.intMaxValueTwoTenthsAsLong).setScale(3))
 
         fun clean(time: Time): Score {
             return Score(value = time.value)
         }
+
+        fun clean(time: String) = clean(Time(time))
     }
 
     sealed class Penalty(
