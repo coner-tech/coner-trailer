@@ -3,15 +3,19 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.crispyfish.model.Registration
 import org.coner.crispyfish.model.RegistrationResult
 import org.coner.trailer.Event
+import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.Policy
+import org.coner.trailer.eventresults.FinalScoreFactory
+import org.coner.trailer.eventresults.Score
 
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
     private val scoreMapper: ScoreMapper,
+    private val finalScoreFactory: FinalScoreFactory,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper
 ) {
 
@@ -20,7 +24,8 @@ class ParticipantResultMapper(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
-        cfResult: RegistrationResult
+        cfResult: RegistrationResult,
+        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
     ): ParticipantResult? {
         val coreSignage = crispyFishParticipantMapper.toCoreSignage(
             context = context,
@@ -39,16 +44,13 @@ class ParticipantResultMapper(
         )
         val scoredRuns = resultRunMapper.toCore(
             corePolicy = corePolicy,
-            coreParticipant = participant,
             crispyFishRegistrationRuns = cfRegistration.runs,
-            crispyFishRegistrationBestRun = cfRegistration.bestRun
+            crispyFishRegistrationBestRun = cfRegistration.bestRun,
+            participant = participant,
+            scoreFn = scoreFn
         )
         return ParticipantResult(
-            score = scoreMapper.toScore(
-                cfRegistration = cfRegistration,
-                cfResult = cfResult,
-                scoredRuns = scoredRuns
-            ) ?: return null,
+            score = finalScoreFactory.factory(scoredRuns) ?: return null,
             participant = participant,
             scoredRuns = scoredRuns,
             // positions and diffs are calculated in toCoreRanked after sorting by score

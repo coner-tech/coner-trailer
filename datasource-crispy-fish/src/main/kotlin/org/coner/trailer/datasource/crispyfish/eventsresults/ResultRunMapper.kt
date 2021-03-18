@@ -5,6 +5,7 @@ import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
 import org.coner.trailer.Policy
+import org.coner.trailer.eventresults.Score
 
 class ResultRunMapper(
     private val scoreMapper: ScoreMapper
@@ -15,8 +16,9 @@ class ResultRunMapper(
         cfRegistrationRunIndex: Int,
         cfRegistrationBestRun: Int?,
         corePolicy: Policy,
-        coreParticipant: Participant
-    ): ResultRun {
+        participant: Participant,
+        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
+    ): ResultRun? {
         return ResultRun(
             time = mapTime(cfRegistrationRun),
             cones = mapCones(cfRegistrationRun),
@@ -26,8 +28,10 @@ class ResultRunMapper(
             personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
             score = scoreMapper.toScore(
                 cfRegistrationRun = cfRegistrationRun,
-                corePolicy = corePolicy
-            )
+                corePolicy = corePolicy,
+                participant = participant,
+                scoreFn = scoreFn
+            ) ?: return null
         )
     }
 
@@ -35,15 +39,17 @@ class ResultRunMapper(
         corePolicy: Policy,
         crispyFishRegistrationRuns: List<RegistrationRun>,
         crispyFishRegistrationBestRun: Int?,
-        coreParticipant: Participant
+        participant: Participant,
+        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
     ): List<ResultRun> {
-        return crispyFishRegistrationRuns.mapIndexed { index, registrationRun ->
+        return crispyFishRegistrationRuns.mapIndexedNotNull { index, registrationRun ->
             toCore(
                 cfRegistrationRun = registrationRun,
                 cfRegistrationRunIndex = index,
                 cfRegistrationBestRun = crispyFishRegistrationBestRun,
                 corePolicy = corePolicy,
-                coreParticipant = coreParticipant
+                participant = participant,
+                scoreFn = scoreFn
             )
         }
     }

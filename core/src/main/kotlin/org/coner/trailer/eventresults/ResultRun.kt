@@ -9,5 +9,5 @@ data class ResultRun(
         val disqualified: Boolean = false,
         val rerun: Boolean = false,
         val personalBest: Boolean = false,
-        val score: Score?
+        val score: Score
 )

@@ -1,6 +1,7 @@
 package org.coner.trailer
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 
 sealed class Grouping(
@@ -32,7 +33,7 @@ sealed class Grouping(
         name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
         sort = pair.first.sort,
         paxed = pair.first.paxed || pair.second.paxed,
-        paxFactor = pair.first.paxFactor?.multiply(pair.second.paxFactor)?.setScale(3)
+        paxFactor = pair.first.paxFactor?.multiply(pair.second.paxFactor)?.setScale(3, RoundingMode.HALF_UP)
             ?: pair.second.paxFactor
     )
 
@@ -46,23 +47,32 @@ sealed class Grouping(
         )
     }
 
+    override fun compareTo(other: Grouping): Int {
+        return compareValues(sort, other.sort)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Grouping) return false
+        if (javaClass != other?.javaClass) return false
+
+        other as Grouping
 
         if (abbreviation != other.abbreviation) return false
         if (name != other.name) return false
         if (sort != other.sort) return false
+        if (paxed != other.paxed) return false
+        if (paxFactor != other.paxFactor) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(abbreviation, name, sort)
-    }
-
-    override fun compareTo(other: Grouping): Int {
-        return compareValues(sort, other.sort)
+        var result = abbreviation.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + (sort ?: 0)
+        result = 31 * result + paxed.hashCode()
+        result = 31 * result + (paxFactor?.hashCode() ?: 0)
+        return result
     }
 
 
