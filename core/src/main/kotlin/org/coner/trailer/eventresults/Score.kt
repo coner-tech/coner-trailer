@@ -1,6 +1,5 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Policy
 import org.coner.trailer.Time
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -30,9 +29,7 @@ data class Score constructor(
         object DidNotFinish : Penalty(floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3))
         object Disqualified : Penalty(floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3))
         object Unknown : Penalty(floor = BigDecimal.valueOf(intMaxValueNineTenthsAsLong).setScale(3))
-        class Cone(policy: Policy, val count: Int) : Penalty(
-            floor = BigDecimal(policy.conePenaltySeconds).multiply(BigDecimal(count)).setScale(3)
-        )
+        class Cone(floor: BigDecimal, val count: Int) : Penalty(floor = floor)
 
         companion object {
             const val intMaxValueOneTenthAsLong = 214748364L
@@ -44,22 +41,6 @@ data class Score constructor(
 
     override fun compareTo(other: Score): Int {
         return value.compareTo(other.value)
-    }
-
-    class RawTimeFactory {
-        fun withPenalty(scratchTime: Time, penalty: Penalty): Score {
-            return Score(value = penalty.floor + scratchTime.value, penalty = penalty)
-        }
-
-        fun withPenalty(scratchTime: String, penalty: Penalty): Score = withPenalty(Time(scratchTime), penalty)
-
-        fun withoutTime() = Score(value = BigDecimal.valueOf(Penalty.intMaxValueTwoTenthsAsLong).setScale(3))
-
-        fun clean(scratchTime: Time): Score {
-            return Score(value = scratchTime.value)
-        }
-
-        fun clean(scratchTime: String) = clean(Time(scratchTime))
     }
 
     class PaxTimeFactory {

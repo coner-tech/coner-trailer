@@ -1,6 +1,6 @@
 package org.coner.trailer.eventresults
 
-enum class FinalScorePolicy {
+enum class FinalScoreStyle {
     AUTOCROSS,
     RALLYCROSS
 }

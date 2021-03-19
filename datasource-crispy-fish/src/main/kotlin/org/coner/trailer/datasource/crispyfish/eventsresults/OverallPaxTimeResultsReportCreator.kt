@@ -18,7 +18,7 @@ class OverallPaxTimeResultsReportCreator(
         val results = context.allRegistrations
             .mapNotNull { registration -> registration.paxResult?.let { paxResult ->
                 participantResultMapper.toCore(
-                    corePolicy = corePolicy,
+                    policy = corePolicy,
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = registration,

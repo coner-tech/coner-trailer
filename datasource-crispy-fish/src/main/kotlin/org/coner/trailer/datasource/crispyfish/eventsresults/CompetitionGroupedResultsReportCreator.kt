@@ -20,7 +20,7 @@ class CompetitionGroupedResultsReportCreator(
         val results = context.allRegistrations
             .mapNotNull { registration -> registration.classResult?.let { classResult ->
                 participantResultMapper.toCore(
-                    corePolicy = corePolicy,
+                    policy = corePolicy,
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = registration,

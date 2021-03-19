@@ -15,12 +15,12 @@ import org.coner.trailer.eventresults.Score
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
     private val scoreMapper: ScoreMapper,
-    private val finalScoreFactory: FinalScoreFactory,
+    private val retrieveFinalScoreFactory: (Policy) -> FinalScoreFactory,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper
 ) {
 
     fun toCore(
-        corePolicy: Policy,
+        policy: Policy,
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
@@ -43,14 +43,14 @@ class ParticipantResultMapper(
             withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
         )
         val scoredRuns = resultRunMapper.toCore(
-            corePolicy = corePolicy,
+            corePolicy = policy,
             crispyFishRegistrationRuns = cfRegistration.runs,
             crispyFishRegistrationBestRun = cfRegistration.bestRun,
             participant = participant,
             scoreFn = scoreFn
         )
         return ParticipantResult(
-            score = finalScoreFactory.factory(scoredRuns) ?: return null,
+            score = retrieveFinalScoreFactory.invoke(policy).factory(scoredRuns) ?: return null,
             participant = participant,
             scoredRuns = scoredRuns,
             // positions and diffs are calculated in toCoreRanked after sorting by score

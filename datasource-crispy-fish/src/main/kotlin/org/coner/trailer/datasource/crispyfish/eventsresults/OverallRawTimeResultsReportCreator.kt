@@ -18,7 +18,7 @@ class OverallRawTimeResultsReportCreator(
         val results = context.allRegistrations
             .mapNotNull { registration -> registration.rawResult?.let { rawResult ->
                 participantResultMapper.toCore(
-                    corePolicy = corePolicy,
+                    policy = corePolicy,
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     cfRegistration = registration,

@@ -1,8 +1,8 @@
 package org.coner.trailer
 
-import org.coner.trailer.eventresults.FinalScorePolicy
+import org.coner.trailer.eventresults.FinalScoreStyle
 
 data class Policy(
     val conePenaltySeconds: Int,
-    val finalScore: FinalScorePolicy
+    val finalScoreStyle: FinalScoreStyle
 )
