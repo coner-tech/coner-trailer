@@ -1,19 +1,27 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Grouping
-import org.coner.trailer.Policy
 import org.coner.trailer.Time
 
 class RawTimeRunScoreFactory(
-    private val policy: Policy
+    private val penaltyFactory: StandardPenaltyFactory
 ) : RunScoreFactory {
     override fun score(
         participantGrouping: Grouping,
-        time: Time,
+        scratchTime: Time,
         cones: Int?,
         didNotFinish: Boolean?,
         disqualified: Boolean?
     ): Score {
-        TODO("Not yet implemented")
+        val penalty = penaltyFactory.penalty(
+            cones = cones,
+            didNotFinish = didNotFinish,
+            disqualified = disqualified
+        )
+        return Score(
+            value = penalty?.let { it.floor + scratchTime.value }
+                ?: scratchTime.value,
+            penalty = penalty
+        )
     }
 }

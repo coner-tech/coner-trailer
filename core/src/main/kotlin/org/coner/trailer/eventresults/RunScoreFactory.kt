@@ -6,7 +6,7 @@ import org.coner.trailer.Time
 interface RunScoreFactory {
     fun score(
         participantGrouping: Grouping,
-        time: Time, // scratch time
+        scratchTime: Time,
         cones: Int? = null,
         didNotFinish: Boolean? = false,
         disqualified: Boolean? = false,
