@@ -27,7 +27,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -137,7 +137,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -234,7 +234,7 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.participantResultMapper)
+        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {

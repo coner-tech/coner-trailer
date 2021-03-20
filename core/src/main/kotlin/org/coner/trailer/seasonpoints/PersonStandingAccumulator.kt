@@ -2,8 +2,6 @@ package org.coner.trailer.seasonpoints
 
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
-import org.coner.trailer.Time
-import org.coner.trailer.average
 
 class PersonStandingAccumulator(
         val person: Person
@@ -11,11 +9,6 @@ class PersonStandingAccumulator(
     val eventToPoints = mutableMapOf<SeasonEvent, Int>()
     val positionToFinishCount = mutableMapOf<Int, Int>()
     var score: Int = 0
-    val marginsOfVictory = mutableListOf<Time>()
     var position: Int? = null
     var tie: Boolean = false
-}
-
-fun Comparator<PersonStandingAccumulator>.thenByAverageMarginOfVictoryDescending(): Comparator<PersonStandingAccumulator> {
-    return thenByDescending { it.marginsOfVictory.average() }
 }

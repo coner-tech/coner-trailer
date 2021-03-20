@@ -69,7 +69,8 @@ class SeasonEventTest {
                 date = LocalDate.parse("2019-02-01"),
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
-                motorsportReg = null
+                motorsportReg = null,
+                policy = TestPolicies.lsccV1
             ),
             points = false,
             eventNumber = null

@@ -49,23 +49,4 @@ object TestComprehensiveResultsReports {
                 groupedResultsReports = TestGroupedResultsReports.LsccTieBreaking.points2
         )
     }
-
-    object Olscc2019 {
-
-        val points1: ComprehensiveResultsReport
-            get() = ComprehensiveResultsReport(
-                    overallResultsReports = listOf(
-                            OverallResultsReport(
-                                    type = StandardResultsTypes.raw,
-                                    participantResults = listOf()
-                            ),
-                            OverallResultsReport(
-                                    type = StandardResultsTypes.pax,
-                                    participantResults = listOf()
-                            )
-                    ),
-                    groupedResultsReports = TestGroupedResultsReports.Olscc2019.points1
-            )
-    }
-
 }

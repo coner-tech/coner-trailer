@@ -6,11 +6,13 @@ import org.coner.crispyfish.filetype.staging.StagingFileAssistant
 import org.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
+import org.coner.trailer.TestPolicies
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
+import org.coner.trailer.eventresults.*
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
@@ -63,12 +65,30 @@ class EventFixture(
         handicaps = seasonFixture.handicaps
     ).query()
 
-    val participantResultMapper = ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(),
-        scoreMapper = ScoreMapper(),
-        crispyFishParticipantMapper = CrispyFishParticipantMapper(
-            crispyFishGroupingMapper = crispyFishGroupingMapper
-        )
+    val crispyFishParticipantMapper = CrispyFishParticipantMapper(
+        crispyFishGroupingMapper = crispyFishGroupingMapper
     )
+    val standardPenaltyFactory = StandardPenaltyFactory(TestPolicies.lsccV1)
+    val rawTimeRunScoreFactory = RawTimeRunScoreFactory(standardPenaltyFactory)
+    val rawTimeScoreMapper = ScoreMapper(rawTimeRunScoreFactory)
+    val paxTimeRunScoreFactory = PaxTimeRunScoreFactory(standardPenaltyFactory)
+    val paxTimeScoreMapper = ScoreMapper(paxTimeRunScoreFactory)
+    val groupedScoreMapper = ScoreMapper(GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory))
+    val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()
 
+    val rawTimeParticipantResultMapper = ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(rawTimeScoreMapper),
+        crispyFishParticipantMapper = crispyFishParticipantMapper,
+        finalScoreFactory = autocrossFinalScoreFactory
+    )
+    val paxTimeParticipantResultMapper = ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(paxTimeScoreMapper),
+        crispyFishParticipantMapper = crispyFishParticipantMapper,
+        finalScoreFactory = autocrossFinalScoreFactory
+    )
+    val groupedParticipantResultMapper = ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(groupedScoreMapper),
+        crispyFishParticipantMapper = crispyFishParticipantMapper,
+        finalScoreFactory = autocrossFinalScoreFactory
+    )
 }

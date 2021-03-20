@@ -110,19 +110,27 @@ class StandingsReportCreatorTest {
                         TestGroupings.Lscc2019.HS to listOf(
                             ParticipantResult(
                                 position = 1,
-                                score = Score("0.000"),
+                                score = Score("45.678"),
                                 participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
                                     seasonPointsEligible = false // only value relevant to test
                                 ),
-                                scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
+                                scoredRuns = listOf(ResultRun(
+                                    score = Score("45.678"),
+                                    time = Time("45.678"),
+                                    personalBest = true
+                                )),
                                 diffPrevious = null,
                                 diffFirst = null
                             ),
                             ParticipantResult( // to make sure eligible are included
                                 position = 2,
-                                score = Score("0.000"),
+                                score = Score("56.789"),
                                 participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
-                                scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
+                                scoredRuns = listOf(ResultRun(
+                                    score = Score("56.789"),
+                                    time = Time("56.789"),
+                                    personalBest = true
+                                )),
                                 diffFirst = null,
                                 diffPrevious = null
                             )
@@ -141,22 +149,5 @@ class StandingsReportCreatorTest {
                 index(0).hasPerson(TestPeople.REBECCA_JACKSON)
             }
         }
-    }
-
-    @Test
-    fun `Create grouped standings sections for OLSCC 2019`() {
-        val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.grouped,
-            season = TestSeasons.olscc2019,
-            eventToGroupedResultsReports = mapOf(
-                TestSeasonEvents.Olscc2019.points1 to TestComprehensiveResultsReports.Olscc2019.points1.groupedResultsReports.single()
-            ),
-            configuration = TestSeasonPointsCalculatorConfigurations.olsccV1
-        )
-
-        val actual = creator.createGroupedStandingsSections(param)
-
-        // actual results not accessible at time of coding.
-        // punting until further notice.
     }
 }

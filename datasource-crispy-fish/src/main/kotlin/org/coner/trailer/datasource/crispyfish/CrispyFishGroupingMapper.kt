@@ -14,7 +14,9 @@ class CrispyFishGroupingMapper {
             abbreviation = classDefinition.abbreviation,
             name = classDefinition.name,
             sort = context.classDefinitionAbbreviationToSort[classDefinition.abbreviation]
-                ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition")
+                ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition"),
+            paxed = classDefinition.paxed,
+            paxFactor = classDefinition.paxFactor
         )
     }
 

@@ -28,7 +28,12 @@ data class Score constructor(
     ) {
         object DidNotFinish : Penalty(floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3))
         object Disqualified : Penalty(floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3))
-        class Cone(floor: BigDecimal, val count: Int) : Penalty(floor = floor)
+        class Cone(floor: BigDecimal, val count: Int) : Penalty(floor = floor) {
+            constructor(
+                floor: String,
+                count: Int
+            ) : this(BigDecimal(floor), count)
+        }
         object Unknown : Penalty(floor = BigDecimal.valueOf(intMaxValueNineTenthsAsLong).setScale(3))
 
         companion object {

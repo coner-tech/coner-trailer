@@ -4,8 +4,6 @@ import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.ResultRun
-import org.coner.trailer.Policy
-import org.coner.trailer.eventresults.Score
 
 class ResultRunMapper(
     private val scoreMapper: ScoreMapper
@@ -15,27 +13,23 @@ class ResultRunMapper(
         cfRegistrationRun: RegistrationRun,
         cfRegistrationRunIndex: Int,
         cfRegistrationBestRun: Int?,
-        corePolicy: Policy,
         participant: Participant,
     ): ResultRun? {
         return ResultRun(
-            time = mapTime(cfRegistrationRun),
+            score = scoreMapper.toScore(
+                cfRegistrationRun = cfRegistrationRun,
+                participant = participant
+            ) ?: return null,
             cones = mapCones(cfRegistrationRun),
             didNotFinish = mapDidNotFinish(cfRegistrationRun),
             disqualified = mapDisqualified(cfRegistrationRun),
             rerun = false, // no re-runs reported in crispy fish registration file
             personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
-            score = scoreMapper.toScore(
-                cfRegistrationRun = cfRegistrationRun,
-                corePolicy = corePolicy,
-                participant = participant,
-                scoreFn = scoreFn
-            ) ?: return null
+            time = mapTime(cfRegistrationRun)
         )
     }
 
     fun toCore(
-        corePolicy: Policy,
         crispyFishRegistrationRuns: List<RegistrationRun>,
         crispyFishRegistrationBestRun: Int?,
         participant: Participant,
@@ -45,9 +39,7 @@ class ResultRunMapper(
                 cfRegistrationRun = registrationRun,
                 cfRegistrationRunIndex = index,
                 cfRegistrationBestRun = crispyFishRegistrationBestRun,
-                corePolicy = corePolicy,
-                participant = participant,
-                scoreFn = scoreFn
+                participant = participant
             )
         }
     }

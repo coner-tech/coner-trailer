@@ -47,7 +47,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points1Simplified.DOMINIC_ROGERS, TestPeople.DOMINIC_ROGERS)
                         )
                     ),
-                    motorsportReg = null
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV1
                 ),
                 eventNumber = 1,
                 points = true
@@ -74,7 +75,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points2Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
                         )
                     ),
-                    motorsportReg = null
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV1
                 ),
                 eventNumber = 2,
                 points = true
@@ -103,7 +105,8 @@ sealed class SeasonFixture(
                             peopleMapping(TestParticipants.Lscc2019Points3Simplified.BENNETT_PANTONE, TestPeople.BENNETT_PANTONE)
                         )
                     ),
-                    motorsportReg = null
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV1
                 ),
                 eventNumber = 3,
                 points = true

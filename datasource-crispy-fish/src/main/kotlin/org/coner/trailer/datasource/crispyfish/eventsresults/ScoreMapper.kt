@@ -2,7 +2,6 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Participant
-import org.coner.trailer.Policy
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.RunScoreFactory
 import org.coner.trailer.eventresults.Score
@@ -15,7 +14,7 @@ class ScoreMapper(
         cfRegistrationRun: RegistrationRun,
         participant: Participant,
     ) : Score? {
-        runScoreFactory.score(
+        return runScoreFactory.score(
             participantGrouping = participant.signage?.grouping ?: return null,
             scratchTime = Time(cfRegistrationRun.time ?: return null),
             cones = (cfRegistrationRun.penalty as? RegistrationRun.Penalty.Cone?)?.count,

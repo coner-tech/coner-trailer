@@ -1,16 +1,12 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.trailer.Event
-import org.coner.trailer.Policy
-import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.OverallResultsReport
-import org.coner.trailer.eventresults.ParticipantResult
 
 interface CrispyFishOverallResultsReportCreator {
 
     fun createFromRegistrationData(
-        corePolicy: Policy,
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport

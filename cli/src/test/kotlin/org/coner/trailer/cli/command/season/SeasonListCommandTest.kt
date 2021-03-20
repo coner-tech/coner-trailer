@@ -43,8 +43,7 @@ class SeasonListCommandTest {
     @Test
     fun `It should list seasons`() {
         val list = listOf(
-                TestSeasons.lscc2019,
-                TestSeasons.olscc2019
+                TestSeasons.lscc2019
         )
         every { service.list() } returns list
         val viewRendered = "view rendered"

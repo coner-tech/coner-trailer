@@ -116,16 +116,4 @@ object TestEvents {
         ) }
     }
 
-    object Olscc2019 {
-        val points1: Event
-            get() = Event(
-                name = "2019 OLSCC Points Event #1",
-                date = LocalDate.of(2019, 3, 10),
-                lifecycle = Event.Lifecycle.FINAL,
-                crispyFish = null,
-                motorsportReg = null,
-                policy = TestPolicies.olsccV1
-            )
-    }
-
 }

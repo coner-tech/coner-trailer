@@ -38,11 +38,8 @@ class RankingSortPersistConstraintsTest {
 
     @Test
     fun `It should assess valid candidate`() {
-        val rankingSorts = Stream.of(
-                mapper.toSnoozle(TestRankingSorts.lscc),
-                mapper.toSnoozle(TestRankingSorts.olscc)
-        )
-        every { resource.stream(any()) } returns rankingSorts
+        val rankingSort = mapper.toSnoozle(TestRankingSorts.lscc)
+        every { resource.stream(any()) } returns Stream.of(rankingSort)
         val candidate = RankingSort(
                 name = "candidate",
                 steps = listOf(RankingSort.Step.ScoreDescending())

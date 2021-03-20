@@ -30,7 +30,7 @@ class OverallRawTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallRawTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -157,7 +157,7 @@ class OverallRawTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallRawTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
@@ -272,7 +272,7 @@ class OverallRawTimeResultsReportCreatorTest {
             allRegistrations = event.registrations()
         )
 
-        val actual = OverallRawTimeResultsReportCreator(event.participantResultMapper)
+        val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)
             .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {

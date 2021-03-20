@@ -49,12 +49,6 @@ object TestSeasonEvents {
         )
     }
 
-    object Olscc2019 {
-
-        val points1: SeasonEvent
-            get() = points(event = TestEvents.Olscc2019.points1, eventNumber = 1)
-    }
-
     private fun points(event: Event, eventNumber: Int) = SeasonEvent(
             event = event,
             eventNumber = eventNumber,

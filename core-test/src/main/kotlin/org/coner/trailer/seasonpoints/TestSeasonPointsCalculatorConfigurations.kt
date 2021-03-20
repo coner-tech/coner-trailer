@@ -23,14 +23,4 @@ object TestSeasonPointsCalculatorConfigurations {
             ),
             rankingSort = TestRankingSorts.lscc,
     )
-
-    val olsccV1 = SeasonPointsCalculatorConfiguration(
-            name = "OLSCC v1",
-            resultsTypeToEventPointsCalculator = mapOf(
-                    StandardResultsTypes.grouped to TestEventPointsCalculators.olsccCalculator,
-                    StandardResultsTypes.raw to TestEventPointsCalculators.olsccCalculator,
-                    StandardResultsTypes.pax to TestEventPointsCalculators.olsccCalculator
-            ),
-            rankingSort = TestRankingSorts.olscc
-    )
 }
