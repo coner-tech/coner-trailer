@@ -17,7 +17,6 @@ class ResultRunMapper(
         cfRegistrationBestRun: Int?,
         corePolicy: Policy,
         participant: Participant,
-        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
     ): ResultRun? {
         return ResultRun(
             time = mapTime(cfRegistrationRun),
@@ -40,7 +39,6 @@ class ResultRunMapper(
         crispyFishRegistrationRuns: List<RegistrationRun>,
         crispyFishRegistrationBestRun: Int?,
         participant: Participant,
-        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
     ): List<ResultRun> {
         return crispyFishRegistrationRuns.mapIndexedNotNull { index, registrationRun ->
             toCore(

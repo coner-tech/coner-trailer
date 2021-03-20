@@ -2,14 +2,13 @@ package org.coner.trailer
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.*
 
 sealed class Grouping(
     val abbreviation: String,
     val name: String,
     val sort: Int?,
     val paxed: Boolean,
-    val paxFactor: BigDecimal?
+    open val paxFactor: BigDecimal?
 ) : Comparable<Grouping> {
     class Singular(
         abbreviation: String,
@@ -33,9 +32,19 @@ sealed class Grouping(
         name = groupingsAsList.joinToString(separator = ", ") { it?.name ?: "" }.trim(),
         sort = pair.first.sort,
         paxed = pair.first.paxed || pair.second.paxed,
-        paxFactor = pair.first.paxFactor?.multiply(pair.second.paxFactor)?.setScale(3, RoundingMode.HALF_UP)
-            ?: pair.second.paxFactor
-    )
+        paxFactor = null
+    ) {
+        override val paxFactor by lazy {
+            val firstPax = pair.first.paxFactor
+            val secondPax = pair.second.paxFactor
+            when {
+                firstPax != null && secondPax != null -> (firstPax * secondPax).setScale(3, RoundingMode.HALF_UP)
+                firstPax == null && secondPax != null -> secondPax
+                firstPax != null && secondPax == null -> firstPax
+                else -> null
+            }
+        }
+    }
 
     companion object {
         val UNKNOWN = Singular(

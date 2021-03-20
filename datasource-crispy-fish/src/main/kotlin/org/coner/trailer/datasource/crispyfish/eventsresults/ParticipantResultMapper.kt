@@ -25,7 +25,6 @@ class ParticipantResultMapper(
         context: CrispyFishEventMappingContext,
         cfRegistration: Registration,
         cfResult: RegistrationResult,
-        scoreFn: (participant: Participant, time: Time?, Score.Penalty?) -> Score
     ): ParticipantResult? {
         val coreSignage = crispyFishParticipantMapper.toCoreSignage(
             context = context,
