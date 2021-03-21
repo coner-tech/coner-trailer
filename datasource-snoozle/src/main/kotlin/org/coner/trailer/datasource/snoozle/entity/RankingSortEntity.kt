@@ -15,8 +15,7 @@ data class RankingSortEntity(
     ) {
         enum class Type {
             ScoreDescending,
-            PositionFinishCountDescending,
-            AverageMarginOfVictoryDescending
+            PositionFinishCountDescending
         }
     }
 

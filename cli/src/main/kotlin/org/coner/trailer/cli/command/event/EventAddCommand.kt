@@ -4,14 +4,18 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
+import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
+import org.coner.trailer.Policy
+import org.coner.trailer.cli.command.policy.policySelectOptionGroup
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.service.PolicyService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -34,6 +38,7 @@ class EventAddCommand(
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
     private val view: EventView by instance()
+    private val policyService: PolicyService by instance()
 
     private val id: UUID? by option(hidden = true)
         .convert { toUuid(it) }
@@ -77,6 +82,8 @@ class EventAddCommand(
     private val crispyFishOptions: CrispyFishOptions by CrispyFishOptions()
 
     private val motorsportRegEventId: String? by option("--motorsportreg-event-id")
+    private val policy: Policy by policySelectOptionGroup { policyService }
+        .required()
 
     override fun run() {
         val create = Event(
@@ -91,7 +98,8 @@ class EventAddCommand(
             ),
             motorsportReg = motorsportRegEventId?.let { Event.MotorsportRegMetadata(
                 id = it
-            ) }
+            ) },
+            policy = policy
         )
         service.create(create)
         echo(view.render(create))

@@ -1,5 +1,6 @@
 package org.coner.trailer.cli.di
 
+import org.coner.trailer.Policy
 import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
@@ -7,7 +8,7 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.*
 import org.coner.trailer.datasource.snoozle.*
-import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
+import org.coner.trailer.eventresults.*
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
@@ -121,7 +122,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<EventResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
     bind<EventMapper>() with singleton { EventMapper(
         personService = instance(),
-        crispyFishGroupingService = instance()
+        crispyFishGroupingService = instance(),
+        policyService = instance()
     ) }
     bind<EventPersistConstraints>() with singleton { EventPersistConstraints(
         resource = instance()
@@ -152,19 +154,61 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         loadConstraints = instance()
     ) }
 
+    // Policies
+    bind<PolicyResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
+    bind<PolicyMapper>() with singleton { PolicyMapper() }
+    bind<PolicyService>() with singleton { PolicyService(
+        resource = instance(),
+        mapper = instance()
+    ) }
+
     // Event Results
-    bind<ResultRunMapper>() with singleton { ResultRunMapper() }
-    bind<ScoreMapper>() with singleton { ScoreMapper() }
-    bind<ParticipantResultMapper>() with singleton { ParticipantResultMapper(
-        resultRunMapper = instance(),
-        scoreMapper = instance(),
-        crispyFishParticipantMapper = instance()
+    bind<StandardPenaltyFactory>() with multiton { policy: Policy -> StandardPenaltyFactory(policy) }
+    bind<RawTimeRunScoreFactory>() with multiton { policy: Policy -> RawTimeRunScoreFactory(
+        penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
     ) }
-    bind<OverallRawTimeResultsReportCreator>() with singleton { OverallRawTimeResultsReportCreator(
-        participantResultMapper = instance()
+    bind<PaxTimeRunScoreFactory>() with multiton { policy: Policy -> PaxTimeRunScoreFactory(
+        penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
+    )}
+    bind<ScoreMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ScoreMapper(
+        runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
     ) }
-    bind<OverallPaxTimeResultsReportCreator>() with singleton { OverallPaxTimeResultsReportCreator(
-        participantResultMapper = instance()
+    bind<ScoreMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ScoreMapper(
+        runScoreFactory = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
+    ) }
+    bind<ScoreMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ScoreMapper(
+        runScoreFactory = GroupedRunScoreFactory(
+            rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
+            paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
+        )
+    ) }
+    bind<FinalScoreFactory>(FinalScoreStyle.AUTOCROSS) with singleton { AutocrossFinalScoreFactory() }
+    bind<FinalScoreFactory>(FinalScoreStyle.RALLYCROSS) with singleton { RallycrossFinalScoreFactory() }
+    bind<ParticipantResultMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(
+            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.raw).invoke(policy)
+        ),
+        crispyFishParticipantMapper = instance(),
+        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
+    ) }
+    bind<ParticipantResultMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(
+            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.pax).invoke(policy)
+        ),
+        crispyFishParticipantMapper = instance(),
+        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
+    ) }
+    bind<ParticipantResultMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
+        resultRunMapper = ResultRunMapper(
+            scoreMapper = ScoreMapper(
+                runScoreFactory = GroupedRunScoreFactory(
+                    rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
+                    paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
+                )
+            )
+        ),
+        crispyFishParticipantMapper = instance(),
+        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
 
     // Groupings

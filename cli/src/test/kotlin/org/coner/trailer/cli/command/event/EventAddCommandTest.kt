@@ -15,6 +15,7 @@ import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.service.PolicyService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -37,6 +38,7 @@ class EventAddCommandTest {
     @MockK lateinit var dbConfig: DatabaseConfiguration
     @MockK lateinit var service: EventService
     @MockK lateinit var view: EventView
+    @MockK lateinit var policyService: PolicyService
 
     lateinit var testConsole: StringBufferConsole
 
@@ -82,6 +84,7 @@ class EventAddCommandTest {
             lifecycle = Event.Lifecycle.CREATE
         )
         every { dbConfig.crispyFishDatabase } returns crispyFishDatabase
+        every { policyService.findById(create.policy.id) } returns create.policy
         justRun { service.create(any()) }
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(any()) } returns viewRendered
@@ -92,7 +95,8 @@ class EventAddCommandTest {
             "--date", "${create.date}",
             "--crispy-fish-event-control-file", "$eventControlFile",
             "--crispy-fish-class-definition-file", "$classDefinitionFile",
-            "--motorsportreg-event-id", motorsportReg.id
+            "--motorsportreg-event-id", motorsportReg.id,
+            "--policy-id", "${create.policy.id}"
         ))
 
         verifySequence {

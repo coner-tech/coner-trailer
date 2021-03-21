@@ -16,7 +16,6 @@ class RankingSortView(override val console: CliktConsole) : BaseCollectionView<R
             when (it) {
                 is RankingSort.Step.ScoreDescending -> "Score Descending"
                 is RankingSort.Step.PositionFinishCountDescending -> "Position Finish Count Descending: ${it.position}"
-                is RankingSort.Step.AverageMarginOfVictoryDescending -> "Average Margin of Victory Descending"
             }
         }.joinToString(separator = console.lineSeparator) {
             "- $it".prependIndent(" ".repeat(12))

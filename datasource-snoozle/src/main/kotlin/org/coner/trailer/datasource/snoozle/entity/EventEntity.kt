@@ -10,7 +10,8 @@ data class EventEntity(
     val date: LocalDate,
     val lifecycle: String,
     val crispyFish: CrispyFishMetadata?,
-    val motorsportReg: MotorsportRegMetadata?
+    val motorsportReg: MotorsportRegMetadata?,
+    val policyId: UUID
 ) : Entity<EventEntity.Key> {
 
     data class CrispyFishMetadata(

@@ -18,9 +18,6 @@ class RankingSortMapper {
                                 position = requireNotNull(step.paramInt1) { "${step.type} requires paramInt1 for position" }
                         )
                     }
-                    RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending -> {
-                        RankingSort.Step.AverageMarginOfVictoryDescending()
-                    }
                 } }
         )
     }
@@ -39,11 +36,6 @@ class RankingSortMapper {
                         RankingSortEntity.Step(
                                 type = RankingSortEntity.Step.Type.PositionFinishCountDescending,
                                 paramInt1 = it.position
-                        )
-                    }
-                    is RankingSort.Step.AverageMarginOfVictoryDescending -> {
-                        RankingSortEntity.Step(
-                                type = RankingSortEntity.Step.Type.AverageMarginOfVictoryDescending
                         )
                     }
                 } }
