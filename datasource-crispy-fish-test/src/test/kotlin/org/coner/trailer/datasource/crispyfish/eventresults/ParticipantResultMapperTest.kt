@@ -80,18 +80,19 @@ class ParticipantResultMapperTest {
                 context = context,
                 crispyFish = registration
             )
-        } returns requireNotNull(expectedParticipant.signage)
+        } returns checkNotNull(expectedParticipant.signage)
         val expectedScoredRuns = listOf(
-            ResultRun(time = Time("52.749")),
-            ResultRun(time = Time("53.175")),
-            ResultRun(time = Time("52.130")),
-            ResultRun(time = Time("52.117")),
-            ResultRun(time = Time("51.408"), personalBest = true)
+            ResultRun(time = Time("52.749"), score = Score("52.749")),
+            ResultRun(time = Time("53.175"), score = Score("53.175")),
+            ResultRun(time = Time("52.130"), score = Score("52.130")),
+            ResultRun(time = Time("52.117"), score = Score("52.117")),
+            ResultRun(time = Time("51.408"), score = Score("51.408"), personalBest = true)
         )
         every {
             resultRunMapper.toCore(
-                crispyFishRegistrationRuns = registration.runs,
-                crispyFishRegistrationBestRun = registration.bestRun
+                cfRegistrationRuns = registration.runs,
+                cfRegistrationBestRun = registration.bestRun,
+                participant = expectedParticipant
             )
         }.returns(expectedScoredRuns)
         val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
@@ -101,8 +102,7 @@ class ParticipantResultMapperTest {
         val actual = mapper.toCore(
             eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
-            cfRegistration = registration,
-            cfResult = result
+            cfRegistration = registration
         )
 
         assertThat(actual).isNotNull().all {
@@ -120,7 +120,9 @@ class ParticipantResultMapperTest {
             ParticipantResult(
                 score = Score("34.567"),
                 participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
-                scoredRuns = listOf(ResultRun(Time("34.567"), personalBest = true)),
+                scoredRuns = listOf(ResultRun(
+                    time = Time("34.567"), score = Score("34.567"), personalBest = true
+                )),
                 position = Int.MAX_VALUE,
                 diffFirst = null,
                 diffPrevious = null
@@ -128,7 +130,9 @@ class ParticipantResultMapperTest {
             ParticipantResult(
                 score = Score("45.678"),
                 participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
-                scoredRuns = listOf(ResultRun(Time("45.678"), personalBest = true)),
+                scoredRuns = listOf(ResultRun(
+                    time = Time("45.678"), score = Score("45.678"), personalBest = true
+                )),
                 position = Int.MAX_VALUE,
                 diffFirst = null,
                 diffPrevious = null
@@ -136,7 +140,9 @@ class ParticipantResultMapperTest {
             ParticipantResult(
                 score = Score("56.789"),
                 participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
-                scoredRuns = listOf(ResultRun(Time("56.789"), personalBest = true)),
+                scoredRuns = listOf(ResultRun(
+                    time = Time("56.789"), score = Score("56.789"), personalBest = true
+                )),
                 position = Int.MAX_VALUE,
                 diffFirst = null,
                 diffPrevious = null

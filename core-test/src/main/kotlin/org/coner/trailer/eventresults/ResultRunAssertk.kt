@@ -9,6 +9,8 @@ import assertk.assertions.support.expected
 import assertk.assertions.support.show
 import org.coner.trailer.isEqualTo
 
+fun Assert<ResultRun>.score() = prop("score") { it.score }
+
 fun Assert<ResultRun>.time() = prop("time") { it.time }
 fun Assert<ResultRun>.hasTime(expected: String?) = time().isEqualTo(expected)
 

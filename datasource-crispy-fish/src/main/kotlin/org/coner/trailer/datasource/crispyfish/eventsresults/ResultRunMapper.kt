@@ -20,9 +20,9 @@ class ResultRunMapper(
                 cfRegistrationRun = cfRegistrationRun,
                 participant = participant
             ) ?: return null,
-            cones = mapCones(cfRegistrationRun),
-            didNotFinish = mapDidNotFinish(cfRegistrationRun),
-            disqualified = mapDisqualified(cfRegistrationRun),
+            cones = (cfRegistrationRun.penalty as? RegistrationRun.Penalty.Cone?)?.count,
+            didNotFinish = cfRegistrationRun.penalty == RegistrationRun.Penalty.DidNotFinish,
+            disqualified = cfRegistrationRun.penalty == RegistrationRun.Penalty.Disqualified,
             rerun = false, // no re-runs reported in crispy fish registration file
             personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
             time = mapTime(cfRegistrationRun)
@@ -30,49 +30,26 @@ class ResultRunMapper(
     }
 
     fun toCore(
-        crispyFishRegistrationRuns: List<RegistrationRun>,
-        crispyFishRegistrationBestRun: Int?,
+        cfRegistrationRuns: List<RegistrationRun>,
+        cfRegistrationBestRun: Int?,
         participant: Participant,
     ): List<ResultRun> {
-        return crispyFishRegistrationRuns.mapIndexedNotNull { index, registrationRun ->
+        return cfRegistrationRuns.mapIndexedNotNull { index, registrationRun ->
             toCore(
                 cfRegistrationRun = registrationRun,
                 cfRegistrationRunIndex = index,
-                cfRegistrationBestRun = crispyFishRegistrationBestRun,
+                cfRegistrationBestRun = cfRegistrationBestRun,
                 participant = participant
             )
         }
     }
 
     private fun mapTime(run: RegistrationRun): Time? {
-        return if (hasValidTime(run)) {
-            Time(run.time ?: return null)
+        val runTime = run.time
+        return if (runTime != null && Time.pattern.matcher(runTime).matches()) {
+            Time(runTime)
         } else {
             null
         }
     }
-
-    private fun hasValidTime(run: RegistrationRun): Boolean {
-        return run.time?.let { Time.pattern.matcher(it).matches() } ?: false
-    }
-
-    private fun mapCones(run: RegistrationRun): Int? {
-        val penalty = run.penalty
-        return if (penalty is RegistrationRun.Penalty.Cone) {
-            penalty.count
-        } else {
-            null
-        }
-    }
-
-    private fun mapDidNotFinish(run: RegistrationRun): Boolean {
-        val penalty = run.penalty
-        return penalty is RegistrationRun.Penalty.DidNotFinish
-    }
-
-    private fun mapDisqualified(run: RegistrationRun): Boolean {
-        return run.penalty is RegistrationRun.Penalty.Disqualified
-    }
-
-
 }
