@@ -3,6 +3,7 @@ package org.coner.trailer.datasource.crispyfish
 import org.coner.crispyfish.model.ClassDefinition
 import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Grouping
+import java.math.BigDecimal
 
 class CrispyFishGroupingMapper {
 
@@ -16,7 +17,10 @@ class CrispyFishGroupingMapper {
             sort = context.classDefinitionAbbreviationToSort[classDefinition.abbreviation]
                 ?: throw IllegalArgumentException("No sort mapping for ClassDefinition: $classDefinition"),
             paxed = classDefinition.paxed,
-            paxFactor = classDefinition.paxFactor
+            paxFactor = when {
+                classDefinition.paxFactor > BigDecimal.ZERO -> classDefinition.paxFactor
+                else -> null
+            }
         )
     }
 

@@ -14,10 +14,9 @@ class GroupedRunScoreFactory(
         didNotFinish: Boolean?,
         disqualified: Boolean?
     ): Score {
-        val factory = if (participantGrouping.paxed) {
-            paxTimes
-        } else {
-            rawTimes
+        val factory = when {
+            participantGrouping.paxed -> paxTimes
+            else -> rawTimes
         }
         return factory.score(
             participantGrouping = participantGrouping,

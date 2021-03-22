@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
+import assertk.assertions.isSameAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -98,6 +99,8 @@ class ParticipantResultMapperTest {
         val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
             every { peopleMap } returns usePeopleMap
         }
+        val expectedScore: Score = mockk()
+        every { finalScoreFactory.factory(expectedScoredRuns) } returns expectedScore
 
         val actual = mapper.toCore(
             eventCrispyFishMetadata = crispyFishMetadata,
@@ -106,6 +109,7 @@ class ParticipantResultMapperTest {
         )
 
         assertThat(actual).isNotNull().all {
+            score().isSameAs(expectedScore)
             hasParticipant(expectedParticipant)
             hasScoredRuns(expectedScoredRuns)
             hasPosition(Int.MAX_VALUE) // not calculated here
