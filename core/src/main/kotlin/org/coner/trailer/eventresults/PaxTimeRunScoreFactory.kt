@@ -5,7 +5,7 @@ import org.coner.trailer.Time
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class PaxTimeRunScoreFactory(
+open class PaxTimeRunScoreFactory(
     private val penaltyFactory: StandardPenaltyFactory
 ) : RunScoreFactory {
     override fun score(

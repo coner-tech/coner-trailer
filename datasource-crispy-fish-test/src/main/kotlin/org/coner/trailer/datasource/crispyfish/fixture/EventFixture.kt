@@ -9,6 +9,7 @@ import org.coner.trailer.SeasonEvent
 import org.coner.trailer.TestPolicies
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
@@ -71,7 +72,7 @@ class EventFixture(
     val standardPenaltyFactory = StandardPenaltyFactory(TestPolicies.lsccV1)
     val rawTimeRunScoreFactory = RawTimeRunScoreFactory(standardPenaltyFactory)
     val rawTimeScoreMapper = ScoreMapper(rawTimeRunScoreFactory)
-    val paxTimeRunScoreFactory = PaxTimeRunScoreFactory(standardPenaltyFactory)
+    val paxTimeRunScoreFactory = LegacyBuggedPaxTimeRunScoreFactory(standardPenaltyFactory)
     val paxTimeScoreMapper = ScoreMapper(paxTimeRunScoreFactory)
     val groupedScoreMapper = ScoreMapper(GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory))
     val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()

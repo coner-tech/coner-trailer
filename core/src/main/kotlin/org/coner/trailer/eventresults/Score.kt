@@ -6,20 +6,23 @@ import java.math.RoundingMode
 
 data class Score constructor(
     val value: BigDecimal,
-    val penalty: Penalty? = null
+    val penalty: Penalty? = null,
+    private val strict: Boolean = true
 ) : Comparable<Score> {
 
     constructor(
         value: String,
-        penalty: Penalty? = null
+        penalty: Penalty? = null,
     ) : this(value = BigDecimal(value), penalty = penalty)
 
     init {
         require(value.scale() == 3) {
             "Scale must be 3 but was ${value.scale()}"
         }
-        require(penalty == null || value >= penalty.floor) {
-            "Score with penalty must have value greater than or equal to its penalty's floor."
+        if (strict) {
+            require(penalty == null || value >= penalty.floor) {
+                "Score with penalty must have value greater than or equal to its penalty's floor."
+            }
         }
     }
 
