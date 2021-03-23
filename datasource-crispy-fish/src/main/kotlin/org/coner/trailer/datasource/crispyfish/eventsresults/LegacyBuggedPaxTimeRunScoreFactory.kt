@@ -6,7 +6,6 @@ import org.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import org.coner.trailer.eventresults.Score
 import org.coner.trailer.eventresults.StandardPenaltyFactory
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 /**
  * A PaxTimeRunScoreFactory which replicates bugs necessary to match legacy results when recreating them with crispy
