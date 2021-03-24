@@ -31,6 +31,11 @@ class StandingsReportCreatorFromCrispyFishTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
+    @BeforeEach
+    fun before() {
+        creator = StandingsReportCreator()
+    }
+
     @Test
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)

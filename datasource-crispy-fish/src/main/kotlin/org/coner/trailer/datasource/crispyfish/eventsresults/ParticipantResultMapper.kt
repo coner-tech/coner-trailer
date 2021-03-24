@@ -55,12 +55,12 @@ class ParticipantResultMapper(
             position = index + 1,
             diffFirst = when {
                 index == 0 -> null
-                result.score.penalty != null -> null
+                result.score.penalty?.diff == false -> null
                 else -> Time(result.score.value - sortedResults[0].score.value)
             },
             diffPrevious = when {
                 index == 0 -> null
-                result.score.penalty != null -> null
+                result.score.penalty?.diff == false -> null
                 else -> Time(result.score.value - sortedResults[index - 1].score.value)
             }
         )

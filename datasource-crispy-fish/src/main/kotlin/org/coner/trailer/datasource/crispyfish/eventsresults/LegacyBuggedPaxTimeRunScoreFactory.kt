@@ -31,13 +31,21 @@ class LegacyBuggedPaxTimeRunScoreFactory(
             didNotFinish = didNotFinish,
             disqualified = disqualified
         )
-        val penalizedTime = when {
-            penalty != null -> penalty.floor + scratchTime.value
-            else -> scratchTime.value
+        val value = when {
+            penalty is Score.Penalty.Cone -> {
+                val penalizedRawTime = penalty.floor + scratchTime.value
+                (participantGrouping.paxFactor?.multiply(penalizedRawTime) ?: penalizedRawTime)
+                    .setScaleWithBuggedCrispyFishRounding()
+            }
+            penalty != null -> {
+                val paxedScratchTime = participantGrouping.paxFactor?.multiply(scratchTime.value) ?: scratchTime.value
+                (penalty.floor + paxedScratchTime).setScaleWithBuggedCrispyFishRounding()
+            }
+            else -> (participantGrouping.paxFactor?.multiply(scratchTime.value) ?: scratchTime.value)
+                .setScaleWithBuggedCrispyFishRounding()
         }
-        val buggedPaxTime = (penalizedTime * (participantGrouping.paxFactor ?: BigDecimal.ONE))
         return Score(
-            value = buggedPaxTime.setScaleWithBuggedCrispyFishRounding(),
+            value = value,
             penalty = penalty,
             strict = false
         )

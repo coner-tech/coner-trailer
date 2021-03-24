@@ -27,22 +27,30 @@ data class Score constructor(
     }
 
     sealed class Penalty(
-        val floor: BigDecimal
+        val floor: BigDecimal,
+        val diff: Boolean
     ) {
-        object DidNotFinish : Penalty(floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3))
-        object Disqualified : Penalty(floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3))
-        class Cone(floor: BigDecimal, val count: Int) : Penalty(floor = floor) {
+        object DidNotFinish : Penalty(
+            diff = false,
+            floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3)
+        )
+        object Disqualified : Penalty(
+            diff = false,
+            floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3)
+        )
+        class Cone(floor: BigDecimal, val count: Int) : Penalty(
+            diff = true,
+            floor = floor
+        ) {
             constructor(
                 floor: String,
                 count: Int
             ) : this(BigDecimal(floor), count)
         }
-        object Unknown : Penalty(floor = BigDecimal.valueOf(intMaxValueNineTenthsAsLong).setScale(3))
 
         companion object {
             const val intMaxValueOneTenthAsLong = 214748364L
             const val intMaxValueTwoTenthsAsLong = 429496729L
-            const val intMaxValueNineTenthsAsLong = 1932735276L
         }
 
     }
