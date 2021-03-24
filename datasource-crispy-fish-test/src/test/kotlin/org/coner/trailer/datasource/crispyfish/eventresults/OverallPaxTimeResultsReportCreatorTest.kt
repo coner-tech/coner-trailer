@@ -259,7 +259,6 @@ class OverallPaxTimeResultsReportCreatorTest {
         }
     }
 
-
     @Test
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)

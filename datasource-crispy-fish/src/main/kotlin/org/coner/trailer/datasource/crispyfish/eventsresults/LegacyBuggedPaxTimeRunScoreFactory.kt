@@ -2,6 +2,7 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.trailer.Grouping
 import org.coner.trailer.Time
+import org.coner.trailer.datasource.crispyfish.util.bigdecimal.setScaleWithBuggedCrispyFishRounding
 import org.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import org.coner.trailer.eventresults.Score
 import org.coner.trailer.eventresults.StandardPenaltyFactory
@@ -35,9 +36,8 @@ class LegacyBuggedPaxTimeRunScoreFactory(
             else -> scratchTime.value
         }
         val buggedPaxTime = (penalizedTime * (participantGrouping.paxFactor ?: BigDecimal.ONE))
-        TODO("when buggedPaxTime is ##.###9 or higher, round up, else round down")
         return Score(
-            value = buggedPaxTime,
+            value = buggedPaxTime.setScaleWithBuggedCrispyFishRounding(),
             penalty = penalty,
             strict = false
         )
