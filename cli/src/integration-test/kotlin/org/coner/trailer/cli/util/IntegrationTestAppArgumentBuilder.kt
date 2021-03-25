@@ -40,7 +40,8 @@ class IntegrationTestAppArgumentBuilder(
             "--name", event.name,
             "--date", "${event.date}",
             "--crispy-fish-event-control-file", "$crispyFishEventControlFile",
-            "--crispy-fish-class-definition-file", "$crispyFishClassDefinitionFile"
+            "--crispy-fish-class-definition-file", "$crispyFishClassDefinitionFile",
+            "--policy-id", "${event.policy.id}"
         )
     }
 

@@ -35,6 +35,7 @@ class EventAddCommand(
 
     override val di: DI by findOrSetObject { di }
 
+
     private val dbConfig: DatabaseConfiguration by instance()
     private val service: EventService by instance()
     private val view: EventView by instance()

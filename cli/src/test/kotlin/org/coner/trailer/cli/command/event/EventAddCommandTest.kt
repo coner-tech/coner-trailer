@@ -54,6 +54,7 @@ class EventAddCommandTest {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
                 bind<EventView>() with instance(view)
+                bind<PolicyService>() with instance(policyService)
             }
         ).apply {
             context {
