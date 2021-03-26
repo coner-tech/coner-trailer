@@ -158,6 +158,7 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<PolicyResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
     bind<PolicyMapper>() with singleton { PolicyMapper() }
     bind<PolicyService>() with singleton { PolicyService(
+        persistConstraints = instance(),
         resource = instance(),
         mapper = instance()
     ) }

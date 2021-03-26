@@ -9,6 +9,8 @@ import org.coner.trailer.cli.command.event.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
+import org.coner.trailer.cli.command.policy.PolicyAddCommand
+import org.coner.trailer.cli.command.policy.PolicyCommand
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.season.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
@@ -134,6 +136,10 @@ val cliktModule = DI.Module("clikt") {
         bind<SeasonListCommand>() with singleton { SeasonListCommand(di = di, useConsole = instance()) }
         bind<SeasonDeleteCommand>() with singleton { SeasonDeleteCommand(di = di, useConsole = instance()) }
         bind<SeasonSetCommand>() with singleton { SeasonSetCommand(di = di, useConsole = instance()) }
+
+        // Policy commands
+        bind<PolicyCommand>() with singleton { PolicyCommand() }
+        bind<PolicyAddCommand>() with singleton { PolicyAddCommand(di = di) }
 
         // Event commands
         bind<EventCommand>() with singleton { EventCommand() }
