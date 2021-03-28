@@ -3,14 +3,12 @@ package org.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.contains
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
-import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,12 +33,12 @@ class ConfigDatabaseRemoveCommandTest {
     @TempDir
     lateinit var temp: Path
 
-    lateinit var dbConfigs: TestDatabaseConfigurations
+    lateinit var dbConfigs: org.coner.trailer.cli.io.TestDatabaseConfigurations
 
 
     @BeforeEach
     fun before() {
-        dbConfigs = TestDatabaseConfigurations(temp)
+        dbConfigs = org.coner.trailer.cli.io.TestDatabaseConfigurations(temp)
         testConsole = StringBufferConsole()
         command = ConfigDatabaseRemoveCommand(
             di = DI {

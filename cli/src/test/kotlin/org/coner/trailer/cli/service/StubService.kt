@@ -1,6 +1,6 @@
 package org.coner.trailer.cli.service
 
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.DatabaseConfiguration
 
 class StubService(
         private val databaseConfiguration: DatabaseConfiguration

@@ -19,7 +19,9 @@
         <module>api-client-motorsportreg-test</module>
         <module>datasource-motorsportreg</module>
         <module>io</module>
+        <module>io-kodein-di</module>
         <module>cli</module>
+        <module>io-test</module>
     </modules>
 
     <properties>

@@ -1,6 +1,7 @@
 package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
+import org.coner.trailer.Policy
 import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import java.nio.file.Path
@@ -26,6 +27,19 @@ class IntegrationTestAppArgumentBuilder(
             "--crispy-fish-database", "$crispyFishDir",
             "--snoozle-database", "$snoozleDir",
             "--default",
+        )
+    }
+
+    fun buildPolicyAdd(
+        policy: Policy
+    ): Array<String> {
+        return build(
+            "policy", "add",
+            "--id", "${policy.id}",
+            "--name", policy.name,
+            "--cone-penalty-seconds", "${policy.conePenaltySeconds}",
+            "--pax-time-style", policy.paxTimeStyle.name.toLowerCase(),
+            "--final-score-style", policy.finalScoreStyle.name.toLowerCase()
         )
     }
 

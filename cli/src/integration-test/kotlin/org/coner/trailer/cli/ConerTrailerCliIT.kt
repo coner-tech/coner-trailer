@@ -90,8 +90,10 @@ class ConerTrailerCliIT {
     fun `It should add an event`() {
         val databaseName = "event-and-prerequisites"
         command.parse(appArgumentBuilder.buildConfigureDatabaseAdd(databaseName))
+
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        command.parse(appArgumentBuilder.buildPolicyAdd(event.policy))
 
         command.parse(appArgumentBuilder.buildEventAddCrispyFish(
             event = event,

@@ -4,7 +4,6 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
@@ -13,9 +12,9 @@ import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.config.ConfigCommand
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.service.StubService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

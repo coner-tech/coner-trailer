@@ -1,7 +1,7 @@
 package org.coner.trailer.cli.view
 
 import com.github.ajalt.clikt.output.CliktConsole
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.DatabaseConfiguration
 
 class DatabaseConfigurationView(
         override val console: CliktConsole

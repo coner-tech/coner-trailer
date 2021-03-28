@@ -110,6 +110,8 @@ class ConerTrailerCliExecutableIT {
         processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        processRunner.execPolicyAdd(policy = event.policy)
+            .waitForSuccess()
 
         val process = processRunner.execEventAddCrispyFish(
             event = event,
@@ -145,6 +147,8 @@ class ConerTrailerCliExecutableIT {
         processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        processRunner.execPolicyAdd(policy = event.policy)
+            .waitForSuccess()
         processRunner.execEventAddCrispyFish(
             event = event,
             crispyFishEventControlFile = seasonFixture.event1.ecfPath,

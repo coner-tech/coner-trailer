@@ -6,12 +6,11 @@ import assertk.assertions.isEqualToIgnoringGivenProperties
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,11 +33,11 @@ class ConfigDatabaseSetDefaultCommandTest {
     @TempDir
     lateinit var temp: Path
 
-    lateinit var dbConfigs: TestDatabaseConfigurations
+    lateinit var dbConfigs: org.coner.trailer.cli.io.TestDatabaseConfigurations
 
     @BeforeEach
     fun before() {
-        dbConfigs = TestDatabaseConfigurations(temp)
+        dbConfigs = org.coner.trailer.cli.io.TestDatabaseConfigurations(temp)
         command = ConfigDatabaseSetDefaultCommand(
             di = DI {
                 bind<ConfigurationService>() with instance(service)

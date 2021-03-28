@@ -18,7 +18,7 @@ private val factory = MotorsportRegApiFactory()
 
 fun motorsportRegApiModule(
     credentialSupplier: () -> MotorsportRegBasicCredentials
-) = DI.Module("motorsportRegApi") {
+) = DI.Module("coner.trailer.cli.motorsportRegApi") {
     bind<AuthenticatedMotorsportRegApi>() with singleton {
         factory.authenticatedBasic(credentialsSupplier = credentialSupplier)
     }

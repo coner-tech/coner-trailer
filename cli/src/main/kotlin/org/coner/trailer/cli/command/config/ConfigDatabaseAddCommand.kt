@@ -1,17 +1,15 @@
 package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.path
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.kodein.di.DI
 import org.kodein.di.DIAware

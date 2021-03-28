@@ -1,14 +1,14 @@
-package org.coner.trailer.cli.io
+package org.coner.trailer.io
 
 import java.nio.file.Files
 import java.nio.file.Path
 
 data class DatabaseConfiguration(
-        val name: String,
-        val crispyFishDatabase: Path,
-        val snoozleDatabase: Path,
-        val motorsportReg: MotorsportReg?,
-        val default: Boolean
+    val name: String,
+    val crispyFishDatabase: Path,
+    val snoozleDatabase: Path,
+    val motorsportReg: MotorsportReg?,
+    val default: Boolean
 ) {
     init {
         require(name.all { it.isLetterOrDigit() || it == '-' || it == '_' || it == ' ' }) { "name must be alphanumeric" }

@@ -1,6 +1,5 @@
 package org.coner.trailer.cli.di
 
-import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.command.RootCommand
@@ -21,7 +20,7 @@ import org.kodein.di.singleton
 import kotlin.io.path.ExperimentalPathApi
 
 @OptIn(ExperimentalPathApi::class)
-val cliktModule = DI.Module("clikt") {
+val cliktModule = DI.Module("coner.trailer.cli.clikt") {
         bind<CliktConsole>() with singleton { defaultCliktConsole() }
         bind<RootCommand>() with singleton { RootCommand(di = di) }
 

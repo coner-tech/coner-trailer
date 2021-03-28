@@ -3,13 +3,12 @@ package org.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
@@ -35,12 +34,12 @@ class ConfigDatabaseListCommandTest {
     @TempDir
     lateinit var temp: Path
 
-    lateinit var dbConfigs: TestDatabaseConfigurations
+    lateinit var dbConfigs: org.coner.trailer.cli.io.TestDatabaseConfigurations
     lateinit var testConsole: StringBufferConsole
 
     @BeforeEach
     fun before() {
-        dbConfigs = TestDatabaseConfigurations(temp)
+        dbConfigs = org.coner.trailer.cli.io.TestDatabaseConfigurations(temp)
         testConsole = StringBufferConsole()
         command = ConfigDatabaseListCommand(
             di = DI {

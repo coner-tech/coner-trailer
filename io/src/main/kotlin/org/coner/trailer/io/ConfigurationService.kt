@@ -1,11 +1,9 @@
-package org.coner.trailer.cli.io
+package org.coner.trailer.io
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.harawata.appdirs.AppDirs
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class ConfigurationService(
         private val configDir: Path,

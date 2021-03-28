@@ -1,5 +1,6 @@
 package org.coner.trailer.cli.io
 
+import org.coner.trailer.io.DatabaseConfiguration
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -11,8 +12,8 @@ class TestDatabaseConfigurations(
     val bar = factory(
             name = "bar",
             motorsportReg = DatabaseConfiguration.MotorsportReg(
-                    username = "user@bar",
-                    organizationId = "bar.organizationId"
+                username = "user@bar",
+                organizationId = "bar.organizationId"
             ),
             default = true
     )
@@ -30,11 +31,11 @@ class TestDatabaseConfigurations(
                 .resolve(name)
                 .also { Files.createDirectories(it) }
         return DatabaseConfiguration(
-                name = name,
-                crispyFishDatabase = path("crispy-fish"),
-                snoozleDatabase = path("snoozle"),
-                motorsportReg = motorsportReg,
-                default = default
+            name = name,
+            crispyFishDatabase = path("crispy-fish"),
+            snoozleDatabase = path("snoozle"),
+            motorsportReg = motorsportReg,
+            default = default
         )
     }
 }

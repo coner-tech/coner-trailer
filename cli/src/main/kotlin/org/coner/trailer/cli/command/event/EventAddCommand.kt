@@ -10,7 +10,7 @@ import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.Event
 import org.coner.trailer.Policy
 import org.coner.trailer.cli.command.policy.policySelectOptionGroup
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.util.clikt.toLocalDate
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView

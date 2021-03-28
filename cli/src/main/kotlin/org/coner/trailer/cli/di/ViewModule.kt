@@ -9,7 +9,7 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 
-val viewModule = DI.Module("view") {
+val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<DatabaseConfigurationView>() with provider { DatabaseConfigurationView(
             console = instance()
     ) }

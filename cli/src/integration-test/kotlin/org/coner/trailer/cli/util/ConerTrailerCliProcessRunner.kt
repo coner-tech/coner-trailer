@@ -1,6 +1,7 @@
 package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
+import org.coner.trailer.Policy
 import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.platform.commons.logging.Logger
@@ -32,6 +33,10 @@ class ConerTrailerCliProcessRunner(
             *appArgumentBuilder.buildConfigureDatabaseAdd(databaseName)
         )
     }
+
+    fun execPolicyAdd(policy: Policy): Process = exec(
+        *appArgumentBuilder.buildPolicyAdd(policy)
+    )
 
     fun execEventAddCrispyFish(
         event: Event,

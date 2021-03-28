@@ -9,14 +9,16 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
 import org.coner.trailer.cli.di.ConfigurationServiceArgument
 import org.coner.trailer.cli.di.ConfigurationServiceFactory
-import org.coner.trailer.cli.di.databaseServiceModule
 import org.coner.trailer.cli.di.motorsportRegApiModule
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
+import org.coner.trailer.di.databaseModule
 import org.kodein.di.*
 import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
 
+@ExperimentalPathApi
 class RootCommand(override val di: DI) : CliktCommand(
     name = "coner-trailer-cli"
 ), DIAware {
@@ -95,7 +97,7 @@ class RootCommand(override val di: DI) : CliktCommand(
             extend(di, copy = Copy.All)
             bind<ConfigurationService>() with instance(service)
             if (database != service.noDatabase) {
-                import(databaseServiceModule(databaseConfiguration = database))
+                import(databaseModule(databaseConfiguration = database))
                 import(motorsportRegApiModule { assembleMotorsportRegBasicCredentials(database) })
             }
         }

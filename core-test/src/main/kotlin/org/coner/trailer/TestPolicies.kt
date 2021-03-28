@@ -14,4 +14,12 @@ object TestPolicies {
         finalScoreStyle = FinalScoreStyle.AUTOCROSS
     ) }
 
+    val lsccV2: Policy by lazy { Policy(
+        id = UUID.randomUUID(),
+        name = "LSCC Policy v2",
+        conePenaltySeconds = 2,
+        paxTimeStyle = PaxTimeStyle.FAIR,
+        finalScoreStyle = FinalScoreStyle.AUTOCROSS
+    ) }
+
 }

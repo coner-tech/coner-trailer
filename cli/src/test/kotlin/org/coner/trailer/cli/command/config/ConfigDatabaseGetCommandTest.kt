@@ -3,13 +3,12 @@ package org.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.contains
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.ConfigurationService
+import org.coner.trailer.io.ConfigurationService
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.view.DatabaseConfigurationView
 import org.junit.jupiter.api.BeforeEach
@@ -37,12 +36,12 @@ class ConfigDatabaseGetCommandTest {
     lateinit var temp: Path
 
     lateinit var testConsole: StringBufferConsole
-    lateinit var dbConfigs: TestDatabaseConfigurations
+    lateinit var dbConfigs: org.coner.trailer.cli.io.TestDatabaseConfigurations
 
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        dbConfigs = TestDatabaseConfigurations(temp)
+        dbConfigs = org.coner.trailer.cli.io.TestDatabaseConfigurations(temp)
         command = ConfigDatabaseGetCommand(
             di = DI {
                 bind<ConfigurationService>() with instance(service)

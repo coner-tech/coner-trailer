@@ -1,26 +1,26 @@
-package org.coner.trailer.cli.di
+package org.coner.trailer.di
 
-import org.coner.trailer.Policy
-import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.*
 import org.coner.trailer.datasource.snoozle.*
-import org.coner.trailer.eventresults.*
+import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*
 import org.coner.trailer.io.service.*
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.kodein.di.singleton
 import kotlin.io.path.ExperimentalPathApi
 
-@OptIn(ExperimentalPathApi::class)
-fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("service") {
+@ExperimentalPathApi
+fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("coner.trailer.io.databaseModule[${databaseConfiguration.name}]") {
     bind<DatabaseConfiguration>() with instance(databaseConfiguration)
     bind<ConerTrailerDatabase>() with singleton { ConerTrailerDatabase(
-            root = databaseConfiguration.snoozleDatabase)
+        root = databaseConfiguration.snoozleDatabase)
     }
 
     // Event Points Calculators
@@ -32,15 +32,15 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     }
     bind<EventPointsCalculatorPersistConstraints>() with singleton {
         EventPointsCalculatorPersistConstraints(
-                resource = instance(),
-                mapper = instance()
+            resource = instance(),
+            mapper = instance()
         )
     }
     bind<EventPointsCalculatorService>() with singleton {
         EventPointsCalculatorService(
-                resource = instance(),
-                mapper = instance(),
-                persistConstraints = instance()
+            resource = instance(),
+            mapper = instance(),
+            persistConstraints = instance()
         )
     }
 
@@ -53,15 +53,15 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     }
     bind<RankingSortPersistConstraints>() with singleton {
         RankingSortPersistConstraints(
-                resource = instance(),
-                mapper = instance()
+            resource = instance(),
+            mapper = instance()
         )
     }
     bind<RankingSortService>() with singleton {
         RankingSortService(
-                resource = instance(),
-                mapper = instance(),
-                persistConstraints = instance()
+            resource = instance(),
+            mapper = instance(),
+            persistConstraints = instance()
         )
     }
 
@@ -71,21 +71,21 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     }
     bind<SeasonPointsCalculatorConfigurationMapper>() with singleton {
         SeasonPointsCalculatorConfigurationMapper(
-                eventPointsCalculatorService = instance(),
-                rankingSortService = instance()
+            eventPointsCalculatorService = instance(),
+            rankingSortService = instance()
         )
     }
     bind<SeasonPointsCalculatorConfigurationConstraints>() with singleton {
         SeasonPointsCalculatorConfigurationConstraints(
-                resource = instance(),
-                mapper = instance()
+            resource = instance(),
+            mapper = instance()
         )
     }
     bind<SeasonPointsCalculatorConfigurationService>() with singleton {
         SeasonPointsCalculatorConfigurationService(
-                resource = instance(),
-                mapper = instance(),
-                constraints = instance()
+            resource = instance(),
+            mapper = instance(),
+            constraints = instance()
         )
     }
 
@@ -95,27 +95,27 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     bind<PersonPersistConstraints>() with singleton { PersonPersistConstraints() }
     bind<PersonDeleteConstraints>() with singleton { PersonDeleteConstraints() }
     bind<PersonService>() with singleton { PersonService(
-            persistConstraints = instance(),
-            deleteConstraints = instance(),
-            resource = instance(),
-            mapper = instance()
+        persistConstraints = instance(),
+        deleteConstraints = instance(),
+        resource = instance(),
+        mapper = instance()
     ) }
 
     // Seasons
     bind<SeasonResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
     bind<SeasonMapper>() with singleton { SeasonMapper(
-            seasonPointsCalculatorConfigurationService = instance()
+        seasonPointsCalculatorConfigurationService = instance()
     ) }
     bind<SeasonPersistConstraints>() with singleton { SeasonPersistConstraints(
-            resource = instance(),
-            mapper = instance()
+        resource = instance(),
+        mapper = instance()
     ) }
     bind<SeasonDeleteConstraints>() with singleton { SeasonDeleteConstraints() }
     bind<SeasonService>() with singleton { SeasonService(
-            resource = instance(),
-            mapper = instance(),
-            persistConstraints = instance(),
-            deleteConstraints = instance()
+        resource = instance(),
+        mapper = instance(),
+        persistConstraints = instance(),
+        deleteConstraints = instance()
     ) }
 
     // Events
@@ -162,54 +162,8 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
         resource = instance(),
         mapper = instance()
     ) }
-
-    // Event Results
-    bind<StandardPenaltyFactory>() with multiton { policy: Policy -> StandardPenaltyFactory(policy) }
-    bind<RawTimeRunScoreFactory>() with multiton { policy: Policy -> RawTimeRunScoreFactory(
-        penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
-    ) }
-    bind<PaxTimeRunScoreFactory>() with multiton { policy: Policy -> PaxTimeRunScoreFactory(
-        penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
-    )}
-    bind<ScoreMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
-    ) }
-    bind<ScoreMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-    ) }
-    bind<ScoreMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = GroupedRunScoreFactory(
-            rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
-            paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-        )
-    ) }
-    bind<FinalScoreFactory>(FinalScoreStyle.AUTOCROSS) with singleton { AutocrossFinalScoreFactory() }
-    bind<FinalScoreFactory>(FinalScoreStyle.RALLYCROSS) with singleton { RallycrossFinalScoreFactory() }
-    bind<ParticipantResultMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(
-            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.raw).invoke(policy)
-        ),
-        crispyFishParticipantMapper = instance(),
-        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
-    ) }
-    bind<ParticipantResultMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(
-            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.pax).invoke(policy)
-        ),
-        crispyFishParticipantMapper = instance(),
-        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
-    ) }
-    bind<ParticipantResultMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(
-            scoreMapper = ScoreMapper(
-                runScoreFactory = GroupedRunScoreFactory(
-                    rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
-                    paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-                )
-            )
-        ),
-        crispyFishParticipantMapper = instance(),
-        finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
+    bind<PolicyPersistConstraints>() with singleton { PolicyPersistConstraints(
+        resource = instance()
     ) }
 
     // Groupings
@@ -219,9 +173,4 @@ fun databaseServiceModule(databaseConfiguration: DatabaseConfiguration) = DI.Mod
     ) }
     bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
 
-
-    bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
-        eventResultsReportFileNameGenerator = instance()
-    ) }
-    bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }
 }

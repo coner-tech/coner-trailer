@@ -11,7 +11,7 @@ import io.mockk.verifySequence
 import org.coner.trailer.Event
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
