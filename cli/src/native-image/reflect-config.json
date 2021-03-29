@@ -87,6 +87,10 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"java.lang.Iterable",
+  "allDeclaredMethods":true
+},
+{
   "name":"java.lang.Number",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
@@ -116,7 +120,12 @@
   "methods":[{"name":"getName","parameterTypes":[] }]
 },
 {
-  "name":"java.nio.file.Path"
+  "name":"java.nio.file.Path",
+  "allDeclaredMethods":true
+},
+{
+  "name":"java.nio.file.Watchable",
+  "allDeclaredMethods":true
 },
 {
   "name":"java.security.AccessController"
@@ -215,27 +224,6 @@
 {
   "name":"org.coner.snoozle.db.entity.Entity",
   "allDeclaredMethods":true
-},
-{
-  "name":"org.coner.trailer.cli.io.Configuration",
-  "allDeclaredFields":true,
-  "allPublicFields":true,
-  "allDeclaredMethods":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
-  "name":"org.coner.trailer.cli.io.DatabaseConfiguration",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"org.coner.trailer.cli.io.DatabaseConfiguration$MotorsportReg",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
 },
 {
   "name":"org.coner.trailer.client.motorsportreg.model.Assignment",
@@ -345,6 +333,15 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
+},
+{
   "name":"org.coner.trailer.datasource.snoozle.entity.RankingSortEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
@@ -381,6 +378,33 @@
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"
+},
+{
+  "name":"org.coner.trailer.io.Configuration",
+  "allDeclaredFields":true,
+  "allPublicFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true
+},
+{
+  "name":"org.coner.trailer.io.DatabaseConfiguration",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"sun.nio.fs.UnixPath",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
 },
 {
   "name":"sun.security.pkcs.SignerInfo[]"
