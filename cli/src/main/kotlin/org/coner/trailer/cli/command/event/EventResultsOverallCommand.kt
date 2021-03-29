@@ -11,6 +11,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import org.coner.trailer.Policy
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.OverallResultsReportTableView
@@ -24,6 +25,7 @@ import org.coner.trailer.io.service.EventService
 import org.coner.trailer.render.StandaloneReportRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.factory
 import org.kodein.di.instance
 import java.nio.file.Path
 import java.util.*
@@ -42,8 +44,8 @@ class EventResultsOverallCommand(
 
     private val eventService: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val crispyFishRawResultsReportCreator: OverallRawTimeResultsReportCreator by instance()
-    private val crispyFishPaxResultsReportCreator: OverallPaxTimeResultsReportCreator by instance()
+    private val crispyFishRawResultsReportCreator: (Policy) -> OverallRawTimeResultsReportCreator by factory()
+    private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
     private val reportTableView: OverallResultsReportTableView by instance()
     private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
     private val standaloneReportRenderer: StandaloneReportRenderer by instance()
@@ -97,8 +99,8 @@ class EventResultsOverallCommand(
             reportChoice.crispyFish -> {
                 val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
                 val reportCreator = when (reportChoice.resultsType) {
-                    StandardResultsTypes.raw -> crispyFishRawResultsReportCreator
-                    StandardResultsTypes.pax -> crispyFishPaxResultsReportCreator
+                    StandardResultsTypes.raw -> crispyFishRawResultsReportCreator(event.policy)
+                    StandardResultsTypes.pax -> crispyFishPaxResultsReportCreator(event.policy)
                     else -> throw IllegalArgumentException()
                 }
                 reportCreator.createFromRegistrationData(

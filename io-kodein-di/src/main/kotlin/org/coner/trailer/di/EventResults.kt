@@ -1,10 +1,7 @@
 package org.coner.trailer.di
 
 import org.coner.trailer.Policy
-import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.*
 import org.coner.trailer.eventresults.*
 import org.kodein.di.*
 
@@ -63,5 +60,15 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         crispyFishParticipantMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
+    bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> OverallRawTimeResultsReportCreator(
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.raw).invoke(policy)
+    ) }
+    bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> OverallPaxTimeResultsReportCreator(
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.pax).invoke(policy)
+    ) }
+    bind<CompetitionGroupedResultsReportCreator>() with multiton { policy: Policy -> CompetitionGroupedResultsReportCreator(
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.grouped).invoke(policy)
+    ) }
+
     bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }
 }

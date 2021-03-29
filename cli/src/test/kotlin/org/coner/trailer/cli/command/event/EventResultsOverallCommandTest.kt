@@ -10,6 +10,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.html.HtmlBlockTag
 import org.coner.trailer.Event
+import org.coner.trailer.Policy
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
+import org.kodein.di.multiton
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.readText
@@ -60,8 +62,8 @@ class EventResultsOverallCommandTest {
         command = EventResultsOverallCommand(DI {
             bind<EventService>() with instance(eventService)
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-            bind<OverallRawTimeResultsReportCreator>() with instance(crispyFishOverallRawTimeResultsReportCreator)
-            bind<OverallPaxTimeResultsReportCreator>() with instance(crispyFishOverallPaxTimeResultsReportCreator)
+            bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
+            bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
             bind<OverallResultsReportTableView>() with instance(reportTableView)
             bind<OverallResultsReportRenderer>() with instance(reportHtmlPartialRenderer)
             bind<StandaloneReportRenderer>() with instance(standaloneReportRenderer)
