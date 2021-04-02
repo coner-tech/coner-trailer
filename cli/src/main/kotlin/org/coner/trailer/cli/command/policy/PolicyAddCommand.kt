@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.Policy
 import org.coner.trailer.cli.util.clikt.toUuid
+import org.coner.trailer.cli.view.PolicyView
 import org.coner.trailer.eventresults.FinalScoreStyle
 import org.coner.trailer.eventresults.PaxTimeStyle
 import org.coner.trailer.io.service.PolicyService
@@ -23,6 +24,7 @@ class PolicyAddCommand(di: DI) : CliktCommand(
     override val di: DI by findOrSetObject { di }
 
     private val service: PolicyService by instance()
+    private val view: PolicyView by instance()
 
     private val id: UUID by option(hidden = true)
         .convert { toUuid(it) }
@@ -49,5 +51,6 @@ class PolicyAddCommand(di: DI) : CliktCommand(
             finalScoreStyle = finalScoreStyle
         )
         service.create(policy)
+        echo(view.render(policy))
     }
 }

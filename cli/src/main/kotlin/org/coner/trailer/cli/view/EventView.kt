@@ -18,6 +18,8 @@ class EventView : View<Event> {
                     People Map:             ${renderPeopleMap(model)}
             MotorsportReg:
                     ID:   ${model.motorsportReg?.id}
+            Policy:
+                    ID: ${model.policy.id}
     """.trimIndent()
 
     private fun renderPeopleMap(model: Event): String {
