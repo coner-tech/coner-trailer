@@ -25,7 +25,7 @@ class PolicyService(
 
     fun findByName(name: String): Policy {
         val entity = resource.stream()
-            .filter { it.name == name }
+            .filter { it.name.equals(name, ignoreCase = true) }
             .findFirst()
             .get()
         return mapper.toCore(entity)

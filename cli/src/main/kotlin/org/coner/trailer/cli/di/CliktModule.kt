@@ -10,6 +10,7 @@ import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
 import org.coner.trailer.cli.command.policy.PolicyAddCommand
 import org.coner.trailer.cli.command.policy.PolicyCommand
+import org.coner.trailer.cli.command.policy.PolicyGetCommand
 import org.coner.trailer.cli.command.policy.PolicyListCommand
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.season.*
@@ -141,6 +142,7 @@ val cliktModule = DI.Module("coner.trailer.cli.clikt") {
         bind<PolicyCommand>() with singleton { PolicyCommand() }
         bind<PolicyAddCommand>() with singleton { PolicyAddCommand(di = di) }
         bind<PolicyListCommand>() with singleton { PolicyListCommand(di = di) }
+        bind<PolicyGetCommand>() with singleton { PolicyGetCommand(di = di) }
 
         // Event commands
         bind<EventCommand>() with singleton { EventCommand() }
