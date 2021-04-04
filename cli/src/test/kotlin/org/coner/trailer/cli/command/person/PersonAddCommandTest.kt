@@ -5,6 +5,7 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
 import io.mockk.verifySequence
 import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
@@ -46,7 +47,7 @@ class PersonAddCommandTest {
     @Test
     fun `It should add person`() {
         val person = TestPeople.ANASTASIA_RIGLER
-        every { service.create(eq(person)) } answers { Unit }
+        justRun { service.create(eq(person)) }
         val viewRendered = "view rendered ${person.lastName} ${person.lastName}"
         every { view.render(eq(person)) } returns viewRendered
 

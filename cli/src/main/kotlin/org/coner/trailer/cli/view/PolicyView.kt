@@ -7,7 +7,7 @@ class PolicyView : View<Policy> {
         ${model.name}
             ID: ${model.id}
             Cone penalty seconds: ${model.conePenaltySeconds}
-            Pax time style:             ${model.paxTimeStyle}
+            Pax time style: ${model.paxTimeStyle}
             Final score style: ${model.finalScoreStyle}
     """.trimIndent()
 }

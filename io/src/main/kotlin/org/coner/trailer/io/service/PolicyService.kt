@@ -6,6 +6,7 @@ import org.coner.trailer.datasource.snoozle.entity.PolicyEntity
 import org.coner.trailer.io.constraint.PolicyPersistConstraints
 import org.coner.trailer.io.mapper.PolicyMapper
 import java.util.*
+import kotlin.streams.toList
 
 class PolicyService(
     private val persistConstraints: PolicyPersistConstraints,
@@ -28,5 +29,12 @@ class PolicyService(
             .findFirst()
             .get()
         return mapper.toCore(entity)
+    }
+
+    fun list(): List<Policy> {
+        return resource.stream()
+            .sorted(compareBy(PolicyEntity::name))
+            .map(mapper::toCore)
+            .toList()
     }
 }
