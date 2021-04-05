@@ -3,9 +3,11 @@ package org.coner.trailer.io.mapper
 import org.coner.trailer.Event
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
+import org.coner.trailer.datasource.snoozle.PolicyResource
 import org.coner.trailer.datasource.snoozle.entity.EventEntity
 import org.coner.trailer.datasource.snoozle.entity.GroupingContainer
 import org.coner.trailer.datasource.snoozle.entity.ParticipantEntity
+import org.coner.trailer.datasource.snoozle.entity.PolicyEntity
 import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.PersonService
 import org.coner.trailer.io.service.PolicyService
@@ -13,7 +15,8 @@ import org.coner.trailer.io.service.PolicyService
 class EventMapper(
     private val personService: PersonService,
     private val crispyFishGroupingService: CrispyFishGroupingService,
-    private val policyService: PolicyService
+    private val policyResource: PolicyResource,
+    private val policyMapper: PolicyMapper,
 ) {
 
     fun toCore(snoozle: EventEntity): Event {
@@ -57,7 +60,7 @@ class EventMapper(
                 )
             },
             motorsportReg = snoozle.motorsportReg?.let { Event.MotorsportRegMetadata(id = it.id) },
-            policy = policyService.findById(snoozle.policyId)
+            policy = policyMapper.toCore(policyResource.read(PolicyEntity.Key(snoozle.policyId)))
         )
     }
 

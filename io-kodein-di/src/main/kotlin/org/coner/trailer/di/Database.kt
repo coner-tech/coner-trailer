@@ -123,7 +123,8 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
     bind<EventMapper>() with singleton { EventMapper(
         personService = instance(),
         crispyFishGroupingService = instance(),
-        policyService = instance()
+        policyResource = instance(),
+        policyMapper = instance()
     ) }
     bind<EventPersistConstraints>() with singleton { EventPersistConstraints(
         resource = instance()
@@ -163,7 +164,9 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
         mapper = instance()
     ) }
     bind<PolicyPersistConstraints>() with singleton { PolicyPersistConstraints(
-        resource = instance()
+        resource = instance(),
+        eventResource = instance(),
+        eventMapper = instance()
     ) }
 
     // Groupings

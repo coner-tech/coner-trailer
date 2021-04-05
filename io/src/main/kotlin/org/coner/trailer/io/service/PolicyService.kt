@@ -14,7 +14,7 @@ class PolicyService(
     private val mapper: PolicyMapper
 ) {
     fun create(create: Policy) {
-        persistConstraints.hasUniqueName(create)
+        persistConstraints.assess(create)
         resource.create(mapper.toSnoozle(create))
     }
 
@@ -36,5 +36,10 @@ class PolicyService(
             .sorted(compareBy(PolicyEntity::name))
             .map(mapper::toCore)
             .toList()
+    }
+
+    fun update(update: Policy) {
+        persistConstraints.assess(update)
+        resource.update(mapper.toSnoozle(update))
     }
 }
