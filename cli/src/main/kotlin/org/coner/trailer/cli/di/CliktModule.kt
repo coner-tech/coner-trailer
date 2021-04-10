@@ -141,6 +141,7 @@ val cliktModule = DI.Module("coner.trailer.cli.clikt") {
         bind<PolicyListCommand>() with singleton { PolicyListCommand(di = di) }
         bind<PolicyGetCommand>() with singleton { PolicyGetCommand(di = di) }
         bind<PolicySetCommand>() with singleton { PolicySetCommand(di = di) }
+        bind<PolicyDeleteCommand>() with singleton { PolicyDeleteCommand(di) }
 
         // Event commands
         bind<EventCommand>() with singleton { EventCommand() }

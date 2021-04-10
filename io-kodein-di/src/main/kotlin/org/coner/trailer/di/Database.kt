@@ -160,8 +160,12 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
     bind<PolicyMapper>() with singleton { PolicyMapper() }
     bind<PolicyService>() with singleton { PolicyService(
         persistConstraints = instance(),
+        deleteConstraints = instance(),
         resource = instance(),
         mapper = instance()
+    ) }
+    bind<PolicyDeleteConstraints>() with singleton { PolicyDeleteConstraints(
+        eventResource = instance()
     ) }
     bind<PolicyPersistConstraints>() with singleton { PolicyPersistConstraints(
         resource = instance(),
@@ -175,5 +179,4 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
         mapper = instance()
     ) }
     bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
-
 }

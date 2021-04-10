@@ -43,6 +43,7 @@ object ConerTrailerCli {
                 instance<PolicyCommand>().subcommands(
                     instance<PolicyAddCommand>(),
                     instance<PolicyGetCommand>(),
+                    instance<PolicyDeleteCommand>(),
                     instance<PolicyListCommand>(),
                     instance<PolicySetCommand>()
                 ),

@@ -3,6 +3,7 @@ package org.coner.trailer.io.service
 import org.coner.trailer.Policy
 import org.coner.trailer.datasource.snoozle.PolicyResource
 import org.coner.trailer.datasource.snoozle.entity.PolicyEntity
+import org.coner.trailer.io.constraint.PolicyDeleteConstraints
 import org.coner.trailer.io.constraint.PolicyPersistConstraints
 import org.coner.trailer.io.mapper.PolicyMapper
 import java.util.*
@@ -10,6 +11,7 @@ import kotlin.streams.toList
 
 class PolicyService(
     private val persistConstraints: PolicyPersistConstraints,
+    private val deleteConstraints: PolicyDeleteConstraints,
     private val resource: PolicyResource,
     private val mapper: PolicyMapper
 ) {
@@ -41,5 +43,10 @@ class PolicyService(
     fun update(update: Policy) {
         persistConstraints.assess(update)
         resource.update(mapper.toSnoozle(update))
+    }
+
+    fun delete(delete: Policy) {
+        deleteConstraints.assess(delete)
+        resource.delete(mapper.toSnoozle(delete))
     }
 }
