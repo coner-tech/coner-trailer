@@ -37,10 +37,10 @@ class PolicyAddCommand(di: DI) : CliktCommand(
         .required()
         .validate { if (it < 0) fail("Must be greater than zero") }
     private val paxTimeStyle: PaxTimeStyle by option()
-        .choice(PaxTimeStyle.values().map { it.name.toLowerCase() to it }.toMap())
+        .choice(PaxTimeStyle.values().associateBy { it.name.toLowerCase() })
         .default(PaxTimeStyle.FAIR)
     private val finalScoreStyle: FinalScoreStyle by option()
-        .choice(FinalScoreStyle.values().map { it.name.toLowerCase() to it }.toMap())
+        .choice(FinalScoreStyle.values().associateBy { it.name.toLowerCase() })
         .required()
 
     override fun run() {

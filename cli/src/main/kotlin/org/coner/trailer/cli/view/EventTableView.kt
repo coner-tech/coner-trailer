@@ -11,10 +11,10 @@ class EventTableView : View<List<Event>> {
             renderer.cwc = CWC_LongestLine()
         }
         at.addRule()
-        at.addRow("ID", "Name", "Date", "Crispy Fish", "MotorsportReg")
+        at.addRow("ID", "Name", "Date", "Policy", "Crispy Fish", "MotorsportReg")
         at.addRule()
         model.forEach { event ->
-            at.addRow(event.id, event.name, event.date, yesOrEmpty(event.crispyFish), yesOrEmpty(event.motorsportReg))
+            at.addRow(event.id, event.name, event.date, event.policy.name, yesOrEmpty(event.crispyFish), yesOrEmpty(event.motorsportReg))
             at.addRule()
         }
         return at.render()

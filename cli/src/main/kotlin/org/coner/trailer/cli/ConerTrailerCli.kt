@@ -7,10 +7,7 @@ import org.coner.trailer.cli.command.event.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
-import org.coner.trailer.cli.command.policy.PolicyAddCommand
-import org.coner.trailer.cli.command.policy.PolicyCommand
-import org.coner.trailer.cli.command.policy.PolicyGetCommand
-import org.coner.trailer.cli.command.policy.PolicyListCommand
+import org.coner.trailer.cli.command.policy.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.season.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
@@ -46,7 +43,8 @@ object ConerTrailerCli {
                 instance<PolicyCommand>().subcommands(
                     instance<PolicyAddCommand>(),
                     instance<PolicyGetCommand>(),
-                    instance<PolicyListCommand>()
+                    instance<PolicyListCommand>(),
+                    instance<PolicySetCommand>()
                 ),
                 instance<EventCommand>().subcommands(
                     instance<EventAddCommand>(),

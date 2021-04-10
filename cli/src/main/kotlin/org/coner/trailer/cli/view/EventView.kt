@@ -17,9 +17,10 @@ class EventView : View<Event> {
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
                     People Map:             ${renderPeopleMap(model)}
             MotorsportReg:
-                    ID:   ${model.motorsportReg?.id}
+                    ID:     ${model.motorsportReg?.id}
             Policy:
-                    ID: ${model.policy.id}
+                    ID:     ${model.policy.id}
+                    Name:   ${model.policy.name}
     """.trimIndent()
 
     private fun renderPeopleMap(model: Event): String {
