@@ -10,7 +10,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.CrispyFishRegistrationTableView

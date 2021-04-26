@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext

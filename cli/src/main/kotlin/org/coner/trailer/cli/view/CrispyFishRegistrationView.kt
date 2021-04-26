@@ -1,6 +1,6 @@
 package org.coner.trailer.cli.view
 
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 
 class CrispyFishRegistrationView : View<Registration> {
     override fun render(model: Registration) = """

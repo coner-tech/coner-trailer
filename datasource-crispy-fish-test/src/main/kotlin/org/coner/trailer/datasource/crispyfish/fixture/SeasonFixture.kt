@@ -1,7 +1,7 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
-import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations

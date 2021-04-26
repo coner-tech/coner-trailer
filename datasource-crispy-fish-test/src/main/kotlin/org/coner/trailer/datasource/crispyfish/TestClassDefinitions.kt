@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.crispyfish
 
-import org.coner.crispyfish.model.ClassDefinition
+import tech.coner.crispyfish.model.ClassDefinition
 import java.math.BigDecimal
 
 object TestClassDefinitions {

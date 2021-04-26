@@ -1,7 +1,7 @@
 package org.coner.trailer.datasource.crispyfish
 
-import org.coner.crispyfish.model.ClassDefinition
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.ClassDefinition
+import tech.coner.crispyfish.model.Registration
 import java.nio.file.Path
 
 class CrispyFishEventMappingContext(

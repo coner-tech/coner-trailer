@@ -1,6 +1,6 @@
 package org.coner.trailer.io.service
 
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Person
 import org.coner.trailer.client.motorsportreg.model.Assignment
 import org.coner.trailer.datasource.snoozle.PersonResource

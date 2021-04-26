@@ -1,9 +1,9 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
-import org.coner.crispyfish.filetype.ecf.EventControlFile
-import org.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import org.coner.crispyfish.filetype.staging.StagingFileAssistant
-import org.coner.crispyfish.query.RegistrationsQuery
+import tech.coner.crispyfish.filetype.ecf.EventControlFile
+import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
+import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.query.RegistrationsQuery
 import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
 import org.coner.trailer.TestPolicies

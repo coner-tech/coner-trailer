@@ -1,6 +1,6 @@
 package org.coner.trailer.io.verification
 
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext

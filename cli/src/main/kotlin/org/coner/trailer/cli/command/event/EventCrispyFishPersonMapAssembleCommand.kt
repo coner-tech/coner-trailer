@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.cli.util.clikt.toUuid

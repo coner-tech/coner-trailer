@@ -1,7 +1,7 @@
 package org.coner.trailer.io.service
 
-import org.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import org.coner.crispyfish.filetype.ecf.EventControlFile
+import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
+import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.constraint.CrispyFishLoadConstraints

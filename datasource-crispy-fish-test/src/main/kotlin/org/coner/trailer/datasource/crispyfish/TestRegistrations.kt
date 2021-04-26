@@ -1,9 +1,9 @@
 package org.coner.trailer.datasource.crispyfish
 
-import org.coner.crispyfish.model.ClassDefinition
-import org.coner.crispyfish.model.Registration
-import org.coner.crispyfish.model.RegistrationResult
-import org.coner.crispyfish.model.RegistrationRun
+import tech.coner.crispyfish.model.ClassDefinition
+import tech.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.RegistrationResult
+import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Grouping
 import org.coner.trailer.Participant
 import org.coner.trailer.TestParticipants

@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.crispyfish
 
-import org.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Car
 import org.coner.trailer.Participant
 import org.coner.trailer.Person

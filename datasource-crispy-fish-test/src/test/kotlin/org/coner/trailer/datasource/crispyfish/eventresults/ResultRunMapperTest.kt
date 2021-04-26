@@ -8,7 +8,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
-import org.coner.crispyfish.model.RegistrationRun
+import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
