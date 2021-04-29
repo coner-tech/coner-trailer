@@ -99,6 +99,8 @@ class EventSetCommand(
         object Unset : MotorsportRegOptions()
     }
 
+    private val runCount: Event.RunCount? by runCountOption()
+
     override fun run() {
         val event = service.findById(id)
         val crispyFish = when (val crispyFishOptions = crispyFish) {
@@ -128,7 +130,8 @@ class EventSetCommand(
             date = date ?: event.date,
             lifecycle = lifecycle ?: event.lifecycle,
             crispyFish = crispyFish ?: event.crispyFish,
-            motorsportReg = motorsportReg
+            motorsportReg = motorsportReg,
+            runCount = runCount ?: event.runCount
         )
         service.update(
             update = set,

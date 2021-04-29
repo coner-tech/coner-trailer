@@ -55,7 +55,11 @@ class IntegrationTestAppArgumentBuilder(
             "--date", "${event.date}",
             "--crispy-fish-event-control-file", "$crispyFishEventControlFile",
             "--crispy-fish-class-definition-file", "$crispyFishClassDefinitionFile",
-            "--policy-id", "${event.policy.id}"
+            "--policy-id", "${event.policy.id}",
+            "--run-count", when (val runCount = event.runCount) {
+                is Event.RunCount.Defined -> "${runCount.value}"
+                Event.RunCount.FromCrispyFish -> "from-crispyfish"
+            }
         )
     }
 

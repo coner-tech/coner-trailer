@@ -11,7 +11,8 @@ data class EventEntity(
     val lifecycle: String,
     val crispyFish: CrispyFishMetadata?,
     val motorsportReg: MotorsportRegMetadata?,
-    val policyId: UUID
+    val policyId: UUID,
+    val runCount: RunCount?
 ) : Entity<EventEntity.Key> {
 
     data class CrispyFishMetadata(
@@ -32,4 +33,14 @@ data class EventEntity(
     )
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key
+
+    data class RunCount(
+        val type: Type,
+        val definedValue: Int? = null
+    ) {
+        enum class Type {
+            DEFINED,
+            FROM_CRISPYFISH
+        }
+    }
 }

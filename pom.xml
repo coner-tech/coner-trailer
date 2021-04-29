@@ -143,6 +143,7 @@
                         <javaParameters>true</javaParameters>
                         <args>
                             <arg>-Xopt-in=kotlin.ExperimentalStdlibApi</arg>
+                            <arg>-Xopt-in=kotlin.io.path.ExperimentalPathApi</arg>
                         </args>
                     </configuration>
                 </plugin>

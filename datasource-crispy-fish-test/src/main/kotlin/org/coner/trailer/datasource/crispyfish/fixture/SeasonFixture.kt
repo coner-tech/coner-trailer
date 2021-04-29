@@ -48,7 +48,8 @@ sealed class SeasonFixture(
                         )
                     ),
                     motorsportReg = null,
-                    policy = TestPolicies.lsccV1
+                    policy = TestPolicies.lsccV1,
+                    runCount = Event.RunCount.Defined(5)
                 ),
                 eventNumber = 1,
                 points = true
@@ -76,7 +77,8 @@ sealed class SeasonFixture(
                         )
                     ),
                     motorsportReg = null,
-                    policy = TestPolicies.lsccV1
+                    policy = TestPolicies.lsccV1,
+                    runCount = Event.RunCount.Defined(4)
                 ),
                 eventNumber = 2,
                 points = true
@@ -106,7 +108,8 @@ sealed class SeasonFixture(
                         )
                     ),
                     motorsportReg = null,
-                    policy = TestPolicies.lsccV1
+                    policy = TestPolicies.lsccV1,
+                    runCount = Event.RunCount.Defined(4)
                 ),
                 eventNumber = 3,
                 points = true

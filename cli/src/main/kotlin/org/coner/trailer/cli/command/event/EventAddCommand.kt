@@ -85,6 +85,7 @@ class EventAddCommand(
     private val motorsportRegEventId: String? by option("--motorsportreg-event-id")
     private val policy: Policy by policySelectOptionGroup { policyService }
         .required()
+    private val runCount: Event.RunCount by runCountOption().required()
 
     override fun run() {
         val create = Event(
@@ -100,7 +101,8 @@ class EventAddCommand(
             motorsportReg = motorsportRegEventId?.let { Event.MotorsportRegMetadata(
                 id = it
             ) },
-            policy = policy
+            policy = policy,
+            runCount = runCount
         )
         service.create(create)
         echo(view.render(create))

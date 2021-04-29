@@ -70,7 +70,8 @@ class SeasonEventTest {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(4)
             ),
             points = false,
             eventNumber = null

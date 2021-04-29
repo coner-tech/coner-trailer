@@ -10,8 +10,16 @@ data class Event(
     val lifecycle: Lifecycle,
     val crispyFish: CrispyFishMetadata?,
     val motorsportReg: MotorsportRegMetadata?,
-    val policy: Policy
+    val policy: Policy,
+    val runCount: RunCount
 ) {
+
+    init {
+        if (runCount == RunCount.FromCrispyFish) {
+            checkNotNull(crispyFish) { "Cannot resolve run count due to lack of crispy fish metadata" }
+        }
+    }
+
     data class CrispyFishMetadata(
             val eventControlFile: String,
             val classDefinitionFile: String,
@@ -36,5 +44,10 @@ data class Event(
         ACTIVE,
         POST,
         FINAL
+    }
+
+    sealed class RunCount {
+        data class Defined(val value: Int) : RunCount()
+        object FromCrispyFish : RunCount()
     }
 }

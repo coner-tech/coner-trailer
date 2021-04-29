@@ -21,6 +21,7 @@ class EventView : View<Event> {
             Policy:
                     ID:     ${model.policy.id}
                     Name:   ${model.policy.name}
+            Run Count:  ${renderRunCount(model)}
     """.trimIndent()
 
     private fun renderPeopleMap(model: Event): String {
@@ -46,6 +47,13 @@ class EventView : View<Event> {
             appendLine()
             append(content)
         }.prependIndent(" ".repeat(24))
+    }
+
+    private fun renderRunCount(model: Event): String {
+        return when (val runCount = model.runCount) {
+            is Event.RunCount.Defined -> runCount.value.toString()
+            Event.RunCount.FromCrispyFish -> "From Crispy Fish"
+        }
     }
 
 }

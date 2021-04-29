@@ -13,7 +13,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(5)
             )
         val points2: Event
             get() = Event(
@@ -22,7 +23,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(4)
             )
         val points3: Event
             get() = Event(
@@ -31,7 +33,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(4)
             )
         val points4: Event
             get() = Event(
@@ -40,7 +43,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(4)
             )
         val points5: Event
             get() = Event(
@@ -49,7 +53,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(4)
             )
         val points6: Event
             get() = Event(
@@ -58,7 +63,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(5)
             )
         val points7: Event
             get() = Event(
@@ -67,7 +73,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(5)
             )
         val points8: Event
             get() = Event(
@@ -76,7 +83,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(5)
             )
         val points9: Event
             get() = Event(
@@ -85,7 +93,8 @@ object TestEvents {
                 lifecycle = Event.Lifecycle.FINAL,
                 crispyFish = null,
                 motorsportReg = null,
-                policy = TestPolicies.lsccV1
+                policy = TestPolicies.lsccV1,
+                runCount = Event.RunCount.Defined(6)
             )
     }
 
@@ -96,7 +105,8 @@ object TestEvents {
             lifecycle = Event.Lifecycle.FINAL,
             crispyFish = null,
             motorsportReg = null,
-            policy = TestPolicies.lsccV1
+            policy = TestPolicies.lsccV1,
+            runCount = Event.RunCount.Defined(5)
         ) }
         val points2 by lazy { Event(
             name = "2019 LSCC Simplified Points Event #2",
@@ -104,7 +114,8 @@ object TestEvents {
             lifecycle = Event.Lifecycle.FINAL,
             crispyFish = null,
             motorsportReg = null,
-            policy = TestPolicies.lsccV1
+            policy = TestPolicies.lsccV1,
+            runCount = Event.RunCount.Defined(4)
         ) }
         val points3 by lazy { Event(
             name = "2019 LSCC Simplified Points Event #3",
@@ -112,7 +123,8 @@ object TestEvents {
             lifecycle = Event.Lifecycle.FINAL,
             crispyFish = null,
             motorsportReg = null,
-            policy = TestPolicies.lsccV1
+            policy = TestPolicies.lsccV1,
+            runCount = Event.RunCount.Defined(4)
         ) }
     }
 

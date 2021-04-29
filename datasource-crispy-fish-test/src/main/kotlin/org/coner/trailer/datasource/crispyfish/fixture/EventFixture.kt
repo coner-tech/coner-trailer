@@ -1,10 +1,5 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
-import tech.coner.crispyfish.filetype.ecf.EventControlFile
-import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
-import tech.coner.crispyfish.query.RegistrationsQuery
-import org.coner.trailer.Person
 import org.coner.trailer.SeasonEvent
 import org.coner.trailer.TestPolicies
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
@@ -13,8 +8,14 @@ import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTime
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
-import org.coner.trailer.eventresults.*
-import java.io.File
+import org.coner.trailer.eventresults.AutocrossFinalScoreFactory
+import org.coner.trailer.eventresults.GroupedRunScoreFactory
+import org.coner.trailer.eventresults.RawTimeRunScoreFactory
+import org.coner.trailer.eventresults.StandardPenaltyFactory
+import tech.coner.crispyfish.filetype.ecf.EventControlFile
+import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
+import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.query.RegistrationsQuery
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectories
