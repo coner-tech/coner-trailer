@@ -29,9 +29,11 @@ class CrispyFishEventMappingContextService(
             isTwoDayEvent = false,
             conePenalty = 2
         )
+        val allRegistrations = eventControlFile.queryRegistrations()
         return CrispyFishEventMappingContext(
             allClassDefinitions = classDefinitionFile.mapper().all(),
-            allRegistrations = eventControlFile.queryRegistrations()
+            allRegistrations = allRegistrations,
+            runCount = allRegistrations.maxOf { it.runs.size }
         )
     }
 }

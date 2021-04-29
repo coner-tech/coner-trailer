@@ -67,7 +67,8 @@ class ParticipantResultMapperTest {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations()
+            allRegistrations = seasonFixture.event1.registrations(),
+            runCount = (seasonFixture.event1.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         )
         every {
             crispyFishParticipantMapper.toCore(

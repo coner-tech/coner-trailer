@@ -3,6 +3,7 @@ package org.coner.trailer.datasource.crispyfish.eventsresults
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.OverallResultsReport
+import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.StandardResultsTypes
 
 class OverallRawTimeResultsReportCreator(
@@ -21,7 +22,7 @@ class OverallRawTimeResultsReportCreator(
                     cfRegistration = registration
                 )
             }
-            .sortedBy { it.score }
+            .sortedWith(compareBy(ParticipantResult::score))
         return OverallResultsReport(
             type = StandardResultsTypes.raw,
             participantResults = results.mapIndexed { index, result ->

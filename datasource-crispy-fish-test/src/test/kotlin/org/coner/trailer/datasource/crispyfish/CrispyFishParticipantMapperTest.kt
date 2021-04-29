@@ -36,7 +36,8 @@ class CrispyFishParticipantMapperTest {
         mapper = CrispyFishParticipantMapper(crispyFishGroupingMapper)
         context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations()
+            allRegistrations = seasonFixture.event1.registrations(),
+            runCount = (seasonFixture.event1.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         )
     }
 

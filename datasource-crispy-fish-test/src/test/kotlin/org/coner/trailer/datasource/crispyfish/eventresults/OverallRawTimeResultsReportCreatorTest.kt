@@ -27,7 +27,8 @@ class OverallRawTimeResultsReportCreatorTest {
         val event = season.event1
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations()
+            allRegistrations = event.registrations(),
+            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         )
 
         val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)
@@ -154,7 +155,8 @@ class OverallRawTimeResultsReportCreatorTest {
         val event = season.event2
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations()
+            allRegistrations = event.registrations(),
+            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         )
 
         val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)
@@ -269,7 +271,8 @@ class OverallRawTimeResultsReportCreatorTest {
         val event = season.event3
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations()
+            allRegistrations = event.registrations(),
+            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         )
 
         val actual = OverallRawTimeResultsReportCreator(event.rawTimeParticipantResultMapper)

@@ -27,7 +27,8 @@ class CrispyFishGroupingMapperTest {
         mapper = CrispyFishGroupingMapper()
         context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations()
+            allRegistrations = emptyList(),
+            runCount = 0
         )
     }
 

@@ -7,6 +7,7 @@ import assertk.assertions.index
 import assertk.assertions.key
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.coner.trailer.Event
 import org.coner.trailer.TestGroupings
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -43,7 +44,8 @@ class StandingsReportCreatorFromCrispyFishTest {
             val creator = CompetitionGroupedResultsReportCreator(eventFixture.groupedParticipantResultMapper)
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
-                allRegistrations = eventFixture.registrations()
+                allRegistrations = eventFixture.registrations(),
+                runCount = (eventFixture.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
             )
             eventFixture.coreSeasonEvent to creator.createFromRegistrationData(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
         }.toMap()

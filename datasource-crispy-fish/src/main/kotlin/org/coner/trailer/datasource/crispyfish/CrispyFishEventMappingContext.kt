@@ -6,7 +6,8 @@ import java.nio.file.Path
 
 class CrispyFishEventMappingContext(
     val allClassDefinitions: List<ClassDefinition>,
-    val allRegistrations: List<Registration>
+    val allRegistrations: List<Registration>,
+    val runCount: Int
 ) {
     val classDefinitionAbbreviationToSort: Map<String, Int> = allClassDefinitions
         .mapIndexed { index, classDefinition ->

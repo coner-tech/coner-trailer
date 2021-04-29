@@ -89,7 +89,8 @@ class EventCrispyFishPersonMapAssembleCommandTest
         every { personService.searchByNameFrom(unmappedClubMemberIdNull) } returns listOf(person)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = emptyList(),
-            allRegistrations = listOf(unmappedClubMemberIdNull)
+            allRegistrations = listOf(unmappedClubMemberIdNull),
+            runCount = 0
         )
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()

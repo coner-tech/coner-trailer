@@ -54,7 +54,8 @@ class CrispyFishGroupingService(
         ).mapper().all()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = allClassDefinitions,
-            allRegistrations = emptyList()
+            allRegistrations = emptyList(),
+            runCount = 0
         )
         return allClassDefinitions.map {
             mapper.toCoreSingular(context = context, classDefinition = it)
