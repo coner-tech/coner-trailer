@@ -1,6 +1,7 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.TestParticipants
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -36,5 +37,20 @@ class ParticipantResultTest {
                 scoredRuns = emptyList()
             )
         }
+    }
+
+    @Test
+    fun `It should build scores for sort for result with all runs taken`() {
+        TODO()
+    }
+
+    @Test
+    fun `It should build scores for sort for result with no runs taken`() {
+        TODO()
+    }
+
+    @Test
+    fun `It should build scores for sort for result with partial runs taken`() {
+        TODO()
     }
 }
