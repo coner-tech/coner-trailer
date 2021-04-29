@@ -25,9 +25,9 @@ data class ParticipantResult(
 
     fun scoresForSort(runCount: Int, padScore: Score): List<Score> {
         val scores = scoredRuns
+            .take(runCount)
             .map { it.score }
             .sorted()
-            .take(runCount)
             .toMutableList()
         while (scores.size < runCount) {
             scores += padScore
