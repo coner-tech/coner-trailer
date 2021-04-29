@@ -58,24 +58,4 @@ data class Score constructor(
     override fun compareTo(other: Score): Int {
         return value.compareTo(other.value)
     }
-
-    class PaxTimeFactory {
-        fun withPenalty(scratchTime: Time, paxFactor: BigDecimal, penalty: Penalty): Score {
-            return Score(value = penalty.floor + scratchTime.paxed(paxFactor), penalty = penalty)
-        }
-
-        fun withPenalty(scratchTime: String, paxFactor: BigDecimal, penalty: Penalty): Score = withPenalty(Time(scratchTime), paxFactor, penalty)
-
-        fun withoutTime() = Score(value = BigDecimal.valueOf(Penalty.intMaxValueTwoTenthsAsLong).setScale(3))
-
-        fun clean(scratchTime: Time, paxFactor: BigDecimal): Score {
-            return Score(value = scratchTime.paxed(paxFactor))
-        }
-
-        fun clean(scratchTime: String, paxFactor: BigDecimal) = clean(Time(scratchTime), paxFactor)
-
-        private fun Time.paxed(paxFactor: BigDecimal): BigDecimal {
-            return value.multiply(paxFactor).setScale(3, RoundingMode.HALF_UP)
-        }
-    }
 }
