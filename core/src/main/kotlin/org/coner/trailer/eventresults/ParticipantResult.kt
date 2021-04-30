@@ -23,15 +23,36 @@ data class ParticipantResult(
         }
     }
 
-    fun scoresForSort(runCount: Int, padScore: Score): List<Score> {
-        val scores = scoredRuns
-            .take(runCount)
-            .map { it.score }
-            .sorted()
-            .toMutableList()
-        while (scores.size < runCount) {
-            scores += padScore
+    class ScoredRunsComparator(
+        private val runCount: Int,
+        private val padScore: Score
+    ) : Comparator<ParticipantResult> {
+
+        fun scoresForSort(participantResult: ParticipantResult): List<Score> {
+            val scores = participantResult.scoredRuns
+                .take(runCount)
+                .sortedBy(ResultRun::score)
+                .map { it.score }
+                .toMutableList()
+            while (scores.size < runCount) {
+                scores += padScore
+            }
+            return scores
         }
-        return scores
+
+        override fun compare(o1: ParticipantResult, o2: ParticipantResult): Int {
+            val o1ScoresForSort = scoresForSort(o1)
+            val o2ScoresForSort = scoresForSort(o2)
+            for ((o1Score, o2Score) in o1ScoresForSort.zip(o2ScoresForSort)) {
+                val comparison = o1Score.compareTo(o2Score)
+                when {
+                    comparison > 0 -> return 1
+                    comparison < 0 -> return -1
+                    comparison == 0 -> continue
+                }
+            }
+            return 0
+        }
+
     }
 }

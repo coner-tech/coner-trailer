@@ -45,18 +45,23 @@ class ParticipantResultTest {
     }
 
     @Nested
-    inner class ScoresForSortTests {
+    inner class ScoredRunsComparatorTests {
 
         private val padScore = Score("999.999")
 
+        private val subject = ParticipantResult.ScoredRunsComparator(
+            runCount = 2,
+            padScore = padScore
+        )
+
         @Test
         fun `It should build scores for sort for result with all runs taken`() {
-            val subject = build(listOf(
+            val participantResult = build(listOf(
                 Score("123.654"),
                 Score("123.456")
             ))
 
-            val actual = subject.scoresForSort(runCount = 2, padScore = padScore)
+            val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
                 Score("123.456"),
@@ -66,9 +71,9 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort for result with no runs taken`() {
-            val subject = build(emptyList())
+            val participantResult = build(emptyList())
 
-            val actual = subject.scoresForSort(runCount = 2, padScore = padScore)
+            val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
                 padScore,
@@ -78,12 +83,12 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort for result with partial runs taken`() {
-            val subject = build(listOf(
+            val participantResult = build(listOf(
                 Score("123.654"),
                 padScore
             ))
 
-            val actual = subject.scoresForSort(runCount = 2, padScore = padScore)
+            val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
                 Score("123.654"),
@@ -93,17 +98,15 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort up to runCount`() {
-            val subject = build(listOf(
+            val participantResult = build(listOf(
                 Score("123.654"),
                 Score("123.564"),
-                Score("123.456"),
                 Score("123.000")
             ))
 
-            val actual = subject.scoresForSort(runCount = 3, padScore)
+            val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
-                Score("123.456"),
                 Score("123.564"),
                 Score("123.654"),
             ))

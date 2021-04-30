@@ -60,8 +60,12 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         crispyFishParticipantMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
+    bind<ParticipantResult.ScoredRunsComparator>() with factory {  ParticipantResult.ScoredRunsComparator(
+        runCount =
+    ) }
     bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> OverallRawTimeResultsReportCreator(
-        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.raw).invoke(policy)
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.raw).invoke(policy),
+        scoredRunsComparatorProvider = provider()
     ) }
     bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> OverallPaxTimeResultsReportCreator(
         participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.pax).invoke(policy)
