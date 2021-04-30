@@ -11,12 +11,11 @@ class OverallRawTimeResultsReportCreator(
     private val scoredRunsComparatorProvider: () -> ParticipantResult.ScoredRunsComparator
 ) : CrispyFishOverallResultsReportCreator {
 
-    // TODO: refactor args to: event: Event, context: CrispyFishEventMappingContext
-
     override fun createFromRegistrationData(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
+        TODO("refactor args to: event: Event, context: CrispyFishEventMappingContext")
         val results = context.allRegistrations
             .mapNotNull { registration ->
                 participantResultMapper.toCore(
