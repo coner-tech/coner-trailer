@@ -9,5 +9,17 @@ data class Policy(
     val name: String,
     val conePenaltySeconds: Int,
     val paxTimeStyle: PaxTimeStyle,
-    val finalScoreStyle: FinalScoreStyle
-)
+    val finalScoreStyle: FinalScoreStyle,
+    /**
+     * Declare the authoritative source of run information
+     */
+    val authoritativeRunSource: RunSource
+) {
+
+    enum class RunSource {
+        /**
+         * Run information will be sourced from crispyfish
+         */
+        CRISPYFISH
+    }
+}
