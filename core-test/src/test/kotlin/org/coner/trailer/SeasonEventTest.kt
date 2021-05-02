@@ -71,7 +71,6 @@ class SeasonEventTest {
                 crispyFish = null,
                 motorsportReg = null,
                 policy = TestPolicies.lsccV1,
-                runCount = Event.RunCount.Defined(4)
             ),
             points = false,
             eventNumber = null

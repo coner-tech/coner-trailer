@@ -45,7 +45,7 @@ class StandingsReportCreatorFromCrispyFishTest {
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
                 allRegistrations = eventFixture.registrations(),
-                runCount = (eventFixture.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+                runCount = eventFixture.runCount
             )
             eventFixture.coreSeasonEvent to creator.createFromRegistrationData(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
         }.toMap()

@@ -20,6 +20,7 @@ sealed class SeasonFixture(
 ) {
     abstract val events: List<EventFixture>
     abstract val season: Season
+
     class Lscc2019Simplified(temp: Path) : SeasonFixture(
         temp = temp,
         path = "lscc-2019-simplified",
@@ -29,6 +30,7 @@ sealed class SeasonFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
+            runCount = 5,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 1",
@@ -49,16 +51,17 @@ sealed class SeasonFixture(
                     ),
                     motorsportReg = null,
                     policy = TestPolicies.lsccV1,
-                    runCount = Event.RunCount.Defined(5)
                 ),
                 eventNumber = 1,
                 points = true
+
             )
         )
         val event2 = EventFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
+            runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 2",
@@ -78,7 +81,6 @@ sealed class SeasonFixture(
                     ),
                     motorsportReg = null,
                     policy = TestPolicies.lsccV1,
-                    runCount = Event.RunCount.Defined(4)
                 ),
                 eventNumber = 2,
                 points = true
@@ -88,6 +90,7 @@ sealed class SeasonFixture(
             seasonFixture = this,
             temp = temp,
             crispyFishGroupingMapper = groupingMapper,
+            runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 3",
@@ -109,7 +112,6 @@ sealed class SeasonFixture(
                     ),
                     motorsportReg = null,
                     policy = TestPolicies.lsccV1,
-                    runCount = Event.RunCount.Defined(4)
                 ),
                 eventNumber = 3,
                 points = true

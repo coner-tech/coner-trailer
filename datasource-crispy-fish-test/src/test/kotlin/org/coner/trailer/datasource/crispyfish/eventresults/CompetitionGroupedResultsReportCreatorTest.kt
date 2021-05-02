@@ -25,7 +25,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+            runCount = event.runCount
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
@@ -136,7 +136,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+            runCount = event.runCount
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
@@ -234,7 +234,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+            runCount = event.runCount
         )
 
         val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)

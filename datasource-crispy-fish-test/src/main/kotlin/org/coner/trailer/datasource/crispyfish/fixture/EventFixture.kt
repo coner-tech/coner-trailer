@@ -28,7 +28,8 @@ class EventFixture(
     private val temp: Path,
     val crispyFishGroupingMapper: CrispyFishGroupingMapper,
     val coreSeasonEvent: SeasonEvent,
-    val conePenalty: Int = 2
+    val conePenalty: Int = 2,
+    val runCount: Int
 ) {
 
     val ecfPath: Path

@@ -16,10 +16,10 @@ data class Policy(
     val authoritativeRunSource: RunSource
 ) {
 
-    enum class RunSource {
+    sealed class RunSource {
         /**
-         * Run information will be sourced from crispyfish
+         * Source runs from crispyfish
          */
-        CRISPYFISH
+        object CrispyFish : RunSource()
     }
 }

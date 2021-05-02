@@ -25,14 +25,13 @@ class OverallRawTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 1`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
-        val runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            runCount = runCount
+            runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = runCount,
+            runCount = event.runCount,
             padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(
@@ -161,14 +160,13 @@ class OverallRawTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 2`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
-        val runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+            runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = runCount,
+            runCount = 4,
             padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(
@@ -285,14 +283,13 @@ class OverallRawTimeResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
-        val runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = event.registrations(),
-            runCount = (event.coreSeasonEvent.event.runCount as Event.RunCount.Defined).value
+            runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = runCount,
+            runCount = event.runCount,
             padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(

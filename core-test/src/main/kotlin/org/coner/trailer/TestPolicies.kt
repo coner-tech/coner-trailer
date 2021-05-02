@@ -11,7 +11,8 @@ object TestPolicies {
         name = "LSCC Archival v1",
         conePenaltySeconds = 2,
         paxTimeStyle = PaxTimeStyle.LEGACY_BUGGED,
-        finalScoreStyle = FinalScoreStyle.AUTOCROSS
+        finalScoreStyle = FinalScoreStyle.AUTOCROSS,
+        authoritativeRunSource = Policy.RunSource.CrispyFish
     ) }
 
     val lsccV2: Policy by lazy { Policy(
@@ -19,7 +20,8 @@ object TestPolicies {
         name = "LSCC Policy v2",
         conePenaltySeconds = 2,
         paxTimeStyle = PaxTimeStyle.FAIR,
-        finalScoreStyle = FinalScoreStyle.AUTOCROSS
+        finalScoreStyle = FinalScoreStyle.AUTOCROSS,
+        authoritativeRunSource = Policy.RunSource.CrispyFish
     ) }
 
 }
