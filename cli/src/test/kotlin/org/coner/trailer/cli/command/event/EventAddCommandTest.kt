@@ -97,8 +97,7 @@ class EventAddCommandTest {
             "--crispy-fish-event-control-file", "$eventControlFile",
             "--crispy-fish-class-definition-file", "$classDefinitionFile",
             "--motorsportreg-event-id", motorsportReg.id,
-            "--policy-id", "${create.policy.id}",
-            "--run-count", "${(create.runCount as Event.RunCount.Defined).value}"
+            "--policy-id", "${create.policy.id}"
         ))
 
         verifySequence {

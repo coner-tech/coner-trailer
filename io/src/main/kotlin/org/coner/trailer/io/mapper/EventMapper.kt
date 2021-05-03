@@ -61,16 +61,6 @@ class EventMapper(
             },
             motorsportReg = snoozle.motorsportReg?.let { Event.MotorsportRegMetadata(id = it.id) },
             policy = policyMapper.toCore(policyResource.read(PolicyEntity.Key(snoozle.policyId))),
-            runCount = when (snoozle.runCount?.type) {
-                EventEntity.RunCount.Type.DEFINED -> Event.RunCount.Defined(
-                    value = checkNotNull(snoozle.runCount?.definedValue)
-                )
-                EventEntity.RunCount.Type.FROM_CRISPYFISH -> Event.RunCount.FromCrispyFish
-                else -> {
-                    if (snoozle.crispyFish != null) Event.RunCount.FromCrispyFish
-                    else throw IllegalStateException("Event entity lacks runCount and cannot discover runCount via crispy fish")
-                }
-            }
         )
     }
 
@@ -108,15 +98,6 @@ class EventMapper(
             ) },
             motorsportReg = core.motorsportReg?.let { EventEntity.MotorsportRegMetadata(id = it.id) },
             policyId = core.policy.id,
-            runCount = when (val runCount = core.runCount) {
-                is Event.RunCount.Defined -> EventEntity.RunCount(
-                    type = EventEntity.RunCount.Type.DEFINED,
-                    definedValue = runCount.value
-                )
-                is Event.RunCount.FromCrispyFish -> EventEntity.RunCount(
-                    type = EventEntity.RunCount.Type.FROM_CRISPYFISH
-                )
-            }
         )
     }
 

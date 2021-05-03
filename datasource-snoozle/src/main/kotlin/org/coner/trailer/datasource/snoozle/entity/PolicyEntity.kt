@@ -9,8 +9,15 @@ data class PolicyEntity(
     val name: String,
     val conePenaltySeconds: Int,
     val paxTimeStyle: String,
-    val finalScoreStyle: String
+    val finalScoreStyle: String,
+    val authoritativeRunSource: RunSource
 ) : Entity<PolicyEntity.Key> {
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key
+
+    data class RunSource(val type: Type) {
+        enum class Type {
+            CRISPY_FISH
+        }
+    }
 }

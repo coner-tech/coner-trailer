@@ -43,8 +43,7 @@ class PolicyDeleteConstraintsTest {
                 lifecycle = it.lifecycle.name,
                 crispyFish = null,
                 motorsportReg = null,
-                policyId = it.policy.id, // important for test
-                runCount = EventEntity.RunCount(type = EventEntity.RunCount.Type.DEFINED, definedValue = 5)
+                policyId = it.policy.id // important for test
             )
         ) }
         every { eventResource.stream() } returns events
@@ -64,8 +63,7 @@ class PolicyDeleteConstraintsTest {
                 lifecycle = it.lifecycle.name,
                 crispyFish = null,
                 motorsportReg = null,
-                policyId = UUID.randomUUID(), // important for test
-                runCount = EventEntity.RunCount(type = EventEntity.RunCount.Type.DEFINED, definedValue = 5)
+                policyId = UUID.randomUUID() // important for test
             )
         ) }
         every { eventResource.stream() } returns events

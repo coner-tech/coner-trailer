@@ -13,7 +13,10 @@ class PolicyMapper {
             name = core.name,
             conePenaltySeconds = core.conePenaltySeconds,
             paxTimeStyle = core.paxTimeStyle.name,
-            finalScoreStyle = core.finalScoreStyle.name
+            finalScoreStyle = core.finalScoreStyle.name,
+            authoritativeRunSource = when (core.authoritativeRunSource) {
+                Policy.RunSource.CrispyFish -> PolicyEntity.RunSource(PolicyEntity.RunSource.Type.CRISPY_FISH)
+            }
         )
     }
 
@@ -23,7 +26,10 @@ class PolicyMapper {
             name = snoozle.name,
             conePenaltySeconds = snoozle.conePenaltySeconds,
             paxTimeStyle = PaxTimeStyle.valueOf(snoozle.paxTimeStyle),
-            finalScoreStyle = FinalScoreStyle.valueOf(snoozle.finalScoreStyle)
+            finalScoreStyle = FinalScoreStyle.valueOf(snoozle.finalScoreStyle),
+            authoritativeRunSource = when (snoozle.authoritativeRunSource.type) {
+                PolicyEntity.RunSource.Type.CRISPY_FISH -> Policy.RunSource.CrispyFish
+            }
         )
     }
 }

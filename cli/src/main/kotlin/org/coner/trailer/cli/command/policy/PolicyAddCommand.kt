@@ -42,6 +42,11 @@ class PolicyAddCommand(di: DI) : CliktCommand(
     private val finalScoreStyle: FinalScoreStyle by option()
         .choice(FinalScoreStyle.values().associateBy { it.name.toLowerCase() })
         .required()
+    private val authoritativeRunSource: Policy.RunSource by option()
+        .choice(
+            "crispy-fish" to Policy.RunSource.CrispyFish
+        )
+        .default(Policy.RunSource.CrispyFish)
 
     override fun run() {
         val create = Policy(
@@ -49,7 +54,8 @@ class PolicyAddCommand(di: DI) : CliktCommand(
             name = name,
             conePenaltySeconds = conePenaltySeconds,
             paxTimeStyle = paxTimeStyle,
-            finalScoreStyle = finalScoreStyle
+            finalScoreStyle = finalScoreStyle,
+            authoritativeRunSource = authoritativeRunSource
         )
         service.create(create)
         echo(view.render(create))
