@@ -119,5 +119,38 @@ class ConerTrailerCliIT {
         }
     }
 
+
+    @Test
+    fun `It should print event raw results in HTML format`() {
+        val databaseName = "print-event-raw-results-html"
+        command.parse(
+            appArgumentBuilder.buildConfigureDatabaseAdd(databaseName)
+        )
+        val event = TestEvents.Lscc2019Simplified.points1
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        command.parse(appArgumentBuilder.buildPolicyAdd(policy = event.policy))
+        command.parse(appArgumentBuilder.buildEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ))
+
+        command.parse(appArgumentBuilder.buildEventResultsOverall(
+            event = event,
+            report = "crispy-fish-raw",
+            format = "html",
+            output = "console"
+        ))
+
+        assertAll {
+            assertThat(testConsole.output, "output").all {
+                contains("<html>")
+                contains("Raw")
+                contains("</html>")
+            }
+            assertThat(testConsole.error, "error").isEmpty()
+        }
+    }
+
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)
 }
