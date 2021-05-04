@@ -68,7 +68,11 @@ class SeasonEventTest {
                 name = "Test and Tune", // important: after "one", before "two"
                 date = LocalDate.parse("2019-02-01"),
                 lifecycle = Event.Lifecycle.FINAL,
-                crispyFish = null,
+                crispyFish = Event.CrispyFishMetadata(
+                    eventControlFile = "test-and-tune.ecf",
+                    classDefinitionFile = "test-and-tune.def",
+                    peopleMap = emptyMap()
+                ),
                 motorsportReg = null,
                 policy = TestPolicies.lsccV1,
             ),

@@ -15,7 +15,6 @@ class OverallRawTimeResultsReportCreator(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
-        TODO("refactor args to: event: Event, context: CrispyFishEventMappingContext")
         val results = context.allRegistrations
             .mapNotNull { registration ->
                 participantResultMapper.toCore(

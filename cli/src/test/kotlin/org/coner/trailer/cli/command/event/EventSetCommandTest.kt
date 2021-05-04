@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import org.junit.platform.commons.util.Preconditions
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -123,13 +124,17 @@ class EventSetCommandTest {
     }
 
     @Test
-    fun `It should keep event properties for options not passed`() {
+    fun `It should keep event properties for options not passed`(
+        @MockK context: CrispyFishEventMappingContext
+    ) {
         val original = TestEvents.Lscc2019.points1
+        val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
         every { service.findById(original.id) } returns original
+        every { crispyFishEventMappingContextService.load(crispyFish) } returns context
         justRun {
             service.update(
                 update = original,
-                context = null
+                context = context
             )
         }
         val viewRendered = "view rendered set event named: ${original.name}"
@@ -143,7 +148,7 @@ class EventSetCommandTest {
             service.findById(original.id)
             service.update(
                 update = original,
-                context = null
+                context = context
             )
             view.render(original)
         }
