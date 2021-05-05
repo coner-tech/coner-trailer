@@ -8,13 +8,14 @@ import org.coner.trailer.eventresults.StandardResultsTypes
 
 class OverallRawTimeResultsReportCreator(
     private val participantResultMapper: ParticipantResultMapper,
-    private val scoredRunsComparatorProvider: () -> ParticipantResult.ScoredRunsComparator
+    private val scoredRunsComparatorProvider: (Int) -> ParticipantResult.ScoredRunsComparator
 ) : CrispyFishOverallResultsReportCreator {
 
     override fun createFromRegistrationData(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext
     ) : OverallResultsReport {
+        val scoredRunsComparator = scoredRunsComparatorProvider(context.runCount)
         val results = context.allRegistrations
             .mapNotNull { registration ->
                 participantResultMapper.toCore(
@@ -23,7 +24,7 @@ class OverallRawTimeResultsReportCreator(
                     cfRegistration = registration
                 )
             }
-            .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparatorProvider()))
+            .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
         return OverallResultsReport(
             type = StandardResultsTypes.raw,
             participantResults = results.mapIndexed { index, result ->

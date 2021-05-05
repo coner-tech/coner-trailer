@@ -25,8 +25,9 @@ data class ParticipantResult(
 
     class ScoredRunsComparator(
         private val runCount: Int,
-        private val padScore: Score
     ) : Comparator<ParticipantResult> {
+
+        var padScore = Score("999.999")
 
         fun scoresForSort(participantResult: ParticipantResult): List<Score> {
             val scores = participantResult.scoredRuns

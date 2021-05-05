@@ -32,7 +32,6 @@ class OverallRawTimeResultsReportCreatorTest {
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount,
-            padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
@@ -167,7 +166,6 @@ class OverallRawTimeResultsReportCreatorTest {
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = 4,
-            padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
@@ -290,7 +288,6 @@ class OverallRawTimeResultsReportCreatorTest {
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount,
-            padScore = Score("999.999")
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
