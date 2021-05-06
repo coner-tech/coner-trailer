@@ -68,10 +68,12 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         scoredRunsComparatorProvider = factory()
     ) }
     bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> OverallPaxTimeResultsReportCreator(
-        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.pax).invoke(policy)
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.pax).invoke(policy),
+        scoredRunsComparatorProvider = factory()
     ) }
     bind<CompetitionGroupedResultsReportCreator>() with multiton { policy: Policy -> CompetitionGroupedResultsReportCreator(
-        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.grouped).invoke(policy)
+        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardResultsTypes.grouped).invoke(policy),
+        scoredRunsComparatorProvider = factory()
     ) }
 
     bind<EventResultsReportFileNameGenerator>() with singleton { EventResultsReportFileNameGenerator() }

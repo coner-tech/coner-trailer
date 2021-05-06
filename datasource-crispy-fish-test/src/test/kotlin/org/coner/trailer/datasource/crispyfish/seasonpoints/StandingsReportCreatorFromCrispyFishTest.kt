@@ -14,6 +14,7 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
+import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.hasSameIdAs
 import org.coner.trailer.seasonpoints.*
@@ -41,11 +42,17 @@ class StandingsReportCreatorFromCrispyFishTest {
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
-            val creator = CompetitionGroupedResultsReportCreator(eventFixture.groupedParticipantResultMapper)
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
                 allRegistrations = eventFixture.registrations(),
                 runCount = eventFixture.runCount
+            )
+            val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+                runCount = context.runCount,
+            )
+            val creator = CompetitionGroupedResultsReportCreator(
+                participantResultMapper = eventFixture.groupedParticipantResultMapper,
+                scoredRunsComparatorProvider = { scoredRunsComparator }
             )
             eventFixture.coreSeasonEvent to creator.createFromRegistrationData(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
         }.toMap()

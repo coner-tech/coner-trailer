@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
@@ -27,9 +28,15 @@ class OverallPaxTimeResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = OverallPaxTimeResultsReportCreator(
+            participantResultMapper = event.paxTimeParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = OverallPaxTimeResultsReportCreator(event.paxTimeParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.pax)
@@ -156,9 +163,15 @@ class OverallPaxTimeResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = OverallPaxTimeResultsReportCreator(
+            participantResultMapper = event.paxTimeParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = OverallPaxTimeResultsReportCreator(event.paxTimeParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.pax)
@@ -270,9 +283,15 @@ class OverallPaxTimeResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = OverallPaxTimeResultsReportCreator(
+            participantResultMapper = event.paxTimeParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = OverallPaxTimeResultsReportCreator(event.paxTimeParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.pax)

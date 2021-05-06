@@ -27,9 +27,15 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = CompetitionGroupedResultsReportCreator(
+            participantResultMapper = event.groupedParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.grouped)
@@ -138,9 +144,15 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = CompetitionGroupedResultsReportCreator(
+            participantResultMapper = event.groupedParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.grouped)
@@ -236,9 +248,15 @@ class CompetitionGroupedResultsReportCreatorTest {
             allRegistrations = event.registrations(),
             runCount = event.runCount
         )
+        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+            runCount = event.runCount,
+        )
+        val subject = CompetitionGroupedResultsReportCreator(
+            participantResultMapper = event.groupedParticipantResultMapper,
+            scoredRunsComparatorProvider = { scoredRunsComparator }
+        )
 
-        val actual = CompetitionGroupedResultsReportCreator(event.groupedParticipantResultMapper)
-            .createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.createFromRegistrationData(event.coreSeasonEvent.event.crispyFish!!, context)
 
         assertThat(actual).all {
             hasType(StandardResultsTypes.grouped)
