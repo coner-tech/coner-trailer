@@ -1,6 +1,7 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Participant
+import org.coner.trailer.Policy
 import org.coner.trailer.Time
 
 data class ParticipantResult(
@@ -24,19 +25,17 @@ data class ParticipantResult(
     }
 
     class ScoredRunsComparator(
-        private val runCount: Int,
+        private val model: Model
     ) : Comparator<ParticipantResult> {
-
-        var padScore = Score("999.999")
 
         fun scoresForSort(participantResult: ParticipantResult): List<Score> {
             val scores = participantResult.scoredRuns
-                .take(runCount)
+                .take(model.runCount)
                 .sortedBy(ResultRun::score)
                 .map { it.score }
                 .toMutableList()
-            while (scores.size < runCount) {
-                scores += padScore
+            while (scores.size < model.runCount) {
+                scores += model.policy.participantResultScoredRunsPad
             }
             return scores
         }
@@ -55,5 +54,9 @@ data class ParticipantResult(
             return 0
         }
 
+        class Model(
+            val policy: Policy,
+            val runCount: Int
+        )
     }
 }

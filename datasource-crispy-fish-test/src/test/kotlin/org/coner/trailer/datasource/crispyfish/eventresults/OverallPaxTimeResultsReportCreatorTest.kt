@@ -29,7 +29,10 @@ class OverallPaxTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            model = ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = OverallPaxTimeResultsReportCreator(
             participantResultMapper = event.paxTimeParticipantResultMapper,
@@ -164,7 +167,10 @@ class OverallPaxTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = OverallPaxTimeResultsReportCreator(
             participantResultMapper = event.paxTimeParticipantResultMapper,
@@ -284,7 +290,10 @@ class OverallPaxTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = OverallPaxTimeResultsReportCreator(
             participantResultMapper = event.paxTimeParticipantResultMapper,

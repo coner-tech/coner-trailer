@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isLessThan
 import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPolicies
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -49,8 +50,12 @@ class ParticipantResultTest {
     @Nested
     inner class ScoredRunsComparatorTests {
 
+        private val policy = TestPolicies.lsccV1
         private val subject = ParticipantResult.ScoredRunsComparator(
-            runCount = 2,
+            model = ParticipantResult.ScoredRunsComparator.Model(
+                policy = TestPolicies.lsccV1,
+                runCount = 2
+            )
         )
 
         @Test
@@ -75,8 +80,8 @@ class ParticipantResultTest {
             val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
-                subject.padScore,
-                subject.padScore
+                policy.participantResultScoredRunsPad,
+                policy.participantResultScoredRunsPad
             ))
         }
 
@@ -84,14 +89,14 @@ class ParticipantResultTest {
         fun `It should build scores for sort for result with partial runs taken`() {
             val participantResult = build(listOf(
                 Score("123.654"),
-                subject.padScore
+                policy.participantResultScoredRunsPad
             ))
 
             val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
                 Score("123.654"),
-                subject.padScore
+                policy.participantResultScoredRunsPad
             ))
         }
 

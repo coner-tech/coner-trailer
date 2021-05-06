@@ -28,7 +28,10 @@ class CompetitionGroupedResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            model = ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = CompetitionGroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,
@@ -145,7 +148,10 @@ class CompetitionGroupedResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            model = ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = CompetitionGroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,
@@ -249,7 +255,10 @@ class CompetitionGroupedResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount,
+            model = ParticipantResult.ScoredRunsComparator.Model(
+                policy = event.coreSeasonEvent.event.policy,
+                runCount = event.runCount
+            )
         )
         val subject = CompetitionGroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,

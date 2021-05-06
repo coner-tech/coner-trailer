@@ -48,7 +48,10 @@ class StandingsReportCreatorFromCrispyFishTest {
                 runCount = eventFixture.runCount
             )
             val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-                runCount = context.runCount,
+                ParticipantResult.ScoredRunsComparator.Model(
+                    policy = eventFixture.coreSeasonEvent.event.policy,
+                    runCount = context.runCount
+                )
             )
             val creator = CompetitionGroupedResultsReportCreator(
                 participantResultMapper = eventFixture.groupedParticipantResultMapper,
