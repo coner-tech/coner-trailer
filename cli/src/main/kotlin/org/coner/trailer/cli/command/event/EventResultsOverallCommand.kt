@@ -11,6 +11,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import org.coner.trailer.Event
 import org.coner.trailer.Policy
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
@@ -52,17 +53,10 @@ class EventResultsOverallCommand(
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
-    enum class Report(
-        val resultsType: ResultsType,
-        val crispyFish: Boolean = false
-    ) {
-        CrispyFishRaw(resultsType = StandardResultsTypes.raw, crispyFish = true),
-        CrispyFishPax(resultsType = StandardResultsTypes.pax, crispyFish = true)
-    }
-    private val report: Report by option()
+    private val report: ResultsType by option()
         .choice(
-            "crispy-fish-raw" to Report.CrispyFishRaw,
-            "crispy-fish-pax" to Report.CrispyFishPax
+            "raw" to StandardResultsTypes.raw,
+            "pax" to StandardResultsTypes.pax
         )
         .required()
     enum class Format(val extension: String) {
@@ -95,10 +89,11 @@ class EventResultsOverallCommand(
     override fun run() {
         val event = eventService.findById(id)
         val reportChoice = report
-        val resultsReport = when {
-            reportChoice.crispyFish -> {
-                val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
-                val reportCreator = when (reportChoice.resultsType) {
+
+        val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
+        val resultsReport = when (event.policy.authoritativeRunSource) {
+            Policy.RunSource.CrispyFish -> {
+                val reportCreator = when (reportChoice) {
                     StandardResultsTypes.raw -> crispyFishRawResultsReportCreator(event.policy)
                     StandardResultsTypes.pax -> crispyFishPaxResultsReportCreator(event.policy)
                     else -> throw IllegalArgumentException()
@@ -108,7 +103,6 @@ class EventResultsOverallCommand(
                     context = crispyFishEventMappingContextService.load(eventCrispyFish)
                 )
             }
-            else -> throw UnsupportedOperationException()
         }
         val render = when (format) {
             Format.TEXT -> reportTableView.render(resultsReport)
@@ -123,7 +117,7 @@ class EventResultsOverallCommand(
             is Output.File -> {
                 val actualDestination = fileOutputResolver.forEventResults(
                     event = event,
-                    type = reportChoice.resultsType,
+                    type = reportChoice,
                     defaultExtension = format.extension,
                     path = output.output
                 )

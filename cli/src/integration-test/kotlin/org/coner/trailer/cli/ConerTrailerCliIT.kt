@@ -137,7 +137,7 @@ class ConerTrailerCliIT {
 
         command.parse(appArgumentBuilder.buildEventResultsOverall(
             event = event,
-            report = "crispy-fish-raw",
+            report = "raw",
             format = "html",
             output = "console"
         ))

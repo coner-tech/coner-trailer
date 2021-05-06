@@ -92,7 +92,7 @@ class EventResultsOverallCommandTest {
 
         command.parse(arrayOf(
             "${event.id}",
-            "--report", "crispy-fish-raw"
+            "--report", "raw"
         ))
 
         assertThat(testConsole.output).isEqualTo(render)
@@ -140,7 +140,7 @@ class EventResultsOverallCommandTest {
 
         command.parse(arrayOf(
             "${event.id}",
-            "--report", "crispy-fish-pax",
+            "--report", "pax",
             "--html",
             "--file", "--file-output", "$output"
         ))

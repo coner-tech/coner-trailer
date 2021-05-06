@@ -157,7 +157,7 @@ class ConerTrailerCliExecutableIT {
 
         val process = processRunner.execEventResultsOverall(
             event = event,
-            report = "crispy-fish-raw",
+            report = "raw",
             format = "html",
             output = "console"
         )
