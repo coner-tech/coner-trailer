@@ -13,8 +13,7 @@ object TestPolicies {
         conePenaltySeconds = 2,
         paxTimeStyle = PaxTimeStyle.LEGACY_BUGGED,
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
-        authoritativeRunSource = Policy.RunSource.CrispyFish,
-        participantResultScoredRunsPad = Score("999.999")
+        authoritativeRunSource = Policy.RunSource.CrispyFish
     ) }
 
     val lsccV2: Policy by lazy { Policy(
@@ -23,8 +22,7 @@ object TestPolicies {
         conePenaltySeconds = 2,
         paxTimeStyle = PaxTimeStyle.FAIR,
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
-        authoritativeRunSource = Policy.RunSource.CrispyFish,
-        participantResultScoredRunsPad = Score("999.999")
+        authoritativeRunSource = Policy.RunSource.CrispyFish
     ) }
 
 }

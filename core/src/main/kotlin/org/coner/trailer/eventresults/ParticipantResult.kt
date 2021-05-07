@@ -25,26 +25,29 @@ data class ParticipantResult(
     }
 
     class ScoredRunsComparator(
-        private val model: Model
+        private val runCount: Int
     ) : Comparator<ParticipantResult> {
 
         fun scoresForSort(participantResult: ParticipantResult): List<Score> {
-            val scores = participantResult.scoredRuns
-                .take(model.runCount)
-                .sortedBy(ResultRun::score)
+            return participantResult.scoredRuns
+                .take(runCount)
+                .sortedBy { it.score }
                 .map { it.score }
-                .toMutableList()
-            while (scores.size < model.runCount) {
-                scores += model.policy.participantResultScoredRunsPad
-            }
-            return scores
+                .toList()
         }
 
         override fun compare(o1: ParticipantResult, o2: ParticipantResult): Int {
             val o1ScoresForSort = scoresForSort(o1)
             val o2ScoresForSort = scoresForSort(o2)
-            for ((o1Score, o2Score) in o1ScoresForSort.zip(o2ScoresForSort)) {
-                val comparison = o1Score.compareTo(o2Score)
+            for (i in 0 .. maxOf(o1ScoresForSort.lastIndex, o2ScoresForSort.lastIndex)) {
+                val o1Candidate = o1ScoresForSort.getOrNull(i)
+                val o2Candidate = o2ScoresForSort.getOrNull(i)
+                val comparison: Int = when {
+                    o1Candidate != null && o2Candidate != null -> o1Candidate.compareTo(o2Candidate)
+                    o1Candidate != null && o2Candidate == null -> -1
+                    o1Candidate == null && o2Candidate != null -> 1
+                    else -> throw IllegalStateException()
+                }
                 when {
                     comparison > 0 -> return 1
                     comparison < 0 -> return -1
@@ -53,10 +56,5 @@ data class ParticipantResult(
             }
             return 0
         }
-
-        class Model(
-            val policy: Policy,
-            val runCount: Int
-        )
     }
 }

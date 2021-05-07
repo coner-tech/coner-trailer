@@ -52,10 +52,7 @@ class ParticipantResultTest {
 
         private val policy = TestPolicies.lsccV1
         private val subject = ParticipantResult.ScoredRunsComparator(
-            model = ParticipantResult.ScoredRunsComparator.Model(
-                policy = TestPolicies.lsccV1,
-                runCount = 2
-            )
+            runCount = 2
         )
 
         @Test
@@ -79,24 +76,19 @@ class ParticipantResultTest {
 
             val actual = subject.scoresForSort(participantResult)
 
-            assertThat(actual).isEqualTo(listOf(
-                policy.participantResultScoredRunsPad,
-                policy.participantResultScoredRunsPad
-            ))
+            assertThat(actual).isEqualTo(emptyList())
         }
 
         @Test
         fun `It should build scores for sort for result with partial runs taken`() {
             val participantResult = build(listOf(
                 Score("123.654"),
-                policy.participantResultScoredRunsPad
             ))
 
             val actual = subject.scoresForSort(participantResult)
 
             assertThat(actual).isEqualTo(listOf(
                 Score("123.654"),
-                policy.participantResultScoredRunsPad
             ))
         }
 

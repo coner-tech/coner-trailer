@@ -31,10 +31,7 @@ class OverallRawTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            ParticipantResult.ScoredRunsComparator.Model(
-                policy = event.coreSeasonEvent.event.policy,
-                runCount = event.runCount
-            )
+            runCount = event.runCount
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
@@ -168,10 +165,7 @@ class OverallRawTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            ParticipantResult.ScoredRunsComparator.Model(
-                policy = event.coreSeasonEvent.event.policy,
-                runCount = 4
-            )
+            runCount = 4
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
@@ -293,10 +287,7 @@ class OverallRawTimeResultsReportCreatorTest {
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            ParticipantResult.ScoredRunsComparator.Model(
-                policy = event.coreSeasonEvent.event.policy,
-                runCount = event.runCount
-            )
+            runCount = event.runCount
         )
         val subject = OverallRawTimeResultsReportCreator(
             participantResultMapper = event.rawTimeParticipantResultMapper,
