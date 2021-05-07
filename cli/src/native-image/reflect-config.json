@@ -342,6 +342,17 @@
   "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
 },
 {
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource$Type",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true
+},
+{
   "name":"org.coner.trailer.datasource.snoozle.entity.RankingSortEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
