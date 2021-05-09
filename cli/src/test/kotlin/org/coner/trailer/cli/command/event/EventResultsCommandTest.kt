@@ -39,9 +39,9 @@ import kotlin.io.path.readText
 
 @ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventResultsOverallCommandTest {
+class EventResultsCommandTest {
 
-    lateinit var command: EventResultsOverallCommand
+    lateinit var command: EventResultsCommand
 
     @MockK lateinit var eventService: EventService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
@@ -59,7 +59,7 @@ class EventResultsOverallCommandTest {
     fun before() {
         crispyFishOverallResultsReportCreatorFactorySlot = slot()
         testConsole = StringBufferConsole()
-        command = EventResultsOverallCommand(DI {
+        command = EventResultsCommand(DI {
             bind<EventService>() with instance(eventService)
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }

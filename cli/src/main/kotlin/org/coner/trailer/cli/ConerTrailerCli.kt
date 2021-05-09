@@ -56,9 +56,7 @@ object ConerTrailerCli {
                     instance<EventDeleteCommand>(),
                     instance<EventGetCommand>(),
                     instance<EventListCommand>(),
-                    instance<EventResultsCommand>().subcommands(
-                        instance<EventResultsOverallCommand>()
-                    ),
+                    instance<EventResultsCommand>(),
                     instance<EventSetCommand>(),
                 ),
                 instance<EventPointsCalculatorCommand>().subcommands(

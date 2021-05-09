@@ -156,6 +156,5 @@ val cliktModule = DI.Module("coner.trailer.cli.clikt") {
         bind<EventSetCommand>() with singleton { EventSetCommand(di = di) }
 
         // Event Results commands
-        bind<EventResultsCommand>() with singleton { EventResultsCommand() }
-        bind<EventResultsOverallCommand>() with singleton { EventResultsOverallCommand(di = di) }
+        bind<EventResultsCommand>() with singleton { EventResultsCommand(di = di) }
 }

@@ -59,14 +59,14 @@ class IntegrationTestAppArgumentBuilder(
         )
     }
 
-    fun buildEventResultsOverall(
+    fun buildEventResults(
         event: Event,
         report: String,
         format: String? = null,
         output: String? = null,
     ): Array<String> {
         return build(
-            *mutableListOf("event", "results", "overall").apply {
+            *mutableListOf("event", "results").apply {
                 add("${event.id}")
                 addAll(arrayOf("--report", report))
                 addAll(format?.let { arrayOf("--$format") } ?: emptyArray())

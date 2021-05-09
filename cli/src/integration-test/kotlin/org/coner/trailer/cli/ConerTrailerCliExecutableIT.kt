@@ -155,7 +155,7 @@ class ConerTrailerCliExecutableIT {
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ).waitForSuccess()
 
-        val process = processRunner.execEventResultsOverall(
+        val process = processRunner.execEventResults(
             event = event,
             report = "raw",
             format = "html",

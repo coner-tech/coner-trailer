@@ -135,7 +135,7 @@ class ConerTrailerCliIT {
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ))
 
-        command.parse(appArgumentBuilder.buildEventResultsOverall(
+        command.parse(appArgumentBuilder.buildEventResults(
             event = event,
             report = "raw",
             format = "html",

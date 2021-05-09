@@ -2,8 +2,6 @@ package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
 import org.coner.trailer.Policy
-import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
-import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
@@ -52,14 +50,14 @@ class ConerTrailerCliProcessRunner(
         )
     }
 
-    fun execEventResultsOverall(
+    fun execEventResults(
         event: Event,
         report: String,
         format: String? = null,
         output: String? = null,
     ): Process {
         return exec(
-            *appArgumentBuilder.buildEventResultsOverall(
+            *appArgumentBuilder.buildEventResults(
                 event = event,
                 report = report,
                 format = format,
