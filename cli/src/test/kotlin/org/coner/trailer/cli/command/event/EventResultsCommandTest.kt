@@ -14,7 +14,7 @@ import org.coner.trailer.Policy
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
-import org.coner.trailer.cli.view.OverallResultsReportTableView
+import org.coner.trailer.cli.view.OverallResultsReportTextTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
@@ -47,7 +47,7 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
     @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
-    @MockK lateinit var reportTableView: OverallResultsReportTableView
+    @MockK lateinit var overallReportTextTableView: OverallResultsReportTextTableView
     @MockK lateinit var reportHtmlPartialRenderer: OverallResultsReportRenderer
     @MockK lateinit var standaloneReportRenderer: StandaloneReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
@@ -64,7 +64,7 @@ class EventResultsCommandTest {
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
             bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
-            bind<OverallResultsReportTableView>() with instance(reportTableView)
+            bind<OverallResultsReportTextTableView>() with instance(overallReportTextTableView)
             bind<OverallResultsReportRenderer>() with instance(reportHtmlPartialRenderer)
             bind<StandaloneReportRenderer>() with instance(standaloneReportRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
@@ -88,7 +88,7 @@ class EventResultsCommandTest {
             context = context
         ) } returns resultsReport
         val render = "plain text"
-        every { reportTableView.render(resultsReport) } returns render
+        every { overallReportTextTableView.render(resultsReport) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -102,7 +102,7 @@ class EventResultsCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            reportTableView.render(resultsReport)
+            overallReportTextTableView.render(resultsReport)
         }
     }
 

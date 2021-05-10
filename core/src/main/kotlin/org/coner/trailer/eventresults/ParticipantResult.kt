@@ -1,7 +1,6 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Participant
-import org.coner.trailer.Policy
 import org.coner.trailer.Time
 
 data class ParticipantResult(

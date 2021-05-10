@@ -1,6 +1,7 @@
 package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
@@ -15,7 +16,8 @@ import org.coner.trailer.Event
 import org.coner.trailer.Policy
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
-import org.coner.trailer.cli.view.OverallResultsReportTableView
+import org.coner.trailer.cli.view.OverallResultsReportTextTableView
+import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.render.OverallResultsReportRenderer
@@ -47,7 +49,8 @@ class EventResultsCommand(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val crispyFishRawResultsReportCreator: (Policy) -> OverallRawTimeResultsReportCreator by factory()
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
-    private val reportTableView: OverallResultsReportTableView by instance()
+    private val crispyFishGroupedResultsReportCreator: (Policy) -> CompetitionGroupedResultsReportCreator by factory()
+    private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
     private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
     private val standaloneReportRenderer: StandaloneReportRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
@@ -56,7 +59,8 @@ class EventResultsCommand(
     private val report: ResultsType by option()
         .choice(
             "raw" to StandardResultsTypes.raw,
-            "pax" to StandardResultsTypes.pax
+            "pax" to StandardResultsTypes.pax,
+            "grouped" to StandardResultsTypes.grouped
         )
         .required()
     enum class Format(val extension: String) {
@@ -88,12 +92,30 @@ class EventResultsCommand(
 
     override fun run() {
         val event = eventService.findById(id)
-        val reportChoice = report
+        val render = when (report) {
+            StandardResultsTypes.raw, StandardResultsTypes.pax -> buildOverallTypeReport(event)
+            StandardResultsTypes.grouped -> buildGroupedTypeReport(event)
+            else -> throw UnsupportedOperationException()
+        }
+        when (val output = medium) {
+            Output.Console -> echo(render)
+            is Output.File -> {
+                val actualDestination = fileOutputResolver.forEventResults(
+                    event = event,
+                    type = report,
+                    defaultExtension = format.extension,
+                    path = output.output
+                )
+                actualDestination.writeText(render)
+            }
+        }
+    }
 
-        val eventCrispyFish = requireNotNull(event.crispyFish) { "Missing crispy fish metadata" }
+    private fun buildOverallTypeReport(event: Event): String {
         val resultsReport = when (event.policy.authoritativeRunSource) {
             Policy.RunSource.CrispyFish -> {
-                val reportCreator = when (reportChoice) {
+                val eventCrispyFish = event.requireCrispyFish()
+                val reportCreator = when (report) {
                     StandardResultsTypes.raw -> crispyFishRawResultsReportCreator(event.policy)
                     StandardResultsTypes.pax -> crispyFishPaxResultsReportCreator(event.policy)
                     else -> throw IllegalArgumentException()
@@ -104,25 +126,30 @@ class EventResultsCommand(
                 )
             }
         }
-        val render = when (format) {
-            Format.TEXT -> reportTableView.render(resultsReport)
+        return when (format) {
+            Format.TEXT -> overallReportTextTableView.render(resultsReport)
             Format.HTML -> standaloneReportRenderer.renderEventResults(
                 event = event,
                 resultsReport = resultsReport,
                 resultsPartial = reportHtmlPartialRenderer.partial(resultsReport)
             )
         }
-        when (val output = medium) {
-            Output.Console -> echo(render)
-            is Output.File -> {
-                val actualDestination = fileOutputResolver.forEventResults(
-                    event = event,
-                    type = reportChoice,
-                    defaultExtension = format.extension,
-                    path = output.output
+    }
+
+    private fun buildGroupedTypeReport(event: Event): String {
+        val resultsReport = when (event.policy.authoritativeRunSource) {
+            Policy.RunSource.CrispyFish -> {
+                val eventCrispyFish = event.requireCrispyFish()
+                val reportCreator = crispyFishGroupedResultsReportCreator(event.policy)
+                reportCreator.createFromRegistrationData(
+                    eventCrispyFishMetadata = eventCrispyFish,
+                    context = crispyFishEventMappingContextService.load(eventCrispyFish)
                 )
-                actualDestination.writeText(render)
             }
+        }
+        return when (format) {
+            Format.TEXT -> TODO()
+            Format.HTML -> TODO()
         }
     }
 }

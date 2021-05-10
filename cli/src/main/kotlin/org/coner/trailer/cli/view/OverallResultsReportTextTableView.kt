@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.CWC_LongestLine
 import org.coner.trailer.eventresults.*
 import org.coner.trailer.render.Renderer
 
-class OverallResultsReportTableView : View<OverallResultsReport>, Renderer {
+class OverallResultsReportTextTableView : View<OverallResultsReport>, Renderer {
 
     override fun render(model: OverallResultsReport): String {
         val at = AsciiTable()

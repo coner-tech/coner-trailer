@@ -36,7 +36,7 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
-    bind<OverallResultsReportTableView>() with provider { OverallResultsReportTableView() }
+    bind<OverallResultsReportTextTableView>() with provider { OverallResultsReportTextTableView() }
     bind<OverallResultsReportRenderer>() with provider { OverallResultsReportRenderer(
         columns = standardOverallResultsReportColumns
     ) }

@@ -46,4 +46,8 @@ data class Event(
         POST,
         FINAL
     }
+
+    fun requireCrispyFish(): CrispyFishMetadata {
+        return requireNotNull(crispyFish) { "Event lacks crispy fish metadata" }
+    }
 }
