@@ -61,7 +61,7 @@ class EventResultsCommand(
         .choice(
             "raw" to StandardResultsTypes.raw,
             "pax" to StandardResultsTypes.pax,
-            "grouped" to StandardResultsTypes.grouped
+            "class" to StandardResultsTypes.grouped
         )
         .required()
     enum class Format(val extension: String) {
