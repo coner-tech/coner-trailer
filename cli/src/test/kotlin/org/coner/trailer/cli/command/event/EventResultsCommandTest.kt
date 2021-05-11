@@ -24,7 +24,7 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.StandaloneReportRenderer
+import org.coner.trailer.render.StandaloneReportHtmlRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -49,7 +49,7 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
     @MockK lateinit var overallReportTextTableView: OverallResultsReportTextTableView
     @MockK lateinit var overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer
-    @MockK lateinit var standaloneReportRenderer: StandaloneReportRenderer
+    @MockK lateinit var standaloneReportHtmlRenderer: StandaloneReportHtmlRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -66,7 +66,7 @@ class EventResultsCommandTest {
             bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
             bind<OverallResultsReportTextTableView>() with instance(overallReportTextTableView)
             bind<OverallResultsReportHtmlRenderer>() with instance(overallResultsReportHtmlRenderer)
-            bind<StandaloneReportRenderer>() with instance(standaloneReportRenderer)
+            bind<StandaloneReportHtmlRenderer>() with instance(standaloneReportHtmlRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -125,7 +125,7 @@ class EventResultsCommandTest {
         val render = "<html>"
         val resultsPartial: HtmlBlockTag.() -> Unit = mockk()
         every { overallResultsReportHtmlRenderer.partial(resultsReport) } returns resultsPartial
-        every { standaloneReportRenderer.renderEventResults(
+        every { standaloneReportHtmlRenderer.renderEventResults(
             event = event,
             resultsReport = resultsReport,
             resultsPartial = resultsPartial
@@ -156,7 +156,7 @@ class EventResultsCommandTest {
                 context = context
             )
             overallResultsReportHtmlRenderer.partial(resultsReport)
-            standaloneReportRenderer.renderEventResults(
+            standaloneReportHtmlRenderer.renderEventResults(
                 event = event,
                 resultsReport = resultsReport,
                 resultsPartial = resultsPartial

@@ -10,7 +10,7 @@ data class PolicyEntity(
     val conePenaltySeconds: Int,
     val paxTimeStyle: String,
     val finalScoreStyle: String,
-    val authoritativeRunSource: RunSource
+    val authoritativeRunSource: RunSource = RunSource(RunSource.Type.CRISPY_FISH)
 ) : Entity<PolicyEntity.Key> {
 
     data class Key(val id: UUID) : org.coner.snoozle.db.Key

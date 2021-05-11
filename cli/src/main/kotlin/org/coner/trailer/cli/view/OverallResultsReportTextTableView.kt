@@ -21,8 +21,8 @@ class OverallResultsReportTextTableView : View<OverallResultsReport>, Renderer {
                 result.participant.car.model,
                 renderScoreColumnValue(result)
             )
-            at.addRule()
         }
+        at.addRule()
         return at.render()
     }
 
