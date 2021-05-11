@@ -6,7 +6,7 @@ import kotlinx.html.dom.serialize
 import kotlinx.html.stream.createHTML
 import org.coner.trailer.eventresults.OverallResultsReport
 
-class OverallResultsReportRenderer(
+class OverallResultsReportHtmlRenderer(
     private val columns: List<OverallResultsReportColumn>
 ) : Renderer {
 

@@ -1,7 +1,6 @@
 package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
@@ -20,7 +19,7 @@ import org.coner.trailer.cli.view.OverallResultsReportTextTableView
 import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.render.OverallResultsReportRenderer
+import org.coner.trailer.render.OverallResultsReportHtmlRenderer
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
@@ -51,7 +50,7 @@ class EventResultsCommand(
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
     private val crispyFishGroupedResultsReportCreator: (Policy) -> CompetitionGroupedResultsReportCreator by factory()
     private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
-    private val reportHtmlPartialRenderer: OverallResultsReportRenderer by instance()
+    private val overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer by instance()
     private val standaloneReportRenderer: StandaloneReportRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -131,7 +130,7 @@ class EventResultsCommand(
             Format.HTML -> standaloneReportRenderer.renderEventResults(
                 event = event,
                 resultsReport = resultsReport,
-                resultsPartial = reportHtmlPartialRenderer.partial(resultsReport)
+                resultsPartial = overallResultsReportHtmlRenderer.partial(resultsReport)
             )
         }
     }
