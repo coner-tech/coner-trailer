@@ -5,7 +5,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.GroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
@@ -14,7 +14,7 @@ import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class CompetitionGroupedResultsReportCreatorTest {
+class GroupedResultsReportCreatorTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
@@ -30,7 +30,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = CompetitionGroupedResultsReportCreator(
+        val subject = GroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
@@ -147,7 +147,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = CompetitionGroupedResultsReportCreator(
+        val subject = GroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
@@ -251,7 +251,7 @@ class CompetitionGroupedResultsReportCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = CompetitionGroupedResultsReportCreator(
+        val subject = GroupedResultsReportCreator(
             participantResultMapper = event.groupedParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )

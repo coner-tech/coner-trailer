@@ -17,7 +17,7 @@ import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.GroupedResultsReportTextTableView
 import org.coner.trailer.cli.view.OverallResultsReportTextTableView
-import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventsresults.GroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
 import org.coner.trailer.render.OverallResultsReportHtmlRenderer
@@ -49,7 +49,7 @@ class EventResultsCommand(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val crispyFishRawResultsReportCreator: (Policy) -> OverallRawTimeResultsReportCreator by factory()
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
-    private val crispyFishGroupedResultsReportCreator: (Policy) -> CompetitionGroupedResultsReportCreator by factory()
+    private val crispyFishGroupedResultsReportCreator: (Policy) -> GroupedResultsReportCreator by factory()
     private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
     private val overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer by instance()
     private val groupedResultsReportTextTableView: GroupedResultsReportTextTableView by instance()

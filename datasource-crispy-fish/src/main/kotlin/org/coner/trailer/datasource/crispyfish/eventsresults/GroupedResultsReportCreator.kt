@@ -8,7 +8,7 @@ import org.coner.trailer.eventresults.GroupedResultsReport
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.StandardResultsTypes
 
-class CompetitionGroupedResultsReportCreator(
+class GroupedResultsReportCreator(
     private val participantResultMapper: ParticipantResultMapper,
     private val scoredRunsComparatorProvider: (Int) -> ParticipantResult.ScoredRunsComparator
 ) {

@@ -5,14 +5,11 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.key
-import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.Event
 import org.coner.trailer.TestGroupings
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventsresults.GroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -50,7 +47,7 @@ class StandingsReportCreatorFromCrispyFishTest {
             val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
                 runCount = context.runCount
             )
-            val creator = CompetitionGroupedResultsReportCreator(
+            val creator = GroupedResultsReportCreator(
                 participantResultMapper = eventFixture.groupedParticipantResultMapper,
                 scoredRunsComparatorProvider = { scoredRunsComparator }
             )

@@ -5,7 +5,6 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.CompetitionGroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
