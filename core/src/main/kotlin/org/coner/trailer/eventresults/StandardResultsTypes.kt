@@ -13,10 +13,12 @@ object StandardResultsTypes {
         scoreColumnHeading = "PAX Time"
     )
     val grouped = ResultsType(
-        key = "grouped",
-        title = "Grouped Results",
+        key = "class",
+        title = "Class Results",
         scoreColumnHeading = "Time"
     )
+
+    val all = listOf(raw, pax, grouped)
 
     fun fromKey(key: String): ResultsType? {
         return when (key) {

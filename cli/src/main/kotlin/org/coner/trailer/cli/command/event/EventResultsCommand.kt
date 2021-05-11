@@ -58,11 +58,7 @@ class EventResultsCommand(
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val report: ResultsType by option()
-        .choice(
-            "raw" to StandardResultsTypes.raw,
-            "pax" to StandardResultsTypes.pax,
-            "class" to StandardResultsTypes.grouped
-        )
+        .choice(StandardResultsTypes.all.associateBy { it.key })
         .required()
     enum class Format(val extension: String) {
         TEXT("txt"),
