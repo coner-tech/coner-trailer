@@ -4,13 +4,13 @@ import kotlinx.html.*
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.ResultsType
 
-interface OverallResultsReportColumn : Renderer {
+interface ResultsReportColumn : Renderer {
 
     val header: TR.(ResultsType) -> Unit
 
     val data: TR.(ParticipantResult) -> Unit
 
-    class Position : OverallResultsReportColumn {
+    class Position : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("position")
@@ -26,7 +26,7 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
 
-    class Signage : OverallResultsReportColumn {
+    class Signage : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage")
@@ -39,7 +39,7 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
 
-    class SignageClass : OverallResultsReportColumn {
+    class SignageClass : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-category-handicap")
@@ -52,7 +52,7 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
 
-    class SignageNumber : OverallResultsReportColumn {
+    class SignageNumber : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-number")
@@ -65,7 +65,7 @@ interface OverallResultsReportColumn : Renderer {
         }
     }
 
-    class Name : OverallResultsReportColumn {
+    class Name : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("name")
@@ -77,7 +77,7 @@ interface OverallResultsReportColumn : Renderer {
             td { text(renderName(it.participant)) }
         }
     }
-    class CarModel : OverallResultsReportColumn {
+    class CarModel : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("car-model")
@@ -89,7 +89,7 @@ interface OverallResultsReportColumn : Renderer {
             td { text(it.participant.car.model ?: "") }
         }
     }
-    class Score : OverallResultsReportColumn {
+    class Score : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -101,7 +101,7 @@ interface OverallResultsReportColumn : Renderer {
             td { text(renderScoreColumnValue(it)) }
         }
     }
-    class DiffFirst : OverallResultsReportColumn {
+    class DiffFirst : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -113,7 +113,7 @@ interface OverallResultsReportColumn : Renderer {
             td { text(render(it.diffFirst)) }
         }
     }
-    class DiffPrevious : OverallResultsReportColumn {
+    class DiffPrevious : ResultsReportColumn {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")

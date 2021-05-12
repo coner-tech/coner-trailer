@@ -25,6 +25,7 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.render.GroupedResultsReportHtmlRenderer
 import org.coner.trailer.render.StandaloneReportHtmlRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -53,6 +54,7 @@ class EventResultsCommand(
     private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
     private val overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer by instance()
     private val groupedResultsReportTextTableView: GroupedResultsReportTextTableView by instance()
+    private val groupedResultsReportHtmlRenderer: GroupedResultsReportHtmlRenderer by instance()
     private val standaloneReportHtmlRenderer: StandaloneReportHtmlRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -146,7 +148,11 @@ class EventResultsCommand(
         }
         return when (format) {
             Format.TEXT -> groupedResultsReportTextTableView.render(resultsReport)
-            Format.HTML -> TODO()
+            Format.HTML -> standaloneReportHtmlRenderer.renderEventResults(
+                event = event,
+                resultsReport = resultsReport,
+                resultsPartial = groupedResultsReportHtmlRenderer.partial(resultsReport)
+            )
         }
     }
 }
