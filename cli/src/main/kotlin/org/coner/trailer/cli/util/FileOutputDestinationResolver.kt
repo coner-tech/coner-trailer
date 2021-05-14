@@ -28,7 +28,7 @@ class FileOutputDestinationResolver(
 
     /**
      * Process a path:
-     * - If path is null, invoke generator in the current working directory
+     * - If path is null, invoke generator in the user's home directory
      * - If path is a directory, invoke generator on it
      * - Otherwise just return it
      * @param path optional directory or file name
