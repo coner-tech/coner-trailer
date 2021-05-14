@@ -1,13 +1,12 @@
 package org.coner.trailer.cli.util
 
+import org.apache.commons.lang3.SystemUtils
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
 import org.coner.trailer.eventresults.ResultsType
 import java.nio.file.Path
-import java.nio.file.Paths
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.isDirectory
-import kotlin.io.path.isRegularFile
 
 @ExperimentalPathApi
 class FileOutputDestinationResolver(
@@ -38,7 +37,7 @@ class FileOutputDestinationResolver(
      */
     fun process(path: Path?, generator: Path.() -> Path): Path {
         return when {
-            path == null -> Paths.get("").generator()
+            path == null -> SystemUtils.getUserHome().toPath().generator()
             path.isDirectory() -> path.generator()
             else -> path
         }
