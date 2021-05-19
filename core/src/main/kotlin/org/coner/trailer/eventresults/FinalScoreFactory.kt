@@ -1,5 +1,7 @@
 package org.coner.trailer.eventresults
 
 interface FinalScoreFactory {
-    fun factory(resultRuns: List<ResultRun>): Score?
+    fun score(resultRuns: List<ResultRun>): Score?
+
+    fun bestRun(resultRuns: List<ResultRun>): ResultRun?
 }

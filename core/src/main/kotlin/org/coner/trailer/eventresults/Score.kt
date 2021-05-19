@@ -1,8 +1,6 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Time
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 data class Score constructor(
     val value: BigDecimal,

@@ -1,47 +1,47 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
-import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Participant
 import org.coner.trailer.Time
+import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.ResultRun
+import tech.coner.crispyfish.model.PenaltyType
+import tech.coner.crispyfish.model.RegistrationRun
+import tech.coner.crispyfish.model.Run
 
 class ResultRunMapper(
     private val scoreMapper: ScoreMapper
 ) {
 
     fun toCore(
-        cfRegistrationRun: RegistrationRun,
-        cfRegistrationRunIndex: Int,
-        cfRegistrationBestRun: Int?,
+        cfRun: Run,
+        cfRunIndex: Int,
         participant: Participant,
+        score: Boolean
     ): ResultRun? {
         return ResultRun(
-            score = scoreMapper.toScore(
-                cfRegistrationRun = cfRegistrationRun,
-                participant = participant
-            ) ?: return null,
-            cones = (cfRegistrationRun.penalty as? RegistrationRun.Penalty.Cone?)?.count,
-            didNotFinish = cfRegistrationRun.penalty == RegistrationRun.Penalty.DidNotFinish,
-            disqualified = cfRegistrationRun.penalty == RegistrationRun.Penalty.Disqualified,
-            rerun = false, // no re-runs reported in crispy fish registration file
-            personalBest = cfRegistrationRunIndex + 1 == cfRegistrationBestRun,
-            time = mapTime(cfRegistrationRun)
+            sequence = cfRunIndex + 1,
+            score = if (score) {
+                scoreMapper.toScore(
+                    cfRun = cfRun,
+                    participant = participant
+                ) ?: return null
+            } else {
+                null
+            },
+            cones = if (cfRun.penaltyType == PenaltyType.CONE) cfRun.cones else null,
+            didNotFinish = cfRun.penaltyType == PenaltyType.DID_NOT_FINISH,
+            disqualified = cfRun.penaltyType == PenaltyType.DISQUALIFIED,
+            rerun = cfRun.penaltyType == PenaltyType.RERUN,
+            time = cfRun.timeScratchAsString?.let { Time(it) }
         )
     }
 
     fun toCore(
-        cfRegistrationRuns: List<RegistrationRun>,
-        cfRegistrationBestRun: Int?,
-        participant: Participant,
+        context: CrispyFishEventMappingContext,
+        participantCfRuns: List<Run>,
+        participant: Participant
     ): List<ResultRun> {
-        return cfRegistrationRuns.mapIndexedNotNull { index, registrationRun ->
-            toCore(
-                cfRegistrationRun = registrationRun,
-                cfRegistrationRunIndex = index,
-                cfRegistrationBestRun = cfRegistrationBestRun,
-                participant = participant
-            )
-        }
+        TODO("consume and score eligible runs")
     }
 
     private fun mapTime(run: RegistrationRun): Time? {

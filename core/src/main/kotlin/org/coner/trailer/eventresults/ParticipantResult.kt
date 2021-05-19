@@ -9,19 +9,16 @@ data class ParticipantResult(
     val participant: Participant,
     val diffFirst: Time?,
     val diffPrevious: Time?,
-    val scoredRuns: List<ResultRun>
+    val scoredRuns: List<ResultRun>,
+    val personalBestScoredRunIndex: Int?
 ) {
 
     init {
         require(position >= 1) { "Position is 1-indexed, argument must be greater than or equal to 1" }
     }
 
-    val personalBestRun: ResultRun? by lazy {
-        when {
-            scoredRuns.isNotEmpty() -> scoredRuns.single { it.personalBest }
-            else -> null
-        }
-    }
+    val personalBestRun: ResultRun?
+        get() = personalBestScoredRunIndex?.let { scoredRuns[it] }
 
     class ScoredRunsComparator(
         private val runCount: Int

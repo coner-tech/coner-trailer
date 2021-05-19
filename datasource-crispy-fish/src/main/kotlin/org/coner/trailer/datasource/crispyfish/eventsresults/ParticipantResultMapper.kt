@@ -35,18 +35,18 @@ class ParticipantResultMapper(
             withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
         )
         val scoredRuns = resultRunMapper.toCore(
-            cfRegistrationRuns = cfRegistration.runs,
-            cfRegistrationBestRun = cfRegistration.bestRun,
+            participantCfRuns = context.runsByRegistration[cfRegistration] ?: return null,
             participant = participant
         )
         return ParticipantResult(
-            score = finalScoreFactory.factory(scoredRuns) ?: return null,
+            score = finalScoreFactory.score(scoredRuns) ?: return null,
             participant = participant,
             scoredRuns = scoredRuns,
             // positions and diffs are calculated in toCoreRanked after sorting by score
             position = Int.MAX_VALUE,
             diffFirst = null,
-            diffPrevious = null
+            diffPrevious = null,
+            personalBestScoredRunIndex = null
         )
     }
 

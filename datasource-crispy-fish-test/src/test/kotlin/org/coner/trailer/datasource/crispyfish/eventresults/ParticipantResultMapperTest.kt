@@ -19,7 +19,6 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
@@ -101,7 +100,7 @@ class ParticipantResultMapperTest {
             every { peopleMap } returns usePeopleMap
         }
         val expectedScore: Score = mockk()
-        every { finalScoreFactory.factory(expectedScoredRuns) } returns expectedScore
+        every { finalScoreFactory.score(expectedScoredRuns) } returns expectedScore
 
         val actual = mapper.toCore(
             eventCrispyFishMetadata = crispyFishMetadata,

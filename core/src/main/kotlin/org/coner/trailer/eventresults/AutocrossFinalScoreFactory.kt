@@ -1,9 +1,12 @@
 package org.coner.trailer.eventresults
 
 class AutocrossFinalScoreFactory : FinalScoreFactory {
-    override fun factory(resultRuns: List<ResultRun>): Score? {
+    override fun score(resultRuns: List<ResultRun>): Score? {
+        return bestRun(resultRuns)?.score
+    }
+
+    override fun bestRun(resultRuns: List<ResultRun>): ResultRun? {
         return resultRuns
-            .map { it.score }
-            .minOrNull()
+            .minByOrNull { it.score }
     }
 }

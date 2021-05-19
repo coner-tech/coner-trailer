@@ -13,7 +13,7 @@
     <artifactId>datasource-crispy-fish</artifactId>
 
     <properties>
-        <crispyfish.version>0.5.6</crispyfish.version>
+        <crispyfish.version>0.5.7-SNAPSHOT</crispyfish.version>
     </properties>
 
     <dependencies>

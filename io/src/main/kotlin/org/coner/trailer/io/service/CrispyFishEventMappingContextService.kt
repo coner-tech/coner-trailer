@@ -4,7 +4,10 @@ import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.datasource.crispyfish.syntheticSignageKey
 import org.coner.trailer.io.constraint.CrispyFishLoadConstraints
+import tech.coner.crispyfish.model.EventDay
+import tech.coner.crispyfish.model.Registration
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
@@ -30,9 +33,21 @@ class CrispyFishEventMappingContextService(
             conePenalty = 2
         )
         val allRegistrations = eventControlFile.queryRegistrations()
+        val registrationsBySyntheticSignage = allRegistrations.associateBy { it.syntheticSignageKey() }
+        val allRuns = eventControlFile.queryStagingRuns(EventDay.ONE)
         return CrispyFishEventMappingContext(
             allClassDefinitions = classDefinitionFile.mapper().all(),
             allRegistrations = allRegistrations,
+            allRuns = allRuns.map { (stagingLineRegistration, run) ->
+                val registration = if (stagingLineRegistration != null) {
+                    val stagingLineRegistrationSyntheticSignage = "${stagingLineRegistration.classing} ${stagingLineRegistration.number}"
+                    val registration = registrationsBySyntheticSignage[stagingLineRegistrationSyntheticSignage]
+                    registration
+                } else {
+                    null
+                }
+                registration to run
+            },
             runCount = allRegistrations.maxOf { it.runs.size }
         )
     }
