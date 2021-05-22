@@ -1,13 +1,8 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Time
+import org.coner.trailer.Run
 
 data class ResultRun(
-        val sequence: Int,
-        val score: Score?,
-        val cones: Int? = null,
-        val didNotFinish: Boolean = false,
-        val disqualified: Boolean = false,
-        val rerun: Boolean = false,
-        val time: Time?
+        val run: Run,
+        val score: Score,
 )

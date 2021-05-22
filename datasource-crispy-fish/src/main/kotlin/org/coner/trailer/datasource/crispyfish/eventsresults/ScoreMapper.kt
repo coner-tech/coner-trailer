@@ -1,11 +1,11 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
-import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.Participant
 import org.coner.trailer.Time
 import org.coner.trailer.eventresults.RunScoreFactory
 import org.coner.trailer.eventresults.Score
 import tech.coner.crispyfish.model.PenaltyType
+import tech.coner.crispyfish.model.RegistrationRun
 import tech.coner.crispyfish.model.Run
 
 class ScoreMapper(

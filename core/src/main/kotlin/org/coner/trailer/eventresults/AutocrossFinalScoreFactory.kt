@@ -7,6 +7,7 @@ class AutocrossFinalScoreFactory : FinalScoreFactory {
 
     override fun bestRun(resultRuns: List<ResultRun>): ResultRun? {
         return resultRuns
-            .minByOrNull { it.score }
+            .filter { it.score != null }
+            .minByOrNull { it.score!! }
     }
 }

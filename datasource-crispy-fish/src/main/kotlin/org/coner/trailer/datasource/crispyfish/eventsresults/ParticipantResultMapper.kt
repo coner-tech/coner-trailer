@@ -35,6 +35,7 @@ class ParticipantResultMapper(
             withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
         )
         val scoredRuns = resultRunMapper.toCore(
+            context = context,
             participantCfRuns = context.runsByRegistration[cfRegistration] ?: return null,
             participant = participant
         )

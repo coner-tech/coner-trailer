@@ -1,5 +1,6 @@
 package org.coner.trailer.datasource.crispyfish
 
+import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import tech.coner.crispyfish.model.ClassDefinition
 import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
