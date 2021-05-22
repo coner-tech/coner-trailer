@@ -100,6 +100,10 @@ class StandingsReportCreatorTest {
 
     @Test
     fun `It should exclude participants not eligible for season points`() {
+        val teriPotter = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
+            seasonPointsEligible = false // only value relevant to test
+        )
+        val rebeccaJackson = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             resultsType = StandardResultsTypes.grouped,
             season = TestSeasons.lscc2019,
@@ -111,28 +115,34 @@ class StandingsReportCreatorTest {
                             ParticipantResult(
                                 position = 1,
                                 score = Score("45.678"),
-                                participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
-                                    seasonPointsEligible = false // only value relevant to test
-                                ),
+                                participant = teriPotter,
                                 scoredRuns = listOf(ResultRun(
+                                    run = Run(
+                                        sequence = 1,
+                                        participant = teriPotter,
+                                        time = Time("45.678")
+                                    ),
                                     score = Score("45.678"),
-                                    time = Time("45.678"),
-                                    personalBest = true
                                 )),
                                 diffPrevious = null,
-                                diffFirst = null
+                                diffFirst = null,
+                                personalBestScoredRunIndex = 0
                             ),
                             ParticipantResult( // to make sure eligible are included
                                 position = 2,
                                 score = Score("56.789"),
-                                participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                                participant = rebeccaJackson,
                                 scoredRuns = listOf(ResultRun(
+                                    run = Run(
+                                        sequence = 2,
+                                        participant = rebeccaJackson,
+                                        time = Time("56.789")
+                                    ),
                                     score = Score("56.789"),
-                                    time = Time("56.789"),
-                                    personalBest = true
                                 )),
                                 diffFirst = null,
-                                diffPrevious = null
+                                diffPrevious = null,
+                                personalBestScoredRunIndex = 0
                             )
                         )
                     )

@@ -6,6 +6,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isLessThan
+import org.coner.trailer.Run
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPolicies
 import org.junit.jupiter.api.Nested
@@ -27,7 +28,8 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 diffFirst = null,
                 diffPrevious = null,
-                scoredRuns = emptyList()
+                scoredRuns = emptyList(),
+                personalBestScoredRunIndex = null
             )
         }
     }
@@ -42,7 +44,8 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 diffFirst = null,
                 diffPrevious = null,
-                scoredRuns = emptyList()
+                scoredRuns = emptyList(),
+                personalBestScoredRunIndex = null
             )
         }
     }
@@ -57,10 +60,13 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort for result with all runs taken`() {
-            val participantResult = build(listOf(
-                Score("123.654"),
-                Score("123.456")
-            ))
+            val participantResult = build(
+                scoredRuns = listOf(
+                    Score("123.654"),
+                    Score("123.456")
+                ),
+                personalBestScoredRunIndex = 1
+            )
 
             val actual = subject.scoresForSort(participantResult)
 
@@ -72,7 +78,10 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort for result with no runs taken`() {
-            val participantResult = build(emptyList())
+            val participantResult = build(
+                scoredRuns = emptyList(),
+                personalBestScoredRunIndex = null
+            )
 
             val actual = subject.scoresForSort(participantResult)
 
@@ -81,9 +90,12 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort for result with partial runs taken`() {
-            val participantResult = build(listOf(
-                Score("123.654"),
-            ))
+            val participantResult = build(
+                scoredRuns = listOf(
+                    Score("123.654"),
+                ),
+                personalBestScoredRunIndex = 0,
+            )
 
             val actual = subject.scoresForSort(participantResult)
 
@@ -94,11 +106,14 @@ class ParticipantResultTest {
 
         @Test
         fun `It should build scores for sort up to runCount`() {
-            val participantResult = build(listOf(
-                Score("123.654"),
-                Score("123.564"),
-                Score("123.000")
-            ))
+            val participantResult = build(
+                scoredRuns = listOf(
+                    Score("123.654"),
+                    Score("123.564"),
+                    Score("123.000")
+                ),
+                personalBestScoredRunIndex = 2
+            )
 
             val actual = subject.scoresForSort(participantResult)
 
@@ -108,15 +123,21 @@ class ParticipantResultTest {
             ))
         }
 
-        private val faster = build(listOf(
-            Score("34.765"),
-            Score("34.567")
-        ))
+        private val faster = build(
+            scoredRuns = listOf(
+                Score("34.765"),
+                Score("34.567")
+            ),
+            personalBestScoredRunIndex = 1
+        )
 
-        private val slower = build(listOf(
-            Score("34.765"),
-            Score("34.657")
-        ))
+        private val slower = build(
+            scoredRuns = listOf(
+                Score("34.765"),
+                Score("34.657")
+            ),
+            personalBestScoredRunIndex = 1
+        )
 
         @Test
         fun `It should compare faster vs slower as lower`() {
@@ -133,7 +154,10 @@ class ParticipantResultTest {
         }
 
         private val runCountSized = faster
-        private val lessThanRunCountSized = build(listOf(faster.scoredRuns.minOf { it.score }))
+        private val lessThanRunCountSized = build(
+            scoredRuns = listOf(faster.scoredRuns.minOf { it.score }),
+            personalBestScoredRunIndex = 1
+        )
 
         @Test
         fun `It should compare runCount-sized scoredRuns vs less-than-runCount-sized scoredRuns as lower`() {
@@ -156,7 +180,7 @@ class ParticipantResultTest {
             assertThat(actual).isEqualTo(0)
         }
 
-        private fun build(scoredRuns: List<Score>) = ParticipantResult(
+        private fun build(scoredRuns: List<Score>, personalBestScoredRunIndex: Int?) = ParticipantResult(
             position = Int.MAX_VALUE,
             score = Score("999.999"),
             participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
@@ -164,8 +188,17 @@ class ParticipantResultTest {
             diffPrevious = null,
             scoredRuns = scoredRuns.map { ResultRun(
                 score = it,
-                time = null
-            ) }
+                run = Run(
+                    sequence = 0,
+                    participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                    time = null,
+                    cones = null,
+                    didNotFinish = null,
+                    disqualified = null,
+                    rerun = null,
+                )
+            ) },
+            personalBestScoredRunIndex = personalBestScoredRunIndex
         )
     }
 

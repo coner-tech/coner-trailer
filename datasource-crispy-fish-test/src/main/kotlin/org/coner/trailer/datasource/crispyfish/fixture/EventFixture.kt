@@ -4,6 +4,7 @@ import org.coner.trailer.SeasonEvent
 import org.coner.trailer.TestPolicies
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
@@ -80,17 +81,26 @@ class EventFixture(
     val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()
 
     val rawTimeParticipantResultMapper = ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(rawTimeScoreMapper),
+        resultRunMapper = ResultRunMapper(
+            cfRunMapper = CrispyFishRunMapper(),
+            scoreMapper = rawTimeScoreMapper
+        ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
     val paxTimeParticipantResultMapper = ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(paxTimeScoreMapper),
+        resultRunMapper = ResultRunMapper(
+            cfRunMapper = CrispyFishRunMapper(),
+            scoreMapper = paxTimeScoreMapper,
+        ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
     val groupedParticipantResultMapper = ParticipantResultMapper(
-        resultRunMapper = ResultRunMapper(groupedScoreMapper),
+        resultRunMapper = ResultRunMapper(
+            cfRunMapper = CrispyFishRunMapper(),
+            scoreMapper =  groupedScoreMapper
+        ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
