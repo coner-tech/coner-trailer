@@ -1,7 +1,6 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.*
-import java.math.BigDecimal
 
 object TestGroupedResultsReports {
 
@@ -14,113 +13,128 @@ object TestGroupedResultsReports {
                 type = StandardResultsTypes.grouped,
                 groupingsToResultsMap = sortedMapOf(
                     TestGroupings.Lscc2019.NOV to listOf(
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 4,
                             score = Score("39.297"),
                             participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 1,
-                                    score = Score("48.029", Score.Penalty.Cone("8.000", 4)),
+                                    participant = participant,
                                     time = Time("49.419"),
-                                    cones = 4
-                                ),
-                                ResultRun(
+                                    cones = 4,
+                                    score = Score("48.029", Score.Penalty.Cone("8.000", 4)),
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 2,
+                                    participant = participant,
                                     score = Score("46.377", Score.Penalty.Cone("6.000", 3)),
                                     time = Time("49.848"),
                                     cones = 3
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 3,
+                                    participant = participant,
                                     score = Score("39.297"),
                                     time = Time("48.515")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 4,
+                                    participant = participant,
                                     score = Score("41.752", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("49.076"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 5,
+                                    participant = participant,
                                     score = Score("40.043"),
                                     time = Time("49.436")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 2,
                             diffPrevious = Time("0.045"),
                             diffFirst = Time("1.483")
                         ),
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 9,
                             score = Score("41.134"),
                             participant = TestParticipants.Lscc2019Points1.BRYANT_MORAN,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 6,
+                                    participant = participant,
                                     score = Score("46.406", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("56.353"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 7,
+                                    participant = participant,
                                     score = Score("43.995"),
                                     time = Time("55.831")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 8,
+                                    participant = participant,
                                     score = Score("41.134"),
                                     time = Time("52.201")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 9,
+                                    participant = participant,
                                     score = Score("43.025", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("52.062"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 10,
+                                    participant = participant,
                                     score = Score("41.822"),
                                     time = Time("53.074")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 2,
                             diffFirst = Time("3.320"),
                             diffPrevious = Time("0.489")
                         ),
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 11,
                             score = Score("41.381"),
                             participant = TestParticipants.Lscc2019Points1.DOMINIC_ROGERS,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 11,
+                                    participant = participant,
                                     score = Score("42.800"),
                                     time = Time("54.246")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 12,
+                                    participant = participant,
                                     score = Score("44.313", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("53.629"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 13,
+                                    participant = participant,
                                     score = Score("42.914", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("51.856"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 14,
+                                    participant = participant,
                                     score = Score("42.140"),
                                     time = Time("53.409")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 15,
+                                    participant = participant,
                                     score = Score("41.381"),
                                     time = Time("52.447")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 4,
                             diffFirst = Time("3.566"),
@@ -128,74 +142,84 @@ object TestGroupedResultsReports {
                         )
                     ),
                     TestGroupings.Lscc2019.STR to listOf(
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 2,
                             score = Score("47.544"),
                             participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 16,
+                                    participant = participant,
                                     score = Score("49.367"),
                                     time = Time("49.367")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 17,
+                                    participant = participant,
                                     score = Score("49.230"),
                                     time = Time("49.230")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 18,
+                                    participant = participant,
                                     score = Score("48.807"),
                                     time = Time("48.807")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 19,
+                                    participant = participant,
                                     score = Score("214748413.573"),
                                     time = Time("49.573"),
                                     didNotFinish = true
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 20,
+                                    participant = participant,
                                     score = Score("47.544"),
                                     time = Time("47.544")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 4,
                             diffFirst = Time("1.401"),
                             diffPrevious = Time("1.401")
                         ),
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 4,
                             score = Score("48.723"),
                             participant = TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 21,
+                                    participant = participant,
                                     score = Score("54.115", Score.Penalty.Cone("4.000", 2)),
                                     time = Time("50.115"),
                                     cones = 2
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 22,
+                                    participant = participant,
                                     score = Score("52.162", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("50.162"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 23,
+                                    participant = participant,
                                     score = Score("49.672"),
                                     time = Time("49.672")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 24,
+                                    participant = participant,
                                     score = Score("49.992"),
                                     time = Time("49.992")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 25,
+                                    participant = participant,
                                     score = Score("48.723"),
                                     time = Time("48.723")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 4,
                             diffFirst = Time("2.580"),
@@ -203,72 +227,82 @@ object TestGroupedResultsReports {
                         )
                     ),
                     TestGroupings.Lscc2019.GS to listOf(
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 2,
                             score = Score("48.141"),
                             participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 26,
+                                    participant = participant,
                                     score = Score("51.026"),
                                     time = Time("51.026")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 27,
+                                    participant = participant,
                                     score = Score("49.335"),
                                     time = Time("49.335")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 28,
+                                    participant = participant,
                                     score = Score("50.396", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("48.396"),
                                     cones = 1
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 29,
+                                    participant = participant,
                                     score = Score("49.208"),
                                     time = Time("49.208")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 30,
+                                    participant = participant,
                                     score = Score("48.141"),
                                     time = Time("48.141")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 4,
                             diffFirst = Time("0.379"),
                             diffPrevious = Time("0.379")
                         ),
-                        ParticipantResult(
+                        testParticipantResult(
                             position = 3,
                             score = Score("49.057"),
                             participant = TestParticipants.Lscc2019Points1.NORMAN_ROBINSON,
-                            scoredRuns = listOf(
-                                ResultRun(
+                            scoredRunsFns = listOf(
+                                { participant -> testResultRun(
                                     sequence = 31,
+                                    participant = participant,
                                     score = Score("52.400"),
                                     time = Time("52.400")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 32,
+                                    participant = participant,
                                     score = Score("52.122"),
                                     time = Time("52.122")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 33,
+                                    participant = participant,
                                     score = Score("51.967"),
                                     time = Time("51.967")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 34,
+                                    participant = participant,
                                     score = Score("49.637"),
                                     time = Time("49.637")
-                                ),
-                                ResultRun(
+                                ) },
+                                { participant -> testResultRun(
                                     sequence = 35,
+                                    participant = participant,
                                     score = Score("49.057"),
                                     time = Time("49.057")
-                                )
+                                ) }
                             ),
                             personalBestScoredRunIndex = 4,
                             diffFirst = Time("1.295"),
@@ -348,8 +382,9 @@ object TestGroupedResultsReports {
             participant = participant,
             // below properties irrelevant to test:
             score = Score("0.000"),
-            scoredRuns = listOf(ResultRun(
+            scoredRuns = listOf(testResultRun(
                 sequence = 0,
+                participant = participant,
                 score = Score("0.000"),
                 time = Time("0.000")
             )),

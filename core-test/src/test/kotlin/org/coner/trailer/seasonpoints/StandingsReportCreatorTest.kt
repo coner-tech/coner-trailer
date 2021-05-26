@@ -108,31 +108,39 @@ class StandingsReportCreatorTest {
                     type = StandardResultsTypes.grouped,
                     groupingsToResultsMap = sortedMapOf(
                         TestGroupings.Lscc2019.HS to listOf(
-                            ParticipantResult(
+                            testParticipantResult(
                                 position = 1,
                                 score = Score("45.678"),
                                 participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
                                     seasonPointsEligible = false // only value relevant to test
                                 ),
-                                scoredRuns = listOf(ResultRun(
-                                    score = Score("45.678"),
-                                    time = Time("45.678"),
-                                    personalBest = true
-                                )),
+                                scoredRunsFns = listOf { participant ->
+                                    testResultRun(
+                                        sequence = 1,
+                                        score = Score("45.678"),
+                                        participant = participant,
+                                        time = Time("45.678"),
+                                    )
+                                },
                                 diffPrevious = null,
-                                diffFirst = null
+                                diffFirst = null,
+                                personalBestScoredRunIndex = 0
                             ),
-                            ParticipantResult( // to make sure eligible are included
+                            testParticipantResult( // to make sure eligible are included
                                 position = 2,
                                 score = Score("56.789"),
                                 participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
-                                scoredRuns = listOf(ResultRun(
-                                    score = Score("56.789"),
-                                    time = Time("56.789"),
-                                    personalBest = true
-                                )),
+                                scoredRunsFns = listOf { participant ->
+                                    testResultRun(
+                                        sequence = 2,
+                                        participant = participant,
+                                        score = Score("56.789"),
+                                        time = Time("56.789"),
+                                    )
+                                },
                                 diffFirst = null,
-                                diffPrevious = null
+                                diffPrevious = null,
+                                personalBestScoredRunIndex = 0
                             )
                         )
                     )
