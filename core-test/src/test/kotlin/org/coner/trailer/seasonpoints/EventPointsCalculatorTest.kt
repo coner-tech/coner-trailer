@@ -5,7 +5,6 @@ import assertk.assertions.isEqualTo
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.mockkParticipantResult
-import org.coner.trailer.eventresults.mockkResultRun
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 

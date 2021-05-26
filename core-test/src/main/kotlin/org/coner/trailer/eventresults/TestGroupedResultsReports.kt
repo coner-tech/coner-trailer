@@ -22,7 +22,6 @@ object TestGroupedResultsReports {
                                     sequence = 1,
                                     participant = participant,
                                     time = Time("49.419"),
-                                    cones = 4,
                                     score = Score("48.029", Score.Penalty.Cone("8.000", 4)),
                                 ) },
                                 { participant -> testResultRun(
