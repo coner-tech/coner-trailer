@@ -10,23 +10,31 @@ import io.mockk.mockk
 import io.mockk.verifySequence
 import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.TestParticipants
+import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import org.coner.trailer.eventresults.*
+import org.coner.trailer.hasTime
+import org.coner.trailer.isClean
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.model.PenaltyType
+import tech.coner.crispyfish.model.Run
 
 @ExtendWith(MockKExtension::class)
 class ResultRunMapperTest {
     
     lateinit var mapper: ResultRunMapper
 
+    @MockK lateinit var cfRunMapper: CrispyFishRunMapper
     @MockK lateinit var scoreMapper: ScoreMapper
-    
+
     @BeforeEach
     fun before() {
         mapper = ResultRunMapper(
+            cfRunMapper = cfRunMapper,
             scoreMapper = scoreMapper
         )
     }
@@ -34,27 +42,33 @@ class ResultRunMapperTest {
     @Test
     fun `It should map a clean run`() {
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val run = RegistrationRun(
-                time = "123.456",
-                penalty = null
+        val cfRun = testCfRun(
+            timeScratchAsString = "123.456"
         )
         val expectedScore: Score = mockk()
         every {
-            scoreMapper.toScore(cfRegistrationRun = run, participant = participant)
+            cfRunMapper.toCore(
+                cfRun = cfRun, // Run #2
+                cfRunIndex = 1, // Run #2
+                participant = participant
+            )
+        }
+        every {
+            scoreMapper.toScore(cfRun = cfRun, participant = participant)
         } returns expectedScore
 
         val actual = mapper.toCore(
-            cfRegistrationRun = run, // Run #2
-            cfRegistrationRunIndex = 1, // Run #2
-            cfRegistrationBestRun = 3, // Run #3,
+            cfRun = cfRun, // Run #2
+            cfRunIndex = 1, // Run #2
             participant = participant
         )
 
         assertThat(actual).isNotNull().all {
             score().isSameAs(expectedScore)
-            hasTime(run.time)
-            isClean()
-            personalBest().isFalse()
+            run().all {
+                hasTime("123.456")
+                isClean()
+            }
         }
     }
 
@@ -210,3 +224,20 @@ class ResultRunMapperTest {
     }
 
 }
+
+private val stagingAssistant = StagingFileAssistant()
+
+private fun testCfRun(
+    timeScratchAsString: String? = null,
+    penaltyType: PenaltyType? = null,
+    cones: Int? = null
+) = Run(
+    timeScratchAsString = timeScratchAsString,
+    penaltyType = penaltyType,
+    number = null, // unused
+    rawTime = null, // unused
+    paxTime = null, // unused
+    cones = cones,
+    timeScored = null, // unused
+    timeScratchAsDuration = null // unused
+)
