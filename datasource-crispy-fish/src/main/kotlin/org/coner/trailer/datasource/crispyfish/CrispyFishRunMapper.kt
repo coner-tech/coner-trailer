@@ -15,10 +15,14 @@ class CrispyFishRunMapper {
         return Run(
             sequence = cfRunIndex + 1,
             participant = participant,
-            cones = if (cfRun.penaltyType == PenaltyType.CONE) cfRun.cones else null,
-            didNotFinish = if (cfRun.penaltyType == PenaltyType.DID_NOT_FINISH) true else null,
-            disqualified = if (cfRun.penaltyType == PenaltyType.DISQUALIFIED) true else null,
-            rerun =  if (cfRun.penaltyType == PenaltyType.RERUN) true else null,
+            cones = if (cfRun.penaltyType == PenaltyType.CONE) {
+                cfRun.cones ?: 0
+            } else {
+                0
+            },
+            didNotFinish = cfRun.penaltyType == PenaltyType.DID_NOT_FINISH,
+            disqualified = cfRun.penaltyType == PenaltyType.DISQUALIFIED,
+            rerun =  cfRun.penaltyType == PenaltyType.RERUN,
             time = cfRun.timeScratchAsString?.let { Time(it) }
         )
     }

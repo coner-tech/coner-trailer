@@ -52,48 +52,49 @@ class ParticipantResultMapperTest {
     @Test
     fun `It should map (core) ParticipantResult from (CF) Registration, arbitrary RegistrationResult, and Map of MemberId to People`() {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
-        val result = requireNotNull(registration.classResult)
-        val expectedPerson = TestPeople.REBECCA_JACKSON
-        val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val person = TestPeople.REBECCA_JACKSON
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val usePeopleMap = mapOf(
             Event.CrispyFishMetadata.PeopleMapKey(
-                grouping = requireNotNull(expectedParticipant.signage?.grouping),
-                number = requireNotNull(expectedParticipant.signage?.number),
-                firstName = requireNotNull(expectedParticipant.firstName),
-                lastName = requireNotNull(expectedPerson.lastName)
-            ) to expectedPerson
+                grouping = requireNotNull(participant.signage?.grouping),
+                number = requireNotNull(participant.signage?.number),
+                firstName = requireNotNull(participant.firstName),
+                lastName = requireNotNull(person.lastName)
+            ) to person
         )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
+        val allRegistrations = seasonFixture.event1.registrations()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations(),
+            allRegistrations = allRegistrations,
+            allRuns = seasonFixture.event1.runs(allRegistrations),
             runCount = seasonFixture.event1.runCount
         )
         every {
             crispyFishParticipantMapper.toCore(
                 context = context,
                 fromRegistration = registration,
-                withPerson = expectedPerson
+                withPerson = person
             )
-        }.returns(expectedParticipant)
+        }.returns(participant)
         every {
             crispyFishParticipantMapper.toCoreSignage(
                 context = context,
                 crispyFish = registration
             )
-        } returns checkNotNull(expectedParticipant.signage)
+        } returns checkNotNull(participant.signage)
         val expectedScoredRuns = listOf(
-            ResultRun(time = Time("52.749"), score = Score("52.749")),
-            ResultRun(time = Time("53.175"), score = Score("53.175")),
-            ResultRun(time = Time("52.130"), score = Score("52.130")),
-            ResultRun(time = Time("52.117"), score = Score("52.117")),
-            ResultRun(time = Time("51.408"), score = Score("51.408"), personalBest = true)
+            testResultRun(sequence = 1, participant = participant, time = Time("52.749"), score = Score("52.749")),
+            testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),
+            testResultRun(sequence = 3, participant = participant, time = Time("52.130"), score = Score("52.130")),
+            testResultRun(sequence = 4, participant = participant, time = Time("52.117"), score = Score("52.117")),
+            testResultRun(sequence = 5, participant = participant, time = Time("51.408"), score = Score("51.408"), personalBest = true)
         )
         every {
             resultRunMapper.toCore(
                 cfRegistrationRuns = registration.runs,
                 cfRegistrationBestRun = registration.bestRun,
-                participant = expectedParticipant
+                participant = participant
             )
         }.returns(expectedScoredRuns)
         val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
@@ -110,7 +111,7 @@ class ParticipantResultMapperTest {
 
         assertThat(actual).isNotNull().all {
             score().isSameAs(expectedScore)
-            hasParticipant(expectedParticipant)
+            hasParticipant(participant)
             hasScoredRuns(expectedScoredRuns)
             hasPosition(Int.MAX_VALUE) // not calculated here
             diffFirst().isNull() // not calculated here

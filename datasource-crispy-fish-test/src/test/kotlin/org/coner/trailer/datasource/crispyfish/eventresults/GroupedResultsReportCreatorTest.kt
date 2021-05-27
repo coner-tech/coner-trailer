@@ -22,9 +22,11 @@ class GroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 1`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
+        val allRegistrations = event.registrations()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(),
+            allRegistrations = allRegistrations,
+            allRuns = event.runs(allRegistrations),
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -139,9 +141,11 @@ class GroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 2`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
+        val allRegistrations = event.registrations()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(),
+            allRegistrations = allRegistrations,
+            allRuns = event.runs(allRegistrations),
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -243,9 +247,11 @@ class GroupedResultsReportCreatorTest {
     fun `It should create from registration data for LSCC 2019 event 3`() {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
+        val allRegistrations = event.registrations()
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
-            allRegistrations = event.registrations(),
+            allRegistrations = allRegistrations,
+            allRuns = event.runs(allRegistrations),
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(

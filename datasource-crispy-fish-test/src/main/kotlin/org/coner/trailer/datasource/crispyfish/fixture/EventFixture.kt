@@ -9,6 +9,7 @@ import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTime
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
+import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import org.coner.trailer.eventresults.AutocrossFinalScoreFactory
 import org.coner.trailer.eventresults.GroupedRunScoreFactory
 import org.coner.trailer.eventresults.RawTimeRunScoreFactory
@@ -16,7 +17,11 @@ import org.coner.trailer.eventresults.StandardPenaltyFactory
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Run
+import tech.coner.crispyfish.model.StagingLineRegistration
 import tech.coner.crispyfish.query.RegistrationsQuery
+import tech.coner.crispyfish.query.StagingRunsQuery
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectories
@@ -68,6 +73,20 @@ class EventFixture(
         categories = seasonFixture.categories,
         handicaps = seasonFixture.handicaps
     ).query()
+
+    fun runs(registrations: List<Registration>): List<Pair<Registration?, Run?>> {
+        val stagingFile = eventControlFile().stagingFile()
+        val stagingRunsQuery = StagingRunsQuery(stagingFile = stagingFile)
+        val stagingRuns = stagingRunsQuery.query()
+        val registrationsBySignageKey = registrations
+            .associateBy { it.syntheticSignageKey() }
+        return stagingRuns
+            .map { (stagingLineRegistration, run) ->
+                val signageKey = stagingLineRegistration?.syntheticSignageKey()
+                val registration = registrationsBySignageKey[signageKey]
+                registration to run
+            }
+    }
 
     val crispyFishParticipantMapper = CrispyFishParticipantMapper(
         crispyFishGroupingMapper = crispyFishGroupingMapper

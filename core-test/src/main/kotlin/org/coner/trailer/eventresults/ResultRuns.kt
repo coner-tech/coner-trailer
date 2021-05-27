@@ -8,10 +8,10 @@ fun testResultRun(
     sequence: Int,
     participant: Participant,
     time: Time,
-    cones: Int? = null,
-    didNotFinish: Boolean? = null,
-    disqualified: Boolean? = null,
-    rerun: Boolean? = null,
+    cones: Int = 0,
+    didNotFinish: Boolean = false,
+    disqualified: Boolean = false,
+    rerun: Boolean = false,
     score: Score
 ) = ResultRun(
     run = Run(

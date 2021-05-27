@@ -34,9 +34,11 @@ class CrispyFishParticipantMapperTest {
     fun before() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         mapper = CrispyFishParticipantMapper(crispyFishGroupingMapper)
+        val allRegistrations = seasonFixture.event1.registrations()
         context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations(),
+            allRegistrations = allRegistrations,
+            allRuns = seasonFixture.event1.runs(allRegistrations),
             runCount = 5
         )
     }

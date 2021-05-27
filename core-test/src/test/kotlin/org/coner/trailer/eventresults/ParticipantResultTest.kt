@@ -9,6 +9,7 @@ import assertk.assertions.isLessThan
 import org.coner.trailer.Run
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.TestPolicies
+import org.coner.trailer.Time
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -186,17 +187,11 @@ class ParticipantResultTest {
             participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
             diffFirst = null,
             diffPrevious = null,
-            scoredRuns = scoredRuns.map { ResultRun(
+            scoredRuns = scoredRuns.map { testResultRun(
                 score = it,
-                run = Run(
-                    sequence = 0,
-                    participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
-                    time = null,
-                    cones = null,
-                    didNotFinish = null,
-                    disqualified = null,
-                    rerun = null,
-                )
+                sequence = 0,
+                participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                time = Time(it.value)
             ) },
             personalBestScoredRunIndex = personalBestScoredRunIndex
         )

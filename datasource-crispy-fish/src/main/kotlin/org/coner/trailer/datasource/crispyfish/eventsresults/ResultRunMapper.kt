@@ -32,14 +32,6 @@ class ResultRunMapper(
         )
     }
 
-    fun toCore(
-        context: CrispyFishEventMappingContext,
-        participantCfRuns: List<Run>,
-        participant: Participant
-    ): List<ResultRun> {
-        TODO("consume and score eligible runs")
-    }
-
     private fun mapTime(run: RegistrationRun): Time? {
         val runTime = run.time
         return if (runTime != null && Time.pattern.matcher(runTime).matches()) {
