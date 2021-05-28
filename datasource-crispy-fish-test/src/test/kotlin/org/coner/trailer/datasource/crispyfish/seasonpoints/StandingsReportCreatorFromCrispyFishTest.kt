@@ -39,9 +39,11 @@ class StandingsReportCreatorFromCrispyFishTest {
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
+            val allRegistrations = eventFixture.registrations()
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
-                allRegistrations = eventFixture.registrations(),
+                allRegistrations = allRegistrations,
+                allRuns = eventFixture.runs(allRegistrations),
                 runCount = eventFixture.runCount
             )
             val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(

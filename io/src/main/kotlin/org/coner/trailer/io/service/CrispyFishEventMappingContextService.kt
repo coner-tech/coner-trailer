@@ -4,7 +4,7 @@ import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.syntheticSignageKey
+import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import org.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.crispyfish.model.EventDay
 import tech.coner.crispyfish.model.Registration

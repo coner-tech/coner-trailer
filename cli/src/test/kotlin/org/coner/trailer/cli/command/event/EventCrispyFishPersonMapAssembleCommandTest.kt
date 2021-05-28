@@ -90,6 +90,7 @@ class EventCrispyFishPersonMapAssembleCommandTest
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = emptyList(),
             allRegistrations = listOf(unmappedClubMemberIdNull),
+            allRuns = emptyList(),
             runCount = 0
         )
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context

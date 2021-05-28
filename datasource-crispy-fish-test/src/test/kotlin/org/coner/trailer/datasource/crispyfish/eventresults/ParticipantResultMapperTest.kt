@@ -64,10 +64,11 @@ class ParticipantResultMapperTest {
         )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val allRegistrations = seasonFixture.event1.registrations()
+        val allRuns = seasonFixture.event1.runs(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = seasonFixture.event1.runs(allRegistrations),
+            allRuns = allRuns,
             runCount = seasonFixture.event1.runCount
         )
         every {
@@ -88,12 +89,14 @@ class ParticipantResultMapperTest {
             testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),
             testResultRun(sequence = 3, participant = participant, time = Time("52.130"), score = Score("52.130")),
             testResultRun(sequence = 4, participant = participant, time = Time("52.117"), score = Score("52.117")),
-            testResultRun(sequence = 5, participant = participant, time = Time("51.408"), score = Score("51.408"), personalBest = true)
+            testResultRun(sequence = 5, participant = participant, time = Time("51.408"), score = Score("51.408"))
         )
+        val participantCfRuns = listOf(10, 11, 12, 13, 14)
+            .mapNotNull { allRuns[it].second }
         every {
-            resultRunMapper.toCore(
-                cfRegistrationRuns = registration.runs,
-                cfRegistrationBestRun = registration.bestRun,
+            resultRunMapper.toCores(
+                context = context,
+                participantCfRuns = participantCfRuns,
                 participant = participant
             )
         }.returns(expectedScoredRuns)
@@ -122,35 +125,53 @@ class ParticipantResultMapperTest {
     @Test
     fun `It should calculate ranking-related properties of ParticipantResult`() {
         val sortedResults = listOf(
-            ParticipantResult(
+            testParticipantResult(
                 score = Score("34.567"),
                 participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
-                scoredRuns = listOf(ResultRun(
-                    time = Time("34.567"), score = Score("34.567"), personalBest = true
-                )),
+                scoredRunsFns = listOf { participant ->
+                    testResultRun(
+                        sequence = 1,
+                        participant = participant,
+                        time = Time("34.567"),
+                        score = Score("34.567")
+                    )
+                },
                 position = Int.MAX_VALUE,
                 diffFirst = null,
-                diffPrevious = null
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
             ),
-            ParticipantResult(
+            testParticipantResult(
                 score = Score("45.678"),
                 participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
-                scoredRuns = listOf(ResultRun(
-                    time = Time("45.678"), score = Score("45.678"), personalBest = true
-                )),
+                scoredRunsFns = listOf { participant ->
+                    testResultRun(
+                        sequence = 2,
+                        participant = participant,
+                        time = Time("45.678"),
+                        score = Score("45.678")
+                    )
+                },
                 position = Int.MAX_VALUE,
                 diffFirst = null,
-                diffPrevious = null
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
             ),
-            ParticipantResult(
+            testParticipantResult(
                 score = Score("56.789"),
                 participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
-                scoredRuns = listOf(ResultRun(
-                    time = Time("56.789"), score = Score("56.789"), personalBest = true
-                )),
+                scoredRunsFns = listOf { participant ->
+                    testResultRun(
+                        sequence = 3,
+                        participant = participant,
+                        time = Time("56.789"),
+                        score = Score("56.789"),
+                    )
+                },
                 position = Int.MAX_VALUE,
                 diffFirst = null,
-                diffPrevious = null
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
             )
         )
 

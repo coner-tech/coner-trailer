@@ -32,6 +32,14 @@ class ResultRunMapper(
         )
     }
 
+    fun toCores(
+        context: CrispyFishEventMappingContext,
+        participantCfRuns: List<Run>,
+        participant: Participant
+    ): List<ResultRun> {
+        TODO()
+    }
+
     private fun mapTime(run: RegistrationRun): Time? {
         val runTime = run.time
         return if (runTime != null && Time.pattern.matcher(runTime).matches()) {

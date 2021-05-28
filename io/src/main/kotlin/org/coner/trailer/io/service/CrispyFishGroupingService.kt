@@ -55,6 +55,7 @@ class CrispyFishGroupingService(
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = allClassDefinitions,
             allRegistrations = emptyList(),
+            allRuns = emptyList(),
             runCount = 0
         )
         return allClassDefinitions.map {

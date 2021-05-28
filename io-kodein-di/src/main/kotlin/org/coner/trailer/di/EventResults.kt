@@ -1,6 +1,7 @@
 package org.coner.trailer.di
 
 import org.coner.trailer.Policy
+import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.*
 import org.coner.trailer.eventresults.*
 import org.kodein.di.*
@@ -20,6 +21,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
             penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
         )
     } }
+    bind<CrispyFishRunMapper>() with singleton { CrispyFishRunMapper() }
     bind<ScoreMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ScoreMapper(
         runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
     ) }
@@ -36,6 +38,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<FinalScoreFactory>(FinalScoreStyle.RALLYCROSS) with singleton { RallycrossFinalScoreFactory() }
     bind<ParticipantResultMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
+            cfRunMapper = instance(),
             scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.raw).invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
@@ -43,6 +46,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     ) }
     bind<ParticipantResultMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
+            cfRunMapper = instance(),
             scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.pax).invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
@@ -50,6 +54,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     ) }
     bind<ParticipantResultMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
+            cfRunMapper = instance(),
             scoreMapper = ScoreMapper(
                 runScoreFactory = GroupedRunScoreFactory(
                     rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),

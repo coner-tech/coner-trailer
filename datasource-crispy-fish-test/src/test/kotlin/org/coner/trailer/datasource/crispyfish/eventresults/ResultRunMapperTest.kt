@@ -75,157 +75,25 @@ class ResultRunMapperTest {
     @Test
     fun `When score maps to null, it should return null`() {
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val cfRegistrationRun = RegistrationRun(
-            time = null, // participant has not taken run #x yet -- no time
-            penalty = null
+        val cfRun = testCfRun(
+            timeScratchAsString = null // participant has not taken run #x yet -- no time
         )
-        val expectedScore = null
-        every { scoreMapper.toScore(cfRegistrationRun, participant) } returns expectedScore
+        every { cfRunMapper.toCore(cfRun, 0, participant) } returns mockk()
+        every { scoreMapper.toScore(cfRun, participant) } returns null
 
         val actual = mapper.toCore(
-            cfRegistrationRun = cfRegistrationRun,
-            cfRegistrationRunIndex = 0, // Run #1
-            cfRegistrationBestRun = null, // no times yet, no best run
+            cfRun = cfRun,
+            cfRunIndex = 0, // Run #1
             participant = participant
         )
 
         assertThat(actual).isNull()
         verifySequence {
-            scoreMapper.toScore(cfRegistrationRun, participant)
+            cfRunMapper.toCore(cfRun, 0, participant)
+            scoreMapper.toScore(cfRun, participant)
         }
     }
-
-    @Test
-    fun `It should map a coned run`() {
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val cfRegistrationRun = RegistrationRun(
-            time = "123.456",
-            penalty = RegistrationRun.Penalty.Cone(2)
-        )
-        val expectedScore: Score = mockk()
-        every {
-            scoreMapper.toScore(cfRegistrationRun = cfRegistrationRun, participant = participant)
-        } returns expectedScore
-
-        val actual = mapper.toCore(
-            cfRegistrationRun = cfRegistrationRun, // Run #2
-            cfRegistrationRunIndex = 1, // Run #2
-            cfRegistrationBestRun = 3, // Run #3,
-            participant = participant
-        )
-
-        assertThat(actual).isNotNull().all {
-            score().isSameAs(expectedScore)
-            hasTime(cfRegistrationRun.time)
-            hasCones(2)
-            didNotFinish().isFalse()
-            disqualified().isFalse()
-            personalBest().isFalse()
-        }
-        verifySequence {
-            scoreMapper.toScore(cfRegistrationRun, participant)
-        }
-    }
-
-    @Test
-    fun `It should map a DNF`() {
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val cfRegistrationRun = RegistrationRun(
-            time = "123.456",
-            penalty = RegistrationRun.Penalty.DidNotFinish
-        )
-        val expectedScore: Score = mockk()
-        every {
-            scoreMapper.toScore(cfRegistrationRun = cfRegistrationRun, participant = participant)
-        } returns expectedScore
-
-        val actual = mapper.toCore(
-            cfRegistrationRun = cfRegistrationRun, // Run #2
-            cfRegistrationRunIndex = 1, // Run #2
-            cfRegistrationBestRun = 3, // Run #3,
-            participant = participant
-        )
-
-        assertThat(actual).isNotNull().all {
-            score().isSameAs(expectedScore)
-            hasTime(cfRegistrationRun.time)
-            didNotFinish().isTrue()
-            conesIsNullOrZero()
-            disqualified().isFalse()
-            personalBest().isFalse()
-        }
-        verifySequence {
-            scoreMapper.toScore(cfRegistrationRun, participant)
-        }
-    }
-
-    @Test
-    fun `It should map a DSQ`() {
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val cfRegistrationRun = RegistrationRun(
-            time = "123.456",
-            penalty = RegistrationRun.Penalty.Disqualified
-        )
-        val expectedScore: Score = mockk()
-        every {
-            scoreMapper.toScore(cfRegistrationRun = cfRegistrationRun, participant = participant)
-        } returns expectedScore
-
-        val actual = mapper.toCore(
-            cfRegistrationRun = cfRegistrationRun, // Run #2
-            cfRegistrationRunIndex = 1, // Run #2
-            cfRegistrationBestRun = 3, // Run #3,
-            participant = participant
-        )
-
-        assertThat(actual).isNotNull().all {
-            score().isSameAs(expectedScore)
-            hasTime(cfRegistrationRun.time)
-            disqualified().isTrue()
-            conesIsNullOrZero()
-            didNotFinish().isFalse()
-            personalBest().isFalse()
-        }
-        verifySequence {
-            scoreMapper.toScore(cfRegistrationRun, participant)
-        }
-    }
-
-    @Test
-    fun `When run index matches best run index, it should map as personal best`() {
-        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val cfRegistrationRun = RegistrationRun(
-            time = "123.456",
-            penalty = null
-        )
-        val expectedScore: Score = mockk()
-        every {
-            scoreMapper.toScore(cfRegistrationRun = cfRegistrationRun, participant = participant)
-        } returns expectedScore
-
-        val actual = mapper.toCore(
-            cfRegistrationRun = cfRegistrationRun, // Run #4
-            cfRegistrationRunIndex = 3, // Run #4
-            cfRegistrationBestRun = 4, // Run #4,
-            participant = participant
-        )
-
-        assertThat(actual).isNotNull().all {
-            score().isSameAs(expectedScore)
-            hasTime(cfRegistrationRun.time)
-            conesIsNullOrZero()
-            didNotFinish().isFalse()
-            disqualified().isFalse()
-            personalBest().isTrue()
-        }
-        verifySequence {
-            scoreMapper.toScore(cfRegistrationRun, participant)
-        }
-    }
-
 }
-
-private val stagingAssistant = StagingFileAssistant()
 
 private fun testCfRun(
     timeScratchAsString: String? = null,
