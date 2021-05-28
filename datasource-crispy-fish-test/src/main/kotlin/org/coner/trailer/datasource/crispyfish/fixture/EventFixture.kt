@@ -19,7 +19,6 @@ import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
 import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
-import tech.coner.crispyfish.model.StagingLineRegistration
 import tech.coner.crispyfish.query.RegistrationsQuery
 import tech.coner.crispyfish.query.StagingRunsQuery
 import java.nio.file.Path
@@ -40,12 +39,14 @@ class EventFixture(
 
     val ecfPath: Path
     val rggPath: Path
+    val st1Path: Path
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.endsWith(".ecf") == true)
         val ecfName = "/seasons/${seasonFixture.path}/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
         ecfPath = install(ecfName)
         rggPath = install(ecfName.replace(".ecf", ".rgg"))
+        st1Path = install(ecfName.replace(".ecf", ".st1"))
     }
 
     fun eventControlFile(): EventControlFile {
