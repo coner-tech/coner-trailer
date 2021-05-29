@@ -79,8 +79,9 @@ class EventFixture(
         val stagingFile = eventControlFile().stagingFile()
         val stagingRunsQuery = StagingRunsQuery(stagingFile = stagingFile)
         val stagingRuns = stagingRunsQuery.query()
-        val registrationsBySignageKey = registrations
-            .associateBy { it.syntheticSignageKey() }
+        val registrationsBySignageKey: Map<String, Registration> = registrations
+            .mapNotNull { registration -> registration.syntheticSignageKey()?.let { key -> key to registration } }
+            .toMap()
         return stagingRuns
             .map { (stagingLineRegistration, run) ->
                 val signageKey = stagingLineRegistration?.syntheticSignageKey()

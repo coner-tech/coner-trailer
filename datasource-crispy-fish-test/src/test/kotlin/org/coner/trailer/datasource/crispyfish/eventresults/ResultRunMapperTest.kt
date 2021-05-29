@@ -45,6 +45,7 @@ class ResultRunMapperTest {
         val cfRun = testCfRun(
             timeScratchAsString = "123.456"
         )
+        val expectedRun: org.coner.trailer.Run = mockk()
         val expectedScore: Score = mockk()
         every {
             cfRunMapper.toCore(
@@ -52,7 +53,7 @@ class ResultRunMapperTest {
                 cfRunIndex = 1, // Run #2
                 participant = participant
             )
-        }
+        } returns expectedRun
         every {
             scoreMapper.toScore(cfRun = cfRun, participant = participant)
         } returns expectedScore
@@ -65,10 +66,18 @@ class ResultRunMapperTest {
 
         assertThat(actual).isNotNull().all {
             score().isSameAs(expectedScore)
-            run().all {
-                hasTime("123.456")
-                isClean()
-            }
+            run().isSameAs(expectedRun)
+        }
+        verifySequence {
+            cfRunMapper.toCore(
+                cfRun = cfRun,
+                cfRunIndex = 1,
+                participant = participant
+            )
+            scoreMapper.toScore(
+                cfRun = cfRun,
+                participant = participant
+            )
         }
     }
 

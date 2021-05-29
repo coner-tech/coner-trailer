@@ -99,7 +99,7 @@ class ParticipantResultMapperTest {
                 participantCfRuns = participantCfRuns,
                 participant = participant
             )
-        }.returns(expectedScoredRuns)
+        } returns(expectedScoredRuns)
         val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
             every { peopleMap } returns usePeopleMap
         }
