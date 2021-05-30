@@ -22,6 +22,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         )
     } }
     bind<CrispyFishRunMapper>() with singleton { CrispyFishRunMapper() }
+    bind<RunEligibilityQualifier>() with singleton { RunEligibilityQualifier() }
     bind<ScoreMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ScoreMapper(
         runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
     ) }
@@ -39,6 +40,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<ParticipantResultMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
+            runEligibilityQualifier = instance(),
             scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.raw).invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
@@ -47,6 +49,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<ParticipantResultMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
+            runEligibilityQualifier = instance(),
             scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.pax).invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
@@ -55,6 +58,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<ParticipantResultMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
+            runEligibilityQualifier = instance(),
             scoreMapper = ScoreMapper(
                 runScoreFactory = GroupedRunScoreFactory(
                     rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),

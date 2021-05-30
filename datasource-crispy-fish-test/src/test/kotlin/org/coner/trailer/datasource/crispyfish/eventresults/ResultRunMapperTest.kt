@@ -48,7 +48,7 @@ class ResultRunMapperTest {
 
         @Test
         fun `It should map a clean eligible run`() {
-            val context: CrispyFishEventMappingContext = mockk() {
+            val context: CrispyFishEventMappingContext = mockk {
                 every { runCount } returns 1
             }
             val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
@@ -58,20 +58,28 @@ class ResultRunMapperTest {
             val expectedRun: org.coner.trailer.Run = mockk()
             every {
                 cfRunMapper.toCore(
-                    cfRun = cfRun, // Run #2
-                    cfRunIndex = 1, // Run #2
+                    cfRun = cfRun, // Run #1
+                    cfRunIndex = 0, // Run #1
                     participant = participant
                 )
             } returns expectedRun
-            every { runEligibilityQualifier.isEligible(maxRunCount = 1, run = expectedRun) }
+            every {
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1,
+                )
+            } returns true
             val expectedScore: Score = mockk()
             every {
                 scoreMapper.toScore(cfRun = cfRun, participant = participant)
             } returns expectedScore
 
             val actual = mapper.toCore(
-                cfRun = cfRun, // Run #2
-                cfRunIndex = 1, // Run #2
+                context = context,
+                cfRun = cfRun, // Run #1
+                cfRunIndex = 0, // Run #1
+                participantResultRunIndex = 0, // Run #1
                 participant = participant
             )
 
@@ -82,10 +90,14 @@ class ResultRunMapperTest {
             verifySequence {
                 cfRunMapper.toCore(
                     cfRun = cfRun,
-                    cfRunIndex = 1,
+                    cfRunIndex = 0,
                     participant = participant
                 )
-                runEligibilityQualifier.isEligible(maxRunCount = 1, run = expectedRun)
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1
+                )
                 scoreMapper.toScore(
                     cfRun = cfRun,
                     participant = participant
@@ -95,28 +107,102 @@ class ResultRunMapperTest {
 
         @Test
         fun `When run is not eligible, it should return null`() {
-            TODO()
-        }
-
-        @Test
-        fun `When score maps to null, it should return null`() {
+            val context: CrispyFishEventMappingContext = mockk {
+                every { runCount } returns 1
+            }
             val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
             val cfRun = testCfRun(
-                timeScratchAsString = null // participant has not taken run #x yet -- no time
+                timeScratchAsString = "123.456"
             )
-            every { cfRunMapper.toCore(cfRun, 0, participant) } returns mockk()
-            every { scoreMapper.toScore(cfRun, participant) } returns null
+            val expectedRun: org.coner.trailer.Run = mockk()
+            every {
+                cfRunMapper.toCore(
+                    cfRun = cfRun, // Run #1
+                    cfRunIndex = 0, // Run #1
+                    participant = participant
+                )
+            } returns expectedRun
+            every {
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1,
+                )
+            } returns false
 
             val actual = mapper.toCore(
+                context = context,
                 cfRun = cfRun,
-                cfRunIndex = 0, // Run #1
+                cfRunIndex = 0,
+                participantResultRunIndex = 0,
                 participant = participant
             )
 
             assertThat(actual).isNull()
             verifySequence {
-                cfRunMapper.toCore(cfRun, 0, participant)
-                scoreMapper.toScore(cfRun, participant)
+                cfRunMapper.toCore(
+                    cfRun = cfRun,
+                    cfRunIndex = 0,
+                    participant = participant
+                )
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1
+                )
+            }
+        }
+
+        @Test
+        fun `When score maps to null, it should return null`() {
+            val context: CrispyFishEventMappingContext = mockk {
+                every { runCount } returns 1
+            }
+            val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+            val cfRun: Run = mockk()
+            val expectedRun: org.coner.trailer.Run = mockk()
+            every {
+                cfRunMapper.toCore(
+                    cfRun = cfRun, // Run #1
+                    cfRunIndex = 0, // Run #1
+                    participant = participant
+                )
+            } returns expectedRun
+            every {
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1,
+                )
+            } returns true
+            every {
+                scoreMapper.toScore(cfRun = cfRun, participant = participant)
+            } returns null
+
+            val actual = mapper.toCore(
+                context = context,
+                cfRun = cfRun, // Run #1
+                cfRunIndex = 0, // Run #1
+                participantResultRunIndex = 0, // Run #1
+                participant = participant
+            )
+
+            assertThat(actual).isNull()
+            verifySequence {
+                cfRunMapper.toCore(
+                    cfRun = cfRun,
+                    cfRunIndex = 0,
+                    participant = participant
+                )
+                runEligibilityQualifier.check(
+                    run = expectedRun,
+                    participantResultRunIndex = 0,
+                    maxRunCount = 1
+                )
+                scoreMapper.toScore(
+                    cfRun = cfRun,
+                    participant = participant
+                )
             }
         }
     }

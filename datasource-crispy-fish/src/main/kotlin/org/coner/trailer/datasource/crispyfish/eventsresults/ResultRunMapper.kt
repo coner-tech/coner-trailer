@@ -20,14 +20,25 @@ class ResultRunMapper(
         context: CrispyFishEventMappingContext,
         cfRun: Run,
         cfRunIndex: Int,
+        participantResultRunIndex: Int,
         participant: Participant,
     ): ResultRun? {
+        val run = cfRunMapper.toCore(
+            cfRun = cfRun,
+            cfRunIndex = cfRunIndex,
+            participant = participant
+        )
+        if (
+            !runEligibilityQualifier.check(
+                run = run,
+                participantResultRunIndex = participantResultRunIndex,
+                maxRunCount = context.runCount
+            )
+        ) {
+            return null
+        }
         return ResultRun(
-            run = cfRunMapper.toCore(
-                cfRun = cfRun,
-                cfRunIndex = cfRunIndex,
-                participant = participant
-            ),
+            run = run,
             score = scoreMapper.toScore(
                 cfRun = cfRun,
                 participant = participant
@@ -41,7 +52,7 @@ class ResultRunMapper(
         participantCfRuns: List<Run>,
         participant: Participant
     ): List<ResultRun> {
-
+        TODO()
     }
 
     private fun mapTime(run: RegistrationRun): Time? {

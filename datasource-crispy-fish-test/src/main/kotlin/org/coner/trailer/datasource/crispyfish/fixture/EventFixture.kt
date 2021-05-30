@@ -10,10 +10,7 @@ import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMa
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
-import org.coner.trailer.eventresults.AutocrossFinalScoreFactory
-import org.coner.trailer.eventresults.GroupedRunScoreFactory
-import org.coner.trailer.eventresults.RawTimeRunScoreFactory
-import org.coner.trailer.eventresults.StandardPenaltyFactory
+import org.coner.trailer.eventresults.*
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
@@ -100,10 +97,12 @@ class EventFixture(
     val paxTimeScoreMapper = ScoreMapper(paxTimeRunScoreFactory)
     val groupedScoreMapper = ScoreMapper(GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory))
     val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()
+    val runEligibilityQualifier = RunEligibilityQualifier()
 
     val rawTimeParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
+            runEligibilityQualifier = runEligibilityQualifier,
             scoreMapper = rawTimeScoreMapper
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
@@ -112,6 +111,7 @@ class EventFixture(
     val paxTimeParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
+            runEligibilityQualifier = runEligibilityQualifier,
             scoreMapper = paxTimeScoreMapper,
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
@@ -120,6 +120,7 @@ class EventFixture(
     val groupedParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
+            runEligibilityQualifier = runEligibilityQualifier,
             scoreMapper =  groupedScoreMapper
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
