@@ -52,7 +52,17 @@ class ResultRunMapper(
         participantCfRuns: List<Run>,
         participant: Participant
     ): List<ResultRun> {
-        TODO()
+        return participantCfRuns.mapIndexedNotNull { index, run ->
+            val cfRunIndex = run.number?.minus(1)
+                ?: return@mapIndexedNotNull null
+            toCore(
+                context = context,
+                cfRun = run,
+                cfRunIndex = cfRunIndex,
+                participantResultRunIndex = index,
+                participant = participant
+            )
+        }
     }
 
     private fun mapTime(run: RegistrationRun): Time? {

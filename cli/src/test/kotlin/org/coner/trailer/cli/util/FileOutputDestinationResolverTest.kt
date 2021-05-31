@@ -34,7 +34,7 @@ class FileOutputDestinationResolverTest {
     fun `It should process null path and generate with current working directory`() {
         val actual = resolver.process(null) { resolve("in-cwd") }
 
-        val expected = Paths.get("in-cwd")
+        val expected = Paths.get("${System.getProperty("user.home")}/in-cwd")
         assertThat(actual).isEqualTo(expected)
     }
 
