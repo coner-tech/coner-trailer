@@ -1,6 +1,7 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Participant
+import org.coner.trailer.Run
 import org.coner.trailer.Time
 
 data class ParticipantResult(
@@ -9,6 +10,7 @@ data class ParticipantResult(
     val participant: Participant,
     val diffFirst: Time?,
     val diffPrevious: Time?,
+    val allRuns: List<Run>,
     val scoredRuns: List<ResultRun>,
     val personalBestScoredRunIndex: Int?
 ) {

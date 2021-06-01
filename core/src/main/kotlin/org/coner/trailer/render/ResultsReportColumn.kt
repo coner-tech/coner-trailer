@@ -125,4 +125,25 @@ interface ResultsReportColumn : Renderer {
             td { text(render(it.diffPrevious)) }
         }
     }
+
+    class Runs : ResultsReportColumn {
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("runs")
+                scope = ThScope.col
+                text("Runs")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td {
+                ol {
+                    classes = setOf("runs")
+                    for (run in it.allRuns) {
+                        li {
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

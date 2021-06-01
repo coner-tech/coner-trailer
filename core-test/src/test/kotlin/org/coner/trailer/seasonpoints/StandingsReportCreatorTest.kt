@@ -114,8 +114,8 @@ class StandingsReportCreatorTest {
                                 participant = TestParticipants.Lscc2019Points1.TERI_POTTER.copy(
                                     seasonPointsEligible = false // only value relevant to test
                                 ),
-                                scoredRunsFns = listOf { participant ->
-                                    testResultRun(
+                                runFns = listOf { participant ->
+                                    testRunWithScore(
                                         sequence = 1,
                                         score = Score("45.678"),
                                         participant = participant,
@@ -130,8 +130,8 @@ class StandingsReportCreatorTest {
                                 position = 2,
                                 score = Score("56.789"),
                                 participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
-                                scoredRunsFns = listOf { participant ->
-                                    testResultRun(
+                                runFns = listOf { participant ->
+                                    testRunWithScore(
                                         sequence = 2,
                                         participant = participant,
                                         score = Score("56.789"),

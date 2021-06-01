@@ -25,3 +25,13 @@ fun testResultRun(
     ),
     score = score,
 )
+
+fun testResultRun(
+    run: Run,
+    score: Score?
+): ResultRun? {
+    return ResultRun(
+        run = run,
+        score = score ?: return null
+    )
+}

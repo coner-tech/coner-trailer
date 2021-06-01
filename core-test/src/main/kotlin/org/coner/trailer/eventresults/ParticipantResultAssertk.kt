@@ -21,4 +21,5 @@ fun Assert<ParticipantResult>.diffPrevious() = prop("diffPrevious") { it.diffPre
 fun Assert<ParticipantResult>.scoredRuns() = prop("scoredRuns") { it.scoredRuns }
 fun Assert<ParticipantResult>.hasScoredRuns(expected: List<ResultRun>) = scoredRuns().isEqualTo(expected)
 
+fun Assert<ParticipantResult>.personalBestScoredRunIndex() = prop("personalBestScoredRunIndex") { it.personalBestScoredRunIndex }
 fun Assert<ParticipantResult>.personalBestRun() = prop("personalBestRun") { it.personalBestRun }

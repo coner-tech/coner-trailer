@@ -1,6 +1,7 @@
 package org.coner.trailer.datasource.crispyfish.eventsresults
 
 import org.coner.trailer.Grouping
+import org.coner.trailer.Run
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.util.bigdecimal.setScaleWithBuggedCrispyFishRounding
 import org.coner.trailer.eventresults.PaxTimeRunScoreFactory
@@ -18,18 +19,10 @@ import org.coner.trailer.eventresults.StandardPenaltyFactory
 class LegacyBuggedPaxTimeRunScoreFactory(
     private val penaltyFactory: StandardPenaltyFactory
 ) : PaxTimeRunScoreFactory(penaltyFactory) {
-    override fun score(
-        participantGrouping: Grouping,
-        scratchTime: Time,
-        cones: Int?,
-        didNotFinish: Boolean?,
-        disqualified: Boolean?
-    ): Score {
-        val penalty = penaltyFactory.penalty(
-            cones = cones,
-            didNotFinish = didNotFinish,
-            disqualified = disqualified
-        )
+    override fun score(run: Run): Score {
+        val participantGrouping = run.requireParticipantSignageGrouping()
+        val scratchTime = run.requireTime()
+        val penalty = penaltyFactory.penalty(run)
         val value = when {
             penalty is Score.Penalty.Cone -> {
                 val penalizedRawTime = penalty.floor + scratchTime.value

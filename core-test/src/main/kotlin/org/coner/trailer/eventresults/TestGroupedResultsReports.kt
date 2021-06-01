@@ -17,34 +17,34 @@ object TestGroupedResultsReports {
                             position = 4,
                             score = Score("39.297"),
                             participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 1,
                                     participant = participant,
                                     time = Time("49.419"),
-                                    score = Score("48.029", Score.Penalty.Cone("8.000", 4)),
+                                    score = Score("48.029", Score.Penalty.Cone("8.000", 4))
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 2,
                                     participant = participant,
-                                    score = Score("46.377", Score.Penalty.Cone("6.000", 3)),
                                     time = Time("49.848"),
-                                    cones = 3
+                                    cones = 3,
+                                    score = Score("46.377", Score.Penalty.Cone("6.000", 3))
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 3,
                                     participant = participant,
                                     score = Score("39.297"),
                                     time = Time("48.515")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 4,
                                     participant = participant,
                                     score = Score("41.752", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("49.076"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 5,
                                     participant = participant,
                                     score = Score("40.043"),
@@ -59,34 +59,34 @@ object TestGroupedResultsReports {
                             position = 9,
                             score = Score("41.134"),
                             participant = TestParticipants.Lscc2019Points1.BRYANT_MORAN,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 6,
                                     participant = participant,
                                     score = Score("46.406", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("56.353"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 7,
                                     participant = participant,
                                     score = Score("43.995"),
                                     time = Time("55.831")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 8,
                                     participant = participant,
                                     score = Score("41.134"),
                                     time = Time("52.201")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 9,
                                     participant = participant,
                                     score = Score("43.025", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("52.062"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 10,
                                     participant = participant,
                                     score = Score("41.822"),
@@ -101,34 +101,34 @@ object TestGroupedResultsReports {
                             position = 11,
                             score = Score("41.381"),
                             participant = TestParticipants.Lscc2019Points1.DOMINIC_ROGERS,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 11,
                                     participant = participant,
                                     score = Score("42.800"),
                                     time = Time("54.246")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 12,
                                     participant = participant,
                                     score = Score("44.313", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("53.629"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 13,
                                     participant = participant,
                                     score = Score("42.914", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("51.856"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 14,
                                     participant = participant,
                                     score = Score("42.140"),
                                     time = Time("53.409")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 15,
                                     participant = participant,
                                     score = Score("41.381"),
@@ -145,33 +145,33 @@ object TestGroupedResultsReports {
                             position = 2,
                             score = Score("47.544"),
                             participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 16,
                                     participant = participant,
                                     score = Score("49.367"),
                                     time = Time("49.367")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 17,
                                     participant = participant,
                                     score = Score("49.230"),
                                     time = Time("49.230")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 18,
                                     participant = participant,
                                     score = Score("48.807"),
                                     time = Time("48.807")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 19,
                                     participant = participant,
                                     score = Score("214748413.573"),
                                     time = Time("49.573"),
                                     didNotFinish = true
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 20,
                                     participant = participant,
                                     score = Score("47.544"),
@@ -186,34 +186,34 @@ object TestGroupedResultsReports {
                             position = 4,
                             score = Score("48.723"),
                             participant = TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 21,
                                     participant = participant,
                                     score = Score("54.115", Score.Penalty.Cone("4.000", 2)),
                                     time = Time("50.115"),
                                     cones = 2
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 22,
                                     participant = participant,
                                     score = Score("52.162", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("50.162"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 23,
                                     participant = participant,
                                     score = Score("49.672"),
                                     time = Time("49.672")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 24,
                                     participant = participant,
                                     score = Score("49.992"),
                                     time = Time("49.992")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 25,
                                     participant = participant,
                                     score = Score("48.723"),
@@ -230,33 +230,33 @@ object TestGroupedResultsReports {
                             position = 2,
                             score = Score("48.141"),
                             participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 26,
                                     participant = participant,
                                     score = Score("51.026"),
                                     time = Time("51.026")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 27,
                                     participant = participant,
                                     score = Score("49.335"),
                                     time = Time("49.335")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 28,
                                     participant = participant,
                                     score = Score("50.396", Score.Penalty.Cone("2.000", 1)),
                                     time = Time("48.396"),
                                     cones = 1
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 29,
                                     participant = participant,
                                     score = Score("49.208"),
                                     time = Time("49.208")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 30,
                                     participant = participant,
                                     score = Score("48.141"),
@@ -271,32 +271,32 @@ object TestGroupedResultsReports {
                             position = 3,
                             score = Score("49.057"),
                             participant = TestParticipants.Lscc2019Points1.NORMAN_ROBINSON,
-                            scoredRunsFns = listOf(
-                                { participant -> testResultRun(
+                            runFns = listOf(
+                                { participant -> testRunWithScore(
                                     sequence = 31,
                                     participant = participant,
                                     score = Score("52.400"),
                                     time = Time("52.400")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 32,
                                     participant = participant,
                                     score = Score("52.122"),
                                     time = Time("52.122")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 33,
                                     participant = participant,
                                     score = Score("51.967"),
                                     time = Time("51.967")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 34,
                                     participant = participant,
                                     score = Score("49.637"),
                                     time = Time("49.637")
                                 ) },
-                                { participant -> testResultRun(
+                                { participant -> testRunWithScore(
                                     sequence = 35,
                                     participant = participant,
                                     score = Score("49.057"),
@@ -376,17 +376,19 @@ object TestGroupedResultsReports {
                 )
             )
 
-        private fun tieBreakingParticipantResult(position: Int, participant: Participant) = ParticipantResult(
+        private fun tieBreakingParticipantResult(position: Int, participant: Participant) = testParticipantResult(
             position = position,
             participant = participant,
             // below properties irrelevant to test:
             score = Score("0.000"),
-            scoredRuns = listOf(testResultRun(
-                sequence = 0,
-                participant = participant,
-                score = Score("0.000"),
-                time = Time("0.000")
-            )),
+            runFns = listOf { _ ->
+                testRunWithScore(
+                    sequence = 0,
+                    participant = participant,
+                    score = Score("0.000"),
+                    time = Time("0.000")
+                )
+            },
             personalBestScoredRunIndex = 0,
             diffFirst = null,
             diffPrevious = null

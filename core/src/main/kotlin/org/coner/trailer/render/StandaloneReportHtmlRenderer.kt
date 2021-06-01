@@ -6,7 +6,7 @@ import kotlinx.html.dom.serialize
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ResultsReport
 
-class StandaloneReportHtmlRenderer : Renderer {
+class StandaloneReportHtmlRenderer : KotlinxHtmlRenderer {
 
     fun renderEventResults(event: Event, resultsReport: ResultsReport, resultsPartial: HtmlBlockTag.() -> Unit): String = createHTMLDocument()
         .html {

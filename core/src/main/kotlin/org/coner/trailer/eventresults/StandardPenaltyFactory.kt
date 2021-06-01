@@ -1,22 +1,19 @@
 package org.coner.trailer.eventresults
 
 import org.coner.trailer.Policy
+import org.coner.trailer.Run
 import java.math.BigDecimal
 
 class StandardPenaltyFactory(
     private val policy: Policy
 ) {
-    fun penalty(
-        cones: Int?,
-        didNotFinish: Boolean?,
-        disqualified: Boolean?
-    ): Score.Penalty? {
+    fun penalty(run: Run): Score.Penalty? {
         return when {
-            disqualified == true -> Score.Penalty.Disqualified
-            didNotFinish == true -> Score.Penalty.DidNotFinish
-            cones != null && cones > 0 -> Score.Penalty.Cone(
-                floor = BigDecimal(policy.conePenaltySeconds) * BigDecimal(cones).setScale(3),
-                count = cones
+            run.disqualified -> Score.Penalty.Disqualified
+            run.didNotFinish -> Score.Penalty.DidNotFinish
+            run.cones > 0 -> Score.Penalty.Cone(
+                floor = BigDecimal(policy.conePenaltySeconds) * BigDecimal(run.cones).setScale(3),
+                count = run.cones
             )
             else -> null
         }

@@ -16,6 +16,7 @@ import org.coner.trailer.TestPeople
 import org.coner.trailer.Time
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
@@ -39,13 +40,15 @@ class ParticipantResultMapperTest {
     @MockK lateinit var resultRunMapper: ResultRunMapper
     @MockK lateinit var finalScoreFactory: FinalScoreFactory
     @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
+    @MockK lateinit var crispyFishRunMapper: CrispyFishRunMapper
 
     @BeforeEach
     fun before() {
         mapper = ParticipantResultMapper(
             resultRunMapper = resultRunMapper,
             finalScoreFactory = finalScoreFactory,
-            crispyFishParticipantMapper = crispyFishParticipantMapper
+            crispyFishParticipantMapper = crispyFishParticipantMapper,
+            crispyFishRunMapper = crispyFishRunMapper
         )
     }
 
@@ -105,6 +108,7 @@ class ParticipantResultMapperTest {
         }
         val expectedScore: Score = mockk()
         every { finalScoreFactory.score(expectedScoredRuns) } returns expectedScore
+        every { finalScoreFactory.bestRun(expectedScoredRuns) } returns expectedScoredRuns[4]
 
         val actual = mapper.toCore(
             eventCrispyFishMetadata = crispyFishMetadata,
@@ -116,6 +120,7 @@ class ParticipantResultMapperTest {
             score().isSameAs(expectedScore)
             hasParticipant(participant)
             hasScoredRuns(expectedScoredRuns)
+            personalBestScoredRunIndex().isEqualTo(4)
             hasPosition(Int.MAX_VALUE) // not calculated here
             diffFirst().isNull() // not calculated here
             diffPrevious().isNull() // not calculated here
@@ -128,8 +133,8 @@ class ParticipantResultMapperTest {
             testParticipantResult(
                 score = Score("34.567"),
                 participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
-                scoredRunsFns = listOf { participant ->
-                    testResultRun(
+                runFns = listOf { participant ->
+                    testRunWithScore(
                         sequence = 1,
                         participant = participant,
                         time = Time("34.567"),
@@ -144,8 +149,8 @@ class ParticipantResultMapperTest {
             testParticipantResult(
                 score = Score("45.678"),
                 participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
-                scoredRunsFns = listOf { participant ->
-                    testResultRun(
+                runFns = listOf { participant ->
+                    testRunWithScore(
                         sequence = 2,
                         participant = participant,
                         time = Time("45.678"),
@@ -160,8 +165,8 @@ class ParticipantResultMapperTest {
             testParticipantResult(
                 score = Score("56.789"),
                 participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
-                scoredRunsFns = listOf { participant ->
-                    testResultRun(
+                runFns = listOf { participant ->
+                    testRunWithScore(
                         sequence = 3,
                         participant = participant,
                         time = Time("56.789"),

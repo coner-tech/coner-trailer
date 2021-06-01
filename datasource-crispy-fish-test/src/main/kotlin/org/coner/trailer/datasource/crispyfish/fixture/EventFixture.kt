@@ -8,7 +8,6 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
 import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import org.coner.trailer.eventresults.*
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
@@ -90,40 +89,42 @@ class EventFixture(
     val crispyFishParticipantMapper = CrispyFishParticipantMapper(
         crispyFishGroupingMapper = crispyFishGroupingMapper
     )
+    val crispyFishRunMapper = CrispyFishRunMapper()
     val standardPenaltyFactory = StandardPenaltyFactory(TestPolicies.lsccV1)
     val rawTimeRunScoreFactory = RawTimeRunScoreFactory(standardPenaltyFactory)
-    val rawTimeScoreMapper = ScoreMapper(rawTimeRunScoreFactory)
     val paxTimeRunScoreFactory = LegacyBuggedPaxTimeRunScoreFactory(standardPenaltyFactory)
-    val paxTimeScoreMapper = ScoreMapper(paxTimeRunScoreFactory)
-    val groupedScoreMapper = ScoreMapper(GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory))
+    val groupedRunScoreFactory = GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory)
     val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()
     val runEligibilityQualifier = RunEligibilityQualifier()
 
     val rawTimeParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
-            cfRunMapper = CrispyFishRunMapper(),
+            cfRunMapper = crispyFishRunMapper,
             runEligibilityQualifier = runEligibilityQualifier,
-            scoreMapper = rawTimeScoreMapper
+            runScoreFactory = rawTimeRunScoreFactory
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
+        crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
     val paxTimeParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
             runEligibilityQualifier = runEligibilityQualifier,
-            scoreMapper = paxTimeScoreMapper,
+            runScoreFactory = paxTimeRunScoreFactory
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
+        crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
     val groupedParticipantResultMapper = ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
             runEligibilityQualifier = runEligibilityQualifier,
-            scoreMapper =  groupedScoreMapper
+            runScoreFactory = groupedRunScoreFactory
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
+        crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
     )
 }

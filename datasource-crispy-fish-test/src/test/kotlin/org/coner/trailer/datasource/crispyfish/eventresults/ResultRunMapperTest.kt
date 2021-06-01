@@ -8,20 +8,15 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
-import tech.coner.crispyfish.model.RegistrationRun
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ScoreMapper
 import org.coner.trailer.eventresults.*
-import org.coner.trailer.hasTime
-import org.coner.trailer.isClean
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
 import tech.coner.crispyfish.model.PenaltyType
 import tech.coner.crispyfish.model.Run
 
@@ -32,14 +27,14 @@ class ResultRunMapperTest {
 
     @MockK lateinit var cfRunMapper: CrispyFishRunMapper
     @MockK lateinit var runEligibilityQualifier: RunEligibilityQualifier
-    @MockK lateinit var scoreMapper: ScoreMapper
+    @MockK lateinit var runScoreFactory: RunScoreFactory
 
     @BeforeEach
     fun before() {
         mapper = ResultRunMapper(
             cfRunMapper = cfRunMapper,
             runEligibilityQualifier = runEligibilityQualifier,
-            scoreMapper = scoreMapper
+            runScoreFactory = runScoreFactory
         )
     }
 
@@ -55,24 +50,24 @@ class ResultRunMapperTest {
             val cfRun = testCfRun(
                 timeScratchAsString = "123.456"
             )
-            val expectedRun: org.coner.trailer.Run = mockk()
+            val run: org.coner.trailer.Run = mockk()
             every {
                 cfRunMapper.toCore(
                     cfRun = cfRun, // Run #1
                     cfRunIndex = 0, // Run #1
                     participant = participant
                 )
-            } returns expectedRun
+            } returns run
             every {
                 runEligibilityQualifier.check(
-                    run = expectedRun,
+                    run = run,
                     participantResultRunIndex = 0,
                     maxRunCount = 1,
                 )
             } returns true
             val expectedScore: Score = mockk()
             every {
-                scoreMapper.toScore(cfRun = cfRun, participant = participant)
+                runScoreFactory.score(run = run)
             } returns expectedScore
 
             val actual = mapper.toCore(
@@ -85,7 +80,7 @@ class ResultRunMapperTest {
 
             assertThat(actual).isNotNull().all {
                 score().isSameAs(expectedScore)
-                run().isSameAs(expectedRun)
+                run().isSameAs(run)
             }
             verifySequence {
                 cfRunMapper.toCore(
@@ -94,14 +89,11 @@ class ResultRunMapperTest {
                     participant = participant
                 )
                 runEligibilityQualifier.check(
-                    run = expectedRun,
+                    run = run,
                     participantResultRunIndex = 0,
                     maxRunCount = 1
                 )
-                scoreMapper.toScore(
-                    cfRun = cfRun,
-                    participant = participant
-                )
+                runScoreFactory.score(run)
             }
         }
 
@@ -149,59 +141,6 @@ class ResultRunMapperTest {
                     run = expectedRun,
                     participantResultRunIndex = 0,
                     maxRunCount = 1
-                )
-            }
-        }
-
-        @Test
-        fun `When score maps to null, it should return null`() {
-            val context: CrispyFishEventMappingContext = mockk {
-                every { runCount } returns 1
-            }
-            val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-            val cfRun: Run = mockk()
-            val expectedRun: org.coner.trailer.Run = mockk()
-            every {
-                cfRunMapper.toCore(
-                    cfRun = cfRun, // Run #1
-                    cfRunIndex = 0, // Run #1
-                    participant = participant
-                )
-            } returns expectedRun
-            every {
-                runEligibilityQualifier.check(
-                    run = expectedRun,
-                    participantResultRunIndex = 0,
-                    maxRunCount = 1,
-                )
-            } returns true
-            every {
-                scoreMapper.toScore(cfRun = cfRun, participant = participant)
-            } returns null
-
-            val actual = mapper.toCore(
-                context = context,
-                cfRun = cfRun, // Run #1
-                cfRunIndex = 0, // Run #1
-                participantResultRunIndex = 0, // Run #1
-                participant = participant
-            )
-
-            assertThat(actual).isNull()
-            verifySequence {
-                cfRunMapper.toCore(
-                    cfRun = cfRun,
-                    cfRunIndex = 0,
-                    participant = participant
-                )
-                runEligibilityQualifier.check(
-                    run = expectedRun,
-                    participantResultRunIndex = 0,
-                    maxRunCount = 1
-                )
-                scoreMapper.toScore(
-                    cfRun = cfRun,
-                    participant = participant
                 )
             }
         }

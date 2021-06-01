@@ -6,10 +6,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isLessThan
-import org.coner.trailer.Run
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPolicies
-import org.coner.trailer.Time
+import org.coner.trailer.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -29,6 +26,7 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 diffFirst = null,
                 diffPrevious = null,
+                allRuns = emptyList(),
                 scoredRuns = emptyList(),
                 personalBestScoredRunIndex = null
             )
@@ -45,6 +43,7 @@ class ParticipantResultTest {
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 diffFirst = null,
                 diffPrevious = null,
+                allRuns = emptyList(),
                 scoredRuns = emptyList(),
                 personalBestScoredRunIndex = null
             )
@@ -187,6 +186,11 @@ class ParticipantResultTest {
             participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
             diffFirst = null,
             diffPrevious = null,
+            allRuns = scoredRuns.map { testRun(
+                sequence = 0,
+                participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
+                time = Time(it.value)
+            )},
             scoredRuns = scoredRuns.map { testResultRun(
                 score = it,
                 sequence = 0,

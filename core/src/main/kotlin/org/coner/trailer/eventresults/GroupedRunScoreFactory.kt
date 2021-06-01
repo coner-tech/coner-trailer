@@ -1,30 +1,18 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Grouping
-import org.coner.trailer.Time
+import org.coner.trailer.Run
 
 class GroupedRunScoreFactory(
     private val rawTimes: RawTimeRunScoreFactory,
     private val paxTimes: PaxTimeRunScoreFactory
 ) : RunScoreFactory {
-    override fun score(
-        participantGrouping: Grouping,
-        scratchTime: Time,
-        cones: Int?,
-        didNotFinish: Boolean?,
-        disqualified: Boolean?
-    ): Score {
-        val factory = when {
-            participantGrouping.paxed -> paxTimes
-            else -> rawTimes
+    override fun score(run: Run): Score {
+        val grouping = run.requireParticipantSignageGrouping()
+        val factory = when (grouping.paxed) {
+            true -> paxTimes
+            false -> rawTimes
         }
-        return factory.score(
-            participantGrouping = participantGrouping,
-            scratchTime = scratchTime,
-            cones = cones,
-            didNotFinish = didNotFinish,
-            disqualified = disqualified
-        )
+        return factory.score(run)
     }
 
 }

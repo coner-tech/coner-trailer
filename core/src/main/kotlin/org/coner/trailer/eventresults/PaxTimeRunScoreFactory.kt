@@ -1,25 +1,16 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Grouping
-import org.coner.trailer.Time
+import org.coner.trailer.Run
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 open class PaxTimeRunScoreFactory(
     private val penaltyFactory: StandardPenaltyFactory
 ) : RunScoreFactory {
-    override fun score(
-        participantGrouping: Grouping,
-        scratchTime: Time,
-        cones: Int?,
-        didNotFinish: Boolean?,
-        disqualified: Boolean?
-    ): Score {
-        val penalty = penaltyFactory.penalty(
-            cones = cones,
-            didNotFinish = didNotFinish,
-            disqualified = disqualified
-        )
+    override fun score(run: Run): Score {
+        val participantGrouping = run.requireParticipantSignageGrouping()
+        val scratchTime = run.requireTime()
+        val penalty = penaltyFactory.penalty(run)
         val paxTime = (scratchTime.value * (participantGrouping.paxFactor ?: BigDecimal.ONE)).setScale(3, RoundingMode.HALF_UP)
         return Score(
             value = penalty?.let { it.floor + paxTime }

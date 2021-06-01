@@ -23,17 +23,9 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     } }
     bind<CrispyFishRunMapper>() with singleton { CrispyFishRunMapper() }
     bind<RunEligibilityQualifier>() with singleton { RunEligibilityQualifier() }
-    bind<ScoreMapper>(StandardResultsTypes.raw) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
-    ) }
-    bind<ScoreMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-    ) }
-    bind<ScoreMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ScoreMapper(
-        runScoreFactory = GroupedRunScoreFactory(
-            rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
-            paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-        )
+    bind<RunScoreFactory>(StandardResultsTypes.grouped) with multiton { policy: Policy -> GroupedRunScoreFactory(
+        rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
+        paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
     ) }
     bind<FinalScoreFactory>(FinalScoreStyle.AUTOCROSS) with singleton { AutocrossFinalScoreFactory() }
     bind<FinalScoreFactory>(FinalScoreStyle.RALLYCROSS) with singleton { RallycrossFinalScoreFactory() }
@@ -41,32 +33,33 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
             runEligibilityQualifier = instance(),
-            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.raw).invoke(policy)
+            runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
+        crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
     bind<ParticipantResultMapper>(StandardResultsTypes.pax) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
             runEligibilityQualifier = instance(),
-            scoreMapper = factory<Policy, ScoreMapper>(StandardResultsTypes.pax).invoke(policy)
+            runScoreFactory = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
         ),
         crispyFishParticipantMapper = instance(),
+        crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
     bind<ParticipantResultMapper>(StandardResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
             runEligibilityQualifier = instance(),
-            scoreMapper = ScoreMapper(
-                runScoreFactory = GroupedRunScoreFactory(
-                    rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
-                    paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
-                )
+            runScoreFactory = GroupedRunScoreFactory(
+                rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
+                paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
             )
         ),
         crispyFishParticipantMapper = instance(),
+        crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
     bind<ParticipantResult.ScoredRunsComparator>() with factory { runCount: Int -> ParticipantResult.ScoredRunsComparator(
