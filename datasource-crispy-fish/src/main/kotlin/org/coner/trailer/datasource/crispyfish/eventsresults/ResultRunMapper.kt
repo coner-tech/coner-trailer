@@ -41,7 +41,6 @@ class ResultRunMapper(
         )
     }
 
-
     fun toCores(
         context: CrispyFishEventMappingContext,
         participantCfRuns: List<Run>,

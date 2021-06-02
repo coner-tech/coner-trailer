@@ -53,7 +53,7 @@ class ParticipantResultMapperTest {
     }
 
     @Test
-    fun `It should map (core) ParticipantResult from (CF) Registration, arbitrary RegistrationResult, and Map of MemberId to People`() {
+    fun `It should map core ParticipantResult from EventCrispyFishMetadata, CrispyFishEventMappingContext, and cf Registration`() {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = TestPeople.REBECCA_JACKSON
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON

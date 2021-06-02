@@ -38,9 +38,10 @@ class ParticipantResultMapper(
         )
         val participantCfRuns = context.runsByRegistration[cfRegistration] ?: return null
         val allRuns = participantCfRuns
-            .mapNotNull { cfRun -> crispyFishRunMapper.toCore(
-                cfRun = cfRun,
-                cfRunIndex = cfRun.number ?: return@mapNotNull null,
+            .mapNotNull { cfRunPair ->
+                crispyFishRunMapper.toCore(
+                cfRun = cfRunPair.second,
+                cfRunIndex = cfRunPair.first,
                 participant = participant
             ) }
         val scoredRuns = resultRunMapper.toCores(

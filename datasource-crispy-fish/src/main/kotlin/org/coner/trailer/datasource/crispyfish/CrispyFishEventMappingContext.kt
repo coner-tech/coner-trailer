@@ -18,17 +18,19 @@ class CrispyFishEventMappingContext(
         }
         .toMap()
 
-    val runsByRegistration: Map<Registration, List<Run>> = allRuns
-        .mapNotNull { (registration, run) ->
+    val runsByRegistration: Map<Registration, List<Pair<Int, Run>>> = allRuns
+        .mapIndexedNotNull { index, pair ->
+            val registration = pair.first
+            val run = pair.second
             if (registration != null && run != null) {
-                registration to run
+                registration to (index to run)
             } else {
                 null
             }
         }
         .groupBy(
             keySelector = { (registration, _) -> registration.syntheticSignageKey() to registration },
-            valueTransform = { (_, run) -> run }
+            valueTransform = { (_, runPair) -> runPair }
         )
         .map { (key, value) -> key.second to value }
         .toMap()
