@@ -95,7 +95,7 @@ class ParticipantResultMapperTest {
             testResultRun(sequence = 5, participant = participant, time = Time("51.408"), score = Score("51.408"))
         )
         val participantCfRuns = listOf(10, 11, 12, 13, 14)
-            .mapNotNull { allRuns[it].second }
+            .map { it to requireNotNull(allRuns[it].second) }
         every {
             resultRunMapper.toCores(
                 context = context,

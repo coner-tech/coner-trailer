@@ -43,19 +43,24 @@ class ResultRunMapper(
 
     fun toCores(
         context: CrispyFishEventMappingContext,
-        participantCfRuns: List<Run>,
+        participantCfRuns: List<Pair<Int, Run>>,
         participant: Participant
     ): List<ResultRun> {
-        return participantCfRuns.mapIndexedNotNull { index, run ->
-            val cfRunIndex = run.number?.minus(1)
-                ?: return@mapIndexedNotNull null
-            toCore(
+        var participantResultRunIndex = 0
+        val cores = mutableListOf<ResultRun>()
+        for ((cfRunIndex, participantCfRun) in participantCfRuns) {
+            val core = toCore(
                 context = context,
-                cfRun = run,
+                cfRun = participantCfRun,
                 cfRunIndex = cfRunIndex,
-                participantResultRunIndex = index,
+                participantResultRunIndex = participantResultRunIndex,
                 participant = participant
             )
+            if (core != null) {
+                cores += core
+                participantResultRunIndex++
+            }
         }
+        return cores
     }
 }
