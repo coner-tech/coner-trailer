@@ -96,6 +96,11 @@ class ParticipantResultMapperTest {
         )
         val participantCfRuns = listOf(10, 11, 12, 13, 14)
             .map { it to requireNotNull(allRuns[it].second) }
+        participantCfRuns.forEachIndexed { index, pair ->
+            every {
+                crispyFishRunMapper.toCore(cfRunIndex = pair.first, cfRun = pair.second, participant = participant)
+            } returns expectedScoredRuns[index].run
+        }
         every {
             resultRunMapper.toCores(
                 context = context,
