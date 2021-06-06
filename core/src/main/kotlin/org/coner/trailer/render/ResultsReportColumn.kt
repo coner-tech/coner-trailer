@@ -98,7 +98,10 @@ interface ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(renderScoreColumnValue(it)) }
+            td {
+                classes = setOf("time")
+                text(renderScoreColumnValue(it))
+            }
         }
     }
     class DiffFirst : ResultsReportColumn {
@@ -110,7 +113,10 @@ interface ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(render(it.diffFirst)) }
+            td {
+                classes = setOf("time")
+                text(render(it.diffFirst))
+            }
         }
     }
     class DiffPrevious : ResultsReportColumn {
@@ -122,7 +128,10 @@ interface ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(render(it.diffPrevious)) }
+            td {
+                classes = setOf("time")
+                text(render(it.diffPrevious))
+            }
         }
     }
 
@@ -137,9 +146,12 @@ interface ResultsReportColumn : Renderer {
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
                 ol {
-                    classes = setOf("runs")
+                    classes = setOf("runs", "time")
                     for (run in it.allRuns) {
-                        li {
+                        render(run)?.let { runText ->
+                            li {
+                                text(runText)
+                            }
                         }
                     }
                 }

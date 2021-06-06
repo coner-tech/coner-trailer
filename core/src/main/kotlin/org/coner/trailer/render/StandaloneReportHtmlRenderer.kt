@@ -15,6 +15,22 @@ class StandaloneReportHtmlRenderer : KotlinxHtmlRenderer {
                 bootstrapMetaViewport()
                 bootstrapLinkCss()
                 title { + titleText() }
+                style { unsafe { raw("""
+                    .time {
+                        font-family: monospace;
+                    }
+                    /*
+                    ol.runs {
+                        padding: 0;
+                        display: flex;
+                        align-content: start;
+                    }
+                    ol.runs li {
+                        display: inline;
+                        width: 150px;
+                    }
+                    */
+                """.trimIndent()) } }
             }
             body {
                 id = "standalone-event-results"

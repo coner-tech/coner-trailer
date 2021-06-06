@@ -7,5 +7,6 @@ val standardResultsReportColumns = listOf(
     ResultsReportColumn.CarModel(),
     ResultsReportColumn.Score(),
     ResultsReportColumn.DiffFirst(),
-    ResultsReportColumn.DiffPrevious()
+    ResultsReportColumn.DiffPrevious(),
+    ResultsReportColumn.Runs()
 )

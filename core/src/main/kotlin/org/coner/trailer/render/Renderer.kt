@@ -17,12 +17,17 @@ interface Renderer {
     }
     fun render(time: Time?) = time?.value?.toString() ?: ""
 
-    fun render(run: Run) = when {
+    fun render(run: Run): String? = when {
         run.disqualified -> Text.disqualified
-        run.didNotFinish -> "${run.time?.value}${Text.didNotFinish}"
-        run.rerun -> "${run.time?.value}${Text.rerun}"
-        run.cones > 0 -> "${run.time?.value}${Text.cone(run.cones)}"
-        else -> run.time?.value
+        run.didNotFinish -> "${run.time?.value}+${Text.didNotFinish}"
+        run.rerun -> {
+            if (run.cones > 0)
+                "${run.time?.value}+${Text.cone(run.cones)} (${Text.rerun})"
+            else
+                "${run.time?.value} (${Text.rerun})"
+        }
+        run.cones > 0 -> "${run.time?.value}+${Text.cone(run.cones)}"
+        else -> "${run.time?.value ?: ""}"
     }
 }
 
@@ -30,5 +35,5 @@ private object Text {
     const val disqualified = "DSQ"
     const val didNotFinish = "DNF"
     const val rerun = "RRN"
-    fun cone(count: Int) = "+$count"
+    fun cone(count: Int) = "$count"
 }
