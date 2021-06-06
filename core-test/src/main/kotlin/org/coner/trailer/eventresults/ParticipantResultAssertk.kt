@@ -18,6 +18,8 @@ fun Assert<ParticipantResult>.diffFirst() = prop("diffFirst") { it.diffFirst }
 
 fun Assert<ParticipantResult>.diffPrevious() = prop("diffPrevious") { it.diffPrevious }
 
+fun Assert<ParticipantResult>.allRuns() = prop("allRuns") { it.allRuns }
+
 fun Assert<ParticipantResult>.scoredRuns() = prop("scoredRuns") { it.scoredRuns }
 fun Assert<ParticipantResult>.hasScoredRuns(expected: List<ResultRun>) = scoredRuns().isEqualTo(expected)
 

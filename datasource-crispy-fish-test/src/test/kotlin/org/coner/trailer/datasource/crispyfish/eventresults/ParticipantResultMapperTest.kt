@@ -2,10 +2,7 @@ package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.*
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -124,6 +121,7 @@ class ParticipantResultMapperTest {
         assertThat(actual).isNotNull().all {
             score().isSameAs(expectedScore)
             hasParticipant(participant)
+            allRuns().hasSize(5)
             hasScoredRuns(expectedScoredRuns)
             personalBestScoredRunIndex().isEqualTo(4)
             hasPosition(Int.MAX_VALUE) // not calculated here
