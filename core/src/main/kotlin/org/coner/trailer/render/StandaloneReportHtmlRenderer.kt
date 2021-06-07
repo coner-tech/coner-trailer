@@ -33,7 +33,7 @@ class StandaloneReportHtmlRenderer : KotlinxHtmlRenderer {
             }
             body {
                 id = "standalone-event-results"
-                classes = setOf("container-md")
+                classes = setOf("container-xxl")
                 h2 { + event.name }
                 resultsPartial(this)
             }

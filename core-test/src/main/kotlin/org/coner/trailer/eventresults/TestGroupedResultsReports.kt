@@ -308,7 +308,8 @@ object TestGroupedResultsReports {
                             diffPrevious = Time("0.916")
                         )
                     )
-                )
+                ),
+                runCount = 5
             )
         )
 
@@ -342,7 +343,8 @@ object TestGroupedResultsReports {
                                 participant = TestParticipants.LsccTieBreaking.HARRY_WEBSTER
                             )
                         )
-                    )
+                    ),
+                    runCount = 1
                 )
             )
         val points2: List<GroupedResultsReport>
@@ -372,7 +374,8 @@ object TestGroupedResultsReports {
                                 participant = TestParticipants.LsccTieBreaking.TERI_POTTER
                             )
                         )
-                    )
+                    ),
+                    runCount = 1
                 )
             )
 
