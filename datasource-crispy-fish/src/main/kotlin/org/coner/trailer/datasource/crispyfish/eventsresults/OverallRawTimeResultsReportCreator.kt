@@ -27,6 +27,7 @@ class OverallRawTimeResultsReportCreator(
             .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
         return OverallResultsReport(
             type = StandardResultsTypes.raw,
+            runCount = context.runCount,
             participantResults = results.mapIndexed { index, result ->
                 participantResultMapper.toCoreRanked(
                     sortedResults = results,

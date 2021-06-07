@@ -28,6 +28,7 @@ class GroupedResultsReportCreator(
             }
         return GroupedResultsReport(
             type = StandardResultsTypes.grouped,
+            runCount = context.runCount,
             groupingsToResultsMap = results
                 .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
                 .groupBy { it.participant.resultGrouping() }

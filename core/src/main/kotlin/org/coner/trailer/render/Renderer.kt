@@ -22,9 +22,9 @@ interface Renderer {
         run.didNotFinish -> "${run.time?.value}+${Text.didNotFinish}"
         run.rerun -> {
             if (run.cones > 0)
-                "${run.time?.value}+${Text.cone(run.cones)} (${Text.rerun})"
+                "${run.time?.value}+${Text.rerun}, +${Text.cone(run.cones)}"
             else
-                "${run.time?.value} (${Text.rerun})"
+                "${run.time?.value}+${Text.rerun}"
         }
         run.cones > 0 -> "${run.time?.value}+${Text.cone(run.cones)}"
         else -> "${run.time?.value ?: ""}"

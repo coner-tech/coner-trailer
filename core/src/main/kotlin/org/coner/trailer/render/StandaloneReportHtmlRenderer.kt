@@ -19,17 +19,16 @@ class StandaloneReportHtmlRenderer : KotlinxHtmlRenderer {
                     .time {
                         font-family: monospace;
                     }
-                    /*
                     ol.runs {
                         padding: 0;
-                        display: flex;
-                        align-content: start;
+                        display: grid;
+                        grid-template-columns: repeat(${resultsReport.runCount}, 1fr);
+                        list-style-type: none;
+                        list-style-position: inside;
                     }
                     ol.runs li {
-                        display: inline;
-                        width: 150px;
+                        min-width: 110px;
                     }
-                    */
                 """.trimIndent()) } }
             }
             body {

@@ -5,5 +5,6 @@ import java.util.*
 
 class GroupedResultsReport(
         type: ResultsType,
+        runCount: Int,
         val groupingsToResultsMap: SortedMap<Grouping, List<ParticipantResult>>
-) : ResultsReport(type = type)
+) : ResultsReport(type = type, runCount = runCount)

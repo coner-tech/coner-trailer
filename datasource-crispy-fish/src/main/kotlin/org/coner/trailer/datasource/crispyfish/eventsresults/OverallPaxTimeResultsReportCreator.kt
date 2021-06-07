@@ -27,6 +27,7 @@ class OverallPaxTimeResultsReportCreator(
             .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
         return OverallResultsReport(
             type = StandardResultsTypes.pax,
+            runCount = context.runCount,
             participantResults = results.mapIndexed { index, result ->
                 participantResultMapper.toCoreRanked(
                     sortedResults = results,
