@@ -143,7 +143,8 @@ class StandingsReportCreatorTest {
                                 personalBestScoredRunIndex = 0
                             )
                         )
-                    )
+                    ),
+                    runCount = 2
                 )
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
