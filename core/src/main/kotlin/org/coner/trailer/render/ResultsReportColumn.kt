@@ -2,15 +2,18 @@ package org.coner.trailer.render
 
 import kotlinx.html.*
 import org.coner.trailer.eventresults.ParticipantResult
+import org.coner.trailer.eventresults.ResultsReport
 import org.coner.trailer.eventresults.ResultsType
 
-interface ResultsReportColumn : Renderer {
+abstract class ResultsReportColumn : Renderer {
 
-    val header: TR.(ResultsType) -> Unit
+    open fun buildStyles(report: ResultsReport): Set<String> = emptySet()
+    
+    abstract val header: TR.(ResultsType) -> Unit
 
-    val data: TR.(ParticipantResult) -> Unit
+    abstract val data: TR.(ParticipantResult) -> Unit
 
-    class Position : ResultsReportColumn {
+    class Position : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("position")
@@ -26,7 +29,7 @@ interface ResultsReportColumn : Renderer {
         }
     }
 
-    class Signage : ResultsReportColumn {
+    class Signage : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage")
@@ -39,7 +42,7 @@ interface ResultsReportColumn : Renderer {
         }
     }
 
-    class SignageClass : ResultsReportColumn {
+    class SignageClass : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-category-handicap")
@@ -52,7 +55,7 @@ interface ResultsReportColumn : Renderer {
         }
     }
 
-    class SignageNumber : ResultsReportColumn {
+    class SignageNumber : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-number")
@@ -65,7 +68,7 @@ interface ResultsReportColumn : Renderer {
         }
     }
 
-    class Name : ResultsReportColumn {
+    class Name : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("name")
@@ -77,7 +80,7 @@ interface ResultsReportColumn : Renderer {
             td { text(renderName(it.participant)) }
         }
     }
-    class CarModel : ResultsReportColumn {
+    class CarModel : ResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("car-model")
@@ -89,7 +92,8 @@ interface ResultsReportColumn : Renderer {
             td { text(it.participant.car.model ?: "") }
         }
     }
-    class Score : ResultsReportColumn {
+    class Score : ResultsReportColumn() {
+        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -104,7 +108,8 @@ interface ResultsReportColumn : Renderer {
             }
         }
     }
-    class DiffFirst : ResultsReportColumn {
+    class DiffFirst : ResultsReportColumn() {
+        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -119,7 +124,8 @@ interface ResultsReportColumn : Renderer {
             }
         }
     }
-    class DiffPrevious : ResultsReportColumn {
+    class DiffPrevious : ResultsReportColumn() {
+        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")
@@ -135,7 +141,22 @@ interface ResultsReportColumn : Renderer {
         }
     }
 
-    class Runs : ResultsReportColumn {
+    class Runs : ResultsReportColumn() {
+        override fun buildStyles(report: ResultsReport) = setOf(
+            CommonStyles.time,
+            """
+            ol.runs {
+                padding: 0;
+                display: grid;
+                grid-template-columns: repeat(${report.runCount}, 1fr);
+                list-style-type: none;
+                list-style-position: inside;
+            }
+            ol.runs li {
+                min-width: 110px;
+            }
+            """.trimIndent()
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("runs")
@@ -157,5 +178,13 @@ interface ResultsReportColumn : Renderer {
                 }
             }
         }
+    }
+    
+    private object CommonStyles {
+        val time = """
+            .time {
+                font-family: monospace;
+            }
+            """.trimIndent()
     }
 }

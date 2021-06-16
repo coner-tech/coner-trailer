@@ -4,19 +4,13 @@ import kotlinx.html.*
 import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import org.coner.trailer.eventresults.OverallResultsReport
+import org.coner.trailer.render.kotlinxhtml.ResultsReportKotlinxHtmlRenderer
 
 class OverallResultsReportHtmlRenderer(
-    private val columns: List<ResultsReportColumn>
-) : Renderer {
+    columns: List<ResultsReportColumn>
+) : ResultsReportKotlinxHtmlRenderer<OverallResultsReport>(columns) {
 
-    fun render(report: OverallResultsReport): String = createHTMLDocument()
-        .html {
-            body {
-                partial(report)()
-            }
-        }.serialize()
-
-    fun partial(report: OverallResultsReport): HtmlBlockTag.() -> Unit = {
+    override fun partial(report: OverallResultsReport): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("results-report", report.type.key)
             h2 { text(report.type.title) }

@@ -1,9 +1,10 @@
-package org.coner.trailer.render
+package org.coner.trailer.render.kotlinxhtml
 
 import kotlinx.html.HEAD
 import kotlinx.html.LinkRel
 import kotlinx.html.link
 import kotlinx.html.meta
+import org.coner.trailer.render.Renderer
 
 interface KotlinxHtmlRenderer : Renderer {
 

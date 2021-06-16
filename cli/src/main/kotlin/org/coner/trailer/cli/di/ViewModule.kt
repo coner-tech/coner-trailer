@@ -1,9 +1,8 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
-import org.coner.trailer.render.GroupedResultsReportHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.GroupedResultsReportKotlinxHtmlRenderer
 import org.coner.trailer.render.OverallResultsReportHtmlRenderer
-import org.coner.trailer.render.StandaloneReportHtmlRenderer
 import org.coner.trailer.render.standardResultsReportColumns
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -42,8 +41,7 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
         columns = standardResultsReportColumns
     ) }
     bind<GroupedResultsReportTextTableView>() with provider { GroupedResultsReportTextTableView() }
-    bind<GroupedResultsReportHtmlRenderer>() with provider { GroupedResultsReportHtmlRenderer(
+    bind<GroupedResultsReportKotlinxHtmlRenderer>() with provider { GroupedResultsReportKotlinxHtmlRenderer(
         columns = standardResultsReportColumns
     ) }
-    bind<StandaloneReportHtmlRenderer>() with provider { StandaloneReportHtmlRenderer() }
 }

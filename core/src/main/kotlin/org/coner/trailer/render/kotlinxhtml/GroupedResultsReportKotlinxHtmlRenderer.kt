@@ -1,22 +1,17 @@
-package org.coner.trailer.render
+package org.coner.trailer.render.kotlinxhtml
 
 import kotlinx.html.*
 import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import org.coner.trailer.eventresults.GroupedResultsReport
+import org.coner.trailer.render.Renderer
+import org.coner.trailer.render.ResultsReportColumn
 
-class GroupedResultsReportHtmlRenderer(
-    private val columns: List<ResultsReportColumn>
-) : Renderer {
+class GroupedResultsReportKotlinxHtmlRenderer(
+    columns: List<ResultsReportColumn>
+) : ResultsReportKotlinxHtmlRenderer<GroupedResultsReport>(columns) {
 
-    fun render(report: GroupedResultsReport): String = createHTMLDocument()
-        .html {
-            body {
-                partial(report)()
-            }
-        }.serialize()
-
-    fun partial(report: GroupedResultsReport): HtmlBlockTag.() -> Unit = {
+    override fun partial(report: GroupedResultsReport): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("results-report", report.type.key)
             h2 { text(report.type.title) }

@@ -25,8 +25,7 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.GroupedResultsReportHtmlRenderer
-import org.coner.trailer.render.StandaloneReportHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.GroupedResultsReportKotlinxHtmlRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
@@ -54,8 +53,7 @@ class EventResultsCommand(
     private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
     private val overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer by instance()
     private val groupedResultsReportTextTableView: GroupedResultsReportTextTableView by instance()
-    private val groupedResultsReportHtmlRenderer: GroupedResultsReportHtmlRenderer by instance()
-    private val standaloneReportHtmlRenderer: StandaloneReportHtmlRenderer by instance()
+    private val groupedResultsReportKotlinxHtmlRenderer: GroupedResultsReportKotlinxHtmlRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -127,11 +125,7 @@ class EventResultsCommand(
         }
         return when (format) {
             Format.TEXT -> overallReportTextTableView.render(resultsReport)
-            Format.HTML -> standaloneReportHtmlRenderer.renderEventResults(
-                event = event,
-                resultsReport = resultsReport,
-                resultsPartial = overallResultsReportHtmlRenderer.partial(resultsReport)
-            )
+            Format.HTML -> overallResultsReportHtmlRenderer.render(event, resultsReport)
         }
     }
 
@@ -148,11 +142,7 @@ class EventResultsCommand(
         }
         return when (format) {
             Format.TEXT -> groupedResultsReportTextTableView.render(resultsReport)
-            Format.HTML -> standaloneReportHtmlRenderer.renderEventResults(
-                event = event,
-                resultsReport = resultsReport,
-                resultsPartial = groupedResultsReportHtmlRenderer.partial(resultsReport)
-            )
+            Format.HTML -> groupedResultsReportKotlinxHtmlRenderer.render(event, resultsReport)
         }
     }
 }
