@@ -4,7 +4,6 @@ import kotlinx.html.*
 import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.ResultsReport
 import org.coner.trailer.render.ResultsReportColumn
 import org.coner.trailer.render.ResultsReportRenderer
@@ -20,19 +19,19 @@ abstract class ResultsReportKotlinxHtmlRenderer<RR : ResultsReport>(
                 bootstrapMetaViewport()
                 bootstrapLinkCss()
                 title { + titleText() }
-                style { unsafe { raw(headerStylesheet(report)) } }
+                style { unsafe { raw(headerStylesheet(event, report)) } }
             }
             body {
                 id = "event-results-report"
                 classes = setOf("container-xxl")
                 h2 { + event.name }
-                partial(report)()
+                partial(event, report)()
             }
         }.serialize()
 
-    private fun headerStylesheet(report: RR): String {
+    private fun headerStylesheet(event: Event, report: RR): String {
         return columns
-            .flatMap { it.buildStyles(report) }
+            .flatMap { it.buildStyles(event, report) }
             .distinct()
             .joinToString(separator = "\n")
     }

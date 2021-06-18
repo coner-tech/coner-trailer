@@ -1,13 +1,14 @@
 package org.coner.trailer.render
 
 import kotlinx.html.*
+import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.ResultsReport
 import org.coner.trailer.eventresults.ResultsType
 
 abstract class ResultsReportColumn : Renderer {
 
-    open fun buildStyles(report: ResultsReport): Set<String> = emptySet()
+    open fun buildStyles(event: Event, report: ResultsReport): Set<String> = emptySet()
     
     abstract val header: TR.(ResultsType) -> Unit
 
@@ -93,7 +94,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
     class Score : ResultsReportColumn() {
-        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -109,7 +110,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
     class DiffFirst : ResultsReportColumn() {
-        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -125,7 +126,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
     class DiffPrevious : ResultsReportColumn() {
-        override fun buildStyles(report: ResultsReport) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")
@@ -142,18 +143,31 @@ abstract class ResultsReportColumn : Renderer {
     }
 
     class Runs : ResultsReportColumn() {
-        override fun buildStyles(report: ResultsReport) = setOf(
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             CommonStyles.time,
             """
-            ol.runs {
-                padding: 0;
-                display: grid;
-                grid-template-columns: repeat(${report.runCount}, 1fr);
-                list-style-type: none;
-                list-style-position: inside;
+            .event-${event.id} th.runs, .event-${event.id} ol.runs {
+                display: none;
             }
-            ol.runs li {
-                min-width: 110px;
+            @media screen {
+                .event-${event.id} th.runs {
+                    display: table-cell;
+                }
+                .event-${event.id} ol.runs {
+                    padding: 0;
+                    display: grid;
+                    grid-template-columns: 1;
+                    list-style-type: none;
+                    list-style-position: inside;
+                }
+                ol.runs li {
+                    min-width: 110px;
+                }
+            }
+            @media screen and (min-width: 1280px) {
+                .event-${event.id} ol.runs {
+                    grid-template-columns: repeat(${report.runCount}, 1fr);
+                }
             }
             """.trimIndent()
         )

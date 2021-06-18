@@ -7,5 +7,5 @@ interface ResultsReportRenderer<RR : ResultsReport, FO, PO> : Renderer {
 
     fun render(event: Event, report: RR): FO
 
-    fun partial(report: RR): PO
+    fun partial(event: Event, report: RR): PO
 }

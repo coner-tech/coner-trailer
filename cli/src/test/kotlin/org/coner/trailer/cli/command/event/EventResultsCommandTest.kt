@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.html.HtmlBlockTag
 import org.coner.trailer.Event
 import org.coner.trailer.Policy
 import org.coner.trailer.TestEvents
