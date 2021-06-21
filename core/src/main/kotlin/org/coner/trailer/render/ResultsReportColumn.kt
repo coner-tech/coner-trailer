@@ -5,6 +5,7 @@ import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.ResultsReport
 import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.render.kotlinxhtml.MediaSize
 
 abstract class ResultsReportColumn : Renderer {
 
@@ -40,6 +41,41 @@ abstract class ResultsReportColumn : Renderer {
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             td { text(render(it.participant.signage)) }
+        }
+    }
+
+    class MobilePositionSignage : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            th.mobile-position-signage, td.mobile-position-signage {
+                display: none;
+            }
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.mobile-position-signage, td.mobile-position-signage {
+                    display: table-cell;
+                }
+            }
+            """.trimIndent()
+        )
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("mobile-position-signage")
+                scope = ThScope.col
+                text("Position / Signage")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td {
+                classes = setOf("mobile-position-signage")
+                div {
+                    classes = setOf("position")
+                    text(it.position)
+                }
+                div {
+                    classes = setOf("signage")
+                    text(render(it.participant.signage))
+                }
+            }
         }
     }
 
@@ -93,6 +129,8 @@ abstract class ResultsReportColumn : Renderer {
             td { text(it.participant.car.model ?: "") }
         }
     }
+    // TODO: MobileNameCarModel
+
     class Score : ResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
@@ -146,11 +184,11 @@ abstract class ResultsReportColumn : Renderer {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             CommonStyles.time,
             """
-            .event-${event.id} th.runs, .event-${event.id} ol.runs {
+            .event-${event.id} th.runs, .event-${event.id} td.runs {
                 display: none;
             }
-            @media screen {
-                .event-${event.id} th.runs {
+            @media screen and (min-width: ${MediaSize.MOBILE_MAX}px) {
+                .event-${event.id} th.runs, .event-${event.id} td.runs  {
                     display: table-cell;
                 }
                 .event-${event.id} ol.runs {
@@ -163,10 +201,10 @@ abstract class ResultsReportColumn : Renderer {
                 ol.runs li {
                     min-width: 110px;
                 }
-            }
-            @media screen and (min-width: 1280px) {
-                .event-${event.id} ol.runs {
-                    grid-template-columns: repeat(${report.runCount}, 1fr);
+                @media screen and (min-width: 1280px) {
+                    .event-${event.id} ol.runs {
+                        grid-template-columns: repeat(${report.runCount}, 1fr);
+                    }
                 }
             }
             """.trimIndent()
@@ -180,6 +218,7 @@ abstract class ResultsReportColumn : Renderer {
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
+                classes = setOf("runs")
                 ol {
                     classes = setOf("runs", "time")
                     for (run in it.allRuns) {
