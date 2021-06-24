@@ -16,6 +16,15 @@ abstract class ResultsReportColumn : Renderer {
     abstract val data: TR.(ParticipantResult) -> Unit
 
     class Position : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.position {
+                    display: none;
+                }
+            }
+            """.trimIndent()
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("position")
@@ -25,6 +34,7 @@ abstract class ResultsReportColumn : Renderer {
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             th {
+                classes = setOf("position")
                 scope = ThScope.row
                 text(it.position)
             }
@@ -32,6 +42,15 @@ abstract class ResultsReportColumn : Renderer {
     }
 
     class Signage : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.signage, td.signage {
+                    display: none;
+                }
+            }
+            """.trimIndent()
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage")
@@ -40,7 +59,10 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(render(it.participant.signage)) }
+            td {
+                classes = setOf("signage")
+                text(render(it.participant.signage))
+            }
         }
     }
 
@@ -51,8 +73,11 @@ abstract class ResultsReportColumn : Renderer {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.mobile-position-signage, td.mobile-position-signage {
+                th.mobile-position-signage {
                     display: table-cell;
+                }
+                th.mobile-position-signage span {
+                    display: block;
                 }
             }
             """.trimIndent()
@@ -65,13 +90,14 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
+            th {
                 classes = setOf("mobile-position-signage")
-                div {
+                scope = ThScope.row
+                span {
                     classes = setOf("position")
                     text(it.position)
                 }
-                div {
+                span {
                     classes = setOf("signage")
                     text(render(it.participant.signage))
                 }
@@ -148,7 +174,10 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
     class DiffFirst : ResultsReportColumn() {
-        override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            CommonStyles.time,
+            CommonStyles.hideDiffOnMobile
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -158,13 +187,16 @@ abstract class ResultsReportColumn : Renderer {
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
-                classes = setOf("time")
+                classes = setOf("time", "diff", "diff-first")
                 text(render(it.diffFirst))
             }
         }
     }
     class DiffPrevious : ResultsReportColumn() {
-        override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            CommonStyles.time,
+            CommonStyles.hideDiffOnMobile
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")
@@ -174,7 +206,7 @@ abstract class ResultsReportColumn : Renderer {
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
-                classes = setOf("time")
+                classes = setOf("time", "diff", "diff-previous")
                 text(render(it.diffPrevious))
             }
         }
@@ -239,5 +271,12 @@ abstract class ResultsReportColumn : Renderer {
                 font-family: monospace;
             }
             """.trimIndent()
+        val hideDiffOnMobile = """
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.diff, td.diff {
+                    display: none;
+                }
+            }
+        """.trimIndent()
     }
 }
