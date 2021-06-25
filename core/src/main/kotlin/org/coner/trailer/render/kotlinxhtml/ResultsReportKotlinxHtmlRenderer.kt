@@ -23,7 +23,7 @@ abstract class ResultsReportKotlinxHtmlRenderer<RR : ResultsReport>(
             }
             body {
                 id = "event-results-report"
-                classes = setOf("container")
+                classes = setOf("container-xl")
                 h2 { + event.name }
                 partial(event, report)()
             }

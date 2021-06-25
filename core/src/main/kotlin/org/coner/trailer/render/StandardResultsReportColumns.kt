@@ -6,6 +6,7 @@ val standardResultsReportColumns = listOf(
     ResultsReportColumn.MobilePositionSignage(),
     ResultsReportColumn.Name(),
     ResultsReportColumn.CarModel(),
+    ResultsReportColumn.MobileNameCarModel(),
     ResultsReportColumn.Score(),
     ResultsReportColumn.DiffFirst(),
     ResultsReportColumn.DiffPrevious(),

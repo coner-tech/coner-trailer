@@ -132,6 +132,15 @@ abstract class ResultsReportColumn : Renderer {
     }
 
     class Name : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.name, td.name {
+                    display: none;
+                }
+            } 
+            """.trimIndent()
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("name")
@@ -140,10 +149,22 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(renderName(it.participant)) }
+            td {
+                classes = setOf("name")
+                text(renderName(it.participant))
+            }
         }
     }
     class CarModel : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.car-model, td.car-model {
+                    display: none;
+                }
+            }
+            """.trimIndent()
+        )
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("car-model")
@@ -152,10 +173,50 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.car.model ?: "") }
+            td {
+                classes = setOf("car-model")
+                text(it.participant.car.model ?: "")
+            }
         }
     }
-    // TODO: MobileNameCarModel
+    class MobileNameCarModel : ResultsReportColumn() {
+        override fun buildStyles(event: Event, report: ResultsReport) = setOf(
+            """
+            th.mobile-name-car-model, td.mobile-name-car-model {
+                display: none;
+            }
+            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                th.mobile-name-car-model, td.mobile-name-car-model {
+                    display: table-cell;
+                }
+                td.mobile-name-car-model span {
+                    display: block;
+                }
+            }
+            """.trimIndent()
+        )
+
+        override val header: TR.(ResultsType) -> Unit = {
+            th {
+                classes = setOf("mobile-name-car-model")
+                scope = ThScope.col
+                text("Name / Car")
+            }
+        }
+        override val data: TR.(ParticipantResult) -> Unit = {
+            td {
+                classes = setOf("mobile-name-car-model")
+                span {
+                    classes = setOf("name")
+                    text(renderName(it.participant))
+                }
+                span {
+                    classes = setOf("car-model")
+                    text(it.participant.car.model ?: "")
+                }
+            }
+        }
+    }
 
     class Score : ResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
