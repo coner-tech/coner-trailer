@@ -1,8 +1,8 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
-import org.coner.trailer.render.kotlinxhtml.GroupedResultsReportKotlinxHtmlRenderer
-import org.coner.trailer.render.OverallResultsReportHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
 import org.coner.trailer.render.standardResultsReportColumns
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -37,11 +37,11 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
     bind<OverallResultsReportTextTableView>() with provider { OverallResultsReportTextTableView() }
-    bind<OverallResultsReportHtmlRenderer>() with provider { OverallResultsReportHtmlRenderer(
+    bind<KotlinxHtmlOverallResultsReportRenderer>() with provider { KotlinxHtmlOverallResultsReportRenderer(
         columns = standardResultsReportColumns
     ) }
     bind<GroupedResultsReportTextTableView>() with provider { GroupedResultsReportTextTableView() }
-    bind<GroupedResultsReportKotlinxHtmlRenderer>() with provider { GroupedResultsReportKotlinxHtmlRenderer(
+    bind<KotlinxHtmlGroupedResultsReportRenderer>() with provider { KotlinxHtmlGroupedResultsReportRenderer(
         columns = standardResultsReportColumns
     ) }
 }

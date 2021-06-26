@@ -17,7 +17,7 @@ import org.coner.trailer.cli.view.OverallResultsReportTextTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.render.OverallResultsReportHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
@@ -46,7 +46,7 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
     @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
     @MockK lateinit var overallReportTextTableView: OverallResultsReportTextTableView
-    @MockK lateinit var overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer
+    @MockK lateinit var kotlinxHtmlOverallResultsReportRenderer: KotlinxHtmlOverallResultsReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -62,7 +62,7 @@ class EventResultsCommandTest {
             bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
             bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
             bind<OverallResultsReportTextTableView>() with instance(overallReportTextTableView)
-            bind<OverallResultsReportHtmlRenderer>() with instance(overallResultsReportHtmlRenderer)
+            bind<KotlinxHtmlOverallResultsReportRenderer>() with instance(kotlinxHtmlOverallResultsReportRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -119,7 +119,7 @@ class EventResultsCommandTest {
             context = context
         ) } returns resultsReport
         val render = "<html>"
-        every { overallResultsReportHtmlRenderer.render(event, resultsReport) } returns render
+        every { kotlinxHtmlOverallResultsReportRenderer.render(event, resultsReport) } returns render
         val actualDestination = output.resolve("pax.html")
         every { fileOutputResolver.forEventResults(
             event = event,
@@ -145,7 +145,7 @@ class EventResultsCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            overallResultsReportHtmlRenderer.render(event, resultsReport)
+            kotlinxHtmlOverallResultsReportRenderer.render(event, resultsReport)
             fileOutputResolver.forEventResults(
                 event = event,
                 type = StandardResultsTypes.pax,

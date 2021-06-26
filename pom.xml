@@ -22,6 +22,8 @@
         <module>io-kodein-di</module>
         <module>cli</module>
         <module>io-test</module>
+        <module>render</module>
+        <module>render-kotlinxhtml</module>
     </modules>
 
     <properties>

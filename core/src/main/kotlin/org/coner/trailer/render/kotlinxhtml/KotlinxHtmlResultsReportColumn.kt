@@ -1,21 +1,20 @@
-package org.coner.trailer.render
+package org.coner.trailer.render.kotlinxhtml
 
 import kotlinx.html.*
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.ResultsReport
 import org.coner.trailer.eventresults.ResultsType
-import org.coner.trailer.render.kotlinxhtml.MediaSize
+import org.coner.trailer.render.EventResultsReportColumnRenderer
 
-abstract class ResultsReportColumn : Renderer {
+abstract class KotlinxHtmlResultsReportColumn : EventResultsReportColumnRenderer<
+        TR.(ResultsType) -> Unit,
+        TR.(ParticipantResult) -> Unit
+        > {
 
     open fun buildStyles(event: Event, report: ResultsReport): Set<String> = emptySet()
-    
-    abstract val header: TR.(ResultsType) -> Unit
 
-    abstract val data: TR.(ParticipantResult) -> Unit
-
-    class Position : ResultsReportColumn() {
+    class Position : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
@@ -41,7 +40,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class Signage : ResultsReportColumn() {
+    class Signage : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
@@ -66,7 +65,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class MobilePositionSignage : ResultsReportColumn() {
+    class MobilePositionSignage : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             th.mobile-position-signage, td.mobile-position-signage {
@@ -105,7 +104,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class SignageClass : ResultsReportColumn() {
+    class SignageClass : KotlinxHtmlResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-category-handicap")
@@ -118,7 +117,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class SignageNumber : ResultsReportColumn() {
+    class SignageNumber : KotlinxHtmlResultsReportColumn() {
         override val header: TR.(ResultsType) -> Unit = {
             th {
                 classes = setOf("signage", "signage-number")
@@ -131,7 +130,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class Name : ResultsReportColumn() {
+    class Name : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
@@ -155,7 +154,7 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
     }
-    class CarModel : ResultsReportColumn() {
+    class CarModel : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
@@ -179,7 +178,7 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
     }
-    class MobileNameCarModel : ResultsReportColumn() {
+    class MobileNameCarModel : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             """
             th.mobile-name-car-model, td.mobile-name-car-model {
@@ -218,7 +217,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class Score : ResultsReportColumn() {
+    class Score : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(CommonStyles.time)
         override val header: TR.(ResultsType) -> Unit = {
             th {
@@ -234,7 +233,7 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
     }
-    class DiffFirst : ResultsReportColumn() {
+    class DiffFirst : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
@@ -253,7 +252,7 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
     }
-    class DiffPrevious : ResultsReportColumn() {
+    class DiffPrevious : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
@@ -273,7 +272,7 @@ abstract class ResultsReportColumn : Renderer {
         }
     }
 
-    class Runs : ResultsReportColumn() {
+    class Runs : KotlinxHtmlResultsReportColumn() {
         override fun buildStyles(event: Event, report: ResultsReport) = setOf(
             CommonStyles.time,
             """
@@ -325,7 +324,7 @@ abstract class ResultsReportColumn : Renderer {
             }
         }
     }
-    
+
     private object CommonStyles {
         val time = """
             .time {

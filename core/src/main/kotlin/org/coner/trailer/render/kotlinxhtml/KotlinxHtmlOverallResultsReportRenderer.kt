@@ -1,13 +1,12 @@
-package org.coner.trailer.render
+package org.coner.trailer.render.kotlinxhtml
 
 import kotlinx.html.*
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.OverallResultsReport
-import org.coner.trailer.render.kotlinxhtml.ResultsReportKotlinxHtmlRenderer
 
-class OverallResultsReportHtmlRenderer(
-    columns: List<ResultsReportColumn>
-) : ResultsReportKotlinxHtmlRenderer<OverallResultsReport>(columns) {
+class KotlinxHtmlOverallResultsReportRenderer(
+    columns: List<KotlinxHtmlResultsReportColumn>
+) : KotlinxHtmlResultsReportRenderer<OverallResultsReport>(columns) {
 
     override fun partial(event: Event, report: OverallResultsReport): HtmlBlockTag.() -> Unit = {
         section {

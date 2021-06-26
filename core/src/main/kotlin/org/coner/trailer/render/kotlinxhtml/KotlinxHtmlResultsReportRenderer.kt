@@ -5,11 +5,10 @@ import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.ResultsReport
-import org.coner.trailer.render.ResultsReportColumn
 import org.coner.trailer.render.ResultsReportRenderer
 
-abstract class ResultsReportKotlinxHtmlRenderer<RR : ResultsReport>(
-    protected val columns: List<ResultsReportColumn>
+abstract class KotlinxHtmlResultsReportRenderer<RR : ResultsReport>(
+    protected val columns: List<KotlinxHtmlResultsReportColumn>
 ) : ResultsReportRenderer<RR, String, HtmlBlockTag.() -> Unit>, KotlinxHtmlRenderer {
 
     override fun render(event: Event, report: RR): String = createHTMLDocument()

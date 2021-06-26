@@ -20,12 +20,12 @@ import org.coner.trailer.cli.view.OverallResultsReportTextTableView
 import org.coner.trailer.datasource.crispyfish.eventsresults.GroupedResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.render.OverallResultsReportHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.kotlinxhtml.GroupedResultsReportKotlinxHtmlRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
@@ -51,9 +51,9 @@ class EventResultsCommand(
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
     private val crispyFishGroupedResultsReportCreator: (Policy) -> GroupedResultsReportCreator by factory()
     private val overallReportTextTableView: OverallResultsReportTextTableView by instance()
-    private val overallResultsReportHtmlRenderer: OverallResultsReportHtmlRenderer by instance()
+    private val kotlinxHtmlOverallResultsReportRenderer: KotlinxHtmlOverallResultsReportRenderer by instance()
     private val groupedResultsReportTextTableView: GroupedResultsReportTextTableView by instance()
-    private val groupedResultsReportKotlinxHtmlRenderer: GroupedResultsReportKotlinxHtmlRenderer by instance()
+    private val kotlinxHtmlGroupedResultsReportRenderer: KotlinxHtmlGroupedResultsReportRenderer by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -125,7 +125,7 @@ class EventResultsCommand(
         }
         return when (format) {
             Format.TEXT -> overallReportTextTableView.render(resultsReport)
-            Format.HTML -> overallResultsReportHtmlRenderer.render(event, resultsReport)
+            Format.HTML -> kotlinxHtmlOverallResultsReportRenderer.render(event, resultsReport)
         }
     }
 
@@ -142,7 +142,7 @@ class EventResultsCommand(
         }
         return when (format) {
             Format.TEXT -> groupedResultsReportTextTableView.render(resultsReport)
-            Format.HTML -> groupedResultsReportKotlinxHtmlRenderer.render(event, resultsReport)
+            Format.HTML -> kotlinxHtmlGroupedResultsReportRenderer.render(event, resultsReport)
         }
     }
 }
