@@ -1,6 +1,5 @@
 package org.coner.trailer.render.asciitable
 
-import de.vandermeer.asciitable.AsciiTable
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.render.EventResultsReportColumnRenderer
@@ -78,7 +77,7 @@ abstract class AsciiTableResultsReportColumn : EventResultsReportColumnRenderer<
             "Runs"
         }
         override val data: (ParticipantResult) -> String = {
-            it.allRuns.joinToString(System.lineSeparator())
+            it.allRuns.joinToString(separator = " ") { run -> render(run) ?: "" }
         }
     }
 }

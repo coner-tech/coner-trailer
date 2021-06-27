@@ -37,12 +37,10 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
-    bind<OverallResultsReportTextTableView>() with provider { OverallResultsReportTextTableView() }
     bind<KotlinxHtmlOverallResultsReportRenderer>() with provider { KotlinxHtmlOverallResultsReportRenderer(
         columns = KotlinxHtmlEventResultsReportColumnRendererFactory()
             .factory(standardEventResultsReportColumns)
     ) }
-    bind<GroupedResultsReportTextTableView>() with provider { GroupedResultsReportTextTableView() }
     bind<KotlinxHtmlGroupedResultsReportRenderer>() with provider { KotlinxHtmlGroupedResultsReportRenderer(
         columns = KotlinxHtmlEventResultsReportColumnRendererFactory()
             .factory(standardEventResultsReportColumns)

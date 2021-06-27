@@ -25,6 +25,7 @@
         <module>render</module>
         <module>render-kotlinxhtml</module>
         <module>render-asciitable</module>
+        <module>render-kodein-di</module>
     </modules>
 
     <properties>

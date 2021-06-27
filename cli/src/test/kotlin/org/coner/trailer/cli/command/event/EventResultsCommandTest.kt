@@ -13,7 +13,6 @@ import org.coner.trailer.Policy
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
-import org.coner.trailer.cli.view.OverallResultsReportTextTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
@@ -23,6 +22,10 @@ import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.render.EventResultsReportColumn
+import org.coner.trailer.render.asciitable.AsciiTableGroupedResultsReportRenderer
+import org.coner.trailer.render.asciitable.AsciiTableOverallResultsReportRenderer
+import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -45,8 +48,10 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
     @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
-    @MockK lateinit var overallReportTextTableView: OverallResultsReportTextTableView
+    @MockK lateinit var asciiTableOverallResultsReportRenderer: AsciiTableOverallResultsReportRenderer
+    @MockK lateinit var asciiTableGroupedResultsReportRenderer: AsciiTableGroupedResultsReportRenderer
     @MockK lateinit var kotlinxHtmlOverallResultsReportRenderer: KotlinxHtmlOverallResultsReportRenderer
+    @MockK lateinit var kotlinxHtmlGroupedResultsReportRenderer: KotlinxHtmlGroupedResultsReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -61,8 +66,10 @@ class EventResultsCommandTest {
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
             bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
-            bind<OverallResultsReportTextTableView>() with instance(overallReportTextTableView)
-            bind<KotlinxHtmlOverallResultsReportRenderer>() with instance(kotlinxHtmlOverallResultsReportRenderer)
+            bind<AsciiTableOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> asciiTableOverallResultsReportRenderer }
+            bind<AsciiTableGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> asciiTableGroupedResultsReportRenderer }
+            bind<KotlinxHtmlOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> kotlinxHtmlOverallResultsReportRenderer }
+            bind<KotlinxHtmlGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> kotlinxHtmlGroupedResultsReportRenderer }
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -84,7 +91,7 @@ class EventResultsCommandTest {
             context = context
         ) } returns resultsReport
         val render = "plain text"
-        every { overallReportTextTableView.render(resultsReport) } returns render
+        every { asciiTableOverallResultsReportRenderer.render(event, resultsReport) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -98,7 +105,7 @@ class EventResultsCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            overallReportTextTableView.render(resultsReport)
+            asciiTableOverallResultsReportRenderer.render(event, resultsReport)
         }
     }
 

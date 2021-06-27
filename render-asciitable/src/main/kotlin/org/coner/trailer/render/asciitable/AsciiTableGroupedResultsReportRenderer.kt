@@ -10,7 +10,7 @@ class AsciiTableGroupedResultsReportRenderer(
 
     override fun partial(event: Event, report: GroupedResultsReport): (AsciiTable) -> Unit = { at ->
         for ((grouping, results) in report.groupingsToResultsMap) {
-            at.addRow(expandToRow(grouping.name))
+            at.addRow(expandToRow(grouping.abbreviation))
             for (result in results) {
                 at.addRow(columns.map { column -> column.data.invoke(result) })
             }

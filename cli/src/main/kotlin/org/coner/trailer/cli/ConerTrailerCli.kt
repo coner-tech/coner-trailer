@@ -14,6 +14,8 @@ import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.coner.trailer.cli.di.cliktModule
 import org.coner.trailer.cli.di.ioModule
 import org.coner.trailer.cli.di.viewModule
+import org.coner.trailer.di.asciiTableModule
+import org.coner.trailer.di.kotlinxHtmlModule
 import org.kodein.di.DI
 import org.kodein.di.direct
 import org.kodein.di.instance
@@ -28,7 +30,13 @@ object ConerTrailerCli {
     }
 
     fun factory(): RootCommand {
-        val di = DI.from(listOf(viewModule, ioModule, cliktModule))
+        val di = DI.from(listOf(
+            viewModule,
+            ioModule,
+            cliktModule,
+            asciiTableModule,
+            kotlinxHtmlModule
+        ))
         val rootCommand: RootCommand = di.direct.run {
             instance<RootCommand>().subcommands(
                 instance<ConfigCommand>().subcommands(
