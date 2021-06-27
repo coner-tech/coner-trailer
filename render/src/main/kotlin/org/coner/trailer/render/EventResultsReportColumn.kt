@@ -10,3 +10,7 @@ enum class EventResultsReportColumn {
     DIFF_PREVIOUS,
     RUNS
 }
+
+val standardEventResultsReportColumns = EventResultsReportColumn
+    .values()
+    .toList()

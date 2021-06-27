@@ -24,6 +24,7 @@
         <module>io-test</module>
         <module>render</module>
         <module>render-kotlinxhtml</module>
+        <module>render-asciitable</module>
     </modules>
 
     <properties>

@@ -9,22 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>render-kotlinxhtml</artifactId>
+    <artifactId>render-asciitable</artifactId>
+
+    <properties>
+        <asciitable.version>0.3.2</asciitable.version>
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.coner.trailer</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.coner.trailer</groupId>
             <artifactId>render</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <groupId>de.vandermeer</groupId>
+            <artifactId>asciitable</artifactId>
+            <version>${asciitable.version}</version>
         </dependency>
     </dependencies>
 
