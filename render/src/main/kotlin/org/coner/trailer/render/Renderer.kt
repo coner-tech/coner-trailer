@@ -17,17 +17,19 @@ interface Renderer {
     }
     fun render(time: Time?) = time?.value?.toString() ?: ""
 
-    fun render(run: Run): String? = when {
-        run.disqualified -> Text.disqualified
-        run.didNotFinish -> "${run.time?.value}+${Text.didNotFinish}"
-        run.rerun -> {
-            if (run.cones > 0)
-                "${run.time?.value}+${Text.rerun}, +${Text.cone(run.cones)}"
-            else
-                "${run.time?.value}+${Text.rerun}"
+    fun render(run: Run): String {
+        return when {
+            run.disqualified -> Text.disqualified
+            run.didNotFinish -> "${run.time?.value}+${Text.didNotFinish}"
+            run.rerun -> {
+                if (run.cones > 0)
+                    "${run.time?.value}+${Text.rerun}, +${Text.cone(run.cones)}"
+                else
+                    "${run.time?.value}+${Text.rerun}"
+            }
+            run.cones > 0 -> "${run.time?.value}+${Text.cone(run.cones)}"
+            else -> "${run.time?.value ?: ""}"
         }
-        run.cones > 0 -> "${run.time?.value}+${Text.cone(run.cones)}"
-        else -> "${run.time?.value ?: ""}"
     }
 }
 

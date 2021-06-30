@@ -77,7 +77,7 @@ abstract class AsciiTableResultsReportColumn : EventResultsReportColumnRenderer<
             "Runs"
         }
         override val data: (ParticipantResult) -> String = {
-            it.allRuns.joinToString(separator = " ") { run -> render(run) ?: "" }
+            it.scoredRuns.joinToString(separator = "|") { resultRun -> render(resultRun.run).padEnd(11, '-') }
         }
     }
 }

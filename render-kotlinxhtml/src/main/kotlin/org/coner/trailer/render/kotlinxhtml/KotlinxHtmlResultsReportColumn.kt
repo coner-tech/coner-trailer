@@ -313,8 +313,8 @@ abstract class KotlinxHtmlResultsReportColumn : EventResultsReportColumnRenderer
                 classes = setOf("runs")
                 ol {
                     classes = setOf("runs", "time")
-                    for (run in it.allRuns) {
-                        render(run)?.let { runText ->
+                    for (scoredRun in it.scoredRuns) {
+                        render(scoredRun.run)?.let { runText ->
                             li {
                                 text(runText)
                             }

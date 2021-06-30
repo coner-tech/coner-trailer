@@ -1,6 +1,5 @@
 package org.coner.trailer.render.asciitable
 
-import de.vandermeer.asciitable.AsciiTable
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.GroupedResultsReport
 
@@ -8,12 +7,17 @@ class AsciiTableGroupedResultsReportRenderer(
     columns: List<AsciiTableResultsReportColumn>
 ) : AsciiTableResultsReportRenderer<GroupedResultsReport>(columns) {
 
-    override fun partial(event: Event, report: GroupedResultsReport): (AsciiTable) -> Unit = { at ->
+    override fun partial(event: Event, report: GroupedResultsReport): () -> String = {
+        val sb = StringBuilder()
         for ((grouping, results) in report.groupingsToResultsMap) {
-            at.addRow(expandToRow(grouping.abbreviation))
+            sb.appendLine(grouping.name)
+            val at = createAsciiTableWithHeaderRow(report)
             for (result in results) {
                 at.addRow(columns.map { column -> column.data.invoke(result) })
             }
+            at.addRule()
+            sb.appendLine(at.render())
         }
+        sb.toString()
     }
 }
