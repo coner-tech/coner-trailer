@@ -7,7 +7,7 @@ import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
 import org.coner.trailer.render.html.HtmlResultsReportColumn
 import org.kodein.di.*
 
-val kotlinxHtmlModule = DI.Module("org.coner.trailer.render.kotlinxhtml") {
+val htmlRenderModule = DI.Module("org.coner.trailer.render.html") {
     bind<HtmlEventResultsReportColumnRendererFactory>() with singleton { HtmlEventResultsReportColumnRendererFactory() }
     bind<List<HtmlResultsReportColumn>>() with multiton { columns: List<EventResultsReportColumn> ->
         instance<HtmlEventResultsReportColumnRendererFactory>().factory(columns)

@@ -7,7 +7,7 @@ import org.coner.trailer.render.text.TextOverallResultsReportRenderer
 import org.coner.trailer.render.text.TextResultsReportColumn
 import org.kodein.di.*
 
-val asciiTableModule = DI.Module("org.coner.trailer.render.asciitable") {
+val textRenderModule = DI.Module("org.coner.trailer.render.text") {
     bind<TextEventResultsReportColumnRendererFactory>() with singleton { TextEventResultsReportColumnRendererFactory() }
     bind<List<TextResultsReportColumn>>() with multiton { columns: List<EventResultsReportColumn> ->
         instance<TextEventResultsReportColumnRendererFactory>().factory(columns)
