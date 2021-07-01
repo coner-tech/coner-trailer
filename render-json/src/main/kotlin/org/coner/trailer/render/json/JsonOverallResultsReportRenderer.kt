@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.render.ResultsReportRenderer
+import org.coner.trailer.render.json.identifier.EventIdentifier
 import org.coner.trailer.render.json.model.OverallEventResultsReportModel
 
 class JsonOverallResultsReportRenderer(
@@ -15,12 +16,18 @@ class JsonOverallResultsReportRenderer(
     private val writer: ObjectWriter = objectMapper.writerFor(OverallEventResultsReportModel::class.java)
 
     override fun render(event: Event, report: OverallResultsReport): String {
-        val model = OverallEventResultsReportModel(event, report)
+        val model = OverallEventResultsReportModel(
+            event = EventIdentifier(event),
+            report = report
+        )
         return writer.writeValueAsString(model)
     }
 
     override fun partial(event: Event, report: OverallResultsReport): ObjectNode {
-        val model = OverallEventResultsReportModel(event, report)
+        val model = OverallEventResultsReportModel(
+            event = EventIdentifier(event),
+            report = report
+        )
         return objectMapper.valueToTree(model)
     }
 

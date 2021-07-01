@@ -25,5 +25,7 @@ data class Participant(
                 is Grouping.Paired -> grouping.pair.second
                 else -> null
             }
+
+        fun toAbbreviatedString() = "${grouping?.abbreviation} $number".trim()
     }
 }
