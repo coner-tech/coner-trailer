@@ -7,27 +7,21 @@ import org.coner.trailer.Event
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.render.ResultsReportRenderer
 import org.coner.trailer.render.json.identifier.EventIdentifier
-import org.coner.trailer.render.json.model.OverallEventResultsReportModel
+import org.coner.trailer.render.json.model.OverallEventResultsModel
 
 class JsonOverallResultsReportRenderer(
     private val objectMapper: ObjectMapper
 ) : ResultsReportRenderer<OverallResultsReport, String, ObjectNode> {
 
-    private val writer: ObjectWriter = objectMapper.writerFor(OverallEventResultsReportModel::class.java)
+    private val writer: ObjectWriter = objectMapper.writerFor(OverallEventResultsModel::class.java)
 
     override fun render(event: Event, report: OverallResultsReport): String {
-        val model = OverallEventResultsReportModel(
-            event = EventIdentifier(event),
-            report = report
-        )
+        val model = OverallEventResultsModel(event, report)
         return writer.writeValueAsString(model)
     }
 
     override fun partial(event: Event, report: OverallResultsReport): ObjectNode {
-        val model = OverallEventResultsReportModel(
-            event = EventIdentifier(event),
-            report = report
-        )
+        val model = OverallEventResultsModel(event, report)
         return objectMapper.valueToTree(model)
     }
 
