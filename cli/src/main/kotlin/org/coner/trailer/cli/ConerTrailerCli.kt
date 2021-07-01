@@ -14,8 +14,9 @@ import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.coner.trailer.cli.di.cliktModule
 import org.coner.trailer.cli.di.ioModule
 import org.coner.trailer.cli.di.viewModule
-import org.coner.trailer.di.textRenderModule
 import org.coner.trailer.di.htmlRenderModule
+import org.coner.trailer.di.jsonRenderModule
+import org.coner.trailer.di.textRenderModule
 import org.kodein.di.DI
 import org.kodein.di.direct
 import org.kodein.di.instance
@@ -34,6 +35,7 @@ object ConerTrailerCli {
             viewModule,
             ioModule,
             cliktModule,
+            jsonRenderModule,
             textRenderModule,
             htmlRenderModule
         ))

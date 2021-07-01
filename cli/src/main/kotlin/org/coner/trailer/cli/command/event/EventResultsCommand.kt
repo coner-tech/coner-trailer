@@ -25,6 +25,8 @@ import org.coner.trailer.io.service.EventService
 import org.coner.trailer.render.EventResultsReportColumn
 import org.coner.trailer.render.html.HtmlGroupedResultsReportRenderer
 import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
+import org.coner.trailer.render.json.JsonGroupedResultsReportRenderer
+import org.coner.trailer.render.json.JsonOverallResultsReportRenderer
 import org.coner.trailer.render.standardEventResultsReportColumns
 import org.coner.trailer.render.text.TextGroupedResultsReportRenderer
 import org.coner.trailer.render.text.TextOverallResultsReportRenderer
@@ -52,9 +54,11 @@ class EventResultsCommand(
     private val crispyFishRawResultsReportCreator: (Policy) -> OverallRawTimeResultsReportCreator by factory()
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
     private val crispyFishGroupedResultsReportCreator: (Policy) -> GroupedResultsReportCreator by factory()
+    private val jsonOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> JsonOverallResultsReportRenderer by factory()
+    private val jsonGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> JsonGroupedResultsReportRenderer by factory()
     private val textOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> TextOverallResultsReportRenderer by factory()
-    private val htmlOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> HtmlOverallResultsReportRenderer by factory()
     private val textGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> TextGroupedResultsReportRenderer by factory()
+    private val htmlOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> HtmlOverallResultsReportRenderer by factory()
     private val htmlGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> HtmlGroupedResultsReportRenderer by factory()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -63,15 +67,17 @@ class EventResultsCommand(
         .choice(StandardResultsTypes.all.associateBy { it.key })
         .required()
     enum class Format(val extension: String) {
+        JSON("json"),
         TEXT("txt"),
         HTML("html")
     }
     private val format: Format by option(help = "Select output format")
         .switch(
+            "--json" to Format.JSON,
             "--text" to Format.TEXT,
             "--html" to Format.HTML
         )
-        .default(Format.TEXT)
+        .default(Format.JSON)
     sealed class Output(help: String) : OptionGroup(help = help) {
         object Console : Output(help = "Output to console")
         class File : Output(help = "Output to file") {
@@ -126,6 +132,7 @@ class EventResultsCommand(
             }
         }
         val rendererFactory = when (format) {
+            Format.JSON -> jsonOverallResultsReportRenderer
             Format.TEXT -> textOverallResultsReportRenderer
             Format.HTML -> htmlOverallResultsReportRenderer
         }
@@ -145,6 +152,7 @@ class EventResultsCommand(
             }
         }
         val rendererFactory = when (format) {
+            Format.JSON -> jsonGroupedResultsReportRenderer
             Format.TEXT -> textGroupedResultsReportRenderer
             Format.HTML -> htmlGroupedResultsReportRenderer
         }
