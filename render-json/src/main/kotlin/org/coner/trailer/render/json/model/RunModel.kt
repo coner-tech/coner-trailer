@@ -6,7 +6,7 @@ import org.coner.trailer.render.json.identifier.ParticipantIdentifier
 
 class RunModel(
     val sequence: Int,
-    val participantIdentifier: ParticipantIdentifier?,
+    val participantSignage: String?,
     val cones: Int,
     val didNotFinish: Boolean,
     val disqualified: Boolean,
@@ -16,7 +16,7 @@ class RunModel(
 
     constructor(run: Run) : this(
         sequence = run.sequence,
-        participantIdentifier = run.participant?.let { ParticipantIdentifier(it) },
+        participantSignage = run.participant?.signage?.toAbbreviatedString(),
         cones = run.cones,
         didNotFinish = run.didNotFinish,
         disqualified = run.disqualified,
