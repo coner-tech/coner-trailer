@@ -23,11 +23,11 @@ import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.render.EventResultsReportColumn
-import org.coner.trailer.render.asciitable.AsciiTableGroupedResultsReportRenderer
-import org.coner.trailer.render.asciitable.AsciiTableOverallResultsReportRenderer
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
+import org.coner.trailer.render.html.HtmlGroupedResultsReportRenderer
+import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
 import org.coner.trailer.render.standardEventResultsReportColumns
+import org.coner.trailer.render.text.TextGroupedResultsReportRenderer
+import org.coner.trailer.render.text.TextOverallResultsReportRenderer
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
@@ -52,10 +52,10 @@ class EventResultsCommand(
     private val crispyFishRawResultsReportCreator: (Policy) -> OverallRawTimeResultsReportCreator by factory()
     private val crispyFishPaxResultsReportCreator: (Policy) -> OverallPaxTimeResultsReportCreator by factory()
     private val crispyFishGroupedResultsReportCreator: (Policy) -> GroupedResultsReportCreator by factory()
-    private val asciiTableOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> AsciiTableOverallResultsReportRenderer by factory()
-    private val kotlinxHtmlOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> KotlinxHtmlOverallResultsReportRenderer by factory()
-    private val asciiTableGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> AsciiTableGroupedResultsReportRenderer by factory()
-    private val kotlinxHtmlGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> KotlinxHtmlGroupedResultsReportRenderer by factory()
+    private val textOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> TextOverallResultsReportRenderer by factory()
+    private val htmlOverallResultsReportRenderer: (List<EventResultsReportColumn>) -> HtmlOverallResultsReportRenderer by factory()
+    private val textGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> TextGroupedResultsReportRenderer by factory()
+    private val htmlGroupedResultsReportRenderer: (List<EventResultsReportColumn>) -> HtmlGroupedResultsReportRenderer by factory()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -126,8 +126,8 @@ class EventResultsCommand(
             }
         }
         val rendererFactory = when (format) {
-            Format.TEXT -> asciiTableOverallResultsReportRenderer
-            Format.HTML -> kotlinxHtmlOverallResultsReportRenderer
+            Format.TEXT -> textOverallResultsReportRenderer
+            Format.HTML -> htmlOverallResultsReportRenderer
         }
         return rendererFactory(standardEventResultsReportColumns)
             .render(event, resultsReport)
@@ -145,8 +145,8 @@ class EventResultsCommand(
             }
         }
         val rendererFactory = when (format) {
-            Format.TEXT -> asciiTableGroupedResultsReportRenderer
-            Format.HTML -> kotlinxHtmlGroupedResultsReportRenderer
+            Format.TEXT -> textGroupedResultsReportRenderer
+            Format.HTML -> htmlGroupedResultsReportRenderer
         }
         return rendererFactory(standardEventResultsReportColumns)
             .render(event, resultsReport)

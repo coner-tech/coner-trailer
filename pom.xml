@@ -23,9 +23,9 @@
         <module>cli</module>
         <module>io-test</module>
         <module>render</module>
-        <module>render-kotlinxhtml</module>
-        <module>render-asciitable</module>
-        <module>render-kodein-di</module>
+        <module>render-html</module>
+        <module>render-text</module>
+        <module>render-all-kodein-di</module>
     </modules>
 
     <properties>

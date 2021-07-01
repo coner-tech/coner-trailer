@@ -1,10 +1,6 @@
 package org.coner.trailer.cli.di
 
 import org.coner.trailer.cli.view.*
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlEventResultsReportColumnRendererFactory
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
-import org.coner.trailer.render.standardEventResultsReportColumns
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -37,12 +33,4 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView() }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView() }
-    bind<KotlinxHtmlOverallResultsReportRenderer>() with provider { KotlinxHtmlOverallResultsReportRenderer(
-        columns = KotlinxHtmlEventResultsReportColumnRendererFactory()
-            .factory(standardEventResultsReportColumns)
-    ) }
-    bind<KotlinxHtmlGroupedResultsReportRenderer>() with provider { KotlinxHtmlGroupedResultsReportRenderer(
-        columns = KotlinxHtmlEventResultsReportColumnRendererFactory()
-            .factory(standardEventResultsReportColumns)
-    ) }
 }

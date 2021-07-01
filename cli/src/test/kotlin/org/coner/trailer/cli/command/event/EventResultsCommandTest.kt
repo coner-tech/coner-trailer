@@ -16,16 +16,16 @@ import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
 import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlOverallResultsReportRenderer
 import org.coner.trailer.eventresults.OverallResultsReport
 import org.coner.trailer.eventresults.ResultsType
 import org.coner.trailer.eventresults.StandardResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.render.EventResultsReportColumn
-import org.coner.trailer.render.asciitable.AsciiTableGroupedResultsReportRenderer
-import org.coner.trailer.render.asciitable.AsciiTableOverallResultsReportRenderer
-import org.coner.trailer.render.kotlinxhtml.KotlinxHtmlGroupedResultsReportRenderer
+import org.coner.trailer.render.html.HtmlGroupedResultsReportRenderer
+import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
+import org.coner.trailer.render.text.TextGroupedResultsReportRenderer
+import org.coner.trailer.render.text.TextOverallResultsReportRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -48,10 +48,10 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
     @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
-    @MockK lateinit var asciiTableOverallResultsReportRenderer: AsciiTableOverallResultsReportRenderer
-    @MockK lateinit var asciiTableGroupedResultsReportRenderer: AsciiTableGroupedResultsReportRenderer
-    @MockK lateinit var kotlinxHtmlOverallResultsReportRenderer: KotlinxHtmlOverallResultsReportRenderer
-    @MockK lateinit var kotlinxHtmlGroupedResultsReportRenderer: KotlinxHtmlGroupedResultsReportRenderer
+    @MockK lateinit var textOverallResultsReportRenderer: TextOverallResultsReportRenderer
+    @MockK lateinit var textGroupedResultsReportRenderer: TextGroupedResultsReportRenderer
+    @MockK lateinit var htmlOverallResultsReportRenderer: HtmlOverallResultsReportRenderer
+    @MockK lateinit var htmlGroupedResultsReportRenderer: HtmlGroupedResultsReportRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
@@ -66,10 +66,10 @@ class EventResultsCommandTest {
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
             bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
-            bind<AsciiTableOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> asciiTableOverallResultsReportRenderer }
-            bind<AsciiTableGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> asciiTableGroupedResultsReportRenderer }
-            bind<KotlinxHtmlOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> kotlinxHtmlOverallResultsReportRenderer }
-            bind<KotlinxHtmlGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> kotlinxHtmlGroupedResultsReportRenderer }
+            bind<TextOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> textOverallResultsReportRenderer }
+            bind<TextGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> textGroupedResultsReportRenderer }
+            bind<HtmlOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> htmlOverallResultsReportRenderer }
+            bind<HtmlGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> htmlGroupedResultsReportRenderer }
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -91,7 +91,7 @@ class EventResultsCommandTest {
             context = context
         ) } returns resultsReport
         val render = "plain text"
-        every { asciiTableOverallResultsReportRenderer.render(event, resultsReport) } returns render
+        every { textOverallResultsReportRenderer.render(event, resultsReport) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -105,7 +105,7 @@ class EventResultsCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            asciiTableOverallResultsReportRenderer.render(event, resultsReport)
+            textOverallResultsReportRenderer.render(event, resultsReport)
         }
     }
 
@@ -126,7 +126,7 @@ class EventResultsCommandTest {
             context = context
         ) } returns resultsReport
         val render = "<html>"
-        every { kotlinxHtmlOverallResultsReportRenderer.render(event, resultsReport) } returns render
+        every { htmlOverallResultsReportRenderer.render(event, resultsReport) } returns render
         val actualDestination = output.resolve("pax.html")
         every { fileOutputResolver.forEventResults(
             event = event,
@@ -152,7 +152,7 @@ class EventResultsCommandTest {
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            kotlinxHtmlOverallResultsReportRenderer.render(event, resultsReport)
+            htmlOverallResultsReportRenderer.render(event, resultsReport)
             fileOutputResolver.forEventResults(
                 event = event,
                 type = StandardResultsTypes.pax,
