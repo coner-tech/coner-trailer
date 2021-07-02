@@ -1,12 +1,11 @@
 package org.coner.trailer.render.json.model
 
 import org.coner.trailer.eventresults.ResultRun
-import org.coner.trailer.eventresults.Score
 
-class ResultRunModel(val run: RunModel, val score: Score) {
+class ResultRunModel(val run: RunModel, val score: ScoreModel) {
 
     constructor(resultRun: ResultRun) : this(
         run = RunModel(resultRun.run),
-        score = resultRun.score
+        score = ScoreModel(resultRun.score)
     )
 }

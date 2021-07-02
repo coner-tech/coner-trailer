@@ -11,7 +11,7 @@ class RunModel(
     val didNotFinish: Boolean,
     val disqualified: Boolean,
     val rerun: Boolean,
-    val time: Time?
+    val time: String?
 ) {
 
     constructor(run: Run) : this(
@@ -21,6 +21,6 @@ class RunModel(
         didNotFinish = run.didNotFinish,
         disqualified = run.disqualified,
         rerun = run.rerun,
-        time = run.time
+        time = run.time?.value.toString()
     )
 }

@@ -7,7 +7,7 @@ import org.coner.trailer.render.json.identifier.ParticipantIdentifier
 
 class ParticipantResultModel(
     val position: Int,
-    val score: Score,
+    val score: ScoreModel,
     val participant: ParticipantIdentifier,
     val diffFirst: Time?,
     val diffPrevious: Time?,
@@ -16,7 +16,7 @@ class ParticipantResultModel(
 ) {
     constructor(participantResult: ParticipantResult) : this(
         position = participantResult.position,
-        score = participantResult.score,
+        score = ScoreModel(participantResult.score),
         participant = ParticipantIdentifier(participantResult.participant),
         diffFirst = participantResult.diffFirst,
         diffPrevious = participantResult.diffPrevious,
