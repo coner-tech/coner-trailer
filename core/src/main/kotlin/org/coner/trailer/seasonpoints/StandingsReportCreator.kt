@@ -4,9 +4,9 @@ import org.coner.trailer.Grouping
 import org.coner.trailer.Person
 import org.coner.trailer.Season
 import org.coner.trailer.SeasonEvent
-import org.coner.trailer.eventresults.ComprehensiveResultsReport
-import org.coner.trailer.eventresults.GroupedResultsReport
-import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.ComprehensiveEventResults
+import org.coner.trailer.eventresults.GroupedEventResults
+import org.coner.trailer.eventresults.EventResultsType
 import java.util.*
 
 class StandingsReportCreator {
@@ -16,35 +16,35 @@ class StandingsReportCreator {
     }
 
     class ComprehensiveStandingsReportParameters(
-            val eventNumberToComprehensiveResultsReport: Map<Int, ComprehensiveResultsReport>
+            val eventNumberToComprehensiveEventResults: Map<Int, ComprehensiveEventResults>
     )
 
     class CreateGroupedStandingsSectionsParameters(
-            val resultsType: ResultsType,
-            val season: Season,
-            val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val configuration: SeasonPointsCalculatorConfiguration
+        val eventResultsType: EventResultsType,
+        val season: Season,
+        val eventToGroupedEventResults: Map<SeasonEvent, GroupedEventResults>,
+        val configuration: SeasonPointsCalculatorConfiguration
     )
 
     fun createGroupedStandingsSections(
             param: CreateGroupedStandingsSectionsParameters
     ): SortedMap<Grouping, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
+        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupedEventResults.keys.map { event: SeasonEvent ->
             val config = event.seasonPointsCalculatorConfiguration
                     ?: param.season.seasonPointsCalculatorConfiguration
-            val eventPointsCalculator = config.resultsTypeToEventPointsCalculator[param.resultsType]
+            val eventPointsCalculator = config.eventResultsTypeToEventPointsCalculator[param.eventResultsType]
             checkNotNull(eventPointsCalculator) {
-                "No event points calculator for results type: ${param.resultsType.title}"
+                "No event points calculator for results type: ${param.eventResultsType.title}"
             }
             event to eventPointsCalculator
         }.toMap()
 
         val groupingsToPersonStandingAccumulators: MutableMap<Grouping, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()
-        for ((event, groupedResultsReport) in param.eventToGroupedResultsReports) {
+        for ((event, groupedEventResults) in param.eventToGroupedEventResults) {
             val calculator = checkNotNull(eventToCalculator[event]) {
                 "Failed to find season points calculator for event: ${event.event.name}"
             }
-            for ((grouping, groupingResults) in groupedResultsReport.groupingsToResultsMap) {
+            for ((grouping, groupingResults) in groupedEventResults.groupingsToResultsMap) {
                 val accumulators: MutableMap<Person, PersonStandingAccumulator> = groupingsToPersonStandingAccumulators[grouping]
                         ?: mutableMapOf<Person, PersonStandingAccumulator>().apply {
                             groupingsToPersonStandingAccumulators[grouping] = this

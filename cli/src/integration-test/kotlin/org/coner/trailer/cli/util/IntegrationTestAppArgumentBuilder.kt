@@ -2,8 +2,6 @@ package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
 import org.coner.trailer.Policy
-import org.coner.trailer.datasource.crispyfish.fixture.EventFixture
-import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
@@ -61,14 +59,14 @@ class IntegrationTestAppArgumentBuilder(
 
     fun buildEventResults(
         event: Event,
-        report: String,
+        type: String,
         format: String? = null,
         output: String? = null,
     ): Array<String> {
         return build(
             *mutableListOf("event", "results").apply {
                 add("${event.id}")
-                addAll(arrayOf("--report", report))
+                addAll(arrayOf("--type", type))
                 addAll(format?.let { arrayOf("--$format") } ?: emptyArray())
                 if (output != null) add("--$output")
             }.toTypedArray()

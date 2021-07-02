@@ -137,7 +137,7 @@ class ConerTrailerCliIT {
 
         command.parse(appArgumentBuilder.buildEventResults(
             event = event,
-            report = "raw",
+            type = "raw",
             format = "html",
             output = "console"
         ))

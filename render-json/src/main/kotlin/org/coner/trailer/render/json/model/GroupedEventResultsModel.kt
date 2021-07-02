@@ -1,28 +1,28 @@
 package org.coner.trailer.render.json.model
 
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.GroupedResultsReport
-import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.GroupedEventResults
+import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.render.json.identifier.EventIdentifier
 
 class GroupedEventResultsModel(
     val event: EventIdentifier,
-    val report: Report
+    val results: ResultsModel
 ) {
-    constructor(event: Event, report: GroupedResultsReport) : this(
+    constructor(event: Event, results: GroupedEventResults) : this(
         event = EventIdentifier(event),
-        report = Report(report)
+        results = ResultsModel(results)
     )
 
-    class Report(
-        val type: ResultsType,
+    class ResultsModel(
+        val type: EventResultsType,
         val runCount: Int,
         val groupingsToResults: Map<String, List<ParticipantResultModel>>
     ) {
-        constructor(report: GroupedResultsReport) : this(
-            type = report.type,
-            runCount = report.runCount,
-            groupingsToResults = report.groupingsToResultsMap
+        constructor(results: GroupedEventResults) : this(
+            type = results.type,
+            runCount = results.runCount,
+            groupingsToResults = results.groupingsToResultsMap
                 .map { (grouping, results) ->
                     grouping.abbreviation to results.map { ParticipantResultModel(it) }
                 }

@@ -157,7 +157,7 @@ class ConerTrailerCliExecutableIT {
 
         val process = processRunner.execEventResults(
             event = event,
-            report = "raw",
+            type = "raw",
             format = "html",
             output = "console"
         )

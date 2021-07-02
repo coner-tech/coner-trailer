@@ -58,7 +58,7 @@ class SeasonPointsCalculatorAddCommand(
         val create = SeasonPointsCalculatorConfiguration(
                 id = id,
                 name = name,
-                resultsTypeToEventPointsCalculator = mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed),
+                eventResultsTypeToEventPointsCalculator = mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed),
                 rankingSort = rankingSortNamed
         )
         service.create(create)

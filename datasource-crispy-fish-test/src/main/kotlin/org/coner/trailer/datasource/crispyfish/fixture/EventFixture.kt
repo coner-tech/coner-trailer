@@ -5,9 +5,9 @@ import org.coner.trailer.TestPolicies
 import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
+import org.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
+import org.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventresults.ResultRunMapper
 import org.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import org.coner.trailer.eventresults.*
 import tech.coner.crispyfish.filetype.ecf.EventControlFile

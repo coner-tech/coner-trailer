@@ -9,10 +9,10 @@ import io.mockk.junit5.MockKExtension
 import org.coner.trailer.TestGroupings
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.GroupedResultsReportCreator
+import org.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.ParticipantResult
-import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.coner.trailer.hasSameIdAs
 import org.coner.trailer.seasonpoints.*
 import org.junit.jupiter.api.BeforeEach
@@ -38,7 +38,7 @@ class StandingsReportCreatorFromCrispyFishTest {
     @Test
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val competitionGroupedResultsReports = seasonFixture.events.map { eventFixture ->
+        val competitionGroupedEventResults = seasonFixture.events.map { eventFixture ->
             val allRegistrations = eventFixture.registrations()
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
@@ -49,16 +49,16 @@ class StandingsReportCreatorFromCrispyFishTest {
             val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
                 runCount = context.runCount
             )
-            val creator = GroupedResultsReportCreator(
+            val creator = GroupedEventResultsFactory(
                 participantResultMapper = eventFixture.groupedParticipantResultMapper,
                 scoredRunsComparatorProvider = { scoredRunsComparator }
             )
-            eventFixture.coreSeasonEvent to creator.createFromRegistrationData(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
+            eventFixture.coreSeasonEvent to creator.factory(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
         }.toMap()
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                resultsType = StandardResultsTypes.grouped,
+                eventResultsType = StandardEventResultsTypes.grouped,
                 season = seasonFixture.season,
-                eventToGroupedResultsReports = competitionGroupedResultsReports,
+                eventToGroupedEventResults = competitionGroupedEventResults,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified
         )
 

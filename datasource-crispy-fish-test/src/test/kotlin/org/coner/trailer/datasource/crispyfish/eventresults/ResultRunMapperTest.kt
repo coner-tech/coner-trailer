@@ -11,7 +11,6 @@ import io.mockk.verifySequence
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

@@ -60,9 +60,9 @@ class SeasonPointsCalculatorSetCommand(
         val update = SeasonPointsCalculatorConfiguration(
                 id = current.id,
                 name = name ?: current.name,
-                resultsTypeToEventPointsCalculator = when {
+                eventResultsTypeToEventPointsCalculator = when {
                     resultsTypeKeyToEventPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed)
-                    else -> current.resultsTypeToEventPointsCalculator
+                    else -> current.eventResultsTypeToEventPointsCalculator
                 },
                 rankingSort = rankingSortNamed ?: current.rankingSort
         )

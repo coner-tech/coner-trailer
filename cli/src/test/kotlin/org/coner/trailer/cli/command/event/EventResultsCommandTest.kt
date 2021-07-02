@@ -14,18 +14,20 @@ import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallPaxTimeResultsReportCreator
-import org.coner.trailer.datasource.crispyfish.eventsresults.OverallRawTimeResultsReportCreator
-import org.coner.trailer.eventresults.OverallResultsReport
-import org.coner.trailer.eventresults.ResultsType
-import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.datasource.crispyfish.eventresults.OverallPaxTimeEventResultsFactory
+import org.coner.trailer.datasource.crispyfish.eventresults.OverallRawEventResultsFactory
+import org.coner.trailer.eventresults.OverallEventResults
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.EventResultsReportColumn
-import org.coner.trailer.render.html.HtmlGroupedResultsReportRenderer
-import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
-import org.coner.trailer.render.text.TextGroupedResultsReportRenderer
-import org.coner.trailer.render.text.TextOverallResultsReportRenderer
+import org.coner.trailer.render.EventResultsColumn
+import org.coner.trailer.render.html.HtmlGroupedEventResultsRenderer
+import org.coner.trailer.render.html.HtmlOverallEventResultsRenderer
+import org.coner.trailer.render.json.JsonGroupedEventResultsRenderer
+import org.coner.trailer.render.json.JsonOverallEventResultsRenderer
+import org.coner.trailer.render.text.TextGroupedEventResultsRenderer
+import org.coner.trailer.render.text.TextOverallEventResultsRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,30 +48,34 @@ class EventResultsCommandTest {
 
     @MockK lateinit var eventService: EventService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var crispyFishOverallRawTimeResultsReportCreator: OverallRawTimeResultsReportCreator
-    @MockK lateinit var crispyFishOverallPaxTimeResultsReportCreator: OverallPaxTimeResultsReportCreator
-    @MockK lateinit var textOverallResultsReportRenderer: TextOverallResultsReportRenderer
-    @MockK lateinit var textGroupedResultsReportRenderer: TextGroupedResultsReportRenderer
-    @MockK lateinit var htmlOverallResultsReportRenderer: HtmlOverallResultsReportRenderer
-    @MockK lateinit var htmlGroupedResultsReportRenderer: HtmlGroupedResultsReportRenderer
+    @MockK lateinit var crispyFishOverallRawEventResultsFactory: OverallRawEventResultsFactory
+    @MockK lateinit var crispyFishOverallPaxEventResultsFactory: OverallPaxTimeEventResultsFactory
+    @MockK lateinit var jsonOverallEventResultsRenderer: JsonOverallEventResultsRenderer
+    @MockK lateinit var jsonGroupedEventResultsRenderer: JsonGroupedEventResultsRenderer
+    @MockK lateinit var textOverallEventResultsRenderer: TextOverallEventResultsRenderer
+    @MockK lateinit var textGroupedEventResultsRenderer: TextGroupedEventResultsRenderer
+    @MockK lateinit var htmlOverallEventResultsRenderer: HtmlOverallEventResultsRenderer
+    @MockK lateinit var htmlGroupedEventResultsRenderer: HtmlGroupedEventResultsRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
-    lateinit var crispyFishOverallResultsReportCreatorFactorySlot: CapturingSlot<ResultsType>
+    lateinit var crispyFishOverallEventResultsCreatorFactorySlot: CapturingSlot<EventResultsType>
     lateinit var testConsole: StringBufferConsole
     
     @BeforeEach
     fun before() {
-        crispyFishOverallResultsReportCreatorFactorySlot = slot()
+        crispyFishOverallEventResultsCreatorFactorySlot = slot()
         testConsole = StringBufferConsole()
         command = EventResultsCommand(DI {
             bind<EventService>() with instance(eventService)
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-            bind<OverallRawTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallRawTimeResultsReportCreator }
-            bind<OverallPaxTimeResultsReportCreator>() with multiton { policy: Policy -> crispyFishOverallPaxTimeResultsReportCreator }
-            bind<TextOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> textOverallResultsReportRenderer }
-            bind<TextGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> textGroupedResultsReportRenderer }
-            bind<HtmlOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> htmlOverallResultsReportRenderer }
-            bind<HtmlGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> htmlGroupedResultsReportRenderer }
+            bind<OverallRawEventResultsFactory>() with multiton { policy: Policy -> crispyFishOverallRawEventResultsFactory }
+            bind<OverallPaxTimeEventResultsFactory>() with multiton { policy: Policy -> crispyFishOverallPaxEventResultsFactory }
+            bind<JsonOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
+            bind<JsonGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> jsonGroupedEventResultsRenderer }
+            bind<TextOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> textOverallEventResultsRenderer }
+            bind<TextGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> textGroupedEventResultsRenderer }
+            bind<HtmlOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
+            bind<HtmlGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> htmlGroupedEventResultsRenderer }
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole
@@ -77,40 +83,74 @@ class EventResultsCommandTest {
     }
 
     @Test
-    fun `It should print report as plain text to console`() {
+    fun `It should print results as json to console`() {
         val eventCrispyFish: Event.CrispyFishMetadata = mockk()
         val event = TestEvents.Lscc2019.points1.copy(
             crispyFish = eventCrispyFish
         )
         every { eventService.findById(event.id) } returns event
-        val resultsReport = mockk<OverallResultsReport>()
+        val results = mockk<OverallEventResults>()
         val context = mockk<CrispyFishEventMappingContext>()
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
-        every { crispyFishOverallRawTimeResultsReportCreator.createFromRegistrationData(
+        every { crispyFishOverallRawEventResultsFactory.factory(
             eventCrispyFishMetadata = eventCrispyFish,
             context = context
-        ) } returns resultsReport
-        val render = "plain text"
-        every { textOverallResultsReportRenderer.render(event, resultsReport) } returns render
+        ) } returns results
+        val render = "json"
+        every { jsonOverallEventResultsRenderer.render(event, results) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
-            "--report", "raw"
+            "--type", "raw"
         ))
 
         assertThat(testConsole.output).isEqualTo(render)
         verifySequence {
             eventService.findById(event.id)
-            crispyFishOverallRawTimeResultsReportCreator.createFromRegistrationData(
+            crispyFishOverallRawEventResultsFactory.factory(
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            textOverallResultsReportRenderer.render(event, resultsReport)
+            jsonOverallEventResultsRenderer.render(event, results)
         }
     }
 
     @Test
-    fun `It should write report as html to file`(
+    fun `It should print results as plain text to console`() {
+        val eventCrispyFish: Event.CrispyFishMetadata = mockk()
+        val event = TestEvents.Lscc2019.points1.copy(
+            crispyFish = eventCrispyFish
+        )
+        every { eventService.findById(event.id) } returns event
+        val results = mockk<OverallEventResults>()
+        val context = mockk<CrispyFishEventMappingContext>()
+        every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        every { crispyFishOverallRawEventResultsFactory.factory(
+            eventCrispyFishMetadata = eventCrispyFish,
+            context = context
+        ) } returns results
+        val render = "plain text"
+        every { textOverallEventResultsRenderer.render(event, results) } returns render
+
+        command.parse(arrayOf(
+            "${event.id}",
+            "--type", "raw",
+            "--text"
+        ))
+
+        assertThat(testConsole.output).isEqualTo(render)
+        verifySequence {
+            eventService.findById(event.id)
+            crispyFishOverallRawEventResultsFactory.factory(
+                eventCrispyFishMetadata = eventCrispyFish,
+                context = context
+            )
+            textOverallEventResultsRenderer.render(event, results)
+        }
+    }
+
+    @Test
+    fun `It should write results as html to file`(
         @TempDir output: Path
     ) {
         val eventCrispyFish: Event.CrispyFishMetadata = mockk()
@@ -118,26 +158,26 @@ class EventResultsCommandTest {
             crispyFish = eventCrispyFish
         )
         every { eventService.findById(event.id) } returns event
-        val resultsReport = mockk<OverallResultsReport>()
+        val results = mockk<OverallEventResults>()
         val context = mockk<CrispyFishEventMappingContext>()
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
-        every { crispyFishOverallPaxTimeResultsReportCreator.createFromRegistrationData(
+        every { crispyFishOverallPaxEventResultsFactory.factory(
             eventCrispyFishMetadata = eventCrispyFish,
             context = context
-        ) } returns resultsReport
+        ) } returns results
         val render = "<html>"
-        every { htmlOverallResultsReportRenderer.render(event, resultsReport) } returns render
+        every { htmlOverallEventResultsRenderer.render(event, results) } returns render
         val actualDestination = output.resolve("pax.html")
         every { fileOutputResolver.forEventResults(
             event = event,
-            type = StandardResultsTypes.pax,
+            type = StandardEventResultsTypes.pax,
             defaultExtension = "html",
             path = output
         ) } returns actualDestination
 
         command.parse(arrayOf(
             "${event.id}",
-            "--report", "pax",
+            "--type", "pax",
             "--html",
             "--file", "--file-output", "$output"
         ))
@@ -148,14 +188,14 @@ class EventResultsCommandTest {
         }
         verifySequence {
             eventService.findById(event.id)
-            crispyFishOverallPaxTimeResultsReportCreator.createFromRegistrationData(
+            crispyFishOverallPaxEventResultsFactory.factory(
                 eventCrispyFishMetadata = eventCrispyFish,
                 context = context
             )
-            htmlOverallResultsReportRenderer.render(event, resultsReport)
+            htmlOverallEventResultsRenderer.render(event, results)
             fileOutputResolver.forEventResults(
                 event = event,
-                type = StandardResultsTypes.pax,
+                type = StandardEventResultsTypes.pax,
                 defaultExtension = "html",
                 path = output
             )

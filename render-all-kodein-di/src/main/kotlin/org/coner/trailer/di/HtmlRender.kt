@@ -1,21 +1,21 @@
 package org.coner.trailer.di
 
-import org.coner.trailer.render.EventResultsReportColumn
-import org.coner.trailer.render.html.HtmlEventResultsReportColumnRendererFactory
-import org.coner.trailer.render.html.HtmlGroupedResultsReportRenderer
-import org.coner.trailer.render.html.HtmlOverallResultsReportRenderer
-import org.coner.trailer.render.html.HtmlResultsReportColumn
+import org.coner.trailer.render.EventResultsColumn
+import org.coner.trailer.render.html.HtmlEventResultsColumnRendererFactory
+import org.coner.trailer.render.html.HtmlGroupedEventResultsRenderer
+import org.coner.trailer.render.html.HtmlOverallEventResultsRenderer
+import org.coner.trailer.render.html.HtmlEventResultsColumn
 import org.kodein.di.*
 
 val htmlRenderModule = DI.Module("org.coner.trailer.render.html") {
-    bind<HtmlEventResultsReportColumnRendererFactory>() with singleton { HtmlEventResultsReportColumnRendererFactory() }
-    bind<List<HtmlResultsReportColumn>>() with multiton { columns: List<EventResultsReportColumn> ->
-        instance<HtmlEventResultsReportColumnRendererFactory>().factory(columns)
+    bind<HtmlEventResultsColumnRendererFactory>() with singleton { HtmlEventResultsColumnRendererFactory() }
+    bind<List<HtmlEventResultsColumn>>() with multiton { columns: List<EventResultsColumn> ->
+        instance<HtmlEventResultsColumnRendererFactory>().factory(columns)
     }
-    bind<HtmlOverallResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> HtmlOverallResultsReportRenderer(
-        columns = factory<List<EventResultsReportColumn>, List<HtmlResultsReportColumn>>().invoke(columns)
+    bind<HtmlOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> HtmlOverallEventResultsRenderer(
+        columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns)
     ) }
-    bind<HtmlGroupedResultsReportRenderer>() with multiton { columns: List<EventResultsReportColumn> -> HtmlGroupedResultsReportRenderer(
-        columns = factory<List<EventResultsReportColumn>, List<HtmlResultsReportColumn>>().invoke(columns)
+    bind<HtmlGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> HtmlGroupedEventResultsRenderer(
+        columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns)
     ) }
 }

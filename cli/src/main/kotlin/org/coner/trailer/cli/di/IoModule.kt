@@ -27,7 +27,7 @@ val ioModule = DI.Module("coner.trailer.cli.io") {
         )
     }
     bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
-        eventResultsReportFileNameGenerator = instance()
+        eventResultsFileNameGenerator = instance()
     ) }
 }
 

@@ -1,28 +1,28 @@
 package org.coner.trailer.render.json.model
 
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.OverallResultsReport
-import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.OverallEventResults
+import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.render.json.identifier.EventIdentifier
 
 class OverallEventResultsModel(
     val event: EventIdentifier,
-    val report: ReportModel
+    val results: ResultsModel
 ) {
-    constructor(event: Event, report: OverallResultsReport) : this(
+    constructor(event: Event, results: OverallEventResults) : this(
         event = EventIdentifier(event),
-        report = ReportModel(report)
+        results = ResultsModel(results)
     )
 
-    class ReportModel(
-        val type: ResultsType,
+    class ResultsModel(
+        val type: EventResultsType,
         val runCount: Int,
         val participantResults: List<ParticipantResultModel>
     ) {
-        constructor(report: OverallResultsReport) : this(
-            type = report.type,
-            runCount = report.runCount,
-            participantResults = report.participantResults.map { ParticipantResultModel(it) }
+        constructor(results: OverallEventResults) : this(
+            type = results.type,
+            runCount = results.runCount,
+            participantResults = results.participantResults.map { ParticipantResultModel(it) }
         )
     }
 }

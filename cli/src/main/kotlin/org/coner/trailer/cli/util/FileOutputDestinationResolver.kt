@@ -2,24 +2,24 @@ package org.coner.trailer.cli.util
 
 import org.apache.commons.lang3.SystemUtils
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
-import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.EventResultsFileNameGenerator
+import org.coner.trailer.eventresults.EventResultsType
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.isDirectory
 
 @ExperimentalPathApi
 class FileOutputDestinationResolver(
-    private val eventResultsReportFileNameGenerator: EventResultsReportFileNameGenerator
+    private val eventResultsFileNameGenerator: EventResultsFileNameGenerator
 ) {
 
     fun forEventResults(
         event: Event,
-        type: ResultsType,
+        type: EventResultsType,
         defaultExtension: String,
         path: Path?
     ): Path {
-        return process(path) { resolve(eventResultsReportFileNameGenerator.build(
+        return process(path) { resolve(eventResultsFileNameGenerator.build(
             event = event,
             type = type,
             extension = defaultExtension

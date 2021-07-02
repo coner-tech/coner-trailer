@@ -6,11 +6,11 @@ import assertk.assertions.isEqualTo
 import org.coner.trailer.Policy
 import org.coner.trailer.TestPolicies
 import org.coner.trailer.cli.io.TestDatabaseConfigurations
-import org.coner.trailer.datasource.crispyfish.eventsresults.LegacyBuggedPaxTimeRunScoreFactory
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
+import org.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
+import org.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
 import org.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import org.coner.trailer.eventresults.PaxTimeStyle
-import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -67,7 +67,7 @@ class EventResultsModuleTest {
         }
 
         assertDoesNotThrow {
-            di.factory<Policy, ParticipantResultMapper>(StandardResultsTypes.raw).invoke(policy)
+            di.factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy)
         }
     }
 
@@ -81,9 +81,9 @@ class EventResultsModuleTest {
             importAll(eventResultsModule, databaseModule(databaseConfiguration))
         }
         val standardResultsTypes = listOf(
-            StandardResultsTypes.raw,
-            StandardResultsTypes.pax,
-            StandardResultsTypes.grouped
+            StandardEventResultsTypes.raw,
+            StandardEventResultsTypes.pax,
+            StandardEventResultsTypes.grouped
         )
 
         val actual = standardResultsTypes.map {

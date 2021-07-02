@@ -4,7 +4,6 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.snoozle.*
-import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
 import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.io.constraint.*
 import org.coner.trailer.io.mapper.*

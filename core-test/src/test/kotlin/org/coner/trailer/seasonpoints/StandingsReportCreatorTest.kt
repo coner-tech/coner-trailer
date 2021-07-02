@@ -22,10 +22,10 @@ class StandingsReportCreatorTest {
     @Test
     fun `Create grouped standings sections for LSCC 2019`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.grouped,
+            eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedResultsReports = mapOf(
-                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveResultsReports.Lscc2019.points1.groupedResultsReports.single()
+            eventToGroupedEventResults = mapOf(
+                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.groupedEventResults.single()
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
@@ -52,11 +52,11 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should create grouped standings sections with LSCC 2019-style tie breaking`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.grouped,
+            eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedResultsReports = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveResultsReports.LsccTieBreaking.points1.groupedResultsReports.single(),
-                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveResultsReports.LsccTieBreaking.points2.groupedResultsReports.single()
+            eventToGroupedEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.groupedEventResults.single(),
+                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.groupedEventResults.single()
 
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
@@ -101,11 +101,11 @@ class StandingsReportCreatorTest {
     @Test
     fun `It should exclude participants not eligible for season points`() {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-            resultsType = StandardResultsTypes.grouped,
+            eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedResultsReports = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to GroupedResultsReport(
-                    type = StandardResultsTypes.grouped,
+            eventToGroupedEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to GroupedEventResults(
+                    type = StandardEventResultsTypes.grouped,
                     groupingsToResultsMap = sortedMapOf(
                         TestGroupings.Lscc2019.HS to listOf(
                             testParticipantResult(

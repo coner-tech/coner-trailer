@@ -8,7 +8,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import org.coner.trailer.eventresults.StandardResultsTypes
+import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.coner.trailer.seasonpoints.TestEventPointsCalculators
@@ -51,11 +51,11 @@ class SeasonPointsCalculatorAddCommandTest {
         val rankingSort = TestRankingSorts.lscc
         every { rankingSortService.findByName(rankingSort.name) } returns create.rankingSort
         val resultsTypeToEventPointsCalculatorNamed = listOf(
-                StandardResultsTypes.grouped.key to groupingCalculator.name,
-                StandardResultsTypes.raw.key to overallCalculator.name,
-                StandardResultsTypes.pax.key to overallCalculator.name
+                StandardEventResultsTypes.grouped.key to groupingCalculator.name,
+                StandardEventResultsTypes.raw.key to overallCalculator.name,
+                StandardEventResultsTypes.pax.key to overallCalculator.name
         )
-        every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.resultsTypeToEventPointsCalculator
+        every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.eventResultsTypeToEventPointsCalculator
         every { service.create(eq(create)) } answers { Unit }
         val rtktperpcn = "--results-type-key-to-event-points-calculator-named"
         val viewRendered = "view rendered ${create.name}"
@@ -64,9 +64,9 @@ class SeasonPointsCalculatorAddCommandTest {
         command.parse(arrayOf(
                 "--id", create.id.toString(),
                 "--name", create.name,
-                rtktperpcn, StandardResultsTypes.grouped.key, groupingCalculator.name,
-                rtktperpcn, StandardResultsTypes.raw.key, overallCalculator.name,
-                rtktperpcn, StandardResultsTypes.pax.key, overallCalculator.name,
+                rtktperpcn, StandardEventResultsTypes.grouped.key, groupingCalculator.name,
+                rtktperpcn, StandardEventResultsTypes.raw.key, overallCalculator.name,
+                rtktperpcn, StandardEventResultsTypes.pax.key, overallCalculator.name,
                 "--ranking-sort-named", rankingSort.name
         ))
 

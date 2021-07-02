@@ -52,14 +52,14 @@ class ConerTrailerCliProcessRunner(
 
     fun execEventResults(
         event: Event,
-        report: String,
+        type: String,
         format: String? = null,
         output: String? = null,
     ): Process {
         return exec(
             *appArgumentBuilder.buildEventResults(
                 event = event,
-                report = report,
+                type = type,
                 format = format,
                 output = output
             )

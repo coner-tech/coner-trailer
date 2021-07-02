@@ -6,8 +6,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
 
-fun Assert<ResultsReport>.type() = prop("type") { it.type }
-fun Assert<ResultsReport>.hasType(expected: ResultsType) = type().isEqualTo(expected)
+fun Assert<EventResults>.type() = prop("type") { it.type }
+fun Assert<EventResults>.hasType(expected: EventResultsType) = type().isEqualTo(expected)
 
 fun Assert<List<ParticipantResult>>.positionDistinct(position: Int) = transform {
     it.singleOrNull { it.position == position }

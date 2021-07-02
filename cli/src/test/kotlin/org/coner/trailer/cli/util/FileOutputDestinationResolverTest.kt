@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.eventresults.EventResultsReportFileNameGenerator
+import org.coner.trailer.eventresults.EventResultsFileNameGenerator
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -21,12 +21,12 @@ class FileOutputDestinationResolverTest {
 
     lateinit var resolver: FileOutputDestinationResolver
 
-    @MockK lateinit var eventResultsReportFileNameGenerator: EventResultsReportFileNameGenerator
+    @MockK lateinit var eventResultsFileNameGenerator: EventResultsFileNameGenerator
 
     @BeforeEach
     fun before() {
         resolver = FileOutputDestinationResolver(
-            eventResultsReportFileNameGenerator = eventResultsReportFileNameGenerator
+            eventResultsFileNameGenerator = eventResultsFileNameGenerator
         )
     }
 
