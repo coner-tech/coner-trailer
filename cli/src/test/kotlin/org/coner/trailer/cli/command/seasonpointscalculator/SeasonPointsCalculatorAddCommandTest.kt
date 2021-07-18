@@ -46,7 +46,7 @@ class SeasonPointsCalculatorAddCommandTest {
     @Test
     fun `It should create a season points calculator`() {
         val create = TestSeasonPointsCalculatorConfigurations.lscc2019.copy()
-        val groupingCalculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val groupingCalculator = TestEventPointsCalculators.lsccGroupedCalculator
         val overallCalculator = TestEventPointsCalculators.lsccOverallCalculator
         val rankingSort = TestRankingSorts.lscc
         every { rankingSortService.findByName(rankingSort.name) } returns create.rankingSort

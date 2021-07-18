@@ -2,8 +2,8 @@ package org.coner.trailer.seasonpoints
 
 object TestEventPointsCalculators {
 
-    val lsccGroupingCalculator by lazy { EventPointsCalculator(
-            name = "lscc grouping",
+    val lsccGroupedCalculator by lazy { EventPointsCalculator(
+            name = "lscc grouped",
             positionToPoints = mapOf(
                     1 to 9,
                     2 to 6,

@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.EnumSource
 
 class EventPointsCalculatorTest {
 
-    enum class LsccGroupingStyleParam(
+    enum class LsccGroupedStyleParam(
             val participantResult: ParticipantResult,
             val expected: Int
     ) {
@@ -45,9 +45,9 @@ class EventPointsCalculatorTest {
     }
 
     @ParameterizedTest
-    @EnumSource(LsccGroupingStyleParam::class)
-    fun `It should calculate points LSCC Grouping-style`(param: LsccGroupingStyleParam) {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+    @EnumSource(LsccGroupedStyleParam::class)
+    fun `It should calculate points LSCC Grouped-style`(param: LsccGroupedStyleParam) {
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
 
         val actual = calculator.calculate(param.participantResult)
 

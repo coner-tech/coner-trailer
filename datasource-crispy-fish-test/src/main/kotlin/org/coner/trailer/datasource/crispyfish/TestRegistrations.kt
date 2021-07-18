@@ -1,13 +1,11 @@
 package org.coner.trailer.datasource.crispyfish
 
+import org.coner.trailer.Participant
+import org.coner.trailer.TestParticipants
 import tech.coner.crispyfish.model.ClassDefinition
 import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.RegistrationResult
 import tech.coner.crispyfish.model.RegistrationRun
-import org.coner.trailer.Grouping
-import org.coner.trailer.Participant
-import org.coner.trailer.TestParticipants
-import java.math.BigDecimal
 
 object TestRegistrations {
 
@@ -95,7 +93,7 @@ object TestRegistrations {
             dateOfBirth = dateOfBirth,
             category = category,
             handicap = handicap,
-            number = participant.signage?.number,
+            number = participant.number,
             firstName = participant.firstName,
             lastName = participant.lastName,
             carColor = participant.car.color,

@@ -31,7 +31,7 @@ class EventPointsCalculatorDeleteCommandTest {
 
     @Test
     fun `It should delete calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         every { service.delete(calculator) } answers { Unit }
 

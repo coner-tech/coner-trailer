@@ -1,9 +1,8 @@
 package org.coner.trailer.datasource.crispyfish.fixture
 
 import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.*
-import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import java.nio.file.Path
 import java.time.LocalDate
@@ -29,7 +28,7 @@ sealed class SeasonFixture(
         val event1 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishGroupingMapper = groupingMapper,
+            crispyFishClassingMapper = groupingMapper,
             runCount = 5,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
@@ -60,7 +59,7 @@ sealed class SeasonFixture(
         val event2 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishGroupingMapper = groupingMapper,
+            crispyFishClassingMapper = groupingMapper,
             runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
@@ -89,7 +88,7 @@ sealed class SeasonFixture(
         val event3 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishGroupingMapper = groupingMapper,
+            crispyFishClassingMapper = groupingMapper,
             runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
@@ -146,13 +145,13 @@ sealed class SeasonFixture(
     val classDefinitions = classDefinitionFile.mapper().all()
     val categories = classDefinitions.filter { it.paxed }
     val handicaps = classDefinitions.filter { !it.paxed }
-    val groupingMapper = CrispyFishGroupingMapper()
+    val groupingMapper = CrispyFishClassingMapper()
 }
 
 private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {
     val key = Event.CrispyFishMetadata.PeopleMapKey(
-        grouping = requireNotNull(testParticipant.signage?.grouping),
-        number = requireNotNull(testParticipant.signage?.number),
+        classing = requireNotNull(testParticipant.classing),
+        number = requireNotNull(testParticipant.number),
         firstName = requireNotNull(testParticipant.firstName),
         lastName = requireNotNull(testParticipant.lastName)
     )

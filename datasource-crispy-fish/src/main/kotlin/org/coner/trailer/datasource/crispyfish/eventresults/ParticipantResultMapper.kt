@@ -1,17 +1,20 @@
 package org.coner.trailer.datasource.crispyfish.eventresults
 
-import tech.coner.crispyfish.model.Registration
+import org.coner.trailer.Class
 import org.coner.trailer.Event
 import org.coner.trailer.Time
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.eventresults.FinalScoreFactory
 import org.coner.trailer.eventresults.ParticipantResult
+import tech.coner.crispyfish.model.Registration
 
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
     private val finalScoreFactory: FinalScoreFactory,
+    private val crispyFishClassingMapper: CrispyFishClassingMapper,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
     private val crispyFishRunMapper: CrispyFishRunMapper
 ) {
@@ -19,26 +22,27 @@ class ParticipantResultMapper(
     fun toCore(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
+        allClassesByAbbreviation: Map<String, Class>,
         cfRegistration: Registration
     ): ParticipantResult? {
-        val coreSignage = crispyFishParticipantMapper.toCoreSignage(
-            context = context,
-            crispyFish = cfRegistration
+        val classing = crispyFishClassingMapper.toCore(
+            allClassesByAbbreviation = allClassesByAbbreviation,
+            cfRegistration = cfRegistration
         )
         val peopleMapKey = Event.CrispyFishMetadata.PeopleMapKey(
-            grouping = coreSignage.grouping ?: return null,
-            number = coreSignage.number ?: return null,
+            classing = classing ?: return null,
+            number = cfRegistration.number ?: return null,
             firstName = cfRegistration.firstName ?: return null,
             lastName = cfRegistration.lastName ?: return null
         )
         val participant = crispyFishParticipantMapper.toCore(
-            context = context,
+            allClassesByAbbreviation = allClassesByAbbreviation,
             fromRegistration = cfRegistration,
             withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
         )
         val participantCfRuns = context.runsByRegistration[cfRegistration] ?: return null
         val allRuns = participantCfRuns
-            .mapNotNull { cfRunPair ->
+            .map { cfRunPair ->
                 crispyFishRunMapper.toCore(
                 cfRun = cfRunPair.second,
                 cfRunIndex = cfRunPair.first,

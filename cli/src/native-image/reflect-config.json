@@ -298,21 +298,10 @@
   "name":"org.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity$Key"
 },
 {
-  "name":"org.coner.trailer.datasource.snoozle.entity.GroupingContainer",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"org.coner.trailer.datasource.snoozle.entity.GroupingContainer$Type",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true
-},
-{
   "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity"
 },
 {
-  "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Signage",
+  "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true

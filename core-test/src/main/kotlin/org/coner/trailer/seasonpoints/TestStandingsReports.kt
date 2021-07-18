@@ -1,6 +1,6 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.TestGroupings
+import org.coner.trailer.TestClasses
 import org.coner.trailer.TestPeople
 import org.coner.trailer.TestSeasonEvents
 import org.coner.trailer.TestSeasons
@@ -12,7 +12,7 @@ object TestStandingsReports {
             return StandingsReport(
                     sections = listOf(
                             StandingsReport.Section(
-                                    title = TestGroupings.Lscc2019.NOV.abbreviation,
+                                    title = TestClasses.Lscc2019.NOV.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,
@@ -59,7 +59,7 @@ object TestStandingsReports {
                                     )
                             ),
                             StandingsReport.Section(
-                                    title = TestGroupings.Lscc2019.STR.abbreviation,
+                                    title = TestClasses.Lscc2019.STR.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,
@@ -109,7 +109,7 @@ object TestStandingsReports {
                                     )
                             ),
                             StandingsReport.Section(
-                                    title = TestGroupings.Lscc2019.GS.abbreviation,
+                                    title = TestClasses.Lscc2019.GS.abbreviation,
                                     standings = listOf(
                                             StandingsReport.Standing(
                                                     position = 1,
@@ -170,7 +170,7 @@ object TestStandingsReports {
         StandingsReport(
                 sections = listOf(
                         StandingsReport.Section(
-                                title = TestGroupings.Lscc2019.HS.name,
+                                title = TestClasses.Lscc2019.HS.name,
                                 standings = listOf(
                                         StandingsReport.Standing(
                                                 position = 1,
@@ -234,7 +234,7 @@ object TestStandingsReports {
         StandingsReport(
                 sections = listOf(
                         StandingsReport.Section(
-                                title = TestGroupings.Lscc2019.HS.name,
+                                title = TestClasses.Lscc2019.HS.name,
                                 standings = listOf(
                                         StandingsReport.Standing(
                                                 position = 1,
@@ -259,7 +259,7 @@ object TestStandingsReports {
                                 )
                         ),
                         StandingsReport.Section(
-                                title = TestGroupings.Lscc2019.STR.name,
+                                title = TestClasses.Lscc2019.STR.name,
                                 standings = listOf(
                                         StandingsReport.Standing(
                                                 position = 1,
@@ -295,7 +295,7 @@ object TestStandingsReports {
                                 )
                         ),
                         StandingsReport.Section(
-                                title = TestGroupings.Lscc2019.NOV.name,
+                                title = TestClasses.Lscc2019.NOV.name,
                                 standings = listOf(
                                         StandingsReport.Standing(
                                                 position = 1,

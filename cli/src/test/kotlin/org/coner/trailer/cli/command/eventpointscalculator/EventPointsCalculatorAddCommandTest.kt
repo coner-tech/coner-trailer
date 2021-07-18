@@ -39,7 +39,7 @@ class EventPointsCalculatorAddCommandTest {
 
     @Test
     fun `It should create calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { constraints.hasUniqueName(calculator.id, calculator.name) } returns true
         every { service.create(eq(calculator)) } answers { Unit }
         val viewRenders = "created ${calculator.id}"

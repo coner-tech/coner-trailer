@@ -39,7 +39,11 @@ class OverallRawTimeEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.raw)
@@ -50,10 +54,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("1")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("1")
                     }
                     score().hasValue("47.544")
                     diffFirst().isNull()
@@ -64,13 +69,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("BS")
-                            }
-                            hasNumber("177")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("BS")
                         }
+                        hasNumber("177")
                     }
                     score().hasValue("48.515")
                     diffFirst().isEqualTo("0.971")
@@ -81,10 +84,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("23")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("23")
                     }
                     score().hasValue("48.723")
                     diffFirst().isEqualTo("1.179")
@@ -95,10 +99,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            hasNumber("130")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("130")
                     }
                     score().hasValue("51.323")
                     diffFirst().isEqualTo("3.779")
@@ -109,10 +114,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            hasNumber("1")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("1")
                     }
                     score().hasValue("51.408")
                     diffFirst().isEqualTo("3.864")
@@ -123,13 +129,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("ES")
-                            }
-                            hasNumber("58")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("ES")
                         }
+                        hasNumber("58")
                     }
                     score().hasValue("52.201")
                     diffFirst().isEqualTo("4.657")
@@ -140,13 +144,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("ES")
-                            }
-                            hasNumber("18")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("ES")
                         }
+                        hasNumber("18")
                     }
                     score().hasValue("52.447")
                     diffFirst().isEqualTo("4.903")
@@ -175,7 +177,11 @@ class OverallRawTimeEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.raw)
@@ -186,10 +192,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("8")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("8")
                     }
                     score().hasValue("34.762")
                     diffFirst().isNull()
@@ -200,10 +207,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("23")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("23")
                     }
                     score().hasValue("36.185")
                     diffFirst().isEqualTo("1.423")
@@ -214,13 +222,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("BS")
-                            }
-                            hasNumber("52")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("BS")
                         }
+                        hasNumber("52")
                     }
                     score().hasValue("37.058")
                     diffFirst().isEqualTo("2.296")
@@ -231,13 +237,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("ES")
-                            }
-                            hasNumber("18")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("ES")
                         }
+                        hasNumber("18")
                     }
                     score().hasValue("38.698")
                     diffFirst().isEqualTo("3.936")
@@ -248,10 +252,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            hasNumber("130")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("130")
                     }
                     score().hasValue("38.986")
                     diffFirst().isEqualTo("4.224")
@@ -262,14 +267,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("CS")
-
-                            }
-                            hasNumber("20")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("CS")
                         }
+                        hasNumber("20")
                     }
                     score().hasDidNotFinish()
                     diffFirst().isNull()
@@ -299,7 +301,11 @@ class OverallRawTimeEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.raw)
@@ -310,10 +316,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("8")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("8")
                     }
                     score().hasValue("80.476")
                     diffFirst().isNull()
@@ -324,10 +331,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("23")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("23")
                     }
                     score().hasValue("83.740")
                     diffFirst().isEqualTo("3.264")
@@ -338,10 +346,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            hasNumber("1")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("1")
                     }
                     score().hasValue("87.036")
                     diffFirst().isEqualTo("6.560")
@@ -352,13 +361,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("BS")
-                            }
-                            hasNumber("52")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("BS")
                         }
+                        hasNumber("52")
                     }
                     score().hasValue("90.079")
                     diffFirst().isEqualTo("9.603")
@@ -369,10 +376,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            hasNumber("130")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("130")
                     }
                     score().hasValue("92.462")
                     diffFirst().isEqualTo("11.986")
@@ -383,13 +391,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("CS")
-                            }
-                            hasNumber("20")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("CS")
                         }
+                        hasNumber("20")
                     }
                     score().hasValue("99.647")
                     diffFirst().isEqualTo("19.171")
@@ -400,13 +406,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("GS")
-                            }
-                            hasNumber("58")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("GS")
                         }
+                        hasNumber("58")
                     }
                     score().hasValue("100.059")
                     diffFirst().isEqualTo("19.583")
@@ -417,13 +421,11 @@ class OverallRawTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().all {
-                                first().isNotNull().hasAbbreviation("NOV")
-                                second().isNotNull().hasAbbreviation("ES")
-                            }
-                            hasNumber("18")
+                        classing().isNotNull().all {
+                            group().isNotNull().hasAbbreviation("NOV")
+                            handicap().hasAbbreviation("ES")
                         }
+                        hasNumber("18")
                     }
                     score().hasValue("100.215")
                     diffFirst().isEqualTo("19.739")

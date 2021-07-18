@@ -5,6 +5,8 @@ import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.TestEvents
+import org.coner.trailer.TestParticipants
+import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.util.ConerTrailerCliProcessRunner
 import org.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import org.coner.trailer.cli.util.NativeImageCommandArrayFactory
@@ -138,6 +140,43 @@ class ConerTrailerCliExecutableIT {
         assertThat(eventEntity.readText(), "persisted event entity").all {
             contains("${event.id}")
             contains(event.name)
+        }
+    }
+
+    @Test
+    fun `It should add a crispy fish person map entry`() {
+        val databaseName = "add-crispy-fish-person-map-entry"
+        processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
+        val event = TestEvents.Lscc2019Simplified.points1
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        val participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF
+        processRunner.execPolicyAdd(policy = event.policy).waitForSuccess()
+        processRunner.execPersonAdd(participant.person!!).waitForSuccess()
+        processRunner.execEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ).waitForSuccess()
+
+        val process: Process = processRunner.execEventCrispyFishPersonMapAdd(
+            event = event,
+            participant = participant
+        )
+        process.waitFor()
+
+        val output = process.inputStream.bufferedReader().readText()
+        val error = process.errorStream.bufferedReader().readText()
+        assertAll {
+            assertThat(process.exitValue(), "exit value").isEqualTo(0)
+            assertThat(output, "output").all {
+                contains(event.name)
+                contains("${event.date}")
+                contains(participant.classing!!.group!!.abbreviation)
+                contains(participant.classing!!.handicap.abbreviation)
+                contains(participant.number!!)
+                contains("${participant.person!!.id}")
+            }
+            assertThat(error, "error").isEmpty()
         }
     }
 

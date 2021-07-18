@@ -36,7 +36,7 @@ class EventPointsCalculatorGetCommandTest {
 
     @Test
     fun `It should get calculator by id`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         val viewRenders = "rendered ${calculator.name}"
         every { view.render(calculator) } returns viewRenders
@@ -52,7 +52,7 @@ class EventPointsCalculatorGetCommandTest {
 
     @Test
     fun `It should get calculator by name`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findByName(calculator.name) } returns calculator
         val viewRenders = "rendered ${calculator.id}"
         every { view.render(calculator) } returns viewRenders

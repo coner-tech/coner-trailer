@@ -13,7 +13,7 @@ import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class GroupedEventResultsCreatorTest {
+class GroupEventResultsCreatorTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
@@ -36,21 +36,26 @@ class GroupedEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.grouped)
-            resultsForGroupingAbbreviation("HS").isNotNull().all {
+            resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(2)
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            number().isEqualTo("130")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("130")
                     }
 
                 }
@@ -59,24 +64,26 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            number().isEqualTo("1")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("1")
                     }
                 }
             }
-            resultsForGroupingAbbreviation("STR").isNotNull().all {
+            resultsForGroupAbbreviation("STR").isNotNull().all {
                 hasSize(2)
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            number().isEqualTo("1")
+                        classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("1")
                     }
                 }
                 index(1).all {
@@ -84,30 +91,28 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("STR")
-                            number().isEqualTo("23")
+                        classing().isNotNull().all { 
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
                         }
+                        hasNumber("23")
                     }
                 }
             }
-            resultsForGroupingAbbreviation("NOV").isNotNull().all {
+            resultsForGroupAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
                 each {
                     it.participant()
-                        .signage().isNotNull()
-                        .grouping().isPaired()
-                        .first().isNotNull().hasAbbreviation("NOV")
+                        .classing().isNotNull()
+                        .group().isNotNull().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("BS")
-                            number().isEqualTo("177")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("BS")
+                        hasNumber("177")
                     }
                 }
                 index(1).all {
@@ -115,10 +120,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("ES")
-                            number().isEqualTo("58")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("ES")
+                        hasNumber("58")
                     }
                 }
                 index(2).all {
@@ -126,10 +129,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("ES")
-                            number().isEqualTo("18")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("ES")
+                        hasNumber("18")
                     }
                 }
             }
@@ -155,38 +156,45 @@ class GroupedEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.grouped)
-            resultsForGroupingAbbreviation("HS").isNotNull().all {
+            resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            number().isEqualTo("130")
+                        classing().isNotNull().all { 
+                            group().isNull()
+                            handicap().hasAbbreviation("HS")
                         }
+                        hasNumber("130")
                     }
 
                 }
             }
-            resultsForGroupingAbbreviation("STR").isNotNull().all {
+            resultsForGroupAbbreviation("STR").isNotNull().all {
                 hasSize(2)
                 each {
                     it.participant()
-                        .signage().isNotNull()
-                        .grouping().isSingular().hasAbbreviation("STR")
+                        .classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
+                        }
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().number().isEqualTo("8")
+                        hasNumber("8")
                     }
                 }
                 index(1).all {
@@ -194,26 +202,22 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().number().isEqualTo("23")
+                        hasNumber("23")
                     }
                 }
             }
-            resultsForGroupingAbbreviation("NOV").isNotNull().all {
+            resultsForGroupAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().signage().isNotNull()
-                        .grouping().isPaired()
-                        .first().isNotNull().hasAbbreviation("NOV")
+                    it.participant().classing().isNotNull().group().isNotNull().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("BS")
-                            number().isEqualTo("52")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("BS")
+                        hasNumber("52")
                     }
                 }
                 index(1).all {
@@ -221,10 +225,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("ES")
-                            number().isEqualTo("18")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("ES")
+                        hasNumber("18")
                     }
                 }
                 index(2).all {
@@ -232,10 +234,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("CS")
-                            number().isEqualTo("20")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("CS")
+                        hasNumber("20")
                     }
                 }
             }
@@ -261,36 +261,40 @@ class GroupedEventResultsCreatorTest {
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
-        val actual = subject.factory(event.coreSeasonEvent.event.crispyFish!!, context)
+        val actual = subject.factory(
+            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            context = context
+        )
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.grouped)
-            resultsForGroupingAbbreviation("HS").isNotNull().all {
+            resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        signage().isNotNull().all {
-                            grouping().isSingular().hasAbbreviation("HS")
-                            number().isEqualTo("130")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("HS")
+                        hasNumber("130")
                     }
                 }
             }
-            resultsForGroupingAbbreviation("STR").isNotNull().all {
+            resultsForGroupAbbreviation("STR").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().signage().isNotNull()
-                        .grouping().isSingular().hasAbbreviation("STR")
+                    it.participant().classing().isNotNull().all {
+                        group().isNull()
+                        handicap().hasAbbreviation("STR")
+                    }
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        signage().isNotNull().number().isEqualTo("8")
+                        hasNumber("8")
                     }
                 }
                 index(1).all {
@@ -298,7 +302,7 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        signage().isNotNull().number().isEqualTo("23")
+                        hasNumber("23")
                     }
                 }
                 index(2).all {
@@ -306,26 +310,25 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        signage().isNotNull().number().isEqualTo("1")
+                        hasNumber("1")
                     }
                 }
             }
-            resultsForGroupingAbbreviation("NOV").isNotNull().all {
+            resultsForGroupAbbreviation("NOV").isNotNull().all {
                 hasSize(4)
                 each {
-                    it.participant().signage().isNotNull()
-                        .grouping().isPaired()
-                        .first().isNotNull().hasAbbreviation("NOV")
+                    it.participant().classing().isNotNull()
+                        .group().isNotNull().hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("BS")
-                            number().isEqualTo("52")
-                        }
+                        classing().isNotNull()
+                            .handicap().hasAbbreviation("BS")
+                        classing().isNotNull().handicap().hasAbbreviation("BS")
+                        hasNumber("52")
                     }
                 }
                 index(1).all {
@@ -333,10 +336,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("GS")
-                            number().isEqualTo("58")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("GS")
+                        hasNumber("58")
                     }
                 }
                 index(2).all {
@@ -344,10 +345,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("ES")
-                            number().isEqualTo("18")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("ES")
+                        hasNumber("18")
                     }
                 }
                 index(3).all {
@@ -355,10 +354,8 @@ class GroupedEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        signage().isNotNull().all {
-                            grouping().isPaired().second().isNotNull().hasAbbreviation("CS")
-                            number().isEqualTo("20")
-                        }
+                        classing().isNotNull().handicap().hasAbbreviation("CS")
+                        hasNumber("20")
                     }
                 }
             }

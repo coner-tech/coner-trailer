@@ -18,20 +18,20 @@ class LegacyBuggedPaxTimeRunScoreFactory(
     private val penaltyFactory: StandardPenaltyFactory
 ) : PaxTimeRunScoreFactory(penaltyFactory) {
     override fun score(run: Run): Score {
-        val participantGrouping = run.requireParticipantSignageGrouping()
+        val participantClassing = run.requireParticipantClassing()
         val scratchTime = run.requireTime()
         val penalty = penaltyFactory.penalty(run)
         val value = when {
             penalty is Score.Penalty.Cone -> {
                 val penalizedRawTime = penalty.floor + scratchTime.value
-                (participantGrouping.paxFactor?.multiply(penalizedRawTime) ?: penalizedRawTime)
+                (participantClassing.paxFactor.multiply(penalizedRawTime) ?: penalizedRawTime)
                     .setScaleWithBuggedCrispyFishRounding()
             }
             penalty != null -> {
-                val paxedScratchTime = participantGrouping.paxFactor?.multiply(scratchTime.value) ?: scratchTime.value
+                val paxedScratchTime = participantClassing.paxFactor.multiply(scratchTime.value) ?: scratchTime.value
                 (penalty.floor + paxedScratchTime).setScaleWithBuggedCrispyFishRounding()
             }
-            else -> (participantGrouping.paxFactor?.multiply(scratchTime.value) ?: scratchTime.value)
+            else -> (participantClassing.paxFactor.multiply(scratchTime.value) ?: scratchTime.value)
                 .setScaleWithBuggedCrispyFishRounding()
         }
         return Score(

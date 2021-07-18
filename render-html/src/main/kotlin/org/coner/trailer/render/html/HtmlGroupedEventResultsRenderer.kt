@@ -2,13 +2,13 @@ package org.coner.trailer.render.html
 
 import kotlinx.html.*
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.GroupedEventResults
+import org.coner.trailer.eventresults.GroupEventResults
 
 class HtmlGroupedEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>
-) : HtmlEventResultsRenderer<GroupedEventResults>(columns) {
+) : HtmlEventResultsRenderer<GroupEventResults>(columns) {
 
-    override fun partial(event: Event, results: GroupedEventResults): HtmlBlockTag.() -> Unit = {
+    override fun partial(event: Event, results: GroupEventResults): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
             h2 { text(results.type.title) }
@@ -20,12 +20,12 @@ class HtmlGroupedEventResultsRenderer(
                     }
                 }
                 tbody {
-                    results.groupingsToResultsMap.forEach { (grouping, participantResults) ->
+                    results.groupParticipantResults.forEach { (group, participantResults) ->
 
                         tr {
                             td {
                                 colSpan = "${columns.size}"
-                                text(grouping.name)
+                                text(group.name)
                             }
                         }
                         for (result in participantResults) {

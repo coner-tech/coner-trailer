@@ -22,6 +22,7 @@ import org.coner.trailer.datasource.crispyfish.eventresults.OverallPaxTimeEventR
 import org.coner.trailer.datasource.crispyfish.eventresults.OverallRawEventResultsFactory
 import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.eventresults.StandardEventResultsTypes
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.render.EventResultsColumn
@@ -52,6 +53,7 @@ class EventResultsCommand(
     override val di by findOrSetObject { di }
 
     private val eventService: EventService by instance()
+    private val crispyFishClassService: CrispyFishClassService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val crispyFishOverallRawEventResultsFactory: (Policy) -> OverallRawEventResultsFactory by factory()
     private val crispyFishOverallPaxEventResultsFactory: (Policy) -> OverallPaxTimeEventResultsFactory by factory()
@@ -129,6 +131,9 @@ class EventResultsCommand(
                 }
                 factory.factory(
                     eventCrispyFishMetadata = eventCrispyFish,
+                    allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
+                        crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
+                    ),
                     context = crispyFishEventMappingContextService.load(eventCrispyFish)
                 )
             }
@@ -148,6 +153,9 @@ class EventResultsCommand(
                 val factory = crispyFishGroupedEventResultsFactory(event.policy)
                 factory.factory(
                     eventCrispyFishMetadata = eventCrispyFish,
+                    allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
+                        crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
+                    ),
                     context = crispyFishEventMappingContextService.load(eventCrispyFish)
                 )
             }

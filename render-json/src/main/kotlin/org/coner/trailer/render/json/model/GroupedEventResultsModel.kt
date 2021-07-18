@@ -1,7 +1,7 @@
 package org.coner.trailer.render.json.model
 
 import org.coner.trailer.Event
-import org.coner.trailer.eventresults.GroupedEventResults
+import org.coner.trailer.eventresults.GroupEventResults
 import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.render.json.identifier.EventIdentifier
 
@@ -9,7 +9,7 @@ class GroupedEventResultsModel(
     val event: EventIdentifier,
     val results: ResultsModel
 ) {
-    constructor(event: Event, results: GroupedEventResults) : this(
+    constructor(event: Event, results: GroupEventResults) : this(
         event = EventIdentifier(event),
         results = ResultsModel(results)
     )
@@ -17,12 +17,12 @@ class GroupedEventResultsModel(
     class ResultsModel(
         val type: EventResultsType,
         val runCount: Int,
-        val groupingsToResults: Map<String, List<ParticipantResultModel>>
+        val groupParticipantResults: Map<String, List<ParticipantResultModel>>
     ) {
-        constructor(results: GroupedEventResults) : this(
+        constructor(results: GroupEventResults) : this(
             type = results.type,
             runCount = results.runCount,
-            groupingsToResults = results.groupingsToResultsMap
+            groupParticipantResults = results.groupParticipantResults
                 .map { (grouping, results) ->
                     grouping.abbreviation to results.map { ParticipantResultModel(it) }
                 }

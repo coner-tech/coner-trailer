@@ -8,7 +8,6 @@ import org.coner.trailer.eventresults.Score
 
 interface Renderer {
 
-    fun render(signage: Participant.Signage?) = "${signage?.grouping?.abbreviation} ${signage?.number}".trim()
     fun renderName(participant: Participant) = "${participant.firstName} ${participant.lastName}"
     fun renderScoreColumnValue(participantResult: ParticipantResult) = when (participantResult.score.penalty) {
         Score.Penalty.DidNotFinish -> Text.didNotFinish

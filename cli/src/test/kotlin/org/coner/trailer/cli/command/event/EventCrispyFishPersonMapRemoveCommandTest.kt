@@ -12,8 +12,8 @@ import org.coner.trailer.*
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
-import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
@@ -31,7 +31,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
     lateinit var command: EventCrispyFishPersonMapRemoveCommand
 
     @MockK lateinit var service: EventService
-    @MockK lateinit var groupingService: CrispyFishGroupingService
+    @MockK lateinit var crispyFishClassService: CrispyFishClassService
     @MockK lateinit var personService: PersonService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var view: EventView
@@ -44,7 +44,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
         command = EventCrispyFishPersonMapRemoveCommand(
             di = DI {
                 bind<EventService>() with instance(service)
-                bind<CrispyFishGroupingService>() with instance(groupingService)
+                bind<CrispyFishClassService>() with instance(crispyFishClassService)
                 bind<PersonService>() with instance(personService)
                 bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
                 bind<EventView>() with instance(view)
@@ -61,10 +61,13 @@ class EventCrispyFishPersonMapRemoveCommandTest {
         @MockK context: CrispyFishEventMappingContext
     ) {
         val person = TestPeople.REBECCA_JACKSON
-        val grouping = TestGroupings.Lscc2019.HS
+        val classing = Classing(
+            group = null,
+            handicap = TestClasses.Lscc2019.HS
+        )
         val number = "1"
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            grouping = grouping,
+            classing = classing,
             number = number,
             firstName = person.firstName,
             lastName = person.lastName
@@ -78,7 +81,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
             crispyFish = crispyFish
         )
         every { service.findById(event.id) } returns event
-        every { groupingService.findSingular(crispyFish, grouping.abbreviation) } returns grouping
+        every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         every { personService.findById(person.id) } returns person
         val set = event.copy(
             crispyFish = crispyFish.copy(
@@ -97,8 +100,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
 
         command.parse(arrayOf(
             "${event.id}",
-            "--grouping", "singular",
-            "--abbreviation-singular", grouping.abbreviation,
+            "--handicap", classing.abbreviation,
             "--number", number,
             "--first-name", person.firstName,
             "--last-name", person.lastName,
@@ -107,7 +109,7 @@ class EventCrispyFishPersonMapRemoveCommandTest {
 
         verifySequence {
             service.findById(event.id)
-            groupingService.findSingular(crispyFish, grouping.abbreviation)
+            crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
             personService.findById(person.id)
             service.update(
                 update = set,

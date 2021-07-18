@@ -7,8 +7,8 @@ class GroupedRunScoreFactory(
     private val paxTimes: PaxTimeRunScoreFactory
 ) : RunScoreFactory {
     override fun score(run: Run): Score {
-        val grouping = run.requireParticipantSignageGrouping()
-        val factory = when (grouping.paxed) {
+        val classing = run.requireParticipantClassing()
+        val factory = when (classing.group?.paxed == true) {
             true -> paxTimes
             false -> rawTimes
         }

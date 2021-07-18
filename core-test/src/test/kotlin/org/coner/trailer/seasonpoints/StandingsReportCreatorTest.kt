@@ -24,8 +24,8 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedEventResults = mapOf(
-                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.groupedEventResults.single()
+            eventToGroupEventResults = mapOf(
+                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.groupEventResults.single()
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
@@ -34,16 +34,16 @@ class StandingsReportCreatorTest {
 
         assertThat(actual).all {
             hasSize(3)
-            key(TestGroupings.Lscc2019.NOV).all {
-                hasTitle(TestGroupings.Lscc2019.NOV.abbreviation)
+            key(TestClasses.Lscc2019.NOV).all {
+                hasTitle(TestClasses.Lscc2019.NOV.abbreviation)
                 standings().hasSize(3)
             }
-            key(TestGroupings.Lscc2019.STR).all {
-                hasTitle(TestGroupings.Lscc2019.STR.abbreviation)
+            key(TestClasses.Lscc2019.STR).all {
+                hasTitle(TestClasses.Lscc2019.STR.abbreviation)
                 standings().hasSize(2)
             }
-            key(TestGroupings.Lscc2019.GS).all {
-                hasTitle(TestGroupings.Lscc2019.GS.abbreviation)
+            key(TestClasses.Lscc2019.GS).all {
+                hasTitle(TestClasses.Lscc2019.GS.abbreviation)
                 standings().hasSize(2)
             }
         }
@@ -54,9 +54,9 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedEventResults = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.groupedEventResults.single(),
-                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.groupedEventResults.single()
+            eventToGroupEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.groupEventResults.single(),
+                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.groupEventResults.single()
 
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
@@ -65,7 +65,7 @@ class StandingsReportCreatorTest {
         val actual = creator.createGroupedStandingsSections(param)
 
         assertThat(actual).all {
-            key(TestGroupings.Lscc2019.HS).all {
+            key(TestClasses.Lscc2019.HS).all {
                 standings().all {
                     hasSize(5)
                     index(0).all {
@@ -103,11 +103,11 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.grouped,
             season = TestSeasons.lscc2019,
-            eventToGroupedEventResults = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to GroupedEventResults(
+            eventToGroupEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to GroupEventResults(
                     type = StandardEventResultsTypes.grouped,
-                    groupingsToResultsMap = sortedMapOf(
-                        TestGroupings.Lscc2019.HS to listOf(
+                    groupParticipantResults = sortedMapOf(
+                        TestClasses.Lscc2019.HS to listOf(
                             testParticipantResult(
                                 position = 1,
                                 score = Score("45.678"),
@@ -153,7 +153,7 @@ class StandingsReportCreatorTest {
         val actual = creator.createGroupedStandingsSections(param)
 
         assertThat(actual).all {
-            key(TestGroupings.Lscc2019.HS).standings().all {
+            key(TestClasses.Lscc2019.HS).standings().all {
                 hasSize(1)
                 index(0).hasPerson(TestPeople.REBECCA_JACKSON)
             }

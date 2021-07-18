@@ -35,6 +35,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
             runEligibilityQualifier = instance(),
             runScoreFactory = factory<Policy, RawTimeRunScoreFactory>().invoke(policy)
         ),
+        crispyFishClassingMapper = instance(),
         crispyFishParticipantMapper = instance(),
         crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
@@ -45,6 +46,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
             runEligibilityQualifier = instance(),
             runScoreFactory = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
         ),
+        crispyFishClassingMapper = instance(),
         crispyFishParticipantMapper = instance(),
         crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
@@ -58,6 +60,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
                 paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
             )
         ),
+        crispyFishClassingMapper = instance(),
         crispyFishParticipantMapper = instance(),
         crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)

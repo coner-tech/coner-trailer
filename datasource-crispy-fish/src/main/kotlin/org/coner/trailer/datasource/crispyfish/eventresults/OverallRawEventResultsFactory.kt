@@ -1,5 +1,6 @@
 package org.coner.trailer.datasource.crispyfish.eventresults
 
+import org.coner.trailer.Class
 import org.coner.trailer.Event
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.eventresults.OverallEventResults
@@ -13,6 +14,7 @@ class OverallRawEventResultsFactory(
 
     override fun factory(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
+        allClassesByAbbreviation: Map<String, Class>,
         context: CrispyFishEventMappingContext
     ) : OverallEventResults {
         val scoredRunsComparator = scoredRunsComparatorProvider(context.runCount)
@@ -21,6 +23,7 @@ class OverallRawEventResultsFactory(
                 participantResultMapper.toCore(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
+                    allClassesByAbbreviation = allClassesByAbbreviation,
                     cfRegistration = registration
                 )
             }

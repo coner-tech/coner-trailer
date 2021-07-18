@@ -7,14 +7,8 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import org.coner.trailer.Event
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPeople
-import org.coner.trailer.Time
-import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
-import org.coner.trailer.datasource.crispyfish.TestRegistrations
+import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
@@ -35,6 +29,7 @@ class ParticipantResultMapperTest {
     @MockK lateinit var resultRunMapper: ResultRunMapper
     @MockK lateinit var finalScoreFactory: FinalScoreFactory
     @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
+    @MockK lateinit var crispyFishClassingMapper: CrispyFishClassingMapper
     @MockK lateinit var crispyFishRunMapper: CrispyFishRunMapper
 
     @BeforeEach
@@ -43,6 +38,7 @@ class ParticipantResultMapperTest {
             resultRunMapper = resultRunMapper,
             finalScoreFactory = finalScoreFactory,
             crispyFishParticipantMapper = crispyFishParticipantMapper,
+            crispyFishClassingMapper = crispyFishClassingMapper,
             crispyFishRunMapper = crispyFishRunMapper
         )
     }
@@ -54,8 +50,8 @@ class ParticipantResultMapperTest {
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val usePeopleMap = mapOf(
             Event.CrispyFishMetadata.PeopleMapKey(
-                grouping = requireNotNull(participant.signage?.grouping),
-                number = requireNotNull(participant.signage?.number),
+                classing = requireNotNull(participant.classing),
+                number = requireNotNull(participant.number),
                 firstName = requireNotNull(participant.firstName),
                 lastName = requireNotNull(person.lastName)
             ) to person
@@ -71,17 +67,17 @@ class ParticipantResultMapperTest {
         )
         every {
             crispyFishParticipantMapper.toCore(
-                context = context,
+                allClassesByAbbreviation = any(),
                 fromRegistration = registration,
                 withPerson = person
             )
         }.returns(participant)
         every {
-            crispyFishParticipantMapper.toCoreSignage(
-                context = context,
-                crispyFish = registration
+            crispyFishClassingMapper.toCore(
+                allClassesByAbbreviation = any(),
+                cfRegistration = registration
             )
-        } returns checkNotNull(participant.signage)
+        } returns checkNotNull(participant.classing)
         val expectedScoredRuns = listOf(
             testResultRun(sequence = 1, participant = participant, time = Time("52.749"), score = Score("52.749")),
             testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),
@@ -113,6 +109,7 @@ class ParticipantResultMapperTest {
         val actual = mapper.toCore(
             eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
             cfRegistration = registration
         )
 

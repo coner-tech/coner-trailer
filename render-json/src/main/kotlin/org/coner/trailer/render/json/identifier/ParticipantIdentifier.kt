@@ -17,7 +17,7 @@ class ParticipantIdentifier(
         personId = participant.person?.id,
         firstName = participant.firstName,
         lastName = participant.lastName,
-        signage = participant.signage?.toAbbreviatedString(),
+        signage = participant.signageClassingNumber,
         car = participant.car,
         sponsor = participant.sponsor
     )

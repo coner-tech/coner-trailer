@@ -23,7 +23,7 @@ abstract class TextEventResultsColumn : EventResultsColumnRenderer<
             "Signage"
         }
         override val data: (ParticipantResult) -> String = {
-            render(it.participant.signage)
+            it.participant.signageClassingNumber ?: ""
         }
     }
 

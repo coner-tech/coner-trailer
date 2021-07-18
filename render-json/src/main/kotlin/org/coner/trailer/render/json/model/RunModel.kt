@@ -16,7 +16,7 @@ class RunModel(
 
     constructor(run: Run) : this(
         sequence = run.sequence,
-        participantSignage = run.participant?.signage?.toAbbreviatedString(),
+        participantSignage = run.participant?.signageClassingNumber,
         cones = run.cones,
         didNotFinish = run.didNotFinish,
         disqualified = run.disqualified,

@@ -3,9 +3,10 @@ package org.coner.trailer.io.service
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.index
+import assertk.assertions.key
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.*
-import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,18 +17,18 @@ import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class CrispyFishGroupingServiceTest {
+class CrispyFishClassServiceTest {
 
-    lateinit var service: CrispyFishGroupingService
+    lateinit var service: CrispyFishClassService
 
     lateinit var seasonFixture: SeasonFixture
     @TempDir lateinit var fixtureRoot: Path
 
     @BeforeEach
     fun before() {
-        val mapper = CrispyFishGroupingMapper()
+        val mapper = CrispyFishClassMapper()
         seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        service = CrispyFishGroupingService(
+        service = CrispyFishClassService(
             crispyFishRoot = seasonFixture.classDefinitionFile.file.parentFile,
             mapper = mapper
         )
@@ -37,7 +38,7 @@ class CrispyFishGroupingServiceTest {
     fun `It should load all singulars`() {
         val event = seasonFixture.events.first().coreSeasonEvent.event
 
-        val actual = service.loadAllSingulars(event.crispyFish!!)
+        val actual = service.loadAllClasses(event.crispyFish!!.classDefinitionFile)
 
         assertThat(actual).all {
             index(0).all {
@@ -99,29 +100,14 @@ class CrispyFishGroupingServiceTest {
     }
 
     @Test
-    fun `It should find singular by abbreviation`() {
+    fun `It should load all by abbreviation`() {
         val event = seasonFixture.events.first().coreSeasonEvent.event
 
-        val actual = service.findSingular(
-            crispyFish = event.crispyFish!!,
-            abbreviation = "CS"
-        )
-
-        assertThat(actual).hasName("C Street")
-    }
-
-    @Test
-    fun `It should find paired by abbreviation`() {
-        val event = seasonFixture.events.first().coreSeasonEvent.event
-
-        val actual = service.findPaired(
-            crispyFish = event.crispyFish!!,
-            abbreviations = "NOV" to "CS"
-        )
+        val actual = service.loadAllByAbbreviation(event.crispyFish!!.classDefinitionFile)
 
         assertThat(actual).all {
-            first().hasName("Novice")
-            second().hasName("C Street")
+            key("CS").hasName("C Street")
+            key("NOV").hasName("Novice")
         }
 
     }

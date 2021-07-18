@@ -2,7 +2,7 @@ package org.coner.trailer.datasource.crispyfish.fixture
 
 import org.coner.trailer.SeasonEvent
 import org.coner.trailer.TestPolicies
-import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
@@ -27,7 +27,7 @@ import kotlin.io.path.writeText
 class EventFixture(
     private val seasonFixture: SeasonFixture,
     private val temp: Path,
-    val crispyFishGroupingMapper: CrispyFishGroupingMapper,
+    val crispyFishClassingMapper: CrispyFishClassingMapper,
     val coreSeasonEvent: SeasonEvent,
     val conePenalty: Int = 2,
     val runCount: Int
@@ -87,7 +87,7 @@ class EventFixture(
     }
 
     val crispyFishParticipantMapper = CrispyFishParticipantMapper(
-        crispyFishGroupingMapper = crispyFishGroupingMapper
+        crispyFishClassingMapper = crispyFishClassingMapper
     )
     val crispyFishRunMapper = CrispyFishRunMapper()
     val standardPenaltyFactory = StandardPenaltyFactory(TestPolicies.lsccV1)
@@ -103,6 +103,7 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = rawTimeRunScoreFactory
         ),
+        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
@@ -113,6 +114,7 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = paxTimeRunScoreFactory
         ),
+        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
@@ -123,6 +125,7 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = groupedRunScoreFactory
         ),
+        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory

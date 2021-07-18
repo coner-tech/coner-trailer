@@ -10,7 +10,7 @@ interface RunScoreFactory {
         "Run lacks time. Not eligible for scoring."
     }
 
-    fun Run.requireParticipantSignageGrouping() = requireNotNull(participant?.signage?.grouping) {
-        "Run lacks participant grouping. Not eligible for scoring."
+    fun Run.requireParticipantClassing() = requireNotNull(participant?.classing) {
+        "Run lacks participant classing. Not eligible for scoring."
     }
 }

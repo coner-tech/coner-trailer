@@ -3,14 +3,17 @@ package org.coner.trailer.io.verification
 import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.MotorsportRegPeopleMapService
 import org.coner.trailer.io.service.PersonService
 
 class EventCrispyFishPersonMapVerifier(
     private val personService: PersonService,
-    private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
+    private val crispyFishClassService: CrispyFishClassService,
+    private val crispyFishClassingMapper: CrispyFishClassingMapper,
     private val motorsportRegPeopleMapService: MotorsportRegPeopleMapService
 ) {
 
@@ -32,6 +35,10 @@ class EventCrispyFishPersonMapVerifier(
                 peopleByMotorsportRegMemberId = peopleByMotorsportRegMemberId
         ) }
         val usedKeys = hashSetOf<Event.CrispyFishMetadata.PeopleMapKey>()
+        val allClassesByAbbreviation = requireNotNull(event.crispyFish?.classDefinitionFile
+            ?.let(crispyFishClassService::loadAllByAbbreviation)) {
+            "Failed to load classes by abbreviation"
+        }
         for (registration in context.allRegistrations) {
             val firstName = registration.firstName
             if (firstName == null) {
@@ -43,22 +50,21 @@ class EventCrispyFishPersonMapVerifier(
                 callback.onUnmappableLastNameNull(registration)
                 continue
             }
-            val signage = crispyFishParticipantMapper.toCoreSignage(
-                context = context,
-                crispyFish = registration
+            val classing = crispyFishClassingMapper.toCore(
+                allClassesByAbbreviation = allClassesByAbbreviation,
+                cfRegistration = registration
             )
-            val grouping = signage.grouping
-            if (grouping == null) {
-                callback.onUnmappableGrouping(registration)
+            if (classing == null) {
+                callback.onUnmappableClassing(registration)
                 continue
             }
-            val number = signage.number
+            val number = registration.number
             if (number == null) {
                 callback.onUnmappableNumber(registration)
                 continue
             }
             val key = Event.CrispyFishMetadata.PeopleMapKey(
-                grouping = grouping,
+                classing = classing,
                 number = number,
                 firstName = firstName,
                 lastName = lastName
@@ -123,7 +129,7 @@ class EventCrispyFishPersonMapVerifier(
         fun onUnmappedMotorsportRegPersonExactMatch(registration: Registration, entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>)
         fun onUnmappableFirstNameNull(registration: Registration)
         fun onUnmappableLastNameNull(registration: Registration)
-        fun onUnmappableGrouping(registration: Registration)
+        fun onUnmappableClassing(registration: Registration)
         fun onUnmappableNumber(registration: Registration)
         fun onUnmappedClubMemberIdNull(registration: Registration)
         fun onUnmappedClubMemberIdNotFound(registration: Registration)
@@ -157,7 +163,7 @@ class EventCrispyFishPersonMapVerifier(
             throw VerificationException()
         }
 
-        override fun onUnmappableGrouping(registration: Registration) {
+        override fun onUnmappableClassing(registration: Registration) {
             throw VerificationException()
         }
 

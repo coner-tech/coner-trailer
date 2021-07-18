@@ -1,6 +1,8 @@
 package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
+import org.coner.trailer.Participant
+import org.coner.trailer.Person
 import org.coner.trailer.Policy
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
@@ -46,6 +48,22 @@ class ConerTrailerCliProcessRunner(
                 event = event,
                 crispyFishEventControlFile = crispyFishEventControlFile,
                 crispyFishClassDefinitionFile = crispyFishClassDefinitionFile
+            )
+        )
+    }
+
+    fun execPersonAdd(person: Person): Process {
+        return exec(*appArgumentBuilder.buildPersonAdd(person))
+    }
+
+    fun execEventCrispyFishPersonMapAdd(
+        event: Event,
+        participant: Participant
+    ): Process {
+        return exec(
+            *appArgumentBuilder.buildEventCrispyFishPersonMapAdd(
+                event = event,
+                participant = participant
             )
         )
     }

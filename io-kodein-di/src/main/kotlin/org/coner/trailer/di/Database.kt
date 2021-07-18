@@ -1,6 +1,7 @@
 package org.coner.trailer.di
 
-import org.coner.trailer.datasource.crispyfish.CrispyFishGroupingMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.snoozle.*
@@ -121,7 +122,7 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
     bind<EventResource>() with singleton { instance<ConerTrailerDatabase>().entity() }
     bind<EventMapper>() with singleton { EventMapper(
         personService = instance(),
-        crispyFishGroupingService = instance(),
+        crispyFishClassService = instance(),
         policyResource = instance(),
         policyMapper = instance()
     ) }
@@ -142,11 +143,12 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
     ) }
     bind<CrispyFishPersonMapper>() with singleton { CrispyFishPersonMapper() }
     bind<CrispyFishParticipantMapper>() with singleton { CrispyFishParticipantMapper(
-        crispyFishGroupingMapper = instance()
+        crispyFishClassingMapper = instance()
     ) }
     bind<EventCrispyFishPersonMapVerifier>() with singleton { EventCrispyFishPersonMapVerifier(
         personService = instance(),
-        crispyFishParticipantMapper = instance(),
+        crispyFishClassService = instance(),
+        crispyFishClassingMapper = instance(),
         motorsportRegPeopleMapService = instance()
     ) }
     bind<CrispyFishEventMappingContextService>() with singleton { CrispyFishEventMappingContextService(
@@ -172,10 +174,11 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
         eventMapper = instance()
     ) }
 
-    // Groupings
-    bind<CrispyFishGroupingService>() with singleton { CrispyFishGroupingService(
+    // Classing
+    bind<CrispyFishClassService>() with singleton { CrispyFishClassService(
         crispyFishRoot = databaseConfiguration.crispyFishDatabase.toFile(),
         mapper = instance()
     ) }
-    bind<CrispyFishGroupingMapper>() with singleton { CrispyFishGroupingMapper() }
+    bind<CrispyFishClassMapper>() with singleton { CrispyFishClassMapper() }
+    bind<CrispyFishClassingMapper>() with singleton { CrispyFishClassingMapper() }
 }

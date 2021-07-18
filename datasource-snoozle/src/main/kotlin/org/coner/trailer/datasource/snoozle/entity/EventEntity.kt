@@ -21,7 +21,8 @@ data class EventEntity(
     )
 
     data class PersonMapEntry(
-        val signage: ParticipantEntity.Signage,
+        val classing: ParticipantEntity.Classing,
+        val number: String,
         val firstName: String,
         val lastName: String,
         val personId: UUID

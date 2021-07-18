@@ -87,7 +87,7 @@ class EventService(
                     unmappable += registration
                 }
 
-                override fun onUnmappableGrouping(registration: Registration) {
+                override fun onUnmappableClassing(registration: Registration) {
                     unmappable += registration
                 }
 

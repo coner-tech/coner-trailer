@@ -5,18 +5,15 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import org.coner.trailer.Classing
 import org.coner.trailer.Event
-import org.coner.trailer.Participant
-import org.coner.trailer.cli.command.grouping.GroupingOption
-import org.coner.trailer.cli.command.grouping.groupingOption
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.EventView
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
-import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.kodein.di.DI
@@ -36,13 +33,14 @@ class EventCrispyFishPersonMapRemoveCommand(
     override val di: DI by findOrSetObject { di }
 
     private val service: EventService by instance()
-    private val groupingService: CrispyFishGroupingService by instance()
+    private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val view: EventView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
-    private val grouping: GroupingOption by groupingOption().required()
+    private val group: String? by option()
+    private val handicap: String by option().required()
     private val number: String by option().required()
     private val firstName: String by option().required()
     private val lastName: String by option().required()
@@ -53,19 +51,14 @@ class EventCrispyFishPersonMapRemoveCommand(
         val crispyFish = checkNotNull(event.crispyFish) {
             "Event must have crispy fish defined already"
         }
-        val grouping = when (val grouping = grouping) {
-            is GroupingOption.Singular -> groupingService.findSingular(
-                crispyFish = crispyFish,
-                abbreviation = grouping.abbreviationSingular
-            )
-            is GroupingOption.Paired -> groupingService.findPaired(
-                crispyFish = crispyFish,
-                abbreviations = grouping.abbreviationsPaired
-            )
-        }
+        val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
+        val classing = Classing(
+            group = allClassesByAbbreviation[group],
+            handicap = allClassesByAbbreviation[handicap] ?: error("No class found for handicap: $handicap")
+        )
         val person = personService.findById(personId)
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            grouping = grouping,
+            classing = classing,
             number = number,
             firstName = firstName,
             lastName = lastName

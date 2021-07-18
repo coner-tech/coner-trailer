@@ -15,14 +15,12 @@ import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
-import org.coner.trailer.io.service.CrispyFishGroupingService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.junit.platform.commons.util.Preconditions
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -40,8 +38,6 @@ class EventSetCommandTest {
 
     @MockK lateinit var dbConfig: DatabaseConfiguration
     @MockK lateinit var service: EventService
-    @MockK lateinit var groupingService: CrispyFishGroupingService
-    @MockK lateinit var personService: PersonService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var view: EventView
 
@@ -58,8 +54,6 @@ class EventSetCommandTest {
             di = DI {
                 bind<DatabaseConfiguration>() with instance(dbConfig)
                 bind<EventService>() with instance(service)
-                bind<CrispyFishGroupingService>() with instance(groupingService)
-                bind<PersonService>() with instance(personService)
                 bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
                 bind<EventView>() with instance(view)
             }

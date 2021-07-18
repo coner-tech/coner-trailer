@@ -6,7 +6,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.key
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.TestGroupings
+import org.coner.trailer.TestClasses
 import org.coner.trailer.TestPeople
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
@@ -38,7 +38,7 @@ class StandingsReportCreatorFromCrispyFishTest {
     @Test
     fun `It should produce season points standings for LSCC 2019 Simplified`() {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val competitionGroupedEventResults = seasonFixture.events.map { eventFixture ->
+        val competitionGroupedEventResults = seasonFixture.events.associate { eventFixture ->
             val allRegistrations = eventFixture.registrations()
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
@@ -53,19 +53,24 @@ class StandingsReportCreatorFromCrispyFishTest {
                 participantResultMapper = eventFixture.groupedParticipantResultMapper,
                 scoredRunsComparatorProvider = { scoredRunsComparator }
             )
-            eventFixture.coreSeasonEvent to creator.factory(eventFixture.coreSeasonEvent.event.crispyFish!!, context)
-        }.toMap()
+            val groupEventResults = creator.factory(
+                eventCrispyFishMetadata = eventFixture.coreSeasonEvent.event.crispyFish!!,
+                allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+                context = context
+            )
+            eventFixture.coreSeasonEvent to groupEventResults
+        }
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 eventResultsType = StandardEventResultsTypes.grouped,
                 season = seasonFixture.season,
-                eventToGroupedEventResults = competitionGroupedEventResults,
+                eventToGroupEventResults = competitionGroupedEventResults,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified
         )
 
         val actual = creator.createGroupedStandingsSections(param)
 
         assertThat(actual).all {
-            key(TestGroupings.Lscc2019.NOV).all {
+            key(TestClasses.Lscc2019.NOV).all {
                 standings().all {
                     hasSize(4)
                     index(0).all {
@@ -94,7 +99,7 @@ class StandingsReportCreatorFromCrispyFishTest {
                     }
                 }
             }
-            key(TestGroupings.Lscc2019.HS).all {
+            key(TestClasses.Lscc2019.HS).all {
                 standings().all {
                     hasSize(2)
                     index(0).all {
@@ -111,7 +116,7 @@ class StandingsReportCreatorFromCrispyFishTest {
                     }
                 }
             }
-            key(TestGroupings.Lscc2019.STR).all {
+            key(TestClasses.Lscc2019.STR).all {
                 standings().all {
                     hasSize(3)
                     index(0).all {

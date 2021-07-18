@@ -9,10 +9,10 @@ object TestGroupedEventResults {
         private val policy = TestPolicies.lsccV1
 
         val points1 = listOf(
-            GroupedEventResults(
+            GroupEventResults(
                 type = StandardEventResultsTypes.grouped,
-                groupingsToResultsMap = sortedMapOf(
-                    TestGroupings.Lscc2019.NOV to listOf(
+                groupParticipantResults = sortedMapOf(
+                    TestClasses.Lscc2019.NOV to listOf(
                         testParticipantResult(
                             position = 4,
                             score = Score("39.297"),
@@ -140,7 +140,7 @@ object TestGroupedEventResults {
                             diffPrevious = Time("0.043")
                         )
                     ),
-                    TestGroupings.Lscc2019.STR to listOf(
+                    TestClasses.Lscc2019.STR to listOf(
                         testParticipantResult(
                             position = 2,
                             score = Score("47.544"),
@@ -225,7 +225,7 @@ object TestGroupedEventResults {
                             diffPrevious = Time("0.349")
                         )
                     ),
-                    TestGroupings.Lscc2019.GS to listOf(
+                    TestClasses.Lscc2019.GS to listOf(
                         testParticipantResult(
                             position = 2,
                             score = Score("48.141"),
@@ -316,12 +316,12 @@ object TestGroupedEventResults {
     }
 
     object LsccTieBreaking {
-        val points1: List<GroupedEventResults>
+        val points1: List<GroupEventResults>
             get() = listOf(
-                GroupedEventResults(
+                GroupEventResults(
                     type = StandardEventResultsTypes.grouped,
-                    groupingsToResultsMap = sortedMapOf(
-                        TestGroupings.Lscc2019.HS to listOf(
+                    groupParticipantResults = sortedMapOf(
+                        TestClasses.Lscc2019.HS to listOf(
                             tieBreakingParticipantResult(
                                 position = 1,
                                 participant = TestParticipants.LsccTieBreaking.REBECCA_JACKSON
@@ -347,12 +347,12 @@ object TestGroupedEventResults {
                     runCount = 1
                 )
             )
-        val points2: List<GroupedEventResults>
+        val points2: List<GroupEventResults>
             get() = listOf(
-                GroupedEventResults(
+                GroupEventResults(
                     type = StandardEventResultsTypes.grouped,
-                    groupingsToResultsMap = sortedMapOf(
-                        TestGroupings.Lscc2019.HS to listOf(
+                    groupParticipantResults = sortedMapOf(
+                        TestClasses.Lscc2019.HS to listOf(
                             tieBreakingParticipantResult(
                                 position = 1,
                                 participant = TestParticipants.LsccTieBreaking.JIMMY_MCKENZIE

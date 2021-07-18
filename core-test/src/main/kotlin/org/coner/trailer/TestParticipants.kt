@@ -4,96 +4,98 @@ object TestParticipants {
     object Lscc2019Points1 {
         val NORMAN_ROBINSON: Participant by lazy {
             factory(
-                    person = TestPeople.NORMAN_ROBINSON,
-                    grouping = TestGroupings.Lscc2019.GS,
-                    number = "52",
-                    car = Car(
-                            model = "2017 Volkswagen GTI",
-                            color = "White"
-                    )
+                person = TestPeople.NORMAN_ROBINSON,
+                group = null,
+                handicap = TestClasses.Lscc2019.GS,
+                number = "52",
+                car = Car(
+                    model = "2017 Volkswagen GTI",
+                    color = "White"
+                )
             )
         }
         val TERI_POTTER: Participant by lazy {
             factory(
-                    person = TestPeople.TERI_POTTER,
-                    grouping = TestGroupings.Lscc2019.GS,
-                    number = "40",
-                    car = Car(
-                            model = "2017 Ford Focus ST",
-                            color = "White"
-                    )
+                person = TestPeople.TERI_POTTER,
+                group = null,
+                handicap = TestClasses.Lscc2019.GS,
+                number = "40",
+                car = Car(
+                    model = "2017 Ford Focus ST",
+                    color = "White"
+                )
             )
         }
         val EUGENE_DRAKE: Participant by lazy {
             factory(
-                    person = TestPeople.EUGENE_DRAKE,
-                    grouping = TestGroupings.Lscc2019.GS,
-                    number = "1",
-                    car = Car(
-                            model = "1999 Mazda Miata",
-                            color = "" // empty
-                    )
+                person = TestPeople.EUGENE_DRAKE,
+                group = null,
+                handicap = TestClasses.Lscc2019.GS,
+                number = "1",
+                car = Car(
+                    model = "1999 Mazda Miata",
+                    color = "" // empty
+                )
             )
         }
         val JIMMY_MCKENZIE: Participant by lazy {
             factory(
-                    person = TestPeople.JIMMY_MCKENZIE,
-                    grouping = TestGroupings.Lscc2019.STR,
-                    number = "23",
-                    car = Car(
-                            model = "1994 Mazda Miata",
-                            color = "White"
-                    )
+                person = TestPeople.JIMMY_MCKENZIE,
+                group = null,
+                handicap = TestClasses.Lscc2019.STR,
+                number = "23",
+                car = Car(
+                    model = "1994 Mazda Miata",
+                    color = "White"
+                )
             )
         }
         val REBECCA_JACKSON: Participant by lazy {
             factory(
-                    person = TestPeople.REBECCA_JACKSON,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "1",
-                    car = Car(
-                            model = "2017 Mazda 6",
-                            color = "Red"
-                    )
+                person = TestPeople.REBECCA_JACKSON,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "1",
+                car = Car(
+                    model = "2017 Mazda 6",
+                    color = "Red"
+                )
             )
         }
         val BRANDY_HUFF: Participant by lazy {
             factory(
-                    person = TestPeople.BRANDY_HUFF,
-                    grouping = Grouping.Paired(
-                            pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.BS
-                    ),
-                    number = "177",
-                    car = Car(
-                            model = "2018 Subaru WRX",
-                            color = "WorldRallyBlue"
-                    )
+                person = TestPeople.BRANDY_HUFF,
+                group = TestClasses.Lscc2019.NOV,
+                handicap = TestClasses.Lscc2019.BS,
+                number = "177",
+                car = Car(
+                    model = "2018 Subaru WRX",
+                    color = "WorldRallyBlue"
+                )
             )
         }
         val BRYANT_MORAN: Participant by lazy {
             factory(
-                    person = TestPeople.BRYANT_MORAN,
-                    grouping = Grouping.Paired(
-                            pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.GS
-                    ),
-                    number = "58",
-                    car = Car(
-                            model = "2017 Volkswagen GTI",
-                            color = "White"
-                    )
+                person = TestPeople.BRYANT_MORAN,
+                group = TestClasses.Lscc2019.NOV,
+                handicap = TestClasses.Lscc2019.GS,
+                number = "58",
+                car = Car(
+                    model = "2017 Volkswagen GTI",
+                    color = "White"
+                )
             )
         }
         val DOMINIC_ROGERS: Participant by lazy {
             factory(
-                    person = TestPeople.DOMINIC_ROGERS,
-                    grouping = Grouping.Paired(
-                            pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
-                    ),
-                    number = "18",
-                    car = Car(
-                            model = "2002 Mazda Miata",
-                            color = "Blue"
-                    )
+                person = TestPeople.DOMINIC_ROGERS,
+                group = TestClasses.Lscc2019.NOV,
+                handicap = TestClasses.Lscc2019.ES,
+                number = "18",
+                car = Car(
+                    model = "2002 Mazda Miata",
+                    color = "Blue"
+                )
             )
         }
     }
@@ -101,49 +103,50 @@ object TestParticipants {
     object Lscc2019Points1Simplified {
         val ANASTASIA_RIGLER: Participant by lazy { factory(
             person = TestPeople.ANASTASIA_RIGLER,
-            grouping = TestGroupings.Lscc2019.HS,
+            group = null,
+            handicap = TestClasses.Lscc2019.HS,
             number = "130",
             car = Car(model = "2015 Honda CR-Z", color = "White")
         ) }
         val REBECCA_JACKSON: Participant by lazy { factory(
             person = TestPeople.REBECCA_JACKSON,
-            grouping = TestGroupings.Lscc2019.HS,
+            group = null,
+            handicap = TestClasses.Lscc2019.HS,
             number = "1",
             car = Car(model = "2017 Mazda 6", color = "Red")
         ) }
         val EUGENE_DRAKE: Participant by lazy { factory(
             person = TestPeople.EUGENE_DRAKE,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "1",
             car = Car(model = "1999 Mazda Miata", color = "")
         ) }
         val JIMMY_MCKENZIE: Participant by lazy { factory(
             person = TestPeople.JIMMY_MCKENZIE,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "23",
             car = Car(model = "1994 Mazda Miata", color = "White")
         ) }
         val BRANDY_HUFF: Participant by lazy { factory(
             person = TestPeople.BRANDY_HUFF,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.BS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.BS,
             number = "177",
             car = Car(model = "2018 Subaru WRX", color = "WorldRallyBlue")
         ) }
         val BRYANT_MORAN: Participant by lazy { factory(
             person = TestPeople.BRYANT_MORAN,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.ES,
             number = "58",
             car = Car(model = "2017 Volkswagen GTI", color = "White")
         ) }
         val DOMINIC_ROGERS: Participant by lazy { factory(
             person = TestPeople.DOMINIC_ROGERS,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.ES,
             number = "18",
             car = Car(model = "2002 Mazda Miata", color = "Blue")
         ) }
@@ -152,43 +155,43 @@ object TestParticipants {
     object Lscc2019Points2Simplified {
         val ANASTASIA_RIGLER: Participant by lazy { factory(
             person = TestPeople.ANASTASIA_RIGLER,
-            grouping = TestGroupings.Lscc2019.HS,
+            group = null,
+            handicap = TestClasses.Lscc2019.HS,
             number = "130",
             car = Car(model = "2015 Honda CR-Z", color = "White")
         ) }
         val REBECCA_JACKSON: Participant by lazy { factory(
             person = TestPeople.REBECCA_JACKSON,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "8",
             car = Car(model = "2002 Honda S2000", color = "Silver")
         ) }
         val JIMMY_MCKENZIE: Participant by lazy { factory(
             person = TestPeople.JIMMY_MCKENZIE,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "23",
             car = Car(model = "1994 Mazda Miata", color = "White")
         ) }
         val BRANDY_HUFF: Participant by lazy { factory(
             person = TestPeople.BRANDY_HUFF,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.BS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.BS,
             number = "52",
             car = Car(model = "2018 Subaru WRX", color = "WorldRallyBlue")
         ) }
         val DOMINIC_ROGERS: Participant by lazy { factory(
             person = TestPeople.DOMINIC_ROGERS,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.ES,
             number = "18",
             car = Car(model = "2002 Mazda Miata", color = "Blue"),
         ) }
         val BENNETT_PANTONE: Participant by lazy { factory(
             person = TestPeople.BENNETT_PANTONE,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.CS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.CS,
             number = "20",
             car = Car(model = "2003 Honda S2000", color = "Spa Yellow")
         ) }
@@ -197,57 +200,57 @@ object TestParticipants {
     object Lscc2019Points3Simplified {
         val ANASTASIA_RIGLER: Participant by lazy { factory(
             person = TestPeople.ANASTASIA_RIGLER,
-            grouping = TestGroupings.Lscc2019.HS,
+            group = null,
+            handicap = TestClasses.Lscc2019.HS,
             number = "130",
             car = Car(model = "2015 Honda CR-Z", "White")
         ) }
         val REBECCA_JACKSON: Participant by lazy { factory(
             person = TestPeople.REBECCA_JACKSON,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "8",
             car = Car(model = "2002 Honda S2000", color = "Silver")
         ) }
         val JIMMY_MCKENZIE: Participant by lazy { factory(
             person = TestPeople.JIMMY_MCKENZIE,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "23",
             car = Car(model = "1994 Mazda Miata", color = "White")
         ) }
         val EUGENE_DRAKE: Participant by lazy { factory(
             person = TestPeople.EUGENE_DRAKE,
-            grouping = TestGroupings.Lscc2019.STR,
+            group = null,
+            handicap = TestClasses.Lscc2019.STR,
             number = "1",
             car = Car(model = "1999 Mazda Miata", color = "")
         ) }
         val BRANDY_HUFF: Participant by lazy { factory(
             person = TestPeople.BRANDY_HUFF,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.BS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.BS,
             number = "52",
             car = Car(model = "2018 Subaru WRX", color = "WorldRallyBlue")
         ) }
         val BRYANT_MORAN: Participant by lazy { factory(
             person = TestPeople.BRYANT_MORAN,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.GS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.GS,
             number = "58",
             car = Car(model = "2017 Volkswagen GTI", color = "White")
         ) }
         val DOMINIC_ROGERS: Participant by lazy { factory(
             person = TestPeople.DOMINIC_ROGERS,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.ES
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.ES,
             number = "18",
             car = Car(model = "2002 Mazda Miata", color = "Blue")
         ) }
         val BENNETT_PANTONE: Participant by lazy { factory(
             person = TestPeople.BENNETT_PANTONE,
-            grouping = Grouping.Paired(
-                pair = TestGroupings.Lscc2019.NOV to TestGroupings.Lscc2019.CS
-            ),
+            group = TestClasses.Lscc2019.NOV,
+            handicap = TestClasses.Lscc2019.CS,
             number = "20",
             car = Car(model = "2003 Honda S2000", color = "Spa Yellow")
         ) }
@@ -256,64 +259,70 @@ object TestParticipants {
     object LsccTieBreaking {
         val REBECCA_JACKSON: Participant by lazy {
             factory(
-                    person = TestPeople.REBECCA_JACKSON,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "1",
-                    car = Car(
-                            model = "2017 Mazda 6",
-                            color = "Red"
-                    )
+                person = TestPeople.REBECCA_JACKSON,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "1",
+                car = Car(
+                    model = "2017 Mazda 6",
+                    color = "Red"
+                )
             )
         }
         val JIMMY_MCKENZIE: Participant by lazy {
             factory(
-                    person = TestPeople.JIMMY_MCKENZIE,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "23",
-                    car = Car(
-                            model = "1994 Mazda Miata",
-                            color = "White"
-                    )
+                person = TestPeople.JIMMY_MCKENZIE,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "23",
+                car = Car(
+                    model = "1994 Mazda Miata",
+                    color = "White"
+                )
             )
         }
         val EUGENE_DRAKE: Participant by lazy {
             factory(
-                    person = TestPeople.EUGENE_DRAKE,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "1",
-                    car = Car(
-                            model = "1999 Mazda Miata",
-                            color = "" // empty
-                    )
+                person = TestPeople.EUGENE_DRAKE,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "1",
+                car = Car(
+                    model = "1999 Mazda Miata",
+                    color = "" // empty
+                )
             )
         }
         val TERI_POTTER: Participant by lazy {
             factory(
-                    person = TestPeople.TERI_POTTER,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "40",
-                    car = Car(
-                            model = "2017 Ford Focus ST",
-                            color = "White"
-                    )
+                person = TestPeople.TERI_POTTER,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "40",
+                car = Car(
+                    model = "2017 Ford Focus ST",
+                    color = "White"
+                )
             )
         }
         val HARRY_WEBSTER: Participant by lazy {
             factory(
-                    person = TestPeople.HARRY_WEBSTER,
-                    grouping = TestGroupings.Lscc2019.HS,
-                    number = "46",
-                    car = Car(
-                            model = "2013 Mazda mazdaspeed3",
-                            color = "silver"
-                    )
+                person = TestPeople.HARRY_WEBSTER,
+                group = null,
+                handicap = TestClasses.Lscc2019.HS,
+                number = "46",
+                car = Car(
+                    model = "2013 Mazda mazdaspeed3",
+                    color = "silver"
+                )
             )
         }
     }
 
     private fun factory(
         person: Person,
-        grouping: Grouping,
+        group: Class?,
+        handicap: Class,
         number: String,
         car: Car,
         seasonPointsEligible: Boolean = true
@@ -321,10 +330,8 @@ object TestParticipants {
         person = person,
         firstName = person.firstName,
         lastName = person.lastName,
-        signage = Participant.Signage(
-            grouping = grouping,
-            number = number,
-        ),
+        classing = Classing(group = group, handicap = handicap),
+        number = number,
         car = car,
         seasonPointsEligible = seasonPointsEligible,
         sponsor = null

@@ -28,7 +28,7 @@ data class Event(
     ) {
 
         data class PeopleMapKey(
-            val grouping: Grouping,
+            val classing: Classing,
             val number: String,
             val firstName: String,
             val lastName: String

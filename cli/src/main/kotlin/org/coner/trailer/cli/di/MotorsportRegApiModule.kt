@@ -36,7 +36,7 @@ fun motorsportRegApiModule(
     bind<MotorsportRegPeopleMapService>() with singleton { MotorsportRegPeopleMapService(
         motorsportRegEventService = instance(),
         motorsportRegParticipantMapper = instance(),
-        crispyFishGroupingService = instance()
+        crispyFishClassService = instance()
     ) }
     bind<MotorsportRegEventService>() with singleton { MotorsportRegEventService(
         authenticatedApi = instance()

@@ -7,7 +7,7 @@ object TestSeasonPointsCalculatorConfigurations {
     val lscc2019 = SeasonPointsCalculatorConfiguration(
             name = "LSCC 2019",
             eventResultsTypeToEventPointsCalculator = mapOf(
-                    StandardEventResultsTypes.grouped to TestEventPointsCalculators.lsccGroupingCalculator,
+                    StandardEventResultsTypes.grouped to TestEventPointsCalculators.lsccGroupedCalculator,
                     StandardEventResultsTypes.raw to TestEventPointsCalculators.lsccOverallCalculator,
                     StandardEventResultsTypes.pax to TestEventPointsCalculators.lsccOverallCalculator
             ),
@@ -17,7 +17,7 @@ object TestSeasonPointsCalculatorConfigurations {
     val lscc2019Simplified = SeasonPointsCalculatorConfiguration(
             name = "LSCC 2019 Simplified",
             eventResultsTypeToEventPointsCalculator = mapOf(
-                    StandardEventResultsTypes.grouped to TestEventPointsCalculators.lsccGroupingCalculator,
+                    StandardEventResultsTypes.grouped to TestEventPointsCalculators.lsccGroupedCalculator,
                     StandardEventResultsTypes.raw to TestEventPointsCalculators.lsccOverallCalculator,
                     StandardEventResultsTypes.pax to TestEventPointsCalculators.lsccOverallCalculator
             ),

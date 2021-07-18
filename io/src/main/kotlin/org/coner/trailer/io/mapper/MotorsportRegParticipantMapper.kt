@@ -1,17 +1,13 @@
 package org.coner.trailer.io.mapper
 
-import org.coner.trailer.Car
-import org.coner.trailer.Grouping
-import org.coner.trailer.Participant
-import org.coner.trailer.Person
+import org.coner.trailer.*
 import org.coner.trailer.client.motorsportreg.model.Assignment
-import org.coner.trailer.io.service.PersonService
 
 class MotorsportRegParticipantMapper {
 
     fun toCore(
         peopleByMotorsportRegMemberId: Map<String, Person>,
-        groupingsByAbbreviation: Map<String, Grouping.Singular>,
+        allClassesByAbbreviation: Map<String, Class>,
         motorsportRegAssignment: Assignment
     ): Participant {
         val person = peopleByMotorsportRegMemberId[motorsportRegAssignment.motorsportRegMemberId]
@@ -23,24 +19,24 @@ class MotorsportRegParticipantMapper {
                 model = motorsportRegAssignment.vehicleModel,
                 color = motorsportRegAssignment.vehicleColor
             ),
-            signage = toCoreSignage(
-                groupingsByAbbreviation = groupingsByAbbreviation,
+            classing = toCoreClassing(
+                allClassesByAbbreviation = allClassesByAbbreviation,
                 motorsportRegAssignment = motorsportRegAssignment
             ),
+            number = motorsportRegAssignment.vehicleNumber,
             seasonPointsEligible = true,
             sponsor = motorsportRegAssignment.sponsor
         )
     }
 
-    fun toCoreSignage(
-        groupingsByAbbreviation: Map<String, Grouping.Singular>,
+    fun toCoreClassing(
+        allClassesByAbbreviation: Map<String, Class>,
         motorsportRegAssignment: Assignment
-    ): Participant.Signage {
-        val category = groupingsByAbbreviation[motorsportRegAssignment.classModifierShort]
-        val handicap = groupingsByAbbreviation[motorsportRegAssignment.classShort] ?: Grouping.UNKNOWN
-        return Participant.Signage(
-            grouping = category?.let { Grouping.Paired(it to handicap) } ?: handicap,
-            number = motorsportRegAssignment.vehicleNumber
+    ): Classing? {
+        return Classing(
+            group = allClassesByAbbreviation[motorsportRegAssignment.classModifierShort],
+            handicap = allClassesByAbbreviation[motorsportRegAssignment.classShort]
+                ?: return null
         )
     }
 }

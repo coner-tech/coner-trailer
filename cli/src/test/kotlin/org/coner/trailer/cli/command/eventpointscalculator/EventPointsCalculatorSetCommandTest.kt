@@ -36,7 +36,7 @@ class EventPointsCalculatorSetCommandTest {
 
     @Test
     fun `It should set all properties of calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         val set = calculator.copy(
                 name = "set",
@@ -74,7 +74,7 @@ class EventPointsCalculatorSetCommandTest {
 
     @Test
     fun `It should only rename a calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         val set = calculator.copy(
                 name = "set"

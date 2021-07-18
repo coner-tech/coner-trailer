@@ -7,6 +7,7 @@ import assertk.assertions.*
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
 import org.coner.trailer.TestEvents
+import org.coner.trailer.TestParticipants
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
@@ -90,7 +91,6 @@ class ConerTrailerCliIT {
     fun `It should add an event`() {
         val databaseName = "event-and-prerequisites"
         command.parse(appArgumentBuilder.buildConfigureDatabaseAdd(databaseName))
-
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         command.parse(appArgumentBuilder.buildPolicyAdd(event.policy))
@@ -119,6 +119,38 @@ class ConerTrailerCliIT {
         }
     }
 
+    @Test
+    fun `It should add a crispy fish person map entry`() {
+        val databaseName = "add-crispy-fish-person-map-entry"
+        command.parse(appArgumentBuilder.buildConfigureDatabaseAdd(databaseName))
+        val event = TestEvents.Lscc2019Simplified.points1
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        command.parse(appArgumentBuilder.buildPolicyAdd(event.policy))
+        val participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF
+        command.parse(appArgumentBuilder.buildPersonAdd(participant.person!!))
+        command.parse(appArgumentBuilder.buildEventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ))
+
+        command.parse(appArgumentBuilder.buildEventCrispyFishPersonMapAdd(
+            event = event,
+            participant = participant
+        ))
+
+        assertAll {
+            assertThat(testConsole.output, "output").all {
+                contains(event.name)
+                contains("${event.date}")
+                contains(participant.classing!!.group!!.abbreviation)
+                contains(participant.classing!!.handicap.abbreviation)
+                contains(participant.number!!)
+                contains("${participant.person!!.id}")
+            }
+            assertThat(testConsole.error, "error").isEmpty()
+        }
+    }
 
     @Test
     fun `It should print event raw results in HTML format`() {

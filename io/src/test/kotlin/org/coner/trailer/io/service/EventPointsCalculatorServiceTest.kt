@@ -40,7 +40,7 @@ class EventPointsCalculatorServiceTest {
 
     @Test
     fun `It should create calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.create(snoozleCalculator) } answers { Unit }
@@ -55,7 +55,7 @@ class EventPointsCalculatorServiceTest {
 
     @Test
     fun `It should find calculator by id`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         val slot = slot<EventPointsCalculatorEntity.Key>()
         every { resource.read(capture(slot)) } returns snoozleCalculator
         every { mapper.fromSnoozle(snoozleCalculator) } returns calculator
@@ -72,13 +72,13 @@ class EventPointsCalculatorServiceTest {
 
     @Test
     fun `It should find calculator by name`() {
-        val lsccGrouping = TestEventPointsCalculators.lsccGroupingCalculator
+        val lsccGrouped = TestEventPointsCalculators.lsccGroupedCalculator
         val lsccOverall = TestEventPointsCalculators.lsccOverallCalculator
         every { resource.stream() } returns Stream.of(
-                mockk { every { name } returns lsccGrouping.name },
+                mockk { every { name } returns lsccGrouped.name },
                 mockk { every { name } returns lsccOverall.name }
         )
-        every { mapper.fromSnoozle(match { it.name == lsccGrouping.name }) } returns lsccGrouping
+        every { mapper.fromSnoozle(match { it.name == lsccGrouped.name }) } returns lsccGrouped
         every { mapper.fromSnoozle(match { it.name == lsccOverall.name }) } returns lsccOverall
 
         val actual = service.findByName(lsccOverall.name)
@@ -99,7 +99,7 @@ class EventPointsCalculatorServiceTest {
 
     @Test
     fun `It should update calculators`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { persistConstraints.assess(calculator) } answers { Unit }
         every { mapper.toSnoozle(calculator) } returns mockk()
         every { resource.update(any()) } returns Unit
@@ -114,7 +114,7 @@ class EventPointsCalculatorServiceTest {
 
     @Test
     fun `It should delete calculators`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         val snoozleCalculator: EventPointsCalculatorEntity = mockk()
         every { mapper.toSnoozle(calculator) } returns snoozleCalculator
         every { resource.delete(snoozleCalculator) } returns Unit

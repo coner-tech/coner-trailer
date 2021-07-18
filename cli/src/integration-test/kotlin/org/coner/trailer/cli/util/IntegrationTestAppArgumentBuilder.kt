@@ -1,6 +1,8 @@
 package org.coner.trailer.cli.util
 
 import org.coner.trailer.Event
+import org.coner.trailer.Participant
+import org.coner.trailer.Person
 import org.coner.trailer.Policy
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
@@ -55,6 +57,49 @@ class IntegrationTestAppArgumentBuilder(
             "--crispy-fish-class-definition-file", "$crispyFishClassDefinitionFile",
             "--policy-id", "${event.policy.id}"
         )
+    }
+
+    fun buildPersonAdd(person: Person): Array<String> {
+        val argumentBuilder = mutableListOf<String>().apply {
+            addAll(arrayOf(
+                "person", "add",
+                "--id", "${person.id}"
+            ))
+            person.clubMemberId?.also {
+                addAll(arrayOf("--club-member-id", it))
+            }
+            addAll(arrayOf(
+                "--first-name", person.firstName,
+                "--last-name", person.lastName
+            ))
+            person.motorsportReg?.memberId?.also {
+                addAll(arrayOf("--motorsportreg-member-id", it))
+            }
+        }
+        return build(*argumentBuilder.toTypedArray())
+    }
+
+    fun buildEventCrispyFishPersonMapAdd(
+        event: Event,
+        participant: Participant
+    ): Array<String> {
+        val argumentBuilder = mutableListOf<String>().apply {
+            addAll(arrayOf(
+                "event", "crispy-fish-person-map-add",
+                "${event.id}"
+            ))
+            participant.classing?.group?.abbreviation?.also {
+                addAll(arrayOf("--group", it))
+            }
+            addAll(arrayOf(
+                "--handicap", participant.classing?.handicap?.abbreviation!!,
+                "--number", participant.number!!,
+                "--first-name", participant.firstName!!,
+                "--last-name", participant.lastName!!,
+                "--person-id", "${participant.person!!.id}"
+            ))
+        }
+        return build(*argumentBuilder.toTypedArray())
     }
 
     fun buildEventResults(

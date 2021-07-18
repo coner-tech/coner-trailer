@@ -6,14 +6,16 @@ import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import org.coner.trailer.Classing
 import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.PersonView
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
@@ -36,12 +38,13 @@ class EventCrispyFishPersonMapAssembleCommand(
 
     private val service: EventService by instance()
     private val personService: PersonService by instance()
+    private val crispyFishClassService: CrispyFishClassService by instance()
+    private val crispyFishClassingMapper: CrispyFishClassingMapper by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
-    private val personView: PersonView by instance()
-    private val crispyFishParticipantMapper: CrispyFishParticipantMapper by instance()
     private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
+    private val personView: PersonView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -53,6 +56,7 @@ class EventCrispyFishPersonMapAssembleCommand(
             throw Abort()
         }
         val context = crispyFishEventMappingContextService.load(crispyFish)
+        val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
         val peopleMap = mutableMapOf<Event.CrispyFishMetadata.PeopleMapKey, Person>()
         eventCrispyFishPersonMapVerifier.verify(
             event = event,
@@ -92,7 +96,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     throw Abort()
                 }
 
-                override fun onUnmappableGrouping(registration: Registration) {
+                override fun onUnmappableClassing(registration: Registration) {
                     enter()
                     echo("Found unmappable registration with null grouping.")
                     echo("Registration:")
@@ -164,13 +168,13 @@ class EventCrispyFishPersonMapAssembleCommand(
 
                 override fun onUnmappedExactMatch(registration: Registration, person: Person) {
                     enter()
-                    val signage = crispyFishParticipantMapper.toCoreSignage(
-                        context = context,
-                        crispyFish = registration
-                    )
+                    val classing: Classing = requireNotNull(crispyFishClassingMapper.toCore(
+                        allClassesByAbbreviation = allClassesByAbbreviation,
+                        cfRegistration = registration
+                    )) { "Unable to resolve classing for exact match registration: $registration}" }
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
-                        grouping = checkNotNull(signage.grouping),
-                        number = checkNotNull(signage.number),
+                        classing = classing,
+                        number = checkNotNull(registration.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )
@@ -185,7 +189,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                 override fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) {
                     enter()
                     echo("Found unused mapping. Ignoring.")
-                    echo("Signage: ${key.grouping.abbreviation} ${key.number}")
+                    echo("Signage: ${key.classing.abbreviation} ${key.number}")
                     echo("Name: ${key.firstName} ${key.lastName}")
                     echo("Person:")
                     echo(personView.render(person))
@@ -226,10 +230,13 @@ class EventCrispyFishPersonMapAssembleCommand(
                             else -> throw UsageError("Not a valid choice: $input")
                         }
                     } ) ?: throw Abort()
-                    val signage = crispyFishParticipantMapper.toCoreSignage(context, registration)
+                    val classing = crispyFishClassingMapper.toCore(
+                        allClassesByAbbreviation = allClassesByAbbreviation,
+                        cfRegistration = registration
+                    )
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
-                        grouping = checkNotNull(signage.grouping),
-                        number = checkNotNull(signage.number),
+                        classing = checkNotNull(classing),
+                        number = checkNotNull(registration.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )

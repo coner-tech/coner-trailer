@@ -1,10 +1,10 @@
 package org.coner.trailer.eventresults
 
-import org.coner.trailer.Grouping
+import org.coner.trailer.Class
 import java.util.*
 
-class GroupedEventResults(
+class GroupEventResults(
         type: EventResultsType,
         runCount: Int,
-        val groupingsToResultsMap: SortedMap<Grouping, List<ParticipantResult>>
+        val groupParticipantResults: SortedMap<Class, List<ParticipantResult>>
 ) : EventResults(type = type, runCount = runCount)

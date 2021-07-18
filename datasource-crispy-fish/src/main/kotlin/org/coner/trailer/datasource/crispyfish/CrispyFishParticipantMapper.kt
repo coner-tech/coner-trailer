@@ -1,16 +1,17 @@
 package org.coner.trailer.datasource.crispyfish
 
-import tech.coner.crispyfish.model.Registration
 import org.coner.trailer.Car
+import org.coner.trailer.Class
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
+import tech.coner.crispyfish.model.Registration
 
 class CrispyFishParticipantMapper(
-    private val crispyFishGroupingMapper: CrispyFishGroupingMapper
+    private val crispyFishClassingMapper: CrispyFishClassingMapper
 ) {
 
     fun toCore(
-        context: CrispyFishEventMappingContext,
+        allClassesByAbbreviation: Map<String, Class>,
         fromRegistration: Registration,
         withPerson: Person?
     ): Participant {
@@ -22,19 +23,13 @@ class CrispyFishParticipantMapper(
                 model = fromRegistration.carModel,
                 color = fromRegistration.carColor
             ),
-            signage = toCoreSignage(context, fromRegistration),
+            number = fromRegistration.number,
+            classing = crispyFishClassingMapper.toCore(
+                allClassesByAbbreviation = allClassesByAbbreviation,
+                cfRegistration = fromRegistration
+            ),
             seasonPointsEligible = withPerson != null,
             sponsor = fromRegistration.sponsor
-        )
-    }
-
-    fun toCoreSignage(context: CrispyFishEventMappingContext, crispyFish: Registration): Participant.Signage {
-        return Participant.Signage(
-            grouping = crispyFishGroupingMapper.toCore(
-                context = context,
-                fromRegistration = crispyFish
-            ),
-            number = crispyFish.number
         )
     }
 }
