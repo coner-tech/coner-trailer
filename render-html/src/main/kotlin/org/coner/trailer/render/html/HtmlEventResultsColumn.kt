@@ -298,9 +298,9 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                     list-style-position: inside;
                 }
                 ol.runs li {
-                    min-width: 110px;
+                    min-width: 100px;
                 }
-                @media screen and (min-width: 1280px) {
+                @media screen and (min-width: 1024px) {
                     .event-${event.id} ol.runs {
                         grid-template-columns: repeat(${results.runCount}, 1fr);
                     }
