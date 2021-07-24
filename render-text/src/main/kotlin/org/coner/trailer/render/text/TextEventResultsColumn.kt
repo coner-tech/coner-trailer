@@ -76,8 +76,12 @@ abstract class TextEventResultsColumn : EventResultsColumnRenderer<
         override val header: (EventResultsType) -> String = {
             "Runs"
         }
-        override val data: (ParticipantResult) -> String = {
-            it.scoredRuns.joinToString(separator = "|") { resultRun -> render(resultRun.run).padEnd(11, '-') }
+        override val data: (ParticipantResult) -> String = { participantResult ->
+            val bestScoredRun = participantResult.personalBestScoredRunIndex?.let { participantResult.scoredRuns[it] }
+            participantResult.scoredRuns.joinToString(separator = "|") { resultRun ->
+                render(resultRun.run)
+                    .padEnd(12, if (resultRun !== bestScoredRun) '-' else '*')
+            }
         }
     }
 }
