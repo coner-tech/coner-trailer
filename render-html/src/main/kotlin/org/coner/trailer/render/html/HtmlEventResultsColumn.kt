@@ -18,7 +18,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.position {
+                .event-results table.primary th.position {
                     display: none;
                 }
             }
@@ -44,7 +44,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.signage, td.signage {
+                .event-results table.primary th.signage, .event-results table.primary td.signage {
                     display: none;
                 }
             }
@@ -68,14 +68,14 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
     class MobilePositionSignage : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            th.mobile-position-signage, td.mobile-position-signage {
+            .event-results table.primary th.mobile-position-signage, .event-results table.primary td.mobile-position-signage {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.mobile-position-signage {
+                .event-results table.primary th.mobile-position-signage {
                     display: table-cell;
                 }
-                th.mobile-position-signage span {
+                .event-results table.primary th.mobile-position-signage span {
                     display: block;
                 }
             }
@@ -134,7 +134,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.name, td.name {
+                .event-results table.primary th.name, .event-results table.primary td.name {
                     display: none;
                 }
             } 
@@ -158,7 +158,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.car-model, td.car-model {
+                .event-results table.primary th.car-model, .event-results table.primary td.car-model {
                     display: none;
                 }
             }
@@ -181,14 +181,14 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
     class MobileNameCarModel : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            th.mobile-name-car-model, td.mobile-name-car-model {
+            .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                th.mobile-name-car-model, td.mobile-name-car-model {
+                .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
                     display: table-cell;
                 }
-                td.mobile-name-car-model span {
+                .event-results table.primary td.mobile-name-car-model span {
                     display: block;
                 }
             }

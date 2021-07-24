@@ -13,7 +13,7 @@ class HtmlOverallEventResultsRenderer(
             classes = setOf("event-results", results.type.key, "event-${event.id}")
             h2 { text(results.type.title) }
             table {
-                classes = setOf("table", "table-striped", "caption-top")
+                classes = setOf("table", "table-striped", "caption-top", "event-results-table-primary")
                 caption { text(results.type.title) }
                 thead {
                     tr {

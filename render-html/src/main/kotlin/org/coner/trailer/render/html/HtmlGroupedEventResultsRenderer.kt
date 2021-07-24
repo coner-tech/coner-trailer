@@ -13,7 +13,7 @@ class HtmlGroupedEventResultsRenderer(
             classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
             h2 { text(results.type.title) }
             table {
-                classes = setOf("table", "table-striped", "caption-top")
+                classes = setOf("table", "table-striped", "caption-top", "primary")
                 thead {
                     tr {
                         columns.forEach { column -> column.header(this, results.type) }
@@ -38,7 +38,7 @@ class HtmlGroupedEventResultsRenderer(
             }
             h2 { text("Top Times") }
             table {
-                classes = setOf("table", "table-striped")
+                classes = setOf("table", "table-striped", "secondary")
                 thead {
                     tr {
                         th {
