@@ -83,6 +83,7 @@ class GroupedEventResultsFactory(
                     addAll(handicapParentTopTimes)
                     addAll(groupParentTopTimes)
                 }
+                .distinct()
                 .sortedWith(compareBy<GroupEventResults.ParentClassTopTime> { it.participantResult.score }.thenBy { it.parent.sort })
         )
     }
