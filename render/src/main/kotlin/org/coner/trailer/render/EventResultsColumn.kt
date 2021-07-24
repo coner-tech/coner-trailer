@@ -5,10 +5,10 @@ enum class EventResultsColumn {
     SIGNAGE,
     NAME,
     CAR_MODEL,
-    SCORE,
+    RUNS,
     DIFF_FIRST,
     DIFF_PREVIOUS,
-    RUNS
+    SCORE,
 }
 
 val standardEventResultsColumns = EventResultsColumn
