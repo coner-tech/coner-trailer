@@ -10,3 +10,8 @@ fun Assert<GroupEventResults>.resultsForGroupAbbreviation(abbreviation: String) 
             map[key]
         }
     }
+
+fun Assert<GroupEventResults>.parentClassTopTimes() = prop("parentClassTopTimes") { it.parentClassTopTimes }
+
+fun Assert<GroupEventResults.ParentClassTopTime>.parent() = prop("parent") { it.parent }
+fun Assert<GroupEventResults.ParentClassTopTime>.participantResult() = prop("participantResult") { it.participantResult }

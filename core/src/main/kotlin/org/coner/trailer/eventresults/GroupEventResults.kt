@@ -6,5 +6,9 @@ import java.util.*
 class GroupEventResults(
         type: EventResultsType,
         runCount: Int,
-        val groupParticipantResults: SortedMap<Class, List<ParticipantResult>>
-) : EventResults(type = type, runCount = runCount)
+        val groupParticipantResults: SortedMap<Class, List<ParticipantResult>>,
+        val parentClassTopTimes: List<ParentClassTopTime>
+) : EventResults(type = type, runCount = runCount) {
+
+        data class ParentClassTopTime(val parent: Class.Parent, val participantResult: ParticipantResult)
+}

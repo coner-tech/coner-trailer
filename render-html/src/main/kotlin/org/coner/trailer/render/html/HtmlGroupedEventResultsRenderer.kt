@@ -36,7 +36,53 @@ class HtmlGroupedEventResultsRenderer(
                     }
                 }
             }
-
+            h2 { text("Top Times") }
+            table {
+                classes = setOf("table", "table-striped")
+                thead {
+                    tr {
+                        th {
+                            scope = ThScope.col
+                            text("Category")
+                        }
+                        th {
+                            scope = ThScope.col
+                            text("Signage")
+                        }
+                        th {
+                            scope = ThScope.col
+                            text("Name")
+                        }
+                        th {
+                            scope = ThScope.col
+                            text("Time")
+                        }
+                    }
+                }
+                tbody {
+                    results.parentClassTopTimes.forEach { (group, topParticipantResult) ->
+                        tr {
+                            th {
+                                classes = setOf("category")
+                                scope = ThScope.row
+                                text(group.name)
+                            }
+                            td {
+                                classes = setOf("signage")
+                                text(topParticipantResult.participant.signageClassingNumber ?: "")
+                            }
+                            td {
+                                classes = setOf("name")
+                                text(renderName(topParticipantResult.participant))
+                            }
+                            td {
+                                classes = setOf("time")
+                                text(topParticipantResult.personalBestRun?.run?.let { render(it) } ?: "")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

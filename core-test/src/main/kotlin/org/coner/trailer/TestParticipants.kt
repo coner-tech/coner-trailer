@@ -34,7 +34,7 @@ object TestParticipants {
                 number = "1",
                 car = Car(
                     model = "1999 Mazda Miata",
-                    color = "" // empty
+                    color = null
                 )
             )
         }
@@ -120,7 +120,7 @@ object TestParticipants {
             group = null,
             handicap = TestClasses.Lscc2019.STR,
             number = "1",
-            car = Car(model = "1999 Mazda Miata", color = "")
+            car = Car(model = "1999 Mazda Miata", color = null)
         ) }
         val JIMMY_MCKENZIE: Participant by lazy { factory(
             person = TestPeople.JIMMY_MCKENZIE,
@@ -224,7 +224,7 @@ object TestParticipants {
             group = null,
             handicap = TestClasses.Lscc2019.STR,
             number = "1",
-            car = Car(model = "1999 Mazda Miata", color = "")
+            car = Car(model = "1999 Mazda Miata", color = null)
         ) }
         val BRANDY_HUFF: Participant by lazy { factory(
             person = TestPeople.BRANDY_HUFF,
@@ -289,7 +289,7 @@ object TestParticipants {
                 number = "1",
                 car = Car(
                     model = "1999 Mazda Miata",
-                    color = "" // empty
+                    color = null
                 )
             )
         }

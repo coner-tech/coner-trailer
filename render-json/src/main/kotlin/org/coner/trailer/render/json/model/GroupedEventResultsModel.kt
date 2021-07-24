@@ -17,15 +17,19 @@ class GroupedEventResultsModel(
     class ResultsModel(
         val type: EventResultsType,
         val runCount: Int,
-        val groupParticipantResults: Map<String, List<ParticipantResultModel>>
+        val groupParticipantResults: Map<String, List<ParticipantResultModel>>,
+        val topTimes: Map<String, ParticipantResultModel>
     ) {
         constructor(results: GroupEventResults) : this(
             type = results.type,
             runCount = results.runCount,
             groupParticipantResults = results.groupParticipantResults
-                .map { (grouping, results) ->
-                    grouping.abbreviation to results.map { ParticipantResultModel(it) }
+                .map { (group, results) ->
+                    group.abbreviation to results.map { ParticipantResultModel(it) }
                 }
+                .toMap(),
+            topTimes = results.parentClassTopTimes
+                .map { (parent, participantResult) -> parent.name to ParticipantResultModel(participantResult) }
                 .toMap()
         )
     }

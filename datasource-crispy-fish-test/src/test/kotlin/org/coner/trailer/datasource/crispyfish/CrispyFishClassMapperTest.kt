@@ -21,9 +21,12 @@ class CrispyFishClassMapperTest {
     @Test
     fun `It should map class definition`() {
         val input = TestClassDefinitions.Lscc2019.CS
+        val allClassParentsByName = mapOf(
+            TestClasses.Lscc2019.STREET.name to TestClasses.Lscc2019.STREET,
+            TestClasses.Lscc2019.STREET_TOURING.name to TestClasses.Lscc2019.STREET_TOURING
+        )
 
-
-        val actual = mapper.toCore(0, input)
+        val actual = mapper.toCore(allClassParentsByName, 0, input)
 
         assertThat(actual).all {
             hasAbbreviation(input.abbreviation)

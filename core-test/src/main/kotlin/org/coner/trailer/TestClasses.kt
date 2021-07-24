@@ -64,10 +64,12 @@ object TestClasses {
         ) }
 
         val STREET by lazy { Class.Parent(
-            name = "Street"
+            name = "Street",
+            sort = 0
         ) }
         val STREET_TOURING by lazy { Class.Parent(
-            name = "Street Touring"
+            name = "Touring",
+            sort = 1
         ) }
 
         val all: List<Class> by lazy { listOf(

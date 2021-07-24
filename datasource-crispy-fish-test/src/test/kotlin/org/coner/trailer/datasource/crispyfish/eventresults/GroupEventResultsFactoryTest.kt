@@ -13,7 +13,7 @@ import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
 @ExperimentalPathApi
-class GroupEventResultsCreatorTest {
+class GroupEventResultsFactoryTest {
 
     @TempDir lateinit var fixtureRoot: Path
 
@@ -32,7 +32,8 @@ class GroupEventResultsCreatorTest {
             runCount = event.runCount
         )
         val subject = GroupedEventResultsFactory(
-            participantResultMapper = event.groupedParticipantResultMapper,
+            groupParticipantResultMapper = event.groupedParticipantResultMapper,
+            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
@@ -134,6 +135,23 @@ class GroupEventResultsCreatorTest {
                     }
                 }
             }
+            parentClassTopTimes().all {
+                hasSize(2)
+                index(0).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
+                    participantResult().all {
+                        hasPosition(1)
+                        participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.EUGENE_DRAKE)
+                    }
+                }
+                index(1).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET)
+                    participantResult().all {
+                        hasPosition(1)
+                        participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
+                    }
+                }
+            }
         }
     }
 
@@ -152,7 +170,8 @@ class GroupEventResultsCreatorTest {
             runCount = event.runCount
         )
         val subject = GroupedEventResultsFactory(
-            participantResultMapper = event.groupedParticipantResultMapper,
+            groupParticipantResultMapper = event.groupedParticipantResultMapper,
+            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
@@ -177,7 +196,6 @@ class GroupEventResultsCreatorTest {
                         }
                         hasNumber("130")
                     }
-
                 }
             }
             resultsForGroupAbbreviation("STR").isNotNull().all {
@@ -239,6 +257,17 @@ class GroupEventResultsCreatorTest {
                     }
                 }
             }
+            parentClassTopTimes().all {
+                hasSize(2)
+                index(0).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.REBECCA_JACKSON)
+                }
+                index(1).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
+                }
+            }
         }
     }
 
@@ -257,7 +286,8 @@ class GroupEventResultsCreatorTest {
             runCount = event.runCount
         )
         val subject = GroupedEventResultsFactory(
-            participantResultMapper = event.groupedParticipantResultMapper,
+            groupParticipantResultMapper = event.groupedParticipantResultMapper,
+            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
 
@@ -357,6 +387,17 @@ class GroupEventResultsCreatorTest {
                         classing().isNotNull().handicap().hasAbbreviation("CS")
                         hasNumber("20")
                     }
+                }
+            }
+            parentClassTopTimes().all {
+                hasSize(2)
+                index(0).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.REBECCA_JACKSON)
+                }
+                index(1).all {
+                    parent().isSameAs(TestClasses.Lscc2019.STREET)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
                 }
             }
         }

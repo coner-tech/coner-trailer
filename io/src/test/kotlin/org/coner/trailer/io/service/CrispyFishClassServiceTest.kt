@@ -7,6 +7,7 @@ import assertk.assertions.key
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,11 +27,13 @@ class CrispyFishClassServiceTest {
 
     @BeforeEach
     fun before() {
-        val mapper = CrispyFishClassMapper()
+        val classMapper = CrispyFishClassMapper()
+        val classParentMapper = CrispyFishClassParentMapper()
         seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishClassService(
             crispyFishRoot = seasonFixture.classDefinitionFile.file.parentFile,
-            mapper = mapper
+            classMapper = classMapper,
+            classParentMapper = classParentMapper
         )
     }
 

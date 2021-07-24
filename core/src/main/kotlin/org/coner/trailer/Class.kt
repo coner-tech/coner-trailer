@@ -17,5 +17,10 @@ data class Class(
         return compareValues(sort, other.sort)
     }
 
-    data class Parent(val name: String)
+    data class Parent(val name: String, val sort: Int) : Comparable<Parent> {
+
+        override fun compareTo(other: Parent): Int {
+            return compareValues(sort, other.sort)
+        }
+    }
 }

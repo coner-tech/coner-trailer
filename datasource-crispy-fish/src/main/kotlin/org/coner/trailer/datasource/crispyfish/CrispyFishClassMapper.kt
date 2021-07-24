@@ -6,11 +6,8 @@ import java.math.BigDecimal
 
 class CrispyFishClassMapper {
 
-    fun toCores(
-        cfClassDefinitions: List<ClassDefinition>
-    ) = cfClassDefinitions.mapIndexed(this::toCore)
-
     fun toCore(
+        allClassParentsByName: Map<String, Class.Parent>,
         index: Int,
         cfClassDefinition: ClassDefinition
     ) = Class(
@@ -22,9 +19,6 @@ class CrispyFishClassMapper {
             cfClassDefinition.paxFactor > BigDecimal.ZERO -> cfClassDefinition.paxFactor
             else -> null
         },
-        parent = when {
-            cfClassDefinition.groupName.isNotEmpty() -> Class.Parent(cfClassDefinition.groupName)
-            else -> null
-        }
+        parent = allClassParentsByName[cfClassDefinition.groupName]
     )
 }

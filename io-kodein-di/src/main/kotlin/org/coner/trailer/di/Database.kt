@@ -1,9 +1,6 @@
 package org.coner.trailer.di
 
-import org.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import org.coner.trailer.datasource.crispyfish.*
 import org.coner.trailer.datasource.snoozle.*
 import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.io.constraint.*
@@ -177,8 +174,10 @@ fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("co
     // Classing
     bind<CrispyFishClassService>() with singleton { CrispyFishClassService(
         crispyFishRoot = databaseConfiguration.crispyFishDatabase.toFile(),
-        mapper = instance()
+        classMapper = instance(),
+        classParentMapper = instance()
     ) }
+    bind<CrispyFishClassParentMapper>() with singleton { CrispyFishClassParentMapper() }
     bind<CrispyFishClassMapper>() with singleton { CrispyFishClassMapper() }
     bind<CrispyFishClassingMapper>() with singleton { CrispyFishClassingMapper() }
 }

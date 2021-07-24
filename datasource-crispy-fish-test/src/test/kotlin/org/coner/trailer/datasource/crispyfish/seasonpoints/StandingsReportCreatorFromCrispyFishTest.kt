@@ -50,7 +50,8 @@ class StandingsReportCreatorFromCrispyFishTest {
                 runCount = context.runCount
             )
             val creator = GroupedEventResultsFactory(
-                participantResultMapper = eventFixture.groupedParticipantResultMapper,
+                groupParticipantResultMapper = eventFixture.groupedParticipantResultMapper,
+                rawTimeParticipantResultMapper = eventFixture.rawTimeParticipantResultMapper,
                 scoredRunsComparatorProvider = { scoredRunsComparator }
             )
             val groupEventResults = creator.factory(

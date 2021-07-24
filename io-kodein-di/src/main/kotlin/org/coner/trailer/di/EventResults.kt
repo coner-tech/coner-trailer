@@ -77,7 +77,8 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         scoredRunsComparatorProvider = factory()
     ) }
     bind<GroupedEventResultsFactory>() with multiton { policy: Policy -> GroupedEventResultsFactory(
-        participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.grouped).invoke(policy),
+        groupParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.grouped).invoke(policy),
+        rawTimeParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy),
         scoredRunsComparatorProvider = factory()
     ) }
 

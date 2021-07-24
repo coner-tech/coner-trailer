@@ -144,7 +144,8 @@ class StandingsReportCreatorTest {
                             )
                         )
                     ),
-                    runCount = 2
+                    runCount = 2,
+                    parentClassTopTimes = emptyList()
                 )
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
