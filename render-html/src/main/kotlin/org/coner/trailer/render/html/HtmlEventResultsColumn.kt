@@ -218,7 +218,14 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
     }
 
     class Score : HtmlEventResultsColumn() {
-        override fun buildStyles(event: Event, results: EventResults) = setOf(CommonStyles.time)
+        override fun buildStyles(event: Event, results: EventResults) = setOf(
+            CommonStyles.time,
+            """
+            .event-results table.primary td.score {
+                font-weight: bold;
+            }
+            """.trimIndent()
+        )
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -228,7 +235,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
-                classes = setOf("time")
+                classes = setOf("time", "score")
                 text(renderScoreColumnValue(it))
             }
         }
@@ -308,14 +315,17 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 text("Runs")
             }
         }
-        override val data: TR.(ParticipantResult) -> Unit = {
+        override val data: TR.(ParticipantResult) -> Unit = { participantResult ->
             td {
                 classes = setOf("runs")
                 ol {
                     classes = setOf("runs", "time")
-                    for (scoredRun in it.scoredRuns) {
-                        render(scoredRun.run)?.let { runText ->
+                    participantResult.scoredRuns.forEachIndexed { index, resultRun ->
+                        render(resultRun.run).let { runText ->
                             li {
+                                if (index == participantResult.personalBestScoredRunIndex) {
+                                    classes = setOf("best", "fw-bold")
+                                }
                                 text(runText)
                             }
                         }
