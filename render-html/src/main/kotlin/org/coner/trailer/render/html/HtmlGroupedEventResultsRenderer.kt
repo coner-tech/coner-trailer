@@ -11,9 +11,9 @@ class HtmlGroupedEventResultsRenderer(
     override fun partial(event: Event, results: GroupEventResults): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
-            h2 { text(results.type.title) }
+            h3 { text(results.type.title) }
             table {
-                classes = setOf("table", "table-striped", "caption-top", "primary")
+                classes = setOf("table", "table-striped", "primary")
                 thead {
                     tr {
                         columns.forEach { column -> column.header(this, results.type) }
@@ -36,7 +36,7 @@ class HtmlGroupedEventResultsRenderer(
                     }
                 }
             }
-            h2 { text("Top Times") }
+            h3 { text("Top Times") }
             table {
                 classes = setOf("table", "table-striped", "secondary")
                 thead {

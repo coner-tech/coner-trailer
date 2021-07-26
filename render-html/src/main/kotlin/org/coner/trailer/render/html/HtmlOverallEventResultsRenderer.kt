@@ -11,10 +11,9 @@ class HtmlOverallEventResultsRenderer(
     override fun partial(event: Event, results: OverallEventResults): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("event-results", results.type.key, "event-${event.id}")
-            h2 { text(results.type.title) }
+            h3 { text(results.type.title) }
             table {
-                classes = setOf("table", "table-striped", "caption-top", "event-results-table-primary")
-                caption { text(results.type.title) }
+                classes = setOf("table", "table-striped", "primary")
                 thead {
                     tr {
                         columns.forEach { column -> column.header(this, results.type) }
