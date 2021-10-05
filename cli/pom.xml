@@ -221,7 +221,7 @@
             <id>cli-native</id>
 
             <properties>
-                <graalvm.version>21.0.0</graalvm.version>
+                <graalvm.version>21.2.0</graalvm.version>
                 <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
             </properties>
             <dependencies>
