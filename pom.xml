@@ -36,7 +36,7 @@
         <kotlinx.coroutines.version>1.5.2</kotlinx.coroutines.version>
         <kotlinx.html.version>0.7.2</kotlinx.html.version>
         <kodein.version>7.0.0</kodein.version>
-        <okhttp3.version>4.9.0</okhttp3.version>
+        <okhttp3.version>4.9.2</okhttp3.version>
         <jackson.version>2.13.0</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
