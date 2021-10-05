@@ -13,7 +13,7 @@
     <artifactId>cli</artifactId>
 
     <properties>
-        <clikt.version>3.0.1</clikt.version>
+        <clikt.version>3.2.0</clikt.version>
         <appdirs.version>1.2.0</appdirs.version>
     </properties>
 
