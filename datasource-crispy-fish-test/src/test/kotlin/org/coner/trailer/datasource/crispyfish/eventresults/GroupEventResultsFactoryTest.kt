@@ -44,7 +44,7 @@ class GroupEventResultsFactoryTest {
         )
 
         assertThat(actual).all {
-            hasType(StandardEventResultsTypes.grouped)
+            hasType(StandardEventResultsTypes.clazz)
             resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(2)
                 index(0).all {
@@ -136,7 +136,7 @@ class GroupEventResultsFactoryTest {
                 }
             }
             parentClassTopTimes().all {
-                hasSize(2)
+                hasSize(3)
                 index(0).all {
                     parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
                     participantResult().all {
@@ -150,6 +150,10 @@ class GroupEventResultsFactoryTest {
                         hasPosition(1)
                         participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
                     }
+                }
+                index(2).all {
+                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
                 }
             }
         }
@@ -182,7 +186,7 @@ class GroupEventResultsFactoryTest {
         )
 
         assertThat(actual).all {
-            hasType(StandardEventResultsTypes.grouped)
+            hasType(StandardEventResultsTypes.clazz)
             resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {
@@ -258,13 +262,17 @@ class GroupEventResultsFactoryTest {
                 }
             }
             parentClassTopTimes().all {
-                hasSize(2)
+                hasSize(3)
                 index(0).all {
                     parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.REBECCA_JACKSON)
                 }
                 index(1).all {
                     parent().isSameAs(TestClasses.Lscc2019.STREET)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
+                }
+                index(2).all {
+                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
                 }
             }
@@ -298,7 +306,7 @@ class GroupEventResultsFactoryTest {
         )
 
         assertThat(actual).all {
-            hasType(StandardEventResultsTypes.grouped)
+            hasType(StandardEventResultsTypes.clazz)
             resultsForGroupAbbreviation("HS").isNotNull().all {
                 hasSize(1)
                 index(0).all {
@@ -390,13 +398,17 @@ class GroupEventResultsFactoryTest {
                 }
             }
             parentClassTopTimes().all {
-                hasSize(2)
+                hasSize(3)
                 index(0).all {
                     parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.REBECCA_JACKSON)
                 }
                 index(1).all {
                     parent().isSameAs(TestClasses.Lscc2019.STREET)
+                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
+                }
+                index(2).all {
+                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
                 }
             }

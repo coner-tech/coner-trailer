@@ -23,7 +23,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     } }
     bind<CrispyFishRunMapper>() with singleton { CrispyFishRunMapper() }
     bind<RunEligibilityQualifier>() with singleton { RunEligibilityQualifier() }
-    bind<RunScoreFactory>(StandardEventResultsTypes.grouped) with multiton { policy: Policy -> GroupedRunScoreFactory(
+    bind<RunScoreFactory>(StandardEventResultsTypes.clazz) with multiton { policy: Policy -> GroupedRunScoreFactory(
         rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
         paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
     ) }
@@ -51,7 +51,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         crispyFishRunMapper = instance(),
         finalScoreFactory = instance(FinalScoreStyle.AUTOCROSS)
     ) }
-    bind<ParticipantResultMapper>(StandardEventResultsTypes.grouped) with multiton { policy: Policy -> ParticipantResultMapper(
+    bind<ParticipantResultMapper>(StandardEventResultsTypes.clazz) with multiton { policy: Policy -> ParticipantResultMapper(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = instance(),
             runEligibilityQualifier = instance(),
@@ -77,10 +77,11 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         scoredRunsComparatorProvider = factory()
     ) }
     bind<GroupedEventResultsFactory>() with multiton { policy: Policy -> GroupedEventResultsFactory(
-        groupParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.grouped).invoke(policy),
+        groupParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.clazz).invoke(policy),
         rawTimeParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy),
         scoredRunsComparatorProvider = factory()
     ) }
+    bind<IndividualEventResultsFactory>() with singleton { IndividualEventResultsFactory() }
 
     bind<EventResultsFileNameGenerator>() with singleton { EventResultsFileNameGenerator() }
 }

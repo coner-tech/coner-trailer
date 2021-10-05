@@ -62,7 +62,7 @@ class GroupedEventResultsFactory(
                 GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
             }
         return GroupEventResults(
-            type = StandardEventResultsTypes.grouped,
+            type = StandardEventResultsTypes.clazz,
             runCount = context.runCount,
             groupParticipantResults = groupResults
                 .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))

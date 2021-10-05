@@ -11,7 +11,8 @@ data class Score constructor(
     constructor(
         value: String,
         penalty: Penalty? = null,
-    ) : this(value = BigDecimal(value), penalty = penalty)
+        strict: Boolean = true
+    ) : this(value = BigDecimal(value), penalty = penalty, strict = strict)
 
     init {
         require(value.scale() == 3) {
@@ -44,6 +45,22 @@ data class Score constructor(
                 floor: String,
                 count: Int
             ) : this(BigDecimal(floor), count)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other !is Cone) return false
+                if (!super.equals(other)) return false
+
+                if (count != other.count) return false
+
+                return true
+            }
+
+            override fun hashCode(): Int {
+                var result = super.hashCode()
+                result = 31 * result + count
+                return result
+            }
         }
 
         companion object {
@@ -51,6 +68,21 @@ data class Score constructor(
             const val intMaxValueTwoTenthsAsLong = 429496729L
         }
 
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Penalty) return false
+
+            if (floor != other.floor) return false
+            if (diff != other.diff) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = floor.hashCode()
+            result = 31 * result + diff.hashCode()
+            return result
+        }
     }
 
     override fun compareTo(other: Score): Int {

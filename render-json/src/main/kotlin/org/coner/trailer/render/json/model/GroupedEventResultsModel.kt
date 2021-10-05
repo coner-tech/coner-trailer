@@ -15,13 +15,13 @@ class GroupedEventResultsModel(
     )
 
     class ResultsModel(
-        val type: EventResultsType,
+        val type: String,
         val runCount: Int,
         val groupParticipantResults: Map<String, List<ParticipantResultModel>>,
         val topTimes: Map<String, ParticipantResultModel>
     ) {
         constructor(results: GroupEventResults) : this(
-            type = results.type,
+            type = results.type.key,
             runCount = results.runCount,
             groupParticipantResults = results.groupParticipantResults
                 .map { (group, results) ->

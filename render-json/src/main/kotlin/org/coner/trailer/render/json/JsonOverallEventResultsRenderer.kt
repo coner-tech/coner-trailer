@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.ObjectWriter
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.OverallEventResults
-import org.coner.trailer.render.EventResultsRenderer
+import org.coner.trailer.render.OverallEventResultsRenderer
 import org.coner.trailer.render.json.model.OverallEventResultsModel
 
 class JsonOverallEventResultsRenderer(
     private val objectMapper: ObjectMapper
-) : EventResultsRenderer<OverallEventResults, String, ObjectNode> {
+) : OverallEventResultsRenderer<String, ObjectNode> {
 
     private val writer: ObjectWriter = objectMapper.writerFor(OverallEventResultsModel::class.java)
 

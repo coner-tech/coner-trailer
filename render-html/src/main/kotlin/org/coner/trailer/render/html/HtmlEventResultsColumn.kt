@@ -18,7 +18,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.position {
+                .event-results table.primary .position {
                     display: none;
                 }
             }
@@ -40,16 +40,22 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Signage : HtmlEventResultsColumn() {
-        override fun buildStyles(event: Event, results: EventResults) = setOf(
-            """
-            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.signage, .event-results table.primary td.signage {
-                    display: none;
-                }
+    class Signage(private val responsive: Boolean) : HtmlEventResultsColumn() {
+        override fun buildStyles(event: Event, results: EventResults): Set<String> {
+            return if (responsive) {
+                setOf(
+                    """
+                    @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                        .event-results table.primary th.signage, .event-results table.primary td.signage {
+                            display: none;
+                        }
+                    }
+                    """.trimIndent()
+                )
+            } else {
+                emptySet()
             }
-            """.trimIndent()
-        )
+        }
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("signage")
@@ -130,16 +136,22 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Name : HtmlEventResultsColumn() {
-        override fun buildStyles(event: Event, results: EventResults) = setOf(
-            """
-            @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.name, .event-results table.primary td.name {
-                    display: none;
-                }
-            } 
-            """.trimIndent()
-        )
+    class Name(private val responsive: Boolean) : HtmlEventResultsColumn() {
+        override fun buildStyles(event: Event, results: EventResults): Set<String> {
+            return if (responsive) {
+                setOf(
+                    """
+                    @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
+                        .event-results table.primary th.name, .event-results table.primary td.name {
+                            display: none;
+                        }
+                    } 
+                    """.trimIndent()
+                )
+            } else {
+                emptySet()
+            }
+        }
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("name")

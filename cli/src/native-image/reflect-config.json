@@ -96,7 +96,12 @@
   "allDeclaredMethods":true
 },
 {
-  "name":"java.lang.Object"
+  "name":"java.lang.Object",
+  "methods":[
+    {"name":"equals","parameterTypes":["java.lang.Object"] }, 
+    {"name":"hashCode","parameterTypes":[] }, 
+    {"name":"toString","parameterTypes":[] }
+  ]
 },
 {
   "name":"java.lang.String"
@@ -118,6 +123,15 @@
 {
   "name":"java.lang.reflect.Parameter",
   "methods":[{"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"java.math.BigDecimal",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"java.math.BigDecimal[]"
 },
 {
   "name":"java.nio.file.Path",
@@ -167,10 +181,16 @@
   "name":"java.util.Map"
 },
 {
+  "name":"java.util.Map$Entry"
+},
+{
   "name":"java.util.UUID",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
+},
+{
+  "name":"java.util.regex.Pattern"
 },
 {
   "name":"javax.security.auth.x500.X500Principal",
@@ -224,6 +244,30 @@
 {
   "name":"org.coner.snoozle.db.entity.Entity",
   "allDeclaredMethods":true
+},
+{
+  "name":"org.coner.trailer.Car",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.Event"
+},
+{
+  "name":"org.coner.trailer.Participant"
+},
+{
+  "name":"org.coner.trailer.Run"
+},
+{
+  "name":"org.coner.trailer.Time",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.Time$Companion"
 },
 {
   "name":"org.coner.trailer.client.motorsportreg.model.Assignment",
@@ -380,6 +424,56 @@
   "name":"org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"
 },
 {
+  "name":"org.coner.trailer.eventresults.EventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.EventResultsType"
+},
+{
+  "name":"org.coner.trailer.eventresults.GroupEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.IndividualEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.OverallEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.ParticipantResult"
+},
+{
+  "name":"org.coner.trailer.eventresults.ResultRun"
+},
+{
+  "name":"org.coner.trailer.eventresults.Score",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Companion"
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Cone",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$DidNotFinish",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Disqualified"
+},
+{
   "name":"org.coner.trailer.io.Configuration",
   "allDeclaredFields":true,
   "allPublicFields":true,
@@ -396,6 +490,90 @@
 },
 {
   "name":"org.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.identifier.EventIdentifier",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.identifier.ParticipantIdentifier",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.GroupedEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.GroupedEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$IndividualParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$ParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.OverallEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.OverallEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ResultRunModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.RunModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ScoreModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true

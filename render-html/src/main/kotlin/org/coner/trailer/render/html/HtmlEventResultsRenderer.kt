@@ -28,7 +28,7 @@ abstract class HtmlEventResultsRenderer<ER : EventResults>(
             }
         }.serialize()
 
-    private fun headerStylesheet(event: Event, results: ER): String {
+    protected open fun headerStylesheet(event: Event, results: ER): String {
         return columns
             .flatMap { it.buildStyles(event, results) }
             .distinct()

@@ -3,7 +3,7 @@ package org.coner.trailer.render.html
 import org.coner.trailer.render.EventResultsColumn
 import org.coner.trailer.render.EventResultsColumnRendererFactory
 
-class HtmlEventResultsColumnRendererFactory : EventResultsColumnRendererFactory<HtmlEventResultsColumn> {
+class HtmlEventResultsColumnRendererFactory() : EventResultsColumnRendererFactory<HtmlEventResultsColumn> {
 
     override fun factory(columns: List<EventResultsColumn>): List<HtmlEventResultsColumn> {
         val renderers = mutableListOf<HtmlEventResultsColumn>()
@@ -15,7 +15,7 @@ class HtmlEventResultsColumnRendererFactory : EventResultsColumnRendererFactory<
                 skipColumns += EventResultsColumn.POSITION
                 skipColumns += EventResultsColumn.SIGNAGE
                 renderers += HtmlEventResultsColumn.Position()
-                renderers += HtmlEventResultsColumn.Signage()
+                renderers += HtmlEventResultsColumn.Signage(responsive = true)
                 renderers += HtmlEventResultsColumn.MobilePositionSignage()
             }
             if (column == EventResultsColumn.NAME
@@ -23,15 +23,15 @@ class HtmlEventResultsColumnRendererFactory : EventResultsColumnRendererFactory<
             ) {
                 skipColumns += EventResultsColumn.NAME
                 skipColumns += EventResultsColumn.CAR_MODEL
-                renderers += HtmlEventResultsColumn.Name()
+                renderers += HtmlEventResultsColumn.Name(responsive = true)
                 renderers += HtmlEventResultsColumn.CarModel()
                 renderers += HtmlEventResultsColumn.MobileNameCarModel()
             }
             if (skipColumns.contains(column)) return@forEachIndexed
             val renderer = when (column) {
                 EventResultsColumn.POSITION -> HtmlEventResultsColumn.Position()
-                EventResultsColumn.SIGNAGE -> HtmlEventResultsColumn.Signage()
-                EventResultsColumn.NAME -> HtmlEventResultsColumn.Name()
+                EventResultsColumn.SIGNAGE -> HtmlEventResultsColumn.Signage(responsive = false)
+                EventResultsColumn.NAME -> HtmlEventResultsColumn.Name(responsive = false)
                 EventResultsColumn.CAR_MODEL -> HtmlEventResultsColumn.CarModel()
                 EventResultsColumn.SCORE -> HtmlEventResultsColumn.Score()
                 EventResultsColumn.DIFF_FIRST -> HtmlEventResultsColumn.DiffFirst()

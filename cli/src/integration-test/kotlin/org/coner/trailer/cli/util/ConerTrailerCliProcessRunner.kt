@@ -4,6 +4,8 @@ import org.coner.trailer.Event
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 import org.coner.trailer.Policy
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.render.Format
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
@@ -70,18 +72,16 @@ class ConerTrailerCliProcessRunner(
 
     fun execEventResults(
         event: Event,
-        type: String,
-        format: String? = null,
-        output: String? = null,
-    ): Process {
-        return exec(
-            *appArgumentBuilder.buildEventResults(
-                event = event,
-                type = type,
-                format = format,
-                output = output
-            )
+        type: EventResultsType,
+        format: Format,
+        output: String
+    ): Process = exec(
+        *appArgumentBuilder.buildEventResults(
+            event = event,
+            type = type,
+            format = format,
+            output = output
         )
-    }
+    )
 
 }

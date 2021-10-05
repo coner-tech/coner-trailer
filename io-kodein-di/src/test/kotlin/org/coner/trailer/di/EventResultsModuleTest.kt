@@ -83,7 +83,7 @@ class EventResultsModuleTest {
         val standardResultsTypes = listOf(
             StandardEventResultsTypes.raw,
             StandardEventResultsTypes.pax,
-            StandardEventResultsTypes.grouped
+            StandardEventResultsTypes.clazz
         )
 
         val actual = standardResultsTypes.map {
@@ -96,7 +96,7 @@ class EventResultsModuleTest {
         assertThat(actual[1], "ParticipantResultMapper for pax")
             .transform { mapper -> actual.count { it == mapper } }
             .isEqualTo(1)
-        assertThat(actual[2], "ParticipantResultMapper for grouped")
+        assertThat(actual[2], "ParticipantResultMapper for clazz")
             .transform { mapper -> actual.count { it == mapper } }
             .isEqualTo(1)
     }

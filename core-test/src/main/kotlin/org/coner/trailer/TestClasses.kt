@@ -60,7 +60,7 @@ object TestClasses {
             sort = 49,
             paxed = true,
             paxFactor = null,
-            parent = null
+            parent = NOVICE
         ) }
 
         val STREET by lazy { Class.Parent(
@@ -70,6 +70,10 @@ object TestClasses {
         val STREET_TOURING by lazy { Class.Parent(
             name = "Touring",
             sort = 1
+        ) }
+        val NOVICE by lazy { Class.Parent(
+            name = "Novice",
+            sort = 2
         ) }
 
         val all: List<Class> by lazy { listOf(

@@ -6,16 +6,21 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
+import org.coner.trailer.Event
 import org.coner.trailer.TestEvents
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.RootCommand
 import org.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.render.Format
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -152,13 +157,14 @@ class ConerTrailerCliIT {
         }
     }
 
-    @Test
-    fun `It should print event raw results in HTML format`() {
-        val databaseName = "print-event-raw-results-html"
+    @ParameterizedTest
+    @MethodSource("org.coner.trailer.cli.util.ParameterSources#provideArgumentsForEventResultsOfAllTypesAndAllFormats")
+    fun `It should print event results of all types and all formats`(eventResultType: EventResultsType, format: Format) {
+        val event = TestEvents.Lscc2019Simplified.points1
+        val databaseName = "print-event-results-${eventResultType.key}-${format.name}"
         command.parse(
             appArgumentBuilder.buildConfigureDatabaseAdd(databaseName)
         )
-        val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         command.parse(appArgumentBuilder.buildPolicyAdd(policy = event.policy))
         command.parse(appArgumentBuilder.buildEventAddCrispyFish(
@@ -166,19 +172,40 @@ class ConerTrailerCliIT {
             crispyFishEventControlFile = seasonFixture.event1.ecfPath,
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ))
+        testConsole.clear()
 
         command.parse(appArgumentBuilder.buildEventResults(
             event = event,
-            type = "raw",
-            format = "html",
+            type = eventResultType,
+            format = format,
             output = "console"
         ))
 
         assertAll {
             assertThat(testConsole.output, "output").all {
-                contains("<html>")
-                contains("Raw")
-                contains("</html>")
+                contains(event.name)
+                when (format) {
+                    Format.HTML -> {
+                        startsWith("<!DOCTYPE html>")
+                        contains(eventResultType.titleShort)
+                        contains("<table ")
+                        contains("</table>")
+                        endsWith("</html>")
+                    }
+                    Format.TEXT -> {
+                        contains(eventResultType.titleShort)
+                        contains("────")
+                        contains("┼")
+                        contains("┴")
+                        doesNotContain("<html>")
+                        doesNotContain("</html>")
+                    }
+                    Format.JSON -> {
+                        startsWith("{")
+                        contains(eventResultType.key)
+                        endsWith("}")
+                    }
+                }
             }
             assertThat(testConsole.error, "error").isEmpty()
         }

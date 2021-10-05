@@ -3,10 +3,12 @@ package org.coner.trailer.render.html
 import kotlinx.html.*
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.GroupEventResults
+import org.coner.trailer.render.GroupEventResultsRenderer
 
-class HtmlGroupedEventResultsRenderer(
+class HtmlGroupEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>
-) : HtmlEventResultsRenderer<GroupEventResults>(columns) {
+) : HtmlEventResultsRenderer<GroupEventResults>(columns),
+    GroupEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
     override fun partial(event: Event, results: GroupEventResults): HtmlBlockTag.() -> Unit = {
         section {

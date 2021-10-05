@@ -20,34 +20,24 @@ import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
 import org.coner.trailer.datasource.crispyfish.eventresults.OverallPaxTimeEventResultsFactory
 import org.coner.trailer.datasource.crispyfish.eventresults.OverallRawEventResultsFactory
-import org.coner.trailer.eventresults.EventResultsType
-import org.coner.trailer.eventresults.StandardEventResultsTypes
+import org.coner.trailer.eventresults.*
 import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.EventResultsColumn
-import org.coner.trailer.render.html.HtmlGroupedEventResultsRenderer
-import org.coner.trailer.render.html.HtmlOverallEventResultsRenderer
-import org.coner.trailer.render.json.JsonGroupedEventResultsRenderer
-import org.coner.trailer.render.json.JsonOverallEventResultsRenderer
-import org.coner.trailer.render.standardEventResultsColumns
-import org.coner.trailer.render.text.TextGroupedEventResultsRenderer
-import org.coner.trailer.render.text.TextOverallEventResultsRenderer
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.factory
-import org.kodein.di.instance
+import org.coner.trailer.render.*
+import org.kodein.di.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.writeText
+import kotlin.reflect.full.isSubclassOf
 
 @ExperimentalPathApi
 class EventResultsCommand(
     di: DI
 ) : CliktCommand(
     name = "results",
-    help = "Overall Results"
+    help = "Event Results"
 ), DIAware {
 
     override val di by findOrSetObject { di }
@@ -58,23 +48,13 @@ class EventResultsCommand(
     private val crispyFishOverallRawEventResultsFactory: (Policy) -> OverallRawEventResultsFactory by factory()
     private val crispyFishOverallPaxEventResultsFactory: (Policy) -> OverallPaxTimeEventResultsFactory by factory()
     private val crispyFishGroupedEventResultsFactory: (Policy) -> GroupedEventResultsFactory by factory()
-    private val jsonOverallEventResultsRenderer: (List<EventResultsColumn>) -> JsonOverallEventResultsRenderer by factory()
-    private val jsonGroupedEventResultsRenderer: (List<EventResultsColumn>) -> JsonGroupedEventResultsRenderer by factory()
-    private val textOverallEventResultsRenderer: (List<EventResultsColumn>) -> TextOverallEventResultsRenderer by factory()
-    private val textGroupedEventResultsRenderer: (List<EventResultsColumn>) -> TextGroupedEventResultsRenderer by factory()
-    private val htmlOverallEventResultsRenderer: (List<EventResultsColumn>) -> HtmlOverallEventResultsRenderer by factory()
-    private val htmlGroupedEventResultsRenderer: (List<EventResultsColumn>) -> HtmlGroupedEventResultsRenderer by factory()
+    private val crispyFishIndividualEventResultsFactory: IndividualEventResultsFactory by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val type: EventResultsType by option()
         .choice(StandardEventResultsTypes.all.associateBy { it.key })
         .required()
-    enum class Format(val extension: String) {
-        JSON("json"),
-        TEXT("txt"),
-        HTML("html")
-    }
     private val format: Format by option(help = "Select output format")
         .switch(
             "--json" to Format.JSON,
@@ -102,8 +82,9 @@ class EventResultsCommand(
     override fun run() {
         val event = eventService.findById(id)
         val render = when (type) {
-            StandardEventResultsTypes.raw, StandardEventResultsTypes.pax -> buildOverallType(event)
-            StandardEventResultsTypes.grouped -> buildGroupedType(event)
+            StandardEventResultsTypes.raw, StandardEventResultsTypes.pax -> renderOverallType(event, buildOverallType(event))
+            StandardEventResultsTypes.clazz -> renderGroupedType(event, buildGroupedType(event))
+            StandardEventResultsTypes.individual -> renderIndividualType(event, buildIndividualType(event))
             else -> throw UnsupportedOperationException()
         }
         when (val output = medium) {
@@ -120,11 +101,11 @@ class EventResultsCommand(
         }
     }
 
-    private fun buildOverallType(event: Event): String {
-        val results = when (event.policy.authoritativeRunSource) {
+    private fun buildOverallType(event: Event, useType: EventResultsType = type): OverallEventResults {
+        return when (event.policy.authoritativeRunSource) {
             Policy.RunSource.CrispyFish -> {
                 val eventCrispyFish = event.requireCrispyFish()
-                val factory = when (type) {
+                val factory = when (useType) {
                     StandardEventResultsTypes.raw -> crispyFishOverallRawEventResultsFactory(event.policy)
                     StandardEventResultsTypes.pax -> crispyFishOverallPaxEventResultsFactory(event.policy)
                     else -> throw IllegalArgumentException()
@@ -138,16 +119,16 @@ class EventResultsCommand(
                 )
             }
         }
-        val renderer = when (format) {
-            Format.JSON -> jsonOverallEventResultsRenderer
-            Format.TEXT -> textOverallEventResultsRenderer
-            Format.HTML -> htmlOverallEventResultsRenderer
-        }(standardEventResultsColumns)
+    }
+
+    private fun renderOverallType(event: Event, results: OverallEventResults): String {
+        val factory = di.direct.factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)
+        val renderer = factory(standardEventResultsColumns)
         return renderer.render(event, results)
     }
 
-    private fun buildGroupedType(event: Event): String {
-        val results = when (event.policy.authoritativeRunSource) {
+    private fun buildGroupedType(event: Event): GroupEventResults {
+        return when (event.policy.authoritativeRunSource) {
             Policy.RunSource.CrispyFish -> {
                 val eventCrispyFish = event.requireCrispyFish()
                 val factory = crispyFishGroupedEventResultsFactory(event.policy)
@@ -160,11 +141,27 @@ class EventResultsCommand(
                 )
             }
         }
-        val renderer = when (format) {
-            Format.JSON -> jsonGroupedEventResultsRenderer
-            Format.TEXT -> textGroupedEventResultsRenderer
-            Format.HTML -> htmlGroupedEventResultsRenderer
-        }(standardEventResultsColumns)
+    }
+
+    private fun renderGroupedType(event: Event, results: GroupEventResults): String {
+        val factory = di.direct.factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format)
+        val renderer = factory(standardEventResultsColumns)
+        return renderer.render(event, results)
+    }
+
+    private fun buildIndividualType(event: Event): IndividualEventResults {
+        return crispyFishIndividualEventResultsFactory.factory(
+            overallEventResults = StandardEventResultsTypes.allForIndividual
+                .filter { it.clazz.isSubclassOf(OverallEventResults::class) }
+                .map { buildOverallType(event = event, useType = it) },
+            groupEventResults =  StandardEventResultsTypes.allForIndividual
+                .filter { it.clazz.isSubclassOf(GroupEventResults::class) }
+                .map { buildGroupedType(event = event) }
+        )
+    }
+
+    private fun renderIndividualType(event: Event, results: IndividualEventResults): String {
+        val renderer = di.direct.instance<IndividualEventResultsRenderer<String, *>>(format)
         return renderer.render(event, results)
     }
 }

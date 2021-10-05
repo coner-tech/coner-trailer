@@ -7,7 +7,7 @@ fun BigDecimal.setScaleWithBuggedCrispyFishRounding(): BigDecimal {
     val roundingMode = if (scale() > 3) {
         val decimalDigits = toString().substringAfter('.')
         if (decimalDigits[3] == '9') {
-            if (decimalDigits[4] == '9' || decimalDigits[4] == '8') {
+            if (decimalDigits[4] == '9' || decimalDigits[4] == '8' || decimalDigits[4] == '7') {
                 RoundingMode.CEILING
             } else {
                 RoundingMode.FLOOR

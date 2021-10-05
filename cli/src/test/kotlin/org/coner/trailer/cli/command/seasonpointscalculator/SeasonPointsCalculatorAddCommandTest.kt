@@ -51,7 +51,7 @@ class SeasonPointsCalculatorAddCommandTest {
         val rankingSort = TestRankingSorts.lscc
         every { rankingSortService.findByName(rankingSort.name) } returns create.rankingSort
         val resultsTypeToEventPointsCalculatorNamed = listOf(
-                StandardEventResultsTypes.grouped.key to groupingCalculator.name,
+                StandardEventResultsTypes.clazz.key to groupingCalculator.name,
                 StandardEventResultsTypes.raw.key to overallCalculator.name,
                 StandardEventResultsTypes.pax.key to overallCalculator.name
         )
@@ -64,7 +64,7 @@ class SeasonPointsCalculatorAddCommandTest {
         command.parse(arrayOf(
                 "--id", create.id.toString(),
                 "--name", create.name,
-                rtktperpcn, StandardEventResultsTypes.grouped.key, groupingCalculator.name,
+                rtktperpcn, StandardEventResultsTypes.clazz.key, groupingCalculator.name,
                 rtktperpcn, StandardEventResultsTypes.raw.key, overallCalculator.name,
                 rtktperpcn, StandardEventResultsTypes.pax.key, overallCalculator.name,
                 "--ranking-sort-named", rankingSort.name

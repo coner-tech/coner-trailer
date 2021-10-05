@@ -4,6 +4,8 @@ import org.coner.trailer.Event
 import org.coner.trailer.Participant
 import org.coner.trailer.Person
 import org.coner.trailer.Policy
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.render.Format
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
 
@@ -104,15 +106,15 @@ class IntegrationTestAppArgumentBuilder(
 
     fun buildEventResults(
         event: Event,
-        type: String,
-        format: String? = null,
+        type: EventResultsType,
+        format: Format? = null,
         output: String? = null,
     ): Array<String> {
         return build(
             *mutableListOf("event", "results").apply {
                 add("${event.id}")
-                addAll(arrayOf("--type", type))
-                addAll(format?.let { arrayOf("--$format") } ?: emptyArray())
+                addAll(arrayOf("--type", type.key.toLowerCase()))
+                addAll(format?.let { arrayOf("--${format.name.toLowerCase()}") } ?: emptyArray())
                 if (output != null) add("--$output")
             }.toTypedArray()
         )

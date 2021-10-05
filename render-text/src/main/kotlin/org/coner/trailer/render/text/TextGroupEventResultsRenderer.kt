@@ -6,10 +6,12 @@ import org.coner.trailer.Class
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.GroupEventResults
 import org.coner.trailer.eventresults.ParticipantResult
+import org.coner.trailer.render.GroupEventResultsRenderer
 
-class TextGroupedEventResultsRenderer(
+class TextGroupEventResultsRenderer(
     columns: List<TextEventResultsColumn>
-) : TextEventResultsRenderer<GroupEventResults>(columns) {
+) : TextEventResultsRenderer<GroupEventResults>(columns),
+    GroupEventResultsRenderer<String, () -> String> {
 
     override fun partial(event: Event, results: GroupEventResults): () -> String = {
         val sb = StringBuilder()

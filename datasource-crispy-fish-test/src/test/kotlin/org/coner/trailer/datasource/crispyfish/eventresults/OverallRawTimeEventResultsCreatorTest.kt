@@ -2,10 +2,7 @@ package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
-import assertk.assertions.index
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
+import assertk.assertions.*
 import org.coner.trailer.*
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
@@ -45,117 +42,7 @@ class OverallRawTimeEventResultsCreatorTest {
             context = context
         )
 
-        assertThat(actual).all {
-            hasType(StandardEventResultsTypes.raw)
-            participantResults().all {
-                hasSize(7)
-                index(0).all {
-                    hasPosition(1)
-                    participant().all {
-                        hasFirstName("Eugene")
-                        hasLastName("Drake")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
-                        }
-                        hasNumber("1")
-                    }
-                    score().hasValue("47.544")
-                    diffFirst().isNull()
-                    diffPrevious().isNull()
-                }
-                index(1).all {
-                    hasPosition(2)
-                    participant().all {
-                        hasFirstName("Brandy")
-                        hasLastName("Huff")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("BS")
-                        }
-                        hasNumber("177")
-                    }
-                    score().hasValue("48.515")
-                    diffFirst().isEqualTo("0.971")
-                    diffPrevious().isEqualTo("0.971")
-                }
-                index(2).all {
-                    hasPosition(3)
-                    participant().all {
-                        hasFirstName("Jimmy")
-                        hasLastName("Mckenzie")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
-                        }
-                        hasNumber("23")
-                    }
-                    score().hasValue("48.723")
-                    diffFirst().isEqualTo("1.179")
-                    diffPrevious().isEqualTo("0.208")
-                }
-                index(3).all {
-                    hasPosition(4)
-                    participant().all {
-                        hasFirstName("Anastasia")
-                        hasLastName("Rigler")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
-                        }
-                        hasNumber("130")
-                    }
-                    score().hasValue("51.323")
-                    diffFirst().isEqualTo("3.779")
-                    diffPrevious().isEqualTo("2.600")
-                }
-                index(4).all {
-                    hasPosition(5)
-                    participant().all {
-                        hasFirstName("Rebecca")
-                        hasLastName("Jackson")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
-                        }
-                        hasNumber("1")
-                    }
-                    score().hasValue("51.408")
-                    diffFirst().isEqualTo("3.864")
-                    diffPrevious().isEqualTo("0.085")
-                }
-                index(5).all {
-                    hasPosition(6)
-                    participant().all {
-                        hasFirstName("Bryant")
-                        hasLastName("Moran")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("ES")
-                        }
-                        hasNumber("58")
-                    }
-                    score().hasValue("52.201")
-                    diffFirst().isEqualTo("4.657")
-                    diffPrevious().isEqualTo("0.793")
-                }
-                index(6).all {
-                    hasPosition(7)
-                    participant().all {
-                        hasFirstName("Dominic")
-                        hasLastName("Rogers")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("ES")
-                        }
-                        hasNumber("18")
-                    }
-                    score().hasValue("52.447")
-                    diffFirst().isEqualTo("4.903")
-                    diffPrevious().isEqualTo("0.246")
-                }
-            }
-        }
+        assertThat(actual).isEqualTo(TestOverallRawEventResults.Lscc2019Simplified.points1)
     }
 
     @Test

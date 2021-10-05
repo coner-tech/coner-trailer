@@ -6,15 +6,18 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.coner.trailer.TestEvents
 import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.util.ConerTrailerCliProcessRunner
 import org.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import org.coner.trailer.cli.util.NativeImageCommandArrayFactory
 import org.coner.trailer.cli.util.ShadedJarCommandArrayFactory
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.render.Format
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -180,11 +183,12 @@ class ConerTrailerCliExecutableIT {
         }
     }
 
-    @Test
-    fun `It should print event raw results in HTML format`() {
-        val databaseName = "print-event-raw-results-html"
-        processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
+    @ParameterizedTest
+    @MethodSource("org.coner.trailer.cli.util.ParameterSources#provideArgumentsForEventResultsOfAllTypesAndAllFormats")
+    fun `It should print event results of all types and all formats`(eventResultType: EventResultsType, format: Format) {
         val event = TestEvents.Lscc2019Simplified.points1
+        val databaseName = "print-event-results-${eventResultType.key}-${format.name}"
+        processRunner.execConfigureDatabaseAdd(databaseName).waitForSuccess()
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         processRunner.execPolicyAdd(policy = event.policy)
             .waitForSuccess()
@@ -196,20 +200,37 @@ class ConerTrailerCliExecutableIT {
 
         val process = processRunner.execEventResults(
             event = event,
-            type = "raw",
-            format = "html",
+            type = eventResultType,
+            format = format,
             output = "console"
         )
         process.waitFor()
 
-        val output = process.inputStream.bufferedReader().readText()
-        val error = process.errorStream.bufferedReader().readText()
+        val output = process.inputStream.bufferedReader().readText().trim()
+        val error = process.errorStream.bufferedReader().readText().trim()
         assertAll {
             assertThat(process.exitValue(), "exit value").isEqualTo(0)
             assertThat(output, "output").all {
-                contains("<html>")
-                contains("Raw")
-                contains("</html>")
+                contains(event.name)
+                when (format) {
+                    Format.HTML -> {
+                        startsWith("<!DOCTYPE html>")
+                        contains(eventResultType.titleShort)
+                        contains("<table ")
+                        contains("</table>")
+                        endsWith("</html>")
+                    }
+                    Format.TEXT -> {
+                        contains(eventResultType.titleShort)
+                        doesNotContain("<!DOCTYPE html")
+                        doesNotContain("</html>")
+                    }
+                    Format.JSON -> {
+                        startsWith("{")
+                        contains(eventResultType.key)
+                        endsWith("}")
+                    }
+                }
             }
             assertThat(error, "error").isEmpty()
         }

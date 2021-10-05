@@ -14,6 +14,7 @@ import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.coner.trailer.cli.di.cliktModule
 import org.coner.trailer.cli.di.ioModule
 import org.coner.trailer.cli.di.viewModule
+import org.coner.trailer.di.allRendererModule
 import org.coner.trailer.di.htmlRenderModule
 import org.coner.trailer.di.jsonRenderModule
 import org.coner.trailer.di.textRenderModule
@@ -35,9 +36,7 @@ object ConerTrailerCli {
             viewModule,
             ioModule,
             cliktModule,
-            jsonRenderModule,
-            textRenderModule,
-            htmlRenderModule
+            allRendererModule
         ))
         val rootCommand: RootCommand = di.direct.run {
             instance<RootCommand>().subcommands(

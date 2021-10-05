@@ -62,7 +62,7 @@ class StandingsReportCreatorFromCrispyFishTest {
             eventFixture.coreSeasonEvent to groupEventResults
         }
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
-                eventResultsType = StandardEventResultsTypes.grouped,
+                eventResultsType = StandardEventResultsTypes.clazz,
                 season = seasonFixture.season,
                 eventToGroupEventResults = competitionGroupedEventResults,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified

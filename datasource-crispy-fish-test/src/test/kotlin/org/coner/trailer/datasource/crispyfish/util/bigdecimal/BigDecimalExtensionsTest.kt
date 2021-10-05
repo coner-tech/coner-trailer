@@ -9,8 +9,8 @@ import java.math.BigDecimal
 class BigDecimalExtensionsTest {
 
     enum class Params(val input: String, val expected: String) {
-        FLOORED_UPPER_BOUND(input = "30.000979", expected = "30.000"),
-        CEILED_LOWER_BOUND(input = "30.000980", expected = "30.001"),
+        FLOORED_UPPER_BOUND(input = "30.000969", expected = "30.000"),
+        CEILED_LOWER_BOUND(input = "30.000970", expected = "30.001"),
         ROUND_DOWN_HALF(input = "30.000500", expected = "30.000"),
         ALREADY_SCALED(input = "30.000", expected = "30.000")
     }

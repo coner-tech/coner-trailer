@@ -23,12 +23,13 @@ import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.render.EventResultsColumn
-import org.coner.trailer.render.html.HtmlGroupedEventResultsRenderer
+import org.coner.trailer.render.*
+import org.coner.trailer.render.html.HtmlGroupEventResultsRenderer
 import org.coner.trailer.render.html.HtmlOverallEventResultsRenderer
-import org.coner.trailer.render.json.JsonGroupedEventResultsRenderer
+import org.coner.trailer.render.json.JsonGroupEventResultsRenderer
+import org.coner.trailer.render.json.JsonIndividualEventResultsRenderer
 import org.coner.trailer.render.json.JsonOverallEventResultsRenderer
-import org.coner.trailer.render.text.TextGroupedEventResultsRenderer
+import org.coner.trailer.render.text.TextGroupEventResultsRenderer
 import org.coner.trailer.render.text.TextOverallEventResultsRenderer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -54,11 +55,12 @@ class EventResultsCommandTest {
     @MockK lateinit var crispyFishOverallRawEventResultsFactory: OverallRawEventResultsFactory
     @MockK lateinit var crispyFishOverallPaxEventResultsFactory: OverallPaxTimeEventResultsFactory
     @MockK lateinit var jsonOverallEventResultsRenderer: JsonOverallEventResultsRenderer
-    @MockK lateinit var jsonGroupedEventResultsRenderer: JsonGroupedEventResultsRenderer
     @MockK lateinit var textOverallEventResultsRenderer: TextOverallEventResultsRenderer
-    @MockK lateinit var textGroupedEventResultsRenderer: TextGroupedEventResultsRenderer
     @MockK lateinit var htmlOverallEventResultsRenderer: HtmlOverallEventResultsRenderer
-    @MockK lateinit var htmlGroupedEventResultsRenderer: HtmlGroupedEventResultsRenderer
+    @MockK lateinit var jsonGroupEventResultsRenderer: JsonGroupEventResultsRenderer
+    @MockK lateinit var textGroupEventResultsRenderer: TextGroupEventResultsRenderer
+    @MockK lateinit var htmlGroupEventResultsRenderer: HtmlGroupEventResultsRenderer
+    @MockK lateinit var jsonIndividualEventResultsRenderer: JsonIndividualEventResultsRenderer
     @MockK lateinit var fileOutputResolver: FileOutputDestinationResolver
 
     lateinit var crispyFishOverallEventResultsCreatorFactorySlot: CapturingSlot<EventResultsType>
@@ -74,12 +76,13 @@ class EventResultsCommandTest {
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
             bind<OverallRawEventResultsFactory>() with multiton { policy: Policy -> crispyFishOverallRawEventResultsFactory }
             bind<OverallPaxTimeEventResultsFactory>() with multiton { policy: Policy -> crispyFishOverallPaxEventResultsFactory }
-            bind<JsonOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
-            bind<JsonGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> jsonGroupedEventResultsRenderer }
-            bind<TextOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> textOverallEventResultsRenderer }
-            bind<TextGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> textGroupedEventResultsRenderer }
-            bind<HtmlOverallEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
-            bind<HtmlGroupedEventResultsRenderer>() with multiton { columns: List<EventResultsColumn> -> htmlGroupedEventResultsRenderer }
+            bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { columns: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
+            bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { columns: List<EventResultsColumn> -> textOverallEventResultsRenderer }
+            bind<OverallEventResultsRenderer<String, *>>(Format.HTML) with multiton { columns: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
+            bind<GroupEventResultsRenderer<String, *>>(Format.JSON) with multiton { columns: List<EventResultsColumn> -> jsonGroupEventResultsRenderer }
+            bind<GroupEventResultsRenderer<String, *>>(Format.TEXT) with multiton { columns: List<EventResultsColumn> -> textGroupEventResultsRenderer }
+            bind<GroupEventResultsRenderer<String, *>>(Format.HTML) with multiton { columns: List<EventResultsColumn> -> htmlGroupEventResultsRenderer }
+            bind<IndividualEventResultsRenderer<String, *>>(Format.JSON) with instance(jsonIndividualEventResultsRenderer)
             bind<FileOutputDestinationResolver>() with instance(fileOutputResolver)
         }).context {
             console = testConsole

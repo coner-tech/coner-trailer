@@ -2,10 +2,12 @@ package org.coner.trailer.render.text
 
 import org.coner.trailer.Event
 import org.coner.trailer.eventresults.OverallEventResults
+import org.coner.trailer.render.OverallEventResultsRenderer
 
 class TextOverallEventResultsRenderer(
     columns: List<TextEventResultsColumn>
-) : TextEventResultsRenderer<OverallEventResults>(columns) {
+) : TextEventResultsRenderer<OverallEventResults>(columns),
+    OverallEventResultsRenderer<String, () -> String> {
 
     override fun partial(event: Event, results: OverallEventResults): () -> String = {
         val at = createAsciiTableWithHeaderRow(results)
