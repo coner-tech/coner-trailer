@@ -17,9 +17,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 class EventResultsModuleTest {
 
     lateinit var di: DirectDI

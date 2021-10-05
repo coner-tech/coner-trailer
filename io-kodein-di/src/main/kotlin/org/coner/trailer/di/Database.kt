@@ -11,9 +11,7 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 fun databaseModule(databaseConfiguration: DatabaseConfiguration) = DI.Module("coner.trailer.io.databaseModule[${databaseConfiguration.name}]") {
     bind<DatabaseConfiguration>() with instance(databaseConfiguration)
     bind<ConerTrailerDatabase>() with singleton { ConerTrailerDatabase(

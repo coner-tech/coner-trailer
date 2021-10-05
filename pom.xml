@@ -31,10 +31,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.31</kotlin.version>
+        <kotlin.version>1.5.31</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlinx.coroutines.version>1.4.2</kotlinx.coroutines.version>
-        <kotlinx.html.version>0.7.1</kotlinx.html.version>
+        <kotlinx.coroutines.version>1.5.2</kotlinx.coroutines.version>
+        <kotlinx.html.version>0.7.2</kotlinx.html.version>
         <kodein.version>7.0.0</kodein.version>
         <okhttp3.version>4.9.0</okhttp3.version>
         <jackson.version>2.12.3</jackson.version>
@@ -153,7 +153,6 @@
                         <jvmTarget>11</jvmTarget>
                         <javaParameters>true</javaParameters>
                         <args>
-                            <arg>-Xopt-in=kotlin.ExperimentalStdlibApi</arg>
                             <arg>-Xopt-in=kotlin.io.path.ExperimentalPathApi</arg>
                         </args>
                     </configuration>

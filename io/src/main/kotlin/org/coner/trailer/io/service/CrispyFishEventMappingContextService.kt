@@ -9,9 +9,7 @@ import org.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.crispyfish.model.EventDay
 import tech.coner.crispyfish.model.Registration
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 class CrispyFishEventMappingContextService(
     private val crispyFishDatabase: Path,
     private val loadConstraints: CrispyFishLoadConstraints

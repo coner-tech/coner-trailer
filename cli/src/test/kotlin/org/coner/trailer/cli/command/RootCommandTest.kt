@@ -23,10 +23,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectory
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class RootCommandTest {
 

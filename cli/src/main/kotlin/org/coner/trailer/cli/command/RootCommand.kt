@@ -17,9 +17,7 @@ import org.coner.trailer.io.ConfigurationService
 import org.coner.trailer.io.DatabaseConfiguration
 import org.kodein.di.*
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 class RootCommand(override val di: DI) : CliktCommand(
     name = "coner-trailer-cli"
 ), DIAware {

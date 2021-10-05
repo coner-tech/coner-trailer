@@ -6,12 +6,10 @@ import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import java.nio.file.Path
 import java.time.LocalDate
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.writeText
 
-@OptIn(ExperimentalPathApi::class)
 sealed class SeasonFixture(
     val temp: Path,
     val path: String,

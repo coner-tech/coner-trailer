@@ -21,9 +21,7 @@ import org.coner.trailer.di.textRenderModule
 import org.kodein.di.DI
 import org.kodein.di.direct
 import org.kodein.di.instance
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 object ConerTrailerCli {
 
     @JvmStatic

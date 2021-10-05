@@ -3,12 +3,10 @@ package org.coner.trailer.io.constraint
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import java.nio.file.LinkOption
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.extension
 import kotlin.io.path.isReadable
 import kotlin.io.path.isRegularFile
 
-@ExperimentalPathApi
 class CrispyFishLoadConstraints(
     private val crispyFishDatabase: Path
 ) : Constraint<CrispyFishEventMappingContext.Key>() {

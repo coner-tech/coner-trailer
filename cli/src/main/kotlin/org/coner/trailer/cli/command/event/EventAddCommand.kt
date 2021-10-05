@@ -22,10 +22,8 @@ import org.kodein.di.instance
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.extension
 
-@ExperimentalPathApi
 class EventAddCommand(
     di: DI
 ) : CliktCommand(
