@@ -35,7 +35,7 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlinx.coroutines.version>1.5.2</kotlinx.coroutines.version>
         <kotlinx.html.version>0.7.2</kotlinx.html.version>
-        <kodein.version>7.8.0</kodein.version>
+        <kodein-di.version>7.8.0</kodein-di.version>
         <okhttp3.version>4.9.2</okhttp3.version>
         <jackson.version>2.13.0</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -78,7 +78,7 @@
             <dependency>
                 <groupId>org.kodein.di</groupId>
                 <artifactId>kodein-di-jvm</artifactId>
-                <version>${kodein.version}</version>
+                <version>${kodein-di.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
