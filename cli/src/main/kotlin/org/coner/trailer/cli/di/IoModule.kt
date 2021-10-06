@@ -9,9 +9,7 @@ import org.coner.trailer.io.ConfigurationService
 import org.kodein.di.*
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.ExperimentalPathApi
 
-@OptIn(ExperimentalPathApi::class)
 val ioModule = DI.Module("coner.trailer.cli.io") {
     bind<ConfigurationService>() with factory { arg: ConfigurationServiceArgument ->
         val appDirs by lazy { AppDirsFactory.getInstance() }

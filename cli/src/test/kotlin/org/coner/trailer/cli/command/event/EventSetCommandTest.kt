@@ -26,11 +26,9 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import java.nio.file.Path
 import java.time.LocalDate
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class EventSetCommandTest {
 

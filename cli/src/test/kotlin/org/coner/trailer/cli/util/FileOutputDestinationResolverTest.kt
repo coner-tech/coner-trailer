@@ -13,9 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class FileOutputDestinationResolverTest {
 

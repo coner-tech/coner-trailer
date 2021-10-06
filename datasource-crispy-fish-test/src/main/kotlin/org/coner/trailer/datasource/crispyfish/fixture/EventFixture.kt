@@ -18,12 +18,10 @@ import tech.coner.crispyfish.model.Run
 import tech.coner.crispyfish.query.RegistrationsQuery
 import tech.coner.crispyfish.query.StagingRunsQuery
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.writeText
 
-@ExperimentalPathApi
 class EventFixture(
     private val seasonFixture: SeasonFixture,
     private val temp: Path,

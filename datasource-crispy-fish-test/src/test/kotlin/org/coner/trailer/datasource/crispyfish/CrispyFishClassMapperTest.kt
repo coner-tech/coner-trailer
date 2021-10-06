@@ -6,9 +6,7 @@ import assertk.assertions.*
 import org.coner.trailer.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 class CrispyFishClassMapperTest {
 
     lateinit var mapper: CrispyFishClassMapper

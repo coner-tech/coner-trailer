@@ -31,20 +31,20 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.31</kotlin.version>
+        <kotlin.version>1.5.31</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlinx.coroutines.version>1.4.2</kotlinx.coroutines.version>
-        <kotlinx.html.version>0.7.1</kotlinx.html.version>
-        <kodein.version>7.0.0</kodein.version>
-        <okhttp3.version>4.9.0</okhttp3.version>
-        <jackson.version>2.12.3</jackson.version>
+        <kotlinx.coroutines.version>1.5.2</kotlinx.coroutines.version>
+        <kotlinx.html.version>0.7.2</kotlinx.html.version>
+        <kodein-di.version>7.8.0</kodein-di.version>
+        <okhttp3.version>4.9.2</okhttp3.version>
+        <jackson.version>2.13.0</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-        <junit.jupiter.version>5.6.2</junit.jupiter.version>
-        <assertk.version>0.22</assertk.version>
-        <mockk.version>1.10.6</mockk.version>
-        <jsoup.version>1.13.1</jsoup.version>
-        <awaitility.version>4.0.3</awaitility.version>
+        <junit.jupiter.version>5.8.1</junit.jupiter.version>
+        <assertk.version>0.25</assertk.version>
+        <mockk.version>1.12.0</mockk.version>
+        <jsoup.version>1.14.3</jsoup.version>
+        <awaitility.version>4.1.0</awaitility.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     </properties>
 
@@ -78,7 +78,7 @@
             <dependency>
                 <groupId>org.kodein.di</groupId>
                 <artifactId>kodein-di-jvm</artifactId>
-                <version>${kodein.version}</version>
+                <version>${kodein-di.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -153,7 +153,6 @@
                         <jvmTarget>11</jvmTarget>
                         <javaParameters>true</javaParameters>
                         <args>
-                            <arg>-Xopt-in=kotlin.ExperimentalStdlibApi</arg>
                             <arg>-Xopt-in=kotlin.io.path.ExperimentalPathApi</arg>
                         </args>
                     </configuration>
@@ -190,7 +189,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.6</version>
+                        <version>0.8.7</version>
                         <executions>
                             <execution>
                                 <id>pre-unit-test</id>

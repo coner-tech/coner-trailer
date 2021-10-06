@@ -25,9 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapAssembleCommandTest
     : CoroutineScope {

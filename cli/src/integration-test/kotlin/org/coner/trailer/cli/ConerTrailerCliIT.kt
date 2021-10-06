@@ -26,7 +26,6 @@ import java.nio.file.Path
 import kotlin.io.path.*
 import kotlin.streams.toList
 
-@ExperimentalPathApi
 class ConerTrailerCliIT {
 
     lateinit var command: RootCommand

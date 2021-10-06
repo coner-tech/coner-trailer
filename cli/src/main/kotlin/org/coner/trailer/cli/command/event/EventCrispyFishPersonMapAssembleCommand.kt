@@ -24,9 +24,7 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 class EventCrispyFishPersonMapAssembleCommand(
     di: DI
 ) : CliktCommand(

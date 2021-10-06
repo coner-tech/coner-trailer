@@ -9,9 +9,8 @@ import org.coner.trailer.render.Format
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
+
 class ConerTrailerCliProcessRunner(
     private val processCommandArrayFactory: ProcessCommandArrayFactory,
     private val appArgumentBuilder: IntegrationTestAppArgumentBuilder

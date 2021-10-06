@@ -1,11 +1,10 @@
 package org.coner.trailer.cli.util
 
 import java.nio.file.Paths
-import kotlin.io.path.ExperimentalPathApi
+
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
 
-@ExperimentalPathApi
 class ShadedJarCommandArrayFactory : ProcessCommandArrayFactory {
 
     override fun build(): Array<String> {

@@ -40,10 +40,8 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.multiton
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.readText
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
 class EventResultsCommandTest {
 

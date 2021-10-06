@@ -28,11 +28,9 @@ import org.coner.trailer.render.*
 import org.kodein.di.*
 import java.nio.file.Path
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.writeText
 import kotlin.reflect.full.isSubclassOf
 
-@ExperimentalPathApi
 class EventResultsCommand(
     di: DI
 ) : CliktCommand(

@@ -7,9 +7,8 @@ import org.coner.trailer.Policy
 import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.render.Format
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
+
 class IntegrationTestAppArgumentBuilder(
     private val configDir: Path,
     private val snoozleDir: Path,

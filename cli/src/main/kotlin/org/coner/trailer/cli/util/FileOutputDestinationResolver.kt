@@ -5,10 +5,8 @@ import org.coner.trailer.Event
 import org.coner.trailer.eventresults.EventResultsFileNameGenerator
 import org.coner.trailer.eventresults.EventResultsType
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.isDirectory
 
-@ExperimentalPathApi
 class FileOutputDestinationResolver(
     private val eventResultsFileNameGenerator: EventResultsFileNameGenerator
 ) {
