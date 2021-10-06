@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [11, 15]
+        java: [11, 17]
 
     steps:
       - uses: actions/checkout@v2
       - name: Setup JDK
-        uses: actions/setup-java@v1.4.3
+        uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: Cache Maven dependencies
@@ -40,7 +41,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup Graalvm
         id: setup-graalvm
-        uses: DeLaGuardo/setup-graalvm@master
+        uses: DeLaGuardo/setup-graalvm@5.0
         with:
           graalvm-version: '21.2.0.java11'
 
