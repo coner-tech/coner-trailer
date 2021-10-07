@@ -4,6 +4,7 @@ import org.coner.trailer.Policy
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventresults.*
 import org.coner.trailer.eventresults.*
+import org.coner.trailer.io.service.OverallEventResultsService
 import org.kodein.di.*
 
 val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
@@ -75,6 +76,12 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<OverallPaxTimeEventResultsFactory>() with multiton { policy: Policy -> OverallPaxTimeEventResultsFactory(
         participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.pax).invoke(policy),
         scoredRunsComparatorProvider = factory()
+    ) }
+    bind<OverallEventResultsService>() with singleton { OverallEventResultsService(
+        crispyFishClassService = instance(),
+        crispyFishEventMappingContextService = instance(),
+        crispyFishOverallRawEventResultsFactory = factory(),
+        crispyFishOverallPaxEventResultsFactory = factory()
     ) }
     bind<GroupedEventResultsFactory>() with multiton { policy: Policy -> GroupedEventResultsFactory(
         groupParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.clazz).invoke(policy),

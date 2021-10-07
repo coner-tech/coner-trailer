@@ -18,12 +18,11 @@ import org.coner.trailer.Policy
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
-import org.coner.trailer.datasource.crispyfish.eventresults.OverallPaxTimeEventResultsFactory
-import org.coner.trailer.datasource.crispyfish.eventresults.OverallRawEventResultsFactory
 import org.coner.trailer.eventresults.*
 import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
+import org.coner.trailer.io.service.OverallEventResultsService
 import org.coner.trailer.render.*
 import org.kodein.di.*
 import java.nio.file.Path
@@ -43,8 +42,7 @@ class EventResultsCommand(
     private val eventService: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val crispyFishOverallRawEventResultsFactory: (Policy) -> OverallRawEventResultsFactory by factory()
-    private val crispyFishOverallPaxEventResultsFactory: (Policy) -> OverallPaxTimeEventResultsFactory by factory()
+    private val overallEventResultsService: OverallEventResultsService by instance()
     private val crispyFishGroupedEventResultsFactory: (Policy) -> GroupedEventResultsFactory by factory()
     private val crispyFishIndividualEventResultsFactory: IndividualEventResultsFactory by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
@@ -79,10 +77,10 @@ class EventResultsCommand(
 
     override fun run() {
         val event = eventService.findById(id)
-        val render = when (type) {
-            StandardEventResultsTypes.raw, StandardEventResultsTypes.pax -> renderOverallType(event, buildOverallType(event))
-            StandardEventResultsTypes.clazz -> renderGroupedType(event, buildGroupedType(event))
-            StandardEventResultsTypes.individual -> renderIndividualType(event, buildIndividualType(event))
+        val render = when (type.clazz) {
+            OverallEventResults::class -> renderOverallType(event, buildOverallType(event))
+            GroupEventResults::class -> renderGroupedType(event, buildGroupedType(event))
+            IndividualEventResults::class -> renderIndividualType(event, buildIndividualType(event))
             else -> throw UnsupportedOperationException()
         }
         when (val output = medium) {
@@ -100,22 +98,10 @@ class EventResultsCommand(
     }
 
     private fun buildOverallType(event: Event, useType: EventResultsType = type): OverallEventResults {
-        return when (event.policy.authoritativeRunSource) {
-            Policy.RunSource.CrispyFish -> {
-                val eventCrispyFish = event.requireCrispyFish()
-                val factory = when (useType) {
-                    StandardEventResultsTypes.raw -> crispyFishOverallRawEventResultsFactory(event.policy)
-                    StandardEventResultsTypes.pax -> crispyFishOverallPaxEventResultsFactory(event.policy)
-                    else -> throw IllegalArgumentException()
-                }
-                factory.factory(
-                    eventCrispyFishMetadata = eventCrispyFish,
-                    allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
-                        crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
-                    ),
-                    context = crispyFishEventMappingContextService.load(eventCrispyFish)
-                )
-            }
+        return when (useType) {
+            StandardEventResultsTypes.raw -> overallEventResultsService.generateRawResults(event)
+            StandardEventResultsTypes.pax -> overallEventResultsService.generatePaxResults(event)
+            else -> throw IllegalArgumentException()
         }
     }
 
