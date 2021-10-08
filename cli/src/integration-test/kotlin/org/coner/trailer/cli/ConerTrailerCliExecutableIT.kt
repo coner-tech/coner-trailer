@@ -20,10 +20,12 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.stream.Stream
 import kotlin.io.path.createDirectory
 import kotlin.io.path.extension
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
+import kotlin.streams.toList
 
 class ConerTrailerCliExecutableIT {
 
@@ -136,11 +138,12 @@ class ConerTrailerCliExecutableIT {
             }
             assertThat(error, "error").isEmpty()
         }
-        val eventEntity = Files.find(snoozleDir, 4, { path, attrs ->
+        val files = Files.find(snoozleDir, 4, { path, attrs ->
             attrs.isRegularFile
                     && path.nameWithoutExtension == "${event.id}"
                     && path.extension == "json"
-        }).toList().single()
+        })
+        val eventEntity = files.toList().single()
         assertThat(eventEntity.readText(), "persisted event entity").all {
             contains("${event.id}")
             contains(event.name)
