@@ -29,7 +29,7 @@ class OverallPaxTimeEventResultsCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = OverallPaxTimeEventResultsFactory(
+        val subject = OverallPaxEventResultsFactory(
             participantResultMapper = event.paxTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
@@ -58,7 +58,7 @@ class OverallPaxTimeEventResultsCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = OverallPaxTimeEventResultsFactory(
+        val subject = OverallPaxEventResultsFactory(
             participantResultMapper = event.paxTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )
@@ -181,7 +181,7 @@ class OverallPaxTimeEventResultsCreatorTest {
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
             runCount = event.runCount
         )
-        val subject = OverallPaxTimeEventResultsFactory(
+        val subject = OverallPaxEventResultsFactory(
             participantResultMapper = event.paxTimeParticipantResultMapper,
             scoredRunsComparatorProvider = { scoredRunsComparator }
         )

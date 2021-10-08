@@ -7,7 +7,7 @@ import org.coner.trailer.eventresults.OverallEventResults
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.StandardEventResultsTypes
 
-class OverallPaxTimeEventResultsFactory(
+class OverallPaxEventResultsFactory(
     private val participantResultMapper: ParticipantResultMapper,
     private val scoredRunsComparatorProvider: (Int) -> ParticipantResult.ScoredRunsComparator
 ) : CrispyFishOverallEventResultsFactory {

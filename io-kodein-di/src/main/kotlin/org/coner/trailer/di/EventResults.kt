@@ -4,7 +4,8 @@ import org.coner.trailer.Policy
 import org.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import org.coner.trailer.datasource.crispyfish.eventresults.*
 import org.coner.trailer.eventresults.*
-import org.coner.trailer.io.service.OverallEventResultsService
+import org.coner.trailer.io.service.CrispyFishEventResultsServiceImpl
+import org.coner.trailer.io.service.EventResultsServiceImpl
 import org.kodein.di.*
 
 val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
@@ -69,19 +70,23 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind<ParticipantResult.ScoredRunsComparator>() with factory { runCount: Int -> ParticipantResult.ScoredRunsComparator(
         runCount = runCount
     ) }
-    bind<OverallRawEventResultsFactory>() with multiton { policy: Policy -> OverallRawEventResultsFactory(
+    bind<CrispyFishOverallEventResultsFactory>(StandardEventResultsTypes.raw) with multiton { policy: Policy -> OverallRawEventResultsFactory(
         participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy),
         scoredRunsComparatorProvider = factory()
     ) }
-    bind<OverallPaxTimeEventResultsFactory>() with multiton { policy: Policy -> OverallPaxTimeEventResultsFactory(
+    bind<CrispyFishOverallEventResultsFactory>(StandardEventResultsTypes.pax) with multiton { policy: Policy -> OverallPaxEventResultsFactory(
         participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.pax).invoke(policy),
         scoredRunsComparatorProvider = factory()
     ) }
-    bind<OverallEventResultsService>() with singleton { OverallEventResultsService(
-        crispyFishClassService = instance(),
-        crispyFishEventMappingContextService = instance(),
-        crispyFishOverallRawEventResultsFactory = factory(),
-        crispyFishOverallPaxEventResultsFactory = factory()
+    bind<EventResultsServiceImpl>() with singleton { EventResultsServiceImpl(
+        crispyFishEventResultsService = CrispyFishEventResultsServiceImpl(
+            crispyFishClassService = instance(),
+            crispyFishEventMappingContextService = instance(),
+            overallRawEventResultsFactory = factory(StandardEventResultsTypes.raw),
+            overallPaxEventResultsFactory = factory(StandardEventResultsTypes.pax),
+            groupEventResultsFactory = factory(),
+            individualEventResultsFactory = instance()
+        )
     ) }
     bind<GroupedEventResultsFactory>() with multiton { policy: Policy -> GroupedEventResultsFactory(
         groupParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.clazz).invoke(policy),

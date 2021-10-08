@@ -8,22 +8,16 @@ import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.Event
-import org.coner.trailer.Policy
-import org.coner.trailer.TestClasses
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.util.FileOutputDestinationResolver
-import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.eventresults.OverallPaxTimeEventResultsFactory
-import org.coner.trailer.datasource.crispyfish.eventresults.OverallRawEventResultsFactory
 import org.coner.trailer.eventresults.OverallEventResults
 import org.coner.trailer.eventresults.EventResultsType
 import org.coner.trailer.eventresults.StandardEventResultsTypes
 import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.io.service.OverallEventResultsService
+import org.coner.trailer.io.service.EventResultsServiceImpl
 import org.coner.trailer.render.*
 import org.coner.trailer.render.html.HtmlGroupEventResultsRenderer
 import org.coner.trailer.render.html.HtmlOverallEventResultsRenderer
@@ -51,7 +45,7 @@ class EventResultsCommandTest {
     @MockK lateinit var eventService: EventService
     @MockK lateinit var crispyFishClassService: CrispyFishClassService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var overallEventResultsService: OverallEventResultsService
+    @MockK lateinit var eventResultsService: EventResultsServiceImpl
     @MockK lateinit var jsonOverallEventResultsRenderer: JsonOverallEventResultsRenderer
     @MockK lateinit var textOverallEventResultsRenderer: TextOverallEventResultsRenderer
     @MockK lateinit var htmlOverallEventResultsRenderer: HtmlOverallEventResultsRenderer
@@ -72,7 +66,7 @@ class EventResultsCommandTest {
             bind<EventService>() with instance(eventService)
             bind<CrispyFishClassService>() with instance(crispyFishClassService)
             bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-            bind<OverallEventResultsService>() with instance(overallEventResultsService)
+            bind<EventResultsServiceImpl>() with instance(eventResultsService)
             bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { columns: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
             bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { columns: List<EventResultsColumn> -> textOverallEventResultsRenderer }
             bind<OverallEventResultsRenderer<String, *>>(Format.HTML) with multiton { columns: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
@@ -91,7 +85,7 @@ class EventResultsCommandTest {
         val event = TestEvents.Lscc2019.points1
         every { eventService.findById(event.id) } returns event
         val results = mockk<OverallEventResults>()
-        every { overallEventResultsService.generateRawResults(event) } returns results
+        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
         val render = "json"
         every { jsonOverallEventResultsRenderer.render(event, results) } returns render
 
@@ -103,7 +97,7 @@ class EventResultsCommandTest {
         assertThat(testConsole.output).isEqualTo(render)
         verifySequence {
             eventService.findById(event.id)
-            overallEventResultsService.generateRawResults(event)
+            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.raw)
             jsonOverallEventResultsRenderer.render(event, results)
         }
     }
@@ -113,7 +107,7 @@ class EventResultsCommandTest {
         val event = TestEvents.Lscc2019.points1
         every { eventService.findById(event.id) } returns event
         val results = mockk<OverallEventResults>()
-        every { overallEventResultsService.generateRawResults(event) } returns results
+        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
         val render = "plain text"
         every { textOverallEventResultsRenderer.render(event, results) } returns render
 
@@ -126,7 +120,7 @@ class EventResultsCommandTest {
         assertThat(testConsole.output).isEqualTo(render)
         verifySequence {
             eventService.findById(event.id)
-            overallEventResultsService.generateRawResults(event)
+            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.raw)
             textOverallEventResultsRenderer.render(event, results)
         }
     }
@@ -138,7 +132,7 @@ class EventResultsCommandTest {
         val event = TestEvents.Lscc2019.points1
         every { eventService.findById(event.id) } returns event
         val results = mockk<OverallEventResults>()
-        every { overallEventResultsService.generatePaxResults(event) } returns results
+        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
         val render = "<html>"
         every { htmlOverallEventResultsRenderer.render(event, results) } returns render
         val actualDestination = output.resolve("pax.html")
@@ -162,7 +156,7 @@ class EventResultsCommandTest {
         }
         verifySequence {
             eventService.findById(event.id)
-            overallEventResultsService.generatePaxResults(event)
+            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.pax)
             htmlOverallEventResultsRenderer.render(event, results)
             fileOutputResolver.forEventResults(
                 event = event,
