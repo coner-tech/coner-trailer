@@ -2,7 +2,6 @@ package org.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.slot
@@ -11,68 +10,63 @@ import kotlinx.coroutines.*
 import org.awaitility.Awaitility
 import org.coner.trailer.*
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.CrispyFishRegistrationView
 import org.coner.trailer.cli.view.PersonView
+import org.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import org.coner.trailer.datasource.crispyfish.TestRegistrations
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
+import org.coner.trailer.io.service.CrispyFishClassService
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.coner.trailer.io.service.PersonService
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import kotlin.coroutines.CoroutineContext
-import kotlin.io.path.ExperimentalPathApi
+import org.kodein.di.*
+import java.nio.file.Paths
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishPersonMapAssembleCommandTest
-    : CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Default + Job()
+class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
 
     lateinit var command: EventCrispyFishPersonMapAssembleCommand
 
-    @MockK lateinit var service: EventService
-    @MockK lateinit var personService: PersonService
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
-    @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
-    @MockK lateinit var crispyFishPersonMapper: CrispyFishPersonMapper
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { CrispyFishRegistrationView() }
+        bindInstance { PersonView(testConsole) }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var useConsole: StringBufferConsole
+    override val coroutineContext = Dispatchers.Default + Job()
+
+    private val service: EventService by instance()
+    private val personService: PersonService by instance()
+    private val crispyFishClassService: CrispyFishClassService by instance()
+    private val crispyFishClassingMapper: CrispyFishClassingMapper by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
+    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        useConsole = StringBufferConsole()
-        command = EventCrispyFishPersonMapAssembleCommand(
-            di = DI {
-                bind<EventService>() with instance(service)
-                bind<PersonService>() with instance(personService)
-                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-                bind<EventCrispyFishPersonMapVerifier>() with instance(eventCrispyFishPersonMapVerifier)
-                bind<CrispyFishRegistrationView>() with instance(CrispyFishRegistrationView())
-                bind<PersonView>() with instance(PersonView(useConsole))
-                bind<CrispyFishParticipantMapper>() with instance(crispyFishParticipantMapper)
-                bind<CrispyFishPersonMapper>() with instance(crispyFishPersonMapper)
-            }
-        ).context {
-            console = useConsole
-        }
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = EventCrispyFishPersonMapAssembleCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
     fun `It should assemble person map in case of registration with club memberId null`() {
         val eventCrispyFish = Event.CrispyFishMetadata(
-            eventControlFile = "eventControlFile.ecf",
-            classDefinitionFile = "classDefinitionFile.def",
+            eventControlFile = Paths.get("eventControlFile.ecf"),
+            classDefinitionFile = Paths.get("classDefinitionFile.def"),
             peopleMap = emptyMap()
         )
         val event = TestEvents.Lscc2019.points1.copy(
@@ -82,32 +76,36 @@ class EventCrispyFishPersonMapAssembleCommandTest
         val unmappedClubMemberIdNull = TestRegistrations.unmappedClubMemberIdNull()
         val person = Person(
             clubMemberId = null,
-            firstName = unmappedClubMemberIdNull.firstName,
-            lastName = unmappedClubMemberIdNull.lastName,
+            firstName = checkNotNull(unmappedClubMemberIdNull.firstName),
+            lastName = checkNotNull(unmappedClubMemberIdNull.lastName),
             motorsportReg = null
         )
         every { personService.searchByNameFrom(unmappedClubMemberIdNull) } returns listOf(person)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = emptyList(),
-            allRegistrations = listOf(unmappedClubMemberIdNull)
+            allRegistrations = listOf(unmappedClubMemberIdNull),
+            allRuns = emptyList(),
+            runCount = 0
         )
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()
         every {
-            eventCrispyFishPersonMapVerifier.verify(context, eventCrispyFish.peopleMap, capture(callbackSlot))
+            eventCrispyFishPersonMapVerifier.verify(
+                event = event,
+                callback = capture(callbackSlot)
+            )
         } answers  {
             val callback = callbackSlot.captured
             launch { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
-            Awaitility.await().until { useConsole.output.endsWith(">") }
-            useConsole.writeInput("0")
-            Awaitility.await().until { useConsole.output.endsWith("<<<") }
+            Awaitility.await().until { testConsole.output.endsWith(">") }
+            testConsole.writeInput("0")
+            Awaitility.await().until { testConsole.output.endsWith("<<<") }
         }
-        val signage = TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage
-        every {
-            crispyFishParticipantMapper.toCoreSignage(context, unmappedClubMemberIdNull)
-        } returns signage
+        val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.classing)
+        every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
 
-        justRun { service.update(any(), context) }
+        justRun { service.update(any()) }
 
         runBlocking {
             command.parse(arrayOf("${event.id}"))
@@ -117,16 +115,17 @@ class EventCrispyFishPersonMapAssembleCommandTest
             crispyFish = eventCrispyFish.copy(
                 peopleMap = mapOf(
                     Event.CrispyFishMetadata.PeopleMapKey(
-                        signage = signage,
-                        firstName = unmappedClubMemberIdNull.firstName,
-                        lastName = unmappedClubMemberIdNull.lastName
+                        classing = classing,
+                        number = checkNotNull(unmappedClubMemberIdNull.number),
+                        firstName = checkNotNull(unmappedClubMemberIdNull.firstName),
+                        lastName = checkNotNull(unmappedClubMemberIdNull.lastName)
                     ) to person
                 )
             )
         )
         verifySequence {
             service.findById(event.id)
-            service.update(update, context)
+            service.update(update)
         }
     }
 

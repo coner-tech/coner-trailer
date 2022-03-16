@@ -3,59 +3,65 @@ package org.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.contains
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.context
-import io.mockk.*
+import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verify
+import io.mockk.verifyOrder
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.TestDatabaseConfigurations
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.DatabaseConfigurationView
+import org.coner.trailer.di.ConfigurationServiceArgument
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.TestDatabaseConfigurations
+import org.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.DIAware
+import org.kodein.di.bindFactory
+import org.kodein.di.bindInstance
 import java.nio.file.Path
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
-class ConfigDatabaseGetCommandTest {
+class ConfigDatabaseGetCommandTest : DIAware {
 
     lateinit var command: ConfigDatabaseGetCommand
 
-    @MockK
-    lateinit var service: ConfigurationService
-    @MockK
-    lateinit var view: DatabaseConfigurationView
+    override val di = DI.lazy {
+        bindFactory { _: ConfigurationServiceArgument -> service }
+        bindInstance { view }
+    }
 
-    @TempDir
-    lateinit var temp: Path
+    @MockK lateinit var service: ConfigurationService
+    @MockK lateinit var view: DatabaseConfigurationView
 
-    lateinit var testConsole: StringBufferConsole
+    @TempDir lateinit var root: Path
+
     lateinit var dbConfigs: TestDatabaseConfigurations
+    lateinit var global: GlobalModel
+    lateinit var testConsole: StringBufferConsole
 
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        dbConfigs = TestDatabaseConfigurations(temp)
-        command = ConfigDatabaseGetCommand(
-            di = DI {
-                bind<ConfigurationService>() with instance(service)
-                bind<DatabaseConfigurationView>() with instance(view)
-            }
-        ).context {
-            console = testConsole
-        }
+        global = GlobalModel()
+        dbConfigs = TestDatabaseConfigurations(root)
+        command = ConfigDatabaseGetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
     fun `When given valid name option it should get it`() {
         arrangeWithTestDatabaseConfigurations()
+        val dbConfig = dbConfigs.foo
+        global.environment = TestEnvironments.temporary(di, root, dbConfig)
         val render = "view.render(foo) => ${UUID.randomUUID()}"
         every { view.render(dbConfigs.foo) }.returns(render)
 
@@ -73,6 +79,7 @@ class ConfigDatabaseGetCommandTest {
     fun `When given invalid name option it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) // baz is not a valid dbConfig
+        global.environment = TestEnvironments.minimal(di)
 
         arrangeWithTestDatabaseConfigurations()
 

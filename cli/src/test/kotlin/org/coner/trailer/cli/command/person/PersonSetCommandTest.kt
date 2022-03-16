@@ -2,6 +2,7 @@ package org.coner.trailer.cli.command.person
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -9,36 +10,43 @@ import io.mockk.verifySequence
 import org.coner.trailer.Person
 import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.PersonView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
 @ExtendWith(MockKExtension::class)
-class PersonSetCommandTest {
+class PersonSetCommandTest : DIAware {
 
     lateinit var command: PersonSetCommand
 
-    @MockK lateinit var service: PersonService
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    private val service: PersonService by instance()
     @MockK lateinit var view: PersonView
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
-        val di = DI {
-            bind<PersonService>() with instance(service)
-            bind<PersonView>() with instance(view)
-        }
-        command = PersonSetCommand(
-                di = di,
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = PersonSetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -64,7 +72,7 @@ class PersonSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output, "console output").isEqualTo(viewRendered)
+        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
     }
 
     @Test
@@ -88,7 +96,7 @@ class PersonSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output, "console output").isEqualTo(viewRendered)
+        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
     }
 
     @Test
@@ -112,7 +120,7 @@ class PersonSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output, "console output").isEqualTo(viewRendered)
+        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
     }
 
     @Test
@@ -138,7 +146,7 @@ class PersonSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output, "console output").isEqualTo(viewRendered)
+        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
     }
 
 }

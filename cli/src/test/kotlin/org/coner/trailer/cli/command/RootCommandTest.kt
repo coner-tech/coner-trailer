@@ -4,7 +4,6 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
@@ -12,11 +11,12 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.coner.trailer.cli.clikt.StringBufferConsole
 import org.coner.trailer.cli.command.config.ConfigCommand
-import org.coner.trailer.cli.di.ConfigurationServiceArgument
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.cli.io.TestDatabaseConfigurations
 import org.coner.trailer.cli.service.StubService
+import org.coner.trailer.di.ConfigurationServiceArgument
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,50 +24,47 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectory
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class RootCommandTest {
+class RootCommandTest : DIAware {
 
     lateinit var command: RootCommand
 
-    @MockK lateinit var serviceFactory: (ConfigurationServiceArgument) -> ConfigurationService
+    override val di: DI = DI.lazy {
+        import(mockkDatabaseModule())
+        bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
+            serviceArgumentSlot.captured = csa
+            service
+        }
+        bind { scoped(EnvironmentScope).singleton { stubService } }
+    }
+
+    lateinit var global: GlobalModel
+    lateinit var testConsole: StringBufferConsole
+
     @MockK lateinit var service: ConfigurationService
-    @MockK lateinit var noDatabase: DatabaseConfiguration
     @MockK lateinit var stubService: StubService
 
-    @TempDir
-    lateinit var temp: Path
+    @TempDir lateinit var temp: Path
 
-    lateinit var testConsole: StringBufferConsole
     lateinit var dbConfigs: TestDatabaseConfigurations
-
     lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
 
     @BeforeEach
     fun before() {
+        global = GlobalModel()
         testConsole = StringBufferConsole()
+        command = RootCommand(di, global)
+            .context { console = testConsole }
+            .subcommands(
+                StubCommand(di, global),
+                ConfigCommand()
+            )
         serviceArgumentSlot = slot()
-        every { service.noDatabase } returns noDatabase
         justRun { service.setup() }
         justRun { stubService.doSomething() }
         dbConfigs = TestDatabaseConfigurations(temp)
-        val di = DI {
-            bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
-                serviceArgumentSlot.captured = csa
-                service
-            }
-            bind<StubService>() with instance(stubService)
-        }
-        command = RootCommand(di).context {
-            console = testConsole
-        }
-        command.subcommands(
-            StubCommand(di),
-            ConfigCommand()
-        )
     }
 
     @Test
@@ -80,11 +77,10 @@ class RootCommandTest {
             "stub"
         ))
 
-        assertThat(command.currentContext.obj)
-                .isNotNull()
-                .isInstanceOf(DI::class)
-                .transform { it.direct.instance<DatabaseConfiguration>() }
-                .isSameAs(dbConfigs.foo)
+        assertThat(global.environment)
+            .isNotNull()
+            .transform { it.databaseConfiguration }
+            .isSameAs(dbConfigs.foo)
     }
 
     @Test
@@ -109,17 +105,16 @@ class RootCommandTest {
     fun `When not given --database it should use the default if available`() {
         arrangeWithDatabases()
         val defaultDatabase = dbConfigs.allByName
-                .values
-                .single { it.default }
+            .values
+            .single { it.default }
 
         command.parse(arrayOf("stub"))
 
         verify { service.getDefaultDatabase() }
-        assertThat(command.currentContext.obj)
-                .isNotNull()
-                .isInstanceOf(DI::class)
-                .transform { it.direct.instance<DatabaseConfiguration>() }
-                .isSameAs(defaultDatabase)
+        assertThat(global.environment)
+            .isNotNull()
+            .transform { it.databaseConfiguration }
+            .isSameAs(defaultDatabase)
     }
 
     @Test
@@ -131,7 +126,7 @@ class RootCommandTest {
         }
 
         assertThat(testConsole.error).all {
-            contains("No database chosen and no default configured.")
+            contains("Command requires database but no database was selected.")
             contains("coner-trailer-cli config database")
         }
     }
@@ -142,12 +137,10 @@ class RootCommandTest {
 
         command.parse(arrayOf("config"))
 
-        assertThat(command.currentContext.obj)
-                .isNotNull()
-                .isInstanceOf(DI::class)
-                .given { di: DI ->
-                    assertThrows<DI.NotFoundException> { di.direct.instance<DatabaseConfiguration>() }
-                }
+        assertThat(global.environment)
+            .isNotNull()
+            .transform { it.databaseConfiguration }
+            .isNull()
     }
 
     @Test
@@ -186,9 +179,7 @@ class RootCommandTest {
     }
 
     private fun arrangeWithoutDatabasesCase() {
-        every { service.listDatabasesByName() } answers { mapOf(
-            noDatabase.name to noDatabase
-        ) }
+        every { service.listDatabasesByName() } answers { emptyMap() }
         every { service.getDefaultDatabase() } returns null
     }
 }

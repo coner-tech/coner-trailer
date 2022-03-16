@@ -1,15 +1,14 @@
 package org.coner.trailer.cli.command.seasonpointscalculator
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.pair
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.cli.di.use
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import org.coner.trailer.io.service.RankingSortService
@@ -18,25 +17,19 @@ import org.coner.trailer.seasonpoints.RankingSort
 import org.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.diContext
 import org.kodein.di.instance
 import java.util.*
 
 class SeasonPointsCalculatorSetCommand(
-        di: DI,
-        useConsole: CliktConsole
+    override val di: DI,
+    private val global: GlobalModel
 ) : CliktCommand(
         name = "set",
         help = "Set a season points calculator"
 ), DIAware {
 
-    init {
-        context {
-            console = useConsole
-        }
-    }
-
-    override val di: DI by findOrSetObject { di }
-
+    override val diContext = diContext { global.requireEnvironment().openDataSession() }
     private val mapper: SeasonPointsCalculatorParameterMapper by instance()
     private val rankingSortService: RankingSortService by instance()
     private val service: SeasonPointsCalculatorConfigurationService by instance()
@@ -55,14 +48,14 @@ class SeasonPointsCalculatorSetCommand(
                         ?: fail("No ranking sort found with name: $it")
             }
 
-    override fun run() {
+    override fun run() = diContext.use {
         val current = service.findById(id)
         val update = SeasonPointsCalculatorConfiguration(
                 id = current.id,
                 name = name ?: current.name,
-                resultsTypeToEventPointsCalculator = when {
+                eventResultsTypeToEventPointsCalculator = when {
                     resultsTypeKeyToEventPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed)
-                    else -> current.resultsTypeToEventPointsCalculator
+                    else -> current.eventResultsTypeToEventPointsCalculator
                 },
                 rankingSort = rankingSortNamed ?: current.rankingSort
         )

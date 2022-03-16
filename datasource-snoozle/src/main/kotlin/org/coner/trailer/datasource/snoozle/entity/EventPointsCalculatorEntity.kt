@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.snoozle.entity
 
-import org.coner.snoozle.db.entity.Entity
+import tech.coner.snoozle.db.entity.Entity
 import java.util.*
 
 data class EventPointsCalculatorEntity(
@@ -12,5 +12,5 @@ data class EventPointsCalculatorEntity(
         val defaultPoints: Int
 ) : Entity<EventPointsCalculatorEntity.Key> {
 
-    data class Key(val id: UUID) : org.coner.snoozle.db.Key
+    data class Key(val id: UUID) : tech.coner.snoozle.db.Key
 }

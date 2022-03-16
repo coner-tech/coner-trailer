@@ -2,126 +2,201 @@ package org.coner.trailer.datasource.crispyfish.eventresults
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
-import io.mockk.MockKAnnotations
+import assertk.assertions.*
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockkObject
-import io.mockk.unmockkAll
-import org.coner.crispyfish.model.RegistrationResult
-import org.coner.trailer.TestParticipants
-import org.coner.trailer.TestPeople
-import org.coner.trailer.Time
-import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ParticipantResultMapper
-import org.coner.trailer.datasource.crispyfish.eventsresults.ResultRunMapper
+import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import org.coner.trailer.*
+import org.coner.trailer.datasource.crispyfish.*
 import org.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import org.coner.trailer.eventresults.*
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
+@ExtendWith(MockKExtension::class)
 class ParticipantResultMapperTest {
 
-    @MockK
-    private lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
+    lateinit var mapper: ParticipantResultMapper
 
     @TempDir lateinit var fixtureRoot: Path
 
+    @MockK lateinit var resultRunMapper: ResultRunMapper
+    @MockK lateinit var finalScoreFactory: FinalScoreFactory
+    @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
+    @MockK lateinit var crispyFishClassingMapper: CrispyFishClassingMapper
+    @MockK lateinit var crispyFishRunMapper: CrispyFishRunMapper
+
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
-        mockkObject(ResultRunMapper)
-    }
-
-    @AfterEach
-    fun after() {
-        unmockkAll()
-    }
-
-    @Test
-    fun `It should map (core) ParticipantResult? to null when (CF) RegistrationResult position is null`() {
-        // indicates a registration for which no result is available
-        val noRegistrationResult = RegistrationResult(time = "", position = null)
-        val registration = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.BRANDY_HUFF.copy(
-            rawResult = noRegistrationResult,
-            paxResult = noRegistrationResult,
-            classResult = noRegistrationResult
+        mapper = ParticipantResultMapper(
+            resultRunMapper = resultRunMapper,
+            finalScoreFactory = finalScoreFactory,
+            crispyFishParticipantMapper = crispyFishParticipantMapper,
+            crispyFishClassingMapper = crispyFishClassingMapper,
+            crispyFishRunMapper = crispyFishRunMapper
         )
-        val participantResultMapper = ParticipantResultMapper(
-            crispyFishParticipantMapper,
-            memberIdToPeople = emptyMap()
-        )
-        val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations()
-        )
-
-        val actual = participantResultMapper.toCore(
-            context = context,
-            cfRegistration = registration,
-            cfResult = noRegistrationResult
-        )
-
-        assertThat(actual).isNull()
     }
 
     @Test
-    fun `It should map (core) ParticipantResult from (CF) Registration, arbitrary RegistrationResult, and Map of MemberId to People`() {
-        val registration = org.coner.trailer.datasource.crispyfish.TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
-        val result = registration.classResult
-        val expectedPerson = TestPeople.REBECCA_JACKSON
-        val expectedParticipant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
-        val memberIdToPeople = mapOf(checkNotNull(expectedPerson.clubMemberId) to expectedPerson)
+    fun `It should map core ParticipantResult from EventCrispyFishMetadata, CrispyFishEventMappingContext, and cf Registration`() {
+        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
+        val person = TestPeople.REBECCA_JACKSON
+        val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
+        val usePeopleMap = mapOf(
+            Event.CrispyFishMetadata.PeopleMapKey(
+                classing = requireNotNull(participant.classing),
+                number = requireNotNull(participant.number),
+                firstName = requireNotNull(participant.firstName),
+                lastName = requireNotNull(person.lastName)
+            ) to person
+        )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
+        val allRegistrations = seasonFixture.event1.registrations()
+        val allRuns = seasonFixture.event1.runs(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
-            allRegistrations = seasonFixture.event1.registrations()
+            allRegistrations = allRegistrations,
+            allRuns = allRuns,
+            runCount = seasonFixture.event1.runCount
         )
         every {
             crispyFishParticipantMapper.toCore(
-                context = context,
+                allClassesByAbbreviation = any(),
                 fromRegistration = registration,
-                withPerson = expectedPerson
+                withPerson = person
             )
-        }.returns(expectedParticipant)
-        val expectedScoredRuns = listOf(
-            ResultRun(time = Time("52.749")),
-            ResultRun(time = Time("53.175")),
-            ResultRun(time = Time("52.130")),
-            ResultRun(time = Time("52.117")),
-            ResultRun(time = Time("51.408"), personalBest = true)
-        )
+        }.returns(participant)
         every {
-            ResultRunMapper.map(
-                crispyFishRegistrationRuns = registration.runs,
-                crispyFishRegistrationBestRun = registration.bestRun
+            crispyFishClassingMapper.toCore(
+                allClassesByAbbreviation = any(),
+                cfRegistration = registration
             )
-        }.returns(expectedScoredRuns)
-        val participantResultMapper = ParticipantResultMapper(
-            crispyFishParticipantMapper,
-            memberIdToPeople
+        } returns checkNotNull(participant.classing)
+        val expectedScoredRuns = listOf(
+            testResultRun(sequence = 1, participant = participant, time = Time("52.749"), score = Score("52.749")),
+            testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),
+            testResultRun(sequence = 3, participant = participant, time = Time("52.130"), score = Score("52.130")),
+            testResultRun(sequence = 4, participant = participant, time = Time("52.117"), score = Score("52.117")),
+            testResultRun(sequence = 5, participant = participant, time = Time("51.408"), score = Score("51.408"))
         )
+        val participantCfRuns = listOf(10, 11, 12, 13, 14)
+            .map { it to requireNotNull(allRuns[it].second) }
+        participantCfRuns.forEachIndexed { index, pair ->
+            every {
+                crispyFishRunMapper.toCore(cfRunIndex = pair.first, cfRun = pair.second, participant = participant)
+            } returns expectedScoredRuns[index].run
+        }
+        every {
+            resultRunMapper.toCores(
+                context = context,
+                participantCfRuns = participantCfRuns,
+                participant = participant
+            )
+        } returns(expectedScoredRuns)
+        val crispyFishMetadata: Event.CrispyFishMetadata = mockk {
+            every { peopleMap } returns usePeopleMap
+        }
+        val expectedScore: Score = mockk()
+        every { finalScoreFactory.score(expectedScoredRuns) } returns expectedScore
+        every { finalScoreFactory.bestRun(expectedScoredRuns) } returns expectedScoredRuns[4]
 
-        val actual = participantResultMapper.toCore(
+        val actual = mapper.toCore(
+            eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
-            cfRegistration = registration,
-            cfResult = result
+            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
+            cfRegistration = registration
         )
 
         assertThat(actual).isNotNull().all {
-            hasPosition(3)
-            hasParticipant(expectedParticipant)
+            score().isSameAs(expectedScore)
+            hasParticipant(participant)
+            allRuns().hasSize(5)
             hasScoredRuns(expectedScoredRuns)
-            marginOfLoss().isNull() // not supported
-            marginOfVictory().isNull() // not supported
+            personalBestScoredRunIndex().isEqualTo(4)
+            hasPosition(Int.MAX_VALUE) // not calculated here
+            diffFirst().isNull() // not calculated here
+            diffPrevious().isNull() // not calculated here
         }
+    }
+
+    @Test
+    fun `It should calculate ranking-related properties of ParticipantResult`() {
+        val sortedResults = listOf(
+            testParticipantResult(
+                score = Score("34.567"),
+                participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
+                runFns = listOf { participant ->
+                    testRunWithScore(
+                        sequence = 1,
+                        participant = participant,
+                        time = Time("34.567"),
+                        score = Score("34.567")
+                    )
+                },
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
+            ),
+            testParticipantResult(
+                score = Score("45.678"),
+                participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
+                runFns = listOf { participant ->
+                    testRunWithScore(
+                        sequence = 2,
+                        participant = participant,
+                        time = Time("45.678"),
+                        score = Score("45.678")
+                    )
+                },
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
+            ),
+            testParticipantResult(
+                score = Score("56.789"),
+                participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
+                runFns = listOf { participant ->
+                    testRunWithScore(
+                        sequence = 3,
+                        participant = participant,
+                        time = Time("56.789"),
+                        score = Score("56.789"),
+                    )
+                },
+                position = Int.MAX_VALUE,
+                diffFirst = null,
+                diffPrevious = null,
+                personalBestScoredRunIndex = 0
+            )
+        )
+
+        val actual = sortedResults.mapIndexed { index, result ->
+            mapper.toCoreRanked(sortedResults, index, result)
+        }
+
+        val expected = listOf(
+            sortedResults[0].copy(
+                position = 1,
+                diffFirst = null,
+                diffPrevious = null
+            ),
+            sortedResults[1].copy(
+                position = 2,
+                diffFirst = Time("11.111"),
+                diffPrevious = Time("11.111")
+            ),
+            sortedResults[2].copy(
+                position = 3,
+                diffFirst = Time("22.222"),
+                diffPrevious = Time("11.111")
+            )
+        )
+        assertThat(actual).isEqualTo(expected)
     }
 }

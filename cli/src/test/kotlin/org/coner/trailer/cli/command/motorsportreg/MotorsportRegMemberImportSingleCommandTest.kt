@@ -2,6 +2,7 @@ package org.coner.trailer.cli.command.motorsportreg
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -9,39 +10,45 @@ import io.mockk.mockk
 import io.mockk.verifySequence
 import org.coner.trailer.TestPeople
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.PersonTableView
-import org.coner.trailer.client.motorsportreg.model.TestMembers
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.di.mockkMotorsportRegApiModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.MotorsportRegImportService
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
 @ExtendWith(MockKExtension::class)
-class MotorsportRegMemberImportSingleCommandTest {
+class MotorsportRegMemberImportSingleCommandTest : DIAware {
 
     lateinit var command: MotorsportRegMemberImportSingleCommand
 
-    @MockK
-    lateinit var service: MotorsportRegImportService
-    @MockK
-    lateinit var view: PersonTableView
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        import(mockkMotorsportRegApiModule)
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var console: StringBufferConsole
+    private val service: MotorsportRegImportService by instance()
+    @MockK lateinit var view: PersonTableView
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
-        command = MotorsportRegMemberImportSingleCommand(
-                di = DI {
-                    bind<MotorsportRegImportService>() with instance(service)
-                    bind<PersonTableView>() with instance(view)
-                },
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = MotorsportRegMemberImportSingleCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -72,7 +79,7 @@ class MotorsportRegMemberImportSingleCommandTest {
             view.render(result.created)
             view.render(result.updated)
         }
-        assertThat(console.output).isEqualTo("""
+        assertThat(testConsole.output).isEqualTo("""
             Created: (0)
             $viewRenderedCreated
             
@@ -110,7 +117,7 @@ class MotorsportRegMemberImportSingleCommandTest {
             view.render(result.created)
             view.render(result.updated)
         }
-        assertThat(console.output).isEqualTo("""
+        assertThat(testConsole.output).isEqualTo("""
             Created: (1)
             $viewRenderedCreated
             

@@ -7,19 +7,19 @@ import org.coner.trailer.Time
 import java.math.BigDecimal
 
 fun mockkParticipantResult(
-        position: Int,
-        score: BigDecimal = BigDecimal("123.456"),
-        participant: Participant,
-        marginOfVictory: Time? = null,
-        marginOfLoss: Time? = null,
-        scoredRuns: List<ResultRun>? = null,
-        personalBestRun: ResultRun? = null
+    position: Int,
+    score: BigDecimal = BigDecimal("123.456"),
+    participant: Participant,
+    diffFirst: Time? = null,
+    diffPrevious: Time? = null,
+    scoredRuns: List<ResultRun>? = null,
+    personalBestRun: ResultRun? = null
 ) : ParticipantResult {
     return mockk {
         every { this@mockk.position }.returns(position)
         every { this@mockk.participant }.returns(participant)
-        every { this@mockk.marginOfVictory }.returns(marginOfVictory)
-        every { this@mockk.marginOfLoss }.returns(marginOfLoss)
+        every { this@mockk.diffFirst }.returns(diffFirst)
+        every { this@mockk.diffPrevious }.returns(diffPrevious)
         every { this@mockk.scoredRuns }.returns(scoredRuns ?: emptyList())
         every { this@mockk.personalBestRun }.returns(personalBestRun)
     }

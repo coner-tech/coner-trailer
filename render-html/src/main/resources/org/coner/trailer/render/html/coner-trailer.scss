@@ -1,0 +1,26 @@
+$orange: #F15A24;
+$gray: #808080;
+$strong-blue: #1F679B;
+
+$custom-colors: (
+    "orange": $orange,
+    "gray": $gray,
+    "strong-blue": $strong-blue,
+    "accent": $strong-blue
+);
+
+$primary: $orange;
+$secondary: $gray;
+
+// Navs / Tabs
+$nav-link-color: white;
+$nav-link-font-weight: bold;
+$nav-link-hover-color: white;
+$nav-tabs-border-color: $orange;
+$nav-tabs-link-active-border-color: $orange $orange transparent;
+
+@import "../../../../../../../../src/main/node/node_modules/bootstrap/scss/bootstrap";
+
+.table-striped-exempt {
+    --bs-table-striped-bg: transparent;
+}

@@ -11,62 +11,50 @@ import io.mockk.verifySequence
 import org.coner.trailer.Event
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.EventView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import org.coner.trailer.io.service.CrispyFishEventMappingContextService
-import org.coner.trailer.io.service.CrispyFishGroupingService
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.EventService
-import org.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
 import java.nio.file.Path
 import java.time.LocalDate
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventSetCommandTest {
+class EventSetCommandTest : DIAware {
 
     lateinit var command: EventSetCommand
 
-    @MockK lateinit var dbConfig: DatabaseConfiguration
-    @MockK lateinit var service: EventService
-    @MockK lateinit var groupingService: CrispyFishGroupingService
-    @MockK lateinit var personService: PersonService
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var view: EventView
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var testConsole: StringBufferConsole
+    private val service: EventService by instance()
+    @MockK lateinit var view: EventView
 
     @TempDir lateinit var root: Path
     lateinit var crispyFish: Path
 
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
+
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
         crispyFish = root.resolve("crispy-fish").createDirectory()
-        command = EventSetCommand(
-            di = DI {
-                bind<DatabaseConfiguration>() with instance(dbConfig)
-                bind<EventService>() with instance(service)
-                bind<CrispyFishGroupingService>() with instance(groupingService)
-                bind<PersonService>() with instance(personService)
-                bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-                bind<EventView>() with instance(view)
-            }
-        ).apply {
-            context {
-                console = testConsole
-            }
-        }
+        command = EventSetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -74,57 +62,53 @@ class EventSetCommandTest {
         @MockK context: CrispyFishEventMappingContext
     ) {
         val original = TestEvents.Lscc2019.points1
-        val setCrispyFish = Event.CrispyFishMetadata(
-            eventControlFile = "set-event-control-file.ecf",
-            classDefinitionFile = "set-class-definition-file.ecf",
-            peopleMap = emptyMap()
-        )
         val set = original.copy(
             name = "It should set event properties",
             date = LocalDate.parse("2020-12-07"),
-            crispyFish = setCrispyFish
+            crispyFish = Event.CrispyFishMetadata(
+                eventControlFile = crispyFish.resolve("set-event-control-file.ecf")
+                    .createFile(),
+                classDefinitionFile = crispyFish.resolve("set-class-definition-file.ecf")
+                    .createFile(),
+                peopleMap = emptyMap()
+            ),
+            motorsportReg = Event.MotorsportRegMetadata(
+                id = "motorsportreg-event-id"
+            )
         )
-        val setEventControlFile = crispyFish.resolve(set.crispyFish!!.eventControlFile).createFile()
-        val setClassDefinitionFile = crispyFish.resolve(set.crispyFish!!.classDefinitionFile).createFile()
-        every { dbConfig.crispyFishDatabase } returns crispyFish
         every { service.findById(original.id) } returns original
-        every { crispyFishEventMappingContextService.load(setCrispyFish) } returns context
-        justRun { service.update(
-            update = set,
-            context = context
-        ) }
+        justRun { service.update(any()) }
         val viewRendered = "view rendered set event named: ${set.name}"
-        every { view.render(set) } returns viewRendered
+        every { view.render(any()) } returns viewRendered
 
         command.parse(arrayOf(
             "${original.id}",
             "--name", set.name,
             "--date", "${set.date}",
             "--crispy-fish", "set",
-            "--event-control-file", "$setEventControlFile",
-            "--class-definition-file", "$setClassDefinitionFile"
+            "--event-control-file", "${set.requireCrispyFish().eventControlFile}",
+            "--class-definition-file", "${set.requireCrispyFish().classDefinitionFile}",
+            "--motorsportreg", "set",
+            "--msr-event-id", "${set.motorsportReg?.id}"
         ))
 
         verifySequence {
             service.findById(original.id)
-            service.update(
-                update = set,
-                context = context
-            )
+            service.update(set)
             view.render(set)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
-    fun `It should keep event properties for options not passed`() {
+    fun `It should keep event properties for options not passed`(
+        @MockK context: CrispyFishEventMappingContext
+    ) {
         val original = TestEvents.Lscc2019.points1
+        val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
         every { service.findById(original.id) } returns original
         justRun {
-            service.update(
-                update = original,
-                context = null
-            )
+            service.update(original)
         }
         val viewRendered = "view rendered set event named: ${original.name}"
         every { view.render(eq(original)) } returns viewRendered
@@ -135,10 +119,7 @@ class EventSetCommandTest {
 
         verifySequence {
             service.findById(original.id)
-            service.update(
-                update = original,
-                context = null
-            )
+            service.update(original)
             view.render(original)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)

@@ -5,13 +5,12 @@ import assertk.assertions.isEqualTo
 import org.coner.trailer.TestParticipants
 import org.coner.trailer.eventresults.ParticipantResult
 import org.coner.trailer.eventresults.mockkParticipantResult
-import org.coner.trailer.eventresults.mockkResultRun
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
 class EventPointsCalculatorTest {
 
-    enum class LsccGroupingStyleParam(
+    enum class LsccGroupedStyleParam(
             val participantResult: ParticipantResult,
             val expected: Int
     ) {
@@ -46,9 +45,9 @@ class EventPointsCalculatorTest {
     }
 
     @ParameterizedTest
-    @EnumSource(LsccGroupingStyleParam::class)
-    fun `It should calculate points LSCC Grouping-style`(param: LsccGroupingStyleParam) {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+    @EnumSource(LsccGroupedStyleParam::class)
+    fun `It should calculate points LSCC Grouped-style`(param: LsccGroupedStyleParam) {
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
 
         val actual = calculator.calculate(param.participantResult)
 
@@ -113,86 +112,6 @@ class EventPointsCalculatorTest {
     @EnumSource(LsccSpecialCupStyleParam::class)
     fun `It should calculate points LSCC Special Cup-style`(param: LsccSpecialCupStyleParam) {
         val calculator = TestEventPointsCalculators.lsccOverallCalculator
-
-        val actual = calculator.calculate(param.participantResult)
-
-        assertThat(actual).isEqualTo(param.expected)
-    }
-
-    enum class NlsccParam(
-            val participantResult: ParticipantResult,
-            val expected: Int
-    ) {
-        FIRST_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 1,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 20
-        ),
-        FIRST_DNF(
-                participantResult = mockkParticipantResult(
-                        position = 1,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun(didNotFinish = true)
-                ),
-                expected = 1
-        ),
-        FIRST_DNS(
-                participantResult = mockkParticipantResult(
-                        position = 1,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = null
-                ),
-                expected = 0
-        ),
-        SECOND_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 2,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 16
-        ),
-        FIFTH_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 5,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 9
-        ),
-        TENTH_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 10,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 2
-        ),
-        ELEVENTH_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 11,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 1
-        ),
-        TWELFTH_CLEAN(
-                participantResult = mockkParticipantResult(
-                        position = 12,
-                        participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
-                        personalBestRun = mockkResultRun()
-                ),
-                expected = 1
-        )
-    }
-
-    @ParameterizedTest
-    @EnumSource(NlsccParam::class)
-    fun `It should calculate points NLSCC-style`(param: NlsccParam) {
-        val calculator = TestEventPointsCalculators.olsccCalculator
 
         val actual = calculator.calculate(param.participantResult)
 

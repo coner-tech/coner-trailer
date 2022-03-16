@@ -2,42 +2,50 @@ package org.coner.trailer.cli.command.seasonpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
 @ExtendWith(MockKExtension::class)
-class SeasonPointsCalculatorGetCommandTest {
+class SeasonPointsCalculatorGetCommandTest : DIAware {
 
     lateinit var command: SeasonPointsCalculatorGetCommand
 
-    @MockK lateinit var service: SeasonPointsCalculatorConfigurationService
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    private val service: SeasonPointsCalculatorConfigurationService by instance()
     @MockK lateinit var view: SeasonPointsCalculatorConfigurationView
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
-        val di = DI {
-            bind<SeasonPointsCalculatorConfigurationService>() with instance(service)
-            bind<SeasonPointsCalculatorConfigurationView>() with instance(view)
-        }
-        command = SeasonPointsCalculatorGetCommand(
-                di = di,
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = SeasonPointsCalculatorGetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -55,7 +63,7 @@ class SeasonPointsCalculatorGetCommandTest {
             service.findById(eq(get.id))
             view.render(get)
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
@@ -73,6 +81,6 @@ class SeasonPointsCalculatorGetCommandTest {
             service.findByName(get.name)
             view.render(get)
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 }

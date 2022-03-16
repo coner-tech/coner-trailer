@@ -1,0 +1,10 @@
+Find:
+
+class (\w*)Test : AbstractCommandTest<\w*>\(\) \{
+
+Replace:
+
+@ExtendWith(MockKExtension::class)
+class $1Test : DIAware {
+
+    lateinit var command: $1

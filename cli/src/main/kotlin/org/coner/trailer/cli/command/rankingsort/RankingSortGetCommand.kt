@@ -1,38 +1,31 @@
 package org.coner.trailer.cli.command.rankingsort
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.groups.single
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.cli.di.use
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.RankingSortView
 import org.coner.trailer.io.service.RankingSortService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.diContext
 import org.kodein.di.instance
 import java.util.*
 
 class RankingSortGetCommand(
-        di: DI,
-        useConsole: CliktConsole
+    override val di: DI,
+    private val global: GlobalModel
 ) : CliktCommand(
         name = "get",
         help = "Get a ranking sort"
 ), DIAware {
 
-    init {
-        context {
-            console = useConsole
-        }
-    }
-
-    override val di: DI by findOrSetObject { di }
-
+    override val diContext = diContext { global.requireEnvironment().openDataSession() }
     private val service: RankingSortService by instance()
     private val view: RankingSortView by instance()
 
@@ -47,11 +40,11 @@ class RankingSortGetCommand(
                     .convert { Query.ByName(name = it) }
     ).single().required()
 
-    override fun run() {
+    override fun run() = diContext.use {
         val get = when(val query = this.query) {
             is Query.ById -> service.findById(query.id)
             is Query.ByName -> service.findByName(query.name)
         }
-        echo(view.render(get ?: return))
+        echo(view.render(get ?: return@use))
     }
 }

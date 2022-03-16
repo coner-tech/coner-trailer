@@ -7,8 +7,8 @@ import java.io.InputStream
 
 class StringBufferConsole : CliktConsole {
 
-    private val out = StringBuffer()
-    private val err = StringBuffer()
+    private var out = StringBuffer()
+    private var err = StringBuffer()
     private var prompting: Boolean = false
     private var input: String? = null
 
@@ -42,5 +42,10 @@ class StringBufferConsole : CliktConsole {
     fun writeInput(input: String) {
         check(prompting)
         this.input = input
+    }
+
+    fun clear() {
+        out = StringBuffer()
+        err = StringBuffer()
     }
 }

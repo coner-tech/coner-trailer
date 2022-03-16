@@ -1,12 +1,12 @@
 package org.coner.trailer.cli.di
 
+import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.coner.trailer.cli.view.*
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import org.kodein.di.provider
+import org.kodein.di.*
 
-val viewModule = DI.Module("view") {
+val viewModule = DI.Module("coner.trailer.cli.view") {
+    bindInstance { defaultCliktConsole() }
+    bind<ClubView>() with provider { ClubView() }
     bind<DatabaseConfigurationView>() with provider { DatabaseConfigurationView(
             console = instance()
     ) }
@@ -27,6 +27,7 @@ val viewModule = DI.Module("view") {
     bind<MotorsportRegMemberTableView>() with provider { MotorsportRegMemberTableView() }
     bind<SeasonView>() with provider { SeasonView() }
     bind<SeasonTableView>() with provider { SeasonTableView() }
+    bind<PolicyView>() with provider { PolicyView() }
     bind<EventView>() with provider { EventView() }
     bind<EventTableView>() with provider { EventTableView() }
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }

@@ -2,23 +2,23 @@ package org.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.options.required
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.io.ConfigurationService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.diContext
 import org.kodein.di.instance
 
 class ConfigDatabaseSetDefaultCommand(
-    di: DI
+    override val di: DI,
+    private val global: GlobalModel
 ) : CliktCommand(
         name = "set-default",
         help = "Set named database to default"
 ), DIAware {
 
-    override val di: DI by findOrSetObject { di }
+    override val diContext = diContext { global.requireEnvironment() }
     private val service: ConfigurationService by instance()
 
     private val name: String by argument()

@@ -3,7 +3,6 @@ package org.coner.trailer.cli.view
 import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import org.coner.trailer.Event
-import org.coner.trailer.Grouping
 import org.coner.trailer.Person
 
 class EventView : View<Event> {
@@ -16,6 +15,11 @@ class EventView : View<Event> {
                     Event Control File:     ${model.crispyFish?.eventControlFile}
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
                     People Map:             ${renderPeopleMap(model)}
+            MotorsportReg:
+                    ID:     ${model.motorsportReg?.id}
+            Policy:
+                    ID:     ${model.policy.id}
+                    Name:   ${model.policy.name}
     """.trimIndent()
 
     private fun renderPeopleMap(model: Event): String {
@@ -26,11 +30,7 @@ class EventView : View<Event> {
             at.addRow("Signage", "Person ID")
             at.addRule()
             model.crispyFish?.peopleMap?.forEach { (key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) ->
-                val grouping = when (val grouping = key.signage.grouping) {
-                    is Grouping.Singular -> grouping.abbreviation
-                    is Grouping.Paired -> "${grouping.pair.first.abbreviation} ${grouping.pair.second.abbreviation}"
-                }
-                at.addRow("$grouping ${key.signage.number}", "${person.id}")
+                at.addRow("${key.classing.abbreviation} ${key.number}", "${person.id}")
             }
             at.addRule()
             at.render()
@@ -42,5 +42,4 @@ class EventView : View<Event> {
             append(content)
         }.prependIndent(" ".repeat(24))
     }
-
 }

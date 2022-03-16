@@ -2,41 +2,55 @@ package org.coner.trailer.cli.command.eventpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.MockKAnnotations
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.EventPointsCalculatorView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.EventPointsCalculatorService
 import org.coner.trailer.seasonpoints.TestEventPointsCalculators
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.junit.jupiter.api.extension.ExtendWith
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
-class EventPointsCalculatorSetCommandTest {
+@ExtendWith(MockKExtension::class)
+class EventPointsCalculatorSetCommandTest : DIAware {
 
     lateinit var command: EventPointsCalculatorSetCommand
 
-    @MockK
-    lateinit var service: EventPointsCalculatorService
-    @MockK
-    lateinit var view: EventPointsCalculatorView
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var console: StringBufferConsole
+    private val service: EventPointsCalculatorService by instance()
+    @MockK lateinit var view: EventPointsCalculatorView
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
-        console = StringBufferConsole()
-        arrangeCommand()
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = EventPointsCalculatorSetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
     fun `It should set all properties of calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         val set = calculator.copy(
                 name = "set",
@@ -69,12 +83,12 @@ class EventPointsCalculatorSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
     fun `It should only rename a calculator`() {
-        val calculator = TestEventPointsCalculators.lsccGroupingCalculator
+        val calculator = TestEventPointsCalculators.lsccGroupedCalculator
         every { service.findById(calculator.id) } returns calculator
         val set = calculator.copy(
                 name = "set"
@@ -93,17 +107,6 @@ class EventPointsCalculatorSetCommandTest {
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
-}
-
-private fun EventPointsCalculatorSetCommandTest.arrangeCommand() {
-    val di = DI {
-        bind<EventPointsCalculatorService>() with instance(service)
-        bind<EventPointsCalculatorView>() with instance(view)
-    }
-    command = EventPointsCalculatorSetCommand(
-            di = di,
-            useConsole = console
-    )
 }

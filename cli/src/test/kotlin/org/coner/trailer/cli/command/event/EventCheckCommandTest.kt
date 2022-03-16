@@ -12,57 +12,68 @@ import io.mockk.mockk
 import io.mockk.verifySequence
 import org.coner.trailer.Event
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import org.coner.trailer.cli.view.PeopleMapKeyTableView
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.CrispyFishEventMappingContextService
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import tech.coner.crispyfish.model.Registration
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 @ExtendWith(MockKExtension::class)
-class EventCheckCommandTest {
+class EventCheckCommandTest : DIAware {
 
     lateinit var command: EventCheckCommand
 
-    @MockK lateinit var service: EventService
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
+    override val di: DI = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { registrationTableView }
+        bindInstance { peopleMapKeyTableView }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    lateinit var global: GlobalModel
+    lateinit var testConsole: StringBufferConsole
+
     @MockK lateinit var registrationTableView: CrispyFishRegistrationTableView
     @MockK lateinit var peopleMapKeyTableView: PeopleMapKeyTableView
 
-    lateinit var useConsole: StringBufferConsole
+    private val service: EventService by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
 
     @BeforeEach
     fun before() {
-        useConsole = StringBufferConsole()
-        command = EventCheckCommand(DI {
-            bind<EventService>() with instance(service)
-            bind<CrispyFishEventMappingContextService>() with instance(crispyFishEventMappingContextService)
-            bind<CrispyFishRegistrationTableView>() with instance(registrationTableView)
-            bind<PeopleMapKeyTableView>() with instance(peopleMapKeyTableView)
-        }).context {
-            console = useConsole
-        }
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = EventCheckCommand(di, global)
+            .context {
+                console = testConsole
+            }
     }
 
     @Test
-    fun `It should check event and report all problems`() {
+    fun `It should check event and report fixable problems`() {
         val checkId = UUID.randomUUID()
         val checkCrispyFish: Event.CrispyFishMetadata = mockk()
+        val checkMotorsportReg: Event.MotorsportRegMetadata = mockk()
         val check: Event = mockk {
             every { id } returns checkId
             every { crispyFish } returns checkCrispyFish
+            every { motorsportReg } returns checkMotorsportReg
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappable = emptyList(),
+            unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
             unmappedClubMemberIdNullRegistrations = listOf(mockk()),
             unmappedClubMemberIdNotFoundRegistrations = listOf(mockk()),
             unmappedClubMemberIdAmbiguousRegistrations = listOf(mockk()),
@@ -82,6 +93,7 @@ class EventCheckCommandTest {
             service.findById(checkId)
             crispyFishEventMappingContextService.load(checkCrispyFish)
             service.check(check, context)
+            registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
             registrationTableView.render(result.unmappedClubMemberIdNullRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdNotFoundRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdAmbiguousRegistrations)
@@ -89,7 +101,7 @@ class EventCheckCommandTest {
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
         }
-        assertThat(useConsole.output).all {
+        assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")
             contains("Found unmapped registration(s) with club member ID not found")
             contains("Found unmapped registration(s) with club member ID ambiguous")
@@ -109,6 +121,8 @@ class EventCheckCommandTest {
         }
         val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
+            unmappable = emptyList(),
+            unmappedMotorsportRegPersonMatches = emptyList(),
             unmappedClubMemberIdNullRegistrations = emptyList(),
             unmappedClubMemberIdNotFoundRegistrations = emptyList(),
             unmappedClubMemberIdAmbiguousRegistrations = emptyList(),
@@ -127,7 +141,7 @@ class EventCheckCommandTest {
             crispyFishEventMappingContextService.load(checkCrispyFish)
             service.check(check, context)
         }
-        assertThat(useConsole.output).isEmpty()
+        assertThat(testConsole.output).isEmpty()
     }
 
     @Test
@@ -146,6 +160,6 @@ class EventCheckCommandTest {
         verifySequence {
             service.findById(checkId)
         }
-        assertThat(useConsole.output).isEmpty()
+        assertThat(testConsole.output).isEmpty()
     }
 }

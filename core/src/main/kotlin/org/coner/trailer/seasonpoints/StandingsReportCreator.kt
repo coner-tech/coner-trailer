@@ -1,12 +1,12 @@
 package org.coner.trailer.seasonpoints
 
-import org.coner.trailer.Grouping
+import org.coner.trailer.Class
 import org.coner.trailer.Person
 import org.coner.trailer.Season
 import org.coner.trailer.SeasonEvent
-import org.coner.trailer.eventresults.ComprehensiveResultsReport
-import org.coner.trailer.eventresults.GroupedResultsReport
-import org.coner.trailer.eventresults.ResultsType
+import org.coner.trailer.eventresults.ComprehensiveEventResults
+import org.coner.trailer.eventresults.EventResultsType
+import org.coner.trailer.eventresults.GroupEventResults
 import java.util.*
 
 class StandingsReportCreator {
@@ -16,71 +16,71 @@ class StandingsReportCreator {
     }
 
     class ComprehensiveStandingsReportParameters(
-            val eventNumberToComprehensiveResultsReport: Map<Int, ComprehensiveResultsReport>
+            val eventNumberToComprehensiveEventResults: Map<Int, ComprehensiveEventResults>
     )
 
     class CreateGroupedStandingsSectionsParameters(
-            val resultsType: ResultsType,
-            val season: Season,
-            val eventToGroupedResultsReports: Map<SeasonEvent, GroupedResultsReport>,
-            val configuration: SeasonPointsCalculatorConfiguration
+        val eventResultsType: EventResultsType,
+        val season: Season,
+        val eventToGroupEventResults: Map<SeasonEvent, GroupEventResults>,
+        val configuration: SeasonPointsCalculatorConfiguration
     )
 
     fun createGroupedStandingsSections(
             param: CreateGroupedStandingsSectionsParameters
-    ): SortedMap<Grouping, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupedResultsReports.keys.map { event: SeasonEvent ->
+    ): SortedMap<Class, StandingsReport.Section> {
+        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupEventResults.keys.map { event: SeasonEvent ->
             val config = event.seasonPointsCalculatorConfiguration
                     ?: param.season.seasonPointsCalculatorConfiguration
-            val eventPointsCalculator = config.resultsTypeToEventPointsCalculator[param.resultsType]
+            val eventPointsCalculator = config.eventResultsTypeToEventPointsCalculator[param.eventResultsType]
             checkNotNull(eventPointsCalculator) {
-                "No event points calculator for results type: ${param.resultsType.title}"
+                "No event points calculator for results type: ${param.eventResultsType.title}"
             }
             event to eventPointsCalculator
         }.toMap()
 
-        val groupingsToPersonStandingAccumulators: MutableMap<Grouping, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()
-        for ((event, groupedResultsReport) in param.eventToGroupedResultsReports) {
+        val groupsToPersonStandingAccumulators: MutableMap<Class, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()
+        for ((event, groupedEventResults) in param.eventToGroupEventResults) {
             val calculator = checkNotNull(eventToCalculator[event]) {
                 "Failed to find season points calculator for event: ${event.event.name}"
             }
-            for ((grouping, groupingResults) in groupedResultsReport.groupingsToResultsMap) {
-                val accumulators: MutableMap<Person, PersonStandingAccumulator> = groupingsToPersonStandingAccumulators[grouping]
+            for ((group, participantResults) in groupedEventResults.groupParticipantResults) {
+                val accumulators: MutableMap<Person, PersonStandingAccumulator> = groupsToPersonStandingAccumulators[group]
                         ?: mutableMapOf<Person, PersonStandingAccumulator>().apply {
-                            groupingsToPersonStandingAccumulators[grouping] = this
+                            groupsToPersonStandingAccumulators[group] = this
                         }
-                for (participantGroupingResult in groupingResults) {
-                    if (participantGroupingResult.participant.person == null
-                            || !participantGroupingResult.participant.seasonPointsEligible) {
+                for (groupParticipantResult in participantResults) {
+                    if (groupParticipantResult.participant.person == null
+                            || !groupParticipantResult.participant.seasonPointsEligible) {
                         continue
                     }
-                    val accumulator = accumulators[participantGroupingResult.participant.person]
+                    val accumulator = accumulators[groupParticipantResult.participant.person]
                             ?: PersonStandingAccumulator(
-                                    person = participantGroupingResult.participant.person
+                                    person = groupParticipantResult.participant.person
                             ).apply {
-                                accumulators[participantGroupingResult.participant.person] = this
+                                accumulators[groupParticipantResult.participant.person] = this
                             }
                     with(accumulator) {
-                        eventToPoints[event] = calculator.calculate(participantGroupingResult)
-                        positionToFinishCount[participantGroupingResult.position] = (positionToFinishCount[participantGroupingResult.position] ?: 0).inc()
+                        eventToPoints[event] = calculator.calculate(groupParticipantResult)
+                        positionToFinishCount[groupParticipantResult.position] = (positionToFinishCount[groupParticipantResult.position] ?: 0).inc()
                     }
                 }
             }
         }
-        groupingsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
+        groupsToPersonStandingAccumulators.forEach { (_, personToStandingAccumulators) ->
             personToStandingAccumulators.values.forEach { accumulator ->
                 accumulator.score = accumulator.eventToPoints.values.sortedDescending()
                         .take(param.season.takeScoreCountForPoints ?: Int.MAX_VALUE)
                         .sum()
             }
         }
-        val groupingsToFinalAccumulators = groupingsToPersonStandingAccumulators.map { (grouping, peopleStandingAccumulators) ->
+        val groupsToFinalAccumulators = groupsToPersonStandingAccumulators.map { (group, peopleStandingAccumulators) ->
             val finalAccumulators = peopleStandingAccumulators.values
                     .toList()
                     .sortedWith(param.configuration.rankingSort.comparator)
-            grouping to finalAccumulators
+            group to finalAccumulators
         }.toMap()
-        groupingsToFinalAccumulators.forEach { (_, accumulators) ->
+        groupsToFinalAccumulators.forEach { (_, accumulators) ->
             accumulators.mapIndexed { index, accumulator ->
                 accumulator.position = if (index > 0) {
                     val previousAccumulator = accumulators[index - 1]
@@ -97,9 +97,9 @@ class StandingsReportCreator {
                 }
             }
         }
-        val sectionStandings: Map<Grouping, List<StandingsReport.Standing>> = groupingsToFinalAccumulators
-                .map { (grouping, accumulators) ->
-                    grouping to accumulators.map { accumulator ->
+        val sectionStandings: Map<Class, List<StandingsReport.Standing>> = groupsToFinalAccumulators
+                .map { (group, accumulators) ->
+                    group to accumulators.map { accumulator ->
                         StandingsReport.Standing(
                                 position = checkNotNull(accumulator.position),
                                 tie = accumulator.tie,
@@ -110,9 +110,9 @@ class StandingsReportCreator {
                     }.toList()
                 }.toMap()
         return sectionStandings
-                .map { (grouping, standings) ->
-                    grouping to StandingsReport.Section(
-                            title = grouping.abbreviation,
+                .mapNotNull { (group, standings) ->
+                    group to StandingsReport.Section(
+                            title = group.abbreviation,
                             standings = standings
                     )
                 }

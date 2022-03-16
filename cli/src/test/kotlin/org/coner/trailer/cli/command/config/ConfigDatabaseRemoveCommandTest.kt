@@ -3,52 +3,51 @@ package org.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.contains
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
-import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
-import io.mockk.*
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
+import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.TestDatabaseConfigurations
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.TestDatabaseConfigurations
+import org.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
 import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
-class ConfigDatabaseRemoveCommandTest {
+class ConfigDatabaseRemoveCommandTest : DIAware {
 
     lateinit var command: ConfigDatabaseRemoveCommand
 
-    @MockK
-    lateinit var service: ConfigurationService
+    override val di = DI.lazy {
+        bind { scoped(EnvironmentScope).singleton { service } }
+    }
+
+    @MockK lateinit var service: ConfigurationService
+
+    @TempDir lateinit var temp: Path
 
     lateinit var testConsole: StringBufferConsole
-
-    @TempDir
-    lateinit var temp: Path
-
+    lateinit var global: GlobalModel
     lateinit var dbConfigs: TestDatabaseConfigurations
-
 
     @BeforeEach
     fun before() {
-        dbConfigs = TestDatabaseConfigurations(temp)
         testConsole = StringBufferConsole()
-        command = ConfigDatabaseRemoveCommand(
-            di = DI {
-                bind<ConfigurationService>() with instance(service)
-            }
-        ).context {
-            console = testConsole
-        }
+        dbConfigs = TestDatabaseConfigurations(temp)
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.minimal(di) }
+        command = ConfigDatabaseRemoveCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -84,5 +83,4 @@ class ConfigDatabaseRemoveCommandTest {
 
 private fun ConfigDatabaseRemoveCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { service.listDatabasesByName() }.returns(dbConfigs.allByName)
-    every { service.noDatabase }.returns(dbConfigs.noDatabase)
 }

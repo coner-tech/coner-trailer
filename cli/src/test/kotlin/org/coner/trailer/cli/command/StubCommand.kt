@@ -1,21 +1,21 @@
 package org.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.findOrSetObject
 import org.coner.trailer.cli.service.StubService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.diContext
 import org.kodein.di.instance
 
 class StubCommand(
-        di: DI
+    override val di: DI,
+    private val global: GlobalModel
 ) : CliktCommand(
-        name = "stub",
-        help = "Exploratory command for DI scoped injection"
+    name = "stub",
+    help = "Exploratory command for DI scoped injection"
 ), DIAware {
 
-    override val di: DI by findOrSetObject { di }
-
+    override val diContext = diContext { global.requireEnvironment() }
     private val service: StubService by instance()
 
     override fun run() {

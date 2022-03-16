@@ -1,5 +1,20 @@
 [
 {
+  "name":"[B"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.KeyDeserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"
+},
+{
   "name":"byte[]"
 },
 {
@@ -46,6 +61,14 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"java.io.ObjectInputStream"
 },
 {
@@ -73,10 +96,17 @@
   "allDeclaredClasses":true
 },
 {
+  "name":"java.lang.Enum$EnumDesc"
+},
+{
   "name":"java.lang.Integer",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
+},
+{
+  "name":"java.lang.Iterable",
+  "allDeclaredMethods":true
 },
 {
   "name":"java.lang.Number",
@@ -84,13 +114,28 @@
   "allDeclaredMethods":true
 },
 {
-  "name":"java.lang.Object"
+  "name":"java.lang.Object",
+  "methods":[
+    {"name":"equals","parameterTypes":["java.lang.Object"] }, 
+    {"name":"hashCode","parameterTypes":[] }, 
+    {"name":"toString","parameterTypes":[] }
+  ]
 },
 {
   "name":"java.lang.String"
 },
 {
   "name":"java.lang.String[]"
+},
+{
+  "name":"java.lang.constant.Constable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.constant.ConstantDesc",
+  "queryAllDeclaredMethods":true
 },
 {
   "name":"java.lang.invoke.MethodHandles$Lookup",
@@ -108,7 +153,24 @@
   "methods":[{"name":"getName","parameterTypes":[] }]
 },
 {
-  "name":"java.nio.file.Path"
+  "name":"java.math.BigDecimal",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"java.math.BigDecimal[]"
+},
+{
+  "name":"java.nio.file.Path",
+  "allDeclaredMethods":true
+},
+{
+  "name":"java.nio.file.Watchable",
+  "allDeclaredMethods":true
+},
+{
+  "name":"java.security.AccessController"
 },
 {
   "name":"java.security.AlgorithmParametersSpi"
@@ -147,15 +209,27 @@
   "name":"java.util.Map"
 },
 {
+  "name":"java.util.Map$Entry"
+},
+{
+  "name":"java.util.Optional"
+},
+{
   "name":"java.util.UUID",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
+  "name":"java.util.regex.Pattern"
+},
+{
   "name":"javax.security.auth.x500.X500Principal",
   "fields":[{"name":"thisX500Name"}],
   "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
+{
+  "name":"jdk.internal.ValueBased"
 },
 {
   "name":"kotlin.KotlinVersion",
@@ -198,30 +272,43 @@
   "allPublicFields":true
 },
 {
-  "name":"org.coner.snoozle.db.Record",
-  "allDeclaredMethods":true
-},
-{
-  "name":"org.coner.snoozle.db.entity.Entity",
-  "allDeclaredMethods":true
-},
-{
-  "name":"org.coner.trailer.cli.io.Configuration",
-  "allDeclaredFields":true,
-  "allPublicFields":true,
-  "allDeclaredMethods":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
-  "name":"org.coner.trailer.cli.io.DatabaseConfiguration",
+  "name":"org.coner.trailer.Car",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.coner.trailer.cli.io.DatabaseConfiguration$MotorsportReg",
+  "name":"org.coner.trailer.Event"
+},
+{
+  "name":"org.coner.trailer.Participant"
+},
+{
+  "name":"org.coner.trailer.Run"
+},
+{
+  "name":"org.coner.trailer.Time",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.Time$Companion"
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.Assignment",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
@@ -245,6 +332,19 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"org.coner.trailer.datasource.snoozle.entity.ClubEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["java.lang.String"] }, 
+    {"name":"getName","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.ClubEntity$Key"
+},
+{
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
@@ -258,6 +358,12 @@
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",
@@ -275,21 +381,10 @@
   "name":"org.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity$Key"
 },
 {
-  "name":"org.coner.trailer.datasource.snoozle.entity.GroupingContainer",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"org.coner.trailer.datasource.snoozle.entity.GroupingContainer$Type",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true
-},
-{
   "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity"
 },
 {
-  "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Signage",
+  "name":"org.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
@@ -308,6 +403,26 @@
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource$Type",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.RankingSortEntity",
@@ -346,6 +461,182 @@
 },
 {
   "name":"org.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"
+},
+{
+  "name":"org.coner.trailer.eventresults.ComprehensiveEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.EventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.EventResultsType"
+},
+{
+  "name":"org.coner.trailer.eventresults.GroupEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.IndividualEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.OverallEventResults"
+},
+{
+  "name":"org.coner.trailer.eventresults.ParticipantResult"
+},
+{
+  "name":"org.coner.trailer.eventresults.ResultRun"
+},
+{
+  "name":"org.coner.trailer.eventresults.Score",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Companion"
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Cone",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$DidNotFinish",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.eventresults.Score$Penalty$Disqualified"
+},
+{
+  "name":"org.coner.trailer.io.Configuration",
+  "allDeclaredFields":true,
+  "allPublicFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true
+},
+{
+  "name":"org.coner.trailer.io.DatabaseConfiguration",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.identifier.EventIdentifier",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.identifier.ParticipantIdentifier",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ComprehensiveEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ComprehensiveEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.GroupedEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.GroupedEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$IndividualParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$ParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.IndividualEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.OverallEventResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.OverallEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ParticipantResultModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ResultRunModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.RunModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.coner.trailer.render.json.model.ScoreModel",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"sun.nio.fs.UnixPath",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
 },
 {
   "name":"sun.security.pkcs.SignerInfo[]"
@@ -487,5 +778,33 @@
 {
   "name":"sun.security.x509.SubjectKeyIdentifierExtension",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.snoozle.db.Record",
+  "allDeclaredMethods":true
+},
+{
+  "name":"tech.coner.snoozle.db.entity.Entity",
+  "allDeclaredMethods":true
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getHost","parameterTypes":[] }, 
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getProcessId","parameterTypes":[] }, 
+    {"name":"getType","parameterTypes":[] }
+  ]
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Key"
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Type",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
 }
 ]

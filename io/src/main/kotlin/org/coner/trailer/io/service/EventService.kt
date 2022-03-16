@@ -1,31 +1,57 @@
 package org.coner.trailer.io.service
 
-import org.coner.crispyfish.model.Registration
 import org.coner.trailer.Event
 import org.coner.trailer.Person
+import org.coner.trailer.Policy
 import org.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import org.coner.trailer.datasource.snoozle.EventResource
 import org.coner.trailer.datasource.snoozle.entity.EventEntity
+import org.coner.trailer.io.DatabaseConfiguration
 import org.coner.trailer.io.constraint.EventDeleteConstraints
 import org.coner.trailer.io.constraint.EventPersistConstraints
 import org.coner.trailer.io.mapper.EventMapper
 import org.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.crispyfish.model.Registration
+import java.nio.file.Path
+import java.time.LocalDate
 import java.util.*
-import kotlin.streams.toList
 
 class EventService(
+    private val dbConfig: DatabaseConfiguration,
     private val resource: EventResource,
     private val mapper: EventMapper,
     private val persistConstraints: EventPersistConstraints,
     private val deleteConstraints: EventDeleteConstraints,
-    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+    private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier,
 ) {
 
     fun create(
-        create: Event
-    ) {
+        id: UUID? = null,
+        name: String,
+        date: LocalDate,
+        crispyFishEventControlFile: Path,
+        crispyFishClassDefinitionFile: Path,
+        motorsportRegEventId: String?,
+        policy: Policy
+    ): Event {
+        val create = Event(
+            id = id ?: UUID.randomUUID(),
+            name = name,
+            date = date,
+            lifecycle = Event.Lifecycle.CREATE,
+            crispyFish = Event.CrispyFishMetadata(
+                eventControlFile = dbConfig.asRelativeToCrispyFishDatabase(crispyFishEventControlFile),
+                classDefinitionFile = dbConfig.asRelativeToCrispyFishDatabase(crispyFishClassDefinitionFile),
+                peopleMap = emptyMap() // out of scope for add command
+            ),
+            motorsportReg = motorsportRegEventId?.let { Event.MotorsportRegMetadata(
+                id = it
+            ) },
+            policy = policy
+        )
         persistConstraints.assess(create)
         resource.create(mapper.toSnoozle(create))
+        return create
     }
 
     fun findById(id: UUID): Event {
@@ -43,15 +69,17 @@ class EventService(
 
     fun list(): List<Event> {
         return resource.stream()
-                .map(mapper::toCore)
-                .toList()
+            .map(mapper::toCore)
+            .sorted(compareBy(Event::date))
+            .toList()
     }
 
     fun check(
         check: Event,
         context: CrispyFishEventMappingContext
     ): CheckResult {
-        val checkCrispyFish = checkNotNull(check.crispyFish)
+        val unmappedMotorsportRegPersonMatches = mutableListOf<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>()
+        val unmappable = mutableListOf<Registration>()
         val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
         val unmappedClubMemberIdNotFoundRegistrations = mutableListOf<Registration>()
         val unmappedClubMemberIdAmbiguousRegistrations = mutableListOf<Registration>()
@@ -59,11 +87,36 @@ class EventService(
         val unmappedExactMatchRegistrations = mutableListOf<Registration>()
         val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
         eventCrispyFishPersonMapVerifier.verify(
-            context = context,
-            peopleMap = checkCrispyFish.peopleMap,
+            event = check,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {
-                override fun onMapped(registration: Registration, person: Person) {
+                override fun onMapped(
+                    registration: Registration,
+                    entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>
+                ) {
                     // no-op
+                }
+
+                override fun onUnmappedMotorsportRegPersonExactMatch(
+                    registration: Registration,
+                    entry: Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>
+                ) {
+                    unmappedMotorsportRegPersonMatches += registration to entry
+                }
+
+                override fun onUnmappableFirstNameNull(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableLastNameNull(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableClassing(registration: Registration) {
+                    unmappable += registration
+                }
+
+                override fun onUnmappableNumber(registration: Registration) {
+                    unmappable += registration
                 }
 
                 override fun onUnmappedClubMemberIdNull(registration: Registration) {
@@ -98,6 +151,8 @@ class EventService(
             }
         )
         return CheckResult(
+            unmappable = unmappable,
+            unmappedMotorsportRegPersonMatches = unmappedMotorsportRegPersonMatches,
             unmappedClubMemberIdNullRegistrations = unmappedClubMemberIdNullRegistrations,
             unmappedClubMemberIdNotFoundRegistrations = unmappedClubMemberIdNotFoundRegistrations,
             unmappedClubMemberIdAmbiguousRegistrations = unmappedClubMemberIdAmbiguousRegistrations,
@@ -108,6 +163,8 @@ class EventService(
     }
 
     class CheckResult(
+        val unmappable: List<Registration>,
+        val unmappedMotorsportRegPersonMatches: List<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>,
         val unmappedClubMemberIdNullRegistrations: List<Registration>,
         val unmappedClubMemberIdNotFoundRegistrations: List<Registration>,
         val unmappedClubMemberIdAmbiguousRegistrations: List<Registration>,
@@ -120,11 +177,9 @@ class EventService(
      * Persist an updated Event.
      *
      * @param[update] Event to persist
-     * @param[context] CrispyFishEventMappingContext the full mapping context for the event. Only required when lifecycle >= ACTIVE
      */
     fun update(
-        update: Event,
-        context: CrispyFishEventMappingContext?
+        update: Event
     ) {
         persistConstraints.assess(update)
         val allowUnmappedCrispyFishPeople = when (update.lifecycle) {
@@ -132,10 +187,8 @@ class EventService(
             Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> false
         }
         if (!allowUnmappedCrispyFishPeople) {
-            val updateCrispyFish = checkNotNull(update.crispyFish) { "crispy fish metadata is required for lifecycle ${update.lifecycle}" }
             eventCrispyFishPersonMapVerifier.verify(
-                context = checkNotNull(context) { "crispy fish event mapping context is required" },
-                peopleMap = updateCrispyFish.peopleMap,
+                event = update,
                 callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
             )
         }

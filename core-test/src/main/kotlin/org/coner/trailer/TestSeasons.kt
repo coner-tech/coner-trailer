@@ -42,15 +42,4 @@ object TestSeasons {
             takeScoreCountForPoints = 2
     ) }
 
-    val olscc2019: Season
-        get() = Season(
-                name = "OLSCC 2019",
-                seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.olsccV1,
-                seasonEvents = listOf(
-
-                ),
-                takeScoreCountForPoints = null
-        )
-
-
 }

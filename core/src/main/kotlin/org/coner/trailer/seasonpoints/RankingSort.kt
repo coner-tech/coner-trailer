@@ -23,8 +23,6 @@ data class RankingSort(
                         ?: compareByDescending(step.comparable)
                 is Step.PositionFinishCountDescending -> builder?.thenByDescending(step.comparable)
                         ?: compareByDescending(step.comparable)
-                is Step.AverageMarginOfVictoryDescending -> builder?.thenByDescending(step.comparable)
-                        ?: compareByDescending(step.comparable)
             }
         }
         checkNotNull(builder) { "model did not include sort steps" }
@@ -42,10 +40,6 @@ data class RankingSort(
             override val comparable: (PersonStandingAccumulator) -> Comparable<*>
                 get() = { it.positionToFinishCount[position] ?: 0 }
 
-        }
-        data class AverageMarginOfVictoryDescending(val index: Int? = null) : Step() {
-            override val comparable: (PersonStandingAccumulator) -> Comparable<*>
-                get() = { it.marginsOfVictory.average() ?: Time(Score.withoutTime().value) }
         }
     }
 

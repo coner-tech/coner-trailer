@@ -2,36 +2,50 @@ package org.coner.trailer.cli.command.rankingsort
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.MockKAnnotations
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.RankingSortView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.seasonpoints.RankingSort
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.junit.jupiter.api.extension.ExtendWith
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
-class RankingSortStepsAppendCommandTest {
+@ExtendWith(MockKExtension::class)
+class RankingSortStepsAppendCommandTest : DIAware {
 
     lateinit var command: RankingSortStepsAppendCommand
 
-    @MockK
-    lateinit var service: RankingSortService
-    @MockK
-    lateinit var view: RankingSortView
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var console: StringBufferConsole
+    private val service: RankingSortService by instance()
+    @MockK lateinit var view: RankingSortView
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        MockKAnnotations.init(this)
-        console = StringBufferConsole()
-        arrangeCommand()
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = RankingSortStepsAppendCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -62,17 +76,6 @@ class RankingSortStepsAppendCommandTest {
             service.update(eq(expected))
             view.render(eq(expected))
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
-}
-
-private fun RankingSortStepsAppendCommandTest.arrangeCommand() {
-    val di = DI {
-        bind<RankingSortService>() with instance(service)
-        bind<RankingSortView>() with instance(view)
-    }
-    command = RankingSortStepsAppendCommand(
-            di = di,
-            useConsole = console
-    )
 }

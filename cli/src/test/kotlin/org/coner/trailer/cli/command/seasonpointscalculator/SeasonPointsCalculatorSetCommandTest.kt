@@ -2,51 +2,54 @@ package org.coner.trailer.cli.command.seasonpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.RankingSortService
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
 @ExtendWith(MockKExtension::class)
-class SeasonPointsCalculatorSetCommandTest {
+class SeasonPointsCalculatorSetCommandTest : DIAware {
 
     lateinit var command: SeasonPointsCalculatorSetCommand
 
-    @MockK
-    lateinit var mapper: SeasonPointsCalculatorParameterMapper
-    @MockK
-    lateinit var rankingSortService: RankingSortService
-    @MockK
-    lateinit var service: SeasonPointsCalculatorConfigurationService
-    @MockK
-    lateinit var view: SeasonPointsCalculatorConfigurationView
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+        bindInstance { mapper }
+    }
+    override val diContext = diContext { command.diContext.value }
 
-    lateinit var console: StringBufferConsole
+    private val rankingSortService: RankingSortService by instance()
+    private val service: SeasonPointsCalculatorConfigurationService by instance()
+    @MockK lateinit var mapper: SeasonPointsCalculatorParameterMapper
+    @MockK lateinit var view: SeasonPointsCalculatorConfigurationView
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
-        val di = DI {
-            bind<SeasonPointsCalculatorParameterMapper>() with instance(mapper)
-            bind<RankingSortService>() with instance(rankingSortService)
-            bind<SeasonPointsCalculatorConfigurationService>() with instance(service)
-            bind<SeasonPointsCalculatorConfigurationView>() with instance(view)
-        }
-        command = SeasonPointsCalculatorSetCommand(
-                di = di,
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = SeasonPointsCalculatorSetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -70,7 +73,7 @@ class SeasonPointsCalculatorSetCommandTest {
             service.update(eq(rename))
             view.render(rename)
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
     @Test
@@ -94,6 +97,6 @@ class SeasonPointsCalculatorSetCommandTest {
             service.update(eq(rename))
             view.render(rename)
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 }

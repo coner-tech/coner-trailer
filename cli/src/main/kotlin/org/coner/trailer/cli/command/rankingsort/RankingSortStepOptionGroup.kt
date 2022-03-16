@@ -12,7 +12,6 @@ fun CliktCommand.rankingSortStepOptions() = option()
         .groupSwitch(
                 "--score-descending" to RankingSortStepOptionGroup.ScoreDescending,
                 "--position-finish-count-descending" to RankingSortStepOptionGroup.PositionFinishCountDescending(),
-                "--average-margin-of-victory-descending" to RankingSortStepOptionGroup.AverageMarginOfVictoryDescending
         )
 
 sealed class RankingSortStepOptionGroup : OptionGroup() {
@@ -30,9 +29,5 @@ sealed class RankingSortStepOptionGroup : OptionGroup() {
             get() = RankingSort.Step.PositionFinishCountDescending(
                     position = position
             )
-    }
-    object AverageMarginOfVictoryDescending : RankingSortStepOptionGroup() {
-        override val step: RankingSort.Step
-            get() = RankingSort.Step.AverageMarginOfVictoryDescending(index = 0)
     }
 }

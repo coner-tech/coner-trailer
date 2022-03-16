@@ -11,12 +11,4 @@ object TestRankingSorts {
                     RankingSort.Step.PositionFinishCountDescending(3)
             )
     )
-
-    val olscc = RankingSort(
-            name = "OLSCC",
-            steps = listOf(
-                    RankingSort.Step.ScoreDescending(0),
-                    RankingSort.Step.AverageMarginOfVictoryDescending(1)
-            )
-    )
 }

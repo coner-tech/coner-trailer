@@ -1,11 +1,10 @@
 package org.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import org.coner.crispyfish.model.Registration
-import org.coner.trailer.Event
+import org.coner.trailer.cli.command.BaseCommand
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.cli.di.use
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import org.coner.trailer.cli.view.PeopleMapKeyTableView
@@ -15,16 +14,17 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
-class EventCheckCommand(di: DI) : CliktCommand(
+class EventCheckCommand(
+    override val di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    global = global,
     name = "check",
     help = "Check an event and report any problems"
 ), DIAware {
 
-    override val di: DI by findOrSetObject { di }
-
+    override val diContext = diContextDataSession()
     private val service: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
@@ -32,11 +32,19 @@ class EventCheckCommand(di: DI) : CliktCommand(
 
     private val id: UUID by argument().convert { toUuid(it) }
 
-    override fun run() {
+    override fun run() = diContext.use {
         val check = service.findById(id)
         val checkCrispyFish = checkNotNull(check.crispyFish) { "Event is missing Crispy Fish Metadata" }
         val context = crispyFishEventMappingContextService.load(checkCrispyFish)
         val result = service.check(check, context)
+        if (result.unmappable.isNotEmpty()) {
+            echo("Found unmappable registration(s):")
+            echo(registrationTableView.render(result.unmappable))
+        }
+        if (result.unmappedMotorsportRegPersonMatches.isNotEmpty()) {
+            echo("Found unmapped registration(s) with cross-reference to person via motorsportreg assignments:")
+            echo(registrationTableView.render(result.unmappedMotorsportRegPersonMatches.map { it.first }))
+        }
         if (result.unmappedClubMemberIdNullRegistrations.isNotEmpty()) {
             echo("Found unmapped registration(s) with club member ID null:")
             echo(registrationTableView.render(result.unmappedClubMemberIdNullRegistrations))

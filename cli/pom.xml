@@ -13,9 +13,7 @@
     <artifactId>cli</artifactId>
 
     <properties>
-        <clikt.version>3.0.1</clikt.version>
-        <appdirs.version>1.2.0</appdirs.version>
-        <asciitable.version>0.3.2</asciitable.version>
+        <clikt.version>3.3.0</clikt.version>
     </properties>
 
     <dependencies>
@@ -32,6 +30,11 @@
             <groupId>org.coner.trailer</groupId>
             <artifactId>io</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>io-kodein-di</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.coner.trailer</groupId>
@@ -52,6 +55,21 @@
             <artifactId>kodein-di-jvm</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>render-html</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>render-text</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>render-all-kodein-di</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
             <artifactId>clikt-jvm</artifactId>
             <version>${clikt.version}</version>
@@ -60,16 +78,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>1.7.30</version>
-        </dependency>
-        <dependency>
-            <groupId>net.harawata</groupId>
-            <artifactId>appdirs</artifactId>
-            <version>${appdirs.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.vandermeer</groupId>
-            <artifactId>asciitable</artifactId>
-            <version>${asciitable.version}</version>
         </dependency>
 
         <dependency>
@@ -101,8 +109,20 @@
         </dependency>
         <dependency>
             <groupId>org.coner.trailer</groupId>
+            <artifactId>io-test</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
             <artifactId>datasource-crispy-fish-test</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.coner.trailer</groupId>
+            <artifactId>io-kodein-di-test</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -154,6 +174,11 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.coner.trailer.cli.ConerTrailerCli</mainClass>
+                                    <!-- Workaround https://github.com/square/retrofit/issues/3341 -->
+                                    <!-- Affects JVM 11 only -->
+                                    <manifestEntries>
+                                        <Add-Opens>java.base/java.lang.invoke</Add-Opens>
+                                    </manifestEntries>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -191,7 +216,7 @@
             <id>cli-native</id>
 
             <properties>
-                <graalvm.version>21.0.0</graalvm.version>
+                <graalvm.version>21.2.0</graalvm.version>
                 <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
             </properties>
             <dependencies>

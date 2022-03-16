@@ -9,38 +9,40 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.TestEvents
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.EventTableView
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
 
 @ExtendWith(MockKExtension::class)
-class EventListCommandTest {
+class EventListCommandTest : DIAware {
 
     lateinit var command: EventListCommand
 
-    @MockK lateinit var service: EventService
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    private val service: EventService by instance()
     @MockK lateinit var view: EventTableView
 
     lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        command = EventListCommand(
-            di = DI {
-                bind<EventService>() with instance(service)
-                bind<EventTableView>() with instance(view)
-            }
-        ).apply {
-            context {
-                console = testConsole
-            }
-        }
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = EventListCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test

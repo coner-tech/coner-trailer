@@ -1,101 +1,125 @@
 package org.coner.trailer.cli
 
 import com.github.ajalt.clikt.core.subcommands
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.command.RootCommand
+import org.coner.trailer.cli.command.club.ClubCommand
+import org.coner.trailer.cli.command.club.ClubGetCommand
+import org.coner.trailer.cli.command.club.ClubSetCommand
 import org.coner.trailer.cli.command.config.*
 import org.coner.trailer.cli.command.event.*
 import org.coner.trailer.cli.command.eventpointscalculator.*
 import org.coner.trailer.cli.command.motorsportreg.*
 import org.coner.trailer.cli.command.person.*
+import org.coner.trailer.cli.command.policy.*
 import org.coner.trailer.cli.command.rankingsort.*
 import org.coner.trailer.cli.command.season.*
 import org.coner.trailer.cli.command.seasonpointscalculator.*
 import org.coner.trailer.cli.di.cliktModule
-import org.coner.trailer.cli.di.ioModule
 import org.coner.trailer.cli.di.viewModule
+import org.coner.trailer.di.*
 import org.kodein.di.DI
-import org.kodein.di.direct
-import org.kodein.di.instance
-import kotlin.io.path.ExperimentalPathApi
 
-@ExperimentalPathApi
 object ConerTrailerCli {
 
     @JvmStatic
     fun main(args: Array<out String>) {
-        factory().main(args)
+        createCommands().main(args)
     }
 
-    fun factory(): RootCommand {
-        val di = DI.from(listOf(viewModule, ioModule, cliktModule))
-        val rootCommand: RootCommand = di.direct.run {
-            instance<RootCommand>().subcommands(
-                instance<ConfigCommand>().subcommands(
-                    instance<ConfigDatabaseCommand>().subcommands(
-                        instance<ConfigDatabaseAddCommand>(),
-                        instance<ConfigDatabaseGetCommand>(),
-                        instance<ConfigDatabaseListCommand>(),
-                        instance<ConfigDatabaseRemoveCommand>(),
-                        instance<ConfigDatabaseSetDefaultCommand>()
+    fun createCommands(): RootCommand {
+        val di = DI.from(listOf(
+            viewModule,
+            ioModule,
+            databaseModule,
+            motorsportRegApiModule,
+            eventResultsModule,
+            cliktModule,
+            allRendererModule
+        ))
+        val global = GlobalModel()
+        return RootCommand(di, global).subcommands(
+            ConfigCommand().subcommands(
+                ConfigDatabaseCommand().subcommands(
+                    ConfigDatabaseAddCommand(di, global),
+                    ConfigDatabaseGetCommand(di, global),
+                    ConfigDatabaseListCommand(di, global),
+                    ConfigDatabaseSnoozleMigrateCommand(di, global),
+                    ConfigDatabaseRemoveCommand(di, global),
+                    ConfigDatabaseSetDefaultCommand(di, global),
+                    ConfigDatabaseSnoozleCommand(global).subcommands(
+                        ConfigDatabaseSnoozleInitializeCommand(di, global),
+                        ConfigDatabaseSnoozleMigrateCommand(di, global)
                     )
-                ),
-                instance<EventCommand>().subcommands(
-                    instance<EventAddCommand>(),
-                    instance<EventCheckCommand>(),
-                    instance<EventCrispyFishPersonMapAddCommand>(),
-                    instance<EventCrispyFishPersonMapAssembleCommand>(),
-                    instance<EventCrispyFishPersonMapRemoveCommand>(),
-                    instance<EventDeleteCommand>(),
-                    instance<EventGetCommand>(),
-                    instance<EventListCommand>(),
-                    instance<EventSetCommand>(),
-                ),
-                instance<EventPointsCalculatorCommand>().subcommands(
-                    instance<EventPointsCalculatorAddCommand>(),
-                    instance<EventPointsCalculatorDeleteCommand>(),
-                    instance<EventPointsCalculatorGetCommand>(),
-                    instance<EventPointsCalculatorListCommand>(),
-                    instance<EventPointsCalculatorSetCommand>()
-                ),
-                instance<MotorsportRegCommand>().subcommands(
-                    instance<MotorsportRegMemberCommand>().subcommands(
-                        instance<MotorsportRegMemberListCommand>(),
-                        instance<MotorsportRegMemberImportCommand>(),
-                        instance<MotorsportRegMemberImportSingleCommand>()
-                    )
-                ),
-                instance<PersonCommand>().subcommands(
-                    instance<PersonAddCommand>(),
-                    instance<PersonDeleteCommand>(),
-                    instance<PersonGetCommand>(),
-                    instance<PersonListCommand>(),
-                    instance<PersonSearchCommand>(),
-                    instance<PersonSetCommand>()
-                ),
-                instance<RankingSortCommand>().subcommands(
-                    instance<RankingSortAddCommand>(),
-                    instance<RankingSortDeleteCommand>(),
-                    instance<RankingSortGetCommand>(),
-                    instance<RankingSortListCommand>(),
-                    instance<RankingSortSetCommand>(),
-                    instance<RankingSortStepsAppendCommand>()
-                ),
-                instance<SeasonCommand>().subcommands(
-                    instance<SeasonAddCommand>(),
-                    instance<SeasonDeleteCommand>(),
-                    instance<SeasonGetCommand>(),
-                    instance<SeasonListCommand>(),
-                    instance<SeasonSetCommand>()
-                ),
-                instance<SeasonPointsCalculatorCommand>().subcommands(
-                    instance<SeasonPointsCalculatorAddCommand>(),
-                    instance<SeasonPointsCalculatorDeleteCommand>(),
-                    instance<SeasonPointsCalculatorGetCommand>(),
-                    instance<SeasonPointsCalculatorListCommand>(),
-                    instance<SeasonPointsCalculatorSetCommand>()
                 )
+            ),
+            ClubCommand(global).subcommands(
+                ClubGetCommand(di, global),
+                ClubSetCommand(di, global)
+            ),
+            PolicyCommand().subcommands(
+                PolicyAddCommand(di, global),
+                PolicyGetCommand(di, global),
+                PolicyDeleteCommand(di, global),
+                PolicyListCommand(di, global),
+                PolicySetCommand(di, global)
+            ),
+            EventCommand().subcommands(
+                EventAddCommand(di, global),
+                EventCheckCommand(di, global),
+                EventCrispyFishPersonMapAddCommand(di, global),
+                EventCrispyFishPersonMapAssembleCommand(di, global),
+                EventCrispyFishPersonMapRemoveCommand(di, global),
+                EventDeleteCommand(di, global),
+                EventGetCommand(di, global),
+                EventListCommand(di, global),
+                EventResultsCommand(di, global),
+                EventSetCommand(di, global),
+            ),
+            EventPointsCalculatorCommand().subcommands(
+                EventPointsCalculatorAddCommand(di, global),
+                EventPointsCalculatorDeleteCommand(di, global),
+                EventPointsCalculatorGetCommand(di, global),
+                EventPointsCalculatorListCommand(di, global),
+                EventPointsCalculatorSetCommand(di, global)
+            ),
+            MotorsportRegCommand().subcommands(
+                MotorsportRegMemberCommand().subcommands(
+                    MotorsportRegMemberListCommand(di, global),
+                    MotorsportRegMemberImportCommand(di, global),
+                    MotorsportRegMemberImportSingleCommand(di, global)
+                )
+            ),
+            PersonCommand().subcommands(
+                PersonAddCommand(di, global),
+                PersonDeleteCommand(di, global),
+                PersonGetCommand(di, global),
+                PersonListCommand(di, global),
+                PersonSearchCommand(di, global),
+                PersonSetCommand(di, global)
+            ),
+            RankingSortCommand().subcommands(
+                RankingSortAddCommand(di, global),
+                RankingSortDeleteCommand(di, global),
+                RankingSortGetCommand(di, global),
+                RankingSortListCommand(di, global),
+                RankingSortSetCommand(di, global),
+                RankingSortStepsAppendCommand(di, global)
+            ),
+            SeasonCommand().subcommands(
+                SeasonAddCommand(di, global),
+                SeasonDeleteCommand(di, global),
+                SeasonGetCommand(di, global),
+                SeasonListCommand(di, global),
+                SeasonSetCommand(di, global)
+            ),
+            SeasonPointsCalculatorCommand().subcommands(
+                SeasonPointsCalculatorAddCommand(di, global),
+                SeasonPointsCalculatorDeleteCommand(di, global),
+                SeasonPointsCalculatorGetCommand(di, global),
+                SeasonPointsCalculatorListCommand(di, global),
+                SeasonPointsCalculatorSetCommand(di, global)
             )
-        }
-        return rootCommand
+        )
     }
 }

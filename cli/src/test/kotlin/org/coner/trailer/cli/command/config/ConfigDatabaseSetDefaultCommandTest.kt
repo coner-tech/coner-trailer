@@ -6,44 +6,53 @@ import assertk.assertions.isEqualToIgnoringGivenProperties
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.BadParameterValue
-import io.mockk.*
+import com.github.ajalt.clikt.core.context
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.coner.trailer.cli.io.ConfigurationService
-import org.coner.trailer.cli.io.DatabaseConfiguration
-import org.coner.trailer.cli.io.TestDatabaseConfigurations
+import io.mockk.justRun
+import io.mockk.slot
+import io.mockk.verifySequence
+import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.io.ConfigurationService
+import org.coner.trailer.io.DatabaseConfiguration
+import org.coner.trailer.io.TestDatabaseConfigurations
+import org.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
 import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
-class ConfigDatabaseSetDefaultCommandTest {
+class ConfigDatabaseSetDefaultCommandTest : DIAware {
 
     lateinit var command: ConfigDatabaseSetDefaultCommand
 
-    @MockK
-    lateinit var service: ConfigurationService
+    override val di = DI.lazy {
+        bind { scoped(EnvironmentScope).singleton { service } }
+    }
 
-    @TempDir
-    lateinit var temp: Path
+    @MockK lateinit var service: ConfigurationService
 
+    @TempDir lateinit var temp: Path
+
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
     lateinit var dbConfigs: TestDatabaseConfigurations
 
     @BeforeEach
     fun before() {
+        testConsole = StringBufferConsole()
         dbConfigs = TestDatabaseConfigurations(temp)
-        command = ConfigDatabaseSetDefaultCommand(
-            di = DI {
-                bind<ConfigurationService>() with instance(service)
-            }
-        )
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.minimal(di) }
+        command = ConfigDatabaseSetDefaultCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -84,5 +93,4 @@ class ConfigDatabaseSetDefaultCommandTest {
 
 private fun ConfigDatabaseSetDefaultCommandTest.arrangeWithTestDatabaseConfigurations() {
     every { service.listDatabasesByName() } returns(dbConfigs.allByName)
-    every { service.noDatabase } returns(dbConfigs.noDatabase)
 }

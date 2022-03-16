@@ -2,42 +2,50 @@ package org.coner.trailer.cli.command.season
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
 import org.coner.trailer.TestSeasons
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.AbstractCommandTest
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.SeasonView
+import org.coner.trailer.di.EnvironmentScope
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.SeasonService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
+import java.util.logging.Logger.global
 
 @ExtendWith(MockKExtension::class)
-class SeasonGetCommandTest {
+class SeasonGetCommandTest : DIAware {
 
     lateinit var command: SeasonGetCommand
 
-    @MockK lateinit var service: SeasonService
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    private val service: SeasonService by instance()
     @MockK lateinit var view: SeasonView
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        val di = DI {
-            bind<SeasonService>() with instance(service)
-            bind<SeasonView>() with instance(view)
-        }
-        console = StringBufferConsole()
-        command = SeasonGetCommand(
-                di = di,
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = SeasonGetCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -55,7 +63,7 @@ class SeasonGetCommandTest {
             service.findByName(get.name)
             view.render(get)
         }
-        assertThat(console.output).isEqualTo(viewRendered)
+        assertThat(testConsole.output).isEqualTo(viewRendered)
     }
 
 }

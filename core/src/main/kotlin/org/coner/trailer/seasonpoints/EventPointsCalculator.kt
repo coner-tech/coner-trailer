@@ -13,7 +13,7 @@ data class EventPointsCalculator(
 ) {
     fun calculate(participantResult: ParticipantResult): Int {
         return when {
-            didNotFinishPoints != null && participantResult.personalBestRun?.didNotFinish ?: false -> didNotFinishPoints
+            didNotFinishPoints != null && participantResult.personalBestRun?.run?.didNotFinish ?: false -> didNotFinishPoints
             didNotStartPoints != null && participantResult.personalBestRun == null -> didNotStartPoints
             else -> positionToPoints[participantResult.position] ?: defaultPoints
         }

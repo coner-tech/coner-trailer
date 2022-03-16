@@ -12,7 +12,7 @@ class EventPointsCalculatorService(
         private val resource: EventPointsCalculatorResource,
         private val mapper: EventPointsCalculatorMapper,
         private val persistConstraints: EventPointsCalculatorPersistConstraints,
-) : Service {
+) {
 
     fun create(calculator: EventPointsCalculator) {
         persistConstraints.assess(calculator)

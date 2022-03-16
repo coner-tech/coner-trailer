@@ -7,6 +7,7 @@ import assertk.assertions.isZero
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.nio.file.Paths
 import java.time.LocalDate
 
 class SeasonEventTest {
@@ -68,7 +69,13 @@ class SeasonEventTest {
                 name = "Test and Tune", // important: after "one", before "two"
                 date = LocalDate.parse("2019-02-01"),
                 lifecycle = Event.Lifecycle.FINAL,
-                crispyFish = null
+                crispyFish = Event.CrispyFishMetadata(
+                    eventControlFile = Paths.get("test-and-tune.ecf"),
+                    classDefinitionFile = Paths.get("test-and-tune.def"),
+                    peopleMap = emptyMap()
+                ),
+                motorsportReg = null,
+                policy = TestPolicies.lsccV1,
             ),
             points = false,
             eventNumber = null

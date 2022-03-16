@@ -1,6 +1,6 @@
 package org.coner.trailer.datasource.snoozle.entity
 
-import org.coner.snoozle.db.entity.Entity
+import tech.coner.snoozle.db.entity.Entity
 import java.util.*
 
 data class PersonEntity(
@@ -13,5 +13,5 @@ data class PersonEntity(
 
     data class MotorsportRegMetadata(val memberId: String)
 
-    data class Key(val id: UUID) : org.coner.snoozle.db.Key
+    data class Key(val id: UUID) : tech.coner.snoozle.db.Key
 }

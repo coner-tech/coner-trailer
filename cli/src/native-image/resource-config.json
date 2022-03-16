@@ -1,19 +1,50 @@
 {
   "resources":{
   "includes":[
-    {"pattern":".*.kotlin_builtins"}, 
-    {"pattern":"META-INF/.*.kotlin_module$"}, 
-    {"pattern":"META-INF/services/.*"}, 
-    {"pattern":"\\QMETA-INF/services/kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader\\E"}, 
-    {"pattern":"\\QMETA-INF/services/kotlin.reflect.jvm.internal.impl.resolve.ExternalOverridabilityCondition\\E"}, 
-    {"pattern":"\\Qkotlin/annotation/annotation.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/collections/collections.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/coroutines/coroutines.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/internal/internal.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/kotlin.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/ranges/ranges.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"}, 
-    {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"}
+    {
+      "pattern":".*.kotlin_builtins"
+    }, 
+    {
+      "pattern":"META-INF/.*.kotlin_module$"
+    }, 
+    {
+      "pattern":"META-INF/services/.*"
+    }, 
+    {
+      "pattern":"\\QMETA-INF/services/kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader\\E"
+    }, 
+    {
+      "pattern":"\\QMETA-INF/services/kotlin.reflect.jvm.internal.impl.resolve.ExternalOverridabilityCondition\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/annotation/annotation.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/collections/collections.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/coroutines/coroutines.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/internal/internal.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/kotlin.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/ranges/ranges.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"
+    }, 
+    {
+      "pattern":"\\Qorg/coner/trailer/render/html/coner-trailer.css\\E"
+    }, 
+    {
+      "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+    }
   ]},
-  "bundles":[]
+  "bundles":[{
+      "name":"com.sun.org.apache.xml.internal.serializer.HTMLEntities"
+    }]
 }

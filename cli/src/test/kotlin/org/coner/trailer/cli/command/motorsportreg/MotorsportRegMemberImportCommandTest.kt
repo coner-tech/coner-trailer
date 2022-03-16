@@ -2,41 +2,49 @@ package org.coner.trailer.cli.command.motorsportreg
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.core.context
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
 import org.coner.trailer.cli.clikt.StringBufferConsole
+import org.coner.trailer.cli.command.GlobalModel
 import org.coner.trailer.cli.view.PersonTableView
+import org.coner.trailer.di.mockkDatabaseModule
+import org.coner.trailer.di.mockkMotorsportRegApiModule
+import org.coner.trailer.io.TestEnvironments
 import org.coner.trailer.io.service.MotorsportRegImportService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.*
 
 @ExtendWith(MockKExtension::class)
-class MotorsportRegMemberImportCommandTest {
+class MotorsportRegMemberImportCommandTest : DIAware {
 
     lateinit var command: MotorsportRegMemberImportCommand
 
-    @MockK lateinit var service: MotorsportRegImportService
+    override val di = DI.lazy {
+        import(mockkDatabaseModule())
+        import(mockkMotorsportRegApiModule)
+        bindInstance { view }
+    }
+    override val diContext = diContext { command.diContext.value }
+
+    private val service: MotorsportRegImportService by instance()
     @MockK lateinit var view: PersonTableView
 
-    lateinit var console: StringBufferConsole
+    lateinit var testConsole: StringBufferConsole
+    lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
-        console = StringBufferConsole()
-        command = MotorsportRegMemberImportCommand(
-                di = DI {
-                    bind<MotorsportRegImportService>() with instance(service)
-                    bind<PersonTableView>() with instance(view)
-                },
-                useConsole = console
-        )
+        testConsole = StringBufferConsole()
+        global = GlobalModel()
+            .apply { environment = TestEnvironments.mock() }
+        command = MotorsportRegMemberImportCommand(di, global)
+            .context { console = testConsole }
     }
 
     @Test
@@ -58,7 +66,7 @@ class MotorsportRegMemberImportCommandTest {
             view.render(result.created)
             view.render(result.updated)
         }
-        assertThat(console.output).isEqualTo("""
+        assertThat(testConsole.output).isEqualTo("""
             Created: (1)
             $viewRenderedCreated
             
@@ -88,7 +96,7 @@ class MotorsportRegMemberImportCommandTest {
             view.render(result.created)
             view.render(result.updated)
         }
-        assertThat(console.output).isEqualTo("""
+        assertThat(testConsole.output).isEqualTo("""
             Created: (1)
             $viewRenderedCreated
             

@@ -13,12 +13,13 @@ fun Assert<Participant>.hasFirstName(expected: String) = firstName().isEqualTo(e
 fun Assert<Participant>.lastName() = prop("lastName") { it.lastName }
 fun Assert<Participant>.hasLastName(expected: String) = lastName().isEqualTo(expected)
 
-fun Assert<Participant>.signage() = prop("signage") { it.signage }
+fun Assert<Participant>.number() = prop("number") { it.number }
+fun Assert<Participant>.hasNumber(expected: String) = number().isEqualTo(expected)
 
-fun Assert<Participant.Signage>.grouping() = prop("grouping") { it.grouping }
+fun Assert<Participant>.classing() = prop("classing") { it.classing }
 
-fun Assert<Participant.Signage>.number() = prop("number") { it.number }
-fun Assert<Participant.Signage>.hasNumber(expected: String) = number().isEqualTo(expected)
+fun Assert<Participant>.signageClassingNumber() = prop("signageClassingNumber") { it.signageClassingNumber }
+fun Assert<Participant>.signageNumberClassing() = prop("signageNumberClassing") { it.signageNumberClassing }
 
 fun Assert<Participant>.car() = prop("car") { it.car }
 

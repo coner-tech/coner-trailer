@@ -1,5 +1,6 @@
 package org.coner.trailer
 
+import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
 
@@ -8,20 +9,36 @@ data class Event(
     val name: String,
     val date: LocalDate,
     val lifecycle: Lifecycle,
-    val crispyFish: CrispyFishMetadata?
+    val crispyFish: CrispyFishMetadata?,
+    val motorsportReg: MotorsportRegMetadata?,
+    val policy: Policy,
 ) {
+
+    init {
+        if (policy.authoritativeRunSource == Policy.RunSource.CrispyFish) {
+            checkNotNull(crispyFish) {
+                "Event policy defines authoritative run source as crispy fish, but event lacks crispy fish metadata"
+            }
+        }
+    }
+
     data class CrispyFishMetadata(
-            val eventControlFile: String,
-            val classDefinitionFile: String,
-            val peopleMap: Map<PeopleMapKey, Person>
+        val eventControlFile: Path,
+        val classDefinitionFile: Path,
+        val peopleMap: Map<PeopleMapKey, Person>
     ) {
 
         data class PeopleMapKey(
-            val signage: Participant.Signage,
+            val classing: Classing,
+            val number: String,
             val firstName: String,
             val lastName: String
         )
     }
+
+    data class MotorsportRegMetadata(
+        val id: String
+    )
 
     enum class Lifecycle {
         CREATE,
@@ -29,5 +46,9 @@ data class Event(
         ACTIVE,
         POST,
         FINAL
+    }
+
+    fun requireCrispyFish(): CrispyFishMetadata {
+        return requireNotNull(crispyFish) { "Event lacks crispy fish metadata" }
     }
 }

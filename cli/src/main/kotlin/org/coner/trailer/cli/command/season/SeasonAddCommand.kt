@@ -1,9 +1,6 @@
 package org.coner.trailer.cli.command.season
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.core.findOrSetObject
-import com.github.ajalt.clikt.output.CliktConsole
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
@@ -11,31 +8,27 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import org.coner.trailer.Season
+import org.coner.trailer.cli.command.GlobalModel
+import org.coner.trailer.cli.di.use
 import org.coner.trailer.cli.util.clikt.toUuid
 import org.coner.trailer.cli.view.SeasonView
 import org.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import org.coner.trailer.io.service.SeasonService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.diContext
 import org.kodein.di.instance
 import java.util.*
 
 class SeasonAddCommand(
-        di: DI,
-        useConsole: CliktConsole
+    override val di: DI,
+    private val global: GlobalModel
 ) : CliktCommand(
         name = "add",
         help = "Add a Season"
 ), DIAware {
 
-    init {
-        context {
-            console = useConsole
-        }
-    }
-
-    override val di: DI by findOrSetObject { di }
-
+    override val diContext = diContext { global.requireEnvironment().openDataSession() }
     private val service: SeasonService by instance()
     private val spccService: SeasonPointsCalculatorConfigurationService by instance()
     private val view: SeasonView by instance()
@@ -55,7 +48,7 @@ class SeasonAddCommand(
     ).required()
     private val takeScoreCountForPoints: Int? by option().int()
 
-    override fun run() {
+    override fun run() = diContext.use {
         val create = Season(
                 id = id ?: UUID.randomUUID(),
                 name = name,
