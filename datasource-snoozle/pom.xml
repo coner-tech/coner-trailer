@@ -13,7 +13,7 @@
     <artifactId>datasource-snoozle</artifactId>
 
     <properties>
-        <snoozle.version>0.5.0-SNAPSHOT</snoozle.version>
+        <snoozle.version>0.5.3</snoozle.version>
     </properties>
 
     <dependencies>
