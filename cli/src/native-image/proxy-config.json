@@ -1,5 +1,5 @@
 [
   {
-    "interfaces":["org.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi"]}
+    "interfaces":["tech.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi"]}
   
 ]

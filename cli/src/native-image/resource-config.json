@@ -38,7 +38,7 @@
       "pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"
     }, 
     {
-      "pattern":"\\Qorg/coner/trailer/render/html/coner-trailer.css\\E"
+      "pattern":"\\Qtech.coner.trailer/render/html/coner-trailer.css\\E"
     }, 
     {
       "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"

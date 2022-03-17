@@ -173,7 +173,7 @@
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.coner.trailer.cli.ConerTrailerCli</mainClass>
+                                    <mainClass>tech.coner.trailer.cli.ConerTrailerCli</mainClass>
                                     <!-- Workaround https://github.com/square/retrofit/issues/3341 -->
                                     <!-- Affects JVM 11 only -->
                                     <manifestEntries>

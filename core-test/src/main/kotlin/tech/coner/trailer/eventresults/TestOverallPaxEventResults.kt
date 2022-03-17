@@ -1,0 +1,343 @@
+package tech.coner.trailer.eventresults
+
+import tech.coner.trailer.Run
+import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.Time
+
+object TestOverallPaxEventResults {
+    object Lscc2019Simplified {
+        val points1: OverallEventResults = OverallEventResults(
+            type = StandardEventResultsTypes.pax,
+            runCount = 5,
+            participantResults = listOf(
+                testParticipantResult(
+                    position = 1,
+                    participant = TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 21,
+                                participant = participant,
+                                time = Time("49.419"),
+                                cones = 4
+                            ) to Score("46.509", Score.Penalty.Cone("8.000", 4), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 22,
+                                participant = participant,
+                                time = Time("49.848"),
+                                cones = 3
+                            ) to Score("45.236", Score.Penalty.Cone("6.000", 3), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 23,
+                                participant = participant,
+                                time = Time("48.515")
+                            ) to Score("39.297", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 24,
+                                participant = participant,
+                                time = Time("49.076"),
+                                cones = 1
+                            ) to Score("41.371", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 25,
+                                participant = participant,
+                                time = Time("49.436")
+                            ) to Score("40.043", strict = false)
+                        }
+                    ),
+                    score = Score("39.297", strict = false),
+                    personalBestScoredRunIndex = 2,
+                    diffFirst = null,
+                    diffPrevious = null
+                ),
+                testParticipantResult(
+                    position = 2,
+                    participant = TestParticipants.Lscc2019Points1Simplified.EUGENE_DRAKE,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 1,
+                                participant = participant,
+                                time = Time("49.367")
+                            ) to Score("40.826", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 2,
+                                participant = participant,
+                                time = Time("49.230")
+                            ) to Score("40.713", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 3,
+                                participant = participant,
+                                time = Time("48.807")
+                            ) to Score("40.363", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 4,
+                                participant = participant,
+                                time = Time("49.573"),
+                                didNotFinish = true
+                            ) to Score("214748404.996", Score.Penalty.DidNotFinish, strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 5,
+                                participant = participant,
+                                time = Time("47.544")
+                            ) to Score("39.318", strict = false)
+                        }
+                    ),
+                    score = Score("39.318", strict = false),
+                    personalBestScoredRunIndex = 4,
+                    diffFirst = Time("0.021"),
+                    diffPrevious = Time("0.021")
+                ),
+                testParticipantResult(
+                    position = 3,
+                    participant = TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 16,
+                                participant = participant,
+                                time = Time("53.693")
+                            ) to Score("41.880", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 17,
+                                participant = participant,
+                                time = Time("52.179"),
+                                cones = 1
+                            ) to Score("42.259", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 18,
+                                participant = participant,
+                                time = Time("52.256")
+                            ) to Score("40.759", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 19,
+                                participant = participant,
+                                time = Time("51.323")
+                            ) to Score("40.031", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 20,
+                                participant = participant,
+                                time = Time("51.344")
+                            ) to Score("40.048", strict = false)
+                        }
+                    ),
+                    score = Score("40.031", strict = false),
+                    personalBestScoredRunIndex = 3,
+                    diffFirst = Time("0.734"),
+                    diffPrevious = Time("0.713")
+                ),
+                testParticipantResult(
+                    position = 4,
+                    participant = TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 11,
+                                participant = participant,
+                                time = Time("52.749")
+                            ) to Score("41.144", strict = false)
+                        },
+                        { participant ->
+
+                            Run(
+                                sequence = 12,
+                                participant = participant,
+                                time = Time("53.175")
+                            ) to Score("41.476", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 13,
+                                participant = participant,
+                                time = Time("52.130")
+                            ) to Score("40.661", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 14,
+                                participant = participant,
+                                time = Time("52.117")
+                            ) to Score("40.651", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 15,
+                                participant = participant,
+                                time = Time("51.408")
+                            ) to Score("40.098", strict = false)
+                        }
+                    ),
+                    score = Score("40.098", strict = false),
+                    personalBestScoredRunIndex = 4,
+                    diffFirst = Time("0.801"),
+                    diffPrevious = Time("0.067")
+                ),
+                testParticipantResult(
+                    position = 5,
+                    participant = TestParticipants.Lscc2019Points1Simplified.JIMMY_MCKENZIE,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 6,
+                                participant = participant,
+                                time = Time("50.115"),
+                                cones = 2
+                            ) to Score("44.753", Score.Penalty.Cone("4.000", 2), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 7,
+                                participant = participant,
+                                time = Time("50.162"),
+                                cones = 1
+                            ) to Score("43.138", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 8,
+                                participant = participant,
+                                time = Time("49.672")
+                            ) to Score("41.078", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 9,
+                                participant = participant,
+                                time = Time("49.992")
+                            ) to Score("41.343", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 10,
+                                participant = participant,
+                                time = Time("48.723")
+                            ) to Score("40.293", strict = false)
+                        }
+                    ),
+                    score = Score("40.293", strict = false),
+                    personalBestScoredRunIndex = 4,
+                    diffFirst = Time("0.996"),
+                    diffPrevious = Time("0.195")
+                ),
+                testParticipantResult(
+                    position = 6,
+                    participant = TestParticipants.Lscc2019Points1Simplified.BRYANT_MORAN,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 26,
+                                participant = participant,
+                                time = Time("56.353"),
+                                cones = 1
+                            ) to Score("46.040", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 27,
+                                participant = participant,
+                                time = Time("55.831")
+                            ) to Score("44.050", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 28,
+                                participant = participant,
+                                time = Time("52.201")
+                            ) to Score("41.186", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 29,
+                                participant = participant,
+                                time = Time("52.062"),
+                                cones = 1
+                            ) to Score("42.654", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 30,
+                                participant = participant,
+                                time = Time("53.074")
+                            ) to Score("41.875", strict = false)
+                        }
+                    ),
+                    score = Score("41.186", strict = false),
+                    personalBestScoredRunIndex = 2,
+                    diffFirst = Time("1.889"),
+                    diffPrevious = Time("0.893")
+                ),
+                testParticipantResult(
+                    position = 7,
+                    participant = TestParticipants.Lscc2019Points1Simplified.DOMINIC_ROGERS,
+                    runFns = listOf(
+                        { participant ->
+                            Run(
+                                sequence = 31,
+                                participant = participant,
+                                time = Time("54.246")
+                            ) to Score("42.800", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 32,
+                                participant = participant,
+                                time = Time("53.629"),
+                                cones = 1
+                            ) to Score("43.891", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 33,
+                                participant = participant,
+                                time = Time("51.856"),
+                                cones = 1
+                            ) to Score("42.492", Score.Penalty.Cone("2.000", 1), strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 34,
+                                participant = participant,
+                                time = Time("53.409")
+                            ) to Score("42.139", strict = false)
+                        },
+                        { participant ->
+                            Run(
+                                sequence = 35,
+                                participant = participant,
+                                time = Time("52.447")
+                            ) to Score("41.380", strict = false)
+                        }
+                    ),
+                    score = Score("41.380", strict = false),
+                    personalBestScoredRunIndex = 4,
+                    diffFirst = Time("2.083"),
+                    diffPrevious = Time("0.194")
+                )
+            )
+        )
+    }
+}
