@@ -9,8 +9,9 @@ class EventView : View<Event> {
 
     override fun render(model: Event) = """
         ${model.name}
-            ID:     ${model.id}
-            Date:   ${model.date}
+            ID:         ${model.id}
+            Date:       ${model.date}
+            Lifecycle:  ${model.lifecycle.name.lowercase()}
             Crispy Fish:
                     Event Control File:     ${model.crispyFish?.eventControlFile}
                     Class Definition File:  ${model.crispyFish?.classDefinitionFile}
