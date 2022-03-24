@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.io.TestConfigurations
 import java.nio.file.Path
 
 class EventResultsModuleTest {
@@ -27,12 +28,14 @@ class EventResultsModuleTest {
 
     @BeforeEach
     fun before() {
-        val databaseConfiguration = TestDatabaseConfigurations(root).bar
+        val configurations = TestConfigurations(root)
+        val databaseConfiguration = configurations.testDatabaseConfigurations.bar
         di = DI.from(listOf(databaseModule, eventResultsModule))
             .direct
         context = EnvironmentHolderImpl(
             di = di.di,
             configurationServiceArgument = ConfigurationServiceArgument.Default,
+            configuration = configurations.testConfiguration(),
             databaseConfiguration = databaseConfiguration,
             motorsportRegCredentialSupplier = { throw UnsupportedOperationException() }
         )

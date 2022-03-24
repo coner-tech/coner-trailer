@@ -3,6 +3,7 @@ package tech.coner.trailer.di
 import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.io.DatabaseConfiguration
 import org.kodein.di.bindings.ScopeRegistry
+import tech.coner.trailer.io.Configuration
 
 class MockEnvironmentHolder : EnvironmentHolder {
 
@@ -10,10 +11,16 @@ class MockEnvironmentHolder : EnvironmentHolder {
 
     override val configurationServiceArgument: ConfigurationServiceArgument
         get() = throw UnsupportedOperationException()
+    override val configuration: Configuration?
+        get() = throw UnsupportedOperationException()
     override val databaseConfiguration: DatabaseConfiguration?
         get() = throw UnsupportedOperationException()
     override val motorsportRegCredentialSupplier: () -> MotorsportRegBasicCredentials
         get() = throw UnsupportedOperationException()
+
+    override fun requireConfiguration(): Configuration {
+        throw UnsupportedOperationException()
+    }
 
     override fun requireDatabaseConfiguration(): DatabaseConfiguration {
         throw UnsupportedOperationException()

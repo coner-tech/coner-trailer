@@ -12,7 +12,11 @@ import tech.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.io.TestConfigurations
+import tech.coner.trailer.io.TestDatabaseConfigurations
+import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
 class StubCommandTest : DIAware {
@@ -23,16 +27,17 @@ class StubCommandTest : DIAware {
         bind { scoped(EnvironmentScope).singleton { stubService } }
     }
 
-    lateinit var testConsole: StringBufferConsole
-
     @MockK lateinit var stubService: StubService
 
+    @TempDir lateinit var root: Path
+    lateinit var testConsole: StringBufferConsole
     lateinit var global: GlobalModel
 
     @BeforeEach
     fun before() {
+        val testConfigurations = TestConfigurations(root)
         global = GlobalModel()
-            .apply { environment = TestEnvironments.minimal(di) }
+            .apply { environment = TestEnvironments.temporary(di, root, testConfigurations.testConfiguration(), testConfigurations.testDatabaseConfigurations.foo) }
         testConsole = StringBufferConsole()
         command = StubCommand(di, global)
             .context { console = testConsole }

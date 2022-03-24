@@ -13,17 +13,21 @@ object TestEnvironments {
     fun temporary(
         di: DI,
         root: Path,
+        configuration: Configuration,
         databaseConfiguration: DatabaseConfiguration,
         motorsportRegCredentialSupplier: (() -> MotorsportRegBasicCredentials)? = null
-    ) = EnvironmentHolderImpl(
-        di = di,
-        configurationServiceArgument = ConfigurationServiceArgument.Override(
-            configDir = root.resolve("config").createDirectory()
-        ),
-        databaseConfiguration = databaseConfiguration,
-        motorsportRegCredentialSupplier = motorsportRegCredentialSupplier
-            ?: { throw UnsupportedOperationException() }
-    )
+    ): EnvironmentHolderImpl {
+        return EnvironmentHolderImpl(
+            di = di,
+            configurationServiceArgument = ConfigurationServiceArgument.Override(
+                configDir = root.resolve("config").createDirectory()
+            ),
+            configuration = configuration,
+            databaseConfiguration = databaseConfiguration,
+            motorsportRegCredentialSupplier = motorsportRegCredentialSupplier
+                ?: { throw UnsupportedOperationException() }
+        )
+    }
     
     fun mock() = MockEnvironmentHolder()
 }

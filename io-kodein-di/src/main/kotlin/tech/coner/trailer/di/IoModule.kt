@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import net.harawata.appdirs.AppDirsFactory
 import org.kodein.di.*
 import tech.coner.trailer.eventresults.EventResultsFileNameGenerator
+import tech.coner.trailer.io.repository.ConfigurationRepository
 import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import java.nio.file.Path
@@ -14,12 +15,17 @@ import java.nio.file.Paths
 val ioModule = DI.Module("coner.trailer.cli.io") {
     bindMultiton { args: ConfigurationServiceArgument ->
         ConfigurationService(
-            objectMapper = ObjectMapper()
-                .registerKotlinModule()
-                .enable(SerializationFeature.INDENT_OUTPUT),
-            configDir = args.configDir
+            repository = ConfigurationRepository(
+                objectMapper = ObjectMapper()
+                    .registerKotlinModule()
+                    .enable(SerializationFeature.INDENT_OUTPUT),
+                configDir = args.configDir
+            )
         )
     }
+    bind { scoped(EnvironmentScope).singleton {
+        factory<ConfigurationServiceArgument, ConfigurationService>()(context.configurationServiceArgument)
+    } }
     bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
         eventResultsFileNameGenerator = instance()
     ) }

@@ -1,10 +1,13 @@
 package tech.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.ConfigurationServiceFactory
-import org.kodein.di.*
+import tech.coner.trailer.io.service.ConfigurationService
 
 class ConfigDatabaseListCommand(
     override val di: DI,
@@ -15,11 +18,11 @@ class ConfigDatabaseListCommand(
 ), DIAware {
 
     override val diContext = diContext { global.requireEnvironment() }
-    private val configurationServiceFactory: ConfigurationServiceFactory by factory()
+
+    private val service: ConfigurationService by instance()
     private val view: DatabaseConfigurationView by instance()
 
     override fun run() {
-        val service = configurationServiceFactory(global.requireEnvironment().configurationServiceArgument)
         echo(view.render(service.listDatabases()))
     }
 }

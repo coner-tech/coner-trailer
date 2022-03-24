@@ -1,5 +1,7 @@
 package tech.coner.trailer.cli.clikt
 
+import assertk.Assert
+import assertk.assertions.prop
 import com.github.ajalt.clikt.output.CliktConsole
 
 class StringBufferConsole : CliktConsole {
@@ -46,3 +48,6 @@ class StringBufferConsole : CliktConsole {
         err = StringBuffer()
     }
 }
+
+fun Assert<StringBufferConsole>.output() = prop("output") { it.output }
+fun Assert<StringBufferConsole>.error() = prop("error") { it.error }

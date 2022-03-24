@@ -1,84 +1,102 @@
 package tech.coner.trailer.io.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
-import java.nio.file.Files
-import java.nio.file.Path
+import tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome
+import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
+import tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome
+import tech.coner.trailer.io.repository.ConfigurationRepository
 
 class ConfigurationService(
-        private val configDir: Path,
-        private val objectMapper: ObjectMapper
+    private val repository: ConfigurationRepository
 ) {
 
-    val configFile by lazy {
-        configDir.resolve("config.json")
+    fun init() {
+        repository.init()
     }
 
-    fun setup() {
-        if (!Files.exists(configDir)) {
-            Files.createDirectories(configDir)
+    fun get(): Configuration {
+        return repository.load()
+    }
+
+    fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> {
+        val config = repository.load()
+        if (config.databases.containsKey(param.name)) {
+            return Result.failure(AlreadyExistsException("Database with name already exists"))
         }
-        check(Files.isDirectory(configDir)) { "$configDir is not a directory" }
-    }
-
-    private fun loadConfig(): Configuration {
-        return when {
-            Files.isReadable(configFile) -> objectMapper.readValue(Files.newInputStream(configFile))
-            else -> Configuration(
-                    databases = mutableMapOf(),
-                    defaultDatabaseName = null
-            )
+        val newDbConfig = DatabaseConfiguration(
+            name = param.name,
+            crispyFishDatabase = param.crispyFishDatabase,
+            snoozleDatabase = param.snoozleDatabase,
+            motorsportReg = param.motorsportReg?.let { DatabaseConfiguration.MotorsportReg(
+                username = it.username,
+                organizationId = it.organizationId
+            ) },
+            default = param.default
+        )
+        val newConfig = config.copy(
+            databases = config.databases
+                .toMutableMap()
+                .apply { put(param.name, newDbConfig) },
+            defaultDatabaseName = if (param.default) param.name else config.defaultDatabaseName
+        )
+        try {
+            repository.save(newConfig)
+        } catch (t: Throwable) {
+            return Result.failure(Exception("Failed to save new config", t))
         }
+        return Result.success(ConfigAddDatabaseOutcome(configuration = newConfig, addedDbConfig = newDbConfig))
     }
 
-    private fun saveConfig(config: Configuration) {
-        objectMapper.writeValue(Files.newOutputStream(configFile), config)
-    }
-
-    fun setDefaultDatabase(name: String): Result<DatabaseConfiguration> {
-        val config = loadConfig()
-        val dbConfig = config.databases[name]
+    fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> {
+        val config = repository.load()
+        val newDefaultDbConfig = config.databases[name]
             ?.copy(default = true)
             ?: return Result.failure(NotFoundException("Database not found with name"))
         val newConfig = config.copy(
             databases = config.databases
                 .mapValues {
-                    when (it.value.name) {
-                        name -> dbConfig
+                    when (it.key) {
+                        name -> newDefaultDbConfig
                         else -> it.value.copy(default = false)
                     }
                 },
             defaultDatabaseName = name
         )
-        saveConfig(newConfig)
-        return Result.success(dbConfig)
+        repository.save(newConfig)
+        return Result.success(ConfigSetDefaultDatabaseOutcome(newConfig, newDefaultDbConfig))
     }
 
     fun listDatabases(): List<DatabaseConfiguration> {
-        return loadConfig().databases.values.toList()
-                .sortedWith(
-                        compareByDescending(DatabaseConfiguration::default)
-                                .thenByDescending(DatabaseConfiguration::name)
-                )
+        return repository.load().databases.values.toList()
+            .sortedWith(
+                compareByDescending(DatabaseConfiguration::default)
+                    .thenByDescending(DatabaseConfiguration::name)
+            )
     }
 
     fun listDatabasesByName() = listDatabases().associateBy { it.name }
 
-    fun removeDatabase(name: String): Result<Unit> {
-        val config = loadConfig()
+    fun removeDatabase(name: String): Result<Configuration> {
+        val config = repository.load()
         val newConfig = config.copy(
             databases = config.databases
                 .toMutableMap()
-                .apply { remove(name) ?: throw NotFoundException("Database not found with name") }
+                .apply { remove(name) ?: return Result.failure(NotFoundException("Database not found with name")) },
+            defaultDatabaseName = if (name == config.defaultDatabaseName) null else config.defaultDatabaseName
         )
-        saveConfig(newConfig)
-        return Result.success(Unit)
+        repository.save(newConfig)
+        return Result.success(newConfig)
+    }
+
+    fun findDatabaseByName(name: String): Result<DatabaseConfiguration> {
+        return listDatabasesByName()[name]
+            ?.let { Result.success(it) }
+            ?: Result.failure(NotFoundException("Database with name not found"))
     }
 
     fun getDefaultDatabase() : DatabaseConfiguration? {
-        val config = loadConfig()
+        val config = repository.load()
         return config.defaultDatabaseName?.let { config.databases[it] }
     }
 
