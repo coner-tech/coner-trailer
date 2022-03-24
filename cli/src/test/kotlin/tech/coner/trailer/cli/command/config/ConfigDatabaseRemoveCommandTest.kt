@@ -12,7 +12,7 @@ import io.mockk.verifySequence
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.io.ConfigurationService
+import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach

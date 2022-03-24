@@ -4,7 +4,7 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.io.ConfigurationService
+import tech.coner.trailer.io.service.ConfigurationService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext

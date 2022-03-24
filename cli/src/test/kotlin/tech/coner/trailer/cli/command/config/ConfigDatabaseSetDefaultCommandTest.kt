@@ -8,24 +8,23 @@ import assertk.assertions.prop
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.slot
 import io.mockk.verifySequence
-import tech.coner.trailer.cli.clikt.StringBufferConsole
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.io.ConfigurationService
-import tech.coner.trailer.io.DatabaseConfiguration
-import tech.coner.trailer.io.TestDatabaseConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.di.mockkIoModule
+import tech.coner.trailer.io.DatabaseConfiguration
+import tech.coner.trailer.io.TestDatabaseConfigurations
+import tech.coner.trailer.io.TestEnvironments
 import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
@@ -34,12 +33,10 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
     lateinit var command: ConfigDatabaseSetDefaultCommand
 
     override val di = DI.lazy {
-        bind { scoped(EnvironmentScope).singleton { service } }
+        import(mockkIoModule)
     }
 
-    @MockK lateinit var service: ConfigurationService
-
-    @TempDir lateinit var temp: Path
+    @TempDir lateinit var root: Path
 
     lateinit var testConsole: StringBufferConsole
     lateinit var global: GlobalModel
@@ -48,9 +45,8 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        dbConfigs = TestDatabaseConfigurations(temp)
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.minimal(di) }
+        dbConfigs = TestDatabaseConfigurations(root)
+        global = GlobalModel(environment = TestEnvironments.temporary(di, root, dbConfigs.foo))
         command = ConfigDatabaseSetDefaultCommand(di, global)
             .context { console = testConsole }
     }

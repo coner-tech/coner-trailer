@@ -1,7 +1,9 @@
-package tech.coner.trailer.io
+package tech.coner.trailer.io.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import tech.coner.trailer.io.Configuration
+import tech.coner.trailer.io.DatabaseConfiguration
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -31,13 +33,27 @@ class ConfigurationService(
         }
     }
 
-    fun configureDatabase(dbConfig: DatabaseConfiguration) {
-        val config = loadConfig()
-        config.databases[dbConfig.name] = dbConfig
-        if (dbConfig.default) {
-            config.defaultDatabaseName = dbConfig.name
-        }
+    private fun saveConfig(config: Configuration) {
         objectMapper.writeValue(Files.newOutputStream(configFile), config)
+    }
+
+    fun setDefaultDatabase(name: String): Result<DatabaseConfiguration> {
+        val config = loadConfig()
+        val dbConfig = config.databases[name]
+            ?.copy(default = true)
+            ?: return Result.failure(NotFoundException("Database not found with name"))
+        val newConfig = config.copy(
+            databases = config.databases
+                .mapValues {
+                    when (it.value.name) {
+                        name -> dbConfig
+                        else -> it.value.copy(default = false)
+                    }
+                },
+            defaultDatabaseName = name
+        )
+        saveConfig(newConfig)
+        return Result.success(dbConfig)
     }
 
     fun listDatabases(): List<DatabaseConfiguration> {
@@ -48,14 +64,17 @@ class ConfigurationService(
                 )
     }
 
-    fun listDatabasesByName() = listDatabases()
-            .map { it.name to it }
-            .toMap()
+    fun listDatabasesByName() = listDatabases().associateBy { it.name }
 
-    fun removeDatabase(dbConfig: DatabaseConfiguration) {
+    fun removeDatabase(name: String): Result<Unit> {
         val config = loadConfig()
-        config.databases.remove(dbConfig.name)
-        objectMapper.writeValue(Files.newOutputStream(configFile), config)
+        val newConfig = config.copy(
+            databases = config.databases
+                .toMutableMap()
+                .apply { remove(name) ?: throw NotFoundException("Database not found with name") }
+        )
+        saveConfig(newConfig)
+        return Result.success(Unit)
     }
 
     fun getDefaultDatabase() : DatabaseConfiguration? {

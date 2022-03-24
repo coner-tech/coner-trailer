@@ -13,7 +13,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.di.ConfigurationServiceArgument
-import tech.coner.trailer.io.ConfigurationService
+import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.TestEnvironments

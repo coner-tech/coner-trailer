@@ -7,15 +7,15 @@ import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.factory
 import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.ConfigurationServiceFactory
 import tech.coner.trailer.di.EnvironmentHolderImpl
-import tech.coner.trailer.io.ConfigurationService
 import tech.coner.trailer.io.DatabaseConfiguration
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.factory
+import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
 
 class RootCommand(

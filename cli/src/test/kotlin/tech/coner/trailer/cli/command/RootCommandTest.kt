@@ -15,7 +15,7 @@ import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.EnvironmentScope
 import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.ConfigurationService
+import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
