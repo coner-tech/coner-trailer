@@ -2,20 +2,21 @@ package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.factory
 import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.ConfigurationServiceFactory
 import tech.coner.trailer.di.EnvironmentHolderImpl
-import tech.coner.trailer.io.ConfigurationService
 import tech.coner.trailer.io.DatabaseConfiguration
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.factory
+import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
 
 class RootCommand(
@@ -71,21 +72,18 @@ class RootCommand(
         val configurationServiceArgument = configDir?.let { ConfigurationServiceArgument.Override(it) }
             ?: ConfigurationServiceArgument.Default
         val configurationService: ConfigurationService = configurationServiceFactory(configurationServiceArgument)
-        configurationService.setup()
-        val database = database?.let {
-            val database = configurationService.listDatabasesByName()[it]
-            if (database == null) {
-                echo(
-                    message = "Database not found",
-                    err = true
-                )
-                throw Abort()
+        configurationService.init()
+        val dbConfig = database
+            ?.let { dbName ->
+                configurationService.findDatabaseByName(dbName)
+                    .getOrElse {
+                        echo("Failed to find database by name: ${it.message}", err = true)
+                        throw ProgramResult(1)
+                    }
             }
-            database
-        }
             ?: configurationService.getDefaultDatabase()
         currentContext.invokedSubcommand?.also { subcommand ->
-            if (database == null && subcommand !is PermitNoDatabaseChosen) {
+            if (dbConfig == null && subcommand !is PermitNoDatabaseChosen) {
                 echo(
                     message = "Command requires database but no database was selected. See: coner-trailer-cli config database",
                     err = true
@@ -96,8 +94,9 @@ class RootCommand(
         global.environment = EnvironmentHolderImpl(
             di = di,
             configurationServiceArgument = configurationServiceArgument,
-            databaseConfiguration = database,
-            motorsportRegCredentialSupplier = { assembleMotorsportRegBasicCredentials(database) }
+            configuration = configurationService.get(),
+            databaseConfiguration = dbConfig,
+            motorsportRegCredentialSupplier = { assembleMotorsportRegBasicCredentials(dbConfig) }
         )
     }
 

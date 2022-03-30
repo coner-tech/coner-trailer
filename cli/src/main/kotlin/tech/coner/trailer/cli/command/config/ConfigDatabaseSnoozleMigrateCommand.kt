@@ -1,18 +1,22 @@
 package tech.coner.trailer.cli.command.config
 
+import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.groupChoice
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.datasource.snoozle.ConerTrailerDatabase
-import org.kodein.di.*
 
 class ConfigDatabaseSnoozleMigrateCommand(
-    di: DI,
+    override val di: DI,
     global: GlobalModel
 ) : BaseCommand(
     global = global,
@@ -21,9 +25,10 @@ class ConfigDatabaseSnoozleMigrateCommand(
         Migrate the Coner Trailer Snoozle database version. Back up the database first.
         """.trimIndent()
 ),
-    DIAware by di {
+    DIAware {
 
-    override val diContext: DIContext<*> = diContext { global.requireEnvironment() }
+    override val diContext = diContext { global.requireEnvironment() }
+
     private val database: ConerTrailerDatabase by instance()
 
     sealed class MigrationStrategy(name: String? = null) : OptionGroup(name) {
@@ -52,9 +57,13 @@ class ConfigDatabaseSnoozleMigrateCommand(
         .required()
 
     override fun run() {
-        val adminSession = database.openAdministrativeSession().getOrThrow()
+        val adminSession = database.openAdministrativeSession()
+            .getOrElse {
+                echo("Failed to open administrative session: ${it.message}", err = true)
+                throw ProgramResult(1)
+            }
         try {
-            val result = when (val migrationStrategy = migrationStrategy) {
+            when (val migrationStrategy = migrationStrategy) {
                 is MigrationStrategy.Segment -> adminSession.migrateDatabase(
                     from = migrationStrategy.from,
                     to = migrationStrategy.to
@@ -62,7 +71,10 @@ class ConfigDatabaseSnoozleMigrateCommand(
                 MigrationStrategy.Increment -> adminSession.incrementalMigrateDatabase()
                 MigrationStrategy.Auto -> adminSession.autoMigrateDatabase()
             }
-            result.getOrThrow()
+                .onFailure {
+                    echo("Failed to migrate database: ${it.message}", err = true)
+                    throw ProgramResult(1)
+                }
         } finally {
             adminSession.close()
         }

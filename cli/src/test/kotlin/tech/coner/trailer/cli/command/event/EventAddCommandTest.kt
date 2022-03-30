@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.io.TestConfigurations
 import java.nio.file.Path
 import kotlin.io.path.createFile
 
@@ -51,11 +52,13 @@ class EventAddCommandTest : DIAware {
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
+        val testConfigs = TestConfigurations(root)
         global = GlobalModel(
             environment = TestEnvironments.temporary(
                 di = di,
                 root = root,
-                databaseConfiguration = TestDatabaseConfigurations(root).foo
+                configuration = testConfigs.testConfiguration(),
+                databaseConfiguration = testConfigs.testDatabaseConfigurations.foo
             )
         )
         command = EventAddCommand(di, global)

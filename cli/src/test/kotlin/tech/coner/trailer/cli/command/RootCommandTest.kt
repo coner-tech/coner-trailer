@@ -4,25 +4,29 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
+import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import tech.coner.trailer.cli.clikt.StringBufferConsole
-import tech.coner.trailer.cli.command.config.ConfigCommand
-import tech.coner.trailer.cli.service.StubService
-import tech.coner.trailer.di.ConfigurationServiceArgument
-import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.ConfigurationService
-import tech.coner.trailer.io.TestDatabaseConfigurations
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.error
+import tech.coner.trailer.cli.command.config.ConfigCommand
+import tech.coner.trailer.cli.service.StubService
+import tech.coner.trailer.di.ConfigurationServiceArgument
+import tech.coner.trailer.di.EnvironmentScope
+import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.io.Configuration
+import tech.coner.trailer.io.TestConfigurations
+import tech.coner.trailer.io.TestDatabaseConfigurations
+import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
 
@@ -48,6 +52,7 @@ class RootCommandTest : DIAware {
 
     @TempDir lateinit var temp: Path
 
+    lateinit var config: Configuration
     lateinit var dbConfigs: TestDatabaseConfigurations
     lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
 
@@ -62,15 +67,17 @@ class RootCommandTest : DIAware {
                 ConfigCommand()
             )
         serviceArgumentSlot = slot()
-        justRun { service.setup() }
+        justRun { service.init() }
         justRun { stubService.doSomething() }
-        dbConfigs = TestDatabaseConfigurations(temp)
+        val configs = TestConfigurations(temp)
+        config = configs.testConfiguration()
+        dbConfigs = configs.testDatabaseConfigurations
     }
 
     @Test
     fun `When given --database with existing database name it should use it`() {
         arrangeWithDatabases()
-        every { service.listDatabasesByName()}.returns(dbConfigs.allByName)
+        every { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
 
         command.parse(arrayOf(
             "--database", "foo",
@@ -86,18 +93,23 @@ class RootCommandTest : DIAware {
     @Test
     fun `When given --database with invalid name it should fail`() {
         arrangeWithDatabases()
+        val exception = Exception("Database with name not found")
+        every { service.findDatabaseByName(any()) } returns Result.failure(exception)
         // baz does not exist
 
-        val actual = assertThrows<Abort> {
+        val actual = assertThrows<ProgramResult> {
             command.parse(arrayOf(
                 "--database", "baz",
                 "stub"
             ))
         }
 
-        assertThat(testConsole.error).all {
-            contains("Database not found")
-            doesNotContain("baz")
+        assertThat(testConsole).all {
+            error().all {
+                contains("Failed to find database by name")
+                contains(exception.message!!)
+                doesNotContain("baz")
+            }
         }
     }
 
@@ -174,11 +186,13 @@ class RootCommandTest : DIAware {
     }
 
     private fun arrangeWithDatabases() {
+        every { service.get() }.returns(config)
         every { service.listDatabasesByName() } answers { dbConfigs.allByName }
         every { service.getDefaultDatabase() } returns(dbConfigs.bar)
     }
 
     private fun arrangeWithoutDatabasesCase() {
+        every { service.get() }.returns(Configuration.DEFAULT)
         every { service.listDatabasesByName() } answers { emptyMap() }
         every { service.getDefaultDatabase() } returns null
     }

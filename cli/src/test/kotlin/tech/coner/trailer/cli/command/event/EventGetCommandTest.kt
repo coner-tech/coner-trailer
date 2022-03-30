@@ -7,17 +7,20 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.*
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
 class EventGetCommandTest : DIAware {
@@ -30,6 +33,7 @@ class EventGetCommandTest : DIAware {
     }
     override val diContext = diContext { command.diContext.value }
 
+    @TempDir lateinit var root: Path
     lateinit var testConsole: StringBufferConsole
     lateinit var global: GlobalModel
 
@@ -39,8 +43,10 @@ class EventGetCommandTest : DIAware {
     @BeforeEach
     fun before() {
         testConsole = StringBufferConsole()
-        global = GlobalModel()
-        global.environment = TestEnvironments.minimal(di)
+        val testConfigs = TestConfigurations(root)
+        global = GlobalModel(
+            environment = TestEnvironments.temporary(di, root, testConfigs.testConfiguration(), testConfigs.testDatabaseConfigurations.foo)
+        )
         command = EventGetCommand(di, global)
             .context {
                 console = testConsole

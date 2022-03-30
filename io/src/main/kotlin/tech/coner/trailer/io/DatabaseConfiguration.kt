@@ -22,8 +22,8 @@ data class DatabaseConfiguration(
     }
 
     data class MotorsportReg(
-            val username: String?,
-            val organizationId: String?
+        val username: String?,
+        val organizationId: String?
     )
 
     fun asRelativeToCrispyFishDatabase(other: Path): Path {

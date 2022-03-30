@@ -1,7 +1,7 @@
 package tech.coner.trailer.io
 
-import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.createDirectories
 
 class TestDatabaseConfigurations(
     private val root: Path
@@ -17,7 +17,7 @@ class TestDatabaseConfigurations(
         default = true
     )
     val all = listOf(bar, foo)
-    val allByName = all.map { it.name to it }.toMap()
+    val allByName = all.associateBy { it.name }
 
     val noDatabase = factory(
         name = "no database",
@@ -28,7 +28,7 @@ class TestDatabaseConfigurations(
         fun path(type: String) = root
             .resolve(name)
             .resolve(type)
-            .also { Files.createDirectories(it) }
+            .also { it.createDirectories() }
         return DatabaseConfiguration(
             name = name,
             crispyFishDatabase = path("crispy-fish"),
