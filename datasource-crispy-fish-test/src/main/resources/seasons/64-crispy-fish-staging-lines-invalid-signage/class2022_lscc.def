@@ -1,0 +1,54 @@
+NONE	1.000	-1	Unknown			exclude			
+SS	0.830	2	Super Street				Street		
+AS	0.821	1	A Street				Street		
+BS	0.818	1	B Street				Street		
+CS	0.810	1	C Street				Street		
+DS	0.807	1	D Street				Street		
+ES	0.792	1	E Street				Street		
+FS	0.814	2	F Street				Street		
+GS	0.794	1	G Street				Street		
+HS	0.786	2	H Street				Street		
+HCS	0.793	-1	Heritage Classic Street						
+SSC	0.809	4	Spec Sport Coupe						
+STH	0.812	2	Street Touring Hatchback				Street Touring		
+STS	0.813	3	Street Touring Sport				Street Touring		
+STX	0.817	3	Street Touring Xtreme				Street Touring		
+STR	0.828	3	Street Touring Roadster				Street Touring		
+STU	0.829	4	Street Touring Ultra				Street Touring		
+SST	0.841	-1	Super Street Touring				Street Touring		
+SSP	0.853	-1	Super Street Prepared				Street Prepared		
+ASP	0.849	3	A Street Prepared				Street Prepared		
+BSP	0.852	4	B Street Prepared				Street Prepared		
+CSP	0.864	-1	C Street Prepared				Street Prepared		
+DSP	0.844	-1	D Street Prepared				Street Prepared		
+ESP	0.840	-1	E Street Prepared				Street Prepared		
+FSP	0.824	-1	F Street Prepared				Street Prepared		
+SSR	0.846	-1	S Street R						
+CAM-T	0.816	4	Classic American Traditional				Classic American		
+CAM-C	0.819	4	Classic American Contemporary				Classic American		
+CAM-S	0.838	-1	Classic American Sports				Classic American		
+XSA	0.842	-1	Xtreme Street A				Xtreme Street		
+XSB	0.851	4	Xtreme Street B				Xtreme Street		
+EVX	0.835	-1	EV Experimental						
+XP	0.885	-1	X Prepared				Prepared		
+BP	0.867	-1	B Prepared				Prepared		
+CP	0.854	-1	C Prepared				Prepared		
+DP	0.865	4	D Prepared				Prepared		
+EP	0.850	-1	E Prepared				Prepared		
+FP	0.874	-1	F Prepared				Prepared		
+HCR	0.815	-1	Heritage Classic Race						
+SMF	0.845	4	Street Modified F				Street Modified		
+SM	0.868	3	Street Modified				Street Modified		
+SSM	0.883	-1	Super Street Modified				Street Modified		
+AM	1.000	-1	A Modified				Modified		
+BM	0.988	-1	B Modified				Modified		
+CM	0.895	-1	C Modified				Modified		
+DM	0.898	-1	D Modified				Modified		
+EM	0.909	3	E Modified				Modified		
+FM	0.908	-1	F Modified				Modified		
+FSAE	0.989	-1	Formula SAE				Formula		
+KM	0.931	-1	F125 Shifter Kart				Kart		
+NOV	1.000	-10	Novice	pax			Novice		
+X	1.000	2	Pro Class	pax			Pro Class		
+OF	1.000	2	Old Farts	pax			Old Farts		
+RIDE	1.000	-1	Passenger	pax		exclude	Passenger Only		

@@ -224,7 +224,6 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             EventCrispyFishPersonMapVerifier(
-                crispyFishEventMappingContextService = instance(),
                 personService = instance(),
                 crispyFishClassService = instance(),
                 crispyFishClassingMapper = instance(),

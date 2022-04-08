@@ -124,6 +124,44 @@ sealed class SeasonFixture(
         )
     }
 
+    class Issue64CrispyFishStagingLinesInvalidSignage(temp: Path) : SeasonFixture(
+        temp = temp,
+        path = "64-crispy-fish-staging-lines-invalid-signage",
+        classDefinitionFixture = ClassDefinitionFixture("class2022_lscc.def")
+    ) {
+        val event = EventFixture(
+            seasonFixture = this,
+            temp = temp,
+            crispyFishClassingMapper = groupingMapper,
+            runCount = 20,
+            coreSeasonEvent = SeasonEvent(
+                event = Event(
+                    name = "64-crispy-fish-staging-lines-invalid-signage",
+                    date = LocalDate.parse("2022-04-08"),
+                    lifecycle = Event.Lifecycle.FINAL,
+                    crispyFish = Event.CrispyFishMetadata(
+                        eventControlFile = Paths.get("2022-04-08 event 1.ecf"),
+                        classDefinitionFile = Paths.get("class2022_lscc.def"),
+                        peopleMap = emptyMap() // intentionally empty to exercise person nullability
+                    ),
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV1,
+                ),
+                eventNumber = null,
+                points = true
+
+            )
+        )
+
+        override val events = listOf(event)
+        override val season = Season(
+            name = "Issue 64 Season",
+            seasonEvents = events.map { it.coreSeasonEvent },
+            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+            takeScoreCountForPoints = null
+        )
+    }
+
     val classDefinitionPath: Path
     val classDefinitionFile: ClassDefinitionFile
 

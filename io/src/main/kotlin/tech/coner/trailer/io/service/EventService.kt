@@ -12,6 +12,8 @@ import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.mapper.EventMapper
 import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.Run
+import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
@@ -23,6 +25,7 @@ class EventService(
     private val persistConstraints: EventPersistConstraints,
     private val deleteConstraints: EventDeleteConstraints,
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier,
+    private val runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier
 ) {
 
     fun create(
@@ -86,8 +89,10 @@ class EventService(
         val unmappedClubMemberIdMatchButNameMismatchRegistrations = mutableListOf<Registration>()
         val unmappedExactMatchRegistrations = mutableListOf<Registration>()
         val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
+        val runsWithInvalidSignage = runWithInvalidSignageVerifier.verify()
         eventCrispyFishPersonMapVerifier.verify(
             event = check,
+            context = context,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {
                 override fun onMapped(
                     registration: Registration,
@@ -158,7 +163,8 @@ class EventService(
             unmappedClubMemberIdAmbiguousRegistrations = unmappedClubMemberIdAmbiguousRegistrations,
             unmappedClubMemberIdMatchButNameMismatchRegistrations = unmappedClubMemberIdMatchButNameMismatchRegistrations,
             unmappedExactMatchRegistrations = unmappedExactMatchRegistrations,
-            unusedPeopleMapKeys = unusedPeopleMapKeys
+            unusedPeopleMapKeys = unusedPeopleMapKeys,
+            runsWithInvalidSignage = runWithInvalidSignageVerifier.verify()
         )
     }
 
@@ -170,7 +176,8 @@ class EventService(
         val unmappedClubMemberIdAmbiguousRegistrations: List<Registration>,
         val unmappedClubMemberIdMatchButNameMismatchRegistrations: List<Registration>,
         val unmappedExactMatchRegistrations: List<Registration>,
-        val unusedPeopleMapKeys: List<Event.CrispyFishMetadata.PeopleMapKey>
+        val unusedPeopleMapKeys: List<Event.CrispyFishMetadata.PeopleMapKey>,
+        val runsWithInvalidSignage: List<Run>
     )
 
     /**

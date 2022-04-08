@@ -1,16 +1,15 @@
 package tech.coner.trailer.io.verification
 
+import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
+import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.service.CrispyFishClassService
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.MotorsportRegPeopleMapService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.crispyfish.model.Registration
 
 class EventCrispyFishPersonMapVerifier(
-    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val personService: PersonService,
     private val crispyFishClassService: CrispyFishClassService,
     private val crispyFishClassingMapper: CrispyFishClassingMapper,
@@ -19,9 +18,9 @@ class EventCrispyFishPersonMapVerifier(
 
     fun verify(
         event: Event,
+        context: CrispyFishEventMappingContext,
         callback: Callback
     ) {
-        val context = crispyFishEventMappingContextService.load(event.requireCrispyFish())
         val people = personService.list()
         val clubMemberIdToPeople: Map<String?, List<Person>> by lazy {
             people.groupBy { it.clubMemberId }
