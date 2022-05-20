@@ -24,6 +24,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
@@ -36,6 +37,7 @@ class EventCrispyFishPersonMapAssembleCommand(
 
     override val diContext = diContext { global.requireEnvironment().openDataSession() }
     private val service: EventService by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val personService: PersonService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val crispyFishClassingMapper: CrispyFishClassingMapper by instance()
@@ -55,6 +57,7 @@ class EventCrispyFishPersonMapAssembleCommand(
         }
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
         val peopleMap = mutableMapOf<Event.CrispyFishMetadata.PeopleMapKey, Person>()
+        val context = crispyFishEventMappingContextService.load(crispyFish)
         eventCrispyFishPersonMapVerifier.verify(
             event = event,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {
@@ -257,7 +260,9 @@ class EventCrispyFishPersonMapAssembleCommand(
                     personService.create(person)
                     return person
                 }
-            })
+            },
+            context = context
+        )
         val update = event.copy(
             crispyFish = crispyFish.copy(
                 peopleMap = peopleMap

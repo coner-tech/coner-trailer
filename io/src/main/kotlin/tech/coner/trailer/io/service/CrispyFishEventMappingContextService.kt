@@ -45,6 +45,7 @@ class CrispyFishEventMappingContextService(
                 }
                 registration to run
             },
+            staging = allRuns,
             runCount = allRegistrations.maxOf { it.runs.size }
         )
     }

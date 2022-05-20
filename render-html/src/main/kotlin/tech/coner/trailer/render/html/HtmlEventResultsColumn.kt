@@ -66,7 +66,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
                 classes = setOf("signage")
-                text(it.participant.signageClassingNumber ?: "")
+                text(it.participant.signage?.classingNumber ?: "")
             }
         }
     }
@@ -104,7 +104,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 }
                 span {
                     classes = setOf("signage")
-                    text(it.participant.signageClassingNumber ?: "")
+                    text(it.participant.signage?.classingNumber ?: "")
                 }
             }
         }
@@ -119,7 +119,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.classing?.abbreviation ?: "") }
+            td { text(it.participant.signage?.classing?.abbreviation ?: "") }
         }
     }
 
@@ -132,7 +132,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td { text(it.participant.number ?: "") }
+            td { text(it.participant.signage?.number ?: "") }
         }
     }
 
@@ -186,7 +186,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override val data: TR.(ParticipantResult) -> Unit = {
             td {
                 classes = setOf("car-model")
-                text(it.participant.car.model ?: "")
+                text(it.participant.car?.model ?: "")
             }
         }
     }
@@ -223,7 +223,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 }
                 span {
                     classes = setOf("car-model")
-                    text(it.participant.car.model ?: "")
+                    text(it.participant.car?.model ?: "")
                 }
             }
         }

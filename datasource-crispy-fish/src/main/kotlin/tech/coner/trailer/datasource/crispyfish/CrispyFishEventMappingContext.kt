@@ -1,15 +1,17 @@
 package tech.coner.trailer.datasource.crispyfish
 
-import tech.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
+import tech.coner.crispyfish.StagingRun
 import tech.coner.crispyfish.model.ClassDefinition
 import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
+import tech.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
 import java.nio.file.Path
 
 class CrispyFishEventMappingContext(
     val allClassDefinitions: List<ClassDefinition>,
     val allRegistrations: List<Registration>,
     val allRuns: List<Pair<Registration?, Run?>>,
+    val staging: List<StagingRun>,
     val runCount: Int
 ) {
     val classDefinitionAbbreviationToSort: Map<String, Int> = allClassDefinitions

@@ -41,7 +41,7 @@ class TextGroupEventResultsRenderer(
         at.addRow("Category", "Signage", "Name", "Time")
         at.addRule()
         for ((parent, topParticipantResult) in results.parentClassTopTimes) {
-            at.addRow(parent.name, topParticipantResult.participant.signageClassingNumber, renderName(topParticipantResult.participant), render(topParticipantResult.personalBestRun!!.run))
+            at.addRow(parent.name, topParticipantResult.participant.signage?.classingNumber, renderName(topParticipantResult.participant), render(topParticipantResult.personalBestRun!!.run))
         }
         at.addRule()
         sb.appendLine(at.render())

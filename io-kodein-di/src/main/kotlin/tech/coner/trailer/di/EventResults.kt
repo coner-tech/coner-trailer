@@ -7,6 +7,7 @@ import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.CrispyFishEventResultsServiceImpl
 import tech.coner.trailer.io.service.EventResultsServiceImpl
 import org.kodein.di.*
+import tech.coner.trailer.StandardPenaltyFactory
 
 val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
 

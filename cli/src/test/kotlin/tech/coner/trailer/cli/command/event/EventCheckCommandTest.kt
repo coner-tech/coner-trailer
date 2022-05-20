@@ -26,6 +26,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.*
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.render.text.TextRunsRenderer
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -37,6 +38,7 @@ class EventCheckCommandTest : DIAware {
         import(mockkDatabaseModule())
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
+        bindInstance { textRunsRenderer }
     }
     override val diContext = diContext { command.diContext.value }
 
@@ -45,9 +47,9 @@ class EventCheckCommandTest : DIAware {
 
     @MockK lateinit var registrationTableView: CrispyFishRegistrationTableView
     @MockK lateinit var peopleMapKeyTableView: PeopleMapKeyTableView
+    @MockK lateinit var textRunsRenderer: TextRunsRenderer
 
     private val service: EventService by instance()
-    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
 
     @BeforeEach
     fun before() {
@@ -70,7 +72,6 @@ class EventCheckCommandTest : DIAware {
             every { crispyFish } returns checkCrispyFish
             every { motorsportReg } returns checkMotorsportReg
         }
-        val context: CrispyFishEventMappingContext = mockk()
         val result = EventService.CheckResult(
             unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
@@ -79,20 +80,20 @@ class EventCheckCommandTest : DIAware {
             unmappedClubMemberIdAmbiguousRegistrations = listOf(mockk()),
             unmappedClubMemberIdMatchButNameMismatchRegistrations = listOf(mockk()),
             unmappedExactMatchRegistrations = listOf(mockk()),
-            unusedPeopleMapKeys = listOf(mockk())
+            unusedPeopleMapKeys = listOf(mockk()),
+            runsWithInvalidSignage = listOf(mockk())
         )
         every { service.findById(checkId) } returns check
-        every { crispyFishEventMappingContextService.load(checkCrispyFish) } returns context
-        every { service.check(check, context) } returns result
+        every { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
+        every { textRunsRenderer.render(runs = any()) } returns "textRunRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 
         verifySequence {
             service.findById(checkId)
-            crispyFishEventMappingContextService.load(checkCrispyFish)
-            service.check(check, context)
+            service.check(check)
             registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
             registrationTableView.render(result.unmappedClubMemberIdNullRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdNotFoundRegistrations)
@@ -100,6 +101,7 @@ class EventCheckCommandTest : DIAware {
             registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations)
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
+            textRunsRenderer.render(result.runsWithInvalidSignage)
         }
         assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")
@@ -108,6 +110,7 @@ class EventCheckCommandTest : DIAware {
             contains("Found unmapped registration(s) with club member ID match but name mismatch")
             contains("Found unmapped registration(s) with exact matching people")
             contains("Found unused people map keys")
+            contains("Found runs with invalid signage")
         }
     }
 
@@ -128,18 +131,17 @@ class EventCheckCommandTest : DIAware {
             unmappedClubMemberIdAmbiguousRegistrations = emptyList(),
             unmappedClubMemberIdMatchButNameMismatchRegistrations = emptyList(),
             unmappedExactMatchRegistrations = emptyList(),
-            unusedPeopleMapKeys = emptyList()
+            unusedPeopleMapKeys = emptyList(),
+            runsWithInvalidSignage = emptyList()
         )
         every { service.findById(checkId) } returns check
-        every { crispyFishEventMappingContextService.load(checkCrispyFish) } returns context
-        every { service.check(check, context) } returns result
+        every { service.check(check) } returns result
 
         command.parse(arrayOf("$checkId"))
 
         verifySequence {
             service.findById(checkId)
-            crispyFishEventMappingContextService.load(checkCrispyFish)
-            service.check(check, context)
+            service.check(check)
         }
         assertThat(testConsole.output).isEmpty()
     }
@@ -152,6 +154,7 @@ class EventCheckCommandTest : DIAware {
             every { crispyFish } returns null
         }
         every { service.findById(checkId) } returns check
+        every { service.check(check) } throws IllegalStateException()
 
         assertThrows<IllegalStateException> {
             command.parse(arrayOf("$checkId"))
@@ -159,6 +162,7 @@ class EventCheckCommandTest : DIAware {
 
         verifySequence {
             service.findById(checkId)
+            service.check(check)
         }
         assertThat(testConsole.output).isEmpty()
     }

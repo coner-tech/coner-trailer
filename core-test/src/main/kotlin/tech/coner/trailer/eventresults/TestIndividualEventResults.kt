@@ -19,7 +19,7 @@ object TestIndividualEventResults {
                 type = StandardEventResultsTypes.individual,
                 runCount = 5,
                 allByParticipant = sortedMapOf(
-                    comparator = compareBy(Participant::lastName, Participant::firstName, Participant::signageClassingNumber),
+                    comparator = compareBy(Participant::lastName, Participant::firstName, { it.signage?.classingNumber }),
                     participants.ANASTASIA_RIGLER to mapOf(
                         raw to rawResults.participantResults[3],
                         pax to paxResults.participantResults[2],

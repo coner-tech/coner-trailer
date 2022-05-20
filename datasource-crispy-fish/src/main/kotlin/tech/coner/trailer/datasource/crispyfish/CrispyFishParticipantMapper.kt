@@ -1,10 +1,7 @@
 package tech.coner.trailer.datasource.crispyfish
 
-import tech.coner.trailer.Car
-import tech.coner.trailer.Class
-import tech.coner.trailer.Participant
-import tech.coner.trailer.Person
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.*
 
 class CrispyFishParticipantMapper(
     private val crispyFishClassingMapper: CrispyFishClassingMapper
@@ -23,10 +20,12 @@ class CrispyFishParticipantMapper(
                 model = fromRegistration.carModel,
                 color = fromRegistration.carColor
             ),
-            number = fromRegistration.number,
-            classing = crispyFishClassingMapper.toCore(
-                allClassesByAbbreviation = allClassesByAbbreviation,
-                cfRegistration = fromRegistration
+            signage = Signage(
+                classing = crispyFishClassingMapper.toCore(
+                    allClassesByAbbreviation = allClassesByAbbreviation,
+                    cfRegistration = fromRegistration
+                ),
+                number = fromRegistration.number,
             ),
             seasonPointsEligible = withPerson != null,
             sponsor = fromRegistration.sponsor

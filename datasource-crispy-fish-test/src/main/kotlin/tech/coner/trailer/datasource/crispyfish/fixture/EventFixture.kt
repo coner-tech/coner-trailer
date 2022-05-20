@@ -17,6 +17,7 @@ import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
 import tech.coner.crispyfish.query.RegistrationsQuery
 import tech.coner.crispyfish.query.StagingRunsQuery
+import tech.coner.trailer.StandardPenaltyFactory
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile

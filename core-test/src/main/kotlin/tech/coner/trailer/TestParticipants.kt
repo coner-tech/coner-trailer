@@ -330,8 +330,10 @@ object TestParticipants {
         person = person,
         firstName = person.firstName,
         lastName = person.lastName,
-        classing = Classing(group = group, handicap = handicap),
-        number = number,
+        signage = Signage(
+            classing = Classing(group = group, handicap = handicap),
+            number = number
+        ),
         car = car,
         seasonPointsEligible = seasonPointsEligible,
         sponsor = null

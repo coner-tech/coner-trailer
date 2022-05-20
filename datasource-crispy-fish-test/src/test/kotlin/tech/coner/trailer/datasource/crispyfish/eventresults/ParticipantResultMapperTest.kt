@@ -48,8 +48,8 @@ class ParticipantResultMapperTest {
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val usePeopleMap = mapOf(
             Event.CrispyFishMetadata.PeopleMapKey(
-                classing = requireNotNull(participant.classing),
-                number = requireNotNull(participant.number),
+                classing = requireNotNull(participant.signage?.classing),
+                number = requireNotNull(participant.signage?.number),
                 firstName = requireNotNull(participant.firstName),
                 lastName = requireNotNull(person.lastName)
             ) to person
@@ -75,7 +75,7 @@ class ParticipantResultMapperTest {
                 allClassesByAbbreviation = any(),
                 cfRegistration = registration
             )
-        } returns checkNotNull(participant.classing)
+        } returns checkNotNull(participant.signage?.classing)
         val expectedScoredRuns = listOf(
             testResultRun(sequence = 1, participant = participant, time = Time("52.749"), score = Score("52.749")),
             testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),

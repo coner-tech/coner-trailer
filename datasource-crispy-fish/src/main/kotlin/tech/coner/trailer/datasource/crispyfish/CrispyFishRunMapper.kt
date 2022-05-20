@@ -10,7 +10,7 @@ class CrispyFishRunMapper {
     fun toCore(
         cfRun: tech.coner.crispyfish.model.Run,
         cfRunIndex: Int,
-        participant: Participant,
+        participant: Participant?,
     ): Run {
         return Run(
             sequence = cfRunIndex + 1,

@@ -9,7 +9,7 @@ class ParticipantIdentifier(
     val firstName: String?,
     val lastName: String?,
     val signage: String?,
-    val car: Car,
+    val car: Car?,
     val sponsor: String?
 ) {
 
@@ -17,7 +17,7 @@ class ParticipantIdentifier(
         personId = participant.person?.id,
         firstName = participant.firstName,
         lastName = participant.lastName,
-        signage = participant.signageClassingNumber,
+        signage = participant.signage?.classingNumber,
         car = participant.car,
         sponsor = participant.sponsor
     )

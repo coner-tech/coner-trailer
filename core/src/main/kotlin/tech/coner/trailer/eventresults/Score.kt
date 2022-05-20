@@ -25,6 +25,11 @@ data class Score constructor(
         }
     }
 
+    override fun compareTo(other: Score): Int {
+        return value.compareTo(other.value)
+    }
+
+
     sealed class Penalty(
         val floor: BigDecimal,
         val diff: Boolean
@@ -83,9 +88,5 @@ data class Score constructor(
             result = 31 * result + diff.hashCode()
             return result
         }
-    }
-
-    override fun compareTo(other: Score): Int {
-        return value.compareTo(other.value)
     }
 }

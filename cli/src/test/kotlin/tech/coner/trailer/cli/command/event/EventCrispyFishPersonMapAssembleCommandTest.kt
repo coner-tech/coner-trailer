@@ -93,6 +93,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
         every {
             eventCrispyFishPersonMapVerifier.verify(
                 event = event,
+                context = context,
                 callback = capture(callbackSlot)
             )
         } answers  {
@@ -102,7 +103,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             testConsole.writeInput("0")
             Awaitility.await().until { testConsole.output.endsWith("<<<") }
         }
-        val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.classing)
+        val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage?.classing)
         every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
 
         justRun { service.update(any()) }

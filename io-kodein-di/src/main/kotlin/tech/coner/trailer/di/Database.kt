@@ -1,13 +1,14 @@
 package tech.coner.trailer.di
 
+import org.kodein.di.*
+import tech.coner.snoozle.db.session.data.DataSession
 import tech.coner.trailer.datasource.crispyfish.*
 import tech.coner.trailer.datasource.snoozle.*
 import tech.coner.trailer.io.constraint.*
 import tech.coner.trailer.io.mapper.*
 import tech.coner.trailer.io.service.*
 import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.kodein.di.*
-import tech.coner.snoozle.db.session.data.DataSession
+import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
 
 val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
@@ -202,7 +203,11 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
                 mapper = instance(),
                 persistConstraints = instance(),
                 deleteConstraints = instance(),
-                eventCrispyFishPersonMapVerifier = instance()
+                eventCrispyFishPersonMapVerifier = instance(),
+                runWithInvalidSignageVerifier = instance(),
+                crispyFishEventMappingContextService = instance(),
+                runService = instance(),
+
             )
         }
     }
@@ -289,4 +294,29 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind { scoped(DataSessionScope).singleton { CrispyFishClassParentMapper() } }
     bind { scoped(DataSessionScope).singleton { CrispyFishClassMapper() } }
     bind { scoped(DataSessionScope).singleton { CrispyFishClassingMapper() } }
+
+    // Runs
+    bind {
+        scoped(DataSessionScope).singleton {
+            RunService(
+                crispyFishRunService = instance()
+            )
+        }
+    }
+    bind {
+        scoped(DataSessionScope).singleton {
+            CrispyFishRunService(
+                crispyFishEventMappingContextService = instance(),
+                crispyFishClassService = instance(),
+                crispyFishClassingMapper = instance(),
+                crispyFishParticipantMapper = instance(),
+                crispyFishRunMapper = instance()
+            )
+        }
+    }
+    bind {
+        scoped(DataSessionScope).singleton {
+            RunWithInvalidSignageVerifier()
+        }
+    }
 }

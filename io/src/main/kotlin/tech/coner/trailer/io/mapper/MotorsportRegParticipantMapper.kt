@@ -19,11 +19,13 @@ class MotorsportRegParticipantMapper {
                 model = motorsportRegAssignment.vehicleModel,
                 color = motorsportRegAssignment.vehicleColor
             ),
-            classing = toCoreClassing(
-                allClassesByAbbreviation = allClassesByAbbreviation,
-                motorsportRegAssignment = motorsportRegAssignment
+            signage = Signage(
+                classing = toCoreClassing(
+                    allClassesByAbbreviation = allClassesByAbbreviation,
+                    motorsportRegAssignment = motorsportRegAssignment
+                ),
+                number = motorsportRegAssignment.vehicleNumber,
             ),
-            number = motorsportRegAssignment.vehicleNumber,
             seasonPointsEligible = true,
             sponsor = motorsportRegAssignment.sponsor
         )

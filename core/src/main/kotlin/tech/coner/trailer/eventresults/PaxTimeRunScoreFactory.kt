@@ -1,6 +1,7 @@
 package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Run
+import tech.coner.trailer.StandardPenaltyFactory
 import java.math.BigDecimal
 import java.math.RoundingMode
 

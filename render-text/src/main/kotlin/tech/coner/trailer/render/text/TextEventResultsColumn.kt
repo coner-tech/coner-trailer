@@ -23,7 +23,7 @@ abstract class TextEventResultsColumn : EventResultsColumnRenderer<
             "Signage"
         }
         override val data: (ParticipantResult) -> String = {
-            it.participant.signageClassingNumber ?: ""
+            it.participant.signage?.classingNumber ?: ""
         }
     }
 
@@ -41,7 +41,7 @@ abstract class TextEventResultsColumn : EventResultsColumnRenderer<
             "Car"
         }
         override val data: (ParticipantResult) -> String = {
-            it.participant.car.model ?: ""
+            it.participant.car?.model ?: ""
         }
     }
 

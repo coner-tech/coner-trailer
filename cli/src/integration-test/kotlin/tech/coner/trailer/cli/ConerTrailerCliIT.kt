@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
@@ -154,9 +155,9 @@ class ConerTrailerCliIT {
             assertThat(testConsole.output, "output").all {
                 contains(event.name)
                 contains("${event.date}")
-                contains(participant.classing!!.group!!.abbreviation)
-                contains(participant.classing!!.handicap.abbreviation)
-                contains(participant.number!!)
+                contains(participant.signage!!.classing!!.group!!.abbreviation)
+                contains(participant.signage!!.classing!!.handicap.abbreviation)
+                contains(participant.signage!!.number!!)
                 contains("${participant.person!!.id}")
             }
             assertThat(testConsole.error, "error").isEmpty()
@@ -215,6 +216,30 @@ class ConerTrailerCliIT {
             }
             assertThat(testConsole.error, "error").isEmpty()
         }
+    }
+
+    @Test
+    fun `It should find crispy fish staging lines with invalid signage`() {
+        val seasonFixture = SeasonFixture.Issue64CrispyFishStagingLinesInvalidSignage(crispyFishDir)
+        val eventFixture = seasonFixture.event
+        val event = eventFixture.coreSeasonEvent.event
+        val databaseName = "64-crispy-fish-staging-invalid-signage"
+        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
+        command.parse(appArgumentBuilder.clubSet(event.policy.club))
+        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
+        command.parse(appArgumentBuilder.eventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = eventFixture.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ))
+        testConsole.clear()
+
+        command.parse(appArgumentBuilder.eventCheck(
+            event = event
+        ))
+
+        assertThat(testConsole.output).contains("Found runs with invalid signage:")
     }
 
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)

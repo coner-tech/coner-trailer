@@ -12,7 +12,10 @@ import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.factory
 import org.kodein.di.instance
+import tech.coner.trailer.Policy
+import tech.coner.trailer.render.text.TextRunsRenderer
 import java.util.*
 
 class EventCheckCommand(
@@ -26,17 +29,15 @@ class EventCheckCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
+    private val textRunsRenderer: TextRunsRenderer by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
 
     override fun run() = diContext.use {
         val check = service.findById(id)
-        val checkCrispyFish = checkNotNull(check.crispyFish) { "Event is missing Crispy Fish Metadata" }
-        val context = crispyFishEventMappingContextService.load(checkCrispyFish)
-        val result = service.check(check, context)
+        val result = service.check(check)
         if (result.unmappable.isNotEmpty()) {
             echo("Found unmappable registration(s):")
             echo(registrationTableView.render(result.unmappable))
@@ -68,6 +69,10 @@ class EventCheckCommand(
         if (result.unusedPeopleMapKeys.isNotEmpty()) {
             echo("Found unused people map keys:")
             echo(peopleMapKeyTableView.render(result.unusedPeopleMapKeys))
+        }
+        if (result.runsWithInvalidSignage.isNotEmpty()) {
+            echo("Found runs with invalid signage:")
+            echo(textRunsRenderer.render(result.runsWithInvalidSignage))
         }
     }
 }

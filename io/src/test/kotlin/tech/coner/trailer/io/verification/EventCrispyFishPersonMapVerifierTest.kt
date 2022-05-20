@@ -24,7 +24,6 @@ class EventCrispyFishPersonMapVerifierTest {
 
     lateinit var verifier: EventCrispyFishPersonMapVerifier
 
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var personService: PersonService
     @MockK lateinit var crispyFishClassService: CrispyFishClassService
     @MockK lateinit var crispyFishClassingMapper: CrispyFishClassingMapper
@@ -36,7 +35,6 @@ class EventCrispyFishPersonMapVerifierTest {
     @BeforeEach
     fun before() {
         verifier = EventCrispyFishPersonMapVerifier(
-            crispyFishEventMappingContextService = crispyFishEventMappingContextService,
             personService = personService,
             crispyFishClassService = crispyFishClassService,
             crispyFishClassingMapper = crispyFishClassingMapper,
@@ -54,8 +52,8 @@ class EventCrispyFishPersonMapVerifierTest {
             person = null
         )
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            classing = requireNotNull(participant.classing),
-            number = requireNotNull(participant.number),
+            classing = requireNotNull(participant.signage?.classing),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(registration.firstName),
             lastName = requireNotNull(registration.lastName)
         )
@@ -66,16 +64,16 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns listOf(person)
-        every { crispyFishClassingMapper.toCore(any(), registration) } returns participant.classing
+        every { crispyFishClassingMapper.toCore(any(), registration) } returns participant.signage?.classing
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         justRun { callback.onMapped(any(), any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -94,8 +92,8 @@ class EventCrispyFishPersonMapVerifierTest {
         val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         every { context.allRegistrations } returns listOf(registration)
         val crossReference = Event.CrispyFishMetadata.PeopleMapKey(
-            classing = requireNotNull(participant.classing),
-            number = requireNotNull(participant.number),
+            classing = requireNotNull(participant.signage?.classing),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(participant.firstName),
             lastName = requireNotNull(participant.lastName)
         ) to person
@@ -103,7 +101,7 @@ class EventCrispyFishPersonMapVerifierTest {
         every {
             crispyFishClassService.loadAllByAbbreviation(any())
         } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.classing)
+        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.signage?.classing)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -111,11 +109,11 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         justRun { callback.onUnmappedMotorsportRegPersonExactMatch(any(), any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -142,17 +140,17 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns listOf(person)
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.classing)
+        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.signage?.classing)
         justRun { callback.onUnmappedClubMemberIdNull(any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -176,17 +174,17 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         val allRegistrations = listOf(registration)
         every { context.allRegistrations } returns allRegistrations
         every { personService.list() } returns emptyList()
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.classing)
+        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.signage?.classing)
         justRun { callback.onUnmappedClubMemberIdNotFound(any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -226,17 +224,17 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         every { context.allRegistrations } returns registrations
         every { personService.list() } returns people
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registrations[0]) } returns requireNotNull(participants[0].classing)
-        every { crispyFishClassingMapper.toCore(any(), registrations[1]) } returns requireNotNull(participants[1].classing)
+        every { crispyFishClassingMapper.toCore(any(), registrations[0]) } returns requireNotNull(participants[0].signage?.classing)
+        every { crispyFishClassingMapper.toCore(any(), registrations[1]) } returns requireNotNull(participants[1].signage?.classing)
         justRun { callback.onUnmappedClubMemberIdAmbiguous(any(), any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -267,9 +265,8 @@ class EventCrispyFishPersonMapVerifierTest {
         every { context.allRegistrations } returns registrations
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registrations[0]) } returns requireNotNull(participants[0].classing)
-        every { crispyFishClassingMapper.toCore(any(), registrations[1]) } returns requireNotNull(participants[1].classing)
-        every { crispyFishEventMappingContextService.load(any()) } returns context
+        every { crispyFishClassingMapper.toCore(any(), registrations[0]) } returns requireNotNull(participants[0].signage?.classing)
+        every { crispyFishClassingMapper.toCore(any(), registrations[1]) } returns requireNotNull(participants[1].signage?.classing)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -281,6 +278,7 @@ class EventCrispyFishPersonMapVerifierTest {
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -302,7 +300,7 @@ class EventCrispyFishPersonMapVerifierTest {
         every { context.allRegistrations } returns listOf(registration)
         every { motorsportRegPeopleMapService.assemble(any(), any()) } returns emptyMap()
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.classing)
+        every { crispyFishClassingMapper.toCore(any(), registration) } returns requireNotNull(participant.signage?.classing)
         val event: Event = mockk {
             every { crispyFish } returns mockk {
                 every { peopleMap } returns emptyMap()
@@ -310,11 +308,11 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         justRun { callback.onUnmappedExactMatch(registration, person) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 
@@ -334,8 +332,8 @@ class EventCrispyFishPersonMapVerifierTest {
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         every { context.allRegistrations } returns emptyList()
         val key = Event.CrispyFishMetadata.PeopleMapKey(
-            classing = requireNotNull(participant.classing),
-            number = requireNotNull(participant.number),
+            classing = requireNotNull(participant.signage?.classing),
+            number = requireNotNull(participant.signage?.number),
             firstName = requireNotNull(registration.firstName),
             lastName = requireNotNull(registration.lastName)
         )
@@ -346,11 +344,11 @@ class EventCrispyFishPersonMapVerifierTest {
             }
             every { requireCrispyFish() } returns crispyFish!!
         }
-        every { crispyFishEventMappingContextService.load(any()) } returns context
         justRun { callback.onUnused(any(), any()) }
 
         verifier.verify(
             event = event,
+            context = context,
             callback = callback
         )
 

@@ -8,9 +8,6 @@ import assertk.assertions.isSameAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import tech.coner.trailer.Event
-import tech.coner.trailer.Person
-import tech.coner.trailer.TestEvents
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.entity.EventEntity
@@ -25,6 +22,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.trailer.*
+import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -40,6 +39,9 @@ class EventServiceTest {
     @MockK lateinit var persistConstraints: EventPersistConstraints
     @MockK lateinit var deleteConstraints: EventDeleteConstraints
     @MockK lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+    @MockK lateinit var runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier
+    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
+    @MockK lateinit var runService: RunService
 
     @BeforeEach
     fun before() {
@@ -51,6 +53,9 @@ class EventServiceTest {
             persistConstraints = persistConstraints,
             deleteConstraints = deleteConstraints,
             eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier,
+            runWithInvalidSignageVerifier = runWithInvalidSignageVerifier,
+            crispyFishEventMappingContextService = crispyFishEventMappingContextService,
+            runService = runService
         )
     }
 
@@ -144,18 +149,22 @@ class EventServiceTest {
     fun `It should check event`() {
         val checkCrispyFishPeopleMap = emptyMap<Event.CrispyFishMetadata.PeopleMapKey, Person>()
         val msrEventId = "msr-event-id"
+        val eventCrispyFish: Event.CrispyFishMetadata = mockk {
+            every { peopleMap } returns checkCrispyFishPeopleMap
+        }
         val check: Event = mockk {
-            every { crispyFish } returns mockk {
-                every { peopleMap } returns checkCrispyFishPeopleMap
-            }
+            every { crispyFish } returns eventCrispyFish
+            every { requireCrispyFish() } returns eventCrispyFish
             every { motorsportReg } returns mockk {
                 every { id } returns msrEventId
             }
         }
         val context: CrispyFishEventMappingContext = mockk()
+        every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
         every { eventCrispyFishPersonMapVerifier.verify(
             event = check,
+            context = context,
             callback = capture(callbackSlot)
         ) } answers {
             val callback = callbackSlot.captured
@@ -168,8 +177,27 @@ class EventServiceTest {
             repeat(7) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
             repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
+        val allRuns = listOf(
+            Run(
+                sequence = 1,
+                participant = Participant(
+                    person = null,
+                    firstName = null,
+                    lastName = null,
+                    signage = Signage(
+                        number = "42",
+                        classing = Classing(group = null, handicap = TestClasses.Lscc2019.CS),
+                    ),
+                    car = null,
+                    seasonPointsEligible = false,
+                    sponsor = null
+                ),
+            )
+        )
+        every { runService.list(event = check) } returns Result.success(allRuns)
+        every { runWithInvalidSignageVerifier.verify(allRuns = allRuns) } returns allRuns
 
-        val actual = service.check(check = check, context = context)
+        val actual = service.check(check = check)
 
         assertThat(actual.unmappedMotorsportRegPersonMatches).hasSize(2)
         assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(3)

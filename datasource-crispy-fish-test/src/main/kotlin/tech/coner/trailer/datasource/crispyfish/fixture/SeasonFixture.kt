@@ -140,7 +140,7 @@ sealed class SeasonFixture(
                     date = LocalDate.parse("2022-04-08"),
                     lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
-                        eventControlFile = Paths.get("2022-04-08 event 1.ecf"),
+                        eventControlFile = Paths.get("64-crispy-fish-staging-lines-invalid-signage.ecf"),
                         classDefinitionFile = Paths.get("class2022_lscc.def"),
                         peopleMap = emptyMap() // intentionally empty to exercise person nullability
                     ),
@@ -148,8 +148,7 @@ sealed class SeasonFixture(
                     policy = TestPolicies.lsccV1,
                 ),
                 eventNumber = null,
-                points = true
-
+                points = false
             )
         )
 
@@ -187,8 +186,8 @@ sealed class SeasonFixture(
 
 private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {
     val key = Event.CrispyFishMetadata.PeopleMapKey(
-        classing = requireNotNull(testParticipant.classing),
-        number = requireNotNull(testParticipant.number),
+        classing = requireNotNull(testParticipant.signage?.classing),
+        number = requireNotNull(testParticipant.signage?.number),
         firstName = requireNotNull(testParticipant.firstName),
         lastName = requireNotNull(testParticipant.lastName)
     )
