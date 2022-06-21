@@ -16,6 +16,7 @@ class CrispyFishRunMapper {
         return cfRun?.let {
             Run(
                 sequence = cfRunIndex + 1,
+                signage = participant?.signage,
                 participant = participant,
                 cones = if (it.penaltyType == PenaltyType.CONE) {
                     cfRun.cones ?: 0

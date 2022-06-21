@@ -22,7 +22,11 @@ class CrispyFishParticipantMapper(
                 peopleMap = peopleMap,
                 registration = registration
             )
-            stagingRegistration != null -> toCoreFromStagingRegistration(allClassesByAbbreviation, peopleMap, stagingRegistration)
+            stagingRegistration != null -> toCoreFromStagingRegistration(
+                allClassesByAbbreviation = allClassesByAbbreviation,
+                peopleMap = peopleMap,
+                stagingRegistration = stagingRegistration
+            )
             else -> null
         }
     }

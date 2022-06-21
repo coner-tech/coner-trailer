@@ -15,9 +15,9 @@ class EventTest {
     @Nested
     inner class ConstructorTests {
 
-        private val policyWithAuthoritativeRunSource = TestPolicies.lsccV1
+        private val policyWithAuthoritativeRunDataSource = TestPolicies.lsccV1
             .also {
-                Preconditions.condition(it.authoritativeRunSource == Policy.RunSource.CrispyFish) {
+                Preconditions.condition(it.authoritativeRunDataSource == Policy.DataSource.CrispyFish) {
                     "Expected policy with authoritative run source: crispy fish"
                 }
             }
@@ -26,7 +26,7 @@ class EventTest {
         fun `When its policy's authoritative run source is crispy fish, if it lacks crispy fish metadata, it should throw`() {
             val exception = assertThrows<IllegalStateException> {
                 TestEvents.Lscc2019.points1.copy(
-                    policy = policyWithAuthoritativeRunSource,
+                    policy = policyWithAuthoritativeRunDataSource,
                     crispyFish = null
                 )
             }
@@ -44,7 +44,7 @@ class EventTest {
         fun `When its policy's authoritative run source is crispy fish, if it has crispy fish metadata, it should instantiate`() {
             assertDoesNotThrow {
                 TestEvents.Lscc2019.points1.copy(
-                    policy = policyWithAuthoritativeRunSource,
+                    policy = policyWithAuthoritativeRunDataSource,
                     crispyFish = mockk()
                 )
             }

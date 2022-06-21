@@ -64,10 +64,10 @@ class ParticipantResultMapperTest {
             runCount = seasonFixture.event1.runCount
         )
         every {
-            crispyFishParticipantMapper.toCore(
+            crispyFishParticipantMapper.toCoreFromRegistration(
                 allClassesByAbbreviation = any(),
                 peopleMap = usePeopleMap,
-                stagingRun = any()
+                registration = any(),
             )
         }.returns(participant)
         val expectedScoredRuns = listOf(

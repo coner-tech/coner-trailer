@@ -18,6 +18,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 1,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.367")
                             ) to Score("49.367")
@@ -25,6 +26,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 2,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.230")
                             ) to Score("49.230")
@@ -32,6 +34,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 3,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("48.807")
                             ) to Score("48.807")
@@ -39,6 +42,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 4,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.573"),
                                 didNotFinish = true
@@ -47,6 +51,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 5,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("47.544")
                             ) to Score("47.544")
@@ -64,6 +69,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 21,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.419"),
                                 cones = 4
@@ -72,6 +78,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 22,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.848"),
                                 cones = 3
@@ -80,6 +87,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 23,
+                                signage = participant.signage,
                                 participant = participant,
                                 time = Time("48.515")
                             ) to Score("48.515")
@@ -87,7 +95,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 24,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("49.076"),
                                 cones = 1
                             ) to Score("51.076", Score.Penalty.Cone("2.000", 1))
@@ -95,7 +103,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 25,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("49.436")
                             ) to Score("49.436")
                         }
@@ -112,7 +120,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 6,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("50.115"),
                                 cones = 2
                             ) to Score("54.115", Score.Penalty.Cone("4.000", 2))
@@ -120,7 +128,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 7,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("50.162"),
                                 cones = 1
                             ) to Score("52.162", Score.Penalty.Cone("2.000", 1))
@@ -128,21 +136,21 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 8,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("49.672")
                             ) to Score("49.672")
                         },
                         { participant ->
                             Run(
                                 sequence = 9,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("49.992")
                             ) to Score("49.992")
                         },
                         { participant ->
                             Run(
                                 sequence = 10,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("48.723")
                             ) to Score("48.723")
                         }
@@ -159,14 +167,14 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 16,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("53.693")
                             ) to Score("53.693")
                         },
                         { participant ->
                             Run(
                                 sequence = 17,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.179"),
                                 cones = 1
                             ) to Score("54.179", Score.Penalty.Cone("2.000", 1))
@@ -174,21 +182,21 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 18,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.256")
                             ) to Score("52.256")
                         },
                         { participant ->
                             Run(
                                 sequence = 19,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("51.323")
                             ) to Score("51.323")
                         },
                         { participant ->
                             Run(
                                 sequence = 20,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("51.344")
                             ) to Score("51.344")
                         }
@@ -205,35 +213,35 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 11,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.749")
                             ) to Score("52.749")
                         },
                         { participant ->
                             Run(
                                 sequence = 12,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("53.175")
                             ) to Score("53.175")
                         },
                         { participant ->
                             Run(
                                 sequence = 13,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.130")
                             ) to Score("52.130")
                         },
                         { participant ->
                             Run(
                                 sequence = 14,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.117")
                             ) to Score("52.117")
                         },
                         { participant ->
                             Run(
                                 sequence = 15,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("51.408")
                             ) to Score("51.408")
                         }
@@ -250,7 +258,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 26,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("56.353"),
                                 cones = 1
                             ) to Score("58.353", Score.Penalty.Cone("2.000", 1))
@@ -258,21 +266,21 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 27,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("55.831")
                             ) to Score("55.831")
                         },
                         { participant ->
                             Run(
                                 sequence = 28,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.201")
                             ) to Score("52.201")
                         },
                         { participant ->
                             Run(
                                 sequence = 29,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.062"),
                                 cones = 1
                             ) to Score("54.062", Score.Penalty.Cone("2.000", 1))
@@ -280,7 +288,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 30,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("53.074")
                             ) to Score("53.074")
                         }
@@ -297,14 +305,14 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 31,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("54.246")
                             ) to Score("54.246")
                         },
                         { participant ->
                             Run(
                                 sequence = 32,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("53.629"),
                                 cones = 1
                             ) to Score("55.629", Score.Penalty.Cone("2.000", 1))
@@ -312,7 +320,7 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 33,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("51.856"),
                                 cones = 1
                             ) to Score("53.856", Score.Penalty.Cone("2.000", 1))
@@ -320,14 +328,14 @@ object TestOverallRawEventResults {
                         { participant ->
                             Run(
                                 sequence = 34,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("53.409")
                             ) to Score("53.409")
                         },
                         { participant ->
                             Run(
                                 sequence = 35,
-                                participant = participant,
+                                signage = participant.signage,                                participant = participant,
                                 time = Time("52.447")
                             ) to Score("52.447")
                         }

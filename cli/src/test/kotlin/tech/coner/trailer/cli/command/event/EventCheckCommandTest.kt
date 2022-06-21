@@ -18,7 +18,6 @@ import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,6 +25,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.*
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.render.text.TextRunsRenderer
 import java.util.*
 
@@ -72,7 +72,7 @@ class EventCheckCommandTest : DIAware {
             every { crispyFish } returns checkCrispyFish
             every { motorsportReg } returns checkMotorsportReg
         }
-        val result = EventService.CheckResult(
+        val result = EventHealthCheckOutcome(
             unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
             unmappedClubMemberIdNullRegistrations = listOf(mockk()),
@@ -123,7 +123,7 @@ class EventCheckCommandTest : DIAware {
             every { crispyFish } returns checkCrispyFish
         }
         val context: CrispyFishEventMappingContext = mockk()
-        val result = EventService.CheckResult(
+        val result = EventHealthCheckOutcome(
             unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = emptyList(),
             unmappedClubMemberIdNullRegistrations = emptyList(),

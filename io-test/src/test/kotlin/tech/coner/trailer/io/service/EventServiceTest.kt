@@ -42,6 +42,7 @@ class EventServiceTest {
     @MockK lateinit var runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
     @MockK lateinit var runService: RunService
+    @MockK lateinit var participantService: ParticipantService
 
     @BeforeEach
     fun before() {
@@ -55,7 +56,8 @@ class EventServiceTest {
             eventCrispyFishPersonMapVerifier = eventCrispyFishPersonMapVerifier,
             runWithInvalidSignageVerifier = runWithInvalidSignageVerifier,
             crispyFishEventMappingContextService = crispyFishEventMappingContextService,
-            runService = runService
+            runService = runService,
+            participantService = participantService,
         )
     }
 
@@ -177,6 +179,8 @@ class EventServiceTest {
             repeat(7) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
             repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
+        val allParticipants = emptyList<Participant>()
+        every { participantService.list(check) } returns Result.success(allParticipants)
         val allRuns = listOf(
             Run(
                 sequence = 1,
@@ -195,7 +199,10 @@ class EventServiceTest {
             )
         )
         every { runService.list(event = check) } returns Result.success(allRuns)
-        every { runWithInvalidSignageVerifier.verify(allRuns = allRuns) } returns allRuns
+        every { runWithInvalidSignageVerifier.verify(
+            allParticipants = allParticipants,
+            allRuns = allRuns
+        ) } returns allRuns
 
         val actual = service.check(check = check)
 

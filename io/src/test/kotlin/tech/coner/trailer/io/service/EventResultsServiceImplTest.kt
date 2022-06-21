@@ -31,7 +31,7 @@ class EventResultsServiceImplTest {
     @Test
     fun `It should delegate building raw results from crispy fish run source`() {
         val event = TestEvents.Lscc2019Simplified.points1
-        check(event.policy.authoritativeRunSource == Policy.RunSource.CrispyFish)
+        check(event.policy.authoritativeRunDataSource == Policy.DataSource.CrispyFish)
         val results = TestOverallRawEventResults.Lscc2019Simplified.points1
         every { crispyFishEventResultsService.buildRawResults(any()) } returns results
 
@@ -46,7 +46,7 @@ class EventResultsServiceImplTest {
     @Test
     fun `It should delegate building pax results from crispy fish run source`() {
         val event = TestEvents.Lscc2019Simplified.points1
-        check(event.policy.authoritativeRunSource == Policy.RunSource.CrispyFish)
+        check(event.policy.authoritativeRunDataSource == Policy.DataSource.CrispyFish)
         val results = TestOverallRawEventResults.Lscc2019Simplified.points1
         every { crispyFishEventResultsService.buildPaxResults(any()) } returns results
 
@@ -61,7 +61,7 @@ class EventResultsServiceImplTest {
     @Test
     fun `It should delegate building class results from crispy fish run source`() {
         val event = TestEvents.Lscc2019Simplified.points1
-        check(event.policy.authoritativeRunSource == Policy.RunSource.CrispyFish)
+        check(event.policy.authoritativeRunDataSource == Policy.DataSource.CrispyFish)
         val results = TestClazzEventResults.Lscc2019Simplified.points1
         every { crispyFishEventResultsService.buildClassResults(any()) } returns results
 

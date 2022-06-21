@@ -207,7 +207,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
                 runWithInvalidSignageVerifier = instance(),
                 crispyFishEventMappingContextService = instance(),
                 runService = instance(),
-
+                participantService = instance(),
             )
         }
     }
@@ -295,6 +295,24 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind { scoped(DataSessionScope).singleton { CrispyFishClassMapper() } }
     bind { scoped(DataSessionScope).singleton { CrispyFishClassingMapper() } }
 
+    // Participants
+    bind {
+        scoped(DataSessionScope).singleton {
+            ParticipantService(
+                crispyFishParticipantService = instance()
+            )
+        }
+    }
+    bind {
+        scoped(DataSessionScope).singleton {
+            CrispyFishParticipantService(
+                crispyFishEventMappingContextService = instance(),
+                crispyFishClassService = instance(),
+                crispyFishParticipantMapper = instance()
+            )
+        }
+    }
+
     // Runs
     bind {
         scoped(DataSessionScope).singleton {
@@ -308,7 +326,6 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
             CrispyFishRunService(
                 crispyFishEventMappingContextService = instance(),
                 crispyFishClassService = instance(),
-                crispyFishClassingMapper = instance(),
                 crispyFishParticipantMapper = instance(),
                 crispyFishRunMapper = instance()
             )

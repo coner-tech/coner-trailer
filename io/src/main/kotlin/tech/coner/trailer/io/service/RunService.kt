@@ -9,8 +9,8 @@ class RunService(
 ) {
 
     fun list(event: Event): Result<List<Run>> {
-        return when (event.policy.authoritativeRunSource) {
-            Policy.RunSource.CrispyFish -> crispyFishRunService.list(event)
+        return when (event.policy.authoritativeRunDataSource) {
+            Policy.DataSource.CrispyFish -> crispyFishRunService.list(event)
         }
     }
 }

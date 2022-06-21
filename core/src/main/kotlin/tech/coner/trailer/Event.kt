@@ -15,7 +15,7 @@ data class Event(
 ) {
 
     init {
-        if (policy.authoritativeRunSource == Policy.RunSource.CrispyFish) {
+        if (policy.authoritativeRunDataSource == Policy.DataSource.CrispyFish) {
             checkNotNull(crispyFish) {
                 "Event policy defines authoritative run source as crispy fish, but event lacks crispy fish metadata"
             }

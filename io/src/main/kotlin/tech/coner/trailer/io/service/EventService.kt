@@ -11,7 +11,7 @@ import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.mapper.EventMapper
 import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
 import tech.coner.crispyfish.model.Registration
-import tech.coner.trailer.Run
+import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.time.LocalDate
@@ -26,7 +26,8 @@ class EventService(
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier,
     private val runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier,
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
-    private val runService: RunService
+    private val runService: RunService,
+    private val participantService: ParticipantService
 ) {
 
     fun create(
@@ -78,7 +79,7 @@ class EventService(
             .toList()
     }
 
-    fun check(check: Event): CheckResult {
+    fun check(check: Event): EventHealthCheckOutcome {
         val unmappedMotorsportRegPersonMatches = mutableListOf<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>()
         val unmappable = mutableListOf<Registration>()
         val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
@@ -88,6 +89,7 @@ class EventService(
         val unmappedExactMatchRegistrations = mutableListOf<Registration>()
         val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
         val context = crispyFishEventMappingContextService.load(check.requireCrispyFish())
+        val participants = participantService.list(check).getOrThrow()
         val runs = runService.list(check).getOrThrow()
         eventCrispyFishPersonMapVerifier.verify(
             event = check,
@@ -154,7 +156,7 @@ class EventService(
                 }
             }
         )
-        return CheckResult(
+        return EventHealthCheckOutcome(
             unmappable = unmappable,
             unmappedMotorsportRegPersonMatches = unmappedMotorsportRegPersonMatches,
             unmappedClubMemberIdNullRegistrations = unmappedClubMemberIdNullRegistrations,
@@ -163,21 +165,12 @@ class EventService(
             unmappedClubMemberIdMatchButNameMismatchRegistrations = unmappedClubMemberIdMatchButNameMismatchRegistrations,
             unmappedExactMatchRegistrations = unmappedExactMatchRegistrations,
             unusedPeopleMapKeys = unusedPeopleMapKeys,
-            runsWithInvalidSignage = runWithInvalidSignageVerifier.verify(runs)
+            runsWithInvalidSignage = runWithInvalidSignageVerifier.verify(
+                allRuns = runs,
+                allParticipants = participants
+            )
         )
     }
-
-    class CheckResult(
-        val unmappable: List<Registration>,
-        val unmappedMotorsportRegPersonMatches: List<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>,
-        val unmappedClubMemberIdNullRegistrations: List<Registration>,
-        val unmappedClubMemberIdNotFoundRegistrations: List<Registration>,
-        val unmappedClubMemberIdAmbiguousRegistrations: List<Registration>,
-        val unmappedClubMemberIdMatchButNameMismatchRegistrations: List<Registration>,
-        val unmappedExactMatchRegistrations: List<Registration>,
-        val unusedPeopleMapKeys: List<Event.CrispyFishMetadata.PeopleMapKey>,
-        val runsWithInvalidSignage: List<Run>
-    )
 
     /**
      * Persist an updated Event.
