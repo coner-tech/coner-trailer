@@ -38,10 +38,12 @@ class StandingsReportCreatorFromCrispyFishTest {
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val competitionGroupedEventResults = seasonFixture.events.associate { eventFixture ->
             val allRegistrations = eventFixture.registrations()
+            val staging = eventFixture.stagingRuns(allRegistrations)
             val context = CrispyFishEventMappingContext(
                 allClassDefinitions = seasonFixture.classDefinitions,
                 allRegistrations = allRegistrations,
-                allRuns = eventFixture.runs(allRegistrations),
+                allRuns = eventFixture.allRuns(allRegistrations, staging),
+                staging = staging,
                 runCount = eventFixture.runCount
             )
             val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(

@@ -11,7 +11,6 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 class CrispyFishRunService(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val crispyFishClassService: CrispyFishClassService,
-    private val crispyFishClassingMapper: CrispyFishClassingMapper,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
     private val crispyFishRunMapper: CrispyFishRunMapper
 ) {
@@ -19,62 +18,20 @@ class CrispyFishRunService(
         val eventCrispyFish = event.requireCrispyFish()
         val context = crispyFishEventMappingContextService.load(eventCrispyFish)
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)
-        val runs = context.allRuns
-            .mapIndexed { index, (registration, run) ->
-                val participant = registration
-                    ?.let {
-                        val classing = crispyFishClassingMapper.toCore(
-                            allClassesByAbbreviation = allClassesByAbbreviation,
-                            cfRegistration = registration
-                        )
-                        val registrationNumber = registration.number
-                        val registrationFirstName = registration.firstName
-                        val registrationLastName = registration.lastName
-                        val peopleMapKey = if (classing != null && registrationNumber != null && registrationFirstName != null && registrationLastName != null) {
-                            Event.CrispyFishMetadata.PeopleMapKey(
-                                classing = classing,
-                                number = registrationNumber,
-                                firstName = registrationFirstName,
-                                lastName = registrationLastName
-                            )
-                        } else {
-                            null
-                        }
-                        peopleMapKey?.let {
-                            crispyFishParticipantMapper.toCore(
-                                allClassesByAbbreviation = allClassesByAbbreviation,
-                                fromRegistration = registration,
-                                withPerson = eventCrispyFish.peopleMap[it]
-                            )
-                        }
-                    }
-                    ?: context.staging[index]
-                        ?.let {
-                            Participant(
-                                signage = Signage(
-                                    classing = it.stagingLineRegistration?.
-                                )
-                            )
-                        }
+        val runs = context.staging
+            .mapIndexed { index, stagingRun ->
                 crispyFishRunMapper.toCore(
-                    cfRun = run ?: createEmptyRun(index),
+                    cfRun = stagingRun.run,
                     cfRunIndex = index,
-                    participant = participant
+                    participant = crispyFishParticipantMapper.toCore(
+                        allClassesByAbbreviation = allClassesByAbbreviation,
+                        peopleMap = eventCrispyFish.peopleMap,
+                        stagingRun = stagingRun
+                    )
                 )
             }
         Result.success(runs)
     } catch (t: Throwable) {
         Result.failure(t)
     }
-
-    private fun createEmptyRun(index: Int) = tech.coner.crispyfish.model.Run(
-        number = index + 1,
-        rawTime = null,
-        paxTime = null,
-        penaltyType = null,
-        cones = null,
-        timeScored = null,
-        timeScratchAsString = null,
-        timeScratchAsDuration = null
-    )
 }

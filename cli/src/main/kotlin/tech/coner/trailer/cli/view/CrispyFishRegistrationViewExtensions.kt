@@ -5,9 +5,9 @@ import tech.coner.crispyfish.model.Registration
 
 internal fun Registration.renderSignage(): String {
     return renderSignage(
-        category = this.category,
-        handicap = this.handicap,
-        number = this.number
+        category = this.signage.classing?.category,
+        handicap = this.signage.classing?.handicap,
+        number = this.signage.number
     )
 }
 

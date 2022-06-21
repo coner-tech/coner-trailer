@@ -20,10 +20,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -49,10 +51,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -184,10 +188,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(

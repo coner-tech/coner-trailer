@@ -1,10 +1,9 @@
 package tech.coner.trailer.datasource.crispyfish
 
-import tech.coner.crispyfish.StagingRun
 import tech.coner.crispyfish.model.ClassDefinition
 import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
-import tech.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
+import tech.coner.crispyfish.model.StagingRun
 import java.nio.file.Path
 
 class CrispyFishEventMappingContext(
@@ -20,21 +19,22 @@ class CrispyFishEventMappingContext(
         }
         .toMap()
 
-    val runsByRegistration: Map<Registration, List<Pair<Int, Run>>> = allRuns
-        .mapIndexedNotNull { index, pair ->
-            val registration = pair.first
-            val run = pair.second
-            if (registration != null && run != null) {
-                registration to (index to run)
+    val runsByRegistration: Map<Registration, List<Pair<Int, StagingRun>>> = staging
+        .mapIndexed { index, stagingRun ->
+            stagingRun.registration to (index to stagingRun)
+        }
+        .groupBy(
+            keySelector = { (registration, _) -> registration?.signage to registration },
+            valueTransform = { (_, stagingRun) -> stagingRun }
+        )
+        .mapNotNull { (signageKey, stagingRuns) ->
+            val registration = signageKey.second
+            if (registration != null) {
+                registration to stagingRuns
             } else {
                 null
             }
         }
-        .groupBy(
-            keySelector = { (registration, _) -> registration.syntheticSignageKey() to registration },
-            valueTransform = { (_, runPair) -> runPair }
-        )
-        .map { (key, value) -> key.second to value }
         .toMap()
 
     data class Key(

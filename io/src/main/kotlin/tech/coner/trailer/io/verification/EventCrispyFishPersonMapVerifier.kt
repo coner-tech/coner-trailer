@@ -57,7 +57,7 @@ class EventCrispyFishPersonMapVerifier(
                 callback.onUnmappableClassing(registration)
                 continue
             }
-            val number = registration.number
+            val number = registration.signage.number
             if (number == null) {
                 callback.onUnmappableNumber(registration)
                 continue

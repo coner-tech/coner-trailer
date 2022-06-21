@@ -24,7 +24,7 @@ class OverallRawEventResultsFactory(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     allClassesByAbbreviation = allClassesByAbbreviation,
-                    cfRegistration = registration
+                    registration = registration
                 )
             }
             .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))

@@ -1,6 +1,7 @@
 package tech.coner.trailer.datasource.crispyfish.eventresults
 
 import tech.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.StagingRun
 import tech.coner.trailer.Class
 import tech.coner.trailer.Event
 import tech.coner.trailer.Time
@@ -14,7 +15,6 @@ import tech.coner.trailer.eventresults.ParticipantResult
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
     private val finalScoreFactory: FinalScoreFactory,
-    private val crispyFishClassingMapper: CrispyFishClassingMapper,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper,
     private val crispyFishRunMapper: CrispyFishRunMapper
 ) {
@@ -23,40 +23,31 @@ class ParticipantResultMapper(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         context: CrispyFishEventMappingContext,
         allClassesByAbbreviation: Map<String, Class>,
-        cfRegistration: Registration
+        registration: Registration
     ): ParticipantResult? {
-        val classing = crispyFishClassingMapper.toCore(
+        val participant = crispyFishParticipantMapper.toCoreFromRegistration(
             allClassesByAbbreviation = allClassesByAbbreviation,
-            cfRegistration = cfRegistration
+            peopleMap = eventCrispyFishMetadata.peopleMap,
+            registration = registration
         )
-        val peopleMapKey = Event.CrispyFishMetadata.PeopleMapKey(
-            classing = classing ?: return null,
-            number = cfRegistration.number ?: return null,
-            firstName = cfRegistration.firstName ?: return null,
-            lastName = cfRegistration.lastName ?: return null
-        )
-        val participant = crispyFishParticipantMapper.toCore(
-            allClassesByAbbreviation = allClassesByAbbreviation,
-            fromRegistration = cfRegistration,
-            withPerson = eventCrispyFishMetadata.peopleMap[peopleMapKey]
-        )
-        val participantCfRuns = context.runsByRegistration[cfRegistration] ?: return null
-        val allRuns = participantCfRuns
-            .map { cfRunPair ->
+        val participantCfStagingRuns = context.runsByRegistration[registration] ?: return null
+        val participantCfRuns = participantCfStagingRuns
+            .map { (cfRunIndex, cfStagingRun) ->
                 crispyFishRunMapper.toCore(
-                cfRun = cfRunPair.second,
-                cfRunIndex = cfRunPair.first,
-                participant = participant
-            ) }
+                    cfRun = cfStagingRun.run,
+                    cfRunIndex = cfRunIndex,
+                    participant = participant
+                )
+            }
         val scoredRuns = resultRunMapper.toCores(
             context = context,
-            participantCfRuns = participantCfRuns,
+            participantCfRuns = participantCfStagingRuns.mapNotNull { (index, stagingRun) -> stagingRun.run?.let { index to it } },
             participant = participant
         )
         return ParticipantResult(
             score = finalScoreFactory.score(scoredRuns) ?: return null,
             participant = participant,
-            allRuns = allRuns,
+            allRuns = participantCfRuns,
             scoredRuns = scoredRuns,
             personalBestScoredRunIndex = finalScoreFactory.bestRun(scoredRuns)?.let { scoredRuns.indexOf(it) },
             // positions and diffs are calculated in toCoreRanked after sorting by score

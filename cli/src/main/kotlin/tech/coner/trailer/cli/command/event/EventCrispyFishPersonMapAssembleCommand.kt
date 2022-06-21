@@ -173,7 +173,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     )) { "Unable to resolve classing for exact match registration: $registration}" }
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
                         classing = classing,
-                        number = checkNotNull(registration.number),
+                        number = checkNotNull(registration.signage.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )
@@ -235,7 +235,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     )
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
                         classing = checkNotNull(classing),
-                        number = checkNotNull(registration.number),
+                        number = checkNotNull(registration.signage.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )
