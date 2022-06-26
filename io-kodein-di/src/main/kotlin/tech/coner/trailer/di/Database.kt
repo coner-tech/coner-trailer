@@ -7,8 +7,8 @@ import tech.coner.trailer.datasource.snoozle.*
 import tech.coner.trailer.io.constraint.*
 import tech.coner.trailer.io.mapper.*
 import tech.coner.trailer.io.service.*
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 
 val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {

@@ -218,29 +218,5 @@ class ConerTrailerCliIT {
         }
     }
 
-    @Test
-    fun `It should find crispy fish staging lines with invalid signage`() {
-        val seasonFixture = SeasonFixture.Issue64CrispyFishStagingLinesInvalidSignage(crispyFishDir)
-        val eventFixture = seasonFixture.event
-        val event = eventFixture.coreSeasonEvent.event
-        val databaseName = "64-crispy-fish-staging-invalid-signage"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-        command.parse(appArgumentBuilder.clubSet(event.policy.club))
-        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
-        command.parse(appArgumentBuilder.eventAddCrispyFish(
-            event = event,
-            crispyFishEventControlFile = eventFixture.ecfPath,
-            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
-        ))
-        testConsole.clear()
-
-        command.parse(appArgumentBuilder.eventCheck(
-            event = event
-        ))
-
-        assertThat(testConsole.output).contains("Found runs with invalid signage:")
-    }
-
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)
 }

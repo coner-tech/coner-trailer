@@ -18,7 +18,7 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext

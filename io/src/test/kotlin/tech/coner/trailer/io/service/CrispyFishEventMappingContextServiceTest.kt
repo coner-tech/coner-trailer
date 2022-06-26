@@ -19,10 +19,9 @@ class CrispyFishEventMappingContextServiceTest {
     @BeforeEach
     fun before() {
         fixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val crispyFishDatabase = fixture.classDefinitionFile.file.parentFile.toPath()
         service = CrispyFishEventMappingContextService(
-            crispyFishDatabase = crispyFishDatabase,
-            loadConstraints = CrispyFishLoadConstraints(crispyFishDatabase)
+            crispyFishDatabase = fixtureRoot,
+            loadConstraints = CrispyFishLoadConstraints(fixtureRoot)
         )
     }
 

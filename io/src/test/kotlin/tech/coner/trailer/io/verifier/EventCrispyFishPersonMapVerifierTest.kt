@@ -1,4 +1,4 @@
-package tech.coner.trailer.io.verification
+package tech.coner.trailer.io.verifier
 
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -11,7 +11,6 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.crispyfish.TestRegistrations
 import tech.coner.trailer.io.service.CrispyFishClassService
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.MotorsportRegPeopleMapService
 import tech.coner.trailer.io.service.PersonService
 import org.junit.jupiter.api.BeforeEach

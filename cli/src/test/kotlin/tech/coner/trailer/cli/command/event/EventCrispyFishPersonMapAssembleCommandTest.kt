@@ -27,7 +27,7 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)

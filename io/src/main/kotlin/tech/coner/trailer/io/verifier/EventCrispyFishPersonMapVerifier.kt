@@ -1,4 +1,4 @@
-package tech.coner.trailer.io.verification
+package tech.coner.trailer.io.verifier
 
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event

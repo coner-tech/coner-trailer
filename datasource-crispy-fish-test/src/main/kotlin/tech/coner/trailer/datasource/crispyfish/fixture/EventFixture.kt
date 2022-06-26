@@ -40,7 +40,7 @@ class EventFixture(
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.extension == "ecf")
-        val ecfName = "/seasons/${seasonFixture.path}/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
+        val ecfName = "/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
         ecfPath = install(ecfName)
         rggPath = install(ecfName.replace(".ecf", ".rgg"))
         st1Path = install(ecfName.replace(".ecf", ".st1"))

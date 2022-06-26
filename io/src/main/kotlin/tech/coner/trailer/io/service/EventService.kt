@@ -9,10 +9,10 @@ import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.constraint.EventDeleteConstraints
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.mapper.EventMapper
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
-import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
+import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*

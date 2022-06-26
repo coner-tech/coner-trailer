@@ -1,4 +1,4 @@
-package tech.coner.trailer.io.verification
+package tech.coner.trailer.io.verifier
 
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Run

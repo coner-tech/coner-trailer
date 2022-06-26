@@ -16,14 +16,14 @@ import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.constraint.EventDeleteConstraints
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.mapper.EventMapper
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.*
-import tech.coner.trailer.io.verification.RunWithInvalidSignageVerifier
+import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -32,17 +32,36 @@ class EventServiceTest {
 
     lateinit var service: EventService
 
-    @TempDir lateinit var root: Path
+    @TempDir
+    lateinit var root: Path
     lateinit var dbConfig: DatabaseConfiguration
-    @MockK lateinit var resource: EventResource
-    @MockK lateinit var mapper: EventMapper
-    @MockK lateinit var persistConstraints: EventPersistConstraints
-    @MockK lateinit var deleteConstraints: EventDeleteConstraints
-    @MockK lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
-    @MockK lateinit var runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier
-    @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
-    @MockK lateinit var runService: RunService
-    @MockK lateinit var participantService: ParticipantService
+
+    @MockK
+    lateinit var resource: EventResource
+
+    @MockK
+    lateinit var mapper: EventMapper
+
+    @MockK
+    lateinit var persistConstraints: EventPersistConstraints
+
+    @MockK
+    lateinit var deleteConstraints: EventDeleteConstraints
+
+    @MockK
+    lateinit var eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier
+
+    @MockK
+    lateinit var runWithInvalidSignageVerifier: RunWithInvalidSignageVerifier
+
+    @MockK
+    lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
+
+    @MockK
+    lateinit var runService: RunService
+
+    @MockK
+    lateinit var participantService: ParticipantService
 
     @BeforeEach
     fun before() {
@@ -164,18 +183,25 @@ class EventServiceTest {
         val context: CrispyFishEventMappingContext = mockk()
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
-        every { eventCrispyFishPersonMapVerifier.verify(
-            event = check,
-            context = context,
-            callback = capture(callbackSlot)
-        ) } answers {
+        every {
+            eventCrispyFishPersonMapVerifier.verify(
+                event = check,
+                context = context,
+                callback = capture(callbackSlot)
+            )
+        } answers {
             val callback = callbackSlot.captured
             callback.onMapped(registration = mockk(), entry = mockk())
             repeat(2) { callback.onUnmappedMotorsportRegPersonExactMatch(registration = mockk(), entry = mockk()) }
             repeat(3) { callback.onUnmappedClubMemberIdNull(registration = mockk()) }
             repeat(4) { callback.onUnmappedClubMemberIdNotFound(registration = mockk()) }
-            repeat(5) { callback.onUnmappedClubMemberIdAmbiguous(registration = mockk(), peopleWithClubMemberId = mockk()) }
-            repeat(6) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk())}
+            repeat(5) {
+                callback.onUnmappedClubMemberIdAmbiguous(
+                    registration = mockk(),
+                    peopleWithClubMemberId = mockk()
+                )
+            }
+            repeat(6) { callback.onUnmappedClubMemberIdMatchButNameMismatch(registration = mockk(), person = mockk()) }
             repeat(7) { callback.onUnmappedExactMatch(registration = mockk(), person = mockk()) }
             repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
@@ -199,10 +225,12 @@ class EventServiceTest {
             )
         )
         every { runService.list(event = check) } returns Result.success(allRuns)
-        every { runWithInvalidSignageVerifier.verify(
-            allParticipants = allParticipants,
-            allRuns = allRuns
-        ) } returns allRuns
+        every {
+            runWithInvalidSignageVerifier.verify(
+                allParticipants = allParticipants,
+                allRuns = allRuns
+            )
+        } returns allRuns
 
         val actual = service.check(check = check)
 

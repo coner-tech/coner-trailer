@@ -9,9 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>io-kodein-di</artifactId>
-
-    <description>Kodein DI bindings for Coner Trailer IO</description>
+    <artifactId>io-testsupport</artifactId>
 
     <properties>
     </properties>
@@ -22,31 +20,20 @@
             <artifactId>io</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.kodein.di</groupId>
-            <artifactId>kodein-di-jvm</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
-            <artifactId>core-test</artifactId>
+            <artifactId>datasource-crispy-fish-test</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>tech.coner.trailer</groupId>
-            <artifactId>io-testsupport</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -28,6 +28,7 @@
         <module>render-all-kodein-di</module>
         <module>render-json</module>
         <module>io-kodein-di-test</module>
+        <module>io-testsupport</module>
     </modules>
 
     <properties>
