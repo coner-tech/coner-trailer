@@ -414,13 +414,13 @@
   "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
 },
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource",
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$RunSource$Type",
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource$Type",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
