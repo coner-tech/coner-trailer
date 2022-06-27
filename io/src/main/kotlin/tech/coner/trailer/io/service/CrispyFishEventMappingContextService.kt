@@ -1,12 +1,11 @@
 package tech.coner.trailer.io.service
 
-import tech.coner.trailer.Event
-import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
-import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import tech.coner.crispyfish.filetype.ecf.EventControlFile
 import tech.coner.crispyfish.model.EventDay
+import tech.coner.trailer.Event
+import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import java.nio.file.Path
 
 class CrispyFishEventMappingContextService(
@@ -30,21 +29,19 @@ class CrispyFishEventMappingContextService(
             conePenalty = 2
         )
         val allRegistrations = eventControlFile.queryRegistrations()
-        val registrationsBySyntheticSignage = allRegistrations.associateBy { it.syntheticSignageKey() }
+        val registrationsBySignage = allRegistrations.associateBy { it.signage }
         val allRuns = eventControlFile.queryStagingRuns(EventDay.ONE)
         return CrispyFishEventMappingContext(
             allClassDefinitions = classDefinitionFile.mapper().all(),
             allRegistrations = allRegistrations,
-            allRuns = allRuns.map { (stagingLineRegistration, run) ->
-                val registration = if (stagingLineRegistration != null) {
-                    val stagingLineRegistrationSyntheticSignage = "${stagingLineRegistration.classing} ${stagingLineRegistration.number}"
-                    val registration = registrationsBySyntheticSignage[stagingLineRegistrationSyntheticSignage]
+            allRuns = allRuns.map {
+                val registration = it.stagingRegistration?.signage?.let { stagingSignage ->
+                    val registration = registrationsBySignage[stagingSignage]
                     registration
-                } else {
-                    null
                 }
-                registration to run
+                registration to it.run
             },
+            staging = allRuns,
             runCount = allRegistrations.maxOf { it.runs.size }
         )
     }

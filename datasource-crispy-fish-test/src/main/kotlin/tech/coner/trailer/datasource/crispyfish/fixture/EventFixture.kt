@@ -1,6 +1,13 @@
 package tech.coner.trailer.datasource.crispyfish.fixture
 
+import tech.coner.crispyfish.filetype.ecf.EventControlFile
+import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
+import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.model.Registration
+import tech.coner.crispyfish.model.Run
+import tech.coner.crispyfish.model.StagingRun
 import tech.coner.trailer.SeasonEvent
+import tech.coner.trailer.StandardPenaltyFactory
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
@@ -8,15 +15,10 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import tech.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
 import tech.coner.trailer.datasource.crispyfish.eventresults.ResultRunMapper
-import tech.coner.trailer.datasource.crispyfish.util.syntheticSignageKey
-import tech.coner.trailer.eventresults.*
-import tech.coner.crispyfish.filetype.ecf.EventControlFile
-import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
-import tech.coner.crispyfish.model.Registration
-import tech.coner.crispyfish.model.Run
-import tech.coner.crispyfish.query.RegistrationsQuery
-import tech.coner.crispyfish.query.StagingRunsQuery
+import tech.coner.trailer.eventresults.AutocrossFinalScoreFactory
+import tech.coner.trailer.eventresults.GroupedRunScoreFactory
+import tech.coner.trailer.eventresults.RawTimeRunScoreFactory
+import tech.coner.trailer.eventresults.RunEligibilityQualifier
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
@@ -38,7 +40,7 @@ class EventFixture(
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.extension == "ecf")
-        val ecfName = "/seasons/${seasonFixture.path}/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
+        val ecfName = "/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
         ecfPath = install(ecfName)
         rggPath = install(ecfName.replace(".ecf", ".rgg"))
         st1Path = install(ecfName.replace(".ecf", ".st1"))
@@ -64,25 +66,20 @@ class EventFixture(
         ecfPath
     }
 
-    fun registrations() = RegistrationsQuery(
-        eventControlFile = eventControlFile(),
-        categories = seasonFixture.categories,
-        handicaps = seasonFixture.handicaps
-    ).query()
+    fun registrations() = eventControlFile().queryRegistrations()
 
-    fun runs(registrations: List<Registration>): List<Pair<Registration?, Run?>> {
-        val stagingFile = eventControlFile().stagingFile()
-        val stagingRunsQuery = StagingRunsQuery(stagingFile = stagingFile)
-        val stagingRuns = stagingRunsQuery.query()
-        val registrationsBySignageKey: Map<String, Registration> = registrations
-            .mapNotNull { registration -> registration.syntheticSignageKey()?.let { key -> key to registration } }
-            .toMap()
+    fun allRuns(registrations: List<Registration>, stagingRuns: List<StagingRun>): List<Pair<Registration?, Run?>> {
+        val registrationsBySignageKey: Map<tech.coner.crispyfish.model.Signage, Registration> =
+            registrations.associateBy { registration -> registration.signage }
         return stagingRuns
-            .map { (stagingLineRegistration, run) ->
-                val signageKey = stagingLineRegistration?.syntheticSignageKey()
-                val registration = registrationsBySignageKey[signageKey]
-                registration to run
+            .map { stagingRun ->
+                val registration = stagingRun.stagingRegistration?.signage?.let { registrationsBySignageKey[it] }
+                registration to stagingRun.run
             }
+    }
+
+    fun stagingRuns(registrations: List<Registration>): List<StagingRun> {
+        return eventControlFile().queryStagingRuns(registrations = registrations)
     }
 
     val crispyFishParticipantMapper = CrispyFishParticipantMapper(
@@ -102,7 +99,6 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = rawTimeRunScoreFactory
         ),
-        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
@@ -113,7 +109,6 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = paxTimeRunScoreFactory
         ),
-        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory
@@ -124,7 +119,6 @@ class EventFixture(
             runEligibilityQualifier = runEligibilityQualifier,
             runScoreFactory = groupedRunScoreFactory
         ),
-        crispyFishClassingMapper = crispyFishClassingMapper,
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,
         finalScoreFactory = autocrossFinalScoreFactory

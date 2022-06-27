@@ -29,7 +29,7 @@ class CrispyFishClassServiceTest {
         val classParentMapper = CrispyFishClassParentMapper()
         seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishClassService(
-            crispyFishRoot = seasonFixture.classDefinitionFile.file.parentFile,
+            crispyFishRoot = fixtureRoot.toFile(),
             classMapper = classMapper,
             classParentMapper = classParentMapper
         )

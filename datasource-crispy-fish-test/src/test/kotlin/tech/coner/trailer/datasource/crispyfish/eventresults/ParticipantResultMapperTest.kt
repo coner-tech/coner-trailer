@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.crispyfish.model.StagingRun
 import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
@@ -27,7 +28,6 @@ class ParticipantResultMapperTest {
     @MockK lateinit var resultRunMapper: ResultRunMapper
     @MockK lateinit var finalScoreFactory: FinalScoreFactory
     @MockK lateinit var crispyFishParticipantMapper: CrispyFishParticipantMapper
-    @MockK lateinit var crispyFishClassingMapper: CrispyFishClassingMapper
     @MockK lateinit var crispyFishRunMapper: CrispyFishRunMapper
 
     @BeforeEach
@@ -36,46 +36,40 @@ class ParticipantResultMapperTest {
             resultRunMapper = resultRunMapper,
             finalScoreFactory = finalScoreFactory,
             crispyFishParticipantMapper = crispyFishParticipantMapper,
-            crispyFishClassingMapper = crispyFishClassingMapper,
             crispyFishRunMapper = crispyFishRunMapper
         )
     }
 
     @Test
     fun `It should map core ParticipantResult from EventCrispyFishMetadata, CrispyFishEventMappingContext, and cf Registration`() {
-        val registration = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON
         val person = TestPeople.REBECCA_JACKSON
         val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
         val usePeopleMap = mapOf(
             Event.CrispyFishMetadata.PeopleMapKey(
-                classing = requireNotNull(participant.classing),
-                number = requireNotNull(participant.number),
+                classing = requireNotNull(participant.signage?.classing),
+                number = requireNotNull(participant.signage?.number),
                 firstName = requireNotNull(participant.firstName),
                 lastName = requireNotNull(person.lastName)
             ) to person
         )
         val seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val allRegistrations = seasonFixture.event1.registrations()
-        val allRuns = seasonFixture.event1.runs(allRegistrations)
+        val staging = seasonFixture.event1.stagingRuns(allRegistrations)
+        val allRuns = seasonFixture.event1.allRuns(allRegistrations, staging)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = seasonFixture.classDefinitions,
             allRegistrations = allRegistrations,
             allRuns = allRuns,
+            staging = staging,
             runCount = seasonFixture.event1.runCount
         )
         every {
-            crispyFishParticipantMapper.toCore(
+            crispyFishParticipantMapper.toCoreFromRegistration(
                 allClassesByAbbreviation = any(),
-                fromRegistration = registration,
-                withPerson = person
+                peopleMap = usePeopleMap,
+                registration = any(),
             )
         }.returns(participant)
-        every {
-            crispyFishClassingMapper.toCore(
-                allClassesByAbbreviation = any(),
-                cfRegistration = registration
-            )
-        } returns checkNotNull(participant.classing)
         val expectedScoredRuns = listOf(
             testResultRun(sequence = 1, participant = participant, time = Time("52.749"), score = Score("52.749")),
             testResultRun(sequence = 2, participant = participant, time = Time("53.175"), score = Score("53.175")),
@@ -108,7 +102,7 @@ class ParticipantResultMapperTest {
             eventCrispyFishMetadata = crispyFishMetadata,
             context = context,
             allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            cfRegistration = registration
+            registration = staging[12].registration!!
         )
 
         assertThat(actual).isNotNull().all {

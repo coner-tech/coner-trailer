@@ -72,7 +72,7 @@ class HtmlGroupEventResultsRenderer(
                             }
                             td {
                                 classes = setOf("signage")
-                                text(topParticipantResult.participant.signageClassingNumber ?: "")
+                                text(topParticipantResult.participant.signage?.classingNumber ?: "")
                             }
                             td {
                                 classes = setOf("name")

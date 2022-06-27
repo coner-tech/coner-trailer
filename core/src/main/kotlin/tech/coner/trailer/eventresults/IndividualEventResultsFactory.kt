@@ -33,7 +33,7 @@ class IndividualEventResultsFactory {
                         }
                     }
                 }
-                .toSortedMap(compareBy(Participant::lastName, Participant::firstName, Participant::signageClassingNumber)),
+                .toSortedMap(compareBy(Participant::lastName, Participant::firstName, { it.signage?.classingNumber })),
             innerEventResultsTypes = allEventResults.map { it.type }
         )
     }

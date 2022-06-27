@@ -1,8 +1,8 @@
 package tech.coner.trailer.di
 
+import org.kodein.di.*
 import tech.coner.trailer.render.*
 import tech.coner.trailer.render.text.*
-import org.kodein.di.*
 
 val textRenderModule = DI.Module("tech.coner.trailer.render.text") {
     val format = Format.TEXT
@@ -21,4 +21,5 @@ val textRenderModule = DI.Module("tech.coner.trailer.render.text") {
         groupRenderer = factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format).invoke(columns) as TextGroupEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(format) with singleton { TextIndividualEventResultsRenderer() }
+    bind<TextRunsRenderer>() with singleton { TextRunsRenderer() }
 }

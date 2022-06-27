@@ -115,6 +115,12 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
+            <artifactId>io-testsupport</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
             <artifactId>datasource-crispy-fish-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

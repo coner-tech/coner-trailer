@@ -1,10 +1,10 @@
 package tech.coner.trailer.datasource.crispyfish.eventresults
 
 import tech.coner.trailer.Run
+import tech.coner.trailer.StandardPenaltyFactory
 import tech.coner.trailer.datasource.crispyfish.util.bigdecimal.setScaleWithBuggedCrispyFishRounding
 import tech.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import tech.coner.trailer.eventresults.Score
-import tech.coner.trailer.eventresults.StandardPenaltyFactory
 
 /**
  * A PaxTimeRunScoreFactory which replicates bugs necessary to match legacy results when recreating them with crispy

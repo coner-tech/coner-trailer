@@ -1,6 +1,5 @@
 package tech.coner.trailer
 
-import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,9 +15,9 @@ class ParticipantTest {
     @ParameterizedTest
     @EnumSource
     fun `It should produce correct signage strings`(param: SignageStringParam) {
-        assertThat(param.participant).all {
-            signageClassingNumber().isEqualTo(param.expectedClassingNumber)
-            signageNumberClassing().isEqualTo(param.expectedNumberClassing)
-        }
+        val signage = param.participant.signage
+
+        assertThat(signage?.classingNumber).isEqualTo(param.expectedClassingNumber)
+        assertThat(signage?.numberClassing).isEqualTo(param.expectedNumberClassing)
     }
 }

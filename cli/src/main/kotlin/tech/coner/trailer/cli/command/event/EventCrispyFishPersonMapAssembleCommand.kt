@@ -18,12 +18,13 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
@@ -36,6 +37,7 @@ class EventCrispyFishPersonMapAssembleCommand(
 
     override val diContext = diContext { global.requireEnvironment().openDataSession() }
     private val service: EventService by instance()
+    private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val personService: PersonService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val crispyFishClassingMapper: CrispyFishClassingMapper by instance()
@@ -55,6 +57,7 @@ class EventCrispyFishPersonMapAssembleCommand(
         }
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
         val peopleMap = mutableMapOf<Event.CrispyFishMetadata.PeopleMapKey, Person>()
+        val context = crispyFishEventMappingContextService.load(crispyFish)
         eventCrispyFishPersonMapVerifier.verify(
             event = event,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {
@@ -170,7 +173,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     )) { "Unable to resolve classing for exact match registration: $registration}" }
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
                         classing = classing,
-                        number = checkNotNull(registration.number),
+                        number = checkNotNull(registration.signage.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )
@@ -232,7 +235,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     )
                     val key = Event.CrispyFishMetadata.PeopleMapKey(
                         classing = checkNotNull(classing),
-                        number = checkNotNull(registration.number),
+                        number = checkNotNull(registration.signage.number),
                         firstName = checkNotNull(registration.firstName),
                         lastName = checkNotNull(registration.lastName)
                     )
@@ -257,7 +260,9 @@ class EventCrispyFishPersonMapAssembleCommand(
                     personService.create(person)
                     return person
                 }
-            })
+            },
+            context = context
+        )
         val update = event.copy(
             crispyFish = crispyFish.copy(
                 peopleMap = peopleMap

@@ -70,6 +70,15 @@ class IntegrationTestAppArgumentBuilder(
         )
     }
 
+    fun eventCheck(
+        event: Event
+    ): Array<String> {
+        return build(
+            "event", "check",
+            "${event.id}"
+        )
+    }
+
     fun personAdd(person: Person): Array<String> {
         val argumentBuilder = mutableListOf<String>().apply {
             addAll(arrayOf(
@@ -99,12 +108,12 @@ class IntegrationTestAppArgumentBuilder(
                 "event", "crispy-fish-person-map-add",
                 "${event.id}"
             ))
-            participant.classing?.group?.abbreviation?.also {
+            participant.signage?.classing?.group?.abbreviation?.also {
                 addAll(arrayOf("--group", it))
             }
             addAll(arrayOf(
-                "--handicap", participant.classing?.handicap?.abbreviation!!,
-                "--number", participant.number!!,
+                "--handicap", participant.signage?.classing?.handicap?.abbreviation!!,
+                "--number", participant.signage?.number!!,
                 "--first-name", participant.firstName!!,
                 "--last-name", participant.lastName!!,
                 "--person-id", "${participant.person!!.id}"

@@ -168,9 +168,9 @@ class ConerTrailerCliExecutableIT {
             output().isNotNull().all {
                 contains(event.name)
                 contains("${event.date}")
-                contains(participant.classing!!.group!!.abbreviation)
-                contains(participant.classing!!.handicap.abbreviation)
-                contains(participant.number!!)
+                contains(participant.signage!!.classing!!.group!!.abbreviation)
+                contains(participant.signage!!.classing!!.handicap.abbreviation)
+                contains(participant.signage!!.number!!)
                 contains("${participant.person!!.id}")
             }
             error().isNull()

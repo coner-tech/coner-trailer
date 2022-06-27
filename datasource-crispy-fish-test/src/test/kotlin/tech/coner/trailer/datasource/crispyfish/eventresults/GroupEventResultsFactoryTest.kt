@@ -20,10 +20,12 @@ class GroupEventResultsFactoryTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
         val allRegistrations = event.registrations()
+        val stagingRuns = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, stagingRuns),
+            staging = stagingRuns,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -50,11 +52,13 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("HS")
+                            }
+                            hasNumber("130")
                         }
-                        hasNumber("130")
                     }
 
                 }
@@ -63,11 +67,13 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("HS")
+                            }
+                            hasNumber("1")
                         }
-                        hasNumber("1")
                     }
                 }
             }
@@ -78,11 +84,13 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("1")
                         }
-                        hasNumber("1")
                     }
                 }
                 index(1).all {
@@ -90,11 +98,13 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        classing().isNotNull().all { 
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("23")
                         }
-                        hasNumber("23")
                     }
                 }
             }
@@ -102,16 +112,20 @@ class GroupEventResultsFactoryTest {
                 hasSize(3)
                 each {
                     it.participant()
+                        .signage().isNotNull()
                         .classing().isNotNull()
-                        .group().isNotNull().hasAbbreviation("NOV")
+                        .group().isNotNull()
+                        .hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        classing().isNotNull().handicap().hasAbbreviation("BS")
-                        hasNumber("177")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("BS")
+                            hasNumber("177")
+                        }
                     }
                 }
                 index(1).all {
@@ -119,8 +133,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        classing().isNotNull().handicap().hasAbbreviation("ES")
-                        hasNumber("58")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("ES")
+                            hasNumber("58")
+                        }
                     }
                 }
                 index(2).all {
@@ -128,8 +144,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        classing().isNotNull().handicap().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("ES")
+                            hasNumber("18")
+                        }
                     }
                 }
             }
@@ -162,10 +180,12 @@ class GroupEventResultsFactoryTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -192,11 +212,13 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        classing().isNotNull().all { 
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("HS")
+                            }
+                            hasNumber("130")
                         }
-                        hasNumber("130")
                     }
                 }
             }
@@ -204,6 +226,7 @@ class GroupEventResultsFactoryTest {
                 hasSize(2)
                 each {
                     it.participant()
+                        .signage().isNotNull()
                         .classing().isNotNull().all {
                             group().isNull()
                             handicap().hasAbbreviation("STR")
@@ -214,7 +237,9 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        hasNumber("8")
+                        signage().isNotNull().all {
+                            hasNumber("8")
+                        }
                     }
                 }
                 index(1).all {
@@ -222,22 +247,28 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        hasNumber("23")
+                        signage().isNotNull().hasNumber("23")
                     }
                 }
             }
             resultsForGroupAbbreviation("NOV").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().classing().isNotNull().group().isNotNull().hasAbbreviation("NOV")
+                    it.participant()
+                        .signage().isNotNull()
+                        .classing().isNotNull()
+                        .group().isNotNull()
+                        .hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        classing().isNotNull().handicap().hasAbbreviation("BS")
-                        hasNumber("52")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("BS")
+                            hasNumber("52")
+                        }
                     }
                 }
                 index(1).all {
@@ -245,8 +276,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        classing().isNotNull().handicap().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("ES")
+                            hasNumber("18")
+                        }
                     }
                 }
                 index(2).all {
@@ -254,8 +287,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        classing().isNotNull().handicap().hasAbbreviation("CS")
-                        hasNumber("20")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("CS")
+                            hasNumber("20")
+                        }
                     }
                 }
             }
@@ -282,10 +317,12 @@ class GroupEventResultsFactoryTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -312,25 +349,29 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        classing().isNotNull().handicap().hasAbbreviation("HS")
-                        hasNumber("130")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("HS")
+                            hasNumber("130")
+                        }
                     }
                 }
             }
             resultsForGroupAbbreviation("STR").isNotNull().all {
                 hasSize(3)
                 each {
-                    it.participant().classing().isNotNull().all {
-                        group().isNull()
-                        handicap().hasAbbreviation("STR")
-                    }
+                    it.participant()
+                        .signage().isNotNull()
+                        .classing().isNotNull().all {
+                            group().isNull()
+                            handicap().hasAbbreviation("STR")
+                        }
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        hasNumber("8")
+                        signage().isNotNull().hasNumber("8")
                     }
                 }
                 index(1).all {
@@ -338,7 +379,7 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        hasNumber("23")
+                        signage().isNotNull().hasNumber("23")
                     }
                 }
                 index(2).all {
@@ -346,25 +387,29 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        hasNumber("1")
+                        signage().isNotNull().hasNumber("1")
                     }
                 }
             }
             resultsForGroupAbbreviation("NOV").isNotNull().all {
                 hasSize(4)
                 each {
-                    it.participant().classing().isNotNull()
-                        .group().isNotNull().hasAbbreviation("NOV")
+                    it.participant()
+                        .signage().isNotNull()
+                        .classing().isNotNull()
+                        .group().isNotNull()
+                        .hasAbbreviation("NOV")
                 }
                 index(0).all {
                     hasPosition(1)
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        classing().isNotNull()
-                            .handicap().hasAbbreviation("BS")
-                        classing().isNotNull().handicap().hasAbbreviation("BS")
-                        hasNumber("52")
+                        signage().isNotNull().all {
+                            classing().isNotNull()
+                                .handicap().hasAbbreviation("BS")
+                            hasNumber("52")
+                        }
                     }
                 }
                 index(1).all {
@@ -372,8 +417,11 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        classing().isNotNull().handicap().hasAbbreviation("GS")
-                        hasNumber("58")
+                        signage().isNotNull().all {
+                            classing().isNotNull()
+                                .handicap().hasAbbreviation("GS")
+                            hasNumber("58")
+                        }
                     }
                 }
                 index(2).all {
@@ -381,8 +429,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        classing().isNotNull().handicap().hasAbbreviation("ES")
-                        hasNumber("18")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("ES")
+                            hasNumber("18")
+                        }
                     }
                 }
                 index(3).all {
@@ -390,8 +440,10 @@ class GroupEventResultsFactoryTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        classing().isNotNull().handicap().hasAbbreviation("CS")
-                        hasNumber("20")
+                        signage().isNotNull().all {
+                            classing().isNotNull().handicap().hasAbbreviation("CS")
+                            hasNumber("20")
+                        }
                     }
                 }
             }

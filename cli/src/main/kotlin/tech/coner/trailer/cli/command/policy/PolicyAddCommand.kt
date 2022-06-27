@@ -47,11 +47,16 @@ class PolicyAddCommand(
     private val finalScoreStyle: FinalScoreStyle by option()
         .choice(FinalScoreStyle.values().associateBy { it.name.toLowerCase() })
         .required()
-    private val authoritativeRunSource: Policy.RunSource by option()
+    private val authoritativeParticipantDataSource: Policy.DataSource by option()
         .choice(
-            "crispy-fish" to Policy.RunSource.CrispyFish
+            "crispy-fish" to Policy.DataSource.CrispyFish
         )
-        .default(Policy.RunSource.CrispyFish)
+        .default(Policy.DataSource.CrispyFish)
+    private val authoritativeRunDataSource: Policy.DataSource by option()
+        .choice(
+            "crispy-fish" to Policy.DataSource.CrispyFish
+        )
+        .default(Policy.DataSource.CrispyFish)
 
     override fun run() = diContext.use {
         val create = Policy(
@@ -61,7 +66,8 @@ class PolicyAddCommand(
             conePenaltySeconds = conePenaltySeconds,
             paxTimeStyle = paxTimeStyle,
             finalScoreStyle = finalScoreStyle,
-            authoritativeRunSource = authoritativeRunSource
+            authoritativeParticipantDataSource = authoritativeParticipantDataSource,
+            authoritativeRunDataSource = authoritativeRunDataSource
         )
         service.create(create)
         echo(view.render(create))

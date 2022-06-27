@@ -50,16 +50,14 @@ class StandingsReportCreator {
                             groupsToPersonStandingAccumulators[group] = this
                         }
                 for (groupParticipantResult in participantResults) {
-                    if (groupParticipantResult.participant.person == null
+                    val person = groupParticipantResult.participant.person
+                    if (person == null
                             || !groupParticipantResult.participant.seasonPointsEligible) {
                         continue
                     }
-                    val accumulator = accumulators[groupParticipantResult.participant.person]
-                            ?: PersonStandingAccumulator(
-                                    person = groupParticipantResult.participant.person
-                            ).apply {
-                                accumulators[groupParticipantResult.participant.person] = this
-                            }
+                    val accumulator = accumulators[person]
+                            ?: PersonStandingAccumulator(person = person)
+                                .apply { accumulators[person] = this }
                     with(accumulator) {
                         eventToPoints[event] = calculator.calculate(groupParticipantResult)
                         positionToFinishCount[groupParticipantResult.position] = (positionToFinishCount[groupParticipantResult.position] ?: 0).inc()

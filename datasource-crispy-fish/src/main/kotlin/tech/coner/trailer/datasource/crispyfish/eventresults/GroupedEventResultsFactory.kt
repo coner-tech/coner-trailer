@@ -26,7 +26,7 @@ class GroupedEventResultsFactory(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     allClassesByAbbreviation = allClassesByAbbreviation,
-                    cfRegistration = registration
+                    registration = registration
                 )
             }
         val rawResults = context.allRegistrations
@@ -35,12 +35,12 @@ class GroupedEventResultsFactory(
                     eventCrispyFishMetadata = eventCrispyFishMetadata,
                     context = context,
                     allClassesByAbbreviation = allClassesByAbbreviation,
-                    cfRegistration = registration
+                    registration = registration
                 )
             }
             .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
         val groupParentTopTimes = rawResults
-            .groupBy { it.participant.classing?.group?.parent }
+            .groupBy { it.participant.signage?.classing?.group?.parent }
             .mapNotNull { (parent, participantResults) ->
                 if (parent == null) {
                     return@mapNotNull null
@@ -51,7 +51,7 @@ class GroupedEventResultsFactory(
                 GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
             }
         val handicapParentTopTimes = rawResults
-            .groupBy { it.participant.classing?.handicap?.parent }
+            .groupBy { it.participant.signage?.classing?.handicap?.parent }
             .mapNotNull { (parent, participantResults) ->
                 if (parent == null) {
                     return@mapNotNull null
@@ -89,8 +89,8 @@ class GroupedEventResultsFactory(
     }
 
     private fun Participant.resultGroup(): Class? {
-        return classing?.group
-            ?: classing?.handicap
+        return signage?.classing?.group
+            ?: signage?.classing?.handicap
     }
 
 }

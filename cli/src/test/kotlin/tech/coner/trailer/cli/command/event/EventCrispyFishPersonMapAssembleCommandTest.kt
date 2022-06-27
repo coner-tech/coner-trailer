@@ -8,6 +8,11 @@ import io.mockk.slot
 import io.mockk.verifySequence
 import kotlinx.coroutines.*
 import org.awaitility.Awaitility
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.kodein.di.*
+import tech.coner.crispyfish.model.Signage
 import tech.coner.trailer.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
@@ -22,11 +27,7 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.verification.EventCrispyFishPersonMapVerifier
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
@@ -85,6 +86,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             allClassDefinitions = emptyList(),
             allRegistrations = listOf(unmappedClubMemberIdNull),
             allRuns = emptyList(),
+            staging = emptyList(),
             runCount = 0
         )
         every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
@@ -93,6 +95,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
         every {
             eventCrispyFishPersonMapVerifier.verify(
                 event = event,
+                context = context,
                 callback = capture(callbackSlot)
             )
         } answers  {
@@ -102,7 +105,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             testConsole.writeInput("0")
             Awaitility.await().until { testConsole.output.endsWith("<<<") }
         }
-        val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.classing)
+        val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage?.classing)
         every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
 
         justRun { service.update(any()) }
@@ -116,7 +119,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
                 peopleMap = mapOf(
                     Event.CrispyFishMetadata.PeopleMapKey(
                         classing = classing,
-                        number = checkNotNull(unmappedClubMemberIdNull.number),
+                        number = checkNotNull(unmappedClubMemberIdNull.signage.number),
                         firstName = checkNotNull(unmappedClubMemberIdNull.firstName),
                         lastName = checkNotNull(unmappedClubMemberIdNull.lastName)
                     ) to person
@@ -134,35 +137,50 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
 private fun TestRegistrations.mapped() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
     firstName = "Mapped",
     lastName = "Mapped",
-    number = "0",
+    signage = Signage(
+        classing = null,
+        number = "0"
+    ),
     memberNumber = "Mapped"
 )
 
 private fun TestRegistrations.unmappedClubMemberIdNull() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
     firstName = "Unmapped",
     lastName = "ClubMemberIdNull",
-    number = "1",
+    signage = Signage(
+        classing = null,
+        number = "1"
+    ),
     memberNumber = null
 )
 
 private fun TestRegistrations.unmappedClubMemberIdNotFound() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
     firstName = "Unmapped",
     lastName = "ClubMemberIdNotFound",
-    number = "2",
+    signage = tech.coner.crispyfish.model.Signage(
+        classing = null,
+        number = "2"
+    ),
     memberNumber = "WillNotBeFound"
 )
 
 private fun TestRegistrations.unmappedClubMemberIdAmbiguous() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
     firstName = "Unmapped",
     lastName = "ClubMemberIdAmbiguous",
-    number = "3",
+    signage = tech.coner.crispyfish.model.Signage(
+        classing = null,
+        number = "3",
+    ),
     memberNumber = "Ambiguous"
 )
 
 private fun TestRegistrations.unmappedClubMemberIdMatchButNameMismatch() = TestRegistrations.Lscc2019Points1.REBECCA_JACKSON.copy(
     firstName = "Unmapped",
     lastName = "ClubMemberIdMatchButNameMismatch",
-    number = "4",
+    signage = Signage(
+        classing = null,
+        number = "4",
+    ),
     memberNumber = "Match"
 )
 

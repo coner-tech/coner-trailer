@@ -11,16 +11,11 @@ data class Policy(
     val conePenaltySeconds: Int,
     val paxTimeStyle: PaxTimeStyle,
     val finalScoreStyle: FinalScoreStyle,
-    /**
-     * Declare the authoritative source of run information
-     */
-    val authoritativeRunSource: RunSource,
+    val authoritativeParticipantDataSource: DataSource,
+    val authoritativeRunDataSource: DataSource,
 ) {
 
-    sealed class RunSource {
-        /**
-         * Source runs from crispyfish
-         */
-        object CrispyFish : RunSource()
+    sealed class DataSource {
+        object CrispyFish : DataSource()
     }
 }

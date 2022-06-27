@@ -9,12 +9,13 @@ data class PolicyEntity(
     val conePenaltySeconds: Int,
     val paxTimeStyle: String,
     val finalScoreStyle: String,
-    val authoritativeRunSource: RunSource = RunSource(RunSource.Type.CRISPY_FISH)
+    val authoritativeParticipantSource: DataSource = DataSource(DataSource.Type.CRISPY_FISH),
+    val authoritativeRunSource: DataSource = DataSource(DataSource.Type.CRISPY_FISH)
 ) : Entity<PolicyEntity.Key> {
 
     data class Key(val id: UUID) : tech.coner.snoozle.db.Key
 
-    data class RunSource(val type: Type) {
+    data class DataSource(val type: Type) {
         enum class Type {
             CRISPY_FISH
         }

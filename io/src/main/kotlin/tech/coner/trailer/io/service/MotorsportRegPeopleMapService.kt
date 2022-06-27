@@ -25,8 +25,8 @@ class MotorsportRegPeopleMapService(
         return msrParticipants.mapNotNull { participant ->
             participant.person?.let { person ->
                 val peopleMapKey = Event.CrispyFishMetadata.PeopleMapKey(
-                    classing = participant.classing ?: return@let null,
-                    number = participant.number ?: return@let null,
+                    classing = participant.signage?.classing ?: return@let null,
+                    number = participant.signage?.number ?: return@let null,
                     firstName = participant.firstName ?: return@let null,
                     lastName = participant.lastName ?: return@let null
                 )

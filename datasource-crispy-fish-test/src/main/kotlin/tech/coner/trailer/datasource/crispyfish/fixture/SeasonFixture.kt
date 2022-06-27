@@ -35,8 +35,8 @@ sealed class SeasonFixture(
                     date = LocalDate.parse("2019-01-01"),
                     lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
-                        eventControlFile = Paths.get("2019-01-01 event 1.ecf"),
-                        classDefinitionFile = Paths.get("lscc2019.def"),
+                        eventControlFile = Paths.get("seasons", path, "2019-01-01 event 1.ecf"),
+                        classDefinitionFile = Paths.get("seasons", path, "lscc2019.def"),
                         peopleMap = mapOf(
                             peopleMapping(TestParticipants.Lscc2019Points1Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
                             peopleMapping(TestParticipants.Lscc2019Points1Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
@@ -66,8 +66,8 @@ sealed class SeasonFixture(
                     date = LocalDate.parse("2019-02-02"),
                     lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
-                        eventControlFile = Paths.get("2019-02-02 event 2.ecf"),
-                        classDefinitionFile = Paths.get("lscc2019.def"),
+                        eventControlFile = Paths.get("seasons", path, "2019-02-02 event 2.ecf"),
+                        classDefinitionFile = Paths.get("seasons", path, "lscc2019.def"),
                         peopleMap = mapOf(
                             peopleMapping(TestParticipants.Lscc2019Points2Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
                             peopleMapping(TestParticipants.Lscc2019Points2Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
@@ -95,8 +95,8 @@ sealed class SeasonFixture(
                     date = LocalDate.parse("2019-03-03"),
                     lifecycle = Event.Lifecycle.FINAL,
                     crispyFish = Event.CrispyFishMetadata(
-                        eventControlFile = Paths.get("2019-03-03 event 3.ecf"),
-                        classDefinitionFile = Paths.get("lscc2019.def"),
+                        eventControlFile = Paths.get("seasons", path, "2019-03-03 event 3.ecf"),
+                        classDefinitionFile = Paths.get("seasons", path, "lscc2019.def"),
                         peopleMap = mapOf(
                             peopleMapping(TestParticipants.Lscc2019Points3Simplified.ANASTASIA_RIGLER, TestPeople.ANASTASIA_RIGLER),
                             peopleMapping(TestParticipants.Lscc2019Points3Simplified.REBECCA_JACKSON, TestPeople.REBECCA_JACKSON),
@@ -121,6 +121,43 @@ sealed class SeasonFixture(
             seasonEvents = events.map { it.coreSeasonEvent },
             seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
             takeScoreCountForPoints = 2
+        )
+    }
+
+    class Issue64CrispyFishStagingLinesInvalidSignage(temp: Path) : SeasonFixture(
+        temp = temp,
+        path = "64-crispy-fish-staging-lines-invalid-signage",
+        classDefinitionFixture = ClassDefinitionFixture("class2022_lscc.def")
+    ) {
+        val event = EventFixture(
+            seasonFixture = this,
+            temp = temp,
+            crispyFishClassingMapper = groupingMapper,
+            runCount = 20,
+            coreSeasonEvent = SeasonEvent(
+                event = Event(
+                    name = "64-crispy-fish-staging-lines-invalid-signage",
+                    date = LocalDate.parse("2022-04-08"),
+                    lifecycle = Event.Lifecycle.FINAL,
+                    crispyFish = Event.CrispyFishMetadata(
+                        eventControlFile = Paths.get("seasons", path, "64-crispy-fish-staging-lines-invalid-signage.ecf"),
+                        classDefinitionFile = Paths.get("seasons", path, "class2022_lscc.def"),
+                        peopleMap = emptyMap() // intentionally empty to exercise person nullability
+                    ),
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV1,
+                ),
+                eventNumber = null,
+                points = false
+            )
+        )
+
+        override val events = listOf(event)
+        override val season = Season(
+            name = "Issue 64 Season",
+            seasonEvents = events.map { it.coreSeasonEvent },
+            seasonPointsCalculatorConfiguration = TestSeasonPointsCalculatorConfigurations.lscc2019,
+            takeScoreCountForPoints = null
         )
     }
 
@@ -149,8 +186,8 @@ sealed class SeasonFixture(
 
 private fun peopleMapping(testParticipant: Participant, person: Person): Pair<Event.CrispyFishMetadata.PeopleMapKey, Person> {
     val key = Event.CrispyFishMetadata.PeopleMapKey(
-        classing = requireNotNull(testParticipant.classing),
-        number = requireNotNull(testParticipant.number),
+        classing = requireNotNull(testParticipant.signage?.classing),
+        number = requireNotNull(testParticipant.signage?.number),
         firstName = requireNotNull(testParticipant.firstName),
         lastName = requireNotNull(testParticipant.lastName)
     )

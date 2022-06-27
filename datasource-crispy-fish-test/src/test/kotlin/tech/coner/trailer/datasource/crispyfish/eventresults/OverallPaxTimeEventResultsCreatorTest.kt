@@ -20,10 +20,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event1
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -49,10 +51,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event2
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -78,11 +82,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("8")
                         }
-                        hasNumber("8")
                     }
                     score().hasValue("28.748")
                     diffFirst().isNull()
@@ -93,11 +99,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("23")
                         }
-                        hasNumber("23")
                     }
                     score().hasValue("29.925")
                     diffFirst().isEqualTo("1.177")
@@ -108,11 +116,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("BS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("BS")
+                            }
+                            hasNumber("52")
                         }
-                        hasNumber("52")
                     }
                     score().hasValue("30.017")
                     diffFirst().isEqualTo("1.269")
@@ -123,11 +133,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("HS")
+                            }
+                            hasNumber("130")
                         }
-                        hasNumber("130")
                     }
                     score().hasValue("30.409")
                     diffFirst().isEqualTo("1.661")
@@ -138,11 +150,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("ES")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("ES")
+                            }
+                            hasNumber("18")
                         }
-                        hasNumber("18")
                     }
                     score().hasValue("30.532")
                     diffFirst().isEqualTo("1.784")
@@ -153,11 +167,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("CS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("CS")
+                            }
+                            hasNumber("20")
                         }
-                        hasNumber("20")
                     }
                     score().hasDidNotFinish()
                     diffFirst().isNull()
@@ -172,10 +188,12 @@ class OverallPaxTimeEventResultsCreatorTest {
         val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         val event = season.event3
         val allRegistrations = event.registrations()
+        val staging = event.stagingRuns(allRegistrations)
         val context = CrispyFishEventMappingContext(
             allClassDefinitions = season.classDefinitions,
             allRegistrations = allRegistrations,
-            allRuns = event.runs(allRegistrations),
+            allRuns = event.allRuns(allRegistrations, staging),
+            staging = staging,
             runCount = event.runCount
         )
         val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
@@ -201,11 +219,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Rebecca")
                         hasLastName("Jackson")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("8")
                         }
-                        hasNumber("8")
                     }
                     score().hasValue("66.553")
                     diffFirst().isNull()
@@ -216,11 +236,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Jimmy")
                         hasLastName("Mckenzie")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("23")
                         }
-                        hasNumber("23")
                     }
                     score().hasValue("69.253")
                     diffFirst().isEqualTo("2.700")
@@ -231,11 +253,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Eugene")
                         hasLastName("Drake")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("STR")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("STR")
+                            }
+                            hasNumber("1")
                         }
-                        hasNumber("1")
                     }
                     score().hasValue("71.978")
                     diffFirst().isEqualTo("5.425")
@@ -246,11 +270,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Anastasia")
                         hasLastName("Rigler")
-                        classing().isNotNull().all {
-                            group().isNull()
-                            handicap().hasAbbreviation("HS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNull()
+                                handicap().hasAbbreviation("HS")
+                            }
+                            hasNumber("130")
                         }
-                        hasNumber("130")
                     }
                     score().hasValue("72.120")
                     diffFirst().isEqualTo("5.567")
@@ -261,11 +287,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Brandy")
                         hasLastName("Huff")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("BS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("BS")
+                            }
+                            hasNumber("52")
                         }
-                        hasNumber("52")
                     }
                     score().hasValue("72.964")
                     diffFirst().isEqualTo("6.411")
@@ -276,11 +304,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bryant")
                         hasLastName("Moran")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("GS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("GS")
+                            }
+                            hasNumber("58")
                         }
-                        hasNumber("58")
                     }
                     score().hasValue("78.846")
                     diffFirst().isEqualTo("12.293")
@@ -291,11 +321,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Dominic")
                         hasLastName("Rogers")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("ES")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("ES")
+                            }
+                            hasNumber("18")
                         }
-                        hasNumber("18")
                     }
                     score().hasValue("79.069")
                     diffFirst().isEqualTo("12.516")
@@ -306,11 +338,13 @@ class OverallPaxTimeEventResultsCreatorTest {
                     participant().all {
                         hasFirstName("Bennett")
                         hasLastName("Pantone")
-                        classing().isNotNull().all {
-                            group().isNotNull().hasAbbreviation("NOV")
-                            handicap().hasAbbreviation("CS")
+                        signage().isNotNull().all {
+                            classing().isNotNull().all {
+                                group().isNotNull().hasAbbreviation("NOV")
+                                handicap().hasAbbreviation("CS")
+                            }
+                            hasNumber("20")
                         }
-                        hasNumber("20")
                     }
                     score().hasValue("80.614")
                     diffFirst().isEqualTo("14.061")

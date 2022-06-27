@@ -17,8 +17,8 @@ class EventResultsServiceImpl(
     }
 
     override fun buildOverallTypeResults(event: Event, type: EventResultsType): OverallEventResults {
-        return when (event.policy.authoritativeRunSource) {
-            Policy.RunSource.CrispyFish -> when (type) {
+        return when (event.policy.authoritativeRunDataSource) {
+            Policy.DataSource.CrispyFish -> when (type) {
                 StandardEventResultsTypes.raw -> crispyFishEventResultsService.buildRawResults(event)
                 StandardEventResultsTypes.pax -> crispyFishEventResultsService.buildPaxResults(event)
                 else -> throw IllegalArgumentException()
@@ -31,8 +31,8 @@ class EventResultsServiceImpl(
     }
 
     override fun buildGroupTypeResults(event: Event, type: EventResultsType): GroupEventResults {
-        return when (event.policy.authoritativeRunSource) {
-            Policy.RunSource.CrispyFish -> when (type) {
+        return when (event.policy.authoritativeRunDataSource) {
+            Policy.DataSource.CrispyFish -> when (type) {
                 StandardEventResultsTypes.clazz -> crispyFishEventResultsService.buildClassResults(event)
                 else -> throw IllegalArgumentException()
             }

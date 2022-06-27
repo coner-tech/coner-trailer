@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
@@ -154,9 +155,9 @@ class ConerTrailerCliIT {
             assertThat(testConsole.output, "output").all {
                 contains(event.name)
                 contains("${event.date}")
-                contains(participant.classing!!.group!!.abbreviation)
-                contains(participant.classing!!.handicap.abbreviation)
-                contains(participant.number!!)
+                contains(participant.signage!!.classing!!.group!!.abbreviation)
+                contains(participant.signage!!.classing!!.handicap.abbreviation)
+                contains(participant.signage!!.number!!)
                 contains("${participant.person!!.id}")
             }
             assertThat(testConsole.error, "error").isEmpty()

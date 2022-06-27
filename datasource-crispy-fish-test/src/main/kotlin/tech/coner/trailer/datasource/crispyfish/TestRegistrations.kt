@@ -1,11 +1,8 @@
 package tech.coner.trailer.datasource.crispyfish
 
+import tech.coner.crispyfish.model.*
 import tech.coner.trailer.Participant
 import tech.coner.trailer.TestParticipants
-import tech.coner.crispyfish.model.ClassDefinition
-import tech.coner.crispyfish.model.Registration
-import tech.coner.crispyfish.model.RegistrationResult
-import tech.coner.crispyfish.model.RegistrationRun
 
 object TestRegistrations {
 
@@ -13,6 +10,7 @@ object TestRegistrations {
         val REBECCA_JACKSON: Registration by lazy {
             val participant = TestParticipants.Lscc2019Points1.REBECCA_JACKSON
             factory(
+                index = 1,
                 participant = participant,
                 category = null,
                 handicap = TestClassDefinitions.Lscc2019.HS,
@@ -42,6 +40,7 @@ object TestRegistrations {
         }
         val BRANDY_HUFF: Registration by lazy {
             factory(
+                index = 4,
                 participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF,
                 category = TestClassDefinitions.Lscc2019.NOV,
                 handicap = TestClassDefinitions.Lscc2019.BS,
@@ -72,6 +71,7 @@ object TestRegistrations {
     }
 
     private fun factory(
+        index: Int,
         participant: Participant,
         category: ClassDefinition?,
         handicap: ClassDefinition?,
@@ -88,16 +88,21 @@ object TestRegistrations {
         custom: Map<String, String?>
     ): Registration {
         return Registration(
+            index = index,
             memberNumber = participant.person?.clubMemberId,
             membershipExpires = membershipExpires,
             dateOfBirth = dateOfBirth,
-            category = category,
-            handicap = handicap,
-            number = participant.number,
+            signage = Signage(
+                classing = Classing(
+                    category = category,
+                    handicap = handicap,
+                ),
+                number = participant.signage?.number,
+            ),
             firstName = participant.firstName,
             lastName = participant.lastName,
-            carColor = participant.car.color,
-            carModel = participant.car.model,
+            carColor = participant.car?.color,
+            carModel = participant.car?.model,
             rawResult = rawResult,
             paxResult = paxResult,
             classResult = classResult,
