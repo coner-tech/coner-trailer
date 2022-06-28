@@ -1,14 +1,14 @@
 package tech.coner.trailer.cli.command.person
 
 import com.github.ajalt.clikt.core.CliktCommand
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.cli.view.PersonView
-import tech.coner.trailer.io.service.PersonService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.use
+import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.io.service.PersonService
 
 class PersonListCommand(
     override val di: DI,

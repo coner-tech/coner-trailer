@@ -12,5 +12,8 @@ class ParticipantService(
         return when (event.policy.authoritativeParticipantDataSource) {
             Policy.DataSource.CrispyFish -> crispyFishParticipantService.list(event)
         }
+            .map { it.sortedWith(Participant.Sorts.signage) }
     }
+
+
 }

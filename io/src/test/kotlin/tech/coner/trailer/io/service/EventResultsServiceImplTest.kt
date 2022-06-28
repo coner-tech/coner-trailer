@@ -6,13 +6,13 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.eventresults.TestClazzEventResults
 import tech.coner.trailer.eventresults.TestOverallRawEventResults
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
 class EventResultsServiceImplTest {

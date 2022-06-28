@@ -3,6 +3,10 @@ package tech.coner.trailer.cli.command.eventpointscalculator
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -10,10 +14,6 @@ import tech.coner.trailer.cli.view.EventPointsCalculatorView
 import tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import tech.coner.trailer.io.service.EventPointsCalculatorService
 import tech.coner.trailer.seasonpoints.EventPointsCalculator
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class EventPointsCalculatorAddCommand(

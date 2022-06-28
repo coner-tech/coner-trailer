@@ -8,6 +8,11 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+import org.kodein.di.*
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestClubs
 import tech.coner.trailer.TestPolicies
@@ -18,11 +23,6 @@ import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
-import org.kodein.di.*
 
 @ExtendWith(MockKExtension::class)
 class PolicyAddCommandTest : DIAware {

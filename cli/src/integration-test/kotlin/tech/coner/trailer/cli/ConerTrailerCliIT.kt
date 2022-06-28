@@ -15,12 +15,13 @@ import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.render.Format
+import tech.coner.trailer.di.Format
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
@@ -215,6 +216,46 @@ class ConerTrailerCliIT {
                 }
             }
             assertThat(testConsole.error, "error").isEmpty()
+        }
+    }
+
+    @Test
+    fun `It should list event participants`() {
+        val event = TestEvents.Lscc2019Simplified.points1
+        val databaseName = "list-event-participants"
+        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
+        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
+        command.parse(appArgumentBuilder.clubSet(event.policy.club))
+        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
+        command.parse(appArgumentBuilder.eventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ))
+        testConsole.clear()
+
+        command.parse(appArgumentBuilder.eventParticipantsList(event = event))
+
+        assertThat(testConsole).all {
+            output().transform { it.lines() }.all {
+                index(1).all {
+                    contains("Signage")
+                    contains("First Name")
+                    contains("Last Name")
+                    contains("Member ID")
+                    contains("Car Model")
+                    contains("Car Color")
+                }
+                index(3).contains("HS 1")
+                index(4).contains("Anastasia")
+                index(5).contains("Drake")
+                index(6).contains("1994 Mazda Miata")
+                index(7).contains("WorldRallyBlue")
+                index(8).contains("NOV ES 18")
+                index(9).contains("Bryant")
+            }
+            error().isEmpty()
         }
     }
 

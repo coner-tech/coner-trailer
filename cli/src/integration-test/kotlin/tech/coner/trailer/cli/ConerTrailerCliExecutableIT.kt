@@ -16,7 +16,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.util.*
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.render.Format
+import tech.coner.trailer.di.Format
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit

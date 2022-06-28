@@ -8,4 +8,9 @@ data class Participant(
     val car: Car?,
     val seasonPointsEligible: Boolean,
     val sponsor: String?
-)
+) {
+    object Sorts {
+        val signage: Comparator<Participant> = compareBy { it.signage }
+    }
+}
+

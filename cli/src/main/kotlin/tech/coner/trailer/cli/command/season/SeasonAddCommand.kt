@@ -7,6 +7,10 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.Season
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -14,10 +18,6 @@ import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.SeasonView
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import tech.coner.trailer.io.service.SeasonService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class SeasonAddCommand(

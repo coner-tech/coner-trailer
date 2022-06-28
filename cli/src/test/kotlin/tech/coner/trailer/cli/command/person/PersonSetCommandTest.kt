@@ -7,6 +7,10 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.kodein.di.*
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.clikt.StringBufferConsole
@@ -15,10 +19,6 @@ import tech.coner.trailer.cli.view.PersonView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.PersonService
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
 
 @ExtendWith(MockKExtension::class)
 class PersonSetCommandTest : DIAware {

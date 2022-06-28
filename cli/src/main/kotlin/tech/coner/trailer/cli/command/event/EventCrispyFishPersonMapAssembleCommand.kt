@@ -5,6 +5,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
+import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Classing
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
@@ -16,15 +21,10 @@ import tech.coner.trailer.cli.view.PersonView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
 import tech.coner.trailer.io.service.CrispyFishClassService
+import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
-import tech.coner.crispyfish.model.Registration
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(

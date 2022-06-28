@@ -23,7 +23,6 @@ import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.ConfigurationServiceFactory
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.TestConfigurations

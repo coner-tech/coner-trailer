@@ -6,7 +6,6 @@ import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
 import tech.coner.trailer.io.mapper.RankingSortMapper
 import tech.coner.trailer.seasonpoints.RankingSort
 import java.util.*
-import kotlin.streams.toList
 
 class RankingSortService(
         private val resource: RankingSortResource,

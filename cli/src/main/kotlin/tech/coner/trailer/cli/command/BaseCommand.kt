@@ -1,10 +1,10 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import tech.coner.trailer.di.DataSessionHolder
 import org.kodein.di.DIAware
 import org.kodein.di.DIContext
 import org.kodein.di.diContext
+import tech.coner.trailer.di.DataSessionHolder
 
 abstract class BaseCommand(
     protected val global: GlobalModel,

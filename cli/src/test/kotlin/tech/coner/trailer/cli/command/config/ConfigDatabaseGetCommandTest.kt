@@ -4,14 +4,12 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verifyOrder
 import io.mockk.verifySequence
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,9 +21,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.mockkServiceModule
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.ConfigurationServiceFactory
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.TestConfigurations

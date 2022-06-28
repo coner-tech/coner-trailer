@@ -7,7 +7,6 @@ import tech.coner.trailer.io.constraint.SeasonDeleteConstraints
 import tech.coner.trailer.io.constraint.SeasonPersistConstraints
 import tech.coner.trailer.io.mapper.SeasonMapper
 import java.util.*
-import kotlin.streams.toList
 
 class SeasonService(
         private val resource: SeasonResource,

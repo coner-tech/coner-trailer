@@ -8,15 +8,15 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
 import tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity
 import tech.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
 import tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import tech.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream
 
 @ExtendWith(MockKExtension::class)

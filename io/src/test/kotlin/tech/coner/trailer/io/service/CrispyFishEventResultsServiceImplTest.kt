@@ -7,6 +7,9 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestEvents
@@ -15,9 +18,6 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResults
 import tech.coner.trailer.eventresults.GroupEventResults
 import tech.coner.trailer.eventresults.IndividualEventResultsFactory
 import tech.coner.trailer.eventresults.OverallEventResults
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
 class CrispyFishEventResultsServiceImplTest {

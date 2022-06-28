@@ -3,6 +3,10 @@ package tech.coner.trailer.cli.command.rankingsort
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.*
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -10,10 +14,6 @@ import tech.coner.trailer.cli.view.RankingSortView
 import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
 import tech.coner.trailer.io.service.RankingSortService
 import tech.coner.trailer.seasonpoints.RankingSort
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class RankingSortAddCommand(

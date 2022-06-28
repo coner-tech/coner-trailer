@@ -12,15 +12,16 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import org.kodein.di.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
+import tech.coner.trailer.di.Format
 import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.render.*
-import org.kodein.di.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
