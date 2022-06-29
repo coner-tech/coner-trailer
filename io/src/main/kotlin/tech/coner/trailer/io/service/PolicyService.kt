@@ -7,7 +7,6 @@ import tech.coner.trailer.io.constraint.PolicyDeleteConstraints
 import tech.coner.trailer.io.constraint.PolicyPersistConstraints
 import tech.coner.trailer.io.mapper.PolicyMapper
 import java.util.*
-import kotlin.streams.toList
 
 class PolicyService(
     private val persistConstraints: PolicyPersistConstraints,

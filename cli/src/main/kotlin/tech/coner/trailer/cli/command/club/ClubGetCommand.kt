@@ -1,13 +1,13 @@
 package tech.coner.trailer.cli.command.club
 
-import tech.coner.trailer.cli.command.BaseCommand
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.ClubView
-import tech.coner.trailer.io.service.ClubService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.view.ClubView
+import tech.coner.trailer.io.service.ClubService
 
 class ClubGetCommand(
     di: DI,

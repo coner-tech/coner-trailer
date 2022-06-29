@@ -2,19 +2,16 @@ package tech.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.factory
-import org.kodein.di.instance
-import tech.coner.trailer.Policy
 import tech.coner.trailer.render.text.TextRunsRenderer
 import java.util.*
 

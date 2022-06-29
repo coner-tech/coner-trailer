@@ -7,12 +7,6 @@ import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import tech.coner.trailer.TestPolicies
-import tech.coner.trailer.cli.clikt.StringBufferConsole
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.TestEnvironments
-import tech.coner.trailer.io.service.PolicyService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -20,6 +14,12 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.TestPolicies
+import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.io.TestEnvironments
+import tech.coner.trailer.io.service.PolicyService
 
 @ExtendWith(MockKExtension::class)
 class PolicyDeleteCommandTest : DIAware {

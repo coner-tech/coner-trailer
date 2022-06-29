@@ -4,6 +4,10 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -13,10 +17,6 @@ import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class PolicyAddCommand(

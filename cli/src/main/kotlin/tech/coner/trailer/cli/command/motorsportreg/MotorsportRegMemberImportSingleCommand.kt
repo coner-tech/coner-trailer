@@ -4,14 +4,14 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.cli.view.PersonTableView
-import tech.coner.trailer.io.service.MotorsportRegImportService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.use
+import tech.coner.trailer.cli.view.PersonTableView
+import tech.coner.trailer.io.service.MotorsportRegImportService
 
 class MotorsportRegMemberImportSingleCommand(
     override val di: DI,

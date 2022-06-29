@@ -172,4 +172,13 @@ fun mockkDatabaseModule() = DI.Module("mockk for coner.trailer.io.database") {
     bind<CrispyFishClassingMapper> {
         scoped(DataSessionScope).singleton { mockk() }
     }
+
+    // Participants
+    bind<ParticipantService> {
+        scoped(DataSessionScope).singleton { mockk() }
+    }
+    bind<CrispyFishParticipantService> {
+        scoped(DataSessionScope).singleton { mockk() }
+    }
+
 }

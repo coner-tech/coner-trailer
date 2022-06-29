@@ -8,15 +8,15 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.datasource.snoozle.PersonResource
 import tech.coner.trailer.datasource.snoozle.entity.PersonEntity
 import tech.coner.trailer.io.constraint.PersonDeleteConstraints
 import tech.coner.trailer.io.constraint.PersonPersistConstraints
 import tech.coner.trailer.io.mapper.PersonMapper
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
 class PersonServiceTest {

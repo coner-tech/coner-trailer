@@ -4,19 +4,21 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import created
-import io.mockk.*
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
+import io.mockk.slot
+import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import tech.coner.trailer.lastName
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import updated
 import java.util.function.Predicate
-import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 class MotorsportRegImportServiceTest {

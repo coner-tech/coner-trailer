@@ -7,6 +7,10 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.Classing
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.command.GlobalModel
@@ -16,10 +20,6 @@ import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class EventCrispyFishPersonMapRemoveCommand(

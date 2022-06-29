@@ -6,7 +6,6 @@ import tech.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConst
 import tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
 import java.util.*
-import kotlin.streams.toList
 
 class SeasonPointsCalculatorConfigurationService(
         private val resource: SeasonPointsCalculatorConfigurationResource,

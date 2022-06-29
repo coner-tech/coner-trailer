@@ -1,5 +1,6 @@
 package tech.coner.trailer.io.service
 
+import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Person
 import tech.coner.trailer.client.motorsportreg.model.Assignment
 import tech.coner.trailer.datasource.snoozle.PersonResource
@@ -7,10 +8,8 @@ import tech.coner.trailer.datasource.snoozle.entity.PersonEntity
 import tech.coner.trailer.io.constraint.PersonDeleteConstraints
 import tech.coner.trailer.io.constraint.PersonPersistConstraints
 import tech.coner.trailer.io.mapper.PersonMapper
-import tech.coner.crispyfish.model.Registration
 import java.util.*
 import java.util.function.Predicate
-import kotlin.streams.toList
 
 class PersonService(
         private val persistConstraints: PersonPersistConstraints,

@@ -10,6 +10,10 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -17,10 +21,6 @@ import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.io.service.EventService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*

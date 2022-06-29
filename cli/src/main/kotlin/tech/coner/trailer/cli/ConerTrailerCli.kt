@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli
 
 import com.github.ajalt.clikt.core.subcommands
+import org.kodein.di.DI
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.command.club.ClubCommand
@@ -8,6 +9,8 @@ import tech.coner.trailer.cli.command.club.ClubGetCommand
 import tech.coner.trailer.cli.command.club.ClubSetCommand
 import tech.coner.trailer.cli.command.config.*
 import tech.coner.trailer.cli.command.event.*
+import tech.coner.trailer.cli.command.event.participants.EventParticipantsCommand
+import tech.coner.trailer.cli.command.event.participants.EventParticipantsListCommand
 import tech.coner.trailer.cli.command.eventpointscalculator.*
 import tech.coner.trailer.cli.command.motorsportreg.*
 import tech.coner.trailer.cli.command.person.*
@@ -18,7 +21,6 @@ import tech.coner.trailer.cli.command.seasonpointscalculator.*
 import tech.coner.trailer.cli.di.cliktModule
 import tech.coner.trailer.cli.di.viewModule
 import tech.coner.trailer.di.*
-import org.kodein.di.DI
 
 object ConerTrailerCli {
 
@@ -73,6 +75,9 @@ object ConerTrailerCli {
                 EventDeleteCommand(di, global),
                 EventGetCommand(di, global),
                 EventListCommand(di, global),
+                EventParticipantsCommand().subcommands(
+                    EventParticipantsListCommand(di, global)
+                ),
                 EventResultsCommand(di, global),
                 EventSetCommand(di, global),
             ),

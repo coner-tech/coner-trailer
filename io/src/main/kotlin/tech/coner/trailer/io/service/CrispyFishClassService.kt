@@ -1,9 +1,9 @@
 package tech.coner.trailer.io.service
 
+import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import tech.coner.trailer.Class
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
-import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import java.io.File
 import java.nio.file.Path
 

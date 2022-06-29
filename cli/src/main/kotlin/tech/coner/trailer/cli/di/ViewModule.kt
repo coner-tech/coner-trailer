@@ -1,8 +1,8 @@
 package tech.coner.trailer.cli.di
 
 import com.github.ajalt.clikt.output.defaultCliktConsole
-import tech.coner.trailer.cli.view.*
 import org.kodein.di.*
+import tech.coner.trailer.cli.view.*
 
 val viewModule = DI.Module("coner.trailer.cli.view") {
     bindInstance { defaultCliktConsole() }

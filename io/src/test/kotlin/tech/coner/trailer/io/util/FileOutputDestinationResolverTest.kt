@@ -5,12 +5,12 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import tech.coner.trailer.eventresults.EventResultsFileNameGenerator
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.trailer.eventresults.EventResultsFileNameGenerator
 import java.nio.file.Path
 import java.nio.file.Paths
 

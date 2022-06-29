@@ -8,10 +8,16 @@ import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.*
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.di.DataSessionScope
+import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.eventresults.EventResultsService
 import tech.coner.trailer.eventresults.EventResultsType
@@ -20,7 +26,10 @@ import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.*
+import tech.coner.trailer.render.EventResultsColumn
+import tech.coner.trailer.render.GroupEventResultsRenderer
+import tech.coner.trailer.render.IndividualEventResultsRenderer
+import tech.coner.trailer.render.OverallEventResultsRenderer
 import tech.coner.trailer.render.html.HtmlGroupEventResultsRenderer
 import tech.coner.trailer.render.html.HtmlOverallEventResultsRenderer
 import tech.coner.trailer.render.json.JsonGroupEventResultsRenderer
@@ -28,11 +37,6 @@ import tech.coner.trailer.render.json.JsonIndividualEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
 import tech.coner.trailer.render.text.TextGroupEventResultsRenderer
 import tech.coner.trailer.render.text.TextOverallEventResultsRenderer
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
 import java.nio.file.Path
 import kotlin.io.path.readText
 

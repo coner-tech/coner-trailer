@@ -7,15 +7,15 @@ import assertk.assertions.isTrue
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.datasource.snoozle.RankingSortResource
 import tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity
 import tech.coner.trailer.io.mapper.RankingSortMapper
 import tech.coner.trailer.seasonpoints.RankingSort
 import tech.coner.trailer.seasonpoints.TestRankingSorts
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream
 
 @ExtendWith(MockKExtension::class)

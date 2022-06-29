@@ -5,15 +5,15 @@ import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.diContext
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.PolicyView
 import tech.coner.trailer.io.service.PolicyService
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
-import org.kodein.di.instance
 import java.util.*
 
 class PolicyGetCommand(

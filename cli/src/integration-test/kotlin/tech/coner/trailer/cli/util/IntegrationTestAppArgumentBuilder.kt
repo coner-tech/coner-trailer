@@ -2,7 +2,7 @@ package tech.coner.trailer.cli.util
 
 import tech.coner.trailer.*
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.render.Format
+import tech.coner.trailer.di.Format
 import java.nio.file.Path
 
 
@@ -135,6 +135,12 @@ class IntegrationTestAppArgumentBuilder(
                 addAll(format?.let { arrayOf("--${format.name.toLowerCase()}") } ?: emptyArray())
                 if (output != null) add("--$output")
             }.toTypedArray()
+        )
+    }
+
+    fun eventParticipantsList(event: Event): Array<String> {
+        return build(
+            *listOf("event", "participants", "list", "${event.id}").toTypedArray()
         )
     }
 }

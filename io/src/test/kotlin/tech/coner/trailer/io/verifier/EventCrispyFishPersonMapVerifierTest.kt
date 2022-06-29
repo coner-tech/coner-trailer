@@ -3,6 +3,9 @@ package tech.coner.trailer.io.verifier
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestClasses
 import tech.coner.trailer.TestParticipants
@@ -13,9 +16,6 @@ import tech.coner.trailer.datasource.crispyfish.TestRegistrations
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.MotorsportRegPeopleMapService
 import tech.coner.trailer.io.service.PersonService
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)

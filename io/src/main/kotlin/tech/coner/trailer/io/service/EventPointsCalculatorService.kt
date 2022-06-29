@@ -6,7 +6,6 @@ import tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import tech.coner.trailer.io.mapper.EventPointsCalculatorMapper
 import tech.coner.trailer.seasonpoints.EventPointsCalculator
 import java.util.*
-import kotlin.streams.toList
 
 class EventPointsCalculatorService(
         private val resource: EventPointsCalculatorResource,

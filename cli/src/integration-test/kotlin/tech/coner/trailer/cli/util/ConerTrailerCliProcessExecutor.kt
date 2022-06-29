@@ -5,7 +5,7 @@ import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.render.Format
+import tech.coner.trailer.di.Format
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
 import java.nio.file.Path
