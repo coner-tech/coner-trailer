@@ -2,9 +2,9 @@ package tech.coner.trailer.eventresults
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import tech.coner.trailer.TestEvents
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.TestEvents
 
 class EventResultsFileNameGeneratorTest {
 

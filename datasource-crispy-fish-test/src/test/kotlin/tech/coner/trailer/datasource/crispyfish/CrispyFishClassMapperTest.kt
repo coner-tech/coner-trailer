@@ -2,10 +2,13 @@ package tech.coner.trailer.datasource.crispyfish
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
-import tech.coner.trailer.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isSameAs
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.*
 
 class CrispyFishClassMapperTest {
 

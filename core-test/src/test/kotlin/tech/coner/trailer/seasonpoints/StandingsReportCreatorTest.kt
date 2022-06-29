@@ -5,10 +5,10 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.key
-import tech.coner.trailer.*
-import tech.coner.trailer.eventresults.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.*
+import tech.coner.trailer.eventresults.*
 
 class StandingsReportCreatorTest {
 

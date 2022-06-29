@@ -5,17 +5,16 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verify
-import tech.coner.trailer.cli.clikt.StringBufferConsole
-import tech.coner.trailer.cli.service.StubService
-import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.io.TestEnvironments
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.service.StubService
+import tech.coner.trailer.di.EnvironmentScope
 import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestDatabaseConfigurations
+import tech.coner.trailer.io.TestEnvironments
 import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)

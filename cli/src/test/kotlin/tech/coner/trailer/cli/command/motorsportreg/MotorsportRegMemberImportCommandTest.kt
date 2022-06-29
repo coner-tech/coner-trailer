@@ -8,6 +8,10 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verifySequence
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.PersonTableView
@@ -15,10 +19,6 @@ import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.di.mockkMotorsportRegApiModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.MotorsportRegImportService
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
 
 @ExtendWith(MockKExtension::class)
 class MotorsportRegMemberImportCommandTest : DIAware {

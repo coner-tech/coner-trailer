@@ -2,11 +2,11 @@ package tech.coner.trailer.seasonpoints
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.mockkParticipantResult
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 
 class EventPointsCalculatorTest {
 

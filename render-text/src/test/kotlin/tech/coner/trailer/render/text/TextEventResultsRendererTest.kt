@@ -2,11 +2,11 @@ package tech.coner.trailer.render.text
 
 import assertk.assertThat
 import assertk.assertions.startsWith
+import org.junit.jupiter.api.Test
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.eventresults.TestOverallRawEventResults
-import org.junit.jupiter.api.Test
 
 class TextEventResultsRendererTest {
 

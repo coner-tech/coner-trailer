@@ -1,9 +1,9 @@
 package tech.coner.trailer.datasource.snoozle
 
-import tech.coner.trailer.datasource.snoozle.entity.*
 import tech.coner.snoozle.db.Database
 import tech.coner.snoozle.db.PathPart
 import tech.coner.snoozle.db.entity.EntityResource
+import tech.coner.trailer.datasource.snoozle.entity.*
 import java.nio.file.Path
 
 class ConerTrailerDatabase(root: Path) : Database(root) {

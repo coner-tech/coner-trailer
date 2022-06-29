@@ -1,9 +1,9 @@
 package tech.coner.trailer.di
 
-import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
-import tech.coner.trailer.io.DatabaseConfiguration
 import org.kodein.di.bindings.ScopeRegistry
+import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.io.Configuration
+import tech.coner.trailer.io.DatabaseConfiguration
 
 class MockEnvironmentHolder : EnvironmentHolder {
 

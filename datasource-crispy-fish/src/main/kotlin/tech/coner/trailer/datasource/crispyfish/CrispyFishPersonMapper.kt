@@ -1,7 +1,7 @@
 package tech.coner.trailer.datasource.crispyfish
 
-import tech.coner.trailer.Person
 import tech.coner.crispyfish.model.Registration
+import tech.coner.trailer.Person
 
 class CrispyFishPersonMapper {
 

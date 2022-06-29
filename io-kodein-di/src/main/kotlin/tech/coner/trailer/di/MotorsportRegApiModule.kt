@@ -1,5 +1,6 @@
 package tech.coner.trailer.di
 
+import org.kodein.di.*
 import tech.coner.trailer.client.motorsportreg.MotorsportRegApiFactory
 import tech.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
 import tech.coner.trailer.io.mapper.MotorsportRegParticipantMapper
@@ -7,7 +8,6 @@ import tech.coner.trailer.io.service.MotorsportRegEventService
 import tech.coner.trailer.io.service.MotorsportRegImportService
 import tech.coner.trailer.io.service.MotorsportRegMemberService
 import tech.coner.trailer.io.service.MotorsportRegPeopleMapService
-import org.kodein.di.*
 
 val motorsportRegApiModule = DI.Module("coner.trailer.cli.motorsportRegApi") {
     bind { scoped(DataSessionScope).singleton {

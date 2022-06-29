@@ -3,12 +3,12 @@ package tech.coner.trailer.cli.command
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import io.mockk.junit5.MockKExtension
-import tech.coner.trailer.cli.clikt.StringBufferConsole
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.diContext
+import tech.coner.trailer.cli.clikt.StringBufferConsole
 
 @ExtendWith(MockKExtension::class)
 abstract class AbstractCommandTest<C> : DIAware

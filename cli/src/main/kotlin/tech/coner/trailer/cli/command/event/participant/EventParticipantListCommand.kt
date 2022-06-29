@@ -1,4 +1,4 @@
-package tech.coner.trailer.cli.command.event.participants
+package tech.coner.trailer.cli.command.event.participant
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
@@ -15,12 +15,12 @@ import tech.coner.trailer.io.service.ParticipantService
 import tech.coner.trailer.render.ParticipantRenderer
 import java.util.*
 
-class EventParticipantsListCommand(
+class EventParticipantListCommand(
     override val di: DI,
     private val global: GlobalModel
 ) : CliktCommand(
     name = "list",
-    help = "List Event Participants"
+    help = "List the participants at an event"
 ), DIAware {
 
     override val diContext = diContext { global.requireEnvironment().openDataSession() }

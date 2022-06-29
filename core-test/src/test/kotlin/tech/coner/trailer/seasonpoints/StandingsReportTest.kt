@@ -5,10 +5,10 @@ import assertk.assertThat
 import assertk.assertions.messageContains
 import io.mockk.every
 import io.mockk.mockk
-import tech.coner.trailer.SeasonEvent
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import tech.coner.trailer.SeasonEvent
 
 class StandingsReportTest {
 

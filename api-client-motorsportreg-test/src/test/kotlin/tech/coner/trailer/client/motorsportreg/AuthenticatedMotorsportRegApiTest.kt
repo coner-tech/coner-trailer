@@ -7,11 +7,11 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import okhttp3.mockwebserver.*
-import tech.coner.trailer.TestEvents
-import tech.coner.trailer.client.motorsportreg.model.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.client.motorsportreg.model.*
 import java.util.*
 
 class AuthenticatedMotorsportRegApiTest {

@@ -1,4 +1,4 @@
-package tech.coner.trailer.cli.command.event.participants
+package tech.coner.trailer.cli.command.event.participant
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -24,9 +24,9 @@ import tech.coner.trailer.io.service.ParticipantService
 import tech.coner.trailer.render.ParticipantRenderer
 
 @ExtendWith(MockKExtension::class)
-class EventParticipantsListCommandTest : DIAware {
+class EventParticipantListCommandTest : DIAware {
 
-    lateinit var command: EventParticipantsListCommand
+    lateinit var command: EventParticipantListCommand
 
     override val di = DI.lazy {
         import(mockkDatabaseModule())
@@ -46,7 +46,7 @@ class EventParticipantsListCommandTest : DIAware {
         testConsole = StringBufferConsole()
         global = GlobalModel()
             .apply { environment = TestEnvironments.mock() }
-        command = EventParticipantsListCommand(di, global)
+        command = EventParticipantListCommand(di, global)
             .context { console = testConsole }
     }
 

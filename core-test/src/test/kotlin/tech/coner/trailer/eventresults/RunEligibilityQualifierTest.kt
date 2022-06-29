@@ -3,10 +3,10 @@ package tech.coner.trailer.eventresults
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import org.junit.jupiter.api.Test
 import tech.coner.trailer.Run
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.Time
-import org.junit.jupiter.api.Test
 
 class RunEligibilityQualifierTest {
 

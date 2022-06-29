@@ -1,12 +1,12 @@
 package tech.coner.trailer.datasource.crispyfish.eventresults
 
+import tech.coner.crispyfish.model.Run
 import tech.coner.trailer.Participant
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import tech.coner.trailer.eventresults.ResultRun
 import tech.coner.trailer.eventresults.RunEligibilityQualifier
 import tech.coner.trailer.eventresults.RunScoreFactory
-import tech.coner.crispyfish.model.Run
 
 class ResultRunMapper(
     private val cfRunMapper: CrispyFishRunMapper,

@@ -2,7 +2,6 @@ package tech.coner.trailer.client.motorsportreg.model
 
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper
-import java.util.*
 
 object TestMembers {
 

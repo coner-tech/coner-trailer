@@ -3,6 +3,11 @@ package tech.coner.trailer.di
 import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.io.TempDir
+import org.kodein.di.*
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
@@ -10,12 +15,6 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMa
 import tech.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
-import tech.coner.trailer.io.TestDatabaseConfigurations
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
 import tech.coner.trailer.io.TestConfigurations
 import java.nio.file.Path
 
