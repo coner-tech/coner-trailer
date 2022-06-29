@@ -11,6 +11,8 @@ import tech.coner.trailer.cli.command.config.*
 import tech.coner.trailer.cli.command.event.*
 import tech.coner.trailer.cli.command.event.participant.EventParticipantCommand
 import tech.coner.trailer.cli.command.event.participant.EventParticipantListCommand
+import tech.coner.trailer.cli.command.event.run.EventRunCommand
+import tech.coner.trailer.cli.command.event.run.EventRunListCommand
 import tech.coner.trailer.cli.command.eventpointscalculator.*
 import tech.coner.trailer.cli.command.motorsportreg.*
 import tech.coner.trailer.cli.command.person.*
@@ -79,6 +81,9 @@ object ConerTrailerCli {
                     EventParticipantListCommand(di, global)
                 ),
                 EventResultsCommand(di, global),
+                EventRunCommand().subcommands(
+                    EventRunListCommand(di, global)
+                ),
                 EventSetCommand(di, global),
             ),
             EventPointsCalculatorCommand().subcommands(

@@ -21,5 +21,4 @@ val textRenderModule = DI.Module("tech.coner.trailer.render.text") {
         groupRenderer = factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format).invoke(columns) as TextGroupEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(format) with singleton { TextIndividualEventResultsRenderer() }
-    bind<TextRunsRenderer>() with singleton { TextRunsRenderer() }
 }
