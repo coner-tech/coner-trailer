@@ -138,9 +138,13 @@ class IntegrationTestAppArgumentBuilder(
         )
     }
 
-    fun eventParticipantsList(event: Event): Array<String> {
+    fun eventParticipantList(event: Event): Array<String> {
         return build(
-            *listOf("event", "participants", "list", "${event.id}").toTypedArray()
+            *listOf("event", "participant", "list", "${event.id}").toTypedArray()
         )
+    }
+
+    fun eventRunList(event: Event): Array<String> {
+        return build("event", "run", "list", "${event.id}")
     }
 }

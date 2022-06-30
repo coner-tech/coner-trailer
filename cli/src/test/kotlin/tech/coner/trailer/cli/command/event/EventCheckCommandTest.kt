@@ -26,7 +26,7 @@ import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.text.TextRunsRenderer
+import tech.coner.trailer.render.text.TextRunRenderer
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -38,7 +38,7 @@ class EventCheckCommandTest : DIAware {
         import(mockkDatabaseModule())
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
-        bindInstance { textRunsRenderer }
+        bindInstance { runRenderer }
     }
     override val diContext = diContext { command.diContext.value }
 
@@ -47,7 +47,7 @@ class EventCheckCommandTest : DIAware {
 
     @MockK lateinit var registrationTableView: CrispyFishRegistrationTableView
     @MockK lateinit var peopleMapKeyTableView: PeopleMapKeyTableView
-    @MockK lateinit var textRunsRenderer: TextRunsRenderer
+    @MockK lateinit var runRenderer: TextRunRenderer
 
     private val service: EventService by instance()
 
@@ -87,7 +87,7 @@ class EventCheckCommandTest : DIAware {
         every { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
-        every { textRunsRenderer.render(runs = any()) } returns "textRunRenderer rendered"
+        every { runRenderer.render(runs = any()) } returns "textRunRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 
@@ -101,7 +101,7 @@ class EventCheckCommandTest : DIAware {
             registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations)
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
-            textRunsRenderer.render(result.runsWithInvalidSignage)
+            runRenderer.render(result.runsWithInvalidSignage)
         }
         assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")

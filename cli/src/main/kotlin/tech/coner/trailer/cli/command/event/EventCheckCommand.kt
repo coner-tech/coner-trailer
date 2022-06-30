@@ -12,7 +12,7 @@ import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.text.TextRunsRenderer
+import tech.coner.trailer.render.text.TextRunRenderer
 import java.util.*
 
 class EventCheckCommand(
@@ -28,7 +28,7 @@ class EventCheckCommand(
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val textRunsRenderer: TextRunsRenderer by instance()
+    private val runRenderer: TextRunRenderer by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -69,7 +69,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(textRunsRenderer.render(result.runsWithInvalidSignage))
+            echo(runRenderer.render(result.runsWithInvalidSignage))
         }
     }
 }

@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Run
 import tech.coner.trailer.render.RunRenderer
 
-class TextRunsRenderer() : RunRenderer {
+class TextRunRenderer : RunRenderer {
 
     override fun render(runs: List<Run>): String {
         val at = AsciiTable().apply {
