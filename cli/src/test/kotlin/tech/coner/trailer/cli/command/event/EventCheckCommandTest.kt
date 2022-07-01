@@ -22,11 +22,12 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.text.TextRunRenderer
+import tech.coner.trailer.render.RunRenderer
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -38,7 +39,7 @@ class EventCheckCommandTest : DIAware {
         import(mockkDatabaseModule())
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
-        bindInstance { runRenderer }
+        bindFactory { _: Format -> runRenderer }
     }
     override val diContext = diContext { command.diContext.value }
 
@@ -47,7 +48,7 @@ class EventCheckCommandTest : DIAware {
 
     @MockK lateinit var registrationTableView: CrispyFishRegistrationTableView
     @MockK lateinit var peopleMapKeyTableView: PeopleMapKeyTableView
-    @MockK lateinit var runRenderer: TextRunRenderer
+    @MockK lateinit var runRenderer: RunRenderer
 
     private val service: EventService by instance()
 

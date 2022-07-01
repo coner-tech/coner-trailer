@@ -40,7 +40,7 @@
         <kodein-di.version>7.8.0</kodein-di.version>
         <okhttp3.version>4.9.2</okhttp3.version>
         <jackson.version>2.13.0</jackson.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
         <assertk.version>0.25</assertk.version>

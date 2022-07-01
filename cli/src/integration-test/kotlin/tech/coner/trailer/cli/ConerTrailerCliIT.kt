@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -327,6 +328,30 @@ class ConerTrailerCliIT {
                     contains("52.447")
                 }
             }
+            error().isEmpty()
+        }
+    }
+
+    @Test
+    fun `It should check an event containing runs with invalid signage`() {
+        val databaseName = "64-invalid-signage"
+        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
+        val seasonFixture = SeasonFixture.Issue64CrispyFishStagingLinesInvalidSignage(temp = crispyFishDir)
+        val event = seasonFixture.event.coreSeasonEvent.event
+        command.parse(appArgumentBuilder.clubSet(event.policy.club))
+        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
+        command.parse(appArgumentBuilder.eventAddCrispyFish(
+            event = event,
+            crispyFishEventControlFile = seasonFixture.event.ecfPath,
+            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
+        ))
+        testConsole.clear()
+
+        command.parse(appArgumentBuilder.eventCheck(event))
+
+        assertThat(testConsole).all {
+            output().contains("CS 3 ")
             error().isEmpty()
         }
     }

@@ -11,7 +11,9 @@ import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
+import tech.coner.trailer.di.Format
 import tech.coner.trailer.io.service.EventService
+import tech.coner.trailer.render.RunRenderer
 import tech.coner.trailer.render.text.TextRunRenderer
 import java.util.*
 
@@ -28,7 +30,7 @@ class EventCheckCommand(
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runRenderer: TextRunRenderer by instance()
+    private val runRenderer: RunRenderer by instance { Format.TEXT }
 
     private val id: UUID by argument().convert { toUuid(it) }
 
