@@ -4,5 +4,5 @@ data class EventContext(
     val classes: List<Class>,
     val participants: List<Participant>,
     val runs: List<Run>,
-    val runCount: Int
+    val extendedParameters: EventExtendedParameters
 )
