@@ -1,10 +1,12 @@
 package tech.coner.trailer.io.util
 
 import assertk.all
+import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.index
 import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import assertk.fail
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.*
@@ -76,6 +78,105 @@ class LifetimeCacheTest : CoroutineScope {
             assertThat(actual).all {
                 hasSize(1)
                 index(0).isEqualTo(0)
+            }
+        }
+    }
+
+    @Nested
+    inner class PutTests {
+
+        @Test
+        fun `It should put value and be retrievable`() {
+            val cache = LifetimeCache<String, String>(Duration.ofDays(1))
+            val key = "key"
+            val value = "value"
+
+            val actual = runBlocking {
+                cache.put(key, value)
+            }
+
+            assertThat(actual).all {
+                isEqualTo(value)
+                isEqualTo(runBlocking {
+                    cache.getOrCreate(key) { fail("should not invoke create fn") }
+                })
+            }
+        }
+    }
+
+    @Nested
+    inner class ClearTests {
+
+        @Test
+        fun `It should clear when already empty`() {
+            val cache = LifetimeCache<String, String>(Duration.ofDays(1))
+            check(runBlocking { cache.isEmpty() }) { "Precondition: cache must initialize empty" }
+
+            runBlocking {
+                cache.clear()
+            }
+
+            assertThat(runBlocking { cache.isEmpty() }).isTrue()
+        }
+
+        @Test
+        fun `It should clear when contains items`() {
+            val cache = LifetimeCache<Int, Int>(Duration.ofDays(1))
+            runBlocking {
+                for (i in 1..10) {
+                    cache.put(i, i)
+                }
+                check(cache.size() == 10) { "Precondition: cache must be populated" }
+            }
+
+            runBlocking {
+                cache.clear()
+            }
+
+            assertThat(runBlocking { cache.isEmpty() }).isTrue()
+        }
+    }
+
+    @Nested
+    inner class PruneTests {
+
+        @Test
+        fun `It should prune expired entries`() {
+            val cache = LifetimeCache<Int, Int>(Duration.ofMillis(1))
+            runBlocking {
+                cache.put(0, 0)
+                cache.put(1, 1)
+                check(cache.size() == 2) { "Precondition: cache must be populated" }
+            }
+
+            runBlocking {
+                delay(1)
+                cache.prune()
+            }
+
+            assertThat(runBlocking { cache.isEmpty() }, "cache empty").isTrue()
+        }
+
+        @Test
+        fun `It should not prune entries before they expire`() {
+            val cache = LifetimeCache<Int, Int>(Duration.ofMillis(10))
+            runBlocking {
+                cache.put(0, 0)
+                delay(9)
+                cache.put(1, 1)
+                check(cache.size() == 2) { "Precondition: cache must be populated" }
+            }
+
+            runBlocking {
+                delay(2)
+                cache.prune()
+            }
+
+            runBlocking {
+                assertAll {
+                    assertThat(cache.size()).isEqualTo(1)
+                    assertThat(cache.getOrCreate(1) { fail("Should not execute create fn") })
+                }
             }
         }
     }

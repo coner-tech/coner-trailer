@@ -1,5 +1,7 @@
 package tech.coner.trailer.io.util
 
+import kotlinx.coroutines.runBlocking
+
 interface Cache<K, V> {
 
     /**
@@ -7,7 +9,7 @@ interface Cache<K, V> {
      */
     suspend fun getOrCreate(key: K, create: () -> V): V
 
-    suspend fun put(key: K, value: V)
+    suspend fun put(key: K, value: V): V
 
     /**
      * Clear the entire cache
@@ -22,6 +24,13 @@ interface Cache<K, V> {
     /**
      * Remove the entry
      */
-    suspend fun remove(key: K)
+    suspend fun remove(key: K): V?
+
+    /**
+     * Find the number of entries in cache
+     */
+    suspend fun size(): Int
+
+    suspend fun isEmpty(): Boolean = runBlocking { size() == 0 }
 
 }

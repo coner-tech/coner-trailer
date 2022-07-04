@@ -1,5 +1,7 @@
 package tech.coner.trailer.di
 
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import org.kodein.di.*
 import tech.coner.snoozle.db.session.data.DataSession
 import tech.coner.trailer.datasource.crispyfish.*
@@ -7,8 +9,10 @@ import tech.coner.trailer.datasource.snoozle.*
 import tech.coner.trailer.io.constraint.*
 import tech.coner.trailer.io.mapper.*
 import tech.coner.trailer.io.service.*
+import tech.coner.trailer.io.util.LifetimeCache
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
+import java.time.Duration
 
 val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
@@ -239,6 +243,8 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishEventMappingContextService(
+                coroutineContext = context.coroutineContext + Job(),
+                cache = LifetimeCache(Duration.ofSeconds(5)),
                 crispyFishDatabase = context.environment.requireDatabaseConfiguration().crispyFishDatabase,
                 loadConstraints = instance()
             )

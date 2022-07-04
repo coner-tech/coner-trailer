@@ -30,10 +30,11 @@ class LifetimeCache<K, V>(
         }
     }
 
-    override suspend fun put(key: K, value: V) {
+    override suspend fun put(key: K, value: V): V {
         mutex.withLock {
             store[key] = createEntry(value)
         }
+        return value
     }
 
     private fun createEntry(value: V): Entry<V> = Entry(
@@ -49,14 +50,10 @@ class LifetimeCache<K, V>(
 
     override suspend fun prune() {
         mutex.withLock {
-            val estimatedDuration = minOf(
-                Duration.ofMillis(store.size.toLong()),
-                Duration.ofSeconds(1)
-            )
-            val estimatedCompletion = Instant.now() + estimatedDuration
+            val now = Instant.now()
             store.entries
-                .mapNotNull { (key, value) ->
-                    if (value.expires.isBefore(estimatedCompletion)) {
+                .mapNotNull { (key, entry) ->
+                    if (entry.expires.isBefore(now)) {
                         key
                     } else {
                         null
@@ -66,9 +63,15 @@ class LifetimeCache<K, V>(
         }
     }
 
-    override suspend fun remove(key: K) {
-        mutex.withLock {
-            store.remove(key)
+    override suspend fun remove(key: K): V? {
+        return mutex.withLock {
+            store.remove(key)?.value
+        }
+    }
+
+    override suspend fun size(): Int {
+        return mutex.withLock {
+            store.size
         }
     }
 
