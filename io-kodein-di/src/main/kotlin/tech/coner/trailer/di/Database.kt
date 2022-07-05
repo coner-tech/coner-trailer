@@ -13,6 +13,7 @@ import tech.coner.trailer.io.util.LifetimeCache
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.time.Duration
+import kotlin.coroutines.coroutineContext
 
 val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
@@ -202,6 +203,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             EventService(
+                coroutineContext = context.coroutineContext + Job(),
                 dbConfig = context.environment.requireDatabaseConfiguration(),
                 resource = instance(),
                 mapper = instance(),
@@ -305,6 +307,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             ParticipantService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishParticipantService = instance()
             )
         }
@@ -312,6 +315,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishParticipantService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishEventMappingContextService = instance(),
                 crispyFishClassService = instance(),
                 crispyFishParticipantMapper = instance()
@@ -323,6 +327,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             RunService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishRunService = instance()
             )
         }
@@ -330,6 +335,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishRunService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishEventMappingContextService = instance(),
                 crispyFishClassService = instance(),
                 crispyFishParticipantMapper = instance(),

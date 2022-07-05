@@ -67,7 +67,7 @@ class ServiceContainer(
         }
     }
 
-    fun <T> onDataSession(block: DataSessionContext.() -> T): T {
+    suspend fun <T> onDataSession(block: suspend DataSessionContext.() -> T): T {
         val context = DataSessionContext(ioTestKodeinDi, environment)
         return try {
             context.block()

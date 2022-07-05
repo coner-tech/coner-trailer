@@ -5,11 +5,14 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,6 +22,7 @@ import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -31,11 +35,15 @@ import tech.coner.trailer.render.RunRenderer
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
-class EventCheckCommandTest : DIAware {
+class EventCheckCommandTest : DIAware,
+    CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Main + Job()
 
     lateinit var command: EventCheckCommand
 
     override val di: DI = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
@@ -57,10 +65,18 @@ class EventCheckCommandTest : DIAware {
         testConsole = StringBufferConsole()
         global = GlobalModel()
             .apply { environment = TestEnvironments.mock() }
-        command = EventCheckCommand(di, global)
+        command = EventCheckCommand(
+            di = di,
+            global = global
+        )
             .context {
                 console = testConsole
             }
+    }
+
+    @AfterEach
+    fun after() {
+        cancel()
     }
 
     @Test
@@ -85,14 +101,14 @@ class EventCheckCommandTest : DIAware {
             runsWithInvalidSignage = listOf(mockk())
         )
         every { service.findById(checkId) } returns check
-        every { service.check(check) } returns result
+        coEvery { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
         every { runRenderer.render(runs = any()) } returns "textRunRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 
-        verifySequence {
+        coVerifySequence {
             service.findById(checkId)
             service.check(check)
             registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
@@ -136,11 +152,11 @@ class EventCheckCommandTest : DIAware {
             runsWithInvalidSignage = emptyList()
         )
         every { service.findById(checkId) } returns check
-        every { service.check(check) } returns result
+        coEvery { service.check(check) } returns result
 
         command.parse(arrayOf("$checkId"))
 
-        verifySequence {
+        coVerifySequence {
             service.findById(checkId)
             service.check(check)
         }
@@ -155,13 +171,13 @@ class EventCheckCommandTest : DIAware {
             every { crispyFish } returns null
         }
         every { service.findById(checkId) } returns check
-        every { service.check(check) } throws IllegalStateException()
+        coEvery { service.check(check) } throws IllegalStateException()
 
         assertThrows<IllegalStateException> {
             command.parse(arrayOf("$checkId"))
         }
 
-        verifySequence {
+        coVerifySequence {
             service.findById(checkId)
             service.check(check)
         }

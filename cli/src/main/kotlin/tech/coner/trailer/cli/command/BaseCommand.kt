@@ -1,12 +1,16 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import org.kodein.di.DIAware
-import org.kodein.di.DIContext
-import org.kodein.di.diContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.plus
+import kotlinx.coroutines.runBlocking
+import org.kodein.di.*
+import tech.coner.trailer.cli.di.CliCoroutineScope
 import tech.coner.trailer.di.DataSessionHolder
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseCommand(
+    di: DI,
     protected val global: GlobalModel,
     help: String = "",
     epilog: String = "",
@@ -23,10 +27,19 @@ abstract class BaseCommand(
     printHelpOnEmptyArgs = printHelpOnEmptyArgs,
     helpTags = helpTags,
     autoCompleteEnvvar = autoCompleteEnvvar
-) {
+),
+    DIAware by di,
+    CoroutineContext by di.direct.instance<CliCoroutineScope>().coroutineContext + Job()
+{
+
+    override fun run() = runBlocking {
+        coRun()
+    }
+
+    abstract suspend fun coRun()
 
     fun <C> C.diContextDataSession(): DIContext<DataSessionHolder>
-            where C : BaseCommand, C : DIAware {
+            where C : BaseCommand {
         return diContext { global.requireEnvironment().openDataSession() }
     }
 }

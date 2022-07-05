@@ -3,7 +3,6 @@ package tech.coner.trailer.cli.command.event
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -14,17 +13,17 @@ import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.render.RunRenderer
-import tech.coner.trailer.render.text.TextRunRenderer
 import java.util.*
 
 class EventCheckCommand(
-    override val di: DI,
+    di: DI,
     global: GlobalModel
 ) : BaseCommand(
+    di = di,
     global = global,
     name = "check",
     help = "Check an event and report any problems"
-), DIAware {
+) {
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
@@ -34,7 +33,7 @@ class EventCheckCommand(
 
     private val id: UUID by argument().convert { toUuid(it) }
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val check = service.findById(id)
         val result = service.check(check)
         if (result.unmappable.isNotEmpty()) {

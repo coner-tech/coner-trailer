@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command.config
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
@@ -9,9 +8,9 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
@@ -19,12 +18,14 @@ import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
 
 class ConfigDatabaseAddCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "add",
     help = "Add database configuration"
-), DIAware {
+) {
 
     override val diContext = diContext { global.requireEnvironment() }
 
@@ -56,7 +57,7 @@ class ConfigDatabaseAddCommand(
     private val motorsportReg: MotorsportRegOptions by MotorsportRegOptions()
     private val default: Boolean by option().flag()
 
-    override fun run() {
+    override suspend fun coRun() {
         service.addDatabase(ConfigAddDatabaseParam(
             name = name,
             crispyFishDatabase = crispyFishDatabase,

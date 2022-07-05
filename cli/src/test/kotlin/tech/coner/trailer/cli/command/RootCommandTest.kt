@@ -19,6 +19,7 @@ import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.command.config.ConfigCommand
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.EnvironmentScope
@@ -36,6 +37,7 @@ class RootCommandTest : DIAware {
     lateinit var command: RootCommand
 
     override val di: DI = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
             serviceArgumentSlot.captured = csa
@@ -64,7 +66,7 @@ class RootCommandTest : DIAware {
             .context { console = testConsole }
             .subcommands(
                 StubCommand(di, global),
-                ConfigCommand()
+                ConfigCommand(di, global)
             )
         serviceArgumentSlot = slot()
         justRun { service.init() }

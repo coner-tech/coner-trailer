@@ -1,12 +1,19 @@
 package tech.coner.trailer.cli.command.config
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.command.PermitNoDatabaseChosen
 
-class ConfigCommand: CliktCommand(
-        name = "config",
-        help = "Grouping of configuration commands"
+class ConfigCommand(
+    di: DI,
+    global: GlobalModel,
+): BaseCommand(
+    di = di,
+    global = global,
+    name = "config",
+    help = "Grouping of configuration commands"
 ), PermitNoDatabaseChosen {
 
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

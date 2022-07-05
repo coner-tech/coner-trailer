@@ -43,32 +43,32 @@ object ConerTrailerCli {
         ))
         val global = GlobalModel()
         return RootCommand(di, global).subcommands(
-            ConfigCommand().subcommands(
-                ConfigDatabaseCommand().subcommands(
+            ConfigCommand(di, global).subcommands(
+                ConfigDatabaseCommand(di, global).subcommands(
                     ConfigDatabaseAddCommand(di, global),
                     ConfigDatabaseGetCommand(di, global),
                     ConfigDatabaseListCommand(di, global),
                     ConfigDatabaseSnoozleMigrateCommand(di, global),
                     ConfigDatabaseRemoveCommand(di, global),
                     ConfigDatabaseSetDefaultCommand(di, global),
-                    ConfigDatabaseSnoozleCommand(global).subcommands(
+                    ConfigDatabaseSnoozleCommand(di, global).subcommands(
                         ConfigDatabaseSnoozleInitializeCommand(di, global),
                         ConfigDatabaseSnoozleMigrateCommand(di, global)
                     )
                 )
             ),
-            ClubCommand(global).subcommands(
+            ClubCommand(di, global).subcommands(
                 ClubGetCommand(di, global),
                 ClubSetCommand(di, global)
             ),
-            PolicyCommand().subcommands(
+            PolicyCommand(di, global).subcommands(
                 PolicyAddCommand(di, global),
                 PolicyGetCommand(di, global),
                 PolicyDeleteCommand(di, global),
                 PolicyListCommand(di, global),
                 PolicySetCommand(di, global)
             ),
-            EventCommand().subcommands(
+            EventCommand(di, global).subcommands(
                 EventAddCommand(di, global),
                 EventCheckCommand(di, global),
                 EventCrispyFishPersonMapAddCommand(di, global),
@@ -77,30 +77,30 @@ object ConerTrailerCli {
                 EventDeleteCommand(di, global),
                 EventGetCommand(di, global),
                 EventListCommand(di, global),
-                EventParticipantCommand().subcommands(
+                EventParticipantCommand(di, global).subcommands(
                     EventParticipantListCommand(di, global)
                 ),
                 EventResultsCommand(di, global),
-                EventRunCommand().subcommands(
+                EventRunCommand(di, global).subcommands(
                     EventRunListCommand(di, global)
                 ),
                 EventSetCommand(di, global),
             ),
-            EventPointsCalculatorCommand().subcommands(
+            EventPointsCalculatorCommand(di, global).subcommands(
                 EventPointsCalculatorAddCommand(di, global),
                 EventPointsCalculatorDeleteCommand(di, global),
                 EventPointsCalculatorGetCommand(di, global),
                 EventPointsCalculatorListCommand(di, global),
                 EventPointsCalculatorSetCommand(di, global)
             ),
-            MotorsportRegCommand().subcommands(
+            MotorsportRegCommand(di, global).subcommands(
                 MotorsportRegMemberCommand().subcommands(
                     MotorsportRegMemberListCommand(di, global),
                     MotorsportRegMemberImportCommand(di, global),
                     MotorsportRegMemberImportSingleCommand(di, global)
                 )
             ),
-            PersonCommand().subcommands(
+            PersonCommand(di, global).subcommands(
                 PersonAddCommand(di, global),
                 PersonDeleteCommand(di, global),
                 PersonGetCommand(di, global),
@@ -108,7 +108,7 @@ object ConerTrailerCli {
                 PersonSearchCommand(di, global),
                 PersonSetCommand(di, global)
             ),
-            RankingSortCommand().subcommands(
+            RankingSortCommand(di, global).subcommands(
                 RankingSortAddCommand(di, global),
                 RankingSortDeleteCommand(di, global),
                 RankingSortGetCommand(di, global),
@@ -116,14 +116,14 @@ object ConerTrailerCli {
                 RankingSortSetCommand(di, global),
                 RankingSortStepsAppendCommand(di, global)
             ),
-            SeasonCommand().subcommands(
+            SeasonCommand(di, global).subcommands(
                 SeasonAddCommand(di, global),
                 SeasonDeleteCommand(di, global),
                 SeasonGetCommand(di, global),
                 SeasonListCommand(di, global),
                 SeasonSetCommand(di, global)
             ),
-            SeasonPointsCalculatorCommand().subcommands(
+            SeasonPointsCalculatorCommand(di, global).subcommands(
                 SeasonPointsCalculatorAddCommand(di, global),
                 SeasonPointsCalculatorDeleteCommand(di, global),
                 SeasonPointsCalculatorGetCommand(di, global),

@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -16,16 +15,16 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.datasource.snoozle.ConerTrailerDatabase
 
 class ConfigDatabaseSnoozleMigrateCommand(
-    override val di: DI,
+    di: DI,
     global: GlobalModel
 ) : BaseCommand(
+    di = di,
     global = global,
     name = "migrate",
     help = """
         Migrate the Coner Trailer Snoozle database version. Back up the database first.
         """.trimIndent()
-),
-    DIAware {
+) {
 
     override val diContext = diContext { global.requireEnvironment() }
 
@@ -56,7 +55,7 @@ class ConfigDatabaseSnoozleMigrateCommand(
         )
         .required()
 
-    override fun run() {
+    override suspend fun coRun() {
         val adminSession = database.openAdministrativeSession()
             .getOrElse {
                 echo("Failed to open administrative session: ${it.message}", err = true)

@@ -1,13 +1,11 @@
 package tech.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
+import io.mockk.*
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.slot
-import io.mockk.verifySequence
 import kotlinx.coroutines.*
 import org.awaitility.Awaitility
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -16,6 +14,7 @@ import tech.coner.crispyfish.model.Signage
 import tech.coner.trailer.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.CrispyFishRegistrationView
 import tech.coner.trailer.cli.view.PersonView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
@@ -33,16 +32,17 @@ import java.nio.file.Paths
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
 
+    override val coroutineContext = Dispatchers.Default + Job()
+
     lateinit var command: EventCrispyFishPersonMapAssembleCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { CrispyFishRegistrationView() }
         bindInstance { PersonView(testConsole) }
     }
     override val diContext = diContext { command.diContext.value }
-
-    override val coroutineContext = Dispatchers.Default + Job()
 
     private val service: EventService by instance()
     private val personService: PersonService by instance()
@@ -61,6 +61,11 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             .apply { environment = TestEnvironments.mock() }
         command = EventCrispyFishPersonMapAssembleCommand(di, global)
             .context { console = testConsole }
+    }
+
+    @AfterEach
+    fun after() {
+        cancel()
     }
 
     @Test
@@ -89,7 +94,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             staging = emptyList(),
             runCount = 0
         )
-        every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        coEvery { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()
         every {
@@ -108,7 +113,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
         val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage?.classing)
         every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
 
-        justRun { service.update(any()) }
+        coJustRun { service.update(any()) }
 
         runBlocking {
             command.parse(arrayOf("${event.id}"))
@@ -126,7 +131,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
                 )
             )
         )
-        verifySequence {
+        coVerifySequence {
             service.findById(event.id)
             service.update(update)
         }

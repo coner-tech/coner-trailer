@@ -1,10 +1,17 @@
 package tech.coner.trailer.cli.command.season
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
 
-class SeasonCommand : CliktCommand(
-        help = "Manage seasons"
+class SeasonCommand(
+    di: DI,
+    global : GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
+    help = "Manage seasons"
 ) {
 
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

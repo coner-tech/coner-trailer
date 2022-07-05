@@ -1,5 +1,6 @@
 package tech.coner.trailer.di
 
+import kotlinx.coroutines.Job
 import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import tech.coner.trailer.datasource.crispyfish.eventresults.*
@@ -78,6 +79,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     ) } }
     bind<EventResultsService> { scoped(DataSessionScope).singleton { EventResultsServiceImpl(
         crispyFishEventResultsService = CrispyFishEventResultsServiceImpl(
+            coroutineContext = context.coroutineContext + Job(),
             crispyFishClassService = instance(),
             crispyFishEventMappingContextService = instance(),
             overallRawEventResultsFactory = factory(StandardEventResultsTypes.raw),

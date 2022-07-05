@@ -2,11 +2,12 @@ package tech.coner.trailer.io.service
 
 import assertk.assertThat
 import assertk.assertions.isSameAs
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,11 +19,14 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResults
 import tech.coner.trailer.eventresults.GroupEventResults
 import tech.coner.trailer.eventresults.IndividualEventResultsFactory
 import tech.coner.trailer.eventresults.OverallEventResults
+import kotlin.coroutines.CoroutineContext
 
 @ExtendWith(MockKExtension::class)
-class CrispyFishEventResultsServiceImplTest {
+class CrispyFishEventResultsServiceImplTest : CoroutineScope {
 
     lateinit var service: CrispyFishEventResultsServiceImpl
+
+    override val coroutineContext = Dispatchers.Default + Job()
 
     @MockK lateinit var crispyFishClassService: CrispyFishClassService
     @MockK lateinit var crispyFishEventMappingContextService: CrispyFishEventMappingContextService
@@ -37,6 +41,7 @@ class CrispyFishEventResultsServiceImplTest {
     @BeforeEach
     fun before() {
         service = CrispyFishEventResultsServiceImpl(
+            coroutineContext = coroutineContext + Job(),
             crispyFishClassService = crispyFishClassService,
             crispyFishEventMappingContextService = crispyFishEventMappingContextService,
             overallRawEventResultsFactory = overallRawEventResultsFactory,
@@ -94,7 +99,7 @@ class CrispyFishEventResultsServiceImplTest {
         val actual = service.buildClassResults(event)
 
         val eventCrispyFish = event.requireCrispyFish()
-        verifySequence {
+        coVerifySequence {
             groupEventResultsFactory(event.policy)
             crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)
             crispyFishEventMappingContextService.load(eventCrispyFish)
@@ -113,7 +118,7 @@ private fun CrispyFishEventResultsServiceImplTest.arrangeBuildOverallTypeResults
     every { crispyFishClassService.loadAllByAbbreviation(
         crispyFishClassDefinitionFile = any()
     ) } returns mockk()
-    every { crispyFishEventMappingContextService.load(any()) } returns mockk()
+    coEvery { crispyFishEventMappingContextService.load(any()) } returns mockk()
     every { factory.factory(
         eventCrispyFishMetadata = any(),
         allClassesByAbbreviation = any(),
@@ -128,7 +133,7 @@ private fun CrispyFishEventResultsServiceImplTest.assertBuildOverallTypeResults(
     expected: OverallEventResults
 ) {
     val eventCrispyFish = event.requireCrispyFish()
-    verifySequence {
+    coVerifySequence {
         factory(event.policy)
         crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)
         crispyFishEventMappingContextService.load(eventCrispyFish)
@@ -143,7 +148,7 @@ private fun CrispyFishEventResultsServiceImplTest.arrangeBuildGroupTypeResults(
     every { crispyFishClassService.loadAllByAbbreviation(
         crispyFishClassDefinitionFile = any()
     ) } returns mockk()
-    every { crispyFishEventMappingContextService.load(any()) } returns mockk()
+    coEvery { crispyFishEventMappingContextService.load(any()) } returns mockk()
     every { mockGroupEventResultsFactory.factory(
         eventCrispyFishMetadata = any(),
         allClassesByAbbreviation = any(),

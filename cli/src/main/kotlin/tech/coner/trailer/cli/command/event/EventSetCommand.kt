@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
@@ -11,10 +10,10 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.Event
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toLocalDate
@@ -26,14 +25,16 @@ import java.time.LocalDate
 import java.util.*
 
 class EventSetCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "set",
     help = "Set an Event"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val service: EventService by instance()
     private val view: EventView by instance()
 
@@ -96,7 +97,7 @@ class EventSetCommand(
         object Unset : MotorsportRegOptions()
     }
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val event = service.findById(id)
         val crispyFish = when (val crispyFishOptions = crispyFish) {
             is CrispyFishOptions.Set -> {

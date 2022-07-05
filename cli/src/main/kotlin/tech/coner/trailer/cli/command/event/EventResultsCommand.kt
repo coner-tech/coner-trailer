@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
@@ -14,6 +13,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
 import tech.coner.trailer.Event
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -27,14 +27,16 @@ import java.util.*
 import kotlin.io.path.writeText
 
 class EventResultsCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "results",
     help = "Event Results"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val eventService: EventService by instance()
     private val eventResultsService: EventResultsService by instance()
     private val individualEventResultsService: IndividualEventResultsService by instance()
@@ -69,7 +71,7 @@ class EventResultsCommand(
         )
         .defaultByName("--console")
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val event = eventService.findById(id)
         val render = when (type.clazz) {
             OverallEventResults::class -> renderOverallType(event, eventResultsService.buildOverallTypeResults(event, type))

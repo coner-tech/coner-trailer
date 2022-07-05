@@ -1,18 +1,22 @@
 package tech.coner.trailer.io.service
 
+import kotlinx.coroutines.runBlocking
 import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.crispyfish.eventresults.CrispyFishOverallEventResultsFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
 import tech.coner.trailer.eventresults.*
+import kotlin.coroutines.CoroutineContext
 
 class CrispyFishEventResultsServiceImpl(
+    coroutineContext: CoroutineContext,
     private val crispyFishClassService: CrispyFishClassService,
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val overallRawEventResultsFactory: (Policy) -> CrispyFishOverallEventResultsFactory,
     private val overallPaxEventResultsFactory: (Policy) -> CrispyFishOverallEventResultsFactory,
     private val groupEventResultsFactory: (Policy) -> GroupedEventResultsFactory
-) : EventResultsService {
+) : EventResultsService,
+        CoroutineContext by coroutineContext {
 
     override fun buildRawResults(event: Event): OverallEventResults {
         return buildOverallTypeResults(event, StandardEventResultsTypes.raw)
@@ -29,13 +33,15 @@ class CrispyFishEventResultsServiceImpl(
             StandardEventResultsTypes.pax -> overallPaxEventResultsFactory(event.policy)
             else -> throw IllegalArgumentException()
         }
-        return factory.factory(
-            eventCrispyFishMetadata = eventCrispyFish,
-            allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
-                crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
-            ),
-            context = crispyFishEventMappingContextService.load(eventCrispyFish)
-        )
+        return runBlocking {
+            factory.factory(
+                eventCrispyFishMetadata = eventCrispyFish,
+                allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
+                    crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
+                ),
+                context = crispyFishEventMappingContextService.load(eventCrispyFish)
+            )
+        }
     }
 
     override fun buildClassResults(event: Event): GroupEventResults {
@@ -48,12 +54,14 @@ class CrispyFishEventResultsServiceImpl(
             StandardEventResultsTypes.clazz -> groupEventResultsFactory(event.policy)
             else -> throw IllegalArgumentException()
         }
-        return factory.factory(
-            eventCrispyFishMetadata = eventCrispyFish,
-            allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
-                crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
-            ),
-            context = crispyFishEventMappingContextService.load(eventCrispyFish)
-        )
+        return runBlocking {
+            factory.factory(
+                eventCrispyFishMetadata = eventCrispyFish,
+                allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(
+                    crispyFishClassDefinitionFile = eventCrispyFish.classDefinitionFile
+                ),
+                context = crispyFishEventMappingContextService.load(eventCrispyFish)
+            )
+        }
     }
 }
