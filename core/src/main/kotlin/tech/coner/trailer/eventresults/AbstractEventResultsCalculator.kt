@@ -6,7 +6,7 @@ import tech.coner.trailer.Run
 import tech.coner.trailer.Time
 
 abstract class AbstractEventResultsCalculator<ER : EventResults>(
-    protected val scoredRunsComparatorFactory: (EventContext) -> ParticipantResult.ScoredRunsComparator,
+    protected val scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     protected val runEligibilityQualifier: RunEligibilityQualifier,
     protected val runScoreFactory: RunScoreFactory,
     protected val finalScoreFactory: FinalScoreFactory
@@ -19,7 +19,6 @@ abstract class AbstractEventResultsCalculator<ER : EventResults>(
     }
 
     protected fun EventContext.buildParticipantResultsUnranked(): List<ParticipantResult> {
-        val scoredRunsComparator = scoredRunsComparatorFactory(this)
         val runsByParticipant = buildRunsByParticipant()
         return participants
             .mapNotNull { participant: Participant ->

@@ -9,7 +9,7 @@ object TestClazzEventResults {
         private val policy = TestPolicies.lsccV1
 
         val points1 = listOf(
-            GroupEventResults(
+            ClazzEventResults(
                 type = StandardEventResultsTypes.clazz,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.NOV to listOf(
@@ -311,7 +311,7 @@ object TestClazzEventResults {
                 ),
                 runCount = 5,
                 parentClassTopTimes = listOf(
-                    GroupEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, testParticipantResult(
+                    ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, testParticipantResult(
                         position = 1,
                         score = Score("48.141"),
                         participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
@@ -352,7 +352,7 @@ object TestClazzEventResults {
                         diffFirst = Time("0.379"),
                         diffPrevious = Time("0.379")
                     )),
-                    GroupEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET_TOURING, testParticipantResult(
+                    ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET_TOURING, testParticipantResult(
                         position = 2,
                         score = Score("47.544"),
                         participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
@@ -400,7 +400,7 @@ object TestClazzEventResults {
     }
 
     object Lscc2019Simplified {
-        val points1: GroupEventResults = GroupEventResults(
+        val points1: ClazzEventResults = ClazzEventResults(
             type = StandardEventResultsTypes.clazz,
             runCount = 5,
             groupParticipantResults = sortedMapOf(
@@ -738,7 +738,7 @@ object TestClazzEventResults {
                 )
             ),
             parentClassTopTimes = listOf(
-                GroupEventResults.ParentClassTopTime(
+                ClazzEventResults.ParentClassTopTime(
                     parent = TestClasses.Lscc2019.STREET,
                     participantResult = testParticipantResult(
                         position = 1,
@@ -787,7 +787,7 @@ object TestClazzEventResults {
                         diffPrevious = null
                     )
                 ),
-                GroupEventResults.ParentClassTopTime(
+                ClazzEventResults.ParentClassTopTime(
                     parent = TestClasses.Lscc2019.STREET_TOURING,
                     participantResult = testParticipantResult(
                         position = 2,
@@ -831,7 +831,7 @@ object TestClazzEventResults {
                         diffPrevious = Time("1.401")
                     )
                 ),
-                GroupEventResults.ParentClassTopTime(
+                ClazzEventResults.ParentClassTopTime(
                     parent = TestClasses.Lscc2019.NOVICE,
                     participantResult = testParticipantResult(
                         position = 4,
@@ -881,9 +881,9 @@ object TestClazzEventResults {
     }
 
     object LsccTieBreaking {
-        val points1: List<GroupEventResults>
+        val points1: List<ClazzEventResults>
             get() = listOf(
-                GroupEventResults(
+                ClazzEventResults(
                     type = StandardEventResultsTypes.clazz,
                     groupParticipantResults = sortedMapOf(
                         TestClasses.Lscc2019.HS to listOf(
@@ -911,16 +911,16 @@ object TestClazzEventResults {
                     ),
                     runCount = 1,
                     parentClassTopTimes = listOf(
-                        GroupEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
+                        ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
                             position = 1,
                             participant = TestParticipants.LsccTieBreaking.REBECCA_JACKSON
                         )
                     ))
                 )
             )
-        val points2: List<GroupEventResults>
+        val points2: List<ClazzEventResults>
             get() = listOf(
-                GroupEventResults(
+                ClazzEventResults(
                     type = StandardEventResultsTypes.clazz,
                     groupParticipantResults = sortedMapOf(
                         TestClasses.Lscc2019.HS to listOf(
@@ -948,7 +948,7 @@ object TestClazzEventResults {
                     ),
                     runCount = 1,
                     parentClassTopTimes = listOf(
-                        GroupEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
+                        ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
                             position = 1,
                             participant = TestParticipants.LsccTieBreaking.JIMMY_MCKENZIE
                         )

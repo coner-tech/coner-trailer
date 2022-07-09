@@ -4,12 +4,12 @@ import tech.coner.trailer.EventContext
 
 abstract class OverallEventResultsCalculator(
     private val type: EventResultsType,
-    scoredRunsComparatorFactory: (EventContext) -> ParticipantResult.ScoredRunsComparator,
+    scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     runEligibilityQualifier: RunEligibilityQualifier,
     runScoreFactory: RunScoreFactory,
     finalScoreFactory: FinalScoreFactory
 ) : AbstractEventResultsCalculator<OverallEventResults>(
-    scoredRunsComparatorFactory = scoredRunsComparatorFactory,
+    scoredRunsComparator = scoredRunsComparator,
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
     finalScoreFactory = finalScoreFactory

@@ -1,6 +1,7 @@
-package tech.coner.trailer
+package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.eventresults.Score
+import tech.coner.trailer.Policy
+import tech.coner.trailer.Run
 import java.math.BigDecimal
 
 class StandardPenaltyFactory(

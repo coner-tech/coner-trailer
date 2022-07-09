@@ -2,15 +2,15 @@ package tech.coner.trailer.render.html
 
 import kotlinx.html.*
 import tech.coner.trailer.Event
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.render.GroupEventResultsRenderer
 
 class HtmlGroupEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>
-) : HtmlEventResultsRenderer<GroupEventResults>(columns),
+) : HtmlEventResultsRenderer<ClazzEventResults>(columns),
     GroupEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
-    override fun partial(event: Event, results: GroupEventResults): HtmlBlockTag.() -> Unit = {
+    override fun partial(event: Event, results: ClazzEventResults): HtmlBlockTag.() -> Unit = {
         section {
             classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
             table {

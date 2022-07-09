@@ -1,5 +1,5 @@
 package tech.coner.trailer.render
 
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 
-interface GroupEventResultsRenderer<FO, PO> : EventResultsRenderer<GroupEventResults, FO, PO>
+interface GroupEventResultsRenderer<FO, PO> : EventResultsRenderer<ClazzEventResults, FO, PO>

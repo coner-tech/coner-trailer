@@ -22,7 +22,7 @@ class IndividualEventResultsFactoryTest {
                 TestOverallRawEventResults.Lscc2019Simplified.points1,
                 TestOverallPaxEventResults.Lscc2019Simplified.points1
             ),
-            groupEventResults = listOf(
+            clazzEventResults = listOf(
                 TestClazzEventResults.Lscc2019Simplified.points1
             )
         )

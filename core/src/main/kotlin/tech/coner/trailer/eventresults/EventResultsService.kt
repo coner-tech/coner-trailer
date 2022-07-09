@@ -11,8 +11,8 @@ interface EventResultsService {
 
     fun buildOverallTypeResults(event: Event, type: EventResultsType): OverallEventResults
 
-    fun buildClassResults(event: Event): GroupEventResults
+    fun buildClassResults(event: Event): ClazzEventResults
 
-    fun buildGroupTypeResults(event: Event, type: EventResultsType): GroupEventResults
+    fun buildGroupTypeResults(event: Event, type: EventResultsType): ClazzEventResults
 
 }

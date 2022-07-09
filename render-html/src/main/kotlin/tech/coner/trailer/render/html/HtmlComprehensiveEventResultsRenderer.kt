@@ -4,7 +4,7 @@ import kotlinx.html.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.eventresults.ComprehensiveEventResults
 import tech.coner.trailer.eventresults.EventResults
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.OverallEventResults
 import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
 
@@ -62,7 +62,7 @@ class HtmlComprehensiveEventResultsRenderer(
             attributes["aria-labelledby"] = "${results.type.key}-tab"
             when (results) {
                 is OverallEventResults -> overallRenderer.partial(event, results).invoke(this)
-                is GroupEventResults -> groupRenderer.partial(event, results).invoke(this)
+                is ClazzEventResults -> groupRenderer.partial(event, results).invoke(this)
                 else -> throw IllegalArgumentException("unable to handle results type: ${results.type.key}")
             }
         }

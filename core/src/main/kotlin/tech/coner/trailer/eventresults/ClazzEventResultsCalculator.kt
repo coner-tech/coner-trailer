@@ -4,28 +4,21 @@ import tech.coner.trailer.Class
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.Participant
 
-class GroupEventResultsCalculator(
-    private val type: EventResultsType,
-    scoredRunsComparatorFactory: (EventContext) -> ParticipantResult.ScoredRunsComparator,
+class ClazzEventResultsCalculator(
+    scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     runEligibilityQualifier: RunEligibilityQualifier,
-    runScoreFactory: GroupedRunScoreFactory,
+    runScoreFactory: ClazzRunScoreFactory,
     finalScoreFactory: FinalScoreFactory,
-) : AbstractEventResultsCalculator<GroupEventResults>(
-    scoredRunsComparatorFactory = scoredRunsComparatorFactory,
+) : AbstractEventResultsCalculator<ClazzEventResults>(
+    scoredRunsComparator = scoredRunsComparator,
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
     finalScoreFactory = finalScoreFactory
 ) {
 
-    init {
-        require(type.clazz == GroupEventResults::class) {
-            "Invalid configuration: type must be for class ${GroupEventResults::class}"
-        }
-    }
-
-    override fun calculate(eventContext: EventContext): GroupEventResults {
-        return GroupEventResults(
-            type = type,
+    override fun calculate(eventContext: EventContext): ClazzEventResults {
+        return ClazzEventResults(
+            type = StandardEventResultsTypes.clazz,
             runCount = eventContext.extendedParameters.runsPerParticipant,
             groupParticipantResults = eventContext.buildParticipantResultsUnranked()
                 .groupBy { it.participant.resultGroup }

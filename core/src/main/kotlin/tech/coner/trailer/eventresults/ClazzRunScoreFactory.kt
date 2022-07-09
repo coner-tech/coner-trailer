@@ -2,7 +2,7 @@ package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Run
 
-class GroupedRunScoreFactory(
+class ClazzRunScoreFactory(
     private val rawTimes: RawTimeRunScoreFactory,
     private val paxTimes: PaxTimeRunScoreFactory
 ) : RunScoreFactory {
@@ -14,5 +14,4 @@ class GroupedRunScoreFactory(
         }
         return factory.score(run)
     }
-
 }

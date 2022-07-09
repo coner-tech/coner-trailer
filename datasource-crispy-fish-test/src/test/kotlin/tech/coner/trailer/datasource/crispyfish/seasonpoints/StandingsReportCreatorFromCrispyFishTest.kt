@@ -64,7 +64,7 @@ class StandingsReportCreatorFromCrispyFishTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
                 eventResultsType = StandardEventResultsTypes.clazz,
                 season = seasonFixture.season,
-                eventToGroupEventResults = competitionGroupedEventResults,
+                eventToClazzEventResults = competitionGroupedEventResults,
                 configuration = TestSeasonPointsCalculatorConfigurations.lscc2019Simplified
         )
 

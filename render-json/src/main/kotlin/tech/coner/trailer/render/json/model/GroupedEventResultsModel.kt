@@ -1,14 +1,14 @@
 package tech.coner.trailer.render.json.model
 
 import tech.coner.trailer.Event
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.render.json.identifier.EventIdentifier
 
 class GroupedEventResultsModel(
     val event: EventIdentifier,
     val results: ResultsModel
 ) {
-    constructor(event: Event, results: GroupEventResults) : this(
+    constructor(event: Event, results: ClazzEventResults) : this(
         event = EventIdentifier(event),
         results = ResultsModel(results)
     )
@@ -19,7 +19,7 @@ class GroupedEventResultsModel(
         val groupParticipantResults: Map<String, List<ParticipantResultModel>>,
         val topTimes: Map<String, ParticipantResultModel>
     ) {
-        constructor(results: GroupEventResults) : this(
+        constructor(results: ClazzEventResults) : this(
             type = results.type.key,
             runCount = results.runCount,
             groupParticipantResults = results.groupParticipantResults

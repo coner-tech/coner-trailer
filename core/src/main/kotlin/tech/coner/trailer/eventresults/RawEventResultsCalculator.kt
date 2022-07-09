@@ -1,15 +1,13 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.EventContext
-
 class RawEventResultsCalculator(
-    scoredRunsComparatorFactory: (EventContext) -> ParticipantResult.ScoredRunsComparator,
+    scoredRunsComparatorFactory: ParticipantResult.ScoredRunsComparator,
     runEligibilityQualifier: RunEligibilityQualifier,
     runScoreFactory: RawTimeRunScoreFactory,
     finalScoreFactory: FinalScoreFactory
 ) : OverallEventResultsCalculator(
     type = StandardEventResultsTypes.raw,
-    scoredRunsComparatorFactory = scoredRunsComparatorFactory,
+    scoredRunsComparator = scoredRunsComparatorFactory,
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
     finalScoreFactory = finalScoreFactory

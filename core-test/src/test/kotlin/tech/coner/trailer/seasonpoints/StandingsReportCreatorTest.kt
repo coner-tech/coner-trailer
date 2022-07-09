@@ -24,8 +24,8 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.clazz,
             season = TestSeasons.lscc2019,
-            eventToGroupEventResults = mapOf(
-                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.groupEventResults.single()
+            eventToClazzEventResults = mapOf(
+                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.clazzEventResults.single()
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
@@ -54,9 +54,9 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.clazz,
             season = TestSeasons.lscc2019,
-            eventToGroupEventResults = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.groupEventResults.single(),
-                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.groupEventResults.single()
+            eventToClazzEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.clazzEventResults.single(),
+                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.clazzEventResults.single()
 
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
@@ -103,8 +103,8 @@ class StandingsReportCreatorTest {
         val param = StandingsReportCreator.CreateGroupedStandingsSectionsParameters(
             eventResultsType = StandardEventResultsTypes.clazz,
             season = TestSeasons.lscc2019,
-            eventToGroupEventResults = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to GroupEventResults(
+            eventToClazzEventResults = mapOf(
+                TestSeasonEvents.LsccTieBreaking.points1 to ClazzEventResults(
                     type = StandardEventResultsTypes.clazz,
                     groupParticipantResults = sortedMapOf(
                         TestClasses.Lscc2019.HS to listOf(

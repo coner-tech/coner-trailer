@@ -19,7 +19,7 @@ object TestComprehensiveEventResults {
                         runCount = 5
                     )
                 ),
-                groupEventResults = TestClazzEventResults.Lscc2019.points1
+                clazzEventResults = TestClazzEventResults.Lscc2019.points1
             )
     }
 
@@ -39,7 +39,7 @@ object TestComprehensiveEventResults {
                         runCount = 1
                     )
                 ),
-                groupEventResults = TestClazzEventResults.LsccTieBreaking.points1
+                clazzEventResults = TestClazzEventResults.LsccTieBreaking.points1
             )
         val points2: ComprehensiveEventResults get() = ComprehensiveEventResults(
             runCount = 1,
@@ -55,7 +55,7 @@ object TestComprehensiveEventResults {
                     runCount = 1
                 )
             ),
-            groupEventResults = TestClazzEventResults.LsccTieBreaking.points2
+            clazzEventResults = TestClazzEventResults.LsccTieBreaking.points2
         )
     }
 }

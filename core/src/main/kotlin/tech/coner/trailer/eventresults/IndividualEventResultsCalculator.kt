@@ -10,7 +10,7 @@ class IndividualEventResultsCalculator(
     override fun calculate(eventContext: EventContext): IndividualEventResults {
         val comprehensiveEventResults = comprehensiveEventResultsCalculator.calculate(eventContext)
         val overallEventResults = comprehensiveEventResults.overallEventResults
-        val groupEventResults = comprehensiveEventResults.groupEventResults
+        val groupEventResults = comprehensiveEventResults.clazzEventResults
         val participants = overallEventResults.first().participantResults.map { it.participant }
         val allEventResults = mutableListOf<EventResults>().apply {
             addAll(overallEventResults)
@@ -24,7 +24,7 @@ class IndividualEventResultsCalculator(
                     allEventResults.associate { eventResults ->
                         eventResults.type to when (eventResults) {
                             is OverallEventResults -> eventResults.participantResults.single { it.participant == participant }
-                            is GroupEventResults -> {
+                            is ClazzEventResults -> {
                                 val groupParticipantResults = eventResults.groupParticipantResults.values
                                     .single { participantResults ->
                                         participantResults.any { it.participant == participant }

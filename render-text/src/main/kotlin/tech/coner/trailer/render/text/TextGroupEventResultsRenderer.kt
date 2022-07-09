@@ -4,16 +4,16 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Class
 import tech.coner.trailer.Event
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.render.GroupEventResultsRenderer
 
 class TextGroupEventResultsRenderer(
     columns: List<TextEventResultsColumn>
-) : TextEventResultsRenderer<GroupEventResults>(columns),
+) : TextEventResultsRenderer<ClazzEventResults>(columns),
     GroupEventResultsRenderer<String, () -> String> {
 
-    override fun partial(event: Event, results: GroupEventResults): () -> String = {
+    override fun partial(event: Event, results: ClazzEventResults): () -> String = {
         val sb = StringBuilder()
         for ((group, participantResults) in results.groupParticipantResults) {
             appendGroupResults(results, group, participantResults, sb)
@@ -22,7 +22,7 @@ class TextGroupEventResultsRenderer(
         sb.toString()
     }
 
-    private fun appendGroupResults(results: GroupEventResults, group: Class, participantResults: List<ParticipantResult>, sb: StringBuilder) {
+    private fun appendGroupResults(results: ClazzEventResults, group: Class, participantResults: List<ParticipantResult>, sb: StringBuilder) {
         sb.appendLine(group.name)
         val at = createAsciiTableWithHeaderRow(results)
         for (result in participantResults) {
@@ -32,7 +32,7 @@ class TextGroupEventResultsRenderer(
         sb.appendLine(at.render())
     }
 
-    private fun appendTopTimes(results: GroupEventResults, sb: StringBuilder) {
+    private fun appendTopTimes(results: ClazzEventResults, sb: StringBuilder) {
         sb.appendLine()
         sb.appendLine("Top Times")
         val at = AsciiTable()

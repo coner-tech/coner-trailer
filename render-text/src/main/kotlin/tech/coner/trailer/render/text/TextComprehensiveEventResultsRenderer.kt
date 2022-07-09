@@ -21,7 +21,7 @@ class TextComprehensiveEventResultsRenderer(
                         .replaceFirst(dateLineMatcher, "")
                 )
             }
-            results.groupEventResults.forEach {
+            results.clazzEventResults.forEach {
                 appendLine(
                     groupRenderer.render(event, it)
                         .replaceFirst(nameLineMatcher, "")

@@ -75,7 +75,7 @@ class EventResultsCommand(
         val event = eventService.findById(id)
         val render = when (type.clazz) {
             OverallEventResults::class -> renderOverallType(event, eventResultsService.buildOverallTypeResults(event, type))
-            GroupEventResults::class -> renderGroupType(event, eventResultsService.buildGroupTypeResults(event, type))
+            ClazzEventResults::class -> renderGroupType(event, eventResultsService.buildGroupTypeResults(event, type))
             ComprehensiveEventResults::class -> renderComprehensiveType(event, comprehensiveEventResultsService.build(event))
             IndividualEventResults::class -> renderIndividualType(event, individualEventResultsService.build(event))
             else -> throw UnsupportedOperationException()
@@ -100,7 +100,7 @@ class EventResultsCommand(
         return renderer.render(event, results)
     }
 
-    private fun renderGroupType(event: Event, results: GroupEventResults): String {
+    private fun renderGroupType(event: Event, results: ClazzEventResults): String {
         val factory = di.direct.factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format)
         val renderer = factory(standardEventResultsColumns)
         return renderer.render(event, results)

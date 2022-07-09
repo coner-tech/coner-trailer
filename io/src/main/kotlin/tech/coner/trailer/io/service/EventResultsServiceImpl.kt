@@ -27,11 +27,11 @@ class EventResultsServiceImpl(
         }
     }
 
-    override fun buildClassResults(event: Event): GroupEventResults {
+    override fun buildClassResults(event: Event): ClazzEventResults {
         return buildGroupTypeResults(event, StandardEventResultsTypes.clazz)
     }
 
-    override fun buildGroupTypeResults(event: Event, type: EventResultsType): GroupEventResults {
+    override fun buildGroupTypeResults(event: Event, type: EventResultsType): ClazzEventResults {
         return when (event.policy.authoritativeRunDataSource) {
             Policy.DataSource.CrispyFish -> when (type) {
                 StandardEventResultsTypes.clazz -> crispyFishEventResultsService.buildClassResults(event)

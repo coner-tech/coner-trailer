@@ -45,11 +45,11 @@ class CrispyFishEventResultsServiceImpl(
         }
     }
 
-    override fun buildClassResults(event: Event): GroupEventResults {
+    override fun buildClassResults(event: Event): ClazzEventResults {
         return buildGroupTypeResults(event, StandardEventResultsTypes.clazz)
     }
 
-    override fun buildGroupTypeResults(event: Event, type: EventResultsType): GroupEventResults {
+    override fun buildGroupTypeResults(event: Event, type: EventResultsType): ClazzEventResults {
         val eventCrispyFish = event.requireCrispyFish()
         val factory = when (type) {
             StandardEventResultsTypes.clazz -> groupEventResultsFactory(event.policy)

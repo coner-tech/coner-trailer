@@ -7,7 +7,7 @@ import tech.coner.crispyfish.model.Registration
 import tech.coner.crispyfish.model.Run
 import tech.coner.crispyfish.model.StagingRun
 import tech.coner.trailer.SeasonEvent
-import tech.coner.trailer.StandardPenaltyFactory
+import tech.coner.trailer.eventresults.StandardPenaltyFactory
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
@@ -16,7 +16,7 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTime
 import tech.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
 import tech.coner.trailer.datasource.crispyfish.eventresults.ResultRunMapper
 import tech.coner.trailer.eventresults.AutocrossFinalScoreFactory
-import tech.coner.trailer.eventresults.GroupedRunScoreFactory
+import tech.coner.trailer.eventresults.ClazzRunScoreFactory
 import tech.coner.trailer.eventresults.RawTimeRunScoreFactory
 import tech.coner.trailer.eventresults.RunEligibilityQualifier
 import java.nio.file.Path
@@ -89,7 +89,7 @@ class EventFixture(
     val standardPenaltyFactory = StandardPenaltyFactory(TestPolicies.lsccV1)
     val rawTimeRunScoreFactory = RawTimeRunScoreFactory(standardPenaltyFactory)
     val paxTimeRunScoreFactory = LegacyBuggedPaxTimeRunScoreFactory(standardPenaltyFactory)
-    val groupedRunScoreFactory = GroupedRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory)
+    val clazzRunScoreFactory = ClazzRunScoreFactory(rawTimeRunScoreFactory, paxTimeRunScoreFactory)
     val autocrossFinalScoreFactory = AutocrossFinalScoreFactory()
     val runEligibilityQualifier = RunEligibilityQualifier()
 
@@ -117,7 +117,7 @@ class EventFixture(
         resultRunMapper = ResultRunMapper(
             cfRunMapper = CrispyFishRunMapper(),
             runEligibilityQualifier = runEligibilityQualifier,
-            runScoreFactory = groupedRunScoreFactory
+            runScoreFactory = clazzRunScoreFactory
         ),
         crispyFishParticipantMapper = crispyFishParticipantMapper,
         crispyFishRunMapper = crispyFishRunMapper,

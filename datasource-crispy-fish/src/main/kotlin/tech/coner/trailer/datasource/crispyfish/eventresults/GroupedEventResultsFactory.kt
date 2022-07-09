@@ -4,10 +4,9 @@ import tech.coner.trailer.Class
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
-import java.util.Collections.addAll
 
 @Deprecated("Removing in favor of core-only event results calculator")
 class GroupedEventResultsFactory(
@@ -20,7 +19,7 @@ class GroupedEventResultsFactory(
         eventCrispyFishMetadata: Event.CrispyFishMetadata,
         allClassesByAbbreviation: Map<String, Class>,
         context: CrispyFishEventMappingContext
-    ) : GroupEventResults {
+    ) : ClazzEventResults {
         val scoredRunsComparator = scoredRunsComparatorProvider(context.runCount)
         val groupResults = context.allRegistrations
             .mapNotNull { registration ->
@@ -63,7 +62,7 @@ class GroupedEventResultsFactory(
 //                    ?: return@mapNotNull null
 //                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
 //            }
-        return GroupEventResults(
+        return ClazzEventResults(
             type = StandardEventResultsTypes.clazz,
             runCount = context.runCount,
             groupParticipantResults = groupResults

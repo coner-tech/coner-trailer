@@ -16,7 +16,7 @@ import tech.coner.trailer.Policy
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.datasource.crispyfish.eventresults.CrispyFishOverallEventResultsFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.IndividualEventResultsCalculator
 import tech.coner.trailer.eventresults.OverallEventResults
 
@@ -90,7 +90,7 @@ class CrispyFishEventResultsServiceImplTest : CoroutineScope {
     @Test
     fun `It should generate class results`() {
         val event = TestEvents.Lscc2019Simplified.points1
-        val classResults: GroupEventResults = mockk()
+        val classResults: ClazzEventResults = mockk()
         arrangeBuildGroupTypeResults(
             toReturn = classResults
         )
@@ -141,7 +141,7 @@ private fun CrispyFishEventResultsServiceImplTest.assertBuildOverallTypeResults(
 }
 
 private fun CrispyFishEventResultsServiceImplTest.arrangeBuildGroupTypeResults(
-    toReturn: GroupEventResults
+    toReturn: ClazzEventResults
 ) {
     every { groupEventResultsFactory(any()) } returns mockGroupEventResultsFactory
     every { crispyFishClassService.loadAllByAbbreviation(

@@ -24,7 +24,7 @@ object StandardEventResultsTypes {
         titleShort = "Class",
         positionColumnHeading = "Class Pos.",
         scoreColumnHeading = "Class Time",
-        clazz = GroupEventResults::class
+        clazz = ClazzEventResults::class
     )
     val topTimes = EventResultsType(
         key = "topTimes",
