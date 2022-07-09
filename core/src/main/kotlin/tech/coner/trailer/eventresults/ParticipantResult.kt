@@ -49,7 +49,6 @@ data class ParticipantResult(
                 when {
                     comparison > 0 -> return 1
                     comparison < 0 -> return -1
-                    comparison == 0 -> continue
                 }
             }
             return 0

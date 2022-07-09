@@ -7,6 +7,7 @@ import tech.coner.trailer.eventresults.OverallEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
 
+@Deprecated("Removing in favor of core-only event results calculator")
 class OverallPaxEventResultsFactory(
     private val participantResultMapper: ParticipantResultMapper,
     private val scoredRunsComparatorProvider: (Int) -> ParticipantResult.ScoredRunsComparator

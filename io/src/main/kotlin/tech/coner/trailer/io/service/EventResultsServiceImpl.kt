@@ -4,6 +4,7 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.eventresults.*
 
+@Deprecated(message = "Preparing to remove in favor of core module EventResultsCalculator")
 class EventResultsServiceImpl(
     private val crispyFishEventResultsService: CrispyFishEventResultsServiceImpl
 ) : EventResultsService {

@@ -8,6 +8,7 @@ import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.CrispyFishEventResultsServiceImpl
 import tech.coner.trailer.io.service.EventResultsServiceImpl
 import org.kodein.di.*
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.StandardPenaltyFactory
 
 val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
@@ -69,6 +70,12 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
     bind { scoped(DataSessionScope).factory { runCount: Int -> ParticipantResult.ScoredRunsComparator(
         runCount = runCount
     ) } }
+    bind {
+        scoped(DataSessionScope).factory { eventContext: EventContext ->
+            factory<Int, ParticipantResult.ScoredRunsComparator>()
+                .invoke(eventContext.extendedParameters.runsPerParticipant)
+        }
+    }
     bind<CrispyFishOverallEventResultsFactory>(StandardEventResultsTypes.raw) { scoped(DataSessionScope).multiton { policy: Policy -> OverallRawEventResultsFactory(
         participantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy),
         scoredRunsComparatorProvider = factory()
@@ -87,7 +94,7 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
             groupEventResultsFactory = factory()
         )
     ) } }
-    bind { scoped(DataSessionScope).singleton { ComprehensiveEventResultsService(
+    bind { scoped(DataSessionScope).singleton { ComprehensiveEventResultsCalculator(
         eventResultsService = instance(),
     ) } }
     bind { scoped(DataSessionScope).singleton { IndividualEventResultsService(
@@ -99,5 +106,5 @@ val eventResultsModule = DI.Module("coner.trailer.io.eventResults") {
         rawTimeParticipantResultMapper = factory<Policy, ParticipantResultMapper>(StandardEventResultsTypes.raw).invoke(policy),
         scoredRunsComparatorProvider = factory()
     ) } }
-    bind { scoped(DataSessionScope).singleton { IndividualEventResultsFactory() } }
+    bind { scoped(DataSessionScope).singleton { IndividualEventResultsCalculator() } }
 }

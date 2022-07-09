@@ -8,6 +8,7 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResults
 import tech.coner.trailer.eventresults.*
 import kotlin.coroutines.CoroutineContext
 
+@Deprecated(message = "Preparing to remove in favor of core module EventResultsCalculator")
 class CrispyFishEventResultsServiceImpl(
     coroutineContext: CoroutineContext,
     private val crispyFishClassService: CrispyFishClassService,

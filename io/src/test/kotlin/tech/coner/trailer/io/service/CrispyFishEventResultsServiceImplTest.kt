@@ -17,9 +17,8 @@ import tech.coner.trailer.TestEvents
 import tech.coner.trailer.datasource.crispyfish.eventresults.CrispyFishOverallEventResultsFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResultsFactory
 import tech.coner.trailer.eventresults.GroupEventResults
-import tech.coner.trailer.eventresults.IndividualEventResultsFactory
+import tech.coner.trailer.eventresults.IndividualEventResultsCalculator
 import tech.coner.trailer.eventresults.OverallEventResults
-import kotlin.coroutines.CoroutineContext
 
 @ExtendWith(MockKExtension::class)
 class CrispyFishEventResultsServiceImplTest : CoroutineScope {
@@ -36,7 +35,7 @@ class CrispyFishEventResultsServiceImplTest : CoroutineScope {
     @MockK lateinit var mockPaxEventResultsFactory: CrispyFishOverallEventResultsFactory
     @MockK lateinit var groupEventResultsFactory: (Policy) -> GroupedEventResultsFactory
     @MockK lateinit var mockGroupEventResultsFactory: GroupedEventResultsFactory
-    @MockK lateinit var individualEventResultsFactory: IndividualEventResultsFactory
+    @MockK lateinit var individualEventResultsFactory: IndividualEventResultsCalculator
 
     @BeforeEach
     fun before() {

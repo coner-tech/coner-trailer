@@ -26,6 +26,14 @@ object StandardEventResultsTypes {
         scoreColumnHeading = "Class Time",
         clazz = GroupEventResults::class
     )
+    val topTimes = EventResultsType(
+        key = "topTimes",
+        title = "Top Times",
+        titleShort = "Top Times",
+        positionColumnHeading = "N/A",
+        scoreColumnHeading = "PAX Time",
+        clazz = TopTimesEventResults::class
+    )
     val comprehensive = EventResultsType(
         key = "comprehensive",
         title = "Comprehensive Results",
@@ -43,8 +51,8 @@ object StandardEventResultsTypes {
         clazz = IndividualEventResults::class
     )
 
-    val all = listOf(raw, pax, clazz, comprehensive, individual)
-    val allForIndividual = all.filterNot { it == individual }
+    val all = listOf(raw, pax, clazz, topTimes, comprehensive, individual)
+    val allForIndividual = listOf(raw, pax, clazz, comprehensive)
 
     fun fromKey(key: String): EventResultsType? {
         return when (key) {

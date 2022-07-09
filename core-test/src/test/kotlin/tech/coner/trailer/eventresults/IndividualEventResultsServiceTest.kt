@@ -16,8 +16,8 @@ class IndividualEventResultsServiceTest {
 
     lateinit var service: IndividualEventResultsService
 
-    @MockK lateinit var comprehensiveEventResultsService: ComprehensiveEventResultsService
-    @MockK lateinit var individualEventResultsFactory: IndividualEventResultsFactory
+    @MockK lateinit var comprehensiveEventResultsService: ComprehensiveEventResultsCalculator
+    @MockK lateinit var individualEventResultsFactory: IndividualEventResultsCalculator
 
     @BeforeEach
     fun before() {

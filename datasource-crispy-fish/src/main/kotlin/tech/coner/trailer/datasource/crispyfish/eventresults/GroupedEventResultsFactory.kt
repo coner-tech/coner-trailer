@@ -7,7 +7,9 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.eventresults.GroupEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
+import java.util.Collections.addAll
 
+@Deprecated("Removing in favor of core-only event results calculator")
 class GroupedEventResultsFactory(
     private val groupParticipantResultMapper: ParticipantResultMapper,
     private val rawTimeParticipantResultMapper: ParticipantResultMapper,
@@ -29,38 +31,38 @@ class GroupedEventResultsFactory(
                     registration = registration
                 )
             }
-        val rawResults = context.allRegistrations
-            .mapNotNull { registration ->
-                rawTimeParticipantResultMapper.toCore(
-                    eventCrispyFishMetadata = eventCrispyFishMetadata,
-                    context = context,
-                    allClassesByAbbreviation = allClassesByAbbreviation,
-                    registration = registration
-                )
-            }
-            .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
-        val groupParentTopTimes = rawResults
-            .groupBy { it.participant.signage?.classing?.group?.parent }
-            .mapNotNull { (parent, participantResults) ->
-                if (parent == null) {
-                    return@mapNotNull null
-                }
-                val topParticipantResult = participantResults.firstOrNull()
-                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
-                    ?: return@mapNotNull null
-                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
-            }
-        val handicapParentTopTimes = rawResults
-            .groupBy { it.participant.signage?.classing?.handicap?.parent }
-            .mapNotNull { (parent, participantResults) ->
-                if (parent == null) {
-                    return@mapNotNull null
-                }
-                val topParticipantResult = participantResults.firstOrNull()
-                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
-                    ?: return@mapNotNull null
-                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
-            }
+//        val rawResults = context.allRegistrations
+//            .mapNotNull { registration ->
+//                rawTimeParticipantResultMapper.toCore(
+//                    eventCrispyFishMetadata = eventCrispyFishMetadata,
+//                    context = context,
+//                    allClassesByAbbreviation = allClassesByAbbreviation,
+//                    registration = registration
+//                )
+//            }
+//            .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
+//        val groupParentTopTimes = rawResults
+//            .groupBy { it.participant.signage?.classing?.group?.parent }
+//            .mapNotNull { (parent, participantResults) ->
+//                if (parent == null) {
+//                    return@mapNotNull null
+//                }
+//                val topParticipantResult = participantResults.firstOrNull()
+//                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
+//                    ?: return@mapNotNull null
+//                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
+//            }
+//        val handicapParentTopTimes = rawResults
+//            .groupBy { it.participant.signage?.classing?.handicap?.parent }
+//            .mapNotNull { (parent, participantResults) ->
+//                if (parent == null) {
+//                    return@mapNotNull null
+//                }
+//                val topParticipantResult = participantResults.firstOrNull()
+//                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
+//                    ?: return@mapNotNull null
+//                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
+//            }
         return GroupEventResults(
             type = StandardEventResultsTypes.clazz,
             runCount = context.runCount,
@@ -78,13 +80,13 @@ class GroupedEventResultsFactory(
                 } }
                 .toMap()
                 .toSortedMap(),
-            parentClassTopTimes = mutableListOf<GroupEventResults.ParentClassTopTime>()
-                .apply {
-                    addAll(handicapParentTopTimes)
-                    addAll(groupParentTopTimes)
-                }
-                .distinct()
-                .sortedWith(compareBy<GroupEventResults.ParentClassTopTime> { it.participantResult.score }.thenBy { it.parent.sort })
+//            parentClassTopTimes = mutableListOf<GroupEventResults.ParentClassTopTime>()
+//                .apply {
+//                    addAll(handicapParentTopTimes)
+//                    addAll(groupParentTopTimes)
+//                }
+//                .distinct()
+//                .sortedWith(compareBy<GroupEventResults.ParentClassTopTime> { it.participantResult.score }.thenBy { it.parent.sort })
         )
     }
 

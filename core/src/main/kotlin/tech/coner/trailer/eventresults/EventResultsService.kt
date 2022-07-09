@@ -2,6 +2,7 @@ package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Event
 
+@Deprecated(message = "Preparing to remove in favor of EventResultsCalculator")
 interface EventResultsService {
 
     fun buildRawResults(event: Event): OverallEventResults

@@ -12,6 +12,7 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
 import tech.coner.trailer.eventresults.FinalScoreFactory
 import tech.coner.trailer.eventresults.ParticipantResult
 
+@Deprecated("Removing in favor of core-only event results calculator")
 class ParticipantResultMapper(
     private val resultRunMapper: ResultRunMapper,
     private val finalScoreFactory: FinalScoreFactory,
@@ -50,7 +51,7 @@ class ParticipantResultMapper(
             allRuns = participantCfRuns,
             scoredRuns = scoredRuns,
             personalBestScoredRunIndex = finalScoreFactory.bestRun(scoredRuns)?.let { scoredRuns.indexOf(it) },
-            // positions and diffs are calculated in toCoreRanked after sorting by score
+
             position = Int.MAX_VALUE,
             diffFirst = null,
             diffPrevious = null,

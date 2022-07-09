@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test
 
 class IndividualEventResultsFactoryTest {
 
-    lateinit var subject: IndividualEventResultsFactory
+    lateinit var subject: IndividualEventResultsCalculator
 
     @BeforeEach
     fun before() {
-        subject = IndividualEventResultsFactory()
+        subject = IndividualEventResultsCalculator()
     }
 
     @Test

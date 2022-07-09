@@ -40,7 +40,7 @@ class EventResultsCommand(
     private val eventService: EventService by instance()
     private val eventResultsService: EventResultsService by instance()
     private val individualEventResultsService: IndividualEventResultsService by instance()
-    private val comprehensiveEventResultsService: ComprehensiveEventResultsService by instance()
+    private val comprehensiveEventResultsService: ComprehensiveEventResultsCalculator by instance()
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

@@ -8,6 +8,7 @@ import tech.coner.trailer.eventresults.ResultRun
 import tech.coner.trailer.eventresults.RunEligibilityQualifier
 import tech.coner.trailer.eventresults.RunScoreFactory
 
+@Deprecated("Removing in favor of core-only event results calculator")
 class ResultRunMapper(
     private val cfRunMapper: CrispyFishRunMapper,
     private val runEligibilityQualifier: RunEligibilityQualifier,

@@ -1,12 +1,14 @@
 package tech.coner.trailer.eventresults
 
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.Participant
 
-class IndividualEventResultsFactory {
+class IndividualEventResultsCalculator(
+    private val comprehensiveEventResultsCalculator: ComprehensiveEventResultsCalculator
+) : EventResultsCalculator<IndividualEventResults> {
 
-    fun factory(
-        comprehensiveEventResults: ComprehensiveEventResults
-    ): IndividualEventResults {
+    override fun calculate(eventContext: EventContext): IndividualEventResults {
+        val comprehensiveEventResults = comprehensiveEventResultsCalculator.calculate(eventContext)
         val overallEventResults = comprehensiveEventResults.overallEventResults
         val groupEventResults = comprehensiveEventResults.groupEventResults
         val participants = overallEventResults.first().participantResults.map { it.participant }
