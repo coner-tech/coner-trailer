@@ -21,6 +21,7 @@ class EventContextService(
         val runsAsync = async { runService.list(event).getOrThrow() }
         val extendedParametersAsync = async { eventExtendedParametersService.load(event).getOrThrow() }
         EventContext(
+            event = event,
             classes = classesAsync.await(),
             participants = participantsAsync.await(),
             runs = runsAsync.await(),

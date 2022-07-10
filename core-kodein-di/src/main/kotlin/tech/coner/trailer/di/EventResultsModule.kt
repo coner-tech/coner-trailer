@@ -3,83 +3,87 @@ package tech.coner.trailer.di
 import org.kodein.di.*
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.Policy
-import tech.coner.trailer.eventresults.StandardPenaltyFactory
 import tech.coner.trailer.eventresults.*
 
 private val privateDi = DI.direct {
-    bindFactory { eventContext: EventContext ->
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         ParticipantResult.ScoredRunsComparator(
             runCount = eventContext.extendedParameters.runsPerParticipant
         )
-    }
-    bindSingleton {
-        RunEligibilityQualifier()
-    }
-    bindMultiton { policy: Policy ->
+    } }
+    bind { scoped(EventResultsSessionScope).singleton { RunEligibilityQualifier() } }
+    bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         StandardPenaltyFactory(policy)
-    }
-    bindMultiton { policy: Policy ->
+    } }
+    bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         RawTimeRunScoreFactory(
             penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
         )
-    }
-    bindMultiton { policy: Policy ->
+    } }
+    bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         PaxTimeRunScoreFactory(
             penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
         )
-    }
-    bindMultiton { policy: Policy ->
+    } }
+    bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         ClazzRunScoreFactory(
             rawTimes = factory<Policy, RawTimeRunScoreFactory>().invoke(policy),
             paxTimes = factory<Policy, PaxTimeRunScoreFactory>().invoke(policy)
         )
-    }
-    bindMultiton { policy: Policy ->
+    } }
+    bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         when (policy.finalScoreStyle) {
             FinalScoreStyle.AUTOCROSS -> AutocrossFinalScoreFactory()
             FinalScoreStyle.RALLYCROSS -> RallycrossFinalScoreFactory()
         }
-    }
-    TODO("Introduce an appropriate scope for event results. Multitons by policy might grow excessively and would be retained indefinitely")
+    } }
 }
 
 val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
-    bindFactory { eventContext: EventContext ->
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
+        val privateContextDi = privateDi.on(context)
         RawEventResultsCalculator(
-            scoredRunsComparatorFactory = privateDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
-            runEligibilityQualifier = privateDi.instance(),
-            runScoreFactory = privateDi.factory<Policy, RawTimeRunScoreFactory>().invoke(eventContext.event.policy),
-            finalScoreFactory = privateDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
+            eventContext = eventContext,
+            scoredRunsComparatorFactory = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
+            runEligibilityQualifier = privateContextDi.instance(),
+            runScoreFactory = privateContextDi.factory<Policy, RawTimeRunScoreFactory>().invoke(eventContext.event.policy),
+            finalScoreFactory = privateContextDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
         )
-    }
-    bindFactory { eventContext: EventContext ->
+    } }
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
+        val privateContextDi = privateDi.on(context)
         PaxEventResultsCalculator(
-            scoredRunsComparator = privateDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
-            runEligibilityQualifier = privateDi.instance(),
-            runScoreFactory = privateDi.factory<Policy, PaxTimeRunScoreFactory>().invoke(eventContext.event.policy),
-            finalScoreFactory = privateDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
+            eventContext = eventContext,
+            scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
+            runEligibilityQualifier = privateContextDi.instance(),
+            runScoreFactory = privateContextDi.factory<Policy, PaxTimeRunScoreFactory>().invoke(eventContext.event.policy),
+            finalScoreFactory = privateContextDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
         )
-    }
-    bindFactory { eventContext: EventContext ->
+    } }
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
+        val privateContextDi = privateDi.on(context)
         ClazzEventResultsCalculator(
-            scoredRunsComparator = privateDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
-            runEligibilityQualifier = privateDi.instance(),
-            runScoreFactory = privateDi.factory<EventContext, ClazzRunScoreFactory>().invoke(eventContext),
-            finalScoreFactory = privateDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
+            eventContext = eventContext,
+            scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
+            runEligibilityQualifier = privateContextDi.instance(),
+            runScoreFactory = privateContextDi.factory<Policy, ClazzRunScoreFactory>().invoke(eventContext.event.policy),
+            finalScoreFactory = privateContextDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
         )
-    }
-    bindFactory { eventContext: EventContext ->
+    } }
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         ComprehensiveEventResultsCalculator(
+            eventContext = eventContext,
             overallEventResultsCalculators = listOf(
                 factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
                 factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
             ),
             groupEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext)
         )
-    }
-    bindFactory { eventContext: EventContext ->
+    } }
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         IndividualEventResultsCalculator(
+            eventContext = eventContext,
             comprehensiveEventResultsCalculator = factory<EventContext, ComprehensiveEventResultsCalculator>().invoke(eventContext)
         )
-    }
+    } }
 }

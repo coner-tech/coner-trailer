@@ -25,7 +25,7 @@ class ComprehensiveEventResultsModel(
             type = results.type.key,
             runCount = results.runCount,
             overalls = results.overallEventResults.map { OverallEventResultsModel.ResultsModel(it) },
-            groups = results.clazzEventResults.map { GroupedEventResultsModel.ResultsModel(it) }
+            groups = listOf(GroupedEventResultsModel.ResultsModel(results.clazzEventResults))
         )
     }
 }

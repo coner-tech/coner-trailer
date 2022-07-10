@@ -21,6 +21,7 @@ class TextComprehensiveEventResultsRenderer(
                         .replaceFirst(dateLineMatcher, "")
                 )
             }
+            /*
             results.clazzEventResults.forEach {
                 appendLine(
                     groupRenderer.render(event, it)
@@ -28,6 +29,7 @@ class TextComprehensiveEventResultsRenderer(
                         .replaceFirst(dateLineMatcher, "")
                 )
             }
+             */
         }
     }
 }

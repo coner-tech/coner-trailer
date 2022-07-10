@@ -3,12 +3,14 @@ package tech.coner.trailer.eventresults
 import tech.coner.trailer.EventContext
 
 abstract class OverallEventResultsCalculator(
+    eventContext: EventContext,
     private val type: EventResultsType,
     scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     runEligibilityQualifier: RunEligibilityQualifier,
     runScoreFactory: RunScoreFactory,
     finalScoreFactory: FinalScoreFactory
 ) : AbstractEventResultsCalculator<OverallEventResults>(
+    eventContext = eventContext,
     scoredRunsComparator = scoredRunsComparator,
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
@@ -21,7 +23,7 @@ abstract class OverallEventResultsCalculator(
         }
     }
 
-    override fun calculate(eventContext: EventContext): OverallEventResults {
+    override fun calculate(): OverallEventResults {
         val participantResultsUnranked: List<ParticipantResult> = eventContext.buildParticipantResultsUnranked()
         return OverallEventResults(
             type = type,

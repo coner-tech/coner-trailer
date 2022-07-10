@@ -19,7 +19,7 @@ import tech.coner.trailer.datasource.crispyfish.eventresults.GroupedEventResults
 import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.IndividualEventResultsCalculator
 import tech.coner.trailer.eventresults.OverallEventResults
-
+/*
 @ExtendWith(MockKExtension::class)
 class CrispyFishEventResultsServiceImplTest : CoroutineScope {
 
@@ -154,3 +154,4 @@ private fun CrispyFishEventResultsServiceImplTest.arrangeBuildGroupTypeResults(
         context = any()
     ) } returns toReturn
 }
+*/

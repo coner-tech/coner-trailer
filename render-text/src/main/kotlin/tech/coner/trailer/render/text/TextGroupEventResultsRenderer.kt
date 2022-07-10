@@ -18,7 +18,7 @@ class TextGroupEventResultsRenderer(
         for ((group, participantResults) in results.groupParticipantResults) {
             appendGroupResults(results, group, participantResults, sb)
         }
-        appendTopTimes(results, sb)
+//        appendTopTimes(results, sb)
         sb.toString()
     }
 
@@ -32,6 +32,7 @@ class TextGroupEventResultsRenderer(
         sb.appendLine(at.render())
     }
 
+    /*
     private fun appendTopTimes(results: ClazzEventResults, sb: StringBuilder) {
         sb.appendLine()
         sb.appendLine("Top Times")
@@ -46,4 +47,5 @@ class TextGroupEventResultsRenderer(
         at.addRule()
         sb.appendLine(at.render())
     }
+    */
 }

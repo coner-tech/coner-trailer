@@ -13,12 +13,15 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
+import tech.coner.trailer.di.EventResultsSession
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.eventresults.*
+import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.render.*
@@ -36,11 +39,24 @@ class EventResultsCommand(
     help = "Event Results"
 ) {
 
-    override val diContext = diContextDataSession()
-    private val eventService: EventService by instance()
-    private val eventResultsService: EventResultsService by instance()
-    private val individualEventResultsService: IndividualEventResultsService by instance()
-    private val comprehensiveEventResultsService: ComprehensiveEventResultsCalculator by instance()
+    private val dataSession = object : DIAware {
+        override val di = this@EventResultsCommand.di
+        override val diContext = diContextDataSession()
+
+        val eventService: EventService by instance()
+        val eventContextService: EventContextService by instance()
+    }
+    private val eventResultsSession = object : DIAware {
+        override val di = this@EventResultsCommand.di
+        override val diContext = diContext { EventResultsSession() }
+
+        val rawFactory: (EventContext) -> RawEventResultsCalculator by factory()
+        val paxFactory: (EventContext) -> PaxEventResultsCalculator by factory()
+        val clazzFactory: (EventContext) -> ClazzEventResultsCalculator by factory()
+        val comprehensiveFactory: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
+        val individualFactory: (EventContext) -> IndividualEventResultsCalculator by factory()
+    }
+
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -48,10 +64,10 @@ class EventResultsCommand(
         .choice(StandardEventResultsTypes.all.associateBy { it.key })
         .required()
     private val format: Format by option(help = "Select output format")
-        .switch(
-            "--json" to Format.JSON,
-            "--text" to Format.TEXT,
-            "--html" to Format.HTML
+        .choice(
+            "json" to Format.JSON,
+            "text" to Format.TEXT,
+            "html" to Format.HTML
         )
         .default(Format.JSON)
     sealed class Output(help: String) : OptionGroup(help = help) {
@@ -71,25 +87,46 @@ class EventResultsCommand(
         )
         .defaultByName("--console")
 
-    override suspend fun coRun() = diContext.use {
-        val event = eventService.findById(id)
-        val render = when (type.clazz) {
-            OverallEventResults::class -> renderOverallType(event, eventResultsService.buildOverallTypeResults(event, type))
-            ClazzEventResults::class -> renderGroupType(event, eventResultsService.buildGroupTypeResults(event, type))
-            ComprehensiveEventResults::class -> renderComprehensiveType(event, comprehensiveEventResultsService.build(event))
-            IndividualEventResults::class -> renderIndividualType(event, individualEventResultsService.build(event))
-            else -> throw UnsupportedOperationException()
+    override suspend fun coRun() {
+        val eventContext = dataSession.diContext.use {
+            val event = dataSession.eventService.findById(id)
+            dataSession.eventContextService.load(event).getOrThrow()
         }
-        when (val output = medium) {
-            Output.Console -> echo(render)
-            is Output.File -> {
-                val actualDestination = fileOutputResolver.forEventResults(
-                    event = event,
-                    type = type,
-                    defaultExtension = format.extension,
-                    path = output.output
+        eventResultsSession.diContext.use {
+            val render = when (type) {
+                StandardEventResultsTypes.raw -> renderOverallType(
+                    event = eventContext.event,
+                    results = eventResultsSession.rawFactory(eventContext).calculate()
                 )
-                actualDestination.writeText(render)
+                StandardEventResultsTypes.pax -> renderOverallType(
+                    event = eventContext.event,
+                    results = eventResultsSession.paxFactory(eventContext).calculate()
+                )
+                StandardEventResultsTypes.clazz -> renderGroupType(
+                    event = eventContext.event,
+                    results = eventResultsSession.clazzFactory(eventContext).calculate()
+                )
+                StandardEventResultsTypes.comprehensive -> renderComprehensiveType(
+                    event = eventContext.event,
+                    results = eventResultsSession.comprehensiveFactory(eventContext).calculate()
+                )
+                StandardEventResultsTypes.individual -> renderIndividualType(
+                    event = eventContext.event,
+                    results = eventResultsSession.individualFactory(eventContext).calculate()
+                )
+                else -> throw UnsupportedOperationException()
+            }
+            when (val output = medium) {
+                Output.Console -> echo(render)
+                is Output.File -> {
+                    val actualDestination = fileOutputResolver.forEventResults(
+                        event = eventContext.event,
+                        type = type,
+                        defaultExtension = format.extension,
+                        path = output.output
+                    )
+                    actualDestination.writeText(render)
+                }
             }
         }
     }

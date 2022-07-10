@@ -62,29 +62,29 @@ class HtmlGroupEventResultsRenderer(
                         }
                     }
                 }
-                tbody {
-                    results.parentClassTopTimes.forEach { (group, topParticipantResult) ->
-                        tr {
-                            th {
-                                classes = setOf("category")
-                                scope = ThScope.row
-                                text(group.name)
-                            }
-                            td {
-                                classes = setOf("signage")
-                                text(topParticipantResult.participant.signage?.classingNumber ?: "")
-                            }
-                            td {
-                                classes = setOf("name")
-                                text(renderName(topParticipantResult.participant))
-                            }
-                            td {
-                                classes = setOf("time")
-                                text(topParticipantResult.personalBestRun?.run?.let { render(it) } ?: "")
-                            }
-                        }
-                    }
-                }
+//                tbody {
+//                    results.parentClassTopTimes.forEach { (group, topParticipantResult) ->
+//                        tr {
+//                            th {
+//                                classes = setOf("category")
+//                                scope = ThScope.row
+//                                text(group.name)
+//                            }
+//                            td {
+//                                classes = setOf("signage")
+//                                text(topParticipantResult.participant.signage?.classingNumber ?: "")
+//                            }
+//                            td {
+//                                classes = setOf("name")
+//                                text(renderName(topParticipantResult.participant))
+//                            }
+//                            td {
+//                                classes = setOf("time")
+//                                text(topParticipantResult.personalBestRun?.run?.let { render(it) } ?: "")
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }

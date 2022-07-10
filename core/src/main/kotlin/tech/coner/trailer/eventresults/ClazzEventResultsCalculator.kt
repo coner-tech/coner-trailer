@@ -5,18 +5,20 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.Participant
 
 class ClazzEventResultsCalculator(
+    eventContext: EventContext,
     scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     runEligibilityQualifier: RunEligibilityQualifier,
     runScoreFactory: ClazzRunScoreFactory,
     finalScoreFactory: FinalScoreFactory,
 ) : AbstractEventResultsCalculator<ClazzEventResults>(
+    eventContext = eventContext,
     scoredRunsComparator = scoredRunsComparator,
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
     finalScoreFactory = finalScoreFactory
 ) {
 
-    override fun calculate(eventContext: EventContext): ClazzEventResults {
+    override fun calculate(): ClazzEventResults {
         return ClazzEventResults(
             type = StandardEventResultsTypes.clazz,
             runCount = eventContext.extendedParameters.runsPerParticipant,

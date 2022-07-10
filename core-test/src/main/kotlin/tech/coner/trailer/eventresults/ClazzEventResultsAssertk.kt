@@ -10,8 +10,3 @@ fun Assert<ClazzEventResults>.resultsForGroupAbbreviation(abbreviation: String) 
             map[key]
         }
     }
-
-fun Assert<ClazzEventResults>.parentClassTopTimes() = prop("parentClassTopTimes") { it.parentClassTopTimes }
-
-fun Assert<ClazzEventResults.ParentClassTopTime>.parent() = prop("parent") { it.parent }
-fun Assert<ClazzEventResults.ParentClassTopTime>.participantResult() = prop("participantResult") { it.participantResult }

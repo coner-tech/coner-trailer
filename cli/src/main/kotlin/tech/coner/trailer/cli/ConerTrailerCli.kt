@@ -33,11 +33,11 @@ object ConerTrailerCli {
 
     fun createCommands(): RootCommand {
         val di = DI.from(listOf(
+            eventResultsModule,
             viewModule,
             ioModule,
             databaseModule,
             motorsportRegApiModule,
-            eventResultsModule,
             cliktModule,
             allRendererModule
         ))

@@ -6,6 +6,7 @@ import tech.coner.trailer.Run
 import tech.coner.trailer.Time
 
 abstract class AbstractEventResultsCalculator<ER : EventResults>(
+    protected val eventContext: EventContext,
     protected val scoredRunsComparator: ParticipantResult.ScoredRunsComparator,
     protected val runEligibilityQualifier: RunEligibilityQualifier,
     protected val runScoreFactory: RunScoreFactory,

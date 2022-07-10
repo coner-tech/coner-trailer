@@ -17,7 +17,6 @@ class GroupedEventResultsModel(
         val type: String,
         val runCount: Int,
         val groupParticipantResults: Map<String, List<ParticipantResultModel>>,
-        val topTimes: Map<String, ParticipantResultModel>
     ) {
         constructor(results: ClazzEventResults) : this(
             type = results.type.key,
@@ -27,9 +26,9 @@ class GroupedEventResultsModel(
                     group.abbreviation to results.map { ParticipantResultModel(it) }
                 }
                 .toMap(),
-            topTimes = results.parentClassTopTimes
-                .map { (parent, participantResult) -> parent.name to ParticipantResultModel(participantResult) }
-                .toMap()
+//            topTimes = results.parentClassTopTimes
+//                .map { (parent, participantResult) -> parent.name to ParticipantResultModel(participantResult) }
+//                .toMap()
         )
     }
 }

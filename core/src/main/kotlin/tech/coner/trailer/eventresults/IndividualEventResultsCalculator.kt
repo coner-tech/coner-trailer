@@ -4,17 +4,18 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.Participant
 
 class IndividualEventResultsCalculator(
+    private val eventContext: EventContext,
     private val comprehensiveEventResultsCalculator: ComprehensiveEventResultsCalculator
 ) : EventResultsCalculator<IndividualEventResults> {
 
-    override fun calculate(eventContext: EventContext): IndividualEventResults {
-        val comprehensiveEventResults = comprehensiveEventResultsCalculator.calculate(eventContext)
+    override fun calculate(): IndividualEventResults {
+        val comprehensiveEventResults = comprehensiveEventResultsCalculator.calculate()
         val overallEventResults = comprehensiveEventResults.overallEventResults
-        val groupEventResults = comprehensiveEventResults.clazzEventResults
+        val clazzEventResults = comprehensiveEventResults.clazzEventResults
         val participants = overallEventResults.first().participantResults.map { it.participant }
         val allEventResults = mutableListOf<EventResults>().apply {
             addAll(overallEventResults)
-            addAll(groupEventResults)
+            add(clazzEventResults)
         }
         return IndividualEventResults(
             type = StandardEventResultsTypes.individual,
