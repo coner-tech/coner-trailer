@@ -18,6 +18,7 @@ class IndividualEventResultsCalculator(
             add(clazzEventResults)
         }
         return IndividualEventResults(
+            eventContext = eventContext,
             type = StandardEventResultsTypes.individual,
             runCount = overallEventResults.first().runCount,
             allByParticipant = participants

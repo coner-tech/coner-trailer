@@ -9,6 +9,7 @@ object TestClazzEventResults {
         private val policy = TestPolicies.lsccV1
 
         val points1 = ClazzEventResults(
+            eventContext = TestEventContexts.Lscc2019Points1Simplified,
             type = StandardEventResultsTypes.clazz,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.NOV to listOf(

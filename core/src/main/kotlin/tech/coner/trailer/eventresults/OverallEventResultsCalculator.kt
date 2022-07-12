@@ -26,6 +26,7 @@ abstract class OverallEventResultsCalculator(
     override fun calculate(): OverallEventResults {
         val participantResultsUnranked: List<ParticipantResult> = eventContext.buildParticipantResultsUnranked()
         return OverallEventResults(
+            eventContext = eventContext,
             type = type,
             runCount = eventContext.extendedParameters.runsPerParticipant,
             participantResults = participantResultsUnranked.toRanked()

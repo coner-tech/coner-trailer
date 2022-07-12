@@ -25,7 +25,7 @@ class StandingsReportCreatorTest {
             eventResultsType = StandardEventResultsTypes.clazz,
             season = TestSeasons.lscc2019,
             eventToClazzEventResults = mapOf(
-                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.clazzEventResults.single()
+                TestSeasonEvents.Lscc2019.points1 to TestComprehensiveEventResults.Lscc2019.points1.clazzEventResults
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
         )
@@ -55,8 +55,8 @@ class StandingsReportCreatorTest {
             eventResultsType = StandardEventResultsTypes.clazz,
             season = TestSeasons.lscc2019,
             eventToClazzEventResults = mapOf(
-                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.clazzEventResults.single(),
-                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.clazzEventResults.single()
+                TestSeasonEvents.LsccTieBreaking.points1 to TestComprehensiveEventResults.LsccTieBreaking.points1.clazzEventResults,
+                TestSeasonEvents.LsccTieBreaking.points2 to TestComprehensiveEventResults.LsccTieBreaking.points2.clazzEventResults
 
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019
@@ -144,8 +144,7 @@ class StandingsReportCreatorTest {
                             )
                         )
                     ),
-                    runCount = 2,
-                    parentClassTopTimes = emptyList()
+                    runCount = 2
                 )
             ),
             configuration = TestSeasonPointsCalculatorConfigurations.lscc2019

@@ -20,6 +20,7 @@ class ClazzEventResultsCalculator(
 
     override fun calculate(): ClazzEventResults {
         return ClazzEventResults(
+            eventContext = eventContext,
             type = StandardEventResultsTypes.clazz,
             runCount = eventContext.extendedParameters.runsPerParticipant,
             groupParticipantResults = eventContext.buildParticipantResultsUnranked()

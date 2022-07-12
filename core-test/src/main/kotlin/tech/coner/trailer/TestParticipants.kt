@@ -98,6 +98,18 @@ object TestParticipants {
                 )
             )
         }
+        val all: List<Participant> by lazy {
+            listOf(
+                NORMAN_ROBINSON,
+                TERI_POTTER,
+                EUGENE_DRAKE,
+                JIMMY_MCKENZIE,
+                REBECCA_JACKSON,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS
+            )
+        }
     }
 
     object Lscc2019Points1Simplified {
@@ -150,6 +162,17 @@ object TestParticipants {
             number = "18",
             car = Car(model = "2002 Mazda Miata", color = "Blue")
         ) }
+        val all: List<Participant> by lazy {
+            listOf(
+                ANASTASIA_RIGLER,
+                REBECCA_JACKSON,
+                EUGENE_DRAKE,
+                JIMMY_MCKENZIE,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS
+            )
+        }
     }
 
     object Lscc2019Points2Simplified {
