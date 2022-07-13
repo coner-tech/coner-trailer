@@ -43,4 +43,20 @@ object TestRuns {
             testRun(35, participants.DOMINIC_ROGERS, Time("52.447"))
         )
     }
+
+    val lsccTieBreakingPoints1 by lazy {
+        val participants = TestParticipants.LsccTieBreaking
+        listOf(
+            testRun(
+                sequence = 1,
+                participant = participants.TERI_POTTER.copy(seasonPointsEligible = false),
+                time = Time("45.678")
+            ),
+            testRun(
+                sequence = 2,
+                participant = participants.REBECCA_JACKSON,
+                time = Time("56.789")
+            )
+        )
+    }
 }

@@ -340,6 +340,15 @@ object TestParticipants {
                 )
             )
         }
+        val all: List<Participant> by lazy {
+            listOf(
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE,
+                EUGENE_DRAKE,
+                TERI_POTTER,
+                HARRY_WEBSTER
+            )
+        }
     }
 
     private fun factory(
