@@ -100,6 +100,21 @@ object TestTopTimesEventResults {
         }
     }
 
+    object Lscc2019Simplified {
+
+        val points1 by lazy {
+            TopTimesEventResults(
+                eventContext = TestEventContexts.Lscc2019Simplified.points1,
+                topTimes = sortedMapOf(
+                    TestClasses.Lscc2019.STREET to TestOverallPaxEventResults.Lscc2019Simplified.points1
+                        .participantResults.single { it.participant == TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF },
+                    TestClasses.Lscc2019.STREET_TOURING to TestOverallPaxEventResults.Lscc2019Simplified.points1
+                        .participantResults.single { it.participant == TestParticipants.Lscc2019Points1Simplified.EUGENE_DRAKE }
+                )
+            )
+        }
+    }
+
     object LsccTieBreaking {
         val points1 = TopTimesEventResults(
             eventContext = TestEventContexts.LsccTieBreaking.points1,

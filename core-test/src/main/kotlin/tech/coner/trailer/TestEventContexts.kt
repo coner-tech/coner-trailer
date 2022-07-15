@@ -8,8 +8,10 @@ object TestEventContexts {
                 event = TestEvents.Lscc2019.points1,
                 classes = TestClasses.Lscc2019.all,
                 participants = TestParticipants.Lscc2019Points1Simplified.all,
-                runs = TODO(),
-                extendedParameters = TODO()
+                runs = emptyList(), // not relevant to test
+                extendedParameters = EventExtendedParameters(
+                    runsPerParticipant = 5
+                )
             )
         }
     }
@@ -20,7 +22,7 @@ object TestEventContexts {
                 event = TestEvents.Lscc2019Simplified.points1,
                 classes = TestClasses.Lscc2019.all,
                 participants = TestParticipants.Lscc2019Points1Simplified.all,
-                runs = TestRuns.lscc2019Points1Simplified,
+                runs = TestRuns.Lscc2019Simplified.points1,
                 extendedParameters = EventExtendedParameters(runsPerParticipant = 5)
             )
         }
@@ -41,7 +43,7 @@ object TestEventContexts {
                 event = TestEvents.Lscc2019.points1,
                 classes = TestClasses.Lscc2019.all,
                 participants = TestParticipants.LsccTieBreaking.all,
-                runs = TestRuns.lsccTieBreakingPoints1,
+                runs = TestRuns.LsccTieBreaking.points1,
                 extendedParameters = EventExtendedParameters(
                     runsPerParticipant = 1
                 )
@@ -50,7 +52,7 @@ object TestEventContexts {
         val points2: EventContext by lazy {
             points1.copy(
                 event = TestEvents.Lscc2019.points2,
-                runs = TestRuns.lsccTieBreakingPoints2
+                runs = TestRuns.LsccTieBreaking.points2
             )
         }
     }

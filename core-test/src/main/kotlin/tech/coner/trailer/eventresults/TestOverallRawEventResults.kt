@@ -11,7 +11,6 @@ object TestOverallRawEventResults {
         val points1: OverallEventResults = OverallEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.raw,
-            runCount = 5,
             participantResults = listOf(
                 testParticipantResult(
                     position = 1,

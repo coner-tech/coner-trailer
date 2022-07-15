@@ -18,8 +18,6 @@ object TestIndividualEventResults {
             val clazzResults = TestClazzEventResults.Lscc2019Simplified.points1
             IndividualEventResults(
                 eventContext = TestEventContexts.Lscc2019Simplified.points1,
-                type = StandardEventResultsTypes.individual,
-                runCount = 5,
                 allByParticipant = sortedMapOf(
                     comparator = compareBy(Participant::lastName, Participant::firstName, { it.signage?.classingNumber }),
                     participants.ANASTASIA_RIGLER to mapOf(

@@ -10,7 +10,6 @@ object TestOverallPaxEventResults {
         val points1: OverallEventResults = OverallEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.pax,
-            runCount = 5,
             participantResults = listOf(
                 testParticipantResult(
                     position = 1,

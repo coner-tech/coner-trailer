@@ -67,15 +67,15 @@ object TestComprehensiveEventResults {
                 topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points1
             )
         val points2: ComprehensiveEventResults get() = ComprehensiveEventResults(
-            eventContext = TestEventContexts.Lscc2019Simplified.points2,
+            eventContext = TestEventContexts.LsccTieBreaking.points2,
             overallEventResults = listOf(
                 OverallEventResults(
-                    eventContext = TestEventContexts.Lscc2019Simplified.points2,
+                    eventContext = TestEventContexts.LsccTieBreaking.points2,
                     type = StandardEventResultsTypes.raw,
                     participantResults = emptyList(),
                 ),
                 OverallEventResults(
-                    eventContext = TestEventContexts.Lscc2019Simplified.points2,
+                    eventContext = TestEventContexts.LsccTieBreaking.points2,
                     type = StandardEventResultsTypes.pax,
                     participantResults = emptyList(),
                 )
