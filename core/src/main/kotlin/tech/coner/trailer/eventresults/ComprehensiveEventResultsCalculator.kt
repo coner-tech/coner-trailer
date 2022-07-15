@@ -12,8 +12,6 @@ class ComprehensiveEventResultsCalculator(
     override fun calculate(): ComprehensiveEventResults {
         return ComprehensiveEventResults(
             eventContext = eventContext,
-            type = StandardEventResultsTypes.comprehensive,
-            runCount = eventContext.extendedParameters.runsPerParticipant,
             overallEventResults = overallEventResultsCalculators.map { it.calculate() },
             clazzEventResults = groupEventResultsCalculator.calculate(),
             topTimesEventResults = topTimesEventResultsCalculator.calculate()

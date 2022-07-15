@@ -10,7 +10,6 @@ object TestClazzEventResults {
 
         val points1 = ClazzEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
-            type = StandardEventResultsTypes.clazz,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.NOV to listOf(
                     testParticipantResult(
@@ -309,7 +308,6 @@ object TestClazzEventResults {
                     )
                 )
             ),
-            runCount = 5,
         )
 
     }
@@ -317,8 +315,6 @@ object TestClazzEventResults {
     object Lscc2019Simplified {
         val points1: ClazzEventResults = ClazzEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
-            type = StandardEventResultsTypes.clazz,
-            runCount = 5,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.HS to listOf(
                     testParticipantResult(
@@ -800,7 +796,6 @@ object TestClazzEventResults {
         val points1: ClazzEventResults
             get() = ClazzEventResults(
                 eventContext = TestEventContexts.LsccTieBreaking.points1,
-                type = StandardEventResultsTypes.clazz,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(
                         tieBreakingParticipantResult(
@@ -825,18 +820,13 @@ object TestClazzEventResults {
                         )
                     )
                 ),
-                runCount = 1,
                 /*parentClassTopTimes = listOf(
-                    ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
-                        position = 1,
-                        participant = TestParticipants.LsccTieBreaking.REBECCA_JACKSON
-                    )
+                    ClazzEventResults.ParentClassTopTime(
                 ))*/
             )
         val points2: ClazzEventResults
             get() = ClazzEventResults(
                 eventContext = TestEventContexts.LsccTieBreaking.points2,
-                type = StandardEventResultsTypes.clazz,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(
                         tieBreakingParticipantResult(
@@ -861,7 +851,6 @@ object TestClazzEventResults {
                         )
                     )
                 ),
-                runCount = 1,
                 /*parentClassTopTimes = listOf(
                     ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, tieBreakingParticipantResult(
                         position = 1,

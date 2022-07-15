@@ -32,7 +32,6 @@ class TopTimesEventResultsCalculator(
             }
         return TopTimesEventResults(
             eventContext = eventContext,
-            runCount = eventContext.extendedParameters.runsPerParticipant,
             topTimes = mutableListOf<Pair<Class.Parent, ParticipantResult>>()
                 .apply {
                     addAll(handicapParentTopTimes)

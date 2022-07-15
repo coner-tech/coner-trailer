@@ -19,8 +19,6 @@ class IndividualEventResultsCalculator(
         }
         return IndividualEventResults(
             eventContext = eventContext,
-            type = StandardEventResultsTypes.individual,
-            runCount = overallEventResults.first().runCount,
             allByParticipant = participants
                 .associateWith { participant ->
                     allEventResults.associate { eventResults ->

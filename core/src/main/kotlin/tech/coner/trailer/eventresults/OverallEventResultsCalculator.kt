@@ -28,7 +28,6 @@ abstract class OverallEventResultsCalculator(
         return OverallEventResults(
             eventContext = eventContext,
             type = type,
-            runCount = eventContext.extendedParameters.runsPerParticipant,
             participantResults = participantResultsUnranked.toRanked()
         )
     }
