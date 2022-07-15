@@ -1,7 +1,5 @@
 package tech.coner.trailer
 
-import kotlinx.html.InputType
-
 object TestRuns {
     val lscc2019Points1Simplified by lazy {
         val participants = TestParticipants.Lscc2019Points1Simplified
@@ -45,6 +43,22 @@ object TestRuns {
     }
 
     val lsccTieBreakingPoints1 by lazy {
+        val participants = TestParticipants.LsccTieBreaking
+        listOf(
+            testRun(
+                sequence = 1,
+                participant = participants.TERI_POTTER.copy(seasonPointsEligible = false),
+                time = Time("45.678")
+            ),
+            testRun(
+                sequence = 2,
+                participant = participants.REBECCA_JACKSON,
+                time = Time("56.789")
+            )
+        )
+    }
+
+    val lsccTieBreakingPoints2 by lazy {
         val participants = TestParticipants.LsccTieBreaking
         listOf(
             testRun(

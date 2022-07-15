@@ -1,13 +1,14 @@
 package tech.coner.trailer.eventresults
 
-import kotlinx.html.InputType
 import tech.coner.trailer.Run
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.Time
 
 object TestOverallPaxEventResults {
     object Lscc2019Simplified {
         val points1: OverallEventResults = OverallEventResults(
+            eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.pax,
             runCount = 5,
             participantResults = listOf(

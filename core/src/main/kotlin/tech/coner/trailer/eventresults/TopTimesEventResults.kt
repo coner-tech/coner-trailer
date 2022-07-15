@@ -2,10 +2,13 @@ package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Class
 import tech.coner.trailer.EventContext
+import java.util.*
 
 class TopTimesEventResults(
     override val eventContext: EventContext,
-    override val type: EventResultsType = StandardEventResultsTypes.topTimes,
     override val runCount: Int,
-    val topTimes: Map<Class.Parent, ParticipantResult>
-) : EventResults
+    val topTimes: SortedMap<Class.Parent, ParticipantResult>
+) : EventResults {
+
+    override val type = StandardEventResultsTypes.topTimes
+}

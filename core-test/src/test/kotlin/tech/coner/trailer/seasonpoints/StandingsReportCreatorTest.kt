@@ -105,7 +105,7 @@ class StandingsReportCreatorTest {
             season = TestSeasons.lscc2019,
             eventToClazzEventResults = mapOf(
                 TestSeasonEvents.LsccTieBreaking.points1 to ClazzEventResults(
-                    eventContext = TestEventContexts.LsccTieBreakingPoints1,
+                    eventContext = TestEventContexts.lsccTieBreakingPoints1,
                     type = StandardEventResultsTypes.clazz,
                     groupParticipantResults = sortedMapOf(
                         TestClasses.Lscc2019.HS to listOf(

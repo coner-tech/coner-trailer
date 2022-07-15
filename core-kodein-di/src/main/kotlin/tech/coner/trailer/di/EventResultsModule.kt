@@ -71,13 +71,24 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
+        TopTimesEventResultsCalculator(
+            eventContext = eventContext,
+            overallEventResultsCalculator = when (eventContext.event.policy.topTimesEventResultsMethod) {
+                StandardEventResultsTypes.raw -> factory<EventContext, RawEventResultsCalculator>().invoke(eventContext)
+                StandardEventResultsTypes.pax -> factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
+                else -> throw IllegalArgumentException("Unrecognized topTimeStyle for event policy")
+            }
+        )
+    } }
+    bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         ComprehensiveEventResultsCalculator(
             eventContext = eventContext,
             overallEventResultsCalculators = listOf(
                 factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
                 factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
             ),
-            groupEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext)
+            groupEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext),
+            topTimesEventResultsCalculator = factory<EventContext, TopTimesEventResultsCalculator>().invoke(eventContext)
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->

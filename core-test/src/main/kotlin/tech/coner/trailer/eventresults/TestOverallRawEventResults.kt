@@ -1,6 +1,7 @@
 package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Run
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.Time
 import java.math.BigDecimal
@@ -8,6 +9,7 @@ import java.math.BigDecimal
 object TestOverallRawEventResults {
     object Lscc2019Simplified {
         val points1: OverallEventResults = OverallEventResults(
+            eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.raw,
             runCount = 5,
             participantResults = listOf(

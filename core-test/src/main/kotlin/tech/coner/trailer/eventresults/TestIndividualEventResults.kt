@@ -2,6 +2,7 @@ package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Participant
 import tech.coner.trailer.TestClasses
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.clazz
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.pax
@@ -16,6 +17,7 @@ object TestIndividualEventResults {
             val paxResults = TestOverallPaxEventResults.Lscc2019Simplified.points1
             val clazzResults = TestClazzEventResults.Lscc2019Simplified.points1
             IndividualEventResults(
+                eventContext = TestEventContexts.Lscc2019Simplified.points1,
                 type = StandardEventResultsTypes.individual,
                 runCount = 5,
                 allByParticipant = sortedMapOf(

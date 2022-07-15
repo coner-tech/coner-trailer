@@ -9,7 +9,7 @@ object TestClazzEventResults {
         private val policy = TestPolicies.lsccV1
 
         val points1 = ClazzEventResults(
-            eventContext = TestEventContexts.Lscc2019Points1Simplified,
+            eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.clazz,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.NOV to listOf(
@@ -310,96 +310,13 @@ object TestClazzEventResults {
                 )
             ),
             runCount = 5,
-            /*parentClassTopTimes = listOf(
-                ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET, testParticipantResult(
-                    position = 1,
-                    score = Score("48.141"),
-                    participant = TestParticipants.Lscc2019Points1.TERI_POTTER,
-                    runFns = listOf(
-                        { participant -> testRunWithScore(
-                            sequence = 26,
-                            participant = participant,
-                            score = Score("51.026"),
-                            time = Time("51.026")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 27,
-                            participant = participant,
-                            score = Score("49.335"),
-                            time = Time("49.335")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 28,
-                            participant = participant,
-                            score = Score("50.396", Score.Penalty.Cone("2.000", 1)),
-                            time = Time("48.396"),
-                            cones = 1
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 29,
-                            participant = participant,
-                            score = Score("49.208"),
-                            time = Time("49.208")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 30,
-                            participant = participant,
-                            score = Score("48.141"),
-                            time = Time("48.141")
-                        ) }
-                    ),
-                    personalBestScoredRunIndex = 4,
-                    diffFirst = Time("0.379"),
-                    diffPrevious = Time("0.379")
-                )),
-                ClazzEventResults.ParentClassTopTime(TestClasses.Lscc2019.STREET_TOURING, testParticipantResult(
-                    position = 2,
-                    score = Score("47.544"),
-                    participant = TestParticipants.Lscc2019Points1.EUGENE_DRAKE,
-                    runFns = listOf(
-                        { participant -> testRunWithScore(
-                            sequence = 16,
-                            participant = participant,
-                            score = Score("49.367"),
-                            time = Time("49.367")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 17,
-                            participant = participant,
-                            score = Score("49.230"),
-                            time = Time("49.230")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 18,
-                            participant = participant,
-                            score = Score("48.807"),
-                            time = Time("48.807")
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 19,
-                            participant = participant,
-                            score = Score("214748413.573"),
-                            time = Time("49.573"),
-                            didNotFinish = true
-                        ) },
-                        { participant -> testRunWithScore(
-                            sequence = 20,
-                            participant = participant,
-                            score = Score("47.544"),
-                            time = Time("47.544")
-                        ) }
-                    ),
-                    personalBestScoredRunIndex = 4,
-                    diffFirst = Time("1.401"),
-                    diffPrevious = Time("1.401")
-                ))
-            ) */
         )
 
     }
 
     object Lscc2019Simplified {
         val points1: ClazzEventResults = ClazzEventResults(
+            eventContext = TestEventContexts.Lscc2019Simplified.points1,
             type = StandardEventResultsTypes.clazz,
             runCount = 5,
             groupParticipantResults = sortedMapOf(
@@ -882,6 +799,7 @@ object TestClazzEventResults {
     object LsccTieBreaking {
         val points1: ClazzEventResults
             get() = ClazzEventResults(
+                eventContext = TestEventContexts.LsccTieBreaking.points1,
                 type = StandardEventResultsTypes.clazz,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(
@@ -917,6 +835,7 @@ object TestClazzEventResults {
             )
         val points2: ClazzEventResults
             get() = ClazzEventResults(
+                eventContext = TestEventContexts.LsccTieBreaking.points2,
                 type = StandardEventResultsTypes.clazz,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(

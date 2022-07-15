@@ -30,39 +30,9 @@ class GroupedEventResultsFactory(
                     registration = registration
                 )
             }
-//        val rawResults = context.allRegistrations
-//            .mapNotNull { registration ->
-//                rawTimeParticipantResultMapper.toCore(
-//                    eventCrispyFishMetadata = eventCrispyFishMetadata,
-//                    context = context,
-//                    allClassesByAbbreviation = allClassesByAbbreviation,
-//                    registration = registration
-//                )
-//            }
-//            .sortedWith(compareBy(ParticipantResult::score).then(scoredRunsComparator))
-//        val groupParentTopTimes = rawResults
-//            .groupBy { it.participant.signage?.classing?.group?.parent }
-//            .mapNotNull { (parent, participantResults) ->
-//                if (parent == null) {
-//                    return@mapNotNull null
-//                }
-//                val topParticipantResult = participantResults.firstOrNull()
-//                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
-//                    ?: return@mapNotNull null
-//                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
-//            }
-//        val handicapParentTopTimes = rawResults
-//            .groupBy { it.participant.signage?.classing?.handicap?.parent }
-//            .mapNotNull { (parent, participantResults) ->
-//                if (parent == null) {
-//                    return@mapNotNull null
-//                }
-//                val topParticipantResult = participantResults.firstOrNull()
-//                    ?.let { rawTimeParticipantResultMapper.toCoreRanked(participantResults, 0, it) }
-//                    ?: return@mapNotNull null
-//                GroupEventResults.ParentClassTopTime(parent, topParticipantResult)
-//            }
+
         return ClazzEventResults(
+            eventContext =
             type = StandardEventResultsTypes.clazz,
             runCount = context.runCount,
             groupParticipantResults = groupResults

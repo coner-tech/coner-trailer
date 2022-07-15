@@ -5,7 +5,8 @@ import tech.coner.trailer.EventContext
 class ComprehensiveEventResultsCalculator(
     private val eventContext: EventContext,
     private val overallEventResultsCalculators: List<OverallEventResultsCalculator>,
-    private val groupEventResultsCalculator: ClazzEventResultsCalculator
+    private val groupEventResultsCalculator: ClazzEventResultsCalculator,
+    private val topTimesEventResultsCalculator: TopTimesEventResultsCalculator
 ) : EventResultsCalculator<ComprehensiveEventResults> {
 
     override fun calculate(): ComprehensiveEventResults {
@@ -14,7 +15,8 @@ class ComprehensiveEventResultsCalculator(
             type = StandardEventResultsTypes.comprehensive,
             runCount = eventContext.extendedParameters.runsPerParticipant,
             overallEventResults = overallEventResultsCalculators.map { it.calculate() },
-            clazzEventResults = groupEventResultsCalculator.calculate()
+            clazzEventResults = groupEventResultsCalculator.calculate(),
+            topTimesEventResults = topTimesEventResultsCalculator.calculate()
         )
     }
 }
