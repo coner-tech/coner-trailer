@@ -39,7 +39,7 @@ class TopTimesEventResultsCalculator(
                 }
                 .sortedBy { (_, participantResult) -> participantResult.score }
                 .distinctBy { (parent, _) -> parent }
-                .toMap()
+                .associate { it.copy(second = it.second.copy(position = 1)) }
                 .toSortedMap(compareBy(Class.Parent::sort))
         )
     }

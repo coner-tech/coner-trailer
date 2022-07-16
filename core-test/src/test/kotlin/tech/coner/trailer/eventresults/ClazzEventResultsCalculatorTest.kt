@@ -123,29 +123,6 @@ class ClazzEventResultsCalculatorTest {
                     }
                 }
             }
-            /*
-            TODO: refactor to TopTimesEventResultsCalculatorTest
-            parentClassTopTimes().all {
-                hasSize(3)
-                index(0).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
-                    participantResult().all {
-                        hasPosition(1)
-                        participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.EUGENE_DRAKE)
-                    }
-                }
-                index(1).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET)
-                    participantResult().all {
-                        hasPosition(1)
-                        participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
-                    }
-                }
-                index(2).all {
-                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
-                }
-            }*/
         }
     }
 
@@ -247,24 +224,6 @@ class ClazzEventResultsCalculatorTest {
                     }
                 }
             }
-            /*
-            TODO: refactor to TopTimesEventResultsCalculatorTest
-            parentClassTopTimes().all {
-                hasSize(3)
-                index(0).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.REBECCA_JACKSON)
-                }
-                index(1).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
-                }
-                index(2).all {
-                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
-                }
-            }
-            */
         }
     }
 
@@ -382,24 +341,6 @@ class ClazzEventResultsCalculatorTest {
                     }
                 }
             }
-            /*
-            TODO: refactor to TopTimesEventResultsCalculatorTest
-            parentClassTopTimes().all {
-                hasSize(3)
-                index(0).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET_TOURING)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.REBECCA_JACKSON)
-                }
-                index(1).all {
-                    parent().isSameAs(TestClasses.Lscc2019.STREET)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
-                }
-                index(2).all {
-                    parent().isSameAs(TestClasses.Lscc2019.NOVICE)
-                    participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
-                }
-            }
-            */
         }
     }
 
