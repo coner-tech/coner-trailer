@@ -31,8 +31,21 @@ object TestEventContexts {
                 event = TestEvents.Lscc2019Simplified.points2,
                 classes = TestClasses.Lscc2019.all,
                 participants = TestParticipants.Lscc2019Points2Simplified.all,
-                runs = TODO(),
-                extendedParameters = TODO()
+                runs = TestRuns.Lscc2019Simplified.points2,
+                extendedParameters = EventExtendedParameters(
+                    runsPerParticipant = 4
+                )
+            )
+        }
+        val points3: EventContext by lazy {
+            EventContext(
+                event = TestEvents.Lscc2019Simplified.points3,
+                classes = TestClasses.Lscc2019.all,
+                participants = TestParticipants.Lscc2019Points3Simplified.all,
+                runs = TestRuns.Lscc2019Simplified.points3,
+                extendedParameters = EventExtendedParameters(
+                    runsPerParticipant = 4
+                )
             )
         }
     }

@@ -12,7 +12,7 @@ import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishRunMapper
-import tech.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
+import tech.coner.trailer.eventresults.LegacyBuggedPaxTimeRunScoreFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
 import tech.coner.trailer.datasource.crispyfish.eventresults.ResultRunMapper
 import tech.coner.trailer.eventresults.AutocrossFinalScoreFactory

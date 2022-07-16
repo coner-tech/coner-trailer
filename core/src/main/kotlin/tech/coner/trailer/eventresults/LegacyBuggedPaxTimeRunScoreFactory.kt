@@ -1,10 +1,8 @@
-package tech.coner.trailer.datasource.crispyfish.eventresults
+package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Run
-import tech.coner.trailer.eventresults.StandardPenaltyFactory
-import tech.coner.trailer.datasource.crispyfish.util.bigdecimal.setScaleWithBuggedCrispyFishRounding
-import tech.coner.trailer.eventresults.PaxTimeRunScoreFactory
-import tech.coner.trailer.eventresults.Score
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * A PaxTimeRunScoreFactory which replicates bugs necessary to match legacy results when recreating them with crispy
@@ -39,5 +37,24 @@ class LegacyBuggedPaxTimeRunScoreFactory(
             penalty = penalty,
             strict = false
         )
+    }
+
+
+    fun BigDecimal.setScaleWithBuggedCrispyFishRounding(): BigDecimal {
+        val roundingMode = if (scale() > 3) {
+            val decimalDigits = toString().substringAfter('.')
+            if (decimalDigits[3] == '9') {
+                if (decimalDigits[4] == '9' || decimalDigits[4] == '8' || decimalDigits[4] == '7') {
+                    RoundingMode.CEILING
+                } else {
+                    RoundingMode.FLOOR
+                }
+            } else {
+                RoundingMode.FLOOR
+            }
+        } else {
+            RoundingMode.FLOOR
+        }
+        return setScale(3, roundingMode)
     }
 }

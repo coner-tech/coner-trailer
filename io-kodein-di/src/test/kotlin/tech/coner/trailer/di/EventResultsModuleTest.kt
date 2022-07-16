@@ -10,7 +10,7 @@ import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestPolicies
-import tech.coner.trailer.datasource.crispyfish.eventresults.LegacyBuggedPaxTimeRunScoreFactory
+import tech.coner.trailer.eventresults.LegacyBuggedPaxTimeRunScoreFactory
 import tech.coner.trailer.datasource.crispyfish.eventresults.ParticipantResultMapper
 import tech.coner.trailer.eventresults.PaxTimeRunScoreFactory
 import tech.coner.trailer.eventresults.PaxTimeStyle

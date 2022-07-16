@@ -1,47 +1,19 @@
-package tech.coner.trailer.datasource.crispyfish.eventresults
+package tech.coner.trailer.eventresults
 
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import tech.coner.trailer.*
-import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.nio.file.Path
+import tech.coner.trailer.*
 
-class GroupEventResultsFactoryTest {
-
-    @TempDir lateinit var fixtureRoot: Path
+class ClazzEventResultsCalculatorTest {
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 1`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event1
-        val allRegistrations = event.registrations()
-        val stagingRuns = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, stagingRuns),
-            staging = stagingRuns,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = GroupedEventResultsFactory(
-            groupParticipantResultMapper = event.groupedParticipantResultMapper,
-            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create class results for LSCC 2019 Simplified Event 1`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        val calculator = createClazzEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.clazz)
@@ -151,6 +123,8 @@ class GroupEventResultsFactoryTest {
                     }
                 }
             }
+            /*
+            TODO: refactor to TopTimesEventResultsCalculatorTest
             parentClassTopTimes().all {
                 hasSize(3)
                 index(0).all {
@@ -171,37 +145,16 @@ class GroupEventResultsFactoryTest {
                     parent().isSameAs(TestClasses.Lscc2019.NOVICE)
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points1Simplified.BRANDY_HUFF)
                 }
-            }
+            }*/
         }
     }
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 2`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event2
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = GroupedEventResultsFactory(
-            groupParticipantResultMapper = event.groupedParticipantResultMapper,
-            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create class results for LSCC 2019 Simplified Event 2`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points2
+        val calculator = createClazzEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.clazz)
@@ -294,6 +247,8 @@ class GroupEventResultsFactoryTest {
                     }
                 }
             }
+            /*
+            TODO: refactor to TopTimesEventResultsCalculatorTest
             parentClassTopTimes().all {
                 hasSize(3)
                 index(0).all {
@@ -309,36 +264,16 @@ class GroupEventResultsFactoryTest {
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points2Simplified.BRANDY_HUFF)
                 }
             }
+            */
         }
     }
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 3`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event3
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = GroupedEventResultsFactory(
-            groupParticipantResultMapper = event.groupedParticipantResultMapper,
-            rawTimeParticipantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create class results for LSCC 2019 Simplified Event 3`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points3
+        val calculator = createClazzEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.clazz)
@@ -447,6 +382,8 @@ class GroupEventResultsFactoryTest {
                     }
                 }
             }
+            /*
+            TODO: refactor to TopTimesEventResultsCalculatorTest
             parentClassTopTimes().all {
                 hasSize(3)
                 index(0).all {
@@ -462,7 +399,26 @@ class GroupEventResultsFactoryTest {
                     participantResult().participant().isEqualTo(TestParticipants.Lscc2019Points3Simplified.BRANDY_HUFF)
                 }
             }
+            */
         }
     }
 
+    private fun createClazzEventResultsCalculator(eventContext: EventContext): ClazzEventResultsCalculator {
+        val standardPenaltyFactory = StandardPenaltyFactory(eventContext.event.policy)
+        return ClazzEventResultsCalculator(
+            eventContext = eventContext,
+            scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
+                runCount = eventContext.extendedParameters.runsPerParticipant
+            ),
+            runEligibilityQualifier = RunEligibilityQualifier(),
+            runScoreFactory = ClazzRunScoreFactory(
+                rawTimes = RawTimeRunScoreFactory(standardPenaltyFactory),
+                paxTimes = when (eventContext.event.policy.paxTimeStyle) {
+                    PaxTimeStyle.FAIR -> PaxTimeRunScoreFactory(standardPenaltyFactory)
+                    PaxTimeStyle.LEGACY_BUGGED -> LegacyBuggedPaxTimeRunScoreFactory(standardPenaltyFactory)
+                }
+            ),
+            finalScoreFactory = AutocrossFinalScoreFactory()
+        )
+    }
 }

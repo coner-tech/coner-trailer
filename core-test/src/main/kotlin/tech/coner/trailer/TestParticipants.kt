@@ -287,6 +287,18 @@ object TestParticipants {
             number = "20",
             car = Car(model = "2003 Honda S2000", color = "Spa Yellow")
         ) }
+        val all: List<Participant> by lazy {
+            listOf(
+                ANASTASIA_RIGLER,
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE,
+                EUGENE_DRAKE,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS,
+                BENNETT_PANTONE
+            )
+        }
     }
 
     object LsccTieBreaking {
