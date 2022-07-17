@@ -1,76 +1,29 @@
-package tech.coner.trailer.datasource.crispyfish.eventresults
+package tech.coner.trailer.eventresults
 
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import tech.coner.trailer.*
-import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.nio.file.Path
+import tech.coner.trailer.*
 
-class OverallRawTimeEventResultsCreatorTest {
-
-    @TempDir lateinit var fixtureRoot: Path
+class RawEventResultsCalculatorTest {
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 1`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event1
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = OverallRawEventResultsFactory(
-            participantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create raw results for LSCC 2019 Simplified Event 1`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        val calculator = createRawEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).isEqualTo(TestOverallRawEventResults.Lscc2019Simplified.points1)
     }
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 2`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event2
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = 4
-        )
-        val subject = OverallRawEventResultsFactory(
-            participantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create raw results for LSCC 2019 Simplified Event 2`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points2
+        val calculator = createRawEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.raw)
@@ -182,33 +135,12 @@ class OverallRawTimeEventResultsCreatorTest {
         }
     }
 
-
     @Test
-    fun `It should create from registration data for LSCC 2019 event 3`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event3
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = OverallRawEventResultsFactory(
-            participantResultMapper = event.rawTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should create raw results for LSCC 2019 Simplified Event 3`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points3
+        val calculator = createRawEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.raw)
@@ -352,5 +284,18 @@ class OverallRawTimeEventResultsCreatorTest {
                 }
             }
         }
+    }
+
+    private fun createRawEventResultsCalculator(eventContext: EventContext): RawEventResultsCalculator {
+        return RawEventResultsCalculator(
+            eventContext = eventContext,
+            scoredRunsComparatorFactory = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
+            runEligibilityQualifier = RunEligibilityQualifier(),
+            runScoreFactory = RawTimeRunScoreFactory(StandardPenaltyFactory(eventContext.event.policy)),
+            finalScoreFactory = when (eventContext.event.policy.finalScoreStyle) {
+                FinalScoreStyle.AUTOCROSS -> AutocrossFinalScoreFactory()
+                FinalScoreStyle.RALLYCROSS -> RallycrossFinalScoreFactory()
+            }
+        )
     }
 }
