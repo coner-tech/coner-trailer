@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.parameters.groups.groupSwitch
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
@@ -39,23 +38,28 @@ class EventResultsCommand(
     help = "Event Results"
 ) {
 
-    private val dataSession = object : DIAware {
-        override val di = this@EventResultsCommand.di
+    internal inner class DataSessionContainer(
+        override val di: DI
+    ) : DIAware {
         override val diContext = diContextDataSession()
 
         val eventService: EventService by instance()
         val eventContextService: EventContextService by instance()
     }
-    private val eventResultsSession = object : DIAware {
-        override val di = this@EventResultsCommand.di
+    internal val dataSessionContainer = DataSessionContainer(di)
+
+    internal inner class EventResultsSessionContainer(
+        override val di: DI
+    ) : DIAware {
         override val diContext = diContext { EventResultsSession() }
 
-        val rawFactory: (EventContext) -> RawEventResultsCalculator by factory()
-        val paxFactory: (EventContext) -> PaxEventResultsCalculator by factory()
-        val clazzFactory: (EventContext) -> ClazzEventResultsCalculator by factory()
-        val comprehensiveFactory: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
-        val individualFactory: (EventContext) -> IndividualEventResultsCalculator by factory()
+        val rawCalculator: (EventContext) -> RawEventResultsCalculator by factory()
+        val paxCalculator: (EventContext) -> PaxEventResultsCalculator by factory()
+        val clazzCalculator: (EventContext) -> ClazzEventResultsCalculator by factory()
+        val comprehensiveCalculator: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
+        val individualCalculator: (EventContext) -> IndividualEventResultsCalculator by factory()
     }
+    internal val eventResultsSessionContainer = EventResultsSessionContainer(di)
 
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -88,31 +92,31 @@ class EventResultsCommand(
         .defaultByName("--console")
 
     override suspend fun coRun() {
-        val eventContext = dataSession.diContext.use {
-            val event = dataSession.eventService.findById(id)
-            dataSession.eventContextService.load(event).getOrThrow()
+        val eventContext = dataSessionContainer.diContext.use {
+            val event = dataSessionContainer.eventService.findById(id)
+            dataSessionContainer.eventContextService.load(event).getOrThrow()
         }
-        eventResultsSession.diContext.use {
+        eventResultsSessionContainer.diContext.use {
             val render = when (type) {
                 StandardEventResultsTypes.raw -> renderOverallType(
                     event = eventContext.event,
-                    results = eventResultsSession.rawFactory(eventContext).calculate()
+                    results = eventResultsSessionContainer.rawCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.pax -> renderOverallType(
                     event = eventContext.event,
-                    results = eventResultsSession.paxFactory(eventContext).calculate()
+                    results = eventResultsSessionContainer.paxCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.clazz -> renderGroupType(
                     event = eventContext.event,
-                    results = eventResultsSession.clazzFactory(eventContext).calculate()
+                    results = eventResultsSessionContainer.clazzCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.comprehensive -> renderComprehensiveType(
                     event = eventContext.event,
-                    results = eventResultsSession.comprehensiveFactory(eventContext).calculate()
+                    results = eventResultsSessionContainer.comprehensiveCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.individual -> renderIndividualType(
                     event = eventContext.event,
-                    results = eventResultsSession.individualFactory(eventContext).calculate()
+                    results = eventResultsSessionContainer.individualCalculator(eventContext).calculate()
                 )
                 else -> throw UnsupportedOperationException()
             }

@@ -108,6 +108,12 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
+            <artifactId>core-kodein-di-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
             <artifactId>api-client-motorsportreg-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

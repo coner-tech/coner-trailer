@@ -5,7 +5,7 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.Policy
 import tech.coner.trailer.eventresults.*
 
-private val privateDi = DI.direct {
+internal val internalEventResultsModule = DI.direct {
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         ParticipantResult.ScoredRunsComparator(
             runCount = eventContext.extendedParameters.runsPerParticipant
@@ -21,9 +21,14 @@ private val privateDi = DI.direct {
         )
     } }
     bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
-        PaxTimeRunScoreFactory(
-            penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
-        )
+        when (policy.paxTimeStyle) {
+            PaxTimeStyle.FAIR -> PaxTimeRunScoreFactory(
+                penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
+            )
+            PaxTimeStyle.LEGACY_BUGGED -> LegacyBuggedPaxTimeRunScoreFactory(
+                penaltyFactory = factory<Policy, StandardPenaltyFactory>().invoke(policy)
+            )
+        }
     } }
     bind { scoped(EventResultsSessionScope).multiton { policy: Policy ->
         ClazzRunScoreFactory(
@@ -41,7 +46,7 @@ private val privateDi = DI.direct {
 
 val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
-        val privateContextDi = privateDi.on(context)
+        val privateContextDi = internalEventResultsModule.on(context)
         RawEventResultsCalculator(
             eventContext = eventContext,
             scoredRunsComparatorFactory = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
@@ -51,7 +56,7 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
-        val privateContextDi = privateDi.on(context)
+        val privateContextDi = internalEventResultsModule.on(context)
         PaxEventResultsCalculator(
             eventContext = eventContext,
             scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
@@ -61,7 +66,7 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
-        val privateContextDi = privateDi.on(context)
+        val privateContextDi = internalEventResultsModule.on(context)
         ClazzEventResultsCalculator(
             eventContext = eventContext,
             scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),

@@ -30,6 +30,11 @@
             <groupId>org.kodein.di</groupId>
             <artifactId>kodein-di-jvm</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>core-kodein-di</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

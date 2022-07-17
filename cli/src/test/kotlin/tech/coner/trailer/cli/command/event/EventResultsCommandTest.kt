@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
@@ -20,11 +21,10 @@ import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.DataSessionScope
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.eventresults.EventResultsService
-import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.eventresults.OverallEventResults
-import tech.coner.trailer.eventresults.StandardEventResultsTypes
+import tech.coner.trailer.di.mockkEventResultsModule
+import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.TestEnvironments
+import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.render.EventResultsColumn
@@ -48,21 +48,26 @@ class EventResultsCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
+        import(mockkEventResultsModule)
         import(mockkDatabaseModule())
-        bind { scoped(DataSessionScope).singleton { eventResultsService } }
-        bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { columns: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
-        bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { columns: List<EventResultsColumn> -> textOverallEventResultsRenderer }
-        bind<OverallEventResultsRenderer<String, *>>(Format.HTML) with multiton { columns: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
-        bind<GroupEventResultsRenderer<String, *>>(Format.JSON) with multiton { columns: List<EventResultsColumn> -> jsonGroupEventResultsRenderer }
-        bind<GroupEventResultsRenderer<String, *>>(Format.TEXT) with multiton { columns: List<EventResultsColumn> -> textGroupEventResultsRenderer }
-        bind<GroupEventResultsRenderer<String, *>>(Format.HTML) with multiton { columns: List<EventResultsColumn> -> htmlGroupEventResultsRenderer }
+        bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
+        bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textOverallEventResultsRenderer }
+        bind<OverallEventResultsRenderer<String, *>>(Format.HTML) with multiton { _: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
+        bind<GroupEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonGroupEventResultsRenderer }
+        bind<GroupEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textGroupEventResultsRenderer }
+        bind<GroupEventResultsRenderer<String, *>>(Format.HTML) with multiton { _: List<EventResultsColumn> -> htmlGroupEventResultsRenderer }
         bind<IndividualEventResultsRenderer<String, *>>(Format.JSON) with instance(jsonIndividualEventResultsRenderer)
+
         bindInstance { fileOutputResolver }
     }
-    override val diContext = diContext { command.diContext.value }
 
     private val eventService: EventService by instance()
-    @MockK lateinit var eventResultsService: EventResultsService
+    private val eventContextService: EventContextService by instance()
+    @MockK lateinit var rawCalculator: RawEventResultsCalculator
+    @MockK lateinit var paxCalculator: PaxEventResultsCalculator
+    @MockK lateinit var clazzCalculator: ClazzEventResultsCalculator
+    @MockK lateinit var comprehensiveCalculator: ComprehensiveEventResultsCalculator
+    @MockK lateinit var individualCalculator: IndividualEventResultsCalculator
     @MockK lateinit var jsonOverallEventResultsRenderer: JsonOverallEventResultsRenderer
     @MockK lateinit var textOverallEventResultsRenderer: TextOverallEventResultsRenderer
     @MockK lateinit var htmlOverallEventResultsRenderer: HtmlOverallEventResultsRenderer
@@ -89,10 +94,12 @@ class EventResultsCommandTest : DIAware {
 
     @Test
     fun `It should print results as json to console`() {
-        val event = TestEvents.Lscc2019.points1
+        val eventContext = TestEventContexts.Lscc2019.points1
+        val event = eventContext.event
         every { eventService.findById(event.id) } returns event
+        coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
-        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
+        every { rawCalculator.calculate() } returns results
         val render = "json"
         every { jsonOverallEventResultsRenderer.render(event, results) } returns render
 
@@ -102,19 +109,22 @@ class EventResultsCommandTest : DIAware {
         ))
 
         assertThat(testConsole.output).isEqualTo(render)
-        verifySequence {
+        coVerifySequence {
             eventService.findById(event.id)
-            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.raw)
+            eventContextService.load(event)
+            rawCalculator.calculate()
             jsonOverallEventResultsRenderer.render(event, results)
         }
     }
 
     @Test
     fun `It should print results as plain text to console`() {
-        val event = TestEvents.Lscc2019.points1
+        val eventContext = TestEventContexts.Lscc2019.points1
+        val event = eventContext.event
         every { eventService.findById(event.id) } returns event
+        coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
-        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
+        every { rawCalculator.calculate() } returns results
         val render = "plain text"
         every { textOverallEventResultsRenderer.render(event, results) } returns render
 
@@ -125,9 +135,10 @@ class EventResultsCommandTest : DIAware {
         ))
 
         assertThat(testConsole.output).isEqualTo(render)
-        verifySequence {
+        coVerifySequence {
             eventService.findById(event.id)
-            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.raw)
+            eventContextService.load(event)
+            rawCalculator.calculate()
             textOverallEventResultsRenderer.render(event, results)
         }
     }
@@ -136,10 +147,12 @@ class EventResultsCommandTest : DIAware {
     fun `It should write results as html to file`(
         @TempDir output: Path
     ) {
-        val event = TestEvents.Lscc2019.points1
+        val eventContext = TestEventContexts.Lscc2019.points1
+        val event = eventContext.event
         every { eventService.findById(event.id) } returns event
+        coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
-        every { eventResultsService.buildOverallTypeResults(any(), any()) } returns results
+        every { paxCalculator.calculate() } returns results
         val render = "<html>"
         every { htmlOverallEventResultsRenderer.render(event, results) } returns render
         val actualDestination = output.resolve("pax.html")
@@ -161,9 +174,10 @@ class EventResultsCommandTest : DIAware {
             assertThat(testConsole.output, "console output").isEmpty()
             assertThat(actualDestination.readText(), "file content").isEqualTo(render)
         }
-        verifySequence {
+        coVerifySequence {
             eventService.findById(event.id)
-            eventResultsService.buildOverallTypeResults(event, StandardEventResultsTypes.pax)
+            eventContextService.load(event)
+            paxCalculator.calculate()
             htmlOverallEventResultsRenderer.render(event, results)
             fileOutputResolver.forEventResults(
                 event = event,

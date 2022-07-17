@@ -9,9 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>core-kodein-di</artifactId>
-
-    <description>Kodein DI bindings for Coner Trailer core module</description>
+    <artifactId>core-kodein-di-test</artifactId>
 
     <properties>
     </properties>
@@ -19,28 +17,13 @@
     <dependencies>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
-            <artifactId>core</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.kodein.di</groupId>
-            <artifactId>kodein-di-jvm</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>tech.coner.trailer</groupId>
-            <artifactId>core-test</artifactId>
+            <artifactId>core-kodein-di</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

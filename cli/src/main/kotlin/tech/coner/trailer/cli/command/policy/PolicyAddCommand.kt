@@ -11,8 +11,10 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
+import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
 import java.util.*
@@ -57,6 +59,12 @@ class PolicyAddCommand(
             "crispy-fish" to Policy.DataSource.CrispyFish
         )
         .default(Policy.DataSource.CrispyFish)
+    private val topTimesEventResultsMethod: EventResultsType by option()
+        .choice(
+            "pax" to StandardEventResultsTypes.pax,
+            "raw" to StandardEventResultsTypes.raw
+        )
+        .default(StandardEventResultsTypes.pax)
 
     override suspend fun coRun() = diContext.use {
         val create = Policy(
@@ -67,7 +75,8 @@ class PolicyAddCommand(
             paxTimeStyle = paxTimeStyle,
             finalScoreStyle = finalScoreStyle,
             authoritativeParticipantDataSource = authoritativeParticipantDataSource,
-            authoritativeRunDataSource = authoritativeRunDataSource
+            authoritativeRunDataSource = authoritativeRunDataSource,
+            topTimesEventResultsMethod = topTimesEventResultsMethod
         )
         service.create(create)
         echo(view.render(create))

@@ -1,14 +1,15 @@
-package tech.coner.trailer.datasource.crispyfish.util.bigdecimal
+package tech.coner.trailer.eventresults
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import tech.coner.trailer.TestPolicies
 import java.math.BigDecimal
 
-class BigDecimalExtensionsTest {
+class LegacyBuggedPaxTimeRunScoreFactoryTest {
 
-    enum class Params(val input: String, val expected: String) {
+    enum class BuggedCrispyFishRoundingParams(val input: String, val expected: String) {
         FLOORED_UPPER_BOUND(input = "30.000969", expected = "30.000"),
         CEILED_LOWER_BOUND(input = "30.000970", expected = "30.001"),
         ROUND_DOWN_HALF(input = "30.000500", expected = "30.000"),
@@ -17,10 +18,13 @@ class BigDecimalExtensionsTest {
 
     @ParameterizedTest
     @EnumSource
-    fun `It should implement known bugged crispy fish rounding`(params: Params) {
+    fun `It should implement known bugged crispy fish rounding`(params: BuggedCrispyFishRoundingParams) {
         val input = BigDecimal(params.input)
+        val factory = LegacyBuggedPaxTimeRunScoreFactory(StandardPenaltyFactory(TestPolicies.lsccV1))
 
-        val actual = input.setScaleWithBuggedCrispyFishRounding()
+        val actual = with (factory) {
+            input.setScaleWithBuggedCrispyFishRounding()
+        }
 
         val expected = BigDecimal(params.expected)
         assertThat(actual, params.name).isEqualTo(expected)
