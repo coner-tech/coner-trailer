@@ -27,8 +27,6 @@ sealed class SeasonFixture(
         val event1 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishClassingMapper = groupingMapper,
-            runCount = 5,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 1",
@@ -58,8 +56,6 @@ sealed class SeasonFixture(
         val event2 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishClassingMapper = groupingMapper,
-            runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 2",
@@ -87,8 +83,6 @@ sealed class SeasonFixture(
         val event3 = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishClassingMapper = groupingMapper,
-            runCount = 4,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "Event 3",
@@ -132,8 +126,6 @@ sealed class SeasonFixture(
         val event = EventFixture(
             seasonFixture = this,
             temp = temp,
-            crispyFishClassingMapper = groupingMapper,
-            runCount = 20,
             coreSeasonEvent = SeasonEvent(
                 event = Event(
                     name = "64-crispy-fish-staging-lines-invalid-signage",

@@ -14,7 +14,7 @@ import tech.coner.trailer.TestParticipants
 class TopTimesEventResultsCalculatorTest {
 
     @Test
-    fun `It should create Top Times event results for LSCC 2019 Simplified Event 1`() {
+    fun `It should calculate Top Times results for LSCC 2019 Simplified Event 1`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val calculator = createTopTimesEventResultsCalculator(eventContext)
 
@@ -40,7 +40,7 @@ class TopTimesEventResultsCalculatorTest {
     }
 
     @Test
-    fun `It should create Top Times event results for LSCC 2019 Simplified Event 2`() {
+    fun `It should calculate Top Times results for LSCC 2019 Simplified Event 2`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points2
         val calculator = createTopTimesEventResultsCalculator(eventContext)
 
@@ -66,7 +66,7 @@ class TopTimesEventResultsCalculatorTest {
     }
 
     @Test
-    fun `It should create Top Times event results for LSCC 2019 Simplified Event 3`() {
+    fun `It should calculate Top Times results for LSCC 2019 Simplified Event 3`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points3
         val calculator = createTopTimesEventResultsCalculator(eventContext)
 

@@ -1,77 +1,29 @@
-package tech.coner.trailer.datasource.crispyfish.eventresults
+package tech.coner.trailer.eventresults
 
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import tech.coner.trailer.*
-import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.eventresults.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.nio.file.Path
+import tech.coner.trailer.*
 
-class OverallPaxTimeEventResultsCreatorTest {
-
-    @TempDir lateinit var fixtureRoot: Path
+class PaxEventResultsCalculatorTest {
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 1`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event1
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = OverallPaxEventResultsFactory(
-            participantResultMapper = event.paxTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should calculate pax results for LSCC 2019 Simplified Event 1`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        val calculator = createPaxEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).isEqualTo(TestOverallPaxEventResults.Lscc2019Simplified.points1)
     }
 
-
     @Test
-    fun `It should create from registration data for LSCC 2019 event 2`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event2
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = OverallPaxEventResultsFactory(
-            participantResultMapper = event.paxTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
+    fun `It should calculate pax results for LSCC 2019 Simplified Event 2`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points2
+        val calculator = createPaxEventResultsCalculator(eventContext)
 
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.pax)
@@ -108,8 +60,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("29.925")
-                    diffFirst().isEqualTo("1.177")
-                    diffPrevious().isEqualTo("1.177")
+                    diffFirst().isEqualTo(Time("1.177"))
+                    diffPrevious().isEqualTo(Time("1.177"))
                 }
                 index(2).all {
                     hasPosition(3)
@@ -125,8 +77,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("30.017")
-                    diffFirst().isEqualTo("1.269")
-                    diffPrevious().isEqualTo("0.092")
+                    diffFirst().isEqualTo(Time("1.269"))
+                    diffPrevious().isEqualTo(Time("0.092"))
                 }
                 index(3).all {
                     hasPosition(4)
@@ -142,8 +94,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("30.409")
-                    diffFirst().isEqualTo("1.661")
-                    diffPrevious().isEqualTo("0.392")
+                    diffFirst().isEqualTo(Time("1.661"))
+                    diffPrevious().isEqualTo(Time("0.392"))
                 }
                 index(4).all {
                     hasPosition(5)
@@ -159,8 +111,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("30.532")
-                    diffFirst().isEqualTo("1.784")
-                    diffPrevious().isEqualTo("0.123")
+                    diffFirst().isEqualTo(Time("1.784"))
+                    diffPrevious().isEqualTo(Time("0.123"))
                 }
                 index(5).all {
                     hasPosition(6)
@@ -184,31 +136,11 @@ class OverallPaxTimeEventResultsCreatorTest {
     }
 
     @Test
-    fun `It should create from registration data for LSCC 2019 event 3`() {
-        val season = SeasonFixture.Lscc2019Simplified(fixtureRoot)
-        val event = season.event3
-        val allRegistrations = event.registrations()
-        val staging = event.stagingRuns(allRegistrations)
-        val context = CrispyFishEventMappingContext(
-            allClassDefinitions = season.classDefinitions,
-            allRegistrations = allRegistrations,
-            allRuns = event.allRuns(allRegistrations, staging),
-            staging = staging,
-            runCount = event.runCount
-        )
-        val scoredRunsComparator = ParticipantResult.ScoredRunsComparator(
-            runCount = event.runCount
-        )
-        val subject = OverallPaxEventResultsFactory(
-            participantResultMapper = event.paxTimeParticipantResultMapper,
-            scoredRunsComparatorProvider = { scoredRunsComparator }
-        )
-
-        val actual = subject.factory(
-            eventCrispyFishMetadata = event.coreSeasonEvent.event.crispyFish!!,
-            allClassesByAbbreviation = TestClasses.Lscc2019.allByAbbreviation,
-            context = context
-        )
+    fun `It should calculate pax results for LSCC 2019 Simplified Event 3`() {
+        val eventContext = TestEventContexts.Lscc2019Simplified.points3
+        val calculator = createPaxEventResultsCalculator(eventContext)
+        
+        val actual = calculator.calculate()
 
         assertThat(actual).all {
             hasType(StandardEventResultsTypes.pax)
@@ -245,8 +177,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("69.253")
-                    diffFirst().isEqualTo("2.700")
-                    diffPrevious().isEqualTo("2.700")
+                    diffFirst().isEqualTo(Time("2.700"))
+                    diffPrevious().isEqualTo(Time("2.700"))
                 }
                 index(2).all {
                     hasPosition(3)
@@ -262,8 +194,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("71.978")
-                    diffFirst().isEqualTo("5.425")
-                    diffPrevious().isEqualTo("2.725")
+                    diffFirst().isEqualTo(Time("5.425"))
+                    diffPrevious().isEqualTo(Time("2.725"))
                 }
                 index(3).all {
                     hasPosition(4)
@@ -279,8 +211,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("72.120")
-                    diffFirst().isEqualTo("5.567")
-                    diffPrevious().isEqualTo("0.142")
+                    diffFirst().isEqualTo(Time("5.567"))
+                    diffPrevious().isEqualTo(Time("0.142"))
                 }
                 index(4).all {
                     hasPosition(5)
@@ -296,8 +228,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("72.964")
-                    diffFirst().isEqualTo("6.411")
-                    diffPrevious().isEqualTo("0.844")
+                    diffFirst().isEqualTo(Time("6.411"))
+                    diffPrevious().isEqualTo(Time("0.844"))
                 }
                 index(5).all {
                     hasPosition(6)
@@ -313,8 +245,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("78.846")
-                    diffFirst().isEqualTo("12.293")
-                    diffPrevious().isEqualTo("5.882")
+                    diffFirst().isEqualTo(Time("12.293"))
+                    diffPrevious().isEqualTo(Time("5.882"))
                 }
                 index(6).all {
                     hasPosition(7)
@@ -330,8 +262,8 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("79.069")
-                    diffFirst().isEqualTo("12.516")
-                    diffPrevious().isEqualTo("0.223")
+                    diffFirst().isEqualTo(Time("12.516"))
+                    diffPrevious().isEqualTo(Time("0.223"))
                 }
                 index(7).all {
                     hasPosition(8)
@@ -347,10 +279,27 @@ class OverallPaxTimeEventResultsCreatorTest {
                         }
                     }
                     score().hasValue("80.614")
-                    diffFirst().isEqualTo("14.061")
-                    diffPrevious().isEqualTo("1.545")
+                    diffFirst().isEqualTo(Time("14.061"))
+                    diffPrevious().isEqualTo(Time("1.545"))
                 }
             }
         }
+    }
+
+    private fun createPaxEventResultsCalculator(eventContext: EventContext): PaxEventResultsCalculator {
+        val standardPenaltyFactory = StandardPenaltyFactory(eventContext.event.policy)
+        return PaxEventResultsCalculator(
+            eventContext = eventContext,
+            scoredRunsComparator = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
+            runEligibilityQualifier = RunEligibilityQualifier(),
+            runScoreFactory = when (eventContext.event.policy.paxTimeStyle) {
+                PaxTimeStyle.FAIR -> PaxTimeRunScoreFactory(standardPenaltyFactory)
+                PaxTimeStyle.LEGACY_BUGGED -> LegacyBuggedPaxTimeRunScoreFactory(standardPenaltyFactory)
+            },
+            finalScoreFactory = when (eventContext.event.policy.finalScoreStyle) {
+                FinalScoreStyle.AUTOCROSS -> AutocrossFinalScoreFactory()
+                FinalScoreStyle.RALLYCROSS -> RallycrossFinalScoreFactory()
+            }
+        )
     }
 }

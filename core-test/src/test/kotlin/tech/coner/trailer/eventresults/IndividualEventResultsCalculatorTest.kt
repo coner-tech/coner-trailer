@@ -19,7 +19,6 @@ class IndividualEventResultsCalculatorTest {
 
     @BeforeEach
     fun before() {
-
         subject = IndividualEventResultsCalculator(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             comprehensiveEventResultsCalculator = comprehensiveEventResultsCalculator
@@ -27,7 +26,7 @@ class IndividualEventResultsCalculatorTest {
     }
 
     @Test
-    fun `It should build individual event results`() {
+    fun `It should calculate individual event results`() {
         val comprehensiveEventResults = ComprehensiveEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             overallEventResults = listOf(

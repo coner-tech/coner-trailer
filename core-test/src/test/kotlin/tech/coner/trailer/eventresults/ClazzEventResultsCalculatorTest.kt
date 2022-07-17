@@ -9,7 +9,7 @@ import tech.coner.trailer.*
 class ClazzEventResultsCalculatorTest {
 
     @Test
-    fun `It should create class results for LSCC 2019 Simplified Event 1`() {
+    fun `It should calculate class results for LSCC 2019 Simplified Event 1`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val calculator = createClazzEventResultsCalculator(eventContext)
 
@@ -127,7 +127,7 @@ class ClazzEventResultsCalculatorTest {
     }
 
     @Test
-    fun `It should create class results for LSCC 2019 Simplified Event 2`() {
+    fun `It should calculate class results for LSCC 2019 Simplified Event 2`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points2
         val calculator = createClazzEventResultsCalculator(eventContext)
 
@@ -228,7 +228,7 @@ class ClazzEventResultsCalculatorTest {
     }
 
     @Test
-    fun `It should create class results for LSCC 2019 Simplified Event 3`() {
+    fun `It should calculate class results for LSCC 2019 Simplified Event 3`() {
         val eventContext = TestEventContexts.Lscc2019Simplified.points3
         val calculator = createClazzEventResultsCalculator(eventContext)
 

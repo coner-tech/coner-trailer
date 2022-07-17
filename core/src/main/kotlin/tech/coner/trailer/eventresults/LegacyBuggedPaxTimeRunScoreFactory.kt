@@ -39,7 +39,6 @@ class LegacyBuggedPaxTimeRunScoreFactory(
         )
     }
 
-
     fun BigDecimal.setScaleWithBuggedCrispyFishRounding(): BigDecimal {
         val roundingMode = if (scale() > 3) {
             val decimalDigits = toString().substringAfter('.')

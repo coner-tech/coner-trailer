@@ -10,6 +10,7 @@ fun testRun(
     rerun: Boolean = false,
 ) = Run(
     sequence = sequence,
+    signage = participant.signage,
     participant = participant,
     time = time,
     cones = cones,
@@ -28,6 +29,7 @@ fun testRun(
     rerun: Boolean = false,
 ) = Run(
     sequence = sequence,
+    signage = participant.signage,
     participant = participant,
     time = Time(timeAsString),
     cones = cones,

@@ -22,7 +22,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.367")
-                            ) to Score("49.367", strict = false)
+                            ) to Score("49.367")
                         },
                         { participant ->
                             Run(
@@ -30,7 +30,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,
                                 participant = participant,
                                 time = Time("49.230")
-                            ) to Score("49.230", strict = false)
+                            ) to Score("49.230")
                         },
                         { participant ->
                             Run(
@@ -38,7 +38,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,
                                 participant = participant,
                                 time = Time("48.807")
-                            ) to Score("48.807", strict = false)
+                            ) to Score("48.807")
                         },
                         { participant ->
                             Run(
@@ -47,7 +47,7 @@ object TestOverallRawEventResults {
                                 participant = participant,
                                 time = Time("49.573"),
                                 didNotFinish = true
-                            ) to Score("${Score.Penalty.DidNotFinish.floor.plus(BigDecimal("49.573"))}", Score.Penalty.DidNotFinish, strict = false)
+                            ) to Score("${Score.Penalty.DidNotFinish.floor.plus(BigDecimal("49.573"))}", Score.Penalty.DidNotFinish)
                         },
                         { participant ->
                             Run(
@@ -55,7 +55,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,
                                 participant = participant,
                                 time = Time("47.544")
-                            ) to Score("47.544", strict = false)
+                            ) to Score("47.544")
                         }
                     ),
                     personalBestScoredRunIndex = 4,
@@ -74,7 +74,7 @@ object TestOverallRawEventResults {
                                 participant = participant,
                                 time = Time("49.419"),
                                 cones = 4
-                            ) to Score("57.419", Score.Penalty.Cone("8.000", 4), strict = false)
+                            ) to Score("57.419", Score.Penalty.Cone("8.000", 4))
                         },
                         { participant ->
                             Run(
@@ -83,7 +83,7 @@ object TestOverallRawEventResults {
                                 participant = participant,
                                 time = Time("49.848"),
                                 cones = 3
-                            ) to Score("55.848", Score.Penalty.Cone("6.000", 3), strict = false)
+                            ) to Score("55.848", Score.Penalty.Cone("6.000", 3))
                         },
                         { participant ->
                             Run(
@@ -91,7 +91,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,
                                 participant = participant,
                                 time = Time("48.515")
-                            ) to Score("48.515", strict = false)
+                            ) to Score("48.515")
                         },
                         { participant ->
                             Run(
@@ -99,14 +99,14 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("49.076"),
                                 cones = 1
-                            ) to Score("51.076", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("51.076", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 25,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("49.436")
-                            ) to Score("49.436", strict = false)
+                            ) to Score("49.436")
                         }
                     ),
                     personalBestScoredRunIndex = 2,
@@ -124,7 +124,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("50.115"),
                                 cones = 2
-                            ) to Score("54.115", Score.Penalty.Cone("4.000", 2), strict = false)
+                            ) to Score("54.115", Score.Penalty.Cone("4.000", 2))
                         },
                         { participant ->
                             Run(
@@ -132,28 +132,28 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("50.162"),
                                 cones = 1
-                            ) to Score("52.162", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("52.162", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 8,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("49.672")
-                            ) to Score("49.672", strict = false)
+                            ) to Score("49.672")
                         },
                         { participant ->
                             Run(
                                 sequence = 9,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("49.992")
-                            ) to Score("49.992", strict = false)
+                            ) to Score("49.992")
                         },
                         { participant ->
                             Run(
                                 sequence = 10,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("48.723")
-                            ) to Score("48.723", strict = false)
+                            ) to Score("48.723")
                         }
                     ),
                     score = Score("48.723"),
@@ -170,7 +170,7 @@ object TestOverallRawEventResults {
                                 sequence = 16,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("53.693")
-                            ) to Score("53.693", strict = false)
+                            ) to Score("53.693")
                         },
                         { participant ->
                             Run(
@@ -178,28 +178,28 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.179"),
                                 cones = 1
-                            ) to Score("54.179", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("54.179", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 18,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.256")
-                            ) to Score("52.256", strict = false)
+                            ) to Score("52.256")
                         },
                         { participant ->
                             Run(
                                 sequence = 19,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("51.323")
-                            ) to Score("51.323", strict = false)
+                            ) to Score("51.323")
                         },
                         { participant ->
                             Run(
                                 sequence = 20,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("51.344")
-                            ) to Score("51.344", strict = false)
+                            ) to Score("51.344")
                         }
                     ),
                     score = Score("51.323"),
@@ -216,35 +216,35 @@ object TestOverallRawEventResults {
                                 sequence = 11,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.749")
-                            ) to Score("52.749", strict = false)
+                            ) to Score("52.749")
                         },
                         { participant ->
                             Run(
                                 sequence = 12,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("53.175")
-                            ) to Score("53.175", strict = false)
+                            ) to Score("53.175")
                         },
                         { participant ->
                             Run(
                                 sequence = 13,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.130")
-                            ) to Score("52.130", strict = false)
+                            ) to Score("52.130")
                         },
                         { participant ->
                             Run(
                                 sequence = 14,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.117")
-                            ) to Score("52.117", strict = false)
+                            ) to Score("52.117")
                         },
                         { participant ->
                             Run(
                                 sequence = 15,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("51.408")
-                            ) to Score("51.408", strict = false)
+                            ) to Score("51.408")
                         }
                     ),
                     score = Score("51.408"),
@@ -262,21 +262,21 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("56.353"),
                                 cones = 1
-                            ) to Score("58.353", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("58.353", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 27,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("55.831")
-                            ) to Score("55.831", strict = false)
+                            ) to Score("55.831")
                         },
                         { participant ->
                             Run(
                                 sequence = 28,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.201")
-                            ) to Score("52.201", strict = false)
+                            ) to Score("52.201")
                         },
                         { participant ->
                             Run(
@@ -284,14 +284,14 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.062"),
                                 cones = 1
-                            ) to Score("54.062", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("54.062", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 30,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("53.074")
-                            ) to Score("53.074", strict = false)
+                            ) to Score("53.074")
                         }
                     ),
                     score = Score("52.201"),
@@ -308,7 +308,7 @@ object TestOverallRawEventResults {
                                 sequence = 31,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("54.246")
-                            ) to Score("54.246", strict = false)
+                            ) to Score("54.246")
                         },
                         { participant ->
                             Run(
@@ -316,7 +316,7 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("53.629"),
                                 cones = 1
-                            ) to Score("55.629", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("55.629", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
@@ -324,21 +324,21 @@ object TestOverallRawEventResults {
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("51.856"),
                                 cones = 1
-                            ) to Score("53.856", Score.Penalty.Cone("2.000", 1), strict = false)
+                            ) to Score("53.856", Score.Penalty.Cone("2.000", 1))
                         },
                         { participant ->
                             Run(
                                 sequence = 34,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("53.409")
-                            ) to Score("53.409", strict = false)
+                            ) to Score("53.409")
                         },
                         { participant ->
                             Run(
                                 sequence = 35,
                                 signage = participant.signage,                                participant = participant,
                                 time = Time("52.447")
-                            ) to Score("52.447", strict = false)
+                            ) to Score("52.447")
                         }
                     ),
                     score = Score("52.447"),

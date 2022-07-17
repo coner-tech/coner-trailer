@@ -11,7 +11,8 @@ open class PaxTimeRunScoreFactory(
         val participantClassing = run.requireParticipantClassing()
         val scratchTime = run.requireTime()
         val penalty = penaltyFactory.penalty(run)
-        val paxTime = (scratchTime.value * (participantClassing.paxFactor ?: BigDecimal.ONE)).setScale(3, RoundingMode.HALF_UP)
+        val paxTime = (scratchTime.value * participantClassing.paxFactor)
+            .setScale(3, RoundingMode.HALF_UP)
         return Score(
             value = penalty?.let { it.floor + paxTime }
                 ?: paxTime,
