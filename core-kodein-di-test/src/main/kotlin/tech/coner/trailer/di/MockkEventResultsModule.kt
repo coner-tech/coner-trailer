@@ -22,9 +22,6 @@ val mockkEventResultsModule = DI.Module("mockk for tech.coner.trailer.eventresul
         mockk<TopTimesEventResultsCalculator>()
     } }
     bind { scoped(EventResultsSessionScope).multiton { _: EventContext ->
-        mockk<ClazzEventResultsCalculator>()
-    } }
-    bind { scoped(EventResultsSessionScope).multiton { _: EventContext ->
         mockk<IndividualEventResultsCalculator>()
     } }
 }
