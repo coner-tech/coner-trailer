@@ -2,16 +2,14 @@ package tech.coner.trailer.render.html
 
 import kotlinx.html.*
 import tech.coner.trailer.Event
-import tech.coner.trailer.eventresults.ComprehensiveEventResults
-import tech.coner.trailer.eventresults.EventResults
-import tech.coner.trailer.eventresults.ClazzEventResults
-import tech.coner.trailer.eventresults.OverallEventResults
+import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
 
 class HtmlComprehensiveEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>,
     private val overallRenderer: HtmlOverallEventResultsRenderer,
-    private val groupRenderer: HtmlClazzEventResultsRenderer
+    private val clazzRenderer: HtmlClazzEventResultsRenderer,
+    private val topTimesRenderer: HtmlTopTimesEventResultsRenderer
 ) : HtmlEventResultsRenderer<ComprehensiveEventResults>(columns),
     ComprehensiveEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
@@ -62,7 +60,8 @@ class HtmlComprehensiveEventResultsRenderer(
             attributes["aria-labelledby"] = "${results.type.key}-tab"
             when (results) {
                 is OverallEventResults -> overallRenderer.partial(event, results).invoke(this)
-                is ClazzEventResults -> groupRenderer.partial(event, results).invoke(this)
+                is ClazzEventResults -> clazzRenderer.partial(event, results).invoke(this)
+                is TopTimesEventResults -> topTimesRenderer.partial(event, results).invoke(this)
                 else -> throw IllegalArgumentException("unable to handle results type: ${results.type.key}")
             }
         }

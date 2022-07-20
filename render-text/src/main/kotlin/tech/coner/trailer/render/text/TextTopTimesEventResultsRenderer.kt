@@ -13,10 +13,14 @@ class TextTopTimesEventResultsRenderer : TextEventResultsRenderer<TopTimesEventR
         val at = AsciiTable()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
-        at.addRow("Category", event.policy.topTimesEventResultsMethod.scoreColumnHeading)
+        at.addRow("Category", "Name", event.policy.topTimesEventResultsMethod.scoreColumnHeading)
         at.addRule()
         results.topTimes.entries.forEach { (classParent, participantResult) ->
-            at.addRow(classParent.name, renderScoreColumnValue(participantResult))
+            at.addRow(
+                classParent.name,
+                renderName(participantResult.participant),
+                renderScoreColumnValue(participantResult)
+            )
         }
         at.addRule()
         at.render()
