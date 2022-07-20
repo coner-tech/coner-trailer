@@ -6,7 +6,8 @@ import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
 
 class TextComprehensiveEventResultsRenderer(
     private val overallRenderer: TextOverallEventResultsRenderer,
-    private val groupRenderer: TextGroupEventResultsRenderer
+    private val clazzRenderer: TextClazzEventResultsRenderer,
+    private val topTimesRenderer: TextTopTimesEventResultsRenderer,
 ) : TextEventResultsRenderer<ComprehensiveEventResults>(emptyList()),
     ComprehensiveEventResultsRenderer<String, () -> String> {
 
@@ -21,15 +22,16 @@ class TextComprehensiveEventResultsRenderer(
                         .replaceFirst(dateLineMatcher, "")
                 )
             }
-            /*
-            results.clazzEventResults.forEach {
-                appendLine(
-                    groupRenderer.render(event, it)
-                        .replaceFirst(nameLineMatcher, "")
-                        .replaceFirst(dateLineMatcher, "")
-                )
-            }
-             */
+            appendLine(
+                clazzRenderer.render(event, results.clazzEventResults)
+                    .replaceFirst(nameLineMatcher, "")
+                    .replaceFirst(dateLineMatcher, "")
+            )
+            appendLine(
+                topTimesRenderer.render(event, results.topTimesEventResults)
+                    .replaceFirst(nameLineMatcher, "")
+                    .replaceFirst(dateLineMatcher, "")
+            )
         }
     }
 }

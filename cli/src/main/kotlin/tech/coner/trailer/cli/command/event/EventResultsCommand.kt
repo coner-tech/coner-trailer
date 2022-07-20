@@ -56,6 +56,7 @@ class EventResultsCommand(
         val rawCalculator: (EventContext) -> RawEventResultsCalculator by factory()
         val paxCalculator: (EventContext) -> PaxEventResultsCalculator by factory()
         val clazzCalculator: (EventContext) -> ClazzEventResultsCalculator by factory()
+        val topTimesCalculator: (EventContext) -> TopTimesEventResultsCalculator by factory()
         val comprehensiveCalculator: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
         val individualCalculator: (EventContext) -> IndividualEventResultsCalculator by factory()
     }
@@ -65,7 +66,7 @@ class EventResultsCommand(
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val type: EventResultsType by option()
-        .choice(StandardEventResultsTypes.all.associateBy { it.key })
+        .choice(StandardEventResultsTypes.all.associateBy { it.key.lowercase() })
         .required()
     private val format: Format by option(help = "Select output format")
         .choice(
@@ -110,6 +111,10 @@ class EventResultsCommand(
                     event = eventContext.event,
                     results = eventResultsSessionContainer.clazzCalculator(eventContext).calculate()
                 )
+                StandardEventResultsTypes.topTimes -> renderTopTimesType(
+                    event = eventContext.event,
+                    results = eventResultsSessionContainer.topTimesCalculator(eventContext).calculate()
+                )
                 StandardEventResultsTypes.comprehensive -> renderComprehensiveType(
                     event = eventContext.event,
                     results = eventResultsSessionContainer.comprehensiveCalculator(eventContext).calculate()
@@ -142,8 +147,13 @@ class EventResultsCommand(
     }
 
     private fun renderGroupType(event: Event, results: ClazzEventResults): String {
-        val factory = di.direct.factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format)
+        val factory = di.direct.factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format)
         val renderer = factory(standardEventResultsColumns)
+        return renderer.render(event, results)
+    }
+
+    private fun renderTopTimesType(event: Event, results: TopTimesEventResults): String {
+        val renderer: TopTimesEventResultsRenderer<String, *> = di.direct.instance(format)
         return renderer.render(event, results)
     }
 

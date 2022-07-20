@@ -11,7 +11,7 @@ import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
 class HtmlComprehensiveEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>,
     private val overallRenderer: HtmlOverallEventResultsRenderer,
-    private val groupRenderer: HtmlGroupEventResultsRenderer
+    private val groupRenderer: HtmlClazzEventResultsRenderer
 ) : HtmlEventResultsRenderer<ComprehensiveEventResults>(columns),
     ComprehensiveEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 

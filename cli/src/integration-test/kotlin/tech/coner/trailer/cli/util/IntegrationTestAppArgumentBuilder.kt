@@ -4,6 +4,7 @@ import tech.coner.trailer.*
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.di.Format
 import java.nio.file.Path
+import java.util.*
 
 
 class IntegrationTestAppArgumentBuilder(
@@ -131,8 +132,8 @@ class IntegrationTestAppArgumentBuilder(
         return build(
             *mutableListOf("event", "results").apply {
                 add("${event.id}")
-                addAll(arrayOf("--type", type.key.toLowerCase()))
-                addAll(format?.let { arrayOf("--${format.name.toLowerCase()}") } ?: emptyArray())
+                addAll(arrayOf("--type", type.key))
+                addAll(format?.let { arrayOf("--format", format.name.lowercase()) } ?: emptyArray())
                 if (output != null) add("--$output")
             }.toTypedArray()
         )

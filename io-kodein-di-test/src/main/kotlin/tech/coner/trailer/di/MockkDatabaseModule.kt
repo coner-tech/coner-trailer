@@ -189,4 +189,9 @@ fun mockkDatabaseModule() = DI.Module("mockk for coner.trailer.io.database") {
         scoped(DataSessionScope).singleton { mockk() }
     }
 
+    // Event Context
+    bind<EventContextService> {
+        scoped(DataSessionScope).singleton { mockk() }
+    }
+
 }

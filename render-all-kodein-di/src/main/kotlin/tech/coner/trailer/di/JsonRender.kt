@@ -9,10 +9,7 @@ import org.kodein.di.bind
 import org.kodein.di.multiton
 import org.kodein.di.singleton
 import tech.coner.trailer.render.*
-import tech.coner.trailer.render.json.JsonComprehensiveEventResultsRenderer
-import tech.coner.trailer.render.json.JsonGroupEventResultsRenderer
-import tech.coner.trailer.render.json.JsonIndividualEventResultsRenderer
-import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
+import tech.coner.trailer.render.json.*
 
 val jsonRenderModule = DI.Module("tech.coner.trailer.render.json") {
     val format = Format.JSON
@@ -22,12 +19,13 @@ val jsonRenderModule = DI.Module("tech.coner.trailer.render.json") {
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build()
     }
-    bind<GroupEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> ->
-        JsonGroupEventResultsRenderer(objectMapper)
+    bind<ClazzEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> ->
+        JsonClazzEventResultsRenderer(objectMapper)
     }
     bind<OverallEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> ->
         JsonOverallEventResultsRenderer(objectMapper)
     }
+    bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { JsonTopTimesEventResultsRenderer(objectMapper) }
     bind<ComprehensiveEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> ->
         JsonComprehensiveEventResultsRenderer(objectMapper)
     }

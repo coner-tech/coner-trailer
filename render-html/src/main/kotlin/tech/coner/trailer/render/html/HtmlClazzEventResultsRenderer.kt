@@ -3,12 +3,12 @@ package tech.coner.trailer.render.html
 import kotlinx.html.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.eventresults.ClazzEventResults
-import tech.coner.trailer.render.GroupEventResultsRenderer
+import tech.coner.trailer.render.ClazzEventResultsRenderer
 
-class HtmlGroupEventResultsRenderer(
+class HtmlClazzEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>
 ) : HtmlEventResultsRenderer<ClazzEventResults>(columns),
-    GroupEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
+    ClazzEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
     override fun partial(event: Event, results: ClazzEventResults): HtmlBlockTag.() -> Unit = {
         section {

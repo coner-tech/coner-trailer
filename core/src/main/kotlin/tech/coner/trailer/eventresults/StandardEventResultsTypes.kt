@@ -27,7 +27,7 @@ object StandardEventResultsTypes {
         clazz = ClazzEventResults::class
     )
     val topTimes = EventResultsType(
-        key = "topTimes",
+        key = "toptimes",
         title = "Top Times",
         titleShort = "Top Times",
         positionColumnHeading = "N/A",
@@ -53,13 +53,9 @@ object StandardEventResultsTypes {
 
     val all = listOf(raw, pax, clazz, topTimes, comprehensive, individual)
     val allForIndividual = listOf(raw, pax, clazz, comprehensive)
+    private val allByKey = all.associateBy { it.key }
 
     fun fromKey(key: String): EventResultsType? {
-        return when (key) {
-            raw.key -> raw
-            pax.key -> pax
-            clazz.key -> clazz
-            else -> null
-        }
+        return allByKey[key]
     }
 }
