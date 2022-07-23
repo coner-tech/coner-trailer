@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
-import tech.coner.trailer.io.util.LifetimeCache
+import tech.coner.trailer.io.util.SimpleCache
 import java.nio.file.Path
 import java.time.Duration
-import kotlin.coroutines.CoroutineContext
 
 class CrispyFishEventMappingContextServiceTest : CoroutineScope {
 
@@ -29,7 +28,7 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
         fixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishEventMappingContextService(
             coroutineContext = coroutineContext + Job(),
-            cache = LifetimeCache(Duration.ofSeconds(1)),
+            cache = SimpleCache(),
             crispyFishDatabase = fixtureRoot,
             loadConstraints = CrispyFishLoadConstraints(fixtureRoot)
         )

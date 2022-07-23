@@ -7,7 +7,7 @@ interface Cache<K, V> {
     /**
      * Get a value by key from cache, or in case of a cache miss, create and associate it with key
      */
-    suspend fun getOrCreate(key: K, create: () -> V): V
+    suspend fun getOrCreate(key: K, create: suspend () -> V): V
 
     suspend fun put(key: K, value: V): V
 
