@@ -38,13 +38,14 @@
       "pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"
     }, 
     {
-      "pattern":"\\Qtech/coner/trailer/render/html/coner-trailer.css\\E"
+      "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
     }, 
     {
-      "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+      "pattern":"\\Qtech/coner/trailer/render/html/coner-trailer.css\\E"
     }
   ]},
   "bundles":[{
-      "name":"com.sun.org.apache.xml.internal.serializer.HTMLEntities"
+      "name":"com.sun.org.apache.xml.internal.serializer.HTMLEntities",
+      "locales":["und"]
     }]
 }
