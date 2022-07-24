@@ -8,6 +8,7 @@ import tech.coner.trailer.datasource.snoozle.*
 import tech.coner.trailer.io.constraint.*
 import tech.coner.trailer.io.mapper.*
 import tech.coner.trailer.io.service.*
+import tech.coner.trailer.io.util.Cache
 import tech.coner.trailer.io.util.SimpleCache
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
@@ -370,4 +371,11 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
             crispyFishEventMappingContextService = instance()
         )
     } }
+
+    // Caches
+    bind<Cache<CrispyFishEventMappingContext.Key, CrispyFishEventMappingContext>> {
+        scoped(DataSessionScope).singleton {
+            SimpleCache()
+        }
+    }
 }
