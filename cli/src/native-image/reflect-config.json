@@ -686,9 +686,6 @@
   "name":"tech.coner.trailer.eventresults.EventResultsType"}
 ,
 {
-  "name":"tech.coner.trailer.eventresults.GroupEventResults"}
-,
-{
   "name":"tech.coner.trailer.eventresults.IndividualEventResults"}
 ,
 {
@@ -800,18 +797,6 @@
 ,
 {
   "name":"tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel$ResultsModel",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
-{
-  "name":"tech.coner.trailer.render.json.model.GroupedEventResultsModel",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
-{
-  "name":"tech.coner.trailer.render.json.model.GroupedEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true}
