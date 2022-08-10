@@ -39,7 +39,7 @@
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>io-kodein-di</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
@@ -62,17 +62,17 @@
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>render-html</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>render-text</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>render-all-kodein-di</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
@@ -121,13 +121,13 @@
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>io-test</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>io-testsupport</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -139,7 +139,7 @@
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>io-kodein-di-test</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -247,6 +247,28 @@
 
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-native-image-config-directory</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/native-image</directory>
+                                        </resource>
+                                    </resources>
+                                    <outputDirectory>${project.build.outputDirectory}/META-INF/native-image</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <plugin>
                         <groupId>org.graalvm.nativeimage</groupId>
                         <artifactId>native-image-maven-plugin</artifactId>
