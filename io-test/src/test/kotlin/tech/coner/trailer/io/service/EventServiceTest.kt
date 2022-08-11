@@ -8,6 +8,8 @@ import assertk.assertions.isSameAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import kotlinx.coroutines.*
+import org.junit.jupiter.api.AfterEach
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.entity.EventEntity
@@ -26,9 +28,12 @@ import tech.coner.trailer.*
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.util.stream.Stream
+import kotlin.coroutines.CoroutineContext
 
 @ExtendWith(MockKExtension::class)
-class EventServiceTest {
+class EventServiceTest : CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Default + Job()
 
     lateinit var service: EventService
 
@@ -67,6 +72,7 @@ class EventServiceTest {
     fun before() {
         dbConfig = TestDatabaseConfigurations(root).foo
         service = EventService(
+            coroutineContext = coroutineContext + Job(),
             dbConfig = dbConfig,
             resource = resource,
             mapper = mapper,
@@ -78,6 +84,11 @@ class EventServiceTest {
             runService = runService,
             participantService = participantService,
         )
+    }
+
+    @AfterEach
+    fun after() {
+        cancel()
     }
 
     @Test
@@ -181,7 +192,7 @@ class EventServiceTest {
             }
         }
         val context: CrispyFishEventMappingContext = mockk()
-        every { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        coEvery { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
         every {
             eventCrispyFishPersonMapVerifier.verify(
@@ -206,7 +217,7 @@ class EventServiceTest {
             repeat(8) { callback.onUnused(key = mockk(), person = mockk()) }
         }
         val allParticipants = emptyList<Participant>()
-        every { participantService.list(check) } returns Result.success(allParticipants)
+        coEvery { participantService.list(check) } returns Result.success(allParticipants)
         val allRuns = listOf(
             Run(
                 sequence = 1,
@@ -224,7 +235,7 @@ class EventServiceTest {
                 ),
             )
         )
-        every { runService.list(event = check) } returns Result.success(allRuns)
+        coEvery { runService.list(event = check) } returns Result.success(allRuns)
         every {
             runWithInvalidSignageVerifier.verify(
                 allParticipants = allParticipants,
@@ -232,7 +243,9 @@ class EventServiceTest {
             )
         } returns allRuns
 
-        val actual = service.check(check = check)
+        val actual = runBlocking {
+            service.check(check = check)
+        }
 
         assertThat(actual.unmappedMotorsportRegPersonMatches).hasSize(2)
         assertThat(actual.unmappedClubMemberIdNullRegistrations).hasSize(3)
@@ -253,7 +266,9 @@ class EventServiceTest {
         every { mapper.toSnoozle(update) } returns mockk()
         justRun { resource.update(any()) }
 
-        service.update(update)
+        runBlocking {
+            service.update(update)
+        }
 
         verifySequence {
             mapper.toSnoozle(update)

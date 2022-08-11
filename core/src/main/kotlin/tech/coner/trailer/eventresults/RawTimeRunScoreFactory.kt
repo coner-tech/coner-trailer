@@ -1,7 +1,6 @@
 package tech.coner.trailer.eventresults
 
 import tech.coner.trailer.Run
-import tech.coner.trailer.StandardPenaltyFactory
 
 class RawTimeRunScoreFactory(
     private val penaltyFactory: StandardPenaltyFactory

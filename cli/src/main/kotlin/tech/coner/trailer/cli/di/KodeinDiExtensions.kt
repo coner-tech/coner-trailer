@@ -10,7 +10,7 @@ import org.kodein.di.bindings.ScopeCloseable
  *
  * @param fn the function to execute
  */
-fun <SC : ScopeCloseable, R> DIContext<SC>.use(fn: () -> R): R {
+suspend fun <SC : ScopeCloseable, R> DIContext<SC>.use(fn: suspend () -> R): R {
     try {
         return fn()
     } finally {

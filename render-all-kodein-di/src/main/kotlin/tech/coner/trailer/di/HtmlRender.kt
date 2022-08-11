@@ -13,14 +13,16 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
     bind<OverallEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlOverallEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns)
     ) }
-    bind<GroupEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlGroupEventResultsRenderer(
+    bind<ClazzEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlClazzEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns)
     ) }
+    bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { HtmlTopTimesEventResultsRenderer() }
     bind<ComprehensiveEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlComprehensiveEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns),
         overallRenderer = factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)(columns) as HtmlOverallEventResultsRenderer,
-        groupRenderer = factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format)(columns) as HtmlGroupEventResultsRenderer
-    )}
+        clazzRenderer = factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format)(columns) as HtmlClazzEventResultsRenderer,
+        topTimesRenderer = instance<TopTimesEventResultsRenderer<String, *>>(format) as HtmlTopTimesEventResultsRenderer
+    ) }
     bind<IndividualEventResultsRenderer<String, *>>(Format.HTML) with singleton {
         HtmlIndividualEventResultsRenderer(
             staticColumns = listOf(

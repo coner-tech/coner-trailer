@@ -30,42 +30,22 @@ data class Score constructor(
     }
 
 
-    sealed class Penalty(
-        val floor: BigDecimal,
-        val diff: Boolean
-    ) {
-        object DidNotFinish : Penalty(
-            diff = false,
-            floor = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3)
-        )
-        object Disqualified : Penalty(
-            diff = false,
-            floor = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3)
-        )
-        class Cone(floor: BigDecimal, val count: Int) : Penalty(
-            diff = true,
-            floor = floor
-        ) {
-            constructor(
-                floor: String,
-                count: Int
-            ) : this(BigDecimal(floor), count)
+    sealed class Penalty : PenaltyInterface {
+        object DidNotFinish : Penalty() {
+            override val diff = false
+            override val floor: BigDecimal = BigDecimal.valueOf(intMaxValueOneTenthAsLong).setScale(3)
+        }
+        object Disqualified : Penalty() {
+            override val diff = false
+            override val floor: BigDecimal = BigDecimal.valueOf(intMaxValueTwoTenthsAsLong).setScale(3)
+        }
+        data class Cone(override val floor: BigDecimal, val count: Int) : Penalty() {
+            override val diff = true
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (other !is Cone) return false
-                if (!super.equals(other)) return false
-
-                if (count != other.count) return false
-
-                return true
-            }
-
-            override fun hashCode(): Int {
-                var result = super.hashCode()
-                result = 31 * result + count
-                return result
-            }
+            constructor(floorAsString: String, count: Int) : this(
+                floor = BigDecimal(floorAsString),
+                count = count
+            )
         }
 
         companion object {
@@ -88,5 +68,10 @@ data class Score constructor(
             result = 31 * result + diff.hashCode()
             return result
         }
+    }
+
+    interface PenaltyInterface {
+        val floor: BigDecimal
+        val diff: Boolean
     }
 }

@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command.policy
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.option
@@ -8,9 +7,9 @@ import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -21,14 +20,16 @@ import tech.coner.trailer.io.service.PolicyService
 import java.util.*
 
 class PolicySetCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "set",
     help = "Set a Policy"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
     private val view: PolicyView by instance()
 
@@ -42,7 +43,7 @@ class PolicySetCommand(
     private val finalScoreStyle: FinalScoreStyle? by option()
         .choice(FinalScoreStyle.values().associateBy { it.name.toLowerCase() })
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val set = service.findById(id).let { it.copy(
             name = name ?: it.name,
             conePenaltySeconds = conePenaltySeconds ?: it.conePenaltySeconds,

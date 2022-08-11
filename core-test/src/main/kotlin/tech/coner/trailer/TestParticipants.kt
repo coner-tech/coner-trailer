@@ -98,6 +98,18 @@ object TestParticipants {
                 )
             )
         }
+        val all: List<Participant> by lazy {
+            listOf(
+                NORMAN_ROBINSON,
+                TERI_POTTER,
+                EUGENE_DRAKE,
+                JIMMY_MCKENZIE,
+                REBECCA_JACKSON,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS
+            )
+        }
     }
 
     object Lscc2019Points1Simplified {
@@ -150,6 +162,17 @@ object TestParticipants {
             number = "18",
             car = Car(model = "2002 Mazda Miata", color = "Blue")
         ) }
+        val all: List<Participant> by lazy {
+            listOf(
+                ANASTASIA_RIGLER,
+                REBECCA_JACKSON,
+                EUGENE_DRAKE,
+                JIMMY_MCKENZIE,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS
+            )
+        }
     }
 
     object Lscc2019Points2Simplified {
@@ -195,6 +218,16 @@ object TestParticipants {
             number = "20",
             car = Car(model = "2003 Honda S2000", color = "Spa Yellow")
         ) }
+        val all: List<Participant> by lazy {
+            listOf(
+                ANASTASIA_RIGLER,
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE,
+                BRANDY_HUFF,
+                DOMINIC_ROGERS,
+                BENNETT_PANTONE
+            )
+        }
     }
 
     object Lscc2019Points3Simplified {
@@ -254,6 +287,18 @@ object TestParticipants {
             number = "20",
             car = Car(model = "2003 Honda S2000", color = "Spa Yellow")
         ) }
+        val all: List<Participant> by lazy {
+            listOf(
+                ANASTASIA_RIGLER,
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE,
+                EUGENE_DRAKE,
+                BRANDY_HUFF,
+                BRYANT_MORAN,
+                DOMINIC_ROGERS,
+                BENNETT_PANTONE
+            )
+        }
     }
 
     object LsccTieBreaking {
@@ -315,6 +360,15 @@ object TestParticipants {
                     model = "2013 Mazda mazdaspeed3",
                     color = "silver"
                 )
+            )
+        }
+        val all: List<Participant> by lazy {
+            listOf(
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE,
+                EUGENE_DRAKE,
+                TERI_POTTER,
+                HARRY_WEBSTER
             )
         }
     }

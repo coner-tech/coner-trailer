@@ -1,10 +1,17 @@
 package tech.coner.trailer.cli.command.person
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
 
-class PersonCommand : CliktCommand(
-        help = "Manage people (records)"
+class PersonCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
+    help = "Manage people (records)"
 ) {
 
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

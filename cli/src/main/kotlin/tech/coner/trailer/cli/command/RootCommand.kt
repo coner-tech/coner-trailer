@@ -18,13 +18,14 @@ import tech.coner.trailer.di.EnvironmentHolderImpl
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
+import java.util.logging.Logger.global
 
 class RootCommand(
-    override val di: DI,
+    di: DI,
     private val global: GlobalModel
 ) : CliktCommand(
     name = "coner-trailer-cli"
-), DIAware {
+), DIAware by di {
 
     private val configurationServiceFactory: ConfigurationServiceFactory by factory()
 

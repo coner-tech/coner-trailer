@@ -1,15 +1,21 @@
 package tech.coner.trailer.eventresults
 
+import tech.coner.trailer.EventContext
+
 data class ComprehensiveEventResults(
-    override val type: EventResultsType = StandardEventResultsTypes.comprehensive,
-    override val runCount: Int,
+    override val eventContext: EventContext,
     val overallEventResults: List<OverallEventResults>,
-    val groupEventResults: List<GroupEventResults>
+    val clazzEventResults: ClazzEventResults,
+    val topTimesEventResults: TopTimesEventResults
 ) : EventResults {
+
+    override val type: EventResultsType = StandardEventResultsTypes.comprehensive
+
     val all: List<EventResults> by lazy {
         mutableListOf<EventResults>().apply {
             addAll(overallEventResults)
-            addAll(groupEventResults)
+            add(clazzEventResults)
+            add(topTimesEventResults)
         }
     }
 }

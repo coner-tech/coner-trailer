@@ -17,7 +17,7 @@ class ComprehensiveEventResultsModel(
         val type: String,
         val runCount: Int,
         val overalls: List<OverallEventResultsModel.ResultsModel>,
-        val groups: List<GroupedEventResultsModel.ResultsModel>
+        val groups: List<ClazzEventResultsModel.ResultsModel>
     ) {
         constructor(
             results: ComprehensiveEventResults
@@ -25,7 +25,7 @@ class ComprehensiveEventResultsModel(
             type = results.type.key,
             runCount = results.runCount,
             overalls = results.overallEventResults.map { OverallEventResultsModel.ResultsModel(it) },
-            groups = results.groupEventResults.map { GroupedEventResultsModel.ResultsModel(it) }
+            groups = listOf(ClazzEventResultsModel.ResultsModel(results.clazzEventResults))
         )
     }
 }

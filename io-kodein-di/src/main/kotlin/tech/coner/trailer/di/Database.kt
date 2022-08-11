@@ -1,5 +1,6 @@
 package tech.coner.trailer.di
 
+import kotlinx.coroutines.Job
 import org.kodein.di.*
 import tech.coner.snoozle.db.session.data.DataSession
 import tech.coner.trailer.datasource.crispyfish.*
@@ -7,6 +8,8 @@ import tech.coner.trailer.datasource.snoozle.*
 import tech.coner.trailer.io.constraint.*
 import tech.coner.trailer.io.mapper.*
 import tech.coner.trailer.io.service.*
+import tech.coner.trailer.io.util.Cache
+import tech.coner.trailer.io.util.SimpleCache
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 
@@ -198,6 +201,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             EventService(
+                coroutineContext = context.coroutineContext + Job(),
                 dbConfig = context.environment.requireDatabaseConfiguration(),
                 resource = instance(),
                 mapper = instance(),
@@ -239,6 +243,8 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishEventMappingContextService(
+                coroutineContext = context.coroutineContext + Job(),
+                cache = SimpleCache(),
                 crispyFishDatabase = context.environment.requireDatabaseConfiguration().crispyFishDatabase,
                 loadConstraints = instance()
             )
@@ -291,14 +297,20 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
             )
         }
     }
-    bind { scoped(DataSessionScope).singleton { CrispyFishClassParentMapper() } }
     bind { scoped(DataSessionScope).singleton { CrispyFishClassMapper() } }
+    bind { scoped(DataSessionScope).singleton { CrispyFishClassParentMapper() } }
     bind { scoped(DataSessionScope).singleton { CrispyFishClassingMapper() } }
+    bind { scoped(DataSessionScope).singleton {
+        ClassService(
+            crispyFishClassService = instance()
+        )
+    } }
 
     // Participants
     bind {
         scoped(DataSessionScope).singleton {
             ParticipantService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishParticipantService = instance()
             )
         }
@@ -306,6 +318,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishParticipantService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishEventMappingContextService = instance(),
                 crispyFishClassService = instance(),
                 crispyFishParticipantMapper = instance()
@@ -317,13 +330,16 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             RunService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishRunService = instance()
             )
         }
     }
+    bind { scoped(DataSessionScope).singleton { CrispyFishRunMapper() } }
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishRunService(
+                coroutineContext = context.coroutineContext + Job(),
                 crispyFishEventMappingContextService = instance(),
                 crispyFishClassService = instance(),
                 crispyFishParticipantMapper = instance(),
@@ -334,6 +350,32 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             RunWithInvalidSignageVerifier()
+        }
+    }
+
+    // Event Context
+    bind { scoped(DataSessionScope).singleton {
+        EventContextService(
+            coroutineContext = context.coroutineContext + Job(),
+            classService = instance(),
+            participantService = instance(),
+            runService = instance(),
+            eventExtendedParametersService = instance()
+        )
+    } }
+
+    // Event Extended Parameters
+    bind { scoped(DataSessionScope).singleton {
+        EventExtendedParametersService(
+            coroutineContext = context.coroutineContext + Job(),
+            crispyFishEventMappingContextService = instance()
+        )
+    } }
+
+    // Caches
+    bind<Cache<CrispyFishEventMappingContext.Key, CrispyFishEventMappingContext>> {
+        scoped(DataSessionScope).singleton {
+            SimpleCache()
         }
     }
 }

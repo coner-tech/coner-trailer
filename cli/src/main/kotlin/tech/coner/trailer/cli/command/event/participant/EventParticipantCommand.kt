@@ -1,10 +1,17 @@
 package tech.coner.trailer.cli.command.event.participant
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
 
-class EventParticipantCommand : CliktCommand(
+class EventParticipantCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "participant",
     help = "Manage the participants at an event"
 ) {
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

@@ -1,12 +1,11 @@
 package tech.coner.trailer.cli.command.event.run
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.di.Format
@@ -17,13 +16,15 @@ import java.util.*
 
 class EventRunListCommand(
     di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "list",
     help = "List the runs at an event"
-), DIAware by di {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
 
     private val eventService: EventService by instance()
     private val runService: RunService by instance()
@@ -31,7 +32,7 @@ class EventRunListCommand(
 
     private val eventId: UUID by argument().convert { toUuid(it) }
 
-    override fun run() {
+    override suspend fun coRun() {
         val event = eventService.findById(eventId)
         val runs = runService.list(event).getOrThrow()
         echo(renderer.render(runs))

@@ -3,11 +3,14 @@ package tech.coner.trailer.cli.command.event
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,6 +18,7 @@ import org.kodein.di.*
 import tech.coner.trailer.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.mockkDatabaseModule
@@ -26,11 +30,15 @@ import tech.coner.trailer.io.service.PersonService
 import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishPersonMapRemoveCommandTest : DIAware {
+class EventCrispyFishPersonMapRemoveCommandTest : DIAware,
+    CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Main + Job()
 
     lateinit var command: EventCrispyFishPersonMapRemoveCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }
@@ -52,6 +60,11 @@ class EventCrispyFishPersonMapRemoveCommandTest : DIAware {
             .apply { environment = TestEnvironments.mock() }
         command = EventCrispyFishPersonMapRemoveCommand(di, global)
             .context { console = testConsole }
+    }
+
+    @AfterEach
+    fun after() {
+        cancel()
     }
 
     @Test
@@ -86,8 +99,8 @@ class EventCrispyFishPersonMapRemoveCommandTest : DIAware {
                 peopleMap = emptyMap()
             )
         )
-        every { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
-        justRun {
+        coEvery { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
+        coJustRun {
             service.update(set)
         }
         val viewRender = "view rendered"
@@ -102,7 +115,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : DIAware {
             "--person-id", "${person.id}"
         ))
 
-        verifySequence {
+        coVerifySequence {
             service.findById(event.id)
             crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
             personService.findById(person.id)

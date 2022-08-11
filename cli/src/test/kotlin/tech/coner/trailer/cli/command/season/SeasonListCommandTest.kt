@@ -14,6 +14,7 @@ import org.kodein.di.*
 import tech.coner.trailer.TestSeasons
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.SeasonTableView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
@@ -25,6 +26,7 @@ class SeasonListCommandTest : DIAware {
     lateinit var command: SeasonListCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }

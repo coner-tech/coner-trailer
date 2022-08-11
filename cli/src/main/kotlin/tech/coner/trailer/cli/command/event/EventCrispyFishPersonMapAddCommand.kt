@@ -1,17 +1,15 @@
 package tech.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.Classing
 import tech.coner.trailer.Event
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -22,14 +20,16 @@ import tech.coner.trailer.io.service.PersonService
 import java.util.*
 
 class EventCrispyFishPersonMapAddCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "crispy-fish-person-map-add",
     help = "Add a Crispy Fish Person Map entry"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
 
     private val service: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
@@ -44,7 +44,7 @@ class EventCrispyFishPersonMapAddCommand(
     private val lastName: String by option().required()
     private val personId: UUID by option().convert { toUuid(it) }.required()
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val event = service.findById(id)
         val crispyFish = checkNotNull(event.crispyFish) {
             "Event must have crispy fish defined already"

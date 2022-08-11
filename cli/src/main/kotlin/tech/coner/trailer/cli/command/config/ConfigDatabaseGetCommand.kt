@@ -1,23 +1,24 @@
 package tech.coner.trailer.cli.command.config
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.parameters.arguments.argument
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.service.ConfigurationService
 
 class ConfigDatabaseGetCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "get",
     help = "Get database configuration"
-), DIAware {
+) {
 
     override val diContext = diContext { global.requireEnvironment() }
 
@@ -26,7 +27,7 @@ class ConfigDatabaseGetCommand(
 
     private val name: String by argument()
 
-    override fun run() {
+    override suspend fun coRun() {
         service.findDatabaseByName(name)
             .onSuccess { echo(view.render(it)) }
             .onFailure {

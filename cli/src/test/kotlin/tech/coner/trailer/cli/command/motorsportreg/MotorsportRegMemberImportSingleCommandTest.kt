@@ -15,6 +15,7 @@ import org.kodein.di.*
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.PersonTableView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.di.mockkMotorsportRegApiModule
@@ -27,6 +28,7 @@ class MotorsportRegMemberImportSingleCommandTest : DIAware {
     lateinit var command: MotorsportRegMemberImportSingleCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         import(mockkMotorsportRegApiModule)
         bindInstance { view }

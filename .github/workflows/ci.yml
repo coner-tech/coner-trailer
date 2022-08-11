@@ -35,17 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
-
       - name: Setup GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
+          version: '21.3.2'
           java-version: '17'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}

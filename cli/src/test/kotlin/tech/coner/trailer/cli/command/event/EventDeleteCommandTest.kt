@@ -15,6 +15,7 @@ import org.kodein.di.instance
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
@@ -25,6 +26,7 @@ class EventDeleteCommandTest : DIAware {
     lateinit var command: EventDeleteCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
     }
     override val diContext = diContext { command.diContext.value }

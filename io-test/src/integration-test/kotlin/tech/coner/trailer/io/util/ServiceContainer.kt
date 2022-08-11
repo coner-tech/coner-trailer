@@ -3,7 +3,6 @@ package tech.coner.trailer.io.util
 import org.kodein.di.*
 import tech.coner.trailer.datasource.snoozle.ConerTrailerDatabase
 import tech.coner.trailer.di.EnvironmentHolder
-import tech.coner.trailer.eventresults.EventResultsService
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.TestEnvironments
@@ -67,7 +66,7 @@ class ServiceContainer(
         }
     }
 
-    fun <T> onDataSession(block: DataSessionContext.() -> T): T {
+    suspend fun <T> onDataSession(block: suspend DataSessionContext.() -> T): T {
         val context = DataSessionContext(ioTestKodeinDi, environment)
         return try {
             context.block()
@@ -85,7 +84,6 @@ class ServiceContainer(
         val clubs: ClubService by instance()
         val crispyFishClasses: CrispyFishClassService by instance()
         val crispyFishEventMappingContexts: CrispyFishEventMappingContextService by instance()
-        val eventResults: EventResultsService by instance()
         val events: EventService by instance()
         val motorsportRegEvents: MotorsportRegEventService by instance()
         val motorsportRegImports: MotorsportRegImportService by instance()

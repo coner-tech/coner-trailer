@@ -1,18 +1,17 @@
 package tech.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Classing
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -28,14 +27,16 @@ import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "crispy-fish-person-map-assemble",
     help = "Interactively assemble the Crispy Fish person map for an event"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val service: EventService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val personService: PersonService by instance()
@@ -48,7 +49,7 @@ class EventCrispyFishPersonMapAssembleCommand(
 
     private val id: UUID by argument().convert { toUuid(it) }
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val event = service.findById(id)
         val crispyFish = event.crispyFish
         if (crispyFish == null) {

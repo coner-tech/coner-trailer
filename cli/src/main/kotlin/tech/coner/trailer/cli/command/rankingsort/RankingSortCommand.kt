@@ -1,8 +1,16 @@
 package tech.coner.trailer.cli.command.rankingsort
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
 
-class RankingSortCommand : CliktCommand() {
+class RankingSortCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global
+) {
 
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

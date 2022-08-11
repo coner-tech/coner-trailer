@@ -31,13 +31,14 @@ import java.time.LocalDate
 import java.util.*
 
 class EventAddCommand(
-    override val di: DI,
+    di: DI,
     global: GlobalModel
 ) : BaseCommand(
+    di = di,
     global = global,
     name = "add",
     help = "Add an Event"
-), DIAware by di {
+) {
 
     override val diContext = diContextDataSession()
 
@@ -96,7 +97,7 @@ class EventAddCommand(
     private val policy: Policy by policySelectOptionGroup { policyService }
         .required()
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val created = service.create(
             id = id,
             name = name,

@@ -1,15 +1,14 @@
 package tech.coner.trailer.cli.command.eventpointscalculator
 
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
@@ -19,14 +18,16 @@ import tech.coner.trailer.seasonpoints.EventPointsCalculator
 import java.util.*
 
 class EventPointsCalculatorSetCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
-        name = "set",
-        help = "Set an event points calculator"
-), DIAware {
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
+    name = "set",
+    help = "Set an event points calculator"
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val service: EventPointsCalculatorService by instance()
     private val view: EventPointsCalculatorView by instance()
 
@@ -66,7 +67,7 @@ class EventPointsCalculatorSetCommand(
     private val defaultPoints: Int? by option()
             .int()
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val old = service.findById(id)
         val update = EventPointsCalculator(
                 id = old.id,

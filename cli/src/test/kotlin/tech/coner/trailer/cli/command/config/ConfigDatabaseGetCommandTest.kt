@@ -21,6 +21,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
@@ -38,6 +39,7 @@ class ConfigDatabaseGetCommandTest : DIAware {
     lateinit var command: ConfigDatabaseGetCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkIoModule)
         bindInstance { view }
     }

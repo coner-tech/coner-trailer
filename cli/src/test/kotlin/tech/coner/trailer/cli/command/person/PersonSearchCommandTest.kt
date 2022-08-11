@@ -18,6 +18,7 @@ import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.PersonView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
@@ -30,6 +31,7 @@ class PersonSearchCommandTest : DIAware {
     lateinit var command: PersonSearchCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }

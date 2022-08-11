@@ -6,7 +6,7 @@ import tech.coner.trailer.Season
 import tech.coner.trailer.SeasonEvent
 import tech.coner.trailer.eventresults.ComprehensiveEventResults
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.eventresults.GroupEventResults
+import tech.coner.trailer.eventresults.ClazzEventResults
 import java.util.*
 
 class StandingsReportCreator {
@@ -22,14 +22,14 @@ class StandingsReportCreator {
     class CreateGroupedStandingsSectionsParameters(
         val eventResultsType: EventResultsType,
         val season: Season,
-        val eventToGroupEventResults: Map<SeasonEvent, GroupEventResults>,
+        val eventToClazzEventResults: Map<SeasonEvent, ClazzEventResults>,
         val configuration: SeasonPointsCalculatorConfiguration
     )
 
     fun createGroupedStandingsSections(
             param: CreateGroupedStandingsSectionsParameters
     ): SortedMap<Class, StandingsReport.Section> {
-        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToGroupEventResults.keys.map { event: SeasonEvent ->
+        val eventToCalculator: Map<SeasonEvent, EventPointsCalculator> = param.eventToClazzEventResults.keys.map { event: SeasonEvent ->
             val config = event.seasonPointsCalculatorConfiguration
                     ?: param.season.seasonPointsCalculatorConfiguration
             val eventPointsCalculator = config.eventResultsTypeToEventPointsCalculator[param.eventResultsType]
@@ -40,7 +40,7 @@ class StandingsReportCreator {
         }.toMap()
 
         val groupsToPersonStandingAccumulators: MutableMap<Class, MutableMap<Person, PersonStandingAccumulator>> = mutableMapOf()
-        for ((event, groupedEventResults) in param.eventToGroupEventResults) {
+        for ((event, groupedEventResults) in param.eventToClazzEventResults) {
             val calculator = checkNotNull(eventToCalculator[event]) {
                 "Failed to find season points calculator for event: ${event.event.name}"
             }

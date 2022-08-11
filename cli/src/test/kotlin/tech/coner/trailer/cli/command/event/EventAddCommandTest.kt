@@ -16,6 +16,7 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestConfigurations
@@ -32,6 +33,7 @@ class EventAddCommandTest : DIAware {
     lateinit var command: EventAddCommand
 
     override val di: DI = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }

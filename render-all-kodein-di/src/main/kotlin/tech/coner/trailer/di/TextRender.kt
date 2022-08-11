@@ -13,12 +13,14 @@ val textRenderModule = DI.Module("tech.coner.trailer.render.text") {
     bind<OverallEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> TextOverallEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<TextEventResultsColumn>>().invoke(columns)
     ) }
-    bind<GroupEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> TextGroupEventResultsRenderer(
+    bind<ClazzEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> TextClazzEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<TextEventResultsColumn>>().invoke(columns)
     ) }
+    bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { TextTopTimesEventResultsRenderer() }
     bind<ComprehensiveEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> TextComprehensiveEventResultsRenderer(
         overallRenderer = factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format).invoke(columns) as TextOverallEventResultsRenderer,
-        groupRenderer = factory<List<EventResultsColumn>, GroupEventResultsRenderer<String, *>>(format).invoke(columns) as TextGroupEventResultsRenderer
+        clazzRenderer = factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format).invoke(columns) as TextClazzEventResultsRenderer,
+        topTimesRenderer = instance<TopTimesEventResultsRenderer<String, *>>(format) as TextTopTimesEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(format) with singleton { TextIndividualEventResultsRenderer() }
 }

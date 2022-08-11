@@ -1,28 +1,29 @@
 package tech.coner.trailer.cli.command.motorsportreg
 
-import com.github.ajalt.clikt.core.CliktCommand
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.diContext
 import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.view.MotorsportRegMemberTableView
 import tech.coner.trailer.io.service.MotorsportRegMemberService
 
 class MotorsportRegMemberListCommand(
-    override val di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
         name = "list",
         help = "List members from MotorsportReg"
-), DIAware {
+) {
 
-    override val diContext = diContext { global.requireEnvironment().openDataSession() }
+    override val diContext = diContextDataSession()
     private val service: MotorsportRegMemberService by instance()
     private val view: MotorsportRegMemberTableView by instance()
 
-    override fun run() = diContext.use {
+    override suspend fun coRun() = diContext.use {
         val members = service.list()
         echo(view.render(members))
     }

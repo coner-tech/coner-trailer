@@ -3,10 +3,16 @@ package tech.coner.trailer.cli.command.event.participant
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -16,6 +22,7 @@ import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
@@ -24,11 +31,15 @@ import tech.coner.trailer.io.service.ParticipantService
 import tech.coner.trailer.render.ParticipantRenderer
 
 @ExtendWith(MockKExtension::class)
-class EventParticipantListCommandTest : DIAware {
+class EventParticipantListCommandTest : DIAware,
+    CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Main + Job()
 
     lateinit var command: EventParticipantListCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindFactory { _: Format -> renderer }
     }
@@ -50,6 +61,11 @@ class EventParticipantListCommandTest : DIAware {
             .context { console = testConsole }
     }
 
+    @AfterEach
+    fun after() {
+        cancel()
+    }
+
     @Test
     fun `It should list event participants`() {
         val event = TestEvents.Lscc2019.points1
@@ -58,13 +74,13 @@ class EventParticipantListCommandTest : DIAware {
             TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE
         )
         every { eventService.findById(any()) } returns event
-        every { participantService.list(any()) } returns Result.success(participants)
+        coEvery { participantService.list(any()) } returns Result.success(participants)
         val render = "participantRenderer rendered participants"
         every { renderer.render(participants) } returns render
 
         command.parse(arrayOf("${event.id}"))
 
-        verifySequence {
+        coVerifySequence {
             eventService.findById(event.id)
             participantService.list(event)
             renderer.render(participants)

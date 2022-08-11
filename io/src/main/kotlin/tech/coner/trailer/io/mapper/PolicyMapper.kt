@@ -4,6 +4,7 @@ import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.snoozle.entity.PolicyEntity
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
+import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.service.ClubService
 
 class PolicyMapper(
@@ -36,7 +37,8 @@ class PolicyMapper(
             },
             authoritativeRunDataSource = when (snoozle.authoritativeRunSource.type) {
                 PolicyEntity.DataSource.Type.CRISPY_FISH -> Policy.DataSource.CrispyFish
-            }
+            },
+            topTimesEventResultsMethod = StandardEventResultsTypes.pax //  TODO: support configuring as raw or pax
         )
     }
 }

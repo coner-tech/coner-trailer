@@ -3,14 +3,16 @@ package tech.coner.trailer.io.service
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
+import kotlin.coroutines.CoroutineContext
 
 class CrispyFishParticipantService(
+    coroutineContext: CoroutineContext,
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val crispyFishClassService: CrispyFishClassService,
     private val crispyFishParticipantMapper: CrispyFishParticipantMapper
-) {
+) : CoroutineContext by coroutineContext {
 
-    fun list(event: Event): Result<List<Participant>> = try {
+    suspend fun list(event: Event): Result<List<Participant>> = try {
         val eventCrispyFish = event.requireCrispyFish()
         val context = crispyFishEventMappingContextService.load(eventCrispyFish)
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)

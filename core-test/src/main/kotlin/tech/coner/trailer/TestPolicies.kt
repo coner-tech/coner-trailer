@@ -2,6 +2,7 @@ package tech.coner.trailer
 
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
+import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import java.util.*
 
 object TestPolicies {
@@ -14,7 +15,8 @@ object TestPolicies {
         paxTimeStyle = PaxTimeStyle.LEGACY_BUGGED,
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
         authoritativeParticipantDataSource = Policy.DataSource.CrispyFish,
-        authoritativeRunDataSource = Policy.DataSource.CrispyFish
+        authoritativeRunDataSource = Policy.DataSource.CrispyFish,
+        topTimesEventResultsMethod = StandardEventResultsTypes.pax
     ) }
 
     val lsccV2: Policy by lazy { Policy(
@@ -25,7 +27,8 @@ object TestPolicies {
         paxTimeStyle = PaxTimeStyle.FAIR,
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
         authoritativeParticipantDataSource = Policy.DataSource.CrispyFish,
-        authoritativeRunDataSource = Policy.DataSource.CrispyFish
+        authoritativeRunDataSource = Policy.DataSource.CrispyFish,
+        topTimesEventResultsMethod = StandardEventResultsTypes.pax
     ) }
 
 }

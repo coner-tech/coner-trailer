@@ -14,6 +14,7 @@ import org.kodein.di.*
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.PolicyView
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestEnvironments
@@ -25,6 +26,7 @@ class PolicyListCommandTest : DIAware {
     lateinit var command: PolicyListCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }

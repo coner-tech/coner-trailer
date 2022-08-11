@@ -16,8 +16,10 @@ import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 class EventService(
+    coroutineContext: CoroutineContext,
     private val dbConfig: DatabaseConfiguration,
     private val resource: EventResource,
     private val mapper: EventMapper,
@@ -28,7 +30,7 @@ class EventService(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val runService: RunService,
     private val participantService: ParticipantService
-) {
+) : CoroutineContext by coroutineContext {
 
     fun create(
         id: UUID? = null,
@@ -79,7 +81,7 @@ class EventService(
             .toList()
     }
 
-    fun check(check: Event): EventHealthCheckOutcome {
+    suspend fun check(check: Event): EventHealthCheckOutcome {
         val unmappedMotorsportRegPersonMatches = mutableListOf<Pair<Registration, Pair<Event.CrispyFishMetadata.PeopleMapKey, Person>>>()
         val unmappable = mutableListOf<Registration>()
         val unmappedClubMemberIdNullRegistrations = mutableListOf<Registration>()
@@ -177,7 +179,7 @@ class EventService(
      *
      * @param[update] Event to persist
      */
-    fun update(update: Event) {
+    suspend fun update(update: Event) {
         persistConstraints.assess(update)
         val allowUnmappedCrispyFishPeople = when (update.lifecycle) {
             Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> true

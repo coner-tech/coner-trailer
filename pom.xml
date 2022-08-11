@@ -29,6 +29,8 @@
         <module>render-json</module>
         <module>io-kodein-di-test</module>
         <module>io-testsupport</module>
+        <module>core-kodein-di</module>
+        <module>core-kodein-di-test</module>
     </modules>
 
     <properties>

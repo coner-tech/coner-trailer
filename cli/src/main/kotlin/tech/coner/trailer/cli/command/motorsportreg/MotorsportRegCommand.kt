@@ -1,13 +1,19 @@
 package tech.coner.trailer.cli.command.motorsportreg
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
+import java.util.logging.Logger.global
 
-class MotorsportRegCommand : CliktCommand(
-        name = "motorsportreg",
-        help = "Interact with MotorsportReg"
+class MotorsportRegCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
+    name = "motorsportreg",
+    help = "Interact with MotorsportReg"
 ) {
 
-    override fun run() {
-        // no-op
-    }
+    override suspend fun coRun() = Unit
 }

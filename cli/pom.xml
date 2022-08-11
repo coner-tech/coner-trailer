@@ -28,6 +28,11 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
+            <artifactId>core-kodein-di</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
             <artifactId>io</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -98,6 +103,12 @@
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>core-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>core-kodein-di-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

@@ -1,10 +1,18 @@
 package tech.coner.trailer.cli.command.eventpointscalculator
 
-import com.github.ajalt.clikt.core.CliktCommand
+import org.kodein.di.DI
+import tech.coner.trailer.cli.command.BaseCommand
+import tech.coner.trailer.cli.command.GlobalModel
+import java.util.logging.Logger.global
 
-class EventPointsCalculatorCommand : CliktCommand(
+class EventPointsCalculatorCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
         help = "Manage the event points calculators"
 ) {
 
-    override fun run() = Unit
+    override suspend fun coRun() = Unit
 }

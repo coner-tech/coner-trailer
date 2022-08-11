@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.EnvironmentScope
 import tech.coner.trailer.io.TestConfigurations
@@ -23,6 +24,7 @@ class StubCommandTest : DIAware {
     lateinit var command: StubCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         bind { scoped(EnvironmentScope).singleton { stubService } }
     }
 

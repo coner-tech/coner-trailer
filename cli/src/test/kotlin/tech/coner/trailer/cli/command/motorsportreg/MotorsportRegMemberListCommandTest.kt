@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.MotorsportRegMemberTableView
 import tech.coner.trailer.client.motorsportreg.model.Member
 import tech.coner.trailer.di.mockkDatabaseModule
@@ -27,6 +28,7 @@ class MotorsportRegMemberListCommandTest : DIAware {
     lateinit var command: MotorsportRegMemberListCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         import(mockkMotorsportRegApiModule)
         bindInstance { view }

@@ -7,4 +7,5 @@ import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalcula
 
 val cliktModule = DI.Module("coner.trailer.cli.clikt") {
         bindSingleton { SeasonPointsCalculatorParameterMapper(eventPointsCalculatorService = instance()) }
+        bindSingleton { CliCoroutineScope }
 }

@@ -3,11 +3,14 @@ package tech.coner.trailer.cli.command.event
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -17,6 +20,7 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.mockkDatabaseModule
@@ -28,11 +32,15 @@ import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 
 @ExtendWith(MockKExtension::class)
-class EventSetCommandTest : DIAware {
+class EventSetCommandTest : DIAware,
+    CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Main + Job()
 
     lateinit var command: EventSetCommand
 
     override val di = DI.lazy {
+        import(testCliktModule)
         import(mockkDatabaseModule())
         bindInstance { view }
     }
@@ -57,6 +65,11 @@ class EventSetCommandTest : DIAware {
             .context { console = testConsole }
     }
 
+    @AfterEach
+    fun after() {
+        cancel()
+    }
+
     @Test
     fun `It should set event properties`(
         @MockK context: CrispyFishEventMappingContext
@@ -77,7 +90,7 @@ class EventSetCommandTest : DIAware {
             )
         )
         every { service.findById(original.id) } returns original
-        justRun { service.update(any()) }
+        coJustRun { service.update(any()) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(any()) } returns viewRendered
 
@@ -92,7 +105,7 @@ class EventSetCommandTest : DIAware {
             "--msr-event-id", "${set.motorsportReg?.id}"
         ))
 
-        verifySequence {
+        coVerifySequence {
             service.findById(original.id)
             service.update(set)
             view.render(set)
@@ -107,7 +120,7 @@ class EventSetCommandTest : DIAware {
         val original = TestEvents.Lscc2019.points1
         val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
         every { service.findById(original.id) } returns original
-        justRun {
+        coJustRun {
             service.update(original)
         }
         val viewRendered = "view rendered set event named: ${original.name}"
@@ -117,7 +130,7 @@ class EventSetCommandTest : DIAware {
             "${original.id}",
         ))
 
-        verifySequence {
+        coVerifySequence {
             service.findById(original.id)
             service.update(original)
             view.render(original)
