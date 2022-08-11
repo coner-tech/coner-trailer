@@ -43,7 +43,8 @@ class LegacyBuggedPaxTimeRunScoreFactory(
         val roundingMode = if (scale() > 3) {
             val decimalDigits = toString().substringAfter('.')
             if (decimalDigits[3] == '9') {
-                if (decimalDigits[4] == '9' || decimalDigits[4] == '8' || decimalDigits[4] == '7') {
+                val tenThousandth = decimalDigits[4]
+                if (tenThousandth == '9' || tenThousandth == '8' || tenThousandth == '7' || tenThousandth == '6' ) {
                     RoundingMode.CEILING
                 } else {
                     RoundingMode.FLOOR

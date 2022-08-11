@@ -72,6 +72,16 @@ object TestEvents {
         ) }
     }
 
+    object Lscc2022 {
+        val points3 by lazy {
+            event(
+                name = "2022 LSCC Points Autocross #3",
+                date = LocalDate.parse("2022-05-15"),
+                policy = TestPolicies.lsccV1
+            )
+        }
+    }
+
 }
 
 private fun event(
