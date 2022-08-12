@@ -73,6 +73,10 @@ object TestPeople {
             firstName ="Johnnie",
             lastName = "Rowe"
     ) }
+    val CLAIRE_DICKERSON by lazy { factory(
+        firstName = "Claire",
+        lastName = "Dickerson"
+    ) }
 
     val all: List<Person> by lazy { listOf(
             DOMINIC_ROGERS,

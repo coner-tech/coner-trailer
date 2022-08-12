@@ -88,4 +88,41 @@ object TestClasses {
 
         val allByAbbreviation by lazy { all.associateBy { it.abbreviation } }
     }
+
+    object Lscc2022 {
+
+        val STU by lazy {
+            Class(
+                abbreviation = "STU",
+                name = "Street Touring Ultra",
+                sort = 17,
+                paxed = false,
+                paxFactor = BigDecimal("0.829"),
+                parent = STREET_TOURING
+            )
+        }
+        val NOV by lazy {
+            Class(
+                abbreviation = "NOV",
+                name = "Novice",
+                sort = 51,
+                paxed = true,
+                paxFactor = BigDecimal("1.000"),
+                parent = NOVICE
+            )
+        }
+
+        val STREET_TOURING by lazy {
+            Class.Parent(
+                name = "Street Touring",
+                sort = 1
+            )
+        }
+        val NOVICE by lazy {
+            Class.Parent(
+                name = "Novice",
+                sort = 2
+            )
+        }
+    }
 }

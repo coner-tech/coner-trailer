@@ -373,6 +373,21 @@ object TestParticipants {
         }
     }
 
+    object Lscc2022Points3 {
+        val CLAIRE_DICKERSON by lazy {
+            factory(
+                person = TestPeople.CLAIRE_DICKERSON,
+                group = TestClasses.Lscc2022.NOV,
+                handicap = TestClasses.Lscc2022.STU,
+                number = "4",
+                car = Car(
+                    model = "2009 Subaru WRX",
+                    color = "silver"
+                )
+            )
+        }
+    }
+
     private fun factory(
         person: Person,
         group: Class?,
