@@ -291,62 +291,6 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Runs : HtmlEventResultsColumn() {
-        override fun buildStyles(event: Event, results: EventResults) = setOf(
-            CommonStyles.time,
-            """
-            .event-${event.id} th.runs, .event-${event.id} td.runs {
-                display: none;
-            }
-            @media screen and (min-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-${event.id} th.runs, .event-${event.id} td.runs  {
-                    display: table-cell;
-                }
-                .event-${event.id} ol.runs {
-                    padding: 0;
-                    display: grid;
-                    grid-template-columns: 1;
-                    list-style-type: none;
-                    list-style-position: inside;
-                }
-                ol.runs li {
-                    min-width: 100px;
-                }
-                @media screen and (min-width: 1024px) {
-                    .event-${event.id} ol.runs {
-                        grid-template-columns: repeat(${results.runCount}, 1fr);
-                    }
-                }
-            }
-            """.trimIndent()
-        )
-        override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("runs")
-                scope = ThScope.col
-                text("Runs")
-            }
-        }
-        override val data: TR.(ParticipantResult) -> Unit = { participantResult ->
-            td {
-                classes = setOf("runs")
-                ol {
-                    classes = setOf("runs", "time")
-                    participantResult.scoredRuns.forEachIndexed { index, resultRun ->
-                        render(resultRun.run).let { runText ->
-                            li {
-                                if (index == participantResult.personalBestScoredRunIndex) {
-                                    classes = setOf("best", "fw-bold")
-                                }
-                                text(runText)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private object CommonStyles {
         val time = """
             .time {

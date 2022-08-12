@@ -29,6 +29,7 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
                 HtmlEventResultsColumn.Name(responsive = false),
                 HtmlEventResultsColumn.Signage(responsive = false),
                 HtmlEventResultsColumn.CarModel(),
+                HtmlEventResultsColumn.Car
             ),
             dynamicTypeColumnFactory = HtmlIndividualEventResultsColumnRendererFactory()
         )

@@ -71,17 +71,4 @@ abstract class TextEventResultsColumn : EventResultsColumnRenderer<
             render(it.diffPrevious)
         }
     }
-
-    class Runs : TextEventResultsColumn() {
-        override val header: (EventResultsType) -> String = {
-            "Runs"
-        }
-        override val data: (ParticipantResult) -> String = { participantResult ->
-            val bestScoredRun = participantResult.personalBestScoredRunIndex?.let { participantResult.scoredRuns[it] }
-            participantResult.scoredRuns.joinToString(separator = "|") { resultRun ->
-                render(resultRun.run)
-                    .padEnd(12, if (resultRun !== bestScoredRun) '-' else '*')
-            }
-        }
-    }
 }

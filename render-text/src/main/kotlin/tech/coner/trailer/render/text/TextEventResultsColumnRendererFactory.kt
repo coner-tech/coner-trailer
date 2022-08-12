@@ -14,7 +14,6 @@ class TextEventResultsColumnRendererFactory : EventResultsColumnRendererFactory<
             EventResultsColumn.SCORE -> TextEventResultsColumn.Score()
             EventResultsColumn.DIFF_FIRST -> TextEventResultsColumn.DiffFirst()
             EventResultsColumn.DIFF_PREVIOUS -> TextEventResultsColumn.DiffPrevious()
-            EventResultsColumn.RUNS -> TextEventResultsColumn.Runs()
         } }
     }
 }
