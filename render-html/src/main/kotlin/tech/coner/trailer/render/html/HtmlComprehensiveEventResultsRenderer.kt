@@ -9,7 +9,8 @@ class HtmlComprehensiveEventResultsRenderer(
     columns: List<HtmlEventResultsColumn>,
     private val overallRenderer: HtmlOverallEventResultsRenderer,
     private val clazzRenderer: HtmlClazzEventResultsRenderer,
-    private val topTimesRenderer: HtmlTopTimesEventResultsRenderer
+    private val topTimesRenderer: HtmlTopTimesEventResultsRenderer,
+    private val individualRenderer: HtmlIndividualEventResultsRenderer
 ) : HtmlEventResultsRenderer<ComprehensiveEventResults>(columns),
     ComprehensiveEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
@@ -62,6 +63,7 @@ class HtmlComprehensiveEventResultsRenderer(
                 is OverallEventResults -> overallRenderer.partial(event, results).invoke(this)
                 is ClazzEventResults -> clazzRenderer.partial(event, results).invoke(this)
                 is TopTimesEventResults -> topTimesRenderer.partial(event, results).invoke(this)
+                is IndividualEventResults -> individualRenderer.partial(event, results).invoke(this)
                 else -> throw IllegalArgumentException("unable to handle results type: ${results.type.key}")
             }
         }

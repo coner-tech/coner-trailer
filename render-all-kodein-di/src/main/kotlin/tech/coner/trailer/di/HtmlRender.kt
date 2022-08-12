@@ -21,7 +21,8 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
         columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns),
         overallRenderer = factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)(columns) as HtmlOverallEventResultsRenderer,
         clazzRenderer = factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format)(columns) as HtmlClazzEventResultsRenderer,
-        topTimesRenderer = instance<TopTimesEventResultsRenderer<String, *>>(format) as HtmlTopTimesEventResultsRenderer
+        topTimesRenderer = instance<TopTimesEventResultsRenderer<String, *>>(format) as HtmlTopTimesEventResultsRenderer,
+        individualRenderer = instance<IndividualEventResultsRenderer<String, *>>(format) as HtmlIndividualEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(Format.HTML) with singleton {
         HtmlIndividualEventResultsRenderer(
@@ -29,7 +30,6 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
                 HtmlEventResultsColumn.Name(responsive = false),
                 HtmlEventResultsColumn.Signage(responsive = false),
                 HtmlEventResultsColumn.CarModel(),
-                HtmlEventResultsColumn.Car
             ),
             dynamicTypeColumnFactory = HtmlIndividualEventResultsColumnRendererFactory()
         )

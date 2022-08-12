@@ -15,28 +15,28 @@ class IndividualEventResultsCalculatorTest {
 
     lateinit var subject: IndividualEventResultsCalculator
 
-    @MockK lateinit var comprehensiveEventResultsCalculator: ComprehensiveEventResultsCalculator
+    @MockK lateinit var rawEventResultsCalculator: RawEventResultsCalculator
+    @MockK lateinit var paxEventResultsCalculator: PaxEventResultsCalculator
+    @MockK lateinit var clazzEventResultsCalculator: ClazzEventResultsCalculator
 
     @BeforeEach
     fun before() {
         subject = IndividualEventResultsCalculator(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
-            comprehensiveEventResultsCalculator = comprehensiveEventResultsCalculator
+            overallEventResultsCalculators = listOf(
+                rawEventResultsCalculator,
+                paxEventResultsCalculator
+            ),
+            clazzEventResultsCalculator = clazzEventResultsCalculator
         )
     }
 
     @Test
     fun `It should calculate individual event results`() {
-        val comprehensiveEventResults = ComprehensiveEventResults(
-            eventContext = TestEventContexts.Lscc2019Simplified.points1,
-            overallEventResults = listOf(
-                TestOverallRawEventResults.Lscc2019Simplified.points1,
-                TestOverallPaxEventResults.Lscc2019Simplified.points1
-            ),
-            clazzEventResults = TestClazzEventResults.Lscc2019Simplified.points1,
-            topTimesEventResults = TestTopTimesEventResults.Lscc2019Simplified.points1
-        )
-        every { comprehensiveEventResultsCalculator.calculate() } returns comprehensiveEventResults
+        val comprehensiveEventResults = TestComprehensiveEventResults.Lscc2019Simplified.points1
+        every { rawEventResultsCalculator.calculate() } returns comprehensiveEventResults.overallEventResults[0]
+        every { paxEventResultsCalculator.calculate() } returns comprehensiveEventResults.overallEventResults[1]
+        every { clazzEventResultsCalculator.calculate() } returns comprehensiveEventResults.clazzEventResults
 
         val actual = subject.calculate()
 

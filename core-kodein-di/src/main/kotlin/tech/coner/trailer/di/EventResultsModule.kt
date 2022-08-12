@@ -92,14 +92,19 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
                 factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
                 factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
             ),
-            groupEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext),
-            topTimesEventResultsCalculator = factory<EventContext, TopTimesEventResultsCalculator>().invoke(eventContext)
+            clazzEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext),
+            topTimesEventResultsCalculator = factory<EventContext, TopTimesEventResultsCalculator>().invoke(eventContext),
+            individualEventResultsCalculator = factory<EventContext, IndividualEventResultsCalculator>().invoke(eventContext)
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         IndividualEventResultsCalculator(
             eventContext = eventContext,
-            comprehensiveEventResultsCalculator = factory<EventContext, ComprehensiveEventResultsCalculator>().invoke(eventContext)
+            overallEventResultsCalculators = listOf(
+                factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
+                factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
+            ),
+            clazzEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext)
         )
     } }
 }

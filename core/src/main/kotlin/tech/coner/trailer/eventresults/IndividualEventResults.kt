@@ -11,4 +11,8 @@ data class IndividualEventResults(
 ) : EventResults {
 
     override val type: EventResultsType = StandardEventResultsTypes.individual
+
+    companion object {
+        val allByParticipantComparator = compareBy(Participant::lastName, Participant::firstName, { it.signage?.classingNumber })
+    }
 }

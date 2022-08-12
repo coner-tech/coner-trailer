@@ -9,6 +9,18 @@ import tech.coner.trailer.eventresults.StandardEventResultsTypes.pax
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.raw
 
 object TestIndividualEventResults {
+
+    object Lscc2019 {
+        val points1: IndividualEventResults by lazy {
+            // punting on full individual event results for unused full-scale event
+            IndividualEventResults(
+                eventContext = TestEventContexts.Lscc2019.points1,
+                allByParticipant = sortedMapOf(IndividualEventResults.allByParticipantComparator),
+                innerEventResultsTypes = emptyList()
+            )
+        }
+    }
+
     object Lscc2019Simplified {
         private val testClasses = TestClasses.Lscc2019
         val points1: IndividualEventResults by lazy {
@@ -61,6 +73,25 @@ object TestIndividualEventResults {
                     paxResults.type,
                     clazzResults.type
                 )
+            )
+        }
+    }
+
+    object LsccTieBreaking {
+        val points1: IndividualEventResults by lazy {
+            // punting on full individual event results not relevant for case
+            IndividualEventResults(
+                eventContext = TestEventContexts.LsccTieBreaking.points1,
+                allByParticipant = sortedMapOf(comparator = IndividualEventResults.allByParticipantComparator),
+                innerEventResultsTypes = emptyList()
+            )
+        }
+        val points2: IndividualEventResults by lazy {
+            IndividualEventResults(
+                // punting on full individual event results not relevant for case
+                eventContext = TestEventContexts.LsccTieBreaking.points2,
+                allByParticipant = sortedMapOf(comparator = IndividualEventResults.allByParticipantComparator),
+                innerEventResultsTypes = emptyList()
             )
         }
     }
