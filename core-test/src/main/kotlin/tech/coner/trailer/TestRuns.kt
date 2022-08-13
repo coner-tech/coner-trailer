@@ -149,4 +149,10 @@ object TestRuns {
             )
         }
     }
+
+    object LifecycleCases {
+        val someParticipantsWithSomeRuns by lazy {
+            TODO()
+        }
+    }
 }

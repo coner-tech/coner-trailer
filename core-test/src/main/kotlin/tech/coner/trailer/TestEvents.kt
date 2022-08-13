@@ -82,6 +82,88 @@ object TestEvents {
         }
     }
 
+    object LifecycleCases {
+        object Create {
+            val noParticipantsYet: Event by lazy {
+                factory("noParticipantsYet", Event.Lifecycle.CREATE)
+            }
+            val participantsWithoutRuns: Event by lazy {
+                factory("participantsWithoutRuns", Event.Lifecycle.CREATE)
+            }
+            val participantsWithRuns: Event by lazy {
+                factory("participantsWithRuns", Event.Lifecycle.CREATE)
+            }
+        }
+        object Pre {
+            val noParticipantsYet: Event by lazy {
+                factory("noParticipantsYet", Event.Lifecycle.PRE)
+            }
+            val withParticipantsWithoutRuns: Event by lazy {
+                factory("withParticipantsWithoutRuns", Event.Lifecycle.PRE)
+            }
+            val withParticipantsWithRuns: Event by lazy {
+                factory("withParticipantsWithRuns", Event.Lifecycle.PRE)
+            }
+        }
+        object Active {
+            val noParticipants: Event by lazy {
+                factory("noParticipants", Event.Lifecycle.ACTIVE)
+            }
+            val noRunsYet: Event by lazy {
+                factory("noRunsYet", Event.Lifecycle.ACTIVE)
+            }
+            val someParticipantsWithSomeRuns: Event by lazy {
+                factory("someParticipantsWithSomeRuns", Event.Lifecycle.ACTIVE)
+            }
+            val allParticipantsWithSomeRuns: Event by lazy {
+                factory("allParticipantsWithSomeRuns", Event.Lifecycle.ACTIVE)
+            }
+            val allParticipantsWithAllRuns: Event by lazy {
+                factory("allParticipantsWithAllRuns", Event.Lifecycle.ACTIVE)
+            }
+        }
+        object Post {
+            val noParticipants: Event by lazy {
+                factory("noParticipants", Event.Lifecycle.POST)
+            }
+            val noRuns: Event by lazy {
+                factory("noRuns", Event.Lifecycle.POST)
+            }
+            val someParticipantsWithoutRuns: Event by lazy {
+                factory("someParticipantsWithoutRuns", Event.Lifecycle.POST)
+            }
+            val allParticipantsWithSomeRuns: Event by lazy {
+                factory("allParticipantsWithSomeRuns", Event.Lifecycle.POST)
+            }
+            val allParticipantsWithAllRuns: Event by lazy {
+                factory("allParticipantsWithAllRuns", Event.Lifecycle.POST)
+            }
+        }
+        object Final {
+            val someParticipantsWithoutRuns: Event by lazy {
+                factory("someParticipantsWithoutRuns", Event.Lifecycle.FINAL)
+            }
+            val allParticipantsWithSomeRuns: Event by lazy {
+                factory("allParticipantsWithSomeRuns", Event.Lifecycle.FINAL)
+            }
+            val allParticipantsWithAllRuns: Event by lazy {
+                factory("allParticipantsWithAllRuns", Event.Lifecycle.FINAL)
+            }
+        }
+
+        private fun factory(
+            nameSuffix: String,
+            lifecycle: Event.Lifecycle
+        ) = Event(
+            name = "Lifecycle Case: ${lifecycle.name} $nameSuffix",
+            date = LocalDate.parse("2022-08-13"),
+            lifecycle = lifecycle,
+            crispyFish = null,
+            motorsportReg = null,
+            policy = TestPolicies.lsccV2
+        )
+    }
+
 }
 
 private fun event(

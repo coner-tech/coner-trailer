@@ -70,7 +70,94 @@ object TestEventContexts {
         }
     }
 
-
+    object LifecycleCases {
+        private val classes = TestClasses.Lscc2019.all
+        private val extendedParameters = EventExtendedParameters(
+            runsPerParticipant = 2
+        )
+        object Create {
+            val noParticipantsYet: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Create.noParticipantsYet,
+                    classes = classes,
+                    participants = emptyList(),
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
+            }
+            val participantsWithoutRuns: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Create.participantsWithoutRuns,
+                    classes = classes,
+                    participants = TestParticipants.LifecycleCases.participants,
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
+            }
+            val participantsWithRuns: EventContext by lazy {
+                participantsWithoutRuns.copy(
+                    event = TestEvents.LifecycleCases.Create.participantsWithRuns,
+                    runs = TestRuns.LifecycleCases.someParticipantsWithSomeRuns
+                )
+            }
+        }
+        object Pre {
+            val noParticipantsYet: EventContext by lazy {
+                TODO()
+            }
+            val withParticipantsWithoutRuns: EventContext by lazy {
+                TODO()
+            }
+            val withParticipantsWithRuns: EventContext by lazy {
+                TODO()
+            }
+        }
+        object Active {
+            val noParticipants: EventContext by lazy {
+                TODO()
+            }
+            val noRunsYet: EventContext by lazy {
+                TODO()
+            }
+            val someParticipantsWithSomeRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithSomeRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithAllRuns: EventContext by lazy {
+                TODO()
+            }
+        }
+        object Post {
+            val noParticipants: EventContext by lazy {
+                TODO()
+            }
+            val noRuns: EventContext by lazy {
+                TODO()
+            }
+            val someParticipantsWithoutRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithSomeRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithAllRuns: EventContext by lazy {
+                TODO()
+            }
+        }
+        object Final {
+            val someParticipantsWithoutRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithSomeRuns: EventContext by lazy {
+                TODO()
+            }
+            val allParticipantsWithAllRuns: EventContext by lazy {
+                TODO()
+            }
+        }
+    }
 
 
 }

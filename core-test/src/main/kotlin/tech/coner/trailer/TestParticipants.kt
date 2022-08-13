@@ -388,6 +388,21 @@ object TestParticipants {
         }
     }
 
+    object LifecycleCases {
+        val REBECCA_JACKSON by lazy { factory(Lscc2019Points1.REBECCA_JACKSON) }
+        val JIMMY_MCKENZIE by lazy { factory(Lscc2019Points1.JIMMY_MCKENZIE) }
+
+        val noParticipantsYet: List<Participant> by lazy { emptyList() }
+        val participants: List<Participant> by lazy {
+            listOf(
+                REBECCA_JACKSON,
+                JIMMY_MCKENZIE
+            )
+        }
+
+        private fun factory(baseParticipant: Participant) = baseParticipant.copy()
+    }
+
     private fun factory(
         person: Person,
         group: Class?,
