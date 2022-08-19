@@ -94,10 +94,15 @@ object TestEventContexts {
                     extendedParameters = extendedParameters
                 )
             }
-            val participantsWithRuns: EventContext by lazy {
+            val someParticipantsWithSomeRuns: EventContext by lazy {
                 participantsWithoutRuns.copy(
-                    event = TestEvents.LifecycleCases.Create.participantsWithRuns,
+                    event = TestEvents.LifecycleCases.Create.someParticipantsWithSomeRuns,
                     runs = TestRuns.LifecycleCases.someParticipantsWithSomeRuns
+                )
+            }
+            val someParticipantsWithAllRuns: EventContext by lazy {
+                someParticipantsWithSomeRuns.copy(
+                    event = TestEvents.LifecycleCases.Create.participants
                 )
             }
         }

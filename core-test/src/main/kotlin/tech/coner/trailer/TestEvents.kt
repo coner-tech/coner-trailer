@@ -1,7 +1,10 @@
 package tech.coner.trailer
 
+import tech.coner.trailer.TestEvents.LifecycleCases.Create.factory
+import tech.coner.trailer.TestEvents.LifecycleCases.Create.lifecycle
 import java.nio.file.Paths
 import java.time.LocalDate
+import kotlin.reflect.KProperty
 
 object TestEvents {
 
@@ -82,86 +85,56 @@ object TestEvents {
         }
     }
 
-    object LifecycleCases {
-        object Create {
-            val noParticipantsYet: Event by lazy {
-                factory("noParticipantsYet", Event.Lifecycle.CREATE)
-            }
-            val participantsWithoutRuns: Event by lazy {
-                factory("participantsWithoutRuns", Event.Lifecycle.CREATE)
-            }
-            val participantsWithRuns: Event by lazy {
-                factory("participantsWithRuns", Event.Lifecycle.CREATE)
-            }
+    sealed class LifecycleCases {
+        protected abstract val lifecycle: Event.Lifecycle
+        object Create : LifecycleCases() {
+            override val lifecycle = Event.Lifecycle.CREATE
+            val noParticipantsYet: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
         }
-        object Pre {
-            val noParticipantsYet: Event by lazy {
-                factory("noParticipantsYet", Event.Lifecycle.PRE)
-            }
-            val withParticipantsWithoutRuns: Event by lazy {
-                factory("withParticipantsWithoutRuns", Event.Lifecycle.PRE)
-            }
-            val withParticipantsWithRuns: Event by lazy {
-                factory("withParticipantsWithRuns", Event.Lifecycle.PRE)
-            }
+        object Pre : LifecycleCases() {
+            override val lifecycle = Event.Lifecycle.PRE
+            val noParticipantsYet: Event by Factory()
+            val withParticipantsWithoutRuns: Event by Factory()
+            val withParticipantsWithRuns: Event by Factory()
         }
-        object Active {
-            val noParticipants: Event by lazy {
-                factory("noParticipants", Event.Lifecycle.ACTIVE)
-            }
-            val noRunsYet: Event by lazy {
-                factory("noRunsYet", Event.Lifecycle.ACTIVE)
-            }
-            val someParticipantsWithSomeRuns: Event by lazy {
-                factory("someParticipantsWithSomeRuns", Event.Lifecycle.ACTIVE)
-            }
-            val allParticipantsWithSomeRuns: Event by lazy {
-                factory("allParticipantsWithSomeRuns", Event.Lifecycle.ACTIVE)
-            }
-            val allParticipantsWithAllRuns: Event by lazy {
-                factory("allParticipantsWithAllRuns", Event.Lifecycle.ACTIVE)
-            }
+        object Active : LifecycleCases() {
+            override val lifecycle = Event.Lifecycle.ACTIVE
+            val noParticipants: Event by Factory()
+            val noRunsYet: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Post {
-            val noParticipants: Event by lazy {
-                factory("noParticipants", Event.Lifecycle.POST)
-            }
-            val noRuns: Event by lazy {
-                factory("noRuns", Event.Lifecycle.POST)
-            }
-            val someParticipantsWithoutRuns: Event by lazy {
-                factory("someParticipantsWithoutRuns", Event.Lifecycle.POST)
-            }
-            val allParticipantsWithSomeRuns: Event by lazy {
-                factory("allParticipantsWithSomeRuns", Event.Lifecycle.POST)
-            }
-            val allParticipantsWithAllRuns: Event by lazy {
-                factory("allParticipantsWithAllRuns", Event.Lifecycle.POST)
-            }
+        object Post : LifecycleCases() {
+            override val lifecycle = Event.Lifecycle.POST
+            val noParticipants: Event by Factory()
+            val noRuns: Event by Factory()
+            val someParticipantsWithoutRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Final {
-            val someParticipantsWithoutRuns: Event by lazy {
-                factory("someParticipantsWithoutRuns", Event.Lifecycle.FINAL)
-            }
-            val allParticipantsWithSomeRuns: Event by lazy {
-                factory("allParticipantsWithSomeRuns", Event.Lifecycle.FINAL)
-            }
-            val allParticipantsWithAllRuns: Event by lazy {
-                factory("allParticipantsWithAllRuns", Event.Lifecycle.FINAL)
-            }
+        object Final : LifecycleCases() {
+            override val lifecycle = Event.Lifecycle.FINAL
+            val someParticipantsWithoutRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
         }
 
-        private fun factory(
-            nameSuffix: String,
-            lifecycle: Event.Lifecycle
-        ) = Event(
-            name = "Lifecycle Case: ${lifecycle.name} $nameSuffix",
-            date = LocalDate.parse("2022-08-13"),
-            lifecycle = lifecycle,
-            crispyFish = null,
-            motorsportReg = null,
-            policy = TestPolicies.lsccV2
-        )
+        private inner class Factory {
+            operator fun getValue(thisRef: Any?, property: KProperty<*>): Event {
+                return Event(
+                    name = "Lifecycle Case: ${lifecycle.name} ${property.name}",
+                    date = LocalDate.parse("2022-08-13"),
+                    lifecycle = lifecycle,
+                    crispyFish = null,
+                    motorsportReg = null,
+                    policy = TestPolicies.lsccV2
+                )
+            }
+        }
     }
 
 }

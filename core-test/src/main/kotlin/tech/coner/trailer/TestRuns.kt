@@ -151,8 +151,35 @@ object TestRuns {
     }
 
     object LifecycleCases {
+        private val participants by lazy { TestParticipants.LifecycleCases }
+
         val someParticipantsWithSomeRuns by lazy {
-            TODO()
+            allParticipantsWithAllRuns.subList(0, 1)
+        }
+
+        val allParticipantsWithAllRuns by lazy {
+            listOf(
+                testRun(
+                    sequence = 1,
+                    participant = participants.REBECCA_JACKSON,
+                    time = Time("34.567")
+                ),
+                testRun(
+                    sequence = 2,
+                    participant = participants.JIMMY_MCKENZIE,
+                    time = Time("35.678")
+                ),
+                testRun(
+                    sequence = 3,
+                    participant = participants.REBECCA_JACKSON,
+                    time = Time("34.456")
+                ),
+                testRun(
+                    sequence = 4,
+                    participant = participants.JIMMY_MCKENZIE,
+                    time = Time("35.567")
+                )
+            )
         }
     }
 }
