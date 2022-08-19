@@ -1,5 +1,7 @@
 package tech.coner.trailer
 
+import tech.coner.trailer.TestParticipants.LifecycleCases.participants
+
 object TestRuns {
 
     object Lscc2019Simplified {
@@ -153,8 +155,19 @@ object TestRuns {
     object LifecycleCases {
         private val participants by lazy { TestParticipants.LifecycleCases }
 
-        val someParticipantsWithSomeRuns by lazy {
+        val someParticipantsWithSomeRuns: List<Run> by lazy {
             allParticipantsWithAllRuns.subList(0, 1)
+        }
+        val someParticipantsWithAllRuns: List<Run> by lazy {
+            mutableListOf<Run>()
+                .apply {
+                    addAll(
+                        allParticipantsWithAllRuns.filter { it.participant == participants.REBECCA_JACKSON }
+                            .also { check(it.size == 2) { "Expected only two runs for Rebecca Jackson" } }
+                    )
+                    add(allParticipantsWithAllRuns.first { it.participant == participants.JIMMY_MCKENZIE })
+                }
+                .sortedBy { it.sequence }
         }
 
         val allParticipantsWithAllRuns by lazy {
