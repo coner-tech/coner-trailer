@@ -89,36 +89,52 @@ object TestEvents {
         protected abstract val lifecycle: Event.Lifecycle
         object Create : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.CREATE
+            val base: Event by Factory()
             val noParticipantsYet: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
             val participantsWithoutRuns: Event by Factory()
             val someParticipantsWithSomeRuns: Event by Factory()
             val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
         }
         object Pre : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.PRE
+            val base: Event by Factory()
             val noParticipantsYet: Event by Factory()
-            val withParticipantsWithoutRuns: Event by Factory()
-            val withParticipantsWithRuns: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
         }
         object Active : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.ACTIVE
-            val noParticipants: Event by Factory()
-            val noRunsYet: Event by Factory()
+            val base: Event by Factory()
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
             val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
         object Post : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.POST
-            val noParticipants: Event by Factory()
-            val noRuns: Event by Factory()
-            val someParticipantsWithoutRuns: Event by Factory()
+            val base: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
         object Final : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.FINAL
-            val someParticipantsWithoutRuns: Event by Factory()
+            val base: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }

@@ -155,6 +155,14 @@ object TestRuns {
     object LifecycleCases {
         private val participants by lazy { TestParticipants.LifecycleCases }
 
+        val runsWithoutSignage: List<Run> by lazy {
+            allParticipantsWithAllRuns
+                .map { it.copy(signage = null, participant = null) }
+        }
+        val runsWithoutParticipants: List<Run> by lazy {
+            allParticipantsWithAllRuns
+                .map { it.copy(participant = null) }
+        }
         val someParticipantsWithSomeRuns: List<Run> by lazy {
             allParticipantsWithAllRuns.subList(0, 1)
         }

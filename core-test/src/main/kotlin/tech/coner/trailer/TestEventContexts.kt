@@ -76,7 +76,7 @@ object TestEventContexts {
             runsPerParticipant = 2
         )
         object Create {
-            val noParticipantsYet: EventContext by lazy {
+            private val base: EventContext by lazy {
                 EventContext(
                     event = TestEvents.LifecycleCases.Create.noParticipantsYet,
                     classes = classes,
@@ -85,18 +85,27 @@ object TestEventContexts {
                     extendedParameters = extendedParameters
                 )
             }
+            val noParticipantsYet: EventContext by lazy {
+                base.copy(
+                    event = TestEvents.LifecycleCases.Create.noParticipantsYet,
+                )
+            }
+            val runsWithoutParticipants: EventContext by lazy {
+                base.copy(
+                    event = TestEvents.LifecycleCases.Create.runsWithoutParticipants,
+                    runs = TestRuns.LifecycleCases.someParticipantsWithAllRuns
+                )
+            }
             val participantsWithoutRuns: EventContext by lazy {
-                EventContext(
+                base.copy(
                     event = TestEvents.LifecycleCases.Create.participantsWithoutRuns,
-                    classes = classes,
-                    participants = TestParticipants.LifecycleCases.participants,
-                    runs = emptyList(),
-                    extendedParameters = extendedParameters
+                    participants = TestParticipants.LifecycleCases.participants
                 )
             }
             val someParticipantsWithSomeRuns: EventContext by lazy {
-                participantsWithoutRuns.copy(
+                base.copy(
                     event = TestEvents.LifecycleCases.Create.someParticipantsWithSomeRuns,
+                    participants = TestParticipants.LifecycleCases.participants,
                     runs = TestRuns.LifecycleCases.someParticipantsWithSomeRuns
                 )
             }
@@ -105,6 +114,9 @@ object TestEventContexts {
                     event = TestEvents.LifecycleCases.Create.someParticipantsWithAllRuns,
                     runs = TestRuns.LifecycleCases.someParticipantsWithAllRuns
                 )
+            }
+            val allParticipantsWithAllRuns: EventContext by lazy {
+
             }
         }
         object Pre {
