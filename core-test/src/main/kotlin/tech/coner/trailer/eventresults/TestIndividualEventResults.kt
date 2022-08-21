@@ -95,4 +95,8 @@ object TestIndividualEventResults {
             )
         }
     }
+
+    object LifecyclePhases {
+
+    }
 }

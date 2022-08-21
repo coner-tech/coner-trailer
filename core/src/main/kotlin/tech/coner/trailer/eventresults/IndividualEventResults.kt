@@ -6,7 +6,7 @@ import java.util.*
 
 data class IndividualEventResults(
     override val eventContext: EventContext,
-    val allByParticipant: SortedMap<Participant, Map<EventResultsType, ParticipantResult>>,
+    val allByParticipant: SortedMap<Participant, Map<EventResultsType, ParticipantResult?>>,
     val innerEventResultsTypes: List<EventResultsType>
 ) : EventResults {
 

@@ -17,17 +17,17 @@ class IndividualEventResultsCalculator(
         }
         return IndividualEventResults(
             eventContext = eventContext,
-            allByParticipant = eventContext.participants // TODO: don't expect a result for every participant. not everyone might have taken runs (yet)
+            allByParticipant = eventContext.participants
                 .associateWith { participant ->
                     allEventResults.associate { eventResults ->
                         eventResults.type to when (eventResults) {
-                            is OverallEventResults -> eventResults.participantResults.single { it.participant == participant }
+                            is OverallEventResults -> eventResults.participantResults.singleOrNull { it.participant == participant }
                             is ClazzEventResults -> {
-                                val groupParticipantResults = eventResults.groupParticipantResults.values
-                                    .single { participantResults ->
+                                eventResults.groupParticipantResults.values
+                                    .singleOrNull { participantResults ->
                                         participantResults.any { it.participant == participant }
                                     }
-                                groupParticipantResults.single { it.participant == participant }
+                                    ?.singleOrNull { it.participant == participant }
                             }
                             else -> throw IllegalArgumentException("Unable to handle event results type: ${eventResults.type.key}")
                         }

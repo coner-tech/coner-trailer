@@ -1,7 +1,5 @@
 package tech.coner.trailer
 
-import tech.coner.trailer.TestEvents.LifecycleCases.Create.factory
-import tech.coner.trailer.TestEvents.LifecycleCases.Create.lifecycle
 import java.nio.file.Paths
 import java.time.LocalDate
 import kotlin.reflect.KProperty

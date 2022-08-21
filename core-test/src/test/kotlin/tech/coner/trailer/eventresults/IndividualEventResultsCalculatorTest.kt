@@ -1,45 +1,45 @@
 package tech.coner.trailer.eventresults
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import tech.coner.trailer.*
+import tech.coner.trailer.EventContext
+import tech.coner.trailer.TestEventContexts
 
 @ExtendWith(MockKExtension::class)
 class IndividualEventResultsCalculatorTest {
 
     lateinit var subject: IndividualEventResultsCalculator
 
-    @MockK lateinit var rawEventResultsCalculator: RawEventResultsCalculator
+    val rawEventResultsCalculator = RawEventResultsCalculator()
     @MockK lateinit var paxEventResultsCalculator: PaxEventResultsCalculator
     @MockK lateinit var clazzEventResultsCalculator: ClazzEventResultsCalculator
 
-    @BeforeEach
-    fun before() {
+    @Test
+    fun `It should calculate for event created with no participants and no runs`() {
+        val eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet
         subject = IndividualEventResultsCalculator(
-            eventContext = TestEventContexts.Lscc2019Simplified.points1,
+            eventContext = eventContext,
             overallEventResultsCalculators = listOf(
-                rawEventResultsCalculator,
-                paxEventResultsCalculator
-            ),
-            clazzEventResultsCalculator = clazzEventResultsCalculator
+                RawEventResultsCalculator.create(eventContext)
+            )
         )
+        TODO()
     }
 
     @Test
-    fun `It should calculate individual event results`() {
-        val comprehensiveEventResults = TestComprehensiveEventResults.Lscc2019Simplified.points1
-        every { rawEventResultsCalculator.calculate() } returns comprehensiveEventResults.overallEventResults[0]
-        every { paxEventResultsCalculator.calculate() } returns comprehensiveEventResults.overallEventResults[1]
-        every { clazzEventResultsCalculator.calculate() } returns comprehensiveEventResults.clazzEventResults
+    fun `It should calculate for event created with some participants with some runs`() {
+        TODO()
+    }
 
-        val actual = subject.calculate()
+    @Test
+    fun `It should calculate for event created with some participants with all runs`() {
+        TODO()
+    }
 
-        assertThat(actual).isEqualTo(TestIndividualEventResults.Lscc2019Simplified.points1)
+    @Test
+    fun `It should calculate for event created with all participants with all runs`() {
+        TODO()
     }
 }
