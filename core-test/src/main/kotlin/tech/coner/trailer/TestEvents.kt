@@ -145,7 +145,7 @@ object TestEvents {
                     lifecycle = lifecycle,
                     crispyFish = null,
                     motorsportReg = null,
-                    policy = TestPolicies.lsccV2
+                    policy = TestPolicies.standardTest
                 )
             }
         }

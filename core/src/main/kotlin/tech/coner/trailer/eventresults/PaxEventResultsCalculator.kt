@@ -15,4 +15,16 @@ class PaxEventResultsCalculator(
     runEligibilityQualifier = runEligibilityQualifier,
     runScoreFactory = runScoreFactory,
     finalScoreFactory = finalScoreFactory
-)
+) {
+
+    constructor(
+        eventContext: EventContext,
+        finalScoreFactory: FinalScoreFactory
+    ) : this(
+        eventContext = eventContext,
+        scoredRunsComparator = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
+        runEligibilityQualifier = RunEligibilityQualifier(),
+        runScoreFactory = PaxTimeRunScoreFactory(StandardPenaltyFactory(eventContext.event.policy)),
+        finalScoreFactory = finalScoreFactory
+    )
+}

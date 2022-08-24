@@ -110,7 +110,7 @@ class TopTimesEventResultsCalculatorTest {
                 )
                 StandardEventResultsTypes.raw -> RawEventResultsCalculator(
                     eventContext = eventContext,
-                    scoredRunsComparatorFactory = scoredRunsComparator,
+                    scoredRunsComparator = scoredRunsComparator,
                     runEligibilityQualifier = RunEligibilityQualifier(),
                     runScoreFactory = RawTimeRunScoreFactory(penaltyFactory),
                     finalScoreFactory = finalScoreFactory

@@ -31,4 +31,18 @@ object TestPolicies {
         topTimesEventResultsMethod = StandardEventResultsTypes.pax
     ) }
 
+    val standardTest by lazy {
+        Policy(
+            id = UUID.randomUUID(),
+            club = TestClubs.lscc,
+            name = "Standard Test Policy",
+            conePenaltySeconds = 2,
+            paxTimeStyle = PaxTimeStyle.FAIR,
+            finalScoreStyle = FinalScoreStyle.AUTOCROSS,
+            authoritativeParticipantDataSource = Policy.DataSource.None,
+            authoritativeRunDataSource = Policy.DataSource.None,
+            topTimesEventResultsMethod = StandardEventResultsTypes.pax
+        )
+    }
+
 }

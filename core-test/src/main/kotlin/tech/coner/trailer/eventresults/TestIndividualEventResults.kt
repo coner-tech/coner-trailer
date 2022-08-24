@@ -1,9 +1,6 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.Participant
-import tech.coner.trailer.TestClasses
-import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.*
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.clazz
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.pax
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.raw
@@ -97,6 +94,80 @@ object TestIndividualEventResults {
     }
 
     object LifecyclePhases {
+        private val standardInnerEventResultsTypes by lazy {
+            listOf(raw, pax, clazz)
+        }
+        val participants = TestParticipants.LifecycleCases
+        val runs = TestRuns.LifecycleCases
+        object Create {
+            private val eventContexts = TestEventContexts.LifecycleCases.Create
+            private val base by lazy {
+                IndividualEventResults(
+                    eventContext = eventContexts.noParticipantsYet,
+                    allByParticipant = sortedMapOf(IndividualEventResults.allByParticipantComparator),
+                    innerEventResultsTypes = standardInnerEventResultsTypes
+                )
+            }
+            val noParticipantsYet by lazy {
+                base.copy(
+                    eventContext = eventContexts.noParticipantsYet
+                )
+            }
+            val runsWithoutParticipants by lazy {
+                base.copy(
+                    eventContext = eventContexts.runsWithoutParticipants
+                )
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                val eventContext = eventContexts.someParticipantsWithSomeRuns
+                val runs = runs.someParticipantsWithSomeRuns
+                base.copy(
+                    eventContext = eventContext,
+                    allByParticipant = sortedMapOf(
+                        IndividualEventResults.allByParticipantComparator,
+                        participants.REBECCA_JACKSON to mapOf(
+                            raw to ParticipantResult(
+                                position = 1,
+                                score = Score("34.567"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("34.567")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            ),
+                            pax to ParticipantResult(
+                                position = 1,
+                                score = Score("26.962"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("34.567")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            ),
+                            clazz to TODO()
+                        ),
+                        participants.JIMMY_MCKENZIE to mapOf(
+                            raw to null,
+                            pax to null,
+                            clazz to null
+                        )
+                    )
+                )
+            }
 
+        }
     }
+
 }

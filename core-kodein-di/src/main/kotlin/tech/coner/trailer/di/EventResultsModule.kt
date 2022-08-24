@@ -49,7 +49,7 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
         val privateContextDi = internalEventResultsModule.on(context)
         RawEventResultsCalculator(
             eventContext = eventContext,
-            scoredRunsComparatorFactory = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
+            scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
             runEligibilityQualifier = privateContextDi.instance(),
             runScoreFactory = privateContextDi.factory<Policy, RawTimeRunScoreFactory>().invoke(eventContext.event.policy),
             finalScoreFactory = privateContextDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)

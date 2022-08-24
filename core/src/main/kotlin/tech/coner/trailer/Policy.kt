@@ -18,6 +18,14 @@ data class Policy(
 ) {
 
     sealed class DataSource {
+        /**
+         * Source data from Crispy Fish
+         */
         object CrispyFish : DataSource()
+
+        /**
+         * Source data from nothing (not persisted). Dev/test use only.
+         */
+        object None : DataSource()
     }
 }

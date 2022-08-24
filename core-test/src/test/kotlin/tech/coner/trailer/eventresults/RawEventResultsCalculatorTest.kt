@@ -289,7 +289,7 @@ class RawEventResultsCalculatorTest {
     private fun createRawEventResultsCalculator(eventContext: EventContext): RawEventResultsCalculator {
         return RawEventResultsCalculator(
             eventContext = eventContext,
-            scoredRunsComparatorFactory = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
+            scoredRunsComparator = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
             runEligibilityQualifier = RunEligibilityQualifier(),
             runScoreFactory = RawTimeRunScoreFactory(StandardPenaltyFactory(eventContext.event.policy)),
             finalScoreFactory = when (eventContext.event.policy.finalScoreStyle) {
