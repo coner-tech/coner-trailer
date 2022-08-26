@@ -348,8 +348,8 @@ object TestOverallRawEventResults {
     }
 
     object LifecyclePhases {
-        val participants = TestParticipants.LifecycleCases
-        val runs = TestRuns.LifecycleCases
+        private val participants = TestParticipants.LifecycleCases
+        private val runs = TestRuns.LifecycleCases
         object Create {
             private val eventContexts = TestEventContexts.LifecycleCases.Create
             val noParticipantsYet by lazy {
@@ -385,7 +385,34 @@ object TestOverallRawEventResults {
                 )
             }
             val someParticipantsWithAllRuns: OverallEventResults by lazy {
-                TODO()
+                val runs = runs.someParticipantsWithAllRuns
+                OverallEventResults(
+                    eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.456"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[0] to Score("34.567") },
+                                { runs[2] to Score("34.456") }
+                            )
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.678"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("1.222"),
+                            diffPrevious = Time("1.222"),
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[1] to Score("35.678") }
+                        )
+                    )
+                )
             }
         }
     }

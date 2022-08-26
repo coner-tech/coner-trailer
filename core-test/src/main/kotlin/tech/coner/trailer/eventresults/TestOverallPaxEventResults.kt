@@ -1,9 +1,6 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.Run
-import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.TestParticipants
-import tech.coner.trailer.Time
+import tech.coner.trailer.*
 
 object TestOverallPaxEventResults {
     object Lscc2019Simplified {
@@ -375,5 +372,14 @@ object TestOverallPaxEventResults {
                 )
             )
         )
+    }
+
+    object LifecyclePhases {
+        private val participants = TestParticipants.LifecycleCases
+        private val runs = TestRuns.LifecycleCases
+        private val eventContexts = TestEventContexts.LifecycleCases.Create
+        object Create {
+
+        }
     }
 }
