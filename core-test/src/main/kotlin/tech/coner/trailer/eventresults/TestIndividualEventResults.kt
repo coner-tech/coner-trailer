@@ -126,7 +126,23 @@ object TestIndividualEventResults {
                     allByParticipant = sortedMapOf(
                         IndividualEventResults.allByParticipantComparator,
                         participants.REBECCA_JACKSON to mapOf(
-                            raw to ParticipantResult(
+                            raw to TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            pax to ParticipantResult(
+                                position = 1,
+                                score = Score("26.962"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("26.962")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            ),
+                            clazz to ParticipantResult(
                                 position = 1,
                                 score = Score("34.567"),
                                 participant = participants.REBECCA_JACKSON,
@@ -140,23 +156,7 @@ object TestIndividualEventResults {
                                     )
                                 ),
                                 personalBestScoredRunIndex = 0
-                            ),
-                            pax to ParticipantResult(
-                                position = 1,
-                                score = Score("26.962"),
-                                participant = participants.REBECCA_JACKSON,
-                                diffFirst = null,
-                                diffPrevious = null,
-                                allRuns = listOf(runs[0]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[0],
-                                        score = Score("34.567")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 0
-                            ),
-                            clazz to TODO()
+                            )
                         ),
                         participants.JIMMY_MCKENZIE to mapOf(
                             raw to null,
@@ -166,7 +166,125 @@ object TestIndividualEventResults {
                     )
                 )
             }
-
+            val someParticipantsWithAllRuns by lazy {
+                val eventContext = eventContexts.someParticipantsWithAllRuns
+                val runs = runs.someParticipantsWithAllRuns
+                base.copy(
+                    eventContext = eventContext,
+                    allByParticipant = sortedMapOf(
+                        IndividualEventResults.allByParticipantComparator,
+                        participants.REBECCA_JACKSON to mapOf(
+                            raw to ParticipantResult(
+                                position = 1,
+                                score = Score("34.456"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0], runs[2]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("34.567")
+                                    ),
+                                    ResultRun(
+                                        run = runs[2],
+                                        score = Score("34.456")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 1
+                            ),
+                            pax to ParticipantResult(
+                                position = 1,
+                                score = Score("26.878"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0], runs[2]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("26.962")
+                                    ),
+                                    ResultRun(
+                                        run = runs[2],
+                                        score = Score("26.878")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 1
+                            ),
+                            clazz to ParticipantResult(
+                                position = 1,
+                                score = Score("26.878"),
+                                participant = participants.REBECCA_JACKSON,
+                                diffFirst = null,
+                                diffPrevious = null,
+                                allRuns = listOf(runs[0], runs[2]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[0],
+                                        score = Score("26.962")
+                                    ),
+                                    ResultRun(
+                                        run = runs[2],
+                                        score = Score("26.878")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 1
+                            )
+                        ),
+                        participants.JIMMY_MCKENZIE to mapOf(
+                            raw to ParticipantResult(
+                                position = 2,
+                                score = Score("35.678"),
+                                participant = participants.JIMMY_MCKENZIE,
+                                diffFirst = Time("1.222"),
+                                diffPrevious = Time("1.222"),
+                                allRuns = listOf(runs[1]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[1],
+                                        score = Score("35.678")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            ),
+                            pax to ParticipantResult(
+                                position = 2,
+                                score = Score("29.506"),
+                                participant = participants.JIMMY_MCKENZIE,
+                                diffFirst = Time("2.628"),
+                                diffPrevious = Time("2.628"),
+                                allRuns = listOf(runs[1]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[1],
+                                        score = Score("29.506")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            ),
+                            clazz to ParticipantResult(
+                                position = 2,
+                                score = Score("29.506"),
+                                participant = participants.JIMMY_MCKENZIE,
+                                diffFirst = Time("2.628"),
+                                diffPrevious = Time("2.628"),
+                                allRuns = listOf(runs[1]),
+                                scoredRuns = listOf(
+                                    ResultRun(
+                                        run = runs[1],
+                                        score = Score("29.506")
+                                    )
+                                ),
+                                personalBestScoredRunIndex = 0
+                            )
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithAllRuns: IndividualEventResults by lazy {
+                TODO()
+            }
         }
     }
 

@@ -1,9 +1,6 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.Run
-import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.TestParticipants
-import tech.coner.trailer.Time
+import tech.coner.trailer.*
 import java.math.BigDecimal
 
 object TestOverallRawEventResults {
@@ -348,5 +345,48 @@ object TestOverallRawEventResults {
                 )
             )
         )
+    }
+
+    object LifecyclePhases {
+        val participants = TestParticipants.LifecycleCases
+        val runs = TestRuns.LifecycleCases
+        object Create {
+            private val eventContexts = TestEventContexts.LifecycleCases.Create
+            val noParticipantsYet by lazy {
+                OverallEventResults(
+                    eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val runsWithoutParticipants by lazy {
+                OverallEventResults(
+                    eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                val runs = runs.someParticipantsWithSomeRuns
+                OverallEventResults(
+                    eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.567"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[0] to Score("34.567") }
+                        )
+                    )
+                )
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                TODO()
+            }
+        }
     }
 }
