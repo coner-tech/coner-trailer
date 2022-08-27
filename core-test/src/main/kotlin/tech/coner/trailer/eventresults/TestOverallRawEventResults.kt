@@ -354,14 +354,14 @@ object TestOverallRawEventResults {
             private val eventContexts = TestEventContexts.LifecycleCases.Create
             val noParticipantsYet by lazy {
                 OverallEventResults(
-                    eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
+                    eventContext = eventContexts.noParticipantsYet,
                     type = StandardEventResultsTypes.raw,
                     participantResults = emptyList()
                 )
             }
             val runsWithoutParticipants by lazy {
                 OverallEventResults(
-                    eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
+                    eventContext = eventContexts.runsWithoutParticipants,
                     type = StandardEventResultsTypes.raw,
                     participantResults = emptyList()
                 )
@@ -369,7 +369,7 @@ object TestOverallRawEventResults {
             val someParticipantsWithSomeRuns by lazy {
                 val runs = runs.someParticipantsWithSomeRuns
                 OverallEventResults(
-                    eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
+                    eventContext = eventContexts.someParticipantsWithSomeRuns,
                     type = StandardEventResultsTypes.raw,
                     participantResults = listOf(
                         testParticipantResult(
@@ -387,7 +387,7 @@ object TestOverallRawEventResults {
             val someParticipantsWithAllRuns: OverallEventResults by lazy {
                 val runs = runs.someParticipantsWithAllRuns
                 OverallEventResults(
-                    eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
+                    eventContext = eventContexts.someParticipantsWithAllRuns,
                     type = StandardEventResultsTypes.raw,
                     participantResults = listOf(
                         testParticipantResult(
@@ -411,6 +411,16 @@ object TestOverallRawEventResults {
                             personalBestScoredRunIndex = 0,
                             runFns = listOf { runs[1] to Score("35.678") }
                         )
+                    )
+                )
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                val runs = runs.allParticipantsWithAllRuns
+                OverallEventResults(
+                    eventContext = eventContexts.allParticipantsWithAllRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        TODO()
                     )
                 )
             }

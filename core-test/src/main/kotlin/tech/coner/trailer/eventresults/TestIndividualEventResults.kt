@@ -121,12 +121,13 @@ object TestIndividualEventResults {
             val someParticipantsWithSomeRuns by lazy {
                 val eventContext = eventContexts.someParticipantsWithSomeRuns
                 val runs = runs.someParticipantsWithSomeRuns
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = sortedMapOf(
                         IndividualEventResults.allByParticipantComparator,
                         participants.REBECCA_JACKSON to mapOf(
-                            raw to TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to ParticipantResult(
                                 position = 1,
                                 score = Score("26.962"),
@@ -169,30 +170,13 @@ object TestIndividualEventResults {
             val someParticipantsWithAllRuns by lazy {
                 val eventContext = eventContexts.someParticipantsWithAllRuns
                 val runs = runs.someParticipantsWithAllRuns
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = sortedMapOf(
                         IndividualEventResults.allByParticipantComparator,
                         participants.REBECCA_JACKSON to mapOf(
-                            raw to ParticipantResult(
-                                position = 1,
-                                score = Score("34.456"),
-                                participant = participants.REBECCA_JACKSON,
-                                diffFirst = null,
-                                diffPrevious = null,
-                                allRuns = listOf(runs[0], runs[2]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[0],
-                                        score = Score("34.567")
-                                    ),
-                                    ResultRun(
-                                        run = runs[2],
-                                        score = Score("34.456")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 1
-                            ),
+                            raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to ParticipantResult(
                                 position = 1,
                                 score = Score("26.878"),
