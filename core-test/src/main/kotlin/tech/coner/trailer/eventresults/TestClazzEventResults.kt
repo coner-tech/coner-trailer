@@ -877,4 +877,12 @@ object TestClazzEventResults {
             diffPrevious = null
         )
     }
+
+    object LifecyclePhases {
+        private val participants = TestParticipants.LifecycleCases
+        private val runs = TestRuns.LifecycleCases
+        object Create {
+            private val eventContexts = TestEventContexts.LifecycleCases.Create
+        }
+    }
 }
