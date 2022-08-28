@@ -122,27 +122,14 @@ object TestIndividualEventResults {
                 val eventContext = eventContexts.someParticipantsWithSomeRuns
                 val runs = runs.someParticipantsWithSomeRuns
                 val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
+                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = sortedMapOf(
                         IndividualEventResults.allByParticipantComparator,
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
-                            pax to ParticipantResult(
-                                position = 1,
-                                score = Score("26.962"),
-                                participant = participants.REBECCA_JACKSON,
-                                diffFirst = null,
-                                diffPrevious = null,
-                                allRuns = listOf(runs[0]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[0],
-                                        score = Score("26.962")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 0
-                            ),
+                            pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             clazz to ParticipantResult(
                                 position = 1,
                                 score = Score("34.567"),
@@ -171,31 +158,14 @@ object TestIndividualEventResults {
                 val eventContext = eventContexts.someParticipantsWithAllRuns
                 val runs = runs.someParticipantsWithAllRuns
                 val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = sortedMapOf(
                         IndividualEventResults.allByParticipantComparator,
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
-                            pax to ParticipantResult(
-                                position = 1,
-                                score = Score("26.878"),
-                                participant = participants.REBECCA_JACKSON,
-                                diffFirst = null,
-                                diffPrevious = null,
-                                allRuns = listOf(runs[0], runs[2]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[0],
-                                        score = Score("26.962")
-                                    ),
-                                    ResultRun(
-                                        run = runs[2],
-                                        score = Score("26.878")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 1
-                            ),
+                            pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             clazz to ParticipantResult(
                                 position = 1,
                                 score = Score("26.878"),
@@ -217,36 +187,8 @@ object TestIndividualEventResults {
                             )
                         ),
                         participants.JIMMY_MCKENZIE to mapOf(
-                            raw to ParticipantResult(
-                                position = 2,
-                                score = Score("35.678"),
-                                participant = participants.JIMMY_MCKENZIE,
-                                diffFirst = Time("1.222"),
-                                diffPrevious = Time("1.222"),
-                                allRuns = listOf(runs[1]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[1],
-                                        score = Score("35.678")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 0
-                            ),
-                            pax to ParticipantResult(
-                                position = 2,
-                                score = Score("29.506"),
-                                participant = participants.JIMMY_MCKENZIE,
-                                diffFirst = Time("2.628"),
-                                diffPrevious = Time("2.628"),
-                                allRuns = listOf(runs[1]),
-                                scoredRuns = listOf(
-                                    ResultRun(
-                                        run = runs[1],
-                                        score = Score("29.506")
-                                    )
-                                ),
-                                personalBestScoredRunIndex = 0
-                            ),
+                            raw to rawResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
+                            pax to paxResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
                             clazz to ParticipantResult(
                                 position = 2,
                                 score = Score("29.506"),
@@ -267,7 +209,25 @@ object TestIndividualEventResults {
                 )
             }
             val allParticipantsWithAllRuns: IndividualEventResults by lazy {
-                TODO()
+                val eventContext = eventContexts.allParticipantsWithAllRuns
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+                base.copy(
+                    eventContext = eventContext,
+                    allByParticipant = sortedMapOf(
+                        IndividualEventResults.allByParticipantComparator,
+                        participants.REBECCA_JACKSON to mapOf(
+                            raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            clazz to TODO()
+                        ),
+                        participants.JIMMY_MCKENZIE to mapOf(
+                            raw to rawResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
+                            pax to paxResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
+                            clazz to TODO()
+                        )
+                    )
+                )
             }
         }
     }

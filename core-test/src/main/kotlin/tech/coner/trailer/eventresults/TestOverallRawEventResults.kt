@@ -420,7 +420,30 @@ object TestOverallRawEventResults {
                     eventContext = eventContexts.allParticipantsWithAllRuns,
                     type = StandardEventResultsTypes.raw,
                     participantResults = listOf(
-                        TODO()
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.456"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[0] to Score("34.567") },
+                                { runs[2] to Score("34.456") }
+                            )
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.567"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("2.538"),
+                            diffPrevious = Time("2.538"),
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[1] to Score("35.678") },
+                                { runs[3] to Score("35.567") }
+                            )
+                        )
                     )
                 )
             }
