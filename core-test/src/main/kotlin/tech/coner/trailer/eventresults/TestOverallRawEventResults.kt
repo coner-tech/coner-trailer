@@ -348,6 +348,7 @@ object TestOverallRawEventResults {
     }
 
     object LifecyclePhases {
+        private val classes = TestClasses.Lscc2019
         private val participants = TestParticipants.LifecycleCases
         private val runs = TestRuns.LifecycleCases
         object Create {
@@ -436,8 +437,8 @@ object TestOverallRawEventResults {
                             position = 2,
                             score = Score("35.567"),
                             participant = participants.JIMMY_MCKENZIE,
-                            diffFirst = Time("2.538"),
-                            diffPrevious = Time("2.538"),
+                            diffFirst = Time("1.111"),
+                            diffPrevious = Time("1.111"),
                             personalBestScoredRunIndex = 1,
                             runFns = listOf(
                                 { runs[1] to Score("35.678") },

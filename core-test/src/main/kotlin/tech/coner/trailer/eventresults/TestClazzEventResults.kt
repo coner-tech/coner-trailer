@@ -881,8 +881,70 @@ object TestClazzEventResults {
     object LifecyclePhases {
         private val participants = TestParticipants.LifecycleCases
         private val runs = TestRuns.LifecycleCases
+        private val classes = TestClasses.Lscc2019
         object Create {
             private val eventContexts = TestEventContexts.LifecycleCases.Create
+            val noParticipantsYet by lazy {
+                ClazzEventResults(
+                    eventContext = eventContexts.noParticipantsYet,
+                    groupParticipantResults = sortedMapOf()
+                )
+            }
+            val runsWithoutParticipants by lazy {
+                ClazzEventResults(
+                    eventContext = eventContexts.runsWithoutParticipants,
+                    groupParticipantResults = sortedMapOf()
+                )
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
+                ClazzEventResults(
+                    eventContext = eventContexts.someParticipantsWithSomeRuns,
+                    groupParticipantResults = sortedMapOf(
+                        classes.HS to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.REBECCA_JACKSON }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        )
+                    )
+                )
+            }
+            val someParticipantsWithAllRuns by lazy {
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+                ClazzEventResults(
+                    eventContext = eventContexts.someParticipantsWithAllRuns,
+                    groupParticipantResults = sortedMapOf(
+                        classes.HS to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.REBECCA_JACKSON }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        ),
+                        classes.STR to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.JIMMY_MCKENZIE }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithAllRuns by lazy {
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+                ClazzEventResults(
+                    eventContext = eventContexts.allParticipantsWithAllRuns,
+                    groupParticipantResults = sortedMapOf(
+                        classes.HS to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.REBECCA_JACKSON }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        ),
+                        classes.STR to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.JIMMY_MCKENZIE }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        )
+                    )
+                )
+            }
         }
     }
 }
