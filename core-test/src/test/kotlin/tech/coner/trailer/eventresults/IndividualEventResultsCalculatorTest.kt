@@ -49,22 +49,13 @@ class IndividualEventResultsCalculatorTest {
         assertThat(actual).isEqualTo(params.expected)
     }
 
-    /*
-
-    @Test
-    fun `It should calculate for event created with all participants with all runs`() {
-        TODO()
-    }
-
-     */
-
     private fun factory(eventContext: EventContext): IndividualEventResultsCalculator {
         val finalScoreFactory = AutocrossFinalScoreFactory()
         return IndividualEventResultsCalculator(
             eventContext = eventContext,
             overallEventResultsCalculators = listOf(
-                RawEventResultsCalculator(eventContext, AutocrossFinalScoreFactory()),
-                PaxEventResultsCalculator(eventContext, AutocrossFinalScoreFactory())
+                RawEventResultsCalculator(eventContext, finalScoreFactory),
+                PaxEventResultsCalculator(eventContext, finalScoreFactory)
             ),
             clazzEventResultsCalculator = ClazzEventResultsCalculator(eventContext, finalScoreFactory)
         )

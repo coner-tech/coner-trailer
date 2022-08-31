@@ -4,6 +4,8 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.*
 
 class ClazzEventResultsCalculatorTest {
@@ -342,6 +344,42 @@ class ClazzEventResultsCalculatorTest {
                 }
             }
         }
+    }
+
+    enum class LifecycleCaseFixtures(
+        val eventContext: EventContext,
+        val expected: ClazzEventResults
+    ) {
+        CREATE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
+            expected = TestClazzEventResults.LifecyclePhases.Create.noParticipantsYet
+        ),
+        CREATE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
+            expected = TestClazzEventResults.LifecyclePhases.Create.runsWithoutParticipants
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+        )
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    fun `It should calculate expected results for events in various states`(params: LifecycleCaseFixtures) {
+        val subject = createClazzEventResultsCalculator(params.eventContext)
+
+        val actual = subject.calculate()
+
+        assertThat(actual).isEqualTo(params.expected)
     }
 
     private fun createClazzEventResultsCalculator(eventContext: EventContext): ClazzEventResultsCalculator {

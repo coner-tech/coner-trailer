@@ -8,7 +8,7 @@ class ClassService(
 ) {
 
     fun list(event: Event): Result<List<tech.coner.trailer.Class>> = runCatching {
-        when (event.policy.authoritativeParticipantDataSource) {
+        when (event.policy.requireAuthoritativeParticipantDataSource()) {
             Policy.DataSource.CrispyFish -> crispyFishClassService.loadAllClasses(event.requireCrispyFish().classDefinitionFile)
         }
     }

@@ -463,8 +463,8 @@ object TestOverallPaxEventResults {
                             position = 2,
                             score = Score("29.414"),
                             participant = participants.JIMMY_MCKENZIE,
-                            diffFirst = Time("1.111"),
-                            diffPrevious = Time("1.111"),
+                            diffFirst = Time("2.538"),
+                            diffPrevious = Time("2.538"),
                             personalBestScoredRunIndex = 1,
                             runFns = listOf(
                                 { runs[1] to Score("29.506") },

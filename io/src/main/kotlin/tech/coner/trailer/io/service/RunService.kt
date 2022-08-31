@@ -11,7 +11,7 @@ class RunService(
 ) : CoroutineContext by coroutineContext {
 
     suspend fun list(event: Event): Result<List<Run>> {
-        return when (event.policy.authoritativeRunDataSource) {
+        return when (event.policy.requireAuthoritativeRunDataSource()) {
             Policy.DataSource.CrispyFish -> crispyFishRunService.list(event)
         }
     }

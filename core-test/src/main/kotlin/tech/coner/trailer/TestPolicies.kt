@@ -39,8 +39,8 @@ object TestPolicies {
             conePenaltySeconds = 2,
             paxTimeStyle = PaxTimeStyle.FAIR,
             finalScoreStyle = FinalScoreStyle.AUTOCROSS,
-            authoritativeParticipantDataSource = Policy.DataSource.None,
-            authoritativeRunDataSource = Policy.DataSource.None,
+            authoritativeParticipantDataSource = null,
+            authoritativeRunDataSource = null,
             topTimesEventResultsMethod = StandardEventResultsTypes.pax
         )
     }

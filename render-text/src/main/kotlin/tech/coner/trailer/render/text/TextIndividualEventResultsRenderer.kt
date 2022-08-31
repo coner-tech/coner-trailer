@@ -22,12 +22,18 @@ class TextIndividualEventResultsRenderer : TextEventResultsRenderer<IndividualEv
         at.addRow(heading)
         at.addRule()
         results.allByParticipant.forEach { (participant, individualParticipantResults) ->
-            val resultsText = mutableListOf(renderName(participant), participant.signage?.classingNumber ?: "", participant.car?.model ?: "").also {
-                individualParticipantResults.values.forEach { individualParticipantResult ->
-                    it.add("${individualParticipantResult.position}")
-                    it.add(renderScoreColumnValue(individualParticipantResult))
+            val resultsText = mutableListOf(
+                renderName(participant),
+                participant.signage?.classingNumber ?: "",
+                participant.car?.model ?: ""
+
+            )
+                .apply {
+                    individualParticipantResults.values.forEach { individualParticipantResult ->
+                        add("${individualParticipantResult?.position ?: ""}")
+                        add(individualParticipantResult?.let(::renderScoreColumnValue) ?: "")
+                    }
                 }
-            }
             at.addRow(resultsText)
         }
         at.addRule()

@@ -12,8 +12,8 @@ data class Policy(
     val conePenaltySeconds: Int,
     val paxTimeStyle: PaxTimeStyle,
     val finalScoreStyle: FinalScoreStyle,
-    val authoritativeParticipantDataSource: DataSource,
-    val authoritativeRunDataSource: DataSource,
+    val authoritativeParticipantDataSource: DataSource?,
+    val authoritativeRunDataSource: DataSource?,
     val topTimesEventResultsMethod: EventResultsType
 ) {
 
@@ -22,10 +22,13 @@ data class Policy(
          * Source data from Crispy Fish
          */
         object CrispyFish : DataSource()
+    }
 
-        /**
-         * Source data from nothing (not persisted). Dev/test use only.
-         */
-        object None : DataSource()
+    fun requireAuthoritativeParticipantDataSource() = checkNotNull(authoritativeParticipantDataSource) {
+        "Operation requires authoritativeParticipantDataSource but it was null"
+    }
+
+    fun requireAuthoritativeRunDataSource() = checkNotNull(authoritativeRunDataSource) {
+        "Operation requires authoritativeRunDataSource but it was null"
     }
 }

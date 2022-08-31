@@ -11,7 +11,7 @@ class EventExtendedParametersService(
 ) : CoroutineContext by coroutineContext {
 
     suspend fun load(event: Event): Result<EventExtendedParameters> = runCatching {
-        when (event.policy.authoritativeParticipantDataSource) {
+        when (event.policy.requireAuthoritativeParticipantDataSource()) {
             Policy.DataSource.CrispyFish -> EventExtendedParameters(
                 runsPerParticipant = crispyFishEventMappingContextService.load(event.requireCrispyFish()).runCount
             )

@@ -4,6 +4,8 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.*
 
 class PaxEventResultsCalculatorTest {
@@ -284,6 +286,42 @@ class PaxEventResultsCalculatorTest {
                 }
             }
         }
+    }
+
+    enum class LifecycleCaseFixtures(
+        val eventContext: EventContext,
+        val expected: OverallEventResults
+    ) {
+        CREATE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.noParticipantsYet
+        ),
+        CREATE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.runsWithoutParticipants
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+        )
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    fun `It should calculate expected results for events in various states`(params: LifecycleCaseFixtures) {
+        val subject = createPaxEventResultsCalculator(params.eventContext)
+
+        val actual = subject.calculate()
+
+        assertThat(actual).isEqualTo(params.expected)
     }
 
     private fun createPaxEventResultsCalculator(eventContext: EventContext): PaxEventResultsCalculator {

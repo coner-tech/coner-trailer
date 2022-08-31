@@ -40,7 +40,10 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Signage(private val responsive: Boolean) : HtmlEventResultsColumn() {
+    class Signage(
+        private val responsive: Boolean,
+        private val participantSignageColumn: HtmlParticipantColumn.Signage = HtmlParticipantColumn.Signage()
+        ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults): Set<String> {
             return if (responsive) {
                 setOf(
@@ -57,17 +60,10 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("signage")
-                scope = ThScope.col
-                text("Signage")
-            }
+            participantSignageColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("signage")
-                text(it.participant.signage?.classingNumber ?: "")
-            }
+            participantSignageColumn.data.invoke(this, it.participant)
         }
     }
 
@@ -136,7 +132,10 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Name(private val responsive: Boolean) : HtmlEventResultsColumn() {
+    class Name(
+        private val responsive: Boolean,
+        private val participantNameColumn: HtmlParticipantColumn.Name = HtmlParticipantColumn.Name()
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults): Set<String> {
             return if (responsive) {
                 setOf(
@@ -153,20 +152,15 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("name")
-                scope = ThScope.col
-                text("Name")
-            }
+            participantNameColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("name")
-                text(renderName(it.participant))
-            }
+            participantNameColumn.data.invoke(this, it.participant)
         }
     }
-    class CarModel : HtmlEventResultsColumn() {
+    class CarModel(
+        private val participantCarModelColumn: HtmlParticipantColumn.CarModel = HtmlParticipantColumn.CarModel()
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
@@ -177,17 +171,10 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             """.trimIndent()
         )
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("car-model")
-                scope = ThScope.col
-                text("Car Model")
-            }
+            participantCarModelColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("car-model")
-                text(it.participant.car?.model ?: "")
-            }
+            participantCarModelColumn.data.invoke(this, it.participant)
         }
     }
     class MobileNameCarModel : HtmlEventResultsColumn() {

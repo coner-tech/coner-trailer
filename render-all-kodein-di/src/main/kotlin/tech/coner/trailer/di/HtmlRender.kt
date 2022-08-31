@@ -25,13 +25,6 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
         individualRenderer = instance<IndividualEventResultsRenderer<String, *>>(format) as HtmlIndividualEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(Format.HTML) with singleton {
-        HtmlIndividualEventResultsRenderer(
-            staticColumns = listOf(
-                HtmlEventResultsColumn.Name(responsive = false),
-                HtmlEventResultsColumn.Signage(responsive = false),
-                HtmlEventResultsColumn.CarModel(),
-            ),
-            dynamicTypeColumnFactory = HtmlIndividualEventResultsColumnRendererFactory()
-        )
+        HtmlIndividualEventResultsRenderer()
     }
 }
