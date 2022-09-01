@@ -1,5 +1,6 @@
 package tech.coner.trailer.di
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import org.kodein.di.*
 import tech.coner.snoozle.db.session.data.DataSession
@@ -201,7 +202,7 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
     bind {
         scoped(DataSessionScope).singleton {
             EventService(
-                coroutineContext = context.coroutineContext + Job(),
+                coroutineScope = CoroutineScope(context.coroutineContext + Job()),
                 dbConfig = context.environment.requireDatabaseConfiguration(),
                 resource = instance(),
                 mapper = instance(),

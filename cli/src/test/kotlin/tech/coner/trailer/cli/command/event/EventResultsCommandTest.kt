@@ -89,7 +89,7 @@ class EventResultsCommandTest : DIAware {
         val eventContext = TestEventContexts.Lscc2019.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
-        every { eventService.findById(event.id) } returns event
+        coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
         every { rawCalculator.calculate() } returns results
@@ -103,7 +103,7 @@ class EventResultsCommandTest : DIAware {
 
         assertThat(testConsole.output).isEqualTo(render)
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
             jsonOverallEventResultsRenderer.render(event, results)
@@ -115,7 +115,7 @@ class EventResultsCommandTest : DIAware {
         val eventContext = TestEventContexts.Lscc2019.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
-        every { eventService.findById(event.id) } returns event
+        coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
         every { rawCalculator.calculate() } returns results
@@ -130,7 +130,7 @@ class EventResultsCommandTest : DIAware {
 
         assertThat(testConsole.output).isEqualTo(render)
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
             textOverallEventResultsRenderer.render(event, results)
@@ -144,7 +144,7 @@ class EventResultsCommandTest : DIAware {
         val eventContext = TestEventContexts.Lscc2019.points1
         val event = eventContext.event
         val paxCalculator = mockkEventResultsFixture.paxCalculator
-        every { eventService.findById(event.id) } returns event
+        coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
         every { paxCalculator.calculate() } returns results
@@ -170,7 +170,7 @@ class EventResultsCommandTest : DIAware {
             assertThat(actualDestination.readText(), "file content").isEqualTo(render)
         }
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             eventContextService.load(event)
             paxCalculator.calculate()
             htmlOverallEventResultsRenderer.render(event, results)

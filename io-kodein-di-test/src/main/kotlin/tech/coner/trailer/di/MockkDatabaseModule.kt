@@ -156,7 +156,7 @@ fun mockkDatabaseModule() = DI.Module("mockk for coner.trailer.io.database") {
         scoped(DataSessionScope).singleton { mockk() }
     }
     bind<PolicyPersistConstraints> {
-        scoped(DataSessionScope).singleton { mockk() }
+        scoped(DataSessionScope).singleton { mockk(relaxed = true) }
     }
 
     // Classing

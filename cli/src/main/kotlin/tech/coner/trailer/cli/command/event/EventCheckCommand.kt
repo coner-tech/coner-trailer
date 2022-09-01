@@ -34,7 +34,7 @@ class EventCheckCommand(
     private val id: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() = diContext.use {
-        val check = service.findById(id)
+        val check = service.findByKey(id).getOrThrow()
         val result = service.check(check)
         if (result.unmappable.isNotEmpty()) {
             echo("Found unmappable registration(s):")

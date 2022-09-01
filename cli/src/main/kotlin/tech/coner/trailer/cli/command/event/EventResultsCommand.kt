@@ -94,7 +94,7 @@ class EventResultsCommand(
 
     override suspend fun coRun() {
         val eventContext = dataSessionContainer.diContext.use {
-            val event = dataSessionContainer.eventService.findById(id)
+            val event = dataSessionContainer.eventService.findByKey(id).getOrThrow()
             dataSessionContainer.eventContextService.load(event).getOrThrow()
         }
         eventResultsSessionContainer.diContext.use {

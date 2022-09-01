@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import kotlinx.html.Entities
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -50,7 +51,7 @@ class EventCrispyFishPersonMapAssembleCommand(
     private val id: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() = diContext.use {
-        val event = service.findById(id)
+        val event = service.findByKey(id).getOrThrow()
         val crispyFish = event.crispyFish
         if (crispyFish == null) {
             echo("Selected Event lacks Crispy Fish Metadata")
@@ -269,6 +270,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                 peopleMap = peopleMap
             )
         )
-        service.update(update)
+        service.update(update).getOrThrow()
+        Unit
     }
 }

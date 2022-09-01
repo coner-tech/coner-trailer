@@ -9,12 +9,14 @@ import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
+import tech.coner.trailer.cli.util.clikt.handle
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.PolicyView
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
+import tech.coner.trailer.io.constraint.PolicyPersistConstraints
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
 import java.util.*
@@ -30,15 +32,16 @@ class PolicyAddCommand(
 ) {
 
     override val diContext = diContextDataSession()
+    private val constraints: PolicyPersistConstraints by instance()
     private val clubService: ClubService by instance()
     private val service: PolicyService by instance()
     private val view: PolicyView by instance()
 
-    private val id: UUID by option(hidden = true)
+    private val id: UUID? by option(hidden = true)
         .convert { toUuid(it) }
-        .default(UUID.randomUUID())
     private val name: String by option()
         .required()
+        .validate { id?.also { id -> handle(constraints.hasUniqueName(id to it)) } }
     private val conePenaltySeconds: Int by option()
         .int()
         .required()
@@ -68,7 +71,7 @@ class PolicyAddCommand(
 
     override suspend fun coRun() = diContext.use {
         val create = Policy(
-            id = id,
+            id = id ?: UUID.randomUUID(),
             club = clubService.get(),
             name = name,
             conePenaltySeconds = conePenaltySeconds,

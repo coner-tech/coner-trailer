@@ -114,11 +114,11 @@ class AuthenticatedMotorsportRegApiTest {
             enqueueResponse(mockAuthenticatedResponse)
         }
 
-        val actual = api.getEventAssignments("${event.id}").execute()
+        val actual = api.getEventAssignments("${event.motorsportReg?.id}").execute()
         val actualRequest = server.takeRequest()
 
         assertThat(actualRequest, "request").all {
-            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "events", "${event.id}", "assignments.json"))
+            requestUrl().isNotNull().pathSegments().isEqualTo(listOf("rest", "events", "${event.motorsportReg?.id}", "assignments.json"))
         }
         assertThat(actual, "response").all {
             code().isEqualTo(200)

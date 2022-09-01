@@ -1,5 +1,6 @@
 package tech.coner.trailer.eventresults
 
+import tech.coner.trailer.Event
 import tech.coner.trailer.EventContext
 
 class IndividualEventResultsCalculator(
@@ -31,6 +32,14 @@ class IndividualEventResultsCalculator(
                             }
                             else -> throw IllegalArgumentException("Unable to handle event results type: ${eventResults.type.key}")
                         }
+                    }
+                }
+                .let { map ->
+                    // exclude participants without runs from POST and later lifecycle events
+                    if (eventContext.event.lifecycle >= Event.Lifecycle.POST) {
+                        map.filterValues { value -> !value.containsValue(null) }
+                    } else {
+                        map
                     }
                 }
                 .toSortedMap(IndividualEventResults.allByParticipantComparator),

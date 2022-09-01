@@ -30,7 +30,7 @@ class EventGetCommand(
     private val id: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() = diContext.use {
-        val get = service.findById(id)
+        val get = service.findByKey(id).getOrThrow()
         echo(view.render(get))
     }
 }

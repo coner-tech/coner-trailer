@@ -1,10 +1,8 @@
 package tech.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
+import io.mockk.*
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.verifySequence
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -48,13 +46,13 @@ class EventDeleteCommandTest : DIAware {
     @Test
     fun `It should delete event`() {
         val event = TestEvents.Lscc2019.points1
-        every { service.findById(event.id) } returns event
-        justRun { service.delete(event) }
+        coEvery { service.findByKey(event.id) } returns Result.success(event)
+        coJustRun { service.delete(event) }
 
         command.parse(arrayOf("${event.id}"))
 
-        verifySequence {
-            service.findById(event.id)
+        coVerifySequence {
+            service.findByKey(event.id)
             service.delete(event)
         }
     }

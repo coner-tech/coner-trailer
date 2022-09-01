@@ -91,7 +91,7 @@ class EventCrispyFishPersonMapAddCommandTest : DIAware,
             firstName = person.firstName,
             lastName = person.lastName
         )
-        every { service.findById(event.id) } returns event
+        coEvery { service.findByKey(event.id) } returns Result.success(event)
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         every { personService.findById(person.id) } returns person
         val set = event.copy(
@@ -114,7 +114,7 @@ class EventCrispyFishPersonMapAddCommandTest : DIAware,
         ))
 
         coVerifySequence {
-            service.findById(event.id)
+            service.findByKey(event.id)
             crispyFishClassService.loadAllByAbbreviation(any())
             personService.findById(person.id)
             service.update(set)

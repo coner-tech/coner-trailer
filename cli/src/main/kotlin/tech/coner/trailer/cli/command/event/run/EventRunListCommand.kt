@@ -33,7 +33,7 @@ class EventRunListCommand(
     private val eventId: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() {
-        val event = eventService.findById(eventId)
+        val event = eventService.findByKey(eventId).getOrThrow()
         val runs = runService.list(event).getOrThrow()
         echo(renderer.render(runs))
     }

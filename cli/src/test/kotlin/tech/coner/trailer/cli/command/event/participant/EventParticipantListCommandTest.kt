@@ -73,7 +73,7 @@ class EventParticipantListCommandTest : DIAware,
             TestParticipants.Lscc2019Points1.REBECCA_JACKSON,
             TestParticipants.Lscc2019Points1.JIMMY_MCKENZIE
         )
-        every { eventService.findById(any()) } returns event
+        coEvery { eventService.findByKey(any()) } returns Result.success(event)
         coEvery { participantService.list(any()) } returns Result.success(participants)
         val render = "participantRenderer rendered participants"
         every { renderer.render(participants) } returns render
@@ -81,7 +81,7 @@ class EventParticipantListCommandTest : DIAware,
         command.parse(arrayOf("${event.id}"))
 
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             participantService.list(event)
             renderer.render(participants)
         }

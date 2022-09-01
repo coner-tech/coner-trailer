@@ -13,6 +13,7 @@ import tech.coner.trailer.Participant
 import tech.coner.trailer.Run
 import tech.coner.trailer.datasource.crispyfish.fixture.EventFixture
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
+import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.util.ServiceContainer
 import java.nio.file.Path
 
@@ -80,7 +81,7 @@ class RunWithInvalidSignageVerifierTest : CoroutineScope {
                 eventFixture.coreSeasonEvent.event.let {
                     clubs.createOrUpdate(it.policy.club.name)
                     policies.create(it.policy)
-                    events.create(
+                    events.create(CreateEventPayload(
                         id = it.id,
                         name = it.name,
                         date = it.date,
@@ -88,7 +89,9 @@ class RunWithInvalidSignageVerifierTest : CoroutineScope {
                         crispyFishClassDefinitionFile = it.crispyFish!!.classDefinitionFile,
                         motorsportRegEventId = it.motorsportReg?.id,
                         policy = it.policy
+                        )
                     )
+                        .getOrThrow()
                 }
             }
         }

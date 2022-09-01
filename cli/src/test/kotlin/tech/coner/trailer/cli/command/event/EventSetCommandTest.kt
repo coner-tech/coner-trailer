@@ -89,7 +89,7 @@ class EventSetCommandTest : DIAware,
                 id = "motorsportreg-event-id"
             )
         )
-        every { service.findById(original.id) } returns original
+        coEvery { service.findByKey(original.id) } returns Result.success(original)
         coJustRun { service.update(any()) }
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view.render(any()) } returns viewRendered
@@ -106,7 +106,7 @@ class EventSetCommandTest : DIAware,
         ))
 
         coVerifySequence {
-            service.findById(original.id)
+            service.findByKey(original.id)
             service.update(set)
             view.render(set)
         }
@@ -119,7 +119,7 @@ class EventSetCommandTest : DIAware,
     ) {
         val original = TestEvents.Lscc2019.points1
         val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
-        every { service.findById(original.id) } returns original
+        coEvery { service.findByKey(original.id) } returns Result.success(original)
         coJustRun {
             service.update(original)
         }
@@ -131,7 +131,7 @@ class EventSetCommandTest : DIAware,
         ))
 
         coVerifySequence {
-            service.findById(original.id)
+            service.findByKey(original.id)
             service.update(original)
             view.render(original)
         }

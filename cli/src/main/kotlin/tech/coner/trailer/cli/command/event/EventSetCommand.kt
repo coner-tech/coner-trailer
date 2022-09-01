@@ -9,6 +9,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import kotlinx.html.Entities
+import kotlinx.html.InputType
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -98,7 +100,7 @@ class EventSetCommand(
     }
 
     override suspend fun coRun() = diContext.use {
-        val event = service.findById(id)
+        val event = service.findByKey(id).getOrThrow()
         val crispyFish = when (val crispyFishOptions = crispyFish) {
             is CrispyFishOptions.Set -> {
                 Event.CrispyFishMetadata(
