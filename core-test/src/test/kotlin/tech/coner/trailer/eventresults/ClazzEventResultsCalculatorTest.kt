@@ -358,6 +358,10 @@ class ClazzEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestClazzEventResults.LifecyclePhases.Create.runsWithoutParticipants
         ),
+        CREATE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.participantsWithoutRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Create.participantsWithoutRuns
+        ),
         CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
             expected = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
@@ -365,6 +369,10 @@ class ClazzEventResultsCalculatorTest {
         CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
             expected = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
         ),
         CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,

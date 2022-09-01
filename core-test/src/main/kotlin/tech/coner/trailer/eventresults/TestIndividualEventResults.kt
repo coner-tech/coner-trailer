@@ -165,6 +165,28 @@ object TestIndividualEventResults {
                     )
                 )
             }
+            val allParticipantsWithSomeRuns: IndividualEventResults by lazy {
+                val eventContext = eventContexts.allParticipantsWithSomeRuns
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+                val clazzResults = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+                base.copy(
+                    eventContext = eventContext,
+                    allByParticipant = sortedMapOf(
+                        IndividualEventResults.allByParticipantComparator,
+                        participants.REBECCA_JACKSON to mapOf(
+                            raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
+                            clazz to clazzResults.groupParticipantResults[classes.HS]?.single { it.participant == participants.REBECCA_JACKSON }
+                        ),
+                        participants.JIMMY_MCKENZIE to mapOf(
+                            raw to rawResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
+                            pax to paxResults.participantResults.single { it.participant == participants.JIMMY_MCKENZIE },
+                            clazz to clazzResults.groupParticipantResults[classes.STR]?.single { it.participant == participants.JIMMY_MCKENZIE }
+                        )
+                    )
+                )
+            }
             val allParticipantsWithAllRuns: IndividualEventResults by lazy {
                 val eventContext = eventContexts.allParticipantsWithAllRuns
                 val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
@@ -187,6 +209,9 @@ object TestIndividualEventResults {
                     )
                 )
             }
+        }
+        object Pre {
+            private val eventContexts = TestEventContexts.LifecycleCases.Pre
         }
     }
 

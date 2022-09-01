@@ -177,28 +177,37 @@ object TestRuns {
                 }
                 .sortedBy { it.sequence }
         }
-
+        val allParticipantsWithSomeRuns by lazy {
+            listOf(
+                allParticipantsWithAllRuns.first { it.participant == participants.REBECCA_JACKSON },
+                allParticipantsWithAllRuns.first { it.participant == participants.JIMMY_MCKENZIE }
+            )
+        }
         val allParticipantsWithAllRuns by lazy {
             listOf(
                 testRun(
                     sequence = 1,
                     participant = participants.REBECCA_JACKSON,
                     time = Time("34.567")
+                    // pax: 26.962
                 ),
                 testRun(
                     sequence = 2,
                     participant = participants.JIMMY_MCKENZIE,
                     time = Time("35.678")
+                    // pax: 29.506
                 ),
                 testRun(
                     sequence = 3,
                     participant = participants.REBECCA_JACKSON,
                     time = Time("34.456")
+                    // pax: 26.876
                 ),
                 testRun(
                     sequence = 4,
                     participant = participants.JIMMY_MCKENZIE,
                     time = Time("35.567")
+                    // pax: 29.414
                 )
             )
         }

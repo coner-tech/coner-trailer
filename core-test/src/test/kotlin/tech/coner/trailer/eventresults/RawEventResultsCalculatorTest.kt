@@ -300,6 +300,10 @@ class RawEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestOverallRawEventResults.LifecyclePhases.Create.runsWithoutParticipants
         ),
+        CREATE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.participantsWithoutRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Create.participantsWithoutRuns
+        ),
         CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
             expected = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
@@ -307,6 +311,10 @@ class RawEventResultsCalculatorTest {
         CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
             expected = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithSomeRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
         ),
         CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,

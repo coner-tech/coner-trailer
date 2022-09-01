@@ -367,6 +367,13 @@ object TestOverallRawEventResults {
                     participantResults = emptyList()
                 )
             }
+            val participantsWithoutRuns by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.participantsWithoutRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
             val someParticipantsWithSomeRuns by lazy {
                 val runs = runs.someParticipantsWithSomeRuns
                 OverallEventResults(
@@ -409,6 +416,33 @@ object TestOverallRawEventResults {
                             participant = participants.JIMMY_MCKENZIE,
                             diffFirst = Time("1.222"),
                             diffPrevious = Time("1.222"),
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[1] to Score("35.678") }
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                val runs = runs.allParticipantsWithSomeRuns
+                OverallEventResults(
+                    eventContext = eventContexts.allParticipantsWithSomeRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.567"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[0] to Score("34.567") }
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.678"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("1.111"),
+                            diffPrevious = Time("1.111"),
                             personalBestScoredRunIndex = 0,
                             runFns = listOf { runs[1] to Score("35.678") }
                         )

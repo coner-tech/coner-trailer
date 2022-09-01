@@ -300,6 +300,10 @@ class PaxEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestOverallPaxEventResults.LifecyclePhases.Create.runsWithoutParticipants
         ),
+        CREATE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.participantsWithoutRuns
+        ),
         CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithSomeRuns,
             expected = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
@@ -307,6 +311,10 @@ class PaxEventResultsCalculatorTest {
         CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
             expected = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
         ),
         CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,

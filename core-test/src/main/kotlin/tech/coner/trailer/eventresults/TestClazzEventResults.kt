@@ -896,6 +896,12 @@ object TestClazzEventResults {
                     groupParticipantResults = sortedMapOf()
                 )
             }
+            val participantsWithoutRuns by lazy {
+                ClazzEventResults(
+                    eventContext = eventContexts.participantsWithoutRuns,
+                    groupParticipantResults = sortedMapOf()
+                )
+            }
             val someParticipantsWithSomeRuns by lazy {
                 val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
                 ClazzEventResults(
@@ -913,6 +919,24 @@ object TestClazzEventResults {
                 val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
                 ClazzEventResults(
                     eventContext = eventContexts.someParticipantsWithAllRuns,
+                    groupParticipantResults = sortedMapOf(
+                        classes.HS to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.REBECCA_JACKSON }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        ),
+                        classes.STR to listOf(
+                            rawResults.participantResults
+                                .single { it.participant == participants.JIMMY_MCKENZIE }
+                                .copy(position = 1, diffFirst = null, diffPrevious = null)
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithSomeRuns by lazy {
+                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+                ClazzEventResults(
+                    eventContext = eventContexts.allParticipantsWithSomeRuns,
                     groupParticipantResults = sortedMapOf(
                         classes.HS to listOf(
                             rawResults.participantResults

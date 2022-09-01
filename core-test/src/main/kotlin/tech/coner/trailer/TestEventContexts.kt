@@ -119,6 +119,13 @@ object TestEventContexts {
                     runs = runFixtures.someParticipantsWithAllRuns
                 )
             }
+            val allParticipantsWithSomeRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithSomeRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithSomeRuns
+                )
+            }
             val allParticipantsWithAllRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.allParticipantsWithAllRuns,

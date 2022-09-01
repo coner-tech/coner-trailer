@@ -33,6 +33,10 @@ class IndividualEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.someParticipantsWithAllRuns,
             expected = TestIndividualEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
         ),
+        CREATE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithSomeRuns,
+            expected = TestIndividualEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+        ),
         CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,
             expected = TestIndividualEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns

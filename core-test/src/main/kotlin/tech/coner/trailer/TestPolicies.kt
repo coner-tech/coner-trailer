@@ -44,5 +44,4 @@ object TestPolicies {
             topTimesEventResultsMethod = StandardEventResultsTypes.pax
         )
     }
-
 }
