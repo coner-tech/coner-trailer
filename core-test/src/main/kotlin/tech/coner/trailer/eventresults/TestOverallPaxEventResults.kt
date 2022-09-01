@@ -386,6 +386,13 @@ object TestOverallPaxEventResults {
                     participantResults = emptyList()
                 )
             }
+            val runsWithoutSignage by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.runsWithoutSignage,
+                    type = StandardEventResultsTypes.pax,
+                    participantResults = emptyList()
+                )
+            }
             val runsWithoutParticipants by lazy {
                 OverallEventResults(
                     eventContext = eventContexts.runsWithoutParticipants,

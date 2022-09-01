@@ -354,6 +354,10 @@ class ClazzEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
             expected = TestClazzEventResults.LifecyclePhases.Create.noParticipantsYet
         ),
+        CREATE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutSignage,
+            expected = TestClazzEventResults.LifecyclePhases.Create.runsWithoutSignage
+        ),
         CREATE_RUNS_WITHOUT_PARTICIPANTS(
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestClazzEventResults.LifecyclePhases.Create.runsWithoutParticipants

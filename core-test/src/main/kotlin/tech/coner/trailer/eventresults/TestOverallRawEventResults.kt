@@ -360,6 +360,13 @@ object TestOverallRawEventResults {
                     participantResults = emptyList()
                 )
             }
+            val runsWithoutSignage by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.runsWithoutSignage,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
             val runsWithoutParticipants by lazy {
                 OverallEventResults(
                     eventContext = eventContexts.runsWithoutParticipants,

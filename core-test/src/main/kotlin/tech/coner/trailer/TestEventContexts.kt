@@ -93,6 +93,12 @@ object TestEventContexts {
                     event = eventsFixtures.noParticipantsYet,
                 )
             }
+            val runsWithoutSignage: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutSignage,
+                    runs = runFixtures.runsWithoutSignage
+                )
+            }
             val runsWithoutParticipants: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.runsWithoutParticipants,

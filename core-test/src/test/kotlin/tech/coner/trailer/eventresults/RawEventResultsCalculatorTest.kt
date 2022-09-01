@@ -296,6 +296,10 @@ class RawEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
             expected = TestOverallRawEventResults.LifecyclePhases.Create.noParticipantsYet
         ),
+        CREATE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutSignage,
+            expected = TestOverallRawEventResults.LifecyclePhases.Create.runsWithoutSignage
+        ),
         CREATE_RUNS_WITHOUT_PARTICIPANTS(
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestOverallRawEventResults.LifecyclePhases.Create.runsWithoutParticipants

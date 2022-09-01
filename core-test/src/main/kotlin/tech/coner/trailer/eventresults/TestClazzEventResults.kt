@@ -890,6 +890,12 @@ object TestClazzEventResults {
                     groupParticipantResults = sortedMapOf()
                 )
             }
+            val runsWithoutSignage by lazy {
+                ClazzEventResults(
+                    eventContext = eventContexts.runsWithoutSignage,
+                    groupParticipantResults = sortedMapOf()
+                )
+            }
             val runsWithoutParticipants by lazy {
                 ClazzEventResults(
                     eventContext = eventContexts.runsWithoutParticipants,

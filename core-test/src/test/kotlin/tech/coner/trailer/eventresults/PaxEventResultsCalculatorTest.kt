@@ -296,6 +296,10 @@ class PaxEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
             expected = TestOverallPaxEventResults.LifecyclePhases.Create.noParticipantsYet
         ),
+        CREATE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.LifecyclePhases.Create.runsWithoutSignage
+        ),
         CREATE_RUNS_WITHOUT_PARTICIPANTS(
             eventContext = TestEventContexts.LifecycleCases.Create.runsWithoutParticipants,
             expected = TestOverallPaxEventResults.LifecyclePhases.Create.runsWithoutParticipants
