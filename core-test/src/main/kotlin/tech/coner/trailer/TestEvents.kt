@@ -87,7 +87,6 @@ object TestEvents {
         protected abstract val lifecycle: Event.Lifecycle
         object Create : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.CREATE
-            val base: Event by Factory()
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
             val runsWithoutParticipants: Event by Factory()
@@ -99,7 +98,6 @@ object TestEvents {
         }
         object Pre : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.PRE
-            val base: Event by Factory()
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
             val runsWithoutParticipants: Event by Factory()
@@ -111,7 +109,6 @@ object TestEvents {
         }
         object Active : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.ACTIVE
-            val base: Event by Factory()
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
             val runsWithoutParticipants: Event by Factory()
@@ -123,7 +120,6 @@ object TestEvents {
         }
         object Post : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.POST
-            val base: Event by Factory()
             val runsWithoutSignage: Event by Factory()
             val participantsWithoutRuns: Event by Factory()
             val someParticipantsWithSomeRuns: Event by Factory()
@@ -133,7 +129,6 @@ object TestEvents {
         }
         object Final : LifecycleCases() {
             override val lifecycle = Event.Lifecycle.FINAL
-            val base: Event by Factory()
             val runsWithoutSignage: Event by Factory()
             val participantsWithoutRuns: Event by Factory()
             val someParticipantsWithSomeRuns: Event by Factory()
