@@ -141,62 +141,256 @@ object TestEventContexts {
             }
         }
         object Pre {
+            private val base: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Pre.noParticipantsYet,
+                    classes = classes,
+                    participants = emptyList(),
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
+            }
+            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Pre }
             val noParticipantsYet: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.noParticipantsYet,
+                )
             }
-            val withParticipantsWithoutRuns: EventContext by lazy {
-                TODO()
+            val runsWithoutSignage: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutSignage,
+                    runs = runFixtures.runsWithoutSignage
+                )
             }
-            val withParticipantsWithRuns: EventContext by lazy {
-                TODO()
+            val runsWithoutParticipants: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutParticipants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
+            }
+            val participantsWithoutRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.participantsWithoutRuns,
+                    participants = participantFixtures.participants
+                )
+            }
+            val someParticipantsWithSomeRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithSomeRuns,
+                    participants = TestParticipants.LifecycleCases.participants,
+                    runs = runFixtures.someParticipantsWithSomeRuns
+                )
+            }
+            val someParticipantsWithAllRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
+            }
+            val allParticipantsWithSomeRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithSomeRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithSomeRuns
+                )
+            }
+            val allParticipantsWithAllRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithAllRuns
+                )
             }
         }
         object Active {
-            val noParticipants: EventContext by lazy {
-                TODO()
+            private val base: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Active.noParticipantsYet,
+                    classes = classes,
+                    participants = emptyList(),
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
             }
-            val noRunsYet: EventContext by lazy {
-                TODO()
+            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Active }
+            val noParticipantsYet: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.noParticipantsYet,
+                )
+            }
+            val runsWithoutSignage: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutSignage,
+                    runs = runFixtures.runsWithoutSignage
+                )
+            }
+            val runsWithoutParticipants: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutParticipants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
+            }
+            val participantsWithoutRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.participantsWithoutRuns,
+                    participants = participantFixtures.participants
+                )
             }
             val someParticipantsWithSomeRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithSomeRuns,
+                    participants = TestParticipants.LifecycleCases.participants,
+                    runs = runFixtures.someParticipantsWithSomeRuns
+                )
+            }
+            val someParticipantsWithAllRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
             }
             val allParticipantsWithSomeRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithSomeRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithSomeRuns
+                )
             }
             val allParticipantsWithAllRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithAllRuns
+                )
             }
         }
         object Post {
-            val noParticipants: EventContext by lazy {
-                TODO()
+            private val base: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Post.noParticipantsYet,
+                    classes = classes,
+                    participants = emptyList(),
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
             }
-            val noRuns: EventContext by lazy {
-                TODO()
+            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Post }
+            val noParticipantsYet: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.noParticipantsYet,
+                )
             }
-            val someParticipantsWithoutRuns: EventContext by lazy {
-                TODO()
+            val runsWithoutSignage: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutSignage,
+                    runs = runFixtures.runsWithoutSignage
+                )
+            }
+            val runsWithoutParticipants: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutParticipants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
+            }
+            val participantsWithoutRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.participantsWithoutRuns,
+                    participants = participantFixtures.participants
+                )
+            }
+            val someParticipantsWithSomeRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithSomeRuns,
+                    participants = TestParticipants.LifecycleCases.participants,
+                    runs = runFixtures.someParticipantsWithSomeRuns
+                )
+            }
+            val someParticipantsWithAllRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
             }
             val allParticipantsWithSomeRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithSomeRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithSomeRuns
+                )
             }
             val allParticipantsWithAllRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithAllRuns
+                )
             }
         }
         object Final {
-            val someParticipantsWithoutRuns: EventContext by lazy {
-                TODO()
+            private val base: EventContext by lazy {
+                EventContext(
+                    event = TestEvents.LifecycleCases.Final.noParticipantsYet,
+                    classes = classes,
+                    participants = emptyList(),
+                    runs = emptyList(),
+                    extendedParameters = extendedParameters
+                )
+            }
+            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Final }
+            val noParticipantsYet: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.noParticipantsYet,
+                )
+            }
+            val runsWithoutSignage: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutSignage,
+                    runs = runFixtures.runsWithoutSignage
+                )
+            }
+            val runsWithoutParticipants: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.runsWithoutParticipants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
+            }
+            val participantsWithoutRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.participantsWithoutRuns,
+                    participants = participantFixtures.participants
+                )
+            }
+            val someParticipantsWithSomeRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithSomeRuns,
+                    participants = TestParticipants.LifecycleCases.participants,
+                    runs = runFixtures.someParticipantsWithSomeRuns
+                )
+            }
+            val someParticipantsWithAllRuns: EventContext by lazy {
+                base.copy(
+                    event = eventsFixtures.someParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.someParticipantsWithAllRuns
+                )
             }
             val allParticipantsWithSomeRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithSomeRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithSomeRuns
+                )
             }
             val allParticipantsWithAllRuns: EventContext by lazy {
-                TODO()
+                base.copy(
+                    event = eventsFixtures.allParticipantsWithAllRuns,
+                    participants = participantFixtures.participants,
+                    runs = runFixtures.allParticipantsWithAllRuns
+                )
             }
         }
     }
-
-
 }
