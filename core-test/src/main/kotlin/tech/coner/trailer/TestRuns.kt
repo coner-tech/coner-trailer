@@ -164,7 +164,7 @@ object TestRuns {
                 .map { it.copy(participant = null) }
         }
         val someParticipantsWithSomeRuns: List<Run> by lazy {
-            allParticipantsWithAllRuns.subList(0, 1)
+            listOf(allParticipantsWithAllRuns[0])
         }
         val someParticipantsWithAllRuns: List<Run> by lazy {
             mutableListOf<Run>()

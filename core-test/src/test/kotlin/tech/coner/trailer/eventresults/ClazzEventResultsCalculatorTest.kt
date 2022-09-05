@@ -350,6 +350,7 @@ class ClazzEventResultsCalculatorTest {
         val eventContext: EventContext,
         val expected: ClazzEventResults
     ) {
+        // Event.Lifecycle.CREATE cases
         CREATE_NO_PARTICIPANTS_YET(
             eventContext = TestEventContexts.LifecycleCases.Create.noParticipantsYet,
             expected = TestClazzEventResults.LifecyclePhases.Create.noParticipantsYet
@@ -381,7 +382,140 @@ class ClazzEventResultsCalculatorTest {
         CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
             eventContext = TestEventContexts.LifecycleCases.Create.allParticipantsWithAllRuns,
             expected = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
-        )
+        ),
+        // Event.Lifecycle.PRE cases
+        PRE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Pre.noParticipantsYet,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.noParticipantsYet
+        ),
+        PRE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Pre.runsWithoutSignage,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.runsWithoutSignage
+        ),
+        PRE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.runsWithoutParticipants,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.runsWithoutParticipants
+        ),
+        PRE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.participantsWithoutRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.participantsWithoutRuns
+        ),
+        PRE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.someParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.someParticipantsWithSomeRuns
+        ),
+        PRE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.someParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.someParticipantsWithAllRuns
+        ),
+        PRE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.allParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.allParticipantsWithSomeRuns
+        ),
+        PRE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Pre.allParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Pre.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.ACTIVE cases
+        ACTIVE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Active.noParticipantsYet,
+            expected = TestClazzEventResults.LifecyclePhases.Active.noParticipantsYet
+        ),
+        ACTIVE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Active.runsWithoutSignage,
+            expected = TestClazzEventResults.LifecyclePhases.Active.runsWithoutSignage
+        ),
+        ACTIVE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Active.runsWithoutParticipants,
+            expected = TestClazzEventResults.LifecyclePhases.Active.runsWithoutParticipants
+        ),
+        ACTIVE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Active.participantsWithoutRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Active.participantsWithoutRuns
+        ),
+        ACTIVE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Active.someParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Active.someParticipantsWithSomeRuns
+        ),
+        ACTIVE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Active.someParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Active.someParticipantsWithAllRuns
+        ),
+        ACTIVE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Active.allParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Active.allParticipantsWithSomeRuns
+        ),
+        ACTIVE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Active.allParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Active.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.POST cases
+        POST_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Post.noParticipantsYet,
+            expected = TestClazzEventResults.LifecyclePhases.Post.noParticipantsYet
+        ),
+        POST_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Post.runsWithoutSignage,
+            expected = TestClazzEventResults.LifecyclePhases.Post.runsWithoutSignage
+        ),
+        POST_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Post.runsWithoutParticipants,
+            expected = TestClazzEventResults.LifecyclePhases.Post.runsWithoutParticipants
+        ),
+        POST_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.participantsWithoutRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Post.participantsWithoutRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.someParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Post.someParticipantsWithSomeRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.someParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Post.someParticipantsWithAllRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.allParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Post.allParticipantsWithSomeRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.allParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Post.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.FINAL cases
+        FINAL_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Final.noParticipantsYet,
+            expected = TestClazzEventResults.LifecyclePhases.Final.noParticipantsYet
+        ),
+        FINAL_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Final.runsWithoutSignage,
+            expected = TestClazzEventResults.LifecyclePhases.Final.runsWithoutSignage
+        ),
+        FINAL_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Final.runsWithoutParticipants,
+            expected = TestClazzEventResults.LifecyclePhases.Final.runsWithoutParticipants
+        ),
+        FINAL_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.participantsWithoutRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Final.participantsWithoutRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.someParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Final.someParticipantsWithSomeRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.someParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Final.someParticipantsWithAllRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.allParticipantsWithSomeRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Final.allParticipantsWithSomeRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.allParticipantsWithAllRuns,
+            expected = TestClazzEventResults.LifecyclePhases.Final.allParticipantsWithAllRuns
+        ),
+        
     }
 
     @ParameterizedTest

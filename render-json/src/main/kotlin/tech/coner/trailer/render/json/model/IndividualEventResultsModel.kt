@@ -39,10 +39,10 @@ class IndividualEventResultsModel(
         val results: Map<String, ParticipantResultModel?>
     ) {
         constructor(
-            entry: Map.Entry<Participant, Map<EventResultsType, ParticipantResult?>>
+            pair: Pair<Participant, Map<EventResultsType, ParticipantResult?>>
         ) : this(
-            participant = ParticipantIdentifier(entry.key),
-            results = entry.value
+            participant = ParticipantIdentifier(pair.first),
+            results = pair.second
                 .map { it.key.key to it.value?.let(::ParticipantResultModel) }
                 .toMap()
         )

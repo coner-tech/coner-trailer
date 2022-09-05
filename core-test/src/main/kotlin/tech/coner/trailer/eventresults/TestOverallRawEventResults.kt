@@ -560,5 +560,75 @@ object TestOverallRawEventResults {
                     .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
             }
         }
+        object Post {
+            private val eventContexts = TestEventContexts.LifecycleCases.Post
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
+        object Final {
+            private val eventContexts = TestEventContexts.LifecycleCases.Final
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
     }
 }

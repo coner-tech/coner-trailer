@@ -14,7 +14,7 @@ class TextIndividualEventResultsRenderer : TextEventResultsRenderer<IndividualEv
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
         val heading = mutableListOf("Name", "Signage", "Car").also {
-            results.allByParticipant.values.first().keys.forEach { eventResultsType ->
+            results.innerEventResultsTypes.forEach { eventResultsType ->
                 it.add(eventResultsType.positionColumnHeading)
                 it.add(eventResultsType.scoreColumnHeading)
             }

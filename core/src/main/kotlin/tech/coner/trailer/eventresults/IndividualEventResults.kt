@@ -6,13 +6,15 @@ import java.util.*
 
 data class IndividualEventResults(
     override val eventContext: EventContext,
-    val allByParticipant: SortedMap<Participant, Map<EventResultsType, ParticipantResult?>>,
+    val allByParticipant: List<Pair<Participant, Map<EventResultsType, ParticipantResult?>>>,
     val innerEventResultsTypes: List<EventResultsType>
 ) : EventResults {
 
     override val type: EventResultsType = StandardEventResultsTypes.individual
 
-    companion object {
-        val allByParticipantComparator = compareBy(Participant::lastName, Participant::firstName, { it.signage?.classingNumber })
+    object Comparators {
+        val allByParticipant = compareBy(Participant::lastName)
+            .thenBy(Participant::firstName)
+            .thenBy { it.signage?.classingNumber }
     }
 }

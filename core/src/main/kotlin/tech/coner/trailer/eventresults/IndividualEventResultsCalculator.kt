@@ -42,7 +42,7 @@ class IndividualEventResultsCalculator(
                         map
                     }
                 }
-                .toSortedMap(IndividualEventResults.allByParticipantComparator),
+                .map { it.key to it.value },
             innerEventResultsTypes = allEventResults.map { it.type }
         )
     }

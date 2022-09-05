@@ -391,6 +391,72 @@ class RawEventResultsCalculatorTest {
             eventContext = TestEventContexts.LifecycleCases.Active.allParticipantsWithAllRuns,
             expected = TestOverallRawEventResults.LifecyclePhases.Active.allParticipantsWithAllRuns
         ),
+        // Event.Lifecycle.POST cases
+        POST_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Post.noParticipantsYet,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.noParticipantsYet
+        ),
+        POST_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Post.runsWithoutSignage,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.runsWithoutSignage
+        ),
+        POST_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Post.runsWithoutParticipants,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.runsWithoutParticipants
+        ),
+        POST_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.participantsWithoutRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.participantsWithoutRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.someParticipantsWithSomeRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.someParticipantsWithSomeRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.someParticipantsWithAllRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.someParticipantsWithAllRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.allParticipantsWithSomeRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.allParticipantsWithSomeRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Post.allParticipantsWithAllRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Post.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.FINAL cases
+        FINAL_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.LifecycleCases.Final.noParticipantsYet,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.noParticipantsYet
+        ),
+        FINAL_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.LifecycleCases.Final.runsWithoutSignage,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.runsWithoutSignage
+        ),
+        FINAL_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.LifecycleCases.Final.runsWithoutParticipants,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.runsWithoutParticipants
+        ),
+        FINAL_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.participantsWithoutRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.participantsWithoutRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.someParticipantsWithSomeRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.someParticipantsWithSomeRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.someParticipantsWithAllRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.someParticipantsWithAllRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.allParticipantsWithSomeRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.allParticipantsWithSomeRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.LifecycleCases.Final.allParticipantsWithAllRuns,
+            expected = TestOverallRawEventResults.LifecyclePhases.Final.allParticipantsWithAllRuns
+        ),
     }
 
     @ParameterizedTest
