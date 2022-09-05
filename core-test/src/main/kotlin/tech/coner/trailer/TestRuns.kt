@@ -1,7 +1,5 @@
 package tech.coner.trailer
 
-import tech.coner.trailer.TestParticipants.LifecycleCases.participants
-
 object TestRuns {
 
     object Lscc2019Simplified {
@@ -152,8 +150,8 @@ object TestRuns {
         }
     }
 
-    object LifecycleCases {
-        private val participants by lazy { TestParticipants.LifecycleCases }
+    object Lifecycles {
+        private val participants by lazy { TestParticipants.Lifecycles }
 
         val runsWithoutSignage: List<Run> by lazy {
             allParticipantsWithAllRuns

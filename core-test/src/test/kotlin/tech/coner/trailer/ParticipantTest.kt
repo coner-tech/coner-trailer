@@ -25,8 +25,8 @@ class ParticipantTest {
 
     @Test
     fun `Different participants should compare as not equal`() {
-        val jackson = TestParticipants.LifecycleCases.REBECCA_JACKSON
-        val mckenzie = TestParticipants.LifecycleCases.JIMMY_MCKENZIE
+        val jackson = TestParticipants.Lifecycles.REBECCA_JACKSON
+        val mckenzie = TestParticipants.Lifecycles.JIMMY_MCKENZIE
 
         val actual = jackson == mckenzie
 

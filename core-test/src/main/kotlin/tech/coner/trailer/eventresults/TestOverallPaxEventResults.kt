@@ -374,11 +374,11 @@ object TestOverallPaxEventResults {
         )
     }
 
-    object LifecyclePhases {
-        private val participants = TestParticipants.LifecycleCases
-        private val runs = TestRuns.LifecycleCases
+    object Lifecycles {
+        private val participants = TestParticipants.Lifecycles
+        private val runs = TestRuns.Lifecycles
         object Create {
-            private val eventContexts = TestEventContexts.LifecycleCases.Create
+            private val eventContexts = TestEventContexts.Lifecycles.Create
             val noParticipantsYet by lazy {
                 OverallEventResults(
                     eventContext = eventContexts.noParticipantsYet,
@@ -517,7 +517,7 @@ object TestOverallPaxEventResults {
             }
         }
         object Pre {
-            private val eventContexts = TestEventContexts.LifecycleCases.Pre
+            private val eventContexts = TestEventContexts.Lifecycles.Pre
             val noParticipantsYet by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
@@ -552,7 +552,7 @@ object TestOverallPaxEventResults {
             }
         }
         object Active {
-            private val eventContexts = TestEventContexts.LifecycleCases.Active
+            private val eventContexts = TestEventContexts.Lifecycles.Active
             val noParticipantsYet by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
@@ -587,7 +587,7 @@ object TestOverallPaxEventResults {
             }
         }
         object Post {
-            private val eventContexts = TestEventContexts.LifecycleCases.Post
+            private val eventContexts = TestEventContexts.Lifecycles.Post
             val noParticipantsYet by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
@@ -622,7 +622,7 @@ object TestOverallPaxEventResults {
             }
         }
         object Final {
-            private val eventContexts = TestEventContexts.LifecycleCases.Final
+            private val eventContexts = TestEventContexts.Lifecycles.Final
             val noParticipantsYet by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)

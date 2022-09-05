@@ -70,24 +70,24 @@ object TestEventContexts {
         }
     }
 
-    object LifecycleCases {
+    object Lifecycles {
         private val classes = TestClasses.Lscc2019.all
         private val extendedParameters = EventExtendedParameters(
             runsPerParticipant = 2
         )
-        private val participantFixtures by lazy { TestParticipants.LifecycleCases }
-        private val runFixtures by lazy { TestRuns.LifecycleCases }
+        private val participantFixtures by lazy { TestParticipants.Lifecycles }
+        private val runFixtures by lazy { TestRuns.Lifecycles }
         object Create {
             private val base: EventContext by lazy {
                 EventContext(
-                    event = TestEvents.LifecycleCases.Create.noParticipantsYet,
+                    event = TestEvents.Lifecycles.Create.noParticipantsYet,
                     classes = classes,
                     participants = emptyList(),
                     runs = emptyList(),
                     extendedParameters = extendedParameters
                 )
             }
-            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Create }
+            private val eventsFixtures by lazy { TestEvents.Lifecycles.Create }
             val noParticipantsYet: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.noParticipantsYet,
@@ -114,7 +114,7 @@ object TestEventContexts {
             val someParticipantsWithSomeRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.someParticipantsWithSomeRuns,
-                    participants = TestParticipants.LifecycleCases.participants,
+                    participants = TestParticipants.Lifecycles.participants,
                     runs = runFixtures.someParticipantsWithSomeRuns
                 )
             }
@@ -143,14 +143,14 @@ object TestEventContexts {
         object Pre {
             private val base: EventContext by lazy {
                 EventContext(
-                    event = TestEvents.LifecycleCases.Pre.noParticipantsYet,
+                    event = TestEvents.Lifecycles.Pre.noParticipantsYet,
                     classes = classes,
                     participants = emptyList(),
                     runs = emptyList(),
                     extendedParameters = extendedParameters
                 )
             }
-            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Pre }
+            private val eventsFixtures by lazy { TestEvents.Lifecycles.Pre }
             val noParticipantsYet: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.noParticipantsYet,
@@ -177,7 +177,7 @@ object TestEventContexts {
             val someParticipantsWithSomeRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.someParticipantsWithSomeRuns,
-                    participants = TestParticipants.LifecycleCases.participants,
+                    participants = TestParticipants.Lifecycles.participants,
                     runs = runFixtures.someParticipantsWithSomeRuns
                 )
             }
@@ -206,14 +206,14 @@ object TestEventContexts {
         object Active {
             private val base: EventContext by lazy {
                 EventContext(
-                    event = TestEvents.LifecycleCases.Active.noParticipantsYet,
+                    event = TestEvents.Lifecycles.Active.noParticipantsYet,
                     classes = classes,
                     participants = emptyList(),
                     runs = emptyList(),
                     extendedParameters = extendedParameters
                 )
             }
-            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Active }
+            private val eventsFixtures by lazy { TestEvents.Lifecycles.Active }
             val noParticipantsYet: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.noParticipantsYet,
@@ -240,7 +240,7 @@ object TestEventContexts {
             val someParticipantsWithSomeRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.someParticipantsWithSomeRuns,
-                    participants = TestParticipants.LifecycleCases.participants,
+                    participants = TestParticipants.Lifecycles.participants,
                     runs = runFixtures.someParticipantsWithSomeRuns
                 )
             }
@@ -269,14 +269,14 @@ object TestEventContexts {
         object Post {
             private val base: EventContext by lazy {
                 EventContext(
-                    event = TestEvents.LifecycleCases.Post.noParticipantsYet,
+                    event = TestEvents.Lifecycles.Post.noParticipantsYet,
                     classes = classes,
                     participants = emptyList(),
                     runs = emptyList(),
                     extendedParameters = extendedParameters
                 )
             }
-            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Post }
+            private val eventsFixtures by lazy { TestEvents.Lifecycles.Post }
             val noParticipantsYet: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.noParticipantsYet,
@@ -303,7 +303,7 @@ object TestEventContexts {
             val someParticipantsWithSomeRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.someParticipantsWithSomeRuns,
-                    participants = TestParticipants.LifecycleCases.participants,
+                    participants = TestParticipants.Lifecycles.participants,
                     runs = runFixtures.someParticipantsWithSomeRuns
                 )
             }
@@ -332,14 +332,14 @@ object TestEventContexts {
         object Final {
             private val base: EventContext by lazy {
                 EventContext(
-                    event = TestEvents.LifecycleCases.Final.noParticipantsYet,
+                    event = TestEvents.Lifecycles.Final.noParticipantsYet,
                     classes = classes,
                     participants = emptyList(),
                     runs = emptyList(),
                     extendedParameters = extendedParameters
                 )
             }
-            private val eventsFixtures by lazy { TestEvents.LifecycleCases.Final }
+            private val eventsFixtures by lazy { TestEvents.Lifecycles.Final }
             val noParticipantsYet: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.noParticipantsYet,
@@ -366,7 +366,7 @@ object TestEventContexts {
             val someParticipantsWithSomeRuns: EventContext by lazy {
                 base.copy(
                     event = eventsFixtures.someParticipantsWithSomeRuns,
-                    participants = TestParticipants.LifecycleCases.participants,
+                    participants = TestParticipants.Lifecycles.participants,
                     runs = runFixtures.someParticipantsWithSomeRuns
                 )
             }

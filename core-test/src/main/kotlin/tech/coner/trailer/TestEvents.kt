@@ -83,9 +83,9 @@ object TestEvents {
         }
     }
 
-    sealed class LifecycleCases {
+    sealed class Lifecycles {
         protected abstract val lifecycle: Event.Lifecycle
-        object Create : LifecycleCases() {
+        object Create : Lifecycles() {
             override val lifecycle = Event.Lifecycle.CREATE
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
@@ -96,7 +96,7 @@ object TestEvents {
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Pre : LifecycleCases() {
+        object Pre : Lifecycles() {
             override val lifecycle = Event.Lifecycle.PRE
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
@@ -107,7 +107,7 @@ object TestEvents {
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Active : LifecycleCases() {
+        object Active : Lifecycles() {
             override val lifecycle = Event.Lifecycle.ACTIVE
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
@@ -118,7 +118,7 @@ object TestEvents {
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Post : LifecycleCases() {
+        object Post : Lifecycles() {
             override val lifecycle = Event.Lifecycle.POST
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()
@@ -129,7 +129,7 @@ object TestEvents {
             val allParticipantsWithSomeRuns: Event by Factory()
             val allParticipantsWithAllRuns: Event by Factory()
         }
-        object Final : LifecycleCases() {
+        object Final : Lifecycles() {
             override val lifecycle = Event.Lifecycle.FINAL
             val noParticipantsYet: Event by Factory()
             val runsWithoutSignage: Event by Factory()

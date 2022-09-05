@@ -92,15 +92,15 @@ object TestIndividualEventResults {
         }
     }
 
-    object LifecyclePhases {
+    object Lifecycles {
         private val standardInnerEventResultsTypes by lazy {
             listOf(raw, pax, clazz)
         }
-        private val participants = TestParticipants.LifecycleCases
-        private val runs = TestRuns.LifecycleCases
+        private val participants = TestParticipants.Lifecycles
+        private val runs = TestRuns.Lifecycles
         private val classes = TestClasses.Lscc2019
         object Create {
-            private val eventContexts = TestEventContexts.LifecycleCases.Create
+            private val eventContexts = TestEventContexts.Lifecycles.Create
             private val base by lazy {
                 IndividualEventResults(
                     eventContext = eventContexts.noParticipantsYet,
@@ -141,9 +141,9 @@ object TestIndividualEventResults {
                 )
             }
             val someParticipantsWithSomeRuns by lazy {
-                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
-                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
-                val clazzResults = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithSomeRuns
+                val rawResults = TestOverallRawEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
+                val paxResults = TestOverallPaxEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
+                val clazzResults = TestClazzEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
                 IndividualEventResults(
                     eventContext = eventContexts.someParticipantsWithSomeRuns,
                     allByParticipant = listOf(
@@ -163,9 +163,9 @@ object TestIndividualEventResults {
             }
             val someParticipantsWithAllRuns by lazy {
                 val eventContext = eventContexts.someParticipantsWithAllRuns
-                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
-                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
-                val clazzResults = TestClazzEventResults.LifecyclePhases.Create.someParticipantsWithAllRuns
+                val rawResults = TestOverallRawEventResults.Lifecycles.Create.someParticipantsWithAllRuns
+                val paxResults = TestOverallPaxEventResults.Lifecycles.Create.someParticipantsWithAllRuns
+                val clazzResults = TestClazzEventResults.Lifecycles.Create.someParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = listOf(
@@ -184,9 +184,9 @@ object TestIndividualEventResults {
             }
             val allParticipantsWithSomeRuns: IndividualEventResults by lazy {
                 val eventContext = eventContexts.allParticipantsWithSomeRuns
-                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
-                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
-                val clazzResults = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithSomeRuns
+                val rawResults = TestOverallRawEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
+                val paxResults = TestOverallPaxEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
+                val clazzResults = TestClazzEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = listOf(
@@ -205,9 +205,9 @@ object TestIndividualEventResults {
             }
             val allParticipantsWithAllRuns: IndividualEventResults by lazy {
                 val eventContext = eventContexts.allParticipantsWithAllRuns
-                val rawResults = TestOverallRawEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
-                val paxResults = TestOverallPaxEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
-                val clazzResults = TestClazzEventResults.LifecyclePhases.Create.allParticipantsWithAllRuns
+                val rawResults = TestOverallRawEventResults.Lifecycles.Create.allParticipantsWithAllRuns
+                val paxResults = TestOverallPaxEventResults.Lifecycles.Create.allParticipantsWithAllRuns
+                val clazzResults = TestClazzEventResults.Lifecycles.Create.allParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
                     allByParticipant = listOf(
@@ -226,7 +226,7 @@ object TestIndividualEventResults {
             }
         }
         object Pre {
-            private val eventContexts = TestEventContexts.LifecycleCases.Pre
+            private val eventContexts = TestEventContexts.Lifecycles.Pre
             val noParticipantsYet: IndividualEventResults by lazy {
                 Create.noParticipantsYet.copy(
                     eventContext = eventContexts.noParticipantsYet
@@ -269,7 +269,7 @@ object TestIndividualEventResults {
             }
         }
         object Active {
-            private val eventContexts = TestEventContexts.LifecycleCases.Active
+            private val eventContexts = TestEventContexts.Lifecycles.Active
             val noParticipantsYet: IndividualEventResults by lazy {
                 Create.noParticipantsYet.copy(
                     eventContext = eventContexts.noParticipantsYet
@@ -312,7 +312,7 @@ object TestIndividualEventResults {
             }
         }
         object Post {
-            private val eventContexts = TestEventContexts.LifecycleCases.Post
+            private val eventContexts = TestEventContexts.Lifecycles.Post
             val noParticipantsYet: IndividualEventResults by lazy {
                 Create.noParticipantsYet.copy(
                     eventContext = eventContexts.noParticipantsYet,

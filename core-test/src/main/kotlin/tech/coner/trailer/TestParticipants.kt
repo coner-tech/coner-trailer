@@ -388,7 +388,7 @@ object TestParticipants {
         }
     }
 
-    object LifecycleCases {
+    object Lifecycles {
         val REBECCA_JACKSON by lazy { factory(Lscc2019Points1.REBECCA_JACKSON) }
         val JIMMY_MCKENZIE by lazy { factory(Lscc2019Points1.JIMMY_MCKENZIE) }
 
