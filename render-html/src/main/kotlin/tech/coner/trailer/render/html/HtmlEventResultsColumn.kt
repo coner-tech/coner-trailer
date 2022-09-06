@@ -91,9 +91,8 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            th {
+            td {
                 classes = setOf("mobile-position-signage")
-                scope = ThScope.row
                 span {
                     classes = setOf("position")
                     text(it.position)
