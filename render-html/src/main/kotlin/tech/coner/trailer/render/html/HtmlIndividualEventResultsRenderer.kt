@@ -68,4 +68,8 @@ class HtmlIndividualEventResultsRenderer(
             .distinct()
             .joinToString(separator = "\n")
     }
+
+    fun buildHeaderStylesheet(event: Event, results: IndividualEventResults): String {
+        return headerStylesheet(event, results)
+    }
 }

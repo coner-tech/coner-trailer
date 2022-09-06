@@ -68,4 +68,13 @@ class HtmlComprehensiveEventResultsRenderer(
             }
         }
     }
+
+    override fun headerStylesheet(event: Event, results: ComprehensiveEventResults): String {
+        return columns
+            .flatMap { it.buildStyles(event, results) }
+            .distinct()
+            .toMutableList()
+            .apply { add(individualRenderer.buildHeaderStylesheet(event, results.individualEventResults)) }
+            .joinToString(separator = "\n")
+    }
 }
