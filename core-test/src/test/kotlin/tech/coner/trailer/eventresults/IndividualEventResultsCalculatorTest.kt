@@ -160,7 +160,7 @@ class IndividualEventResultsCalculatorTest {
         val actual = subject.calculate()
 
         assertThat(actual).all {
-            allByParticipant().hasSize(params.expected.allByParticipant.size)
+            resultsByParticipant().hasSize(params.expected.resultsByIndividual.size)
             isEqualTo(params.expected)
         }
     }

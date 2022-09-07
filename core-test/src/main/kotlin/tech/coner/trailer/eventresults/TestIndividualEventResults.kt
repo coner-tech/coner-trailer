@@ -1,6 +1,9 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.*
+import tech.coner.trailer.TestClasses
+import tech.coner.trailer.TestEventContexts
+import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.TestRuns
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.clazz
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.pax
 import tech.coner.trailer.eventresults.StandardEventResultsTypes.raw
@@ -12,7 +15,7 @@ object TestIndividualEventResults {
             // punting on full individual event results for unused full-scale event
             IndividualEventResults(
                 eventContext = TestEventContexts.Lscc2019.points1,
-                allByParticipant = emptyList(),
+                resultsByIndividual = emptyList(),
                 innerEventResultsTypes = emptyList()
             )
         }
@@ -27,7 +30,7 @@ object TestIndividualEventResults {
             val clazzResults = TestClazzEventResults.Lscc2019Simplified.points1
             IndividualEventResults(
                 eventContext = TestEventContexts.Lscc2019Simplified.points1,
-                allByParticipant = listOf(
+                resultsByIndividual = listOf(
                     participants.ANASTASIA_RIGLER to mapOf(
                         raw to rawResults.participantResults[3],
                         pax to paxResults.participantResults[2],
@@ -78,7 +81,7 @@ object TestIndividualEventResults {
             // punting on full individual event results not relevant for case
             IndividualEventResults(
                 eventContext = TestEventContexts.LsccTieBreaking.points1,
-                allByParticipant = emptyList(),
+                resultsByIndividual = emptyList(),
                 innerEventResultsTypes = emptyList()
             )
         }
@@ -86,7 +89,7 @@ object TestIndividualEventResults {
             IndividualEventResults(
                 // punting on full individual event results not relevant for case
                 eventContext = TestEventContexts.LsccTieBreaking.points2,
-                allByParticipant = emptyList(),
+                resultsByIndividual = emptyList(),
                 innerEventResultsTypes = emptyList()
             )
         }
@@ -104,7 +107,7 @@ object TestIndividualEventResults {
             private val base by lazy {
                 IndividualEventResults(
                     eventContext = eventContexts.noParticipantsYet,
-                    allByParticipant = emptyList(),
+                    resultsByIndividual = emptyList(),
                     innerEventResultsTypes = standardInnerEventResultsTypes
                 )
             }
@@ -126,7 +129,7 @@ object TestIndividualEventResults {
             val participantsWithoutRuns by lazy {
                 base.copy(
                     eventContext = eventContexts.participantsWithoutRuns,
-                    allByParticipant = listOf(
+                    resultsByIndividual = listOf(
                         participants.REBECCA_JACKSON to mapOf(
                             raw to null,
                             pax to null,
@@ -146,7 +149,7 @@ object TestIndividualEventResults {
                 val clazzResults = TestClazzEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
                 IndividualEventResults(
                     eventContext = eventContexts.someParticipantsWithSomeRuns,
-                    allByParticipant = listOf(
+                    resultsByIndividual = listOf(
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
@@ -168,7 +171,7 @@ object TestIndividualEventResults {
                 val clazzResults = TestClazzEventResults.Lifecycles.Create.someParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
-                    allByParticipant = listOf(
+                    resultsByIndividual = listOf(
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
@@ -189,7 +192,7 @@ object TestIndividualEventResults {
                 val clazzResults = TestClazzEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
                 base.copy(
                     eventContext = eventContext,
-                    allByParticipant = listOf(
+                    resultsByIndividual = listOf(
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
@@ -210,7 +213,7 @@ object TestIndividualEventResults {
                 val clazzResults = TestClazzEventResults.Lifecycles.Create.allParticipantsWithAllRuns
                 base.copy(
                     eventContext = eventContext,
-                    allByParticipant = listOf(
+                    resultsByIndividual = listOf(
                         participants.REBECCA_JACKSON to mapOf(
                             raw to rawResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
                             pax to paxResults.participantResults.single { it.participant == participants.REBECCA_JACKSON },
@@ -316,31 +319,31 @@ object TestIndividualEventResults {
             val noParticipantsYet: IndividualEventResults by lazy {
                 Create.noParticipantsYet.copy(
                     eventContext = eventContexts.noParticipantsYet,
-                    allByParticipant = emptyList()
+                    resultsByIndividual = emptyList()
                 )
             }
             val runsWithoutSignage: IndividualEventResults by lazy {
                 Create.runsWithoutSignage.copy(
                     eventContext = eventContexts.runsWithoutSignage,
-                    allByParticipant = emptyList()
+                    resultsByIndividual = emptyList()
                 )
             }
             val runsWithoutParticipants: IndividualEventResults by lazy {
                 Create.runsWithoutParticipants.copy(
                     eventContext = eventContexts.runsWithoutParticipants,
-                    allByParticipant = emptyList()
+                    resultsByIndividual = emptyList()
                 )
             }
             val participantsWithoutRuns: IndividualEventResults by lazy {
                 Create.participantsWithoutRuns.copy(
                     eventContext = eventContexts.participantsWithoutRuns,
-                    allByParticipant = emptyList()
+                    resultsByIndividual = emptyList()
                 )
             }
             val someParticipantsWithSomeRuns: IndividualEventResults by lazy {
                 Create.someParticipantsWithSomeRuns.copy(
                     eventContext = eventContexts.someParticipantsWithSomeRuns,
-                    allByParticipant = Create.someParticipantsWithSomeRuns.allByParticipant
+                    resultsByIndividual = Create.someParticipantsWithSomeRuns.resultsByIndividual
                         .toMutableList()
                         .apply { removeIf { (participant, _) -> participant == participants.JIMMY_MCKENZIE } }
                 )

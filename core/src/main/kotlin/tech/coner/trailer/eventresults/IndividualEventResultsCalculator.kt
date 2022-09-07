@@ -18,7 +18,7 @@ class IndividualEventResultsCalculator(
         }
         return IndividualEventResults(
             eventContext = eventContext,
-            allByParticipant = eventContext.participants
+            resultsByIndividual = eventContext.participants
                 .associateWith { participant ->
                     allEventResults.associate { eventResults ->
                         eventResults.type to when (eventResults) {
@@ -42,7 +42,8 @@ class IndividualEventResultsCalculator(
                         map
                     }
                 }
-                .map { it.key to it.value },
+                .map { it.key to it.value }
+                .sortedWith(IndividualEventResults.Comparators.standard),
             innerEventResultsTypes = allEventResults.map { it.type }
         )
     }

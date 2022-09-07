@@ -21,7 +21,7 @@ class TextIndividualEventResultsRenderer : TextEventResultsRenderer<IndividualEv
         }
         at.addRow(heading)
         at.addRule()
-        results.allByParticipant.forEach { (participant, individualParticipantResults) ->
+        results.resultsByIndividual.forEach { (participant, individualParticipantResults) ->
             val resultsText = mutableListOf(
                 renderName(participant),
                 participant.signage?.classingNumber ?: "",

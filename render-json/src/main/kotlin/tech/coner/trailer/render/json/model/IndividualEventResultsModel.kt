@@ -30,7 +30,7 @@ class IndividualEventResultsModel(
         ) : this(
             type = results.type.key,
             runCount = results.runCount,
-            allByParticipant = results.allByParticipant.map { IndividualParticipantResultModel(it) }
+            allByParticipant = results.resultsByIndividual.map { IndividualParticipantResultModel(it) }
         )
     }
 

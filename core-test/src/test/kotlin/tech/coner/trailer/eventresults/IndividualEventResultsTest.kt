@@ -13,7 +13,7 @@ class IndividualEventResultsTest {
     fun `It should hold some participants with some runs`() {
         val actual = TestIndividualEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
 
-        assertThat(actual).allByParticipant().hasSize(2)
+        assertThat(actual).resultsByParticipant().hasSize(2)
     }
 
     @Nested

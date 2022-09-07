@@ -38,12 +38,12 @@ class HtmlIndividualEventResultsRenderer(
                     }
                 }
                 tbody {
-                    results.allByParticipant.forEach { (participant, individualParticipantResults) ->
+                    results.resultsByIndividual.forEach { (participant, resultsByType) ->
                         tr {
                             staticColumns.forEach { staticColumn ->
                                 staticColumn.data(this, participant)
                             }
-                            individualParticipantResults.values.forEach { individualParticipantResult ->
+                            resultsByType.values.forEach { individualParticipantResult ->
                                 dynamicColumns.forEach { dynamicColumn ->
                                     if (individualParticipantResult != null) {
                                         dynamicColumn.data(this, individualParticipantResult)
