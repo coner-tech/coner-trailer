@@ -74,7 +74,14 @@ class HtmlComprehensiveEventResultsRenderer(
             .flatMap { it.buildStyles(event, results) }
             .distinct()
             .toMutableList()
-            .apply { add(individualRenderer.buildHeaderStylesheet(event, results.individualEventResults)) }
+            .apply {
+                addAll(
+                    results.overallEventResults.map { overallRenderer.headerStylesheet(event, it) }
+                )
+                add(clazzRenderer.headerStylesheet(event, results.clazzEventResults))
+                add(topTimesRenderer.headerStylesheet(event, results.topTimesEventResults))
+                add(individualRenderer.headerStylesheet(event, results.individualEventResults))
+            }
             .joinToString(separator = "\n")
     }
 }

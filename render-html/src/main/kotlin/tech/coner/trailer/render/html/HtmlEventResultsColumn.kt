@@ -18,12 +18,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary .position {
+                .event-results-${results.type.key} table.primary .position {
                     display: none;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("position")
@@ -43,13 +44,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
     class Signage(
         private val responsive: Boolean,
         private val participantSignageColumn: HtmlParticipantColumn.Signage = HtmlParticipantColumn.Signage()
-        ) : HtmlEventResultsColumn() {
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults): Set<String> {
             return if (responsive) {
                 setOf(
                     """
                     @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                        .event-results table.primary th.signage, .event-results table.primary td.signage {
+                        .event-results-${results.type.key} table.primary th.signage, .event-results-${results.type.key} table.primary td.signage {
                             display: none;
                         }
                     }
@@ -59,6 +60,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 emptySet()
             }
         }
+
         override val header: TR.(EventResultsType) -> Unit = {
             participantSignageColumn.header.invoke(this)
         }
@@ -70,19 +72,20 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
     class MobilePositionSignage : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            .event-results table.primary th.mobile-position-signage, .event-results table.primary td.mobile-position-signage {
+            .event-results-${results.type.key} table.primary th.mobile-position-signage, .event-results-${results.type.key} table.primary td.mobile-position-signage {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.mobile-position-signage {
+                .event-results-${results.type.key} table.primary th.mobile-position-signage, .event-results-${results.type.key} table.primary td.mobile-position-signage {
                     display: table-cell;
                 }
-                .event-results table.primary th.mobile-position-signage span {
+                .event-results-${results.type.key} table.primary th.mobile-position-signage span, .event-results-${results.type.key} table.primary td.mobile-position-signage span {
                     display: block;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("mobile-position-signage")
@@ -140,7 +143,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 setOf(
                     """
                     @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                        .event-results table.primary th.name, .event-results table.primary td.name {
+                        .event-results-${results.type.key} table.primary th.name, .event-results-${results.type.key} table.primary td.name {
                             display: none;
                         }
                     } 
@@ -150,6 +153,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 emptySet()
             }
         }
+
         override val header: TR.(EventResultsType) -> Unit = {
             participantNameColumn.header.invoke(this)
         }
@@ -157,18 +161,20 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             participantNameColumn.data.invoke(this, it.participant)
         }
     }
+
     class CarModel(
         private val participantCarModelColumn: HtmlParticipantColumn.CarModel = HtmlParticipantColumn.CarModel()
     ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.car-model, .event-results table.primary td.car-model {
+                .event-results-${results.type.key} table.primary th.car-model, .event-results-${results.type.key} table.primary td.car-model {
                     display: none;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             participantCarModelColumn.header.invoke(this)
         }
@@ -176,17 +182,18 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             participantCarModelColumn.data.invoke(this, it.participant)
         }
     }
+
     class MobileNameCarModel : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
+            .event-results-${results.type.key} table.primary th.mobile-name-car-model, .event-results-${results.type.key} table.primary td.mobile-name-car-model {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
+                .event-results-${results.type.key} table.primary th.mobile-name-car-model, .event-results-${results.type.key} table.primary td.mobile-name-car-model {
                     display: table-cell;
                 }
-                .event-results table.primary td.mobile-name-car-model span {
+                .event-results-${results.type.key} table.primary td.mobile-name-car-model span {
                     display: block;
                 }
             }
@@ -219,11 +226,12 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             """
-            .event-results table.primary td.score {
+            .event-results-${results.type.key} table.primary td.score {
                 font-weight: bold;
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -238,11 +246,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
     }
+
     class DiffFirst : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -257,11 +267,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
     }
+
     class DiffPrevious : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")

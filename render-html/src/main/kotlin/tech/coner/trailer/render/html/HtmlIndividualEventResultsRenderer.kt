@@ -4,6 +4,7 @@ import kotlinx.html.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.eventresults.IndividualEventResults
 import tech.coner.trailer.render.IndividualEventResultsRenderer
+import java.util.Collections.addAll
 
 class HtmlIndividualEventResultsRenderer(
     private val staticColumns: List<HtmlParticipantColumn> = listOf(
@@ -60,16 +61,9 @@ class HtmlIndividualEventResultsRenderer(
     }
 
     override fun headerStylesheet(event: Event, results: IndividualEventResults): String {
-        return mutableListOf<HtmlEventResultsColumn>()
-            .apply {
-                addAll(dynamicColumns)
-            }
+        return dynamicColumns
             .flatMap { it.buildStyles(event, results) }
             .distinct()
             .joinToString(separator = "\n")
-    }
-
-    fun buildHeaderStylesheet(event: Event, results: IndividualEventResults): String {
-        return headerStylesheet(event, results)
     }
 }

@@ -12,7 +12,7 @@ abstract class HtmlIndividualEventResultsColumn : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.position, .event-results table.primary td.position {
+                .event-results-${results.type.key} table.primary th.position, .event-results-${results.type.key} table.primary td.position {
                     display: none;
                 }
             }
@@ -36,7 +36,7 @@ abstract class HtmlIndividualEventResultsColumn : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.score, .event-results table.primary td.score {
+                .event-results-${results.type.key} table.primary th.score, .event-results-${results.type.key} table.primary td.score {
                     display: none;
                 }
             }
@@ -60,14 +60,14 @@ abstract class HtmlIndividualEventResultsColumn : HtmlEventResultsColumn() {
     class MobilePositionScore : HtmlIndividualEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            .event-results table.primary th.mobile-position-score, .event-results table.primary td.mobile-position-score {
+            .event-results-${results.type.key} table.primary th.mobile-position-score, .event-results-${results.type.key} table.primary td.mobile-position-score {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.mobile-position-score, .event-results table.primary td.mobile-position-score {
+                .event-results-${results.type.key} table.primary th.mobile-position-score, .event-results-${results.type.key} table.primary td.mobile-position-score {
                     display: table-cell;
                 }
-                .event-results table.primary td.mobile-position-score span {
+                .event-results-${results.type.key} table.primary td.mobile-position-score span {
                     display: block;
                 }
             }

@@ -12,7 +12,7 @@ class HtmlOverallEventResultsRenderer(
 
     override fun partial(event: Event, results: OverallEventResults): HtmlBlockTag.() -> Unit = {
         section {
-            classes = setOf("event-results", results.type.key, "event-${event.id}")
+            classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
             table {
                 classes = setOf("table", "table-striped", "primary")
                 thead {
