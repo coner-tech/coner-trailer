@@ -2,9 +2,9 @@ package tech.coner.trailer.render.html
 
 import kotlinx.html.*
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.IndividualEventResults
 import tech.coner.trailer.render.IndividualEventResultsRenderer
-import java.util.Collections.addAll
 
 class HtmlIndividualEventResultsRenderer(
     private val staticColumns: List<HtmlParticipantColumn> = listOf(
@@ -20,9 +20,9 @@ class HtmlIndividualEventResultsRenderer(
 ) : HtmlEventResultsRenderer<IndividualEventResults>(columns = emptyList()),
     IndividualEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
-    override fun partial(event: Event, results: IndividualEventResults): HtmlBlockTag.() -> Unit = {
+    override fun partial(eventContext: EventContext, results: IndividualEventResults): HtmlBlockTag.() -> Unit = {
         section {
-            classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
+            classes = setOf("event-results", "event-results-${results.type.key}", "event-${eventContext.event.id}")
             h3 { text(results.type.title) }
             table {
                 classes = setOf("table", "table-striped", "primary")
@@ -67,7 +67,7 @@ class HtmlIndividualEventResultsRenderer(
             .joinToString(separator = "\n")
     }
 
-    override fun HEAD.specificScripts(event: Event, results: IndividualEventResults) {
+    override fun HEAD.specificScripts(eventContext: EventContext, results: IndividualEventResults) {
         // no-op TODO("Not yet implemented")
     }
 }

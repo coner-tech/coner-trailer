@@ -3,6 +3,7 @@ package tech.coner.trailer.di
 import org.kodein.di.*
 import tech.coner.trailer.render.*
 import tech.coner.trailer.render.html.*
+import tech.coner.trailer.render.json.JsonClazzEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
 
 val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
@@ -16,7 +17,8 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
             .invoke(emptyList()) as JsonOverallEventResultsRenderer
     ) }
     bind<ClazzEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlClazzEventResultsRenderer(
-        columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns)
+        jsonRenderer = factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(Format.JSON)
+            .invoke(emptyList()) as JsonClazzEventResultsRenderer
     ) }
     bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { HtmlTopTimesEventResultsRenderer() }
     bind<ComprehensiveEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlComprehensiveEventResultsRenderer(

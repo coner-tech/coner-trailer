@@ -1,7 +1,7 @@
 package tech.coner.trailer.render.text
 
 import tech.coner.trailer.Class
-import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.ClazzEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.render.ClazzEventResultsRenderer
@@ -11,7 +11,7 @@ class TextClazzEventResultsRenderer(
 ) : TextEventResultsRenderer<ClazzEventResults>(columns),
     ClazzEventResultsRenderer<String, () -> String> {
 
-    override fun partial(event: Event, results: ClazzEventResults): () -> String = {
+    override fun partial(eventContext: EventContext, results: ClazzEventResults): () -> String = {
         val sb = StringBuilder()
         for ((group, participantResults) in results.groupParticipantResults) {
             appendGroupResults(results, group, participantResults, sb)

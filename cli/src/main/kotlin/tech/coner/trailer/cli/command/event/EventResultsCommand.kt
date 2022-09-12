@@ -11,7 +11,6 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
-import tech.coner.trailer.Event
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -100,27 +99,27 @@ class EventResultsCommand(
         eventResultsSessionContainer.diContext.use {
             val render = when (type) {
                 StandardEventResultsTypes.raw -> renderOverallType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.rawCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.pax -> renderOverallType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.paxCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.clazz -> renderGroupType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.clazzCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.topTimes -> renderTopTimesType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.topTimesCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.comprehensive -> renderComprehensiveType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.comprehensiveCalculator(eventContext).calculate()
                 )
                 StandardEventResultsTypes.individual -> renderIndividualType(
-                    event = eventContext.event,
+                    eventContext = eventContext,
                     results = eventResultsSessionContainer.individualCalculator(eventContext).calculate()
                 )
                 else -> throw UnsupportedOperationException()
@@ -140,31 +139,31 @@ class EventResultsCommand(
         }
     }
 
-    private fun renderOverallType(event: Event, results: OverallEventResults): String {
+    private fun renderOverallType(eventContext: EventContext, results: OverallEventResults): String {
         val factory = di.direct.factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)
         val renderer = factory(standardEventResultsColumns)
-        return renderer.render(event, results)
+        return renderer.render(eventContext, results)
     }
 
-    private fun renderGroupType(event: Event, results: ClazzEventResults): String {
+    private fun renderGroupType(eventContext: EventContext, results: ClazzEventResults): String {
         val factory = di.direct.factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format)
         val renderer = factory(standardEventResultsColumns)
-        return renderer.render(event, results)
+        return renderer.render(eventContext, results)
     }
 
-    private fun renderTopTimesType(event: Event, results: TopTimesEventResults): String {
+    private fun renderTopTimesType(eventContext: EventContext, results: TopTimesEventResults): String {
         val renderer: TopTimesEventResultsRenderer<String, *> = di.direct.instance(format)
-        return renderer.render(event, results)
+        return renderer.render(eventContext, results)
     }
 
-    private fun renderComprehensiveType(event: Event, results: ComprehensiveEventResults): String {
+    private fun renderComprehensiveType(eventContext: EventContext, results: ComprehensiveEventResults): String {
         val factory = di.direct.factory<List<EventResultsColumn>, ComprehensiveEventResultsRenderer<String, *>>(format)
         val renderer = factory(standardEventResultsColumns)
-        return renderer.render(event, results)
+        return renderer.render(eventContext, results)
     }
 
-    private fun renderIndividualType(event: Event, results: IndividualEventResults): String {
+    private fun renderIndividualType(eventContext: EventContext, results: IndividualEventResults): String {
         val renderer = di.direct.instance<IndividualEventResultsRenderer<String, *>>(format)
-        return renderer.render(event, results)
+        return renderer.render(eventContext, results)
     }
 }

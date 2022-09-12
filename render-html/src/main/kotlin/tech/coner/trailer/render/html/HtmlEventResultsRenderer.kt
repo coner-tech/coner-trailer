@@ -4,6 +4,7 @@ import kotlinx.html.*
 import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.render.EventResultsRenderer
 
@@ -11,22 +12,22 @@ abstract class HtmlEventResultsRenderer<ER : EventResults>(
     protected val columns: List<HtmlEventResultsColumn>
 ) : EventResultsRenderer<ER, String, HtmlBlockTag.() -> Unit>, HtmlRenderer {
 
-    override fun render(event: Event, results: ER): String = createHTMLDocument()
+    override fun render(eventContext: EventContext, results: ER): String = createHTMLDocument()
         .html {
-            fun titleText() = "${event.name} - ${event.date} - ${results.type.title}"
+            fun titleText() = "${eventContext.event.name} - ${InputType.date} - ${results.type.title}"
             head {
                 installBootstrap()
                 title { + titleText() }
-                style { unsafe { raw(headerStylesheet(event, results)) } }
+                style { unsafe { raw(headerStylesheet(eventContext.event, results)) } }
                 installConerTrailerStylesheet()
                 commonScripts()
-                specificScripts(event, results)
+                specificScripts(eventContext, results)
             }
             body {
                 id = "event-results"
                 classes = setOf("container-xl")
-                renderNavbar(event, results)
-                partial(event, results)()
+                renderNavbar(eventContext.event, results)
+                partial(eventContext, results)()
                 renderFooter()
                 standardEventResultTableTemplate()
                 standardEventResultTableRowTemplate()
@@ -101,7 +102,7 @@ abstract class HtmlEventResultsRenderer<ER : EventResults>(
         """.trimIndent()) } }
     }
 
-    abstract fun HEAD.specificScripts(event: Event, results: ER)
+    abstract fun HEAD.specificScripts(eventContext: EventContext, results: ER)
 
     protected fun SECTION.setupResultsContent(results: ER, rendered: String) {
         script {

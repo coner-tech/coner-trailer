@@ -1,16 +1,16 @@
 package tech.coner.trailer.render.html
 
 import kotlinx.html.*
-import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.TopTimesEventResults
 import tech.coner.trailer.render.TopTimesEventResultsRenderer
 
 class HtmlTopTimesEventResultsRenderer : HtmlEventResultsRenderer<TopTimesEventResults>(emptyList()),
     TopTimesEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
-    override fun partial(event: Event, results: TopTimesEventResults): HtmlBlockTag.() -> Unit = {
+    override fun partial(eventContext: EventContext, results: TopTimesEventResults): HtmlBlockTag.() -> Unit = {
         section {
-            classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
+            classes = setOf("event-results", "event-results-${results.type.key}", "event-${eventContext.event.id}")
             table {
                 classes = setOf("table", "table-striped", "primary")
                 thead {
@@ -28,7 +28,7 @@ class HtmlTopTimesEventResultsRenderer : HtmlEventResultsRenderer<TopTimesEventR
                         th {
                             classes = setOf("score")
                             scope = ThScope.col
-                            text(event.policy.topTimesEventResultsMethod.scoreColumnHeading)
+                            text(eventContext.event.policy.topTimesEventResultsMethod.scoreColumnHeading)
                         }
                     }
                 }
@@ -55,7 +55,7 @@ class HtmlTopTimesEventResultsRenderer : HtmlEventResultsRenderer<TopTimesEventR
 
     }
 
-    override fun HEAD.specificScripts(event: Event, results: TopTimesEventResults) {
+    override fun HEAD.specificScripts(eventContext: EventContext, results: TopTimesEventResults) {
         // no-op TODO("Not yet implemented")
     }
 }

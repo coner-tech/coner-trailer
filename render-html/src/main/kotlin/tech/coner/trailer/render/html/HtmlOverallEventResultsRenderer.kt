@@ -1,7 +1,7 @@
 package tech.coner.trailer.render.html
 
 import kotlinx.html.*
-import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.OverallEventResults
 import tech.coner.trailer.render.OverallEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
@@ -11,22 +11,22 @@ class HtmlOverallEventResultsRenderer(
 ) : HtmlEventResultsRenderer<OverallEventResults>(emptyList()),
     OverallEventResultsRenderer<String, HtmlBlockTag.() -> Unit> {
 
-    override fun partial(event: Event, results: OverallEventResults): HtmlBlockTag.() -> Unit = {
+    override fun partial(eventContext: EventContext, results: OverallEventResults): HtmlBlockTag.() -> Unit = {
         section {
-            classes = setOf("event-results", "event-results-${results.type.key}", "event-${event.id}")
+            classes = setOf("event-results", "event-results-${results.type.key}", "event-${eventContext.event.id}")
         }
     }
 
-    override fun HEAD.specificScripts(event: Event, results: OverallEventResults) {
+    override fun HEAD.specificScripts(eventContext: EventContext, results: OverallEventResults) {
         script { unsafe { raw("""
             if (typeof allResults == 'undefined') allResults = {};
-            allResults.${results.type.key} = ${jsonRenderer.render(event, results)};
+            allResults.${results.type.key} = ${jsonRenderer.render(eventContext, results)};
             
             document.addEventListener("DOMContentLoaded", function() {
                 // setup ${results.type.key} content
                 useTemplate(function() {
                     // setup table
-                    const section = document.querySelector("section.event-results-${results.type.key}.event-${event.id}");
+                    const section = document.querySelector("section.event-results-${results.type.key}.event-${eventContext.event.id}");
                     const binding = new StandardEventResultTableBinding();
                     binding.score.textContent = "${results.type.scoreColumnHeading}";
                     section.appendChild(binding.root);

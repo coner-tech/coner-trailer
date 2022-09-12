@@ -3,6 +3,7 @@ package tech.coner.trailer.render.text
 import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.render.EventResultsRenderer
 
@@ -10,10 +11,10 @@ abstract class TextEventResultsRenderer<ER : EventResults>(
     protected val columns: List<TextEventResultsColumn>
 ) : EventResultsRenderer<ER, String, () -> String> {
 
-    override fun render(event: Event, results: ER): String {
+    override fun render(eventContext: EventContext, results: ER): String {
         return buildString {
-            appendHeader(event, results)
-            append(partial(event, results).invoke())
+            appendHeader(eventContext.event, results)
+            append(partial(eventContext, results).invoke())
             appendLine()
         }
     }

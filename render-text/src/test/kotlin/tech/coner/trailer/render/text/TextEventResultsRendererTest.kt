@@ -3,7 +3,7 @@ package tech.coner.trailer.render.text
 import assertk.assertThat
 import assertk.assertions.startsWith
 import org.junit.jupiter.api.Test
-import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.eventresults.TestOverallRawEventResults
@@ -15,7 +15,7 @@ class TextEventResultsRendererTest {
     @Test
     fun `It should include header`() {
         renderer = object : TextEventResultsRenderer<EventResults>(emptyList()) {
-            override fun partial(event: Event, results: EventResults): () -> String = {
+            override fun partial(eventContext: EventContext, results: EventResults): () -> String = {
                 ""
             }
         }
