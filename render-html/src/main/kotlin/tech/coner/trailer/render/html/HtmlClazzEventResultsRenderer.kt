@@ -41,4 +41,8 @@ class HtmlClazzEventResultsRenderer(
             }
         }
     }
+
+    override fun HEAD.specificScripts(event: Event, results: ClazzEventResults) {
+        // no-op TODO("Not yet implemented")
+    }
 }

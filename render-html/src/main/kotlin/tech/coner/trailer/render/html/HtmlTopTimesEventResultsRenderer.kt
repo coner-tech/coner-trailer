@@ -54,4 +54,8 @@ class HtmlTopTimesEventResultsRenderer : HtmlEventResultsRenderer<TopTimesEventR
         }
 
     }
+
+    override fun HEAD.specificScripts(event: Event, results: TopTimesEventResults) {
+        // no-op TODO("Not yet implemented")
+    }
 }

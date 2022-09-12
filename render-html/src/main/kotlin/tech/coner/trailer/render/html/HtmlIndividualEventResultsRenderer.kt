@@ -66,4 +66,8 @@ class HtmlIndividualEventResultsRenderer(
             .distinct()
             .joinToString(separator = "\n")
     }
+
+    override fun HEAD.specificScripts(event: Event, results: IndividualEventResults) {
+        // no-op TODO("Not yet implemented")
+    }
 }

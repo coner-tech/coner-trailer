@@ -84,4 +84,8 @@ class HtmlComprehensiveEventResultsRenderer(
             }
             .joinToString(separator = "\n")
     }
+
+    override fun HEAD.specificScripts(event: Event, results: ComprehensiveEventResults) {
+        // no-op TODO("Not yet implemented")
+    }
 }

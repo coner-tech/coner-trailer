@@ -87,6 +87,7 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         )
 
         override val header: TR.(EventResultsType) -> Unit = {
+
             th {
                 classes = setOf("mobile-position-signage")
                 scope = ThScope.col
