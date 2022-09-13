@@ -4,6 +4,7 @@ import org.kodein.di.*
 import tech.coner.trailer.render.*
 import tech.coner.trailer.render.html.*
 import tech.coner.trailer.render.json.JsonClazzEventResultsRenderer
+import tech.coner.trailer.render.json.JsonIndividualEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
 import tech.coner.trailer.render.json.JsonTopTimesEventResultsRenderer
 
@@ -32,6 +33,8 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
         individualRenderer = instance<IndividualEventResultsRenderer<String, *>>(format) as HtmlIndividualEventResultsRenderer
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(Format.HTML) with singleton {
-        HtmlIndividualEventResultsRenderer()
+        HtmlIndividualEventResultsRenderer(
+            jsonRenderer = instance<IndividualEventResultsRenderer<String, *>>(Format.JSON) as JsonIndividualEventResultsRenderer
+        )
     }
 }

@@ -12,11 +12,15 @@ import tech.coner.trailer.render.json.identifier.ParticipantIdentifier
 
 class IndividualEventResultsModel(
     val event: EventIdentifier,
+    val types: Map<String, EventResultsTypeModel>,
     val results: ResultsModel
 ) {
 
-    constructor(event: Event, results: IndividualEventResults) : this(
+    constructor(event: Event, types: List<EventResultsType>, results: IndividualEventResults) : this(
         event = EventIdentifier(event),
+        types = types
+            .map(::EventResultsTypeModel)
+            .associateBy(EventResultsTypeModel::key),
         results = ResultsModel(results)
     )
 

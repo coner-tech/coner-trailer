@@ -12,12 +12,20 @@ class JsonIndividualEventResultsRenderer(
 ) : IndividualEventResultsRenderer<String, ObjectNode> {
 
     override fun render(eventContext: EventContext, results: IndividualEventResults): String {
-        val model = IndividualEventResultsModel(eventContext.event, results)
+        val model = IndividualEventResultsModel(
+            event = eventContext.event,
+            types = results.innerEventResultsTypes,
+            results = results
+        )
         return objectMapper.writeValueAsString(model)
     }
 
     override fun partial(eventContext: EventContext, results: IndividualEventResults): ObjectNode {
-        val model = IndividualEventResultsModel(eventContext.event, results)
+        val model = IndividualEventResultsModel(
+            event = eventContext.event,
+            types = results.innerEventResultsTypes,
+            results = results
+        )
         return objectMapper.valueToTree(model)
     }
 }
