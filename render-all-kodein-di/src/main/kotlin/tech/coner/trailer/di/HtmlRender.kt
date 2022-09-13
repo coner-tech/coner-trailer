@@ -5,6 +5,7 @@ import tech.coner.trailer.render.*
 import tech.coner.trailer.render.html.*
 import tech.coner.trailer.render.json.JsonClazzEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
+import tech.coner.trailer.render.json.JsonTopTimesEventResultsRenderer
 
 val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
     val format = Format.HTML
@@ -20,7 +21,9 @@ val htmlRenderModule = DI.Module("tech.coner.trailer.render.html") {
         jsonRenderer = factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(Format.JSON)
             .invoke(emptyList()) as JsonClazzEventResultsRenderer
     ) }
-    bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { HtmlTopTimesEventResultsRenderer() }
+    bind<TopTimesEventResultsRenderer<String, *>>(format) with singleton { HtmlTopTimesEventResultsRenderer(
+        jsonRenderer = instance<TopTimesEventResultsRenderer<String, *>>(Format.JSON) as JsonTopTimesEventResultsRenderer
+    ) }
     bind<ComprehensiveEventResultsRenderer<String, *>>(format) with multiton { columns: List<EventResultsColumn> -> HtmlComprehensiveEventResultsRenderer(
         columns = factory<List<EventResultsColumn>, List<HtmlEventResultsColumn>>().invoke(columns),
         overallRenderer = factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)(columns) as HtmlOverallEventResultsRenderer,
