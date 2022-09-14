@@ -35,6 +35,9 @@ class HtmlIndividualEventResultsRenderer(
                             scope = ThScope.col
                             text("Car")
                         }
+                        th {
+                            // intentionally left blank
+                        }
                     }
                 }
                 tbody {
@@ -48,8 +51,55 @@ class HtmlIndividualEventResultsRenderer(
                         <td class="name" />
                         <td class="signage "/>
                         <td class="car" />
+                        <td>
+                            <button
+                                class="btn btn-secondary detail"
+                                type="button" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#individual-event-results-detail-modal"
+                                data-results-index="">
+                                +
+                            </button>
+                        </td>
                     </tr>
                 """.trimIndent()) }
+            }
+            div {
+                id = "individual-event-results-detail-modal"
+                classes = setOf("modal")
+                div {
+                    classes = setOf("modal-dialog")
+                    div {
+                        classes = setOf("modal-content")
+                        div {
+                            classes = setOf("modal-header")
+                            h5 {
+                                classes = setOf("modal-title", "name")
+                            }
+                            button {
+                                type = ButtonType.button
+                                classes = setOf("btn-close")
+                                attributes["data-bs-dismiss"] = "modal"
+                                attributes["aria-label"] = "Close"
+                            }
+                        }
+                        div {
+                            classes = setOf("modal-body")
+                            h4 {
+                                classes = setOf("name")
+                            }
+                        }
+                        div {
+                            classes = setOf("modal-footer")
+                            button {
+                                type = ButtonType.button
+                                classes = setOf("btn", "btn-primary")
+                                attributes["data-bs-dismiss"] = "modal"
+                                text("Close")
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -66,6 +116,14 @@ class HtmlIndividualEventResultsRenderer(
                     this.name = this.root.querySelector("td.name");
                     this.signage = this.root.querySelector("td.signage");
                     this.car = this.root.querySelector("td.car");
+                    this.detail = this.root.querySelector("button.detail");
+                }
+            }
+            
+            class IndividualEventResultsDetailModalBinding {
+                constructor() {
+                    this.root = document.getElementById("individual-event-results-detail-modal");
+                    this.name = this.root.querySelector(".name");
                 }
             }
             
@@ -83,8 +141,22 @@ class HtmlIndividualEventResultsRenderer(
                         binding.name.textContent = participant.firstName + " " + participant.lastName;
                         binding.signage.textContent = participant.signage;
                         binding.car.textContent = participant.car?.model;
+                        binding.detail.dataset.resultsIndex = i;
                         tbody.appendChild(binding.root);
                     }
+                });
+            });
+            
+            document.addEventListener("DOMContentLoaded", function() {
+                // setup modal
+                const individualEventResultsDetailModalBinding = new IndividualEventResultsDetailModalBinding();
+                individualEventResultsDetailModalBinding.root.addEventListener("show.bs.modal", function (event) {
+                    const button = event.relatedTarget;
+                    const resultsIndex = button.dataset.resultsIndex;
+                    const individualParticipantResult = allResults.individual.results.allByParticipant[resultsIndex];
+                    const participant = individualParticipantResult.participant;
+                    const binding = individualEventResultsDetailModalBinding;
+                    binding.name.textContent = participant.firstName + " " + participant.lastName;
                 });
             });
         """.trimIndent()) } }
