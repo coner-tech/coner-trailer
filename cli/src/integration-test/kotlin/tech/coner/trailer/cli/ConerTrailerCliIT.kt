@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -21,8 +20,8 @@ import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.di.Format
+import tech.coner.trailer.eventresults.EventResultsType
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
@@ -194,13 +193,6 @@ class ConerTrailerCliIT {
             assertThat(testConsole.output, "output").all {
                 contains(event.name)
                 when (format) {
-                    Format.HTML -> {
-                        startsWith("<!DOCTYPE html>")
-                        contains(eventResultType.titleShort)
-                        contains("<table ")
-                        contains("</table>")
-                        endsWith("</html>")
-                    }
                     Format.TEXT -> {
                         contains(eventResultType.titleShort)
                         contains("────")

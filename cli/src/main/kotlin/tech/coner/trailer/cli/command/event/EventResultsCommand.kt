@@ -71,7 +71,6 @@ class EventResultsCommand(
         .choice(
             "json" to Format.JSON,
             "text" to Format.TEXT,
-            "html" to Format.HTML
         )
         .default(Format.JSON)
     sealed class Output(help: String) : OptionGroup(help = help) {

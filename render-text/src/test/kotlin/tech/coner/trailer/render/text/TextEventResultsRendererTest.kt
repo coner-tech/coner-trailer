@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.startsWith
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.EventContext
-import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.eventresults.TestOverallRawEventResults
 
@@ -19,15 +19,15 @@ class TextEventResultsRendererTest {
                 ""
             }
         }
-        val event = TestEvents.Lscc2019Simplified.points1
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val eventResults = TestOverallRawEventResults.Lscc2019Simplified.points1
 
-        val actual = renderer.render(event, eventResults)
+        val actual = renderer.render(eventContext, eventResults)
 
         assertThat(actual)
             .startsWith("""
-                ${event.name}
-                ${event.date}
+                ${eventContext.event.name}
+                ${eventContext.event.date}
                 ${eventResults.type.title}
                 
             """.trimIndent())
