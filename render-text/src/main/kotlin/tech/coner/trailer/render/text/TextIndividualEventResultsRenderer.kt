@@ -6,7 +6,7 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.IndividualEventResults
 import tech.coner.trailer.render.IndividualEventResultsRenderer
 
-class TextIndividualEventResultsRenderer : TextEventResultsRenderer<IndividualEventResults>(columns = emptyList()),
+class TextIndividualEventResultsRenderer : TextEventResultsRenderer<IndividualEventResults>(),
     IndividualEventResultsRenderer<String, () -> String> {
 
     override fun partial(eventContext: EventContext, results: IndividualEventResults): () -> String = {

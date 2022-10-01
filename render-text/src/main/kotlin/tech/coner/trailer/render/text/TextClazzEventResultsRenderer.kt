@@ -1,38 +1,25 @@
 package tech.coner.trailer.render.text
 
-import tech.coner.trailer.Class
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.ClazzEventResults
-import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.render.ClazzEventResultsRenderer
 
 class TextClazzEventResultsRenderer(
-    columns: List<TextEventResultsColumn>
-) : TextEventResultsRenderer<ClazzEventResults>(columns),
+) : TextEventResultsRenderer<ClazzEventResults>(),
     ClazzEventResultsRenderer<String, () -> String> {
 
     override fun partial(eventContext: EventContext, results: ClazzEventResults): () -> String = {
         val sb = StringBuilder()
-        for ((group, participantResults) in results.groupParticipantResults) {
-            appendGroupResults(results, group, participantResults, sb)
+        results.groupParticipantResults.forEach { (group, participantResults) ->
+            sb.appendLine(group.name)
+            val at = createAsciiTable()
+            at.appendHeader()
+            for (participantResult in participantResults) {
+                at.appendData(participantResult)
+            }
+            at.addRule()
+            sb.appendLine(at.render())
         }
         sb.toString()
     }
-
-    private fun appendGroupResults(
-        results: ClazzEventResults,
-        group: Class,
-        participantResults: List<ParticipantResult>,
-        sb: StringBuilder
-    ) {
-        sb.appendLine(group.name)
-        val at = createAsciiTableWithHeaderRow(results)
-        for (result in participantResults) {
-            at.addRow(columns.map { column -> column.data.invoke(result) })
-        }
-        at.addRule()
-        sb.appendLine(at.render())
-    }
-
-
 }

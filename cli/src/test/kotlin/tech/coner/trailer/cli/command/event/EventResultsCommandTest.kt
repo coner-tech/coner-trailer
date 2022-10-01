@@ -1,8 +1,6 @@
 package tech.coner.trailer.cli.command.event
 
-import assertk.assertAll
 import assertk.assertThat
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
 import io.mockk.*
@@ -11,8 +9,10 @@ import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.bindInstance
+import org.kodein.di.bindSingleton
 import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
@@ -22,13 +22,11 @@ import tech.coner.trailer.di.MockkEventResultsFixture
 import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.OverallEventResults
-import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.render.ClazzEventResultsRenderer
-import tech.coner.trailer.render.EventResultsColumn
 import tech.coner.trailer.render.IndividualEventResultsRenderer
 import tech.coner.trailer.render.OverallEventResultsRenderer
 import tech.coner.trailer.render.html.HtmlClazzEventResultsRenderer
@@ -38,8 +36,6 @@ import tech.coner.trailer.render.json.JsonIndividualEventResultsRenderer
 import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
 import tech.coner.trailer.render.text.TextClazzEventResultsRenderer
 import tech.coner.trailer.render.text.TextOverallEventResultsRenderer
-import java.nio.file.Path
-import kotlin.io.path.readText
 
 @ExtendWith(MockKExtension::class)
 class EventResultsCommandTest : DIAware {
@@ -50,11 +46,11 @@ class EventResultsCommandTest : DIAware {
         import(testCliktModule)
         import(mockkEventResultsFixture.module)
         import(mockkDatabaseModule())
-        bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
-        bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textOverallEventResultsRenderer }
-        bind<ClazzEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonGroupEventResultsRenderer }
-        bind<ClazzEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textGroupEventResultsRenderer }
-        bind<IndividualEventResultsRenderer<String, *>>(Format.JSON) with instance(jsonIndividualEventResultsRenderer)
+        bindSingleton<OverallEventResultsRenderer<String, *>>(Format.JSON) { jsonOverallEventResultsRenderer }
+        bindSingleton<OverallEventResultsRenderer<String, *>>(Format.TEXT) { textOverallEventResultsRenderer }
+        bindSingleton<ClazzEventResultsRenderer<String, *>>(Format.JSON) { jsonGroupEventResultsRenderer }
+        bindSingleton<ClazzEventResultsRenderer<String, *>>(Format.TEXT) { textGroupEventResultsRenderer }
+        bindSingleton<IndividualEventResultsRenderer<String, *>>(Format.JSON) { jsonIndividualEventResultsRenderer }
 
         bindInstance { fileOutputResolver }
     }

@@ -6,7 +6,7 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.TopTimesEventResults
 import tech.coner.trailer.render.TopTimesEventResultsRenderer
 
-class TextTopTimesEventResultsRenderer : TextEventResultsRenderer<TopTimesEventResults>(emptyList()),
+class TextTopTimesEventResultsRenderer : TextEventResultsRenderer<TopTimesEventResults>(),
     TopTimesEventResultsRenderer<String, () -> String> {
 
     override fun partial(eventContext: EventContext, results: TopTimesEventResults): () -> String = {

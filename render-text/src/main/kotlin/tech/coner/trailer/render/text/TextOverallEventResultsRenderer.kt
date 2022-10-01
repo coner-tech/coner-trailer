@@ -5,14 +5,14 @@ import tech.coner.trailer.eventresults.OverallEventResults
 import tech.coner.trailer.render.OverallEventResultsRenderer
 
 class TextOverallEventResultsRenderer(
-    columns: List<TextEventResultsColumn>
-) : TextEventResultsRenderer<OverallEventResults>(columns),
+) : TextEventResultsRenderer<OverallEventResults>(),
     OverallEventResultsRenderer<String, () -> String> {
 
     override fun partial(eventContext: EventContext, results: OverallEventResults): () -> String = {
-        val at = createAsciiTableWithHeaderRow(results)
+        val at = createAsciiTable()
+        at.appendHeader()
         for (participantResult in results.participantResults) {
-            at.addRow(columns.map { column -> column.data.invoke(participantResult) })
+            at.appendData(participantResult)
         }
         at.addRule()
         at.render()

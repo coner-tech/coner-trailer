@@ -14,7 +14,7 @@ class TextEventResultsRendererTest {
 
     @Test
     fun `It should include header`() {
-        renderer = object : TextEventResultsRenderer<EventResults>(emptyList()) {
+        renderer = object : TextEventResultsRenderer<EventResults>() {
             override fun partial(eventContext: EventContext, results: EventResults): () -> String = {
                 ""
             }

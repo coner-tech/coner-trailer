@@ -1,6 +1,5 @@
 package tech.coner.trailer.render.text
 
-import kotlinx.html.InputType
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.ComprehensiveEventResults
 import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
@@ -9,7 +8,7 @@ class TextComprehensiveEventResultsRenderer(
     private val overallRenderer: TextOverallEventResultsRenderer,
     private val clazzRenderer: TextClazzEventResultsRenderer,
     private val topTimesRenderer: TextTopTimesEventResultsRenderer,
-) : TextEventResultsRenderer<ComprehensiveEventResults>(emptyList()),
+) : TextEventResultsRenderer<ComprehensiveEventResults>(),
     ComprehensiveEventResultsRenderer<String, () -> String> {
 
     override fun partial(eventContext: EventContext, results: ComprehensiveEventResults): () -> String = {

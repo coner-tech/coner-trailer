@@ -4,18 +4,18 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Event
 import tech.coner.trailer.EventContext
+import tech.coner.trailer.Time
 import tech.coner.trailer.eventresults.EventResults
+import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.render.EventResultsRenderer
 
 abstract class TextEventResultsRenderer<ER : EventResults>(
-    protected val columns: List<TextEventResultsColumn>
 ) : EventResultsRenderer<ER, String, () -> String> {
 
     override fun render(eventContext: EventContext, results: ER): String {
         return buildString {
             appendHeader(eventContext.event, results)
-            append(partial(eventContext, results).invoke())
-            appendLine()
+            appendLine(partial(eventContext, results).invoke())
         }
     }
 
@@ -26,13 +26,38 @@ abstract class TextEventResultsRenderer<ER : EventResults>(
         appendLine()
     }
 
-    protected fun createAsciiTableWithHeaderRow(results: ER): AsciiTable {
-        return AsciiTable().also { at ->
-            at.renderer.cwc = CWC_LongestLine()
-            at.addRule()
-            at.addRow(columns.map { column -> column.header(results.type) })
-            at.addRule()
-        }
+    protected fun createAsciiTable() = AsciiTable()
+        .also { it.renderer.cwc = CWC_LongestLine() }
+
+    protected fun AsciiTable.appendHeader() {
+        addRule()
+        addRow(
+            "Pos.",
+            "Signage",
+            "Name",
+            "Car",
+            "Score",
+            "Diff. 1st",
+            "Diff. Prev.",
+        )
+        addRule()
+    }
+
+    protected fun AsciiTable.appendData(participantResult: ParticipantResult) {
+        addRow(
+            "${participantResult.position}",
+            participantResult.participant.signage?.classingNumber ?: "",
+            renderName(participantResult.participant),
+            participantResult.participant.car?.model ?: "",
+            renderScoreColumnValue(participantResult),
+            renderDiffColumnValue(participantResult, participantResult.diffFirst),
+            renderDiffColumnValue(participantResult, participantResult.diffPrevious)
+        )
+    }
+
+    private fun renderDiffColumnValue(participantResult: ParticipantResult, diff: Time?) = when (participantResult.position) {
+        1 -> ""
+        else -> render(diff)
     }
 
 }

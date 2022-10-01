@@ -139,14 +139,12 @@ class EventResultsCommand(
     }
 
     private fun renderOverallType(eventContext: EventContext, results: OverallEventResults): String {
-        val factory = di.direct.factory<List<EventResultsColumn>, OverallEventResultsRenderer<String, *>>(format)
-        val renderer = factory(standardEventResultsColumns)
+        val renderer = di.direct.instance<OverallEventResultsRenderer<String, *>>(format)
         return renderer.render(eventContext, results)
     }
 
     private fun renderGroupType(eventContext: EventContext, results: ClazzEventResults): String {
-        val factory = di.direct.factory<List<EventResultsColumn>, ClazzEventResultsRenderer<String, *>>(format)
-        val renderer = factory(standardEventResultsColumns)
+        val renderer = di.direct.instance<ClazzEventResultsRenderer<String, *>>(format)
         return renderer.render(eventContext, results)
     }
 
@@ -156,8 +154,7 @@ class EventResultsCommand(
     }
 
     private fun renderComprehensiveType(eventContext: EventContext, results: ComprehensiveEventResults): String {
-        val factory = di.direct.factory<List<EventResultsColumn>, ComprehensiveEventResultsRenderer<String, *>>(format)
-        val renderer = factory(standardEventResultsColumns)
+        val renderer = di.direct.instance<ComprehensiveEventResultsRenderer<String, *>>(format)
         return renderer.render(eventContext, results)
     }
 
