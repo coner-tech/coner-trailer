@@ -18,7 +18,7 @@ class PolicyMapper(
             conePenaltySeconds = core.conePenaltySeconds,
             paxTimeStyle = core.paxTimeStyle.name,
             finalScoreStyle = core.finalScoreStyle.name,
-            authoritativeRunSource = when (core.authoritativeRunDataSource) {
+            authoritativeRunSource = when (core.requireAuthoritativeRunDataSource()) {
                 Policy.DataSource.CrispyFish -> PolicyEntity.DataSource(PolicyEntity.DataSource.Type.CRISPY_FISH)
             }
         )

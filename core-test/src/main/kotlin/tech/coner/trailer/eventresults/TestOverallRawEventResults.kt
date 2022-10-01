@@ -1,9 +1,6 @@
 package tech.coner.trailer.eventresults
 
-import tech.coner.trailer.Run
-import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.TestParticipants
-import tech.coner.trailer.Time
+import tech.coner.trailer.*
 import java.math.BigDecimal
 
 object TestOverallRawEventResults {
@@ -348,5 +345,290 @@ object TestOverallRawEventResults {
                 )
             )
         )
+    }
+
+    object Lifecycles {
+        private val classes = TestClasses.Lscc2019
+        private val participants = TestParticipants.Lifecycles
+        private val runs = TestRuns.Lifecycles
+        object Create {
+            private val eventContexts = TestEventContexts.Lifecycles.Create
+            val noParticipantsYet by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.noParticipantsYet,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val runsWithoutSignage by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.runsWithoutSignage,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val runsWithoutParticipants by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.runsWithoutParticipants,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val participantsWithoutRuns by lazy {
+                OverallEventResults(
+                    eventContext = eventContexts.participantsWithoutRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = emptyList()
+                )
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                val runs = runs.someParticipantsWithSomeRuns
+                OverallEventResults(
+                    eventContext = eventContexts.someParticipantsWithSomeRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.567"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[0] to Score("34.567") }
+                        )
+                    )
+                )
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                val runs = runs.someParticipantsWithAllRuns
+                OverallEventResults(
+                    eventContext = eventContexts.someParticipantsWithAllRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.456"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[0] to Score("34.567") },
+                                { runs[2] to Score("34.456") }
+                            )
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.678"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("1.222"),
+                            diffPrevious = Time("1.222"),
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[1] to Score("35.678") }
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                val runs = runs.allParticipantsWithSomeRuns
+                OverallEventResults(
+                    eventContext = eventContexts.allParticipantsWithSomeRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.567"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[0] to Score("34.567") }
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.678"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("1.111"),
+                            diffPrevious = Time("1.111"),
+                            personalBestScoredRunIndex = 0,
+                            runFns = listOf { runs[1] to Score("35.678") }
+                        )
+                    )
+                )
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                val runs = runs.allParticipantsWithAllRuns
+                OverallEventResults(
+                    eventContext = eventContexts.allParticipantsWithAllRuns,
+                    type = StandardEventResultsTypes.raw,
+                    participantResults = listOf(
+                        testParticipantResult(
+                            position = 1,
+                            score = Score("34.456"),
+                            participant = participants.REBECCA_JACKSON,
+                            diffFirst = null,
+                            diffPrevious = null,
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[0] to Score("34.567") },
+                                { runs[2] to Score("34.456") }
+                            )
+                        ),
+                        testParticipantResult(
+                            position = 2,
+                            score = Score("35.567"),
+                            participant = participants.JIMMY_MCKENZIE,
+                            diffFirst = Time("1.111"),
+                            diffPrevious = Time("1.111"),
+                            personalBestScoredRunIndex = 1,
+                            runFns = listOf(
+                                { runs[1] to Score("35.678") },
+                                { runs[3] to Score("35.567") }
+                            )
+                        )
+                    )
+                )
+            }
+        }
+        object Pre {
+            private val eventContexts = TestEventContexts.Lifecycles.Pre
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
+        object Active {
+            private val eventContexts = TestEventContexts.Lifecycles.Active
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
+        object Post {
+            private val eventContexts = TestEventContexts.Lifecycles.Post
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
+        object Final {
+            private val eventContexts = TestEventContexts.Lifecycles.Final
+            val noParticipantsYet by lazy {
+                Create.noParticipantsYet
+                    .copy(eventContext = eventContexts.noParticipantsYet)
+            }
+            val runsWithoutSignage by lazy {
+                Create.runsWithoutSignage
+                    .copy(eventContext = eventContexts.runsWithoutSignage)
+            }
+            val runsWithoutParticipants by lazy {
+                Create.runsWithoutParticipants
+                    .copy(eventContext = eventContexts.runsWithoutParticipants)
+            }
+            val participantsWithoutRuns by lazy {
+                Create.participantsWithoutRuns
+                    .copy(eventContext = eventContexts.participantsWithoutRuns)
+            }
+            val someParticipantsWithSomeRuns by lazy {
+                Create.someParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
+            }
+            val someParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.someParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
+            }
+            val allParticipantsWithSomeRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithSomeRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
+            }
+            val allParticipantsWithAllRuns: OverallEventResults by lazy {
+                Create.allParticipantsWithAllRuns
+                    .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
+            }
+        }
     }
 }

@@ -3,10 +3,7 @@ package tech.coner.trailer.cli.command.event
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.groups.required
-import com.github.ajalt.clikt.parameters.options.convert
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
-import com.github.ajalt.clikt.parameters.options.validate
+import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -24,6 +21,7 @@ import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.di.DataSessionHolder
 import tech.coner.trailer.io.constraint.EventPersistConstraints
+import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
 import java.nio.file.Path
@@ -98,7 +96,7 @@ class EventAddCommand(
         .required()
 
     override suspend fun coRun() = diContext.use {
-        val created = service.create(
+        val created = service.create(CreateEventPayload(
             id = id,
             name = name,
             date = date,
@@ -106,7 +104,8 @@ class EventAddCommand(
             crispyFishClassDefinitionFile = crispyFishOptions.classDefinitionFile,
             motorsportRegEventId = motorsportRegEventId,
             policy = policy
-        )
+        ))
+            .getOrThrow()
         echo(view.render(created))
     }
 }

@@ -36,7 +36,6 @@ class HtmlEventResultsColumnRendererFactory() : EventResultsColumnRendererFactor
                 EventResultsColumn.SCORE -> HtmlEventResultsColumn.Score()
                 EventResultsColumn.DIFF_FIRST -> HtmlEventResultsColumn.DiffFirst()
                 EventResultsColumn.DIFF_PREVIOUS -> HtmlEventResultsColumn.DiffPrevious()
-                EventResultsColumn.RUNS -> HtmlEventResultsColumn.Runs()
             }
             renderers += renderer
         }

@@ -18,6 +18,20 @@ class ClazzEventResultsCalculator(
     finalScoreFactory = finalScoreFactory
 ) {
 
+    constructor(
+        eventContext: EventContext,
+        finalScoreFactory: FinalScoreFactory
+    ) : this(
+        eventContext = eventContext,
+        scoredRunsComparator = ParticipantResult.ScoredRunsComparator(eventContext.extendedParameters.runsPerParticipant),
+        runEligibilityQualifier = RunEligibilityQualifier(),
+        runScoreFactory = ClazzRunScoreFactory(
+            rawTimes = RawTimeRunScoreFactory(StandardPenaltyFactory(eventContext.event.policy)),
+            paxTimes = PaxTimeRunScoreFactory(StandardPenaltyFactory(eventContext.event.policy))
+        ),
+        finalScoreFactory = finalScoreFactory
+    )
+
     override fun calculate(): ClazzEventResults {
         return ClazzEventResults(
             eventContext = eventContext,

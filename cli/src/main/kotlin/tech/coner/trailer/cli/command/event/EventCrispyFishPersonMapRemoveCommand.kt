@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import kotlinx.html.Entities
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -46,7 +47,7 @@ class EventCrispyFishPersonMapRemoveCommand(
     private val personId: UUID by option().convert { toUuid(it) }.required()
 
     override suspend fun coRun() = diContext.use {
-        val event = service.findById(id)
+        val event = service.findByKey(id).getOrThrow()
         val crispyFish = checkNotNull(event.crispyFish) {
             "Event must have crispy fish defined already"
         }

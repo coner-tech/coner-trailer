@@ -12,7 +12,6 @@ val allRendererModule = DI.Module("tech.coner.trailer.render") {
     importAll(
         jsonRenderModule,
         textRenderModule,
-        htmlRenderModule
     )
 
     bindMultiton<Format, ParticipantRenderer> { when (it) {

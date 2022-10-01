@@ -3,10 +3,13 @@ package tech.coner.trailer.cli.command.event
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
+import kotlinx.html.InputType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -22,6 +25,7 @@ import tech.coner.trailer.di.mockkDatabaseModule
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.constraint.EventPersistConstraints
+import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
 import java.nio.file.Path
@@ -79,17 +83,9 @@ class EventAddCommandTest : DIAware {
             .also { it.createFile() }
         val crispyFishClassDefinitionFile = crispyFishRoot.resolve(create.requireCrispyFish().classDefinitionFile)
             .also { it.createFile() }
-        every {
-            service.create(
-                id = create.id,
-                name = create.name,
-                date = create.date,
-                crispyFishEventControlFile = create.requireCrispyFish().eventControlFile,
-                crispyFishClassDefinitionFile = create.requireCrispyFish().classDefinitionFile,
-                motorsportRegEventId = create.motorsportReg?.id,
-                policy = create.policy
-            )
-        } returns create
+        coEvery {
+            service.create(any())
+        } returns Result.success(create)
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.render(create) } returns viewRendered
 
@@ -105,9 +101,9 @@ class EventAddCommandTest : DIAware {
             )
         )
 
-        verifySequence {
+        coVerifySequence {
             policyService.findById(create.policy.id)
-            service.create(
+            service.create(CreateEventPayload(
                 id = create.id,
                 name = create.name,
                 date = create.date,
@@ -115,7 +111,7 @@ class EventAddCommandTest : DIAware {
                 crispyFishClassDefinitionFile = create.requireCrispyFish().classDefinitionFile,
                 motorsportRegEventId = create.motorsportReg?.id,
                 policy = create.policy
-            )
+            ))
             view.render(create)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)

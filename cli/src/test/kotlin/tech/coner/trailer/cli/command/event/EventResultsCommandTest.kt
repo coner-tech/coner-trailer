@@ -17,14 +17,18 @@ import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
-import tech.coner.trailer.di.*
-import tech.coner.trailer.eventresults.*
+import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.MockkEventResultsFixture
+import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.eventresults.EventResultsType
+import tech.coner.trailer.eventresults.OverallEventResults
+import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.EventResultsColumn
 import tech.coner.trailer.render.ClazzEventResultsRenderer
+import tech.coner.trailer.render.EventResultsColumn
 import tech.coner.trailer.render.IndividualEventResultsRenderer
 import tech.coner.trailer.render.OverallEventResultsRenderer
 import tech.coner.trailer.render.html.HtmlClazzEventResultsRenderer
@@ -48,10 +52,8 @@ class EventResultsCommandTest : DIAware {
         import(mockkDatabaseModule())
         bind<OverallEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonOverallEventResultsRenderer }
         bind<OverallEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textOverallEventResultsRenderer }
-        bind<OverallEventResultsRenderer<String, *>>(Format.HTML) with multiton { _: List<EventResultsColumn> -> htmlOverallEventResultsRenderer }
         bind<ClazzEventResultsRenderer<String, *>>(Format.JSON) with multiton { _: List<EventResultsColumn> -> jsonGroupEventResultsRenderer }
         bind<ClazzEventResultsRenderer<String, *>>(Format.TEXT) with multiton { _: List<EventResultsColumn> -> textGroupEventResultsRenderer }
-        bind<ClazzEventResultsRenderer<String, *>>(Format.HTML) with multiton { _: List<EventResultsColumn> -> htmlGroupEventResultsRenderer }
         bind<IndividualEventResultsRenderer<String, *>>(Format.JSON) with instance(jsonIndividualEventResultsRenderer)
 
         bindInstance { fileOutputResolver }
@@ -89,12 +91,12 @@ class EventResultsCommandTest : DIAware {
         val eventContext = TestEventContexts.Lscc2019.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
-        every { eventService.findById(event.id) } returns event
+        coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
         every { rawCalculator.calculate() } returns results
         val render = "json"
-        every { jsonOverallEventResultsRenderer.render(event, results) } returns render
+        every { jsonOverallEventResultsRenderer.render(eventContext, results) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -103,10 +105,10 @@ class EventResultsCommandTest : DIAware {
 
         assertThat(testConsole.output).isEqualTo(render)
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
-            jsonOverallEventResultsRenderer.render(event, results)
+            jsonOverallEventResultsRenderer.render(eventContext, results)
         }
     }
 
@@ -115,12 +117,12 @@ class EventResultsCommandTest : DIAware {
         val eventContext = TestEventContexts.Lscc2019.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
-        every { eventService.findById(event.id) } returns event
+        coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
         val results = mockk<OverallEventResults>()
         every { rawCalculator.calculate() } returns results
         val render = "plain text"
-        every { textOverallEventResultsRenderer.render(event, results) } returns render
+        every { textOverallEventResultsRenderer.render(eventContext, results) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -130,56 +132,10 @@ class EventResultsCommandTest : DIAware {
 
         assertThat(testConsole.output).isEqualTo(render)
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
-            textOverallEventResultsRenderer.render(event, results)
-        }
-    }
-
-    @Test
-    fun `It should write results as html to file`(
-        @TempDir output: Path
-    ) {
-        val eventContext = TestEventContexts.Lscc2019.points1
-        val event = eventContext.event
-        val paxCalculator = mockkEventResultsFixture.paxCalculator
-        every { eventService.findById(event.id) } returns event
-        coEvery { eventContextService.load(event) } returns Result.success(eventContext)
-        val results = mockk<OverallEventResults>()
-        every { paxCalculator.calculate() } returns results
-        val render = "<html>"
-        every { htmlOverallEventResultsRenderer.render(event, results) } returns render
-        val actualDestination = output.resolve("pax.html")
-        every { fileOutputResolver.forEventResults(
-            event = event,
-            type = StandardEventResultsTypes.pax,
-            defaultExtension = "html",
-            path = output
-        ) } returns actualDestination
-
-        command.parse(arrayOf(
-            "${event.id}",
-            "--type", "pax",
-            "--format", "html",
-            "--file", "--file-output", "$output"
-        ))
-
-        assertAll {
-            assertThat(testConsole.output, "console output").isEmpty()
-            assertThat(actualDestination.readText(), "file content").isEqualTo(render)
-        }
-        coVerifySequence {
-            eventService.findById(event.id)
-            eventContextService.load(event)
-            paxCalculator.calculate()
-            htmlOverallEventResultsRenderer.render(event, results)
-            fileOutputResolver.forEventResults(
-                event = event,
-                type = StandardEventResultsTypes.pax,
-                defaultExtension = "html",
-                path = output
-            )
+            textOverallEventResultsRenderer.render(eventContext, results)
         }
     }
 }

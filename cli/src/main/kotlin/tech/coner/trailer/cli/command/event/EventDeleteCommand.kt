@@ -28,7 +28,8 @@ class EventDeleteCommand(
     private val id: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() = diContext.use {
-        val delete = service.findById(id)
+        val delete = service.findByKey(id).getOrThrow()
         service.delete(delete)
+        Unit
     }
 }

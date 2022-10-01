@@ -11,7 +11,7 @@ class ParticipantService(
 ) : CoroutineContext by coroutineContext {
 
     suspend fun list(event: Event): Result<List<Participant>> {
-        return when (event.policy.authoritativeParticipantDataSource) {
+        return when (event.policy.requireAuthoritativeParticipantDataSource()) {
             Policy.DataSource.CrispyFish -> crispyFishParticipantService.list(event)
         }
             .map { it.sortedWith(Participant.Sorts.signage) }

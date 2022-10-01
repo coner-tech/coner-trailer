@@ -1,467 +1,467 @@
 [
 {
-  "name":"[B"}
-,
+  "name":"[B"
+},
 {
-  "name":"[C"}
-,
+  "name":"[C"
+},
 {
-  "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"}
-,
+  "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
+},
 {
-  "name":"[Lcom.fasterxml.jackson.databind.deser.KeyDeserializers;"}
-,
+  "name":"[Lcom.fasterxml.jackson.databind.deser.KeyDeserializers;"
+},
 {
-  "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"}
-,
+  "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"
+},
 {
-  "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"}
-,
+  "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"
+},
 {
-  "name":"[Ljava.lang.String;"}
-,
+  "name":"[Ljava.lang.String;"
+},
 {
-  "name":"[Ljava.math.BigDecimal;"}
-,
+  "name":"[Ljava.math.BigDecimal;"
+},
 {
-  "name":"[Lsun.security.pkcs.SignerInfo;"}
-,
+  "name":"[Lsun.security.pkcs.SignerInfo;"
+},
 {
-  "name":"byte[]"}
-,
+  "name":"byte[]"
+},
 {
-  "name":"char[]"}
-,
+  "name":"char[]"
+},
 {
-  "name":"com.fasterxml.jackson.databind.deser.Deserializers[]"}
-,
+  "name":"com.fasterxml.jackson.databind.deser.Deserializers[]"
+},
 {
-  "name":"com.fasterxml.jackson.databind.deser.KeyDeserializers[]"}
-,
+  "name":"com.fasterxml.jackson.databind.deser.KeyDeserializers[]"
+},
 {
-  "name":"com.fasterxml.jackson.databind.deser.ValueInstantiators[]"}
-,
+  "name":"com.fasterxml.jackson.databind.deser.ValueInstantiators[]"
+},
 {
   "name":"com.fasterxml.jackson.databind.ext.Java7HandlersImpl",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
-  "name":"com.fasterxml.jackson.databind.ser.Serializers[]"}
-,
+  "name":"com.fasterxml.jackson.databind.ser.Serializers[]"
+},
 {
   "name":"com.sun.crypto.provider.AESCipher$General",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.ARCFOURCipher",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.ChaCha20Cipher$ChaCha20Poly1305",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.DESCipher",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.DESedeCipher",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.DHParameters",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.GaloisCounterMode$AESGCM",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.TlsKeyMaterialGenerator",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.TlsMasterSecretGenerator",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.crypto.provider.TlsPrfGenerator$V12",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
-  "name":"java.io.ObjectInputStream"}
-,
+  "name":"java.io.ObjectInputStream"
+},
 {
   "name":"java.io.Serializable",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredClasses":true}
-,
+  "allDeclaredClasses":true
+},
 {
-  "name":"java.lang.Class"}
-,
+  "name":"java.lang.Class"
+},
 {
-  "name":"java.lang.Class[]"}
-,
+  "name":"java.lang.Class[]"
+},
 {
   "name":"java.lang.Comparable",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredClasses":true}
-,
+  "allDeclaredClasses":true
+},
 {
   "name":"java.lang.Enum",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredClasses":true}
-,
+  "allDeclaredClasses":true
+},
 {
-  "name":"java.lang.Enum$EnumDesc"}
-,
+  "name":"java.lang.Enum$EnumDesc"
+},
 {
   "name":"java.lang.Integer",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"java.lang.Iterable",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"java.lang.Number",
   "allDeclaredFields":true,
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"java.lang.Object",
   "methods":[
     {"name":"equals","parameterTypes":["java.lang.Object"] }, 
     {"name":"hashCode","parameterTypes":[] }, 
     {"name":"toString","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
-  "name":"java.lang.String"}
-,
+  "name":"java.lang.String"
+},
 {
-  "name":"java.lang.String[]"}
-,
+  "name":"java.lang.String[]"
+},
 {
   "name":"java.lang.constant.Constable",
   "allDeclaredFields":true,
   "allDeclaredClasses":true,
-  "queryAllDeclaredMethods":true}
-,
+  "queryAllDeclaredMethods":true
+},
 {
   "name":"java.lang.constant.ConstantDesc",
-  "queryAllDeclaredMethods":true}
-,
+  "queryAllDeclaredMethods":true
+},
 {
   "name":"java.lang.invoke.MethodHandles$Lookup",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Class","int"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Class","int"] }]
+},
 {
   "name":"java.lang.reflect.Executable",
-  "methods":[{"name":"getParameters","parameterTypes":[] }]}
-,
+  "methods":[{"name":"getParameters","parameterTypes":[] }]
+},
 {
-  "name":"java.lang.reflect.Method"}
-,
+  "name":"java.lang.reflect.Method"
+},
 {
   "name":"java.lang.reflect.Parameter",
-  "methods":[{"name":"getName","parameterTypes":[] }]}
-,
+  "methods":[{"name":"getName","parameterTypes":[] }]
+},
 {
   "name":"java.math.BigDecimal",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"java.math.BigDecimal[]"}
-,
+  "name":"java.math.BigDecimal[]"
+},
 {
   "name":"java.nio.file.Path",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"java.nio.file.Watchable",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
-  "name":"java.security.AccessController"}
-,
+  "name":"java.security.AccessController"
+},
 {
-  "name":"java.security.AlgorithmParametersSpi"}
-,
+  "name":"java.security.AlgorithmParametersSpi"
+},
 {
-  "name":"java.security.KeyStoreSpi"}
-,
+  "name":"java.security.KeyStoreSpi"
+},
 {
-  "name":"java.security.MessageDigestSpi"}
-,
+  "name":"java.security.MessageDigestSpi"
+},
 {
-  "name":"java.security.SecureRandomParameters"}
-,
+  "name":"java.security.SecureRandomParameters"
+},
 {
-  "name":"java.security.interfaces.ECPrivateKey"}
-,
+  "name":"java.security.interfaces.ECPrivateKey"
+},
 {
-  "name":"java.security.interfaces.ECPublicKey"}
-,
+  "name":"java.security.interfaces.ECPublicKey"
+},
 {
-  "name":"java.security.interfaces.RSAPrivateKey"}
-,
+  "name":"java.security.interfaces.RSAPrivateKey"
+},
 {
-  "name":"java.security.interfaces.RSAPublicKey"}
-,
+  "name":"java.security.interfaces.RSAPublicKey"
+},
 {
-  "name":"java.time.LocalDate"}
-,
+  "name":"java.time.LocalDate"
+},
 {
-  "name":"java.util.Date"}
-,
+  "name":"java.util.Date"
+},
 {
-  "name":"java.util.List"}
-,
+  "name":"java.util.List"
+},
 {
-  "name":"java.util.Map"}
-,
+  "name":"java.util.Map"
+},
 {
-  "name":"java.util.Map$Entry"}
-,
+  "name":"java.util.Map$Entry"
+},
 {
-  "name":"java.util.Optional"}
-,
+  "name":"java.util.Optional"
+},
 {
   "name":"java.util.UUID",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"java.util.regex.Pattern"}
-,
+  "name":"java.util.regex.Pattern"
+},
 {
   "name":"javax.security.auth.x500.X500Principal",
   "fields":[{"name":"thisX500Name"}],
-  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
 {
-  "name":"jdk.internal.ValueBased"}
-,
+  "name":"jdk.internal.ValueBased"
+},
 {
   "name":"kotlin.KotlinVersion",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allPublicMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"kotlin.KotlinVersion$Companion"}
-,
+  "name":"kotlin.KotlinVersion$Companion"
+},
 {
-  "name":"kotlin.KotlinVersion$Companion[]"}
-,
+  "name":"kotlin.KotlinVersion$Companion[]"
+},
 {
-  "name":"kotlin.KotlinVersion[]"}
-,
+  "name":"kotlin.KotlinVersion[]"
+},
 {
   "name":"kotlin.Metadata",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"kotlin.Pair",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"kotlin.Unit"}
-,
+  "name":"kotlin.Unit"
+},
 {
   "name":"kotlin.internal.jdk8.JDK8PlatformImplementations",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
-  "name":"kotlin.jvm.internal.DefaultConstructorMarker"}
-,
+  "name":"kotlin.jvm.internal.DefaultConstructorMarker"
+},
 {
   "name":"kotlin.reflect.jvm.internal.ReflectionFactoryImpl",
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"kotlin.reflect.jvm.internal.impl.resolve.scopes.DescriptorKindFilter",
-  "allPublicFields":true}
-,
+  "allPublicFields":true
+},
 {
   "name":"sun.nio.fs.UnixPath",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"sun.security.pkcs.SignerInfo[]"}
-,
+  "name":"sun.security.pkcs.SignerInfo[]"
+},
 {
   "name":"sun.security.pkcs12.PKCS12KeyStore",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.DSA$SHA224withDSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.DSA$SHA256withDSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.JavaKeyStore$DualFormatJKS",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.JavaKeyStore$JKS",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.NativePRNG",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.SHA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.SHA2$SHA224",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.SHA2$SHA256",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.SHA5$SHA384",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.SHA5$SHA512",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.X509Factory",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.provider.certpath.PKIXCertPathValidator",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.rsa.RSAKeyFactory$Legacy",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.rsa.RSAPSSSignature",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.rsa.RSASignature$SHA224withRSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.rsa.RSASignature$SHA256withRSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.rsa.RSASignature$SHA512withRSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.ssl.SSLContextImpl$TLSContext",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
-  "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
-  "name":"sun.security.util.ObjectIdentifier"}
-,
+  "name":"sun.security.util.ObjectIdentifier"
+},
 {
   "name":"sun.security.x509.AuthorityInfoAccessExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.AuthorityKeyIdentifierExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.BasicConstraintsExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.CRLDistributionPointsExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
-  "name":"sun.security.x509.CertificateExtensions"}
-,
+  "name":"sun.security.x509.CertificateExtensions"
+},
 {
   "name":"sun.security.x509.CertificatePoliciesExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.ExtendedKeyUsageExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.IssuerAlternativeNameExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.KeyUsageExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.NetscapeCertTypeExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.PrivateKeyUsageExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.SubjectAlternativeNameExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"sun.security.x509.SubjectKeyIdentifierExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]}
-,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
 {
   "name":"tech.coner.snoozle.db.Record",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"tech.coner.snoozle.db.entity.Entity",
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity",
   "allDeclaredFields":true,
@@ -472,76 +472,103 @@
     {"name":"getId","parameterTypes":[] }, 
     {"name":"getProcessId","parameterTypes":[] }, 
     {"name":"getType","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
-  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Key"}
-,
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Key"
+},
 {
   "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Type",
   "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true}
-,
+  "queryAllDeclaredMethods":true
+},
 {
   "name":"tech.coner.trailer.Car",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.Event"}
-,
+  "name":"tech.coner.trailer.Class",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getAbbreviation","parameterTypes":[] }, 
+    {"name":"getName","parameterTypes":[] }, 
+    {"name":"getParent","parameterTypes":[] }, 
+    {"name":"getPaxFactor","parameterTypes":[] }, 
+    {"name":"getPaxed","parameterTypes":[] }, 
+    {"name":"getSort","parameterTypes":[] }
+  ]
+},
 {
-  "name":"tech.coner.trailer.Participant"}
-,
+  "name":"tech.coner.trailer.Class$Parent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getName","parameterTypes":[] }, 
+    {"name":"getSort","parameterTypes":[] }
+  ]
+},
 {
-  "name":"tech.coner.trailer.Run"}
-,
+  "name":"tech.coner.trailer.Event"
+},
+{
+  "name":"tech.coner.trailer.EventContext"
+},
+{
+  "name":"tech.coner.trailer.Participant"
+},
+{
+  "name":"tech.coner.trailer.Run"
+},
 {
   "name":"tech.coner.trailer.Time",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.Time$Companion"}
-,
+  "name":"tech.coner.trailer.Time$Companion"
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.Assignment",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.GetMembersResponse",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.GetMembersResponse$Response",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.Member",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity",
   "allDeclaredFields":true,
@@ -550,188 +577,189 @@
   "methods":[
     {"name":"<init>","parameterTypes":["java.lang.String"] }, 
     {"name":"getName","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity$Key"
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource$Type",
   "allDeclaredFields":true,
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step$Type",
   "allDeclaredFields":true,
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonEntity$Key"
+},
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"}
-,
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"
+},
 {
-  "name":"tech.coner.trailer.eventresults.ClazzEventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.ClazzEventResults"
+},
 {
-  "name":"tech.coner.trailer.eventresults.ComprehensiveEventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.ComprehensiveEventResults"
+},
 {
-  "name":"tech.coner.trailer.eventresults.EventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.EventResults"
+},
 {
-  "name":"tech.coner.trailer.eventresults.EventResultsType"}
-,
+  "name":"tech.coner.trailer.eventresults.EventResultsType"
+},
 {
-  "name":"tech.coner.trailer.eventresults.IndividualEventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.IndividualEventResults"
+},
 {
-  "name":"tech.coner.trailer.eventresults.OverallEventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.OverallEventResults"
+},
 {
-  "name":"tech.coner.trailer.eventresults.ParticipantResult"}
-,
+  "name":"tech.coner.trailer.eventresults.ParticipantResult"
+},
 {
-  "name":"tech.coner.trailer.eventresults.ResultRun"}
-,
+  "name":"tech.coner.trailer.eventresults.ResultRun"
+},
 {
   "name":"tech.coner.trailer.eventresults.Score",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.eventresults.Score$Penalty",
   "allDeclaredFields":true,
-  "allDeclaredMethods":true}
-,
+  "allDeclaredMethods":true
+},
 {
-  "name":"tech.coner.trailer.eventresults.Score$Penalty$Companion"}
-,
+  "name":"tech.coner.trailer.eventresults.Score$Penalty$Companion"
+},
 {
   "name":"tech.coner.trailer.eventresults.Score$Penalty$Cone",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.eventresults.Score$Penalty$DidNotFinish",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
-  "name":"tech.coner.trailer.eventresults.Score$Penalty$Disqualified"}
-,
+  "name":"tech.coner.trailer.eventresults.Score$Penalty$Disqualified"
+},
 {
-  "name":"tech.coner.trailer.eventresults.Score$PenaltyInterface"}
-,
+  "name":"tech.coner.trailer.eventresults.Score$PenaltyInterface",
+  "queryAllDeclaredMethods":true
+},
 {
-  "name":"tech.coner.trailer.eventresults.TopTimesEventResults"}
-,
+  "name":"tech.coner.trailer.eventresults.TopTimesEventResults"
+},
 {
   "name":"tech.coner.trailer.io.Configuration",
   "allDeclaredFields":true,
@@ -739,45 +767,46 @@
   "allDeclaredMethods":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
-  "allPublicConstructors":true}
-,
+  "allPublicConstructors":true
+},
 {
-  "name":"tech.coner.trailer.io.Configuration$Companion"}
-,
+  "name":"tech.coner.trailer.io.Configuration$Companion"
+},
 {
   "name":"tech.coner.trailer.io.DatabaseConfiguration",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.identifier.EventIdentifier",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.identifier.ParticipantIdentifier",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.ClazzEventResultsModel",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[
+    {"name":"getClasses","parameterTypes":[] }, 
     {"name":"getEvent","parameterTypes":[] }, 
     {"name":"getResults","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
   "name":"tech.coner.trailer.render.json.model.ClazzEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
@@ -787,80 +816,80 @@
     {"name":"getClazzParticipantResults","parameterTypes":[] }, 
     {"name":"getRunCount","parameterTypes":[] }, 
     {"name":"getType","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
   "name":"tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$IndividualParticipantResultModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$ParticipantResultModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.OverallEventResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.OverallEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.ParticipantResultModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.ResultRunModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.RunModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.ScoreModel",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "allDeclaredConstructors":true}
-,
+  "allDeclaredConstructors":true
+},
 {
   "name":"tech.coner.trailer.render.json.model.TopTimesEventResultsModel",
   "allDeclaredFields":true,
@@ -869,8 +898,8 @@
   "methods":[
     {"name":"getEvent","parameterTypes":[] }, 
     {"name":"getResults","parameterTypes":[] }
-  ]}
-,
+  ]
+},
 {
   "name":"tech.coner.trailer.render.json.model.TopTimesEventResultsModel$ResultsModel",
   "allDeclaredFields":true,
@@ -879,6 +908,6 @@
   "methods":[
     {"name":"getTopTimes","parameterTypes":[] }, 
     {"name":"getType","parameterTypes":[] }
-  ]}
-
+  ]
+}
 ]

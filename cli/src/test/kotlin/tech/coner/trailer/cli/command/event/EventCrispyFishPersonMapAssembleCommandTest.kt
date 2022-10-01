@@ -78,7 +78,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
         val event = TestEvents.Lscc2019.points1.copy(
             crispyFish = eventCrispyFish
         )
-        every { service.findById(event.id) } returns event
+        coEvery { service.findByKey(event.id) } returns Result.success(event)
         val unmappedClubMemberIdNull = TestRegistrations.unmappedClubMemberIdNull()
         val person = Person(
             clubMemberId = null,
@@ -132,7 +132,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
             )
         )
         coVerifySequence {
-            service.findById(event.id)
+            service.findByKey(event.id)
             service.update(update)
         }
     }

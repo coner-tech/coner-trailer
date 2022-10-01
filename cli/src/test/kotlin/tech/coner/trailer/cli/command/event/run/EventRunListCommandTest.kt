@@ -63,7 +63,7 @@ class EventRunListCommandTest : DIAware,
     fun `It should list event runs`() {
         val event = TestEvents.Lscc2019.points1
         val runs = emptyList<Run>()
-        every { eventService.findById(any()) } returns event
+        coEvery { eventService.findByKey(any()) } returns Result.success(event)
         coEvery { runService.list(any()) } returns Result.success(runs)
         val render = "runRenderer rendered runs"
         every { renderer.render(runs) } returns render
@@ -71,7 +71,7 @@ class EventRunListCommandTest : DIAware,
         command.parse(arrayOf("${event.id}"))
 
         coVerifySequence {
-            eventService.findById(event.id)
+            eventService.findByKey(event.id)
             runService.list(event)
             renderer.render(runs)
         }

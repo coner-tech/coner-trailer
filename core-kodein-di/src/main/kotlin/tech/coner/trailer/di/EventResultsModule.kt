@@ -49,7 +49,7 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
         val privateContextDi = internalEventResultsModule.on(context)
         RawEventResultsCalculator(
             eventContext = eventContext,
-            scoredRunsComparatorFactory = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
+            scoredRunsComparator = privateContextDi.factory<EventContext, ParticipantResult.ScoredRunsComparator>().invoke(eventContext),
             runEligibilityQualifier = privateContextDi.instance(),
             runScoreFactory = privateContextDi.factory<Policy, RawTimeRunScoreFactory>().invoke(eventContext.event.policy),
             finalScoreFactory = privateContextDi.factory<Policy, FinalScoreFactory>().invoke(eventContext.event.policy)
@@ -92,14 +92,19 @@ val eventResultsModule = DI.Module("tech.coner.trailer.eventresults") {
                 factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
                 factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
             ),
-            groupEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext),
-            topTimesEventResultsCalculator = factory<EventContext, TopTimesEventResultsCalculator>().invoke(eventContext)
+            clazzEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext),
+            topTimesEventResultsCalculator = factory<EventContext, TopTimesEventResultsCalculator>().invoke(eventContext),
+            individualEventResultsCalculator = factory<EventContext, IndividualEventResultsCalculator>().invoke(eventContext)
         )
     } }
     bind { scoped(EventResultsSessionScope).factory { eventContext: EventContext ->
         IndividualEventResultsCalculator(
             eventContext = eventContext,
-            comprehensiveEventResultsCalculator = factory<EventContext, ComprehensiveEventResultsCalculator>().invoke(eventContext)
+            overallEventResultsCalculators = listOf(
+                factory<EventContext, RawEventResultsCalculator>().invoke(eventContext),
+                factory<EventContext, PaxEventResultsCalculator>().invoke(eventContext)
+            ),
+            clazzEventResultsCalculator = factory<EventContext, ClazzEventResultsCalculator>().invoke(eventContext)
         )
     } }
 }

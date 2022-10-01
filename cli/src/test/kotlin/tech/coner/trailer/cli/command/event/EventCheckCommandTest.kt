@@ -100,7 +100,7 @@ class EventCheckCommandTest : DIAware,
             unusedPeopleMapKeys = listOf(mockk()),
             runsWithInvalidSignage = listOf(mockk())
         )
-        every { service.findById(checkId) } returns check
+        coEvery { service.findByKey(checkId) } returns Result.success(check)
         coEvery { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
@@ -109,7 +109,7 @@ class EventCheckCommandTest : DIAware,
         command.parse(arrayOf("$checkId"))
 
         coVerifySequence {
-            service.findById(checkId)
+            service.findByKey(checkId)
             service.check(check)
             registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
             registrationTableView.render(result.unmappedClubMemberIdNullRegistrations)
@@ -151,13 +151,13 @@ class EventCheckCommandTest : DIAware,
             unusedPeopleMapKeys = emptyList(),
             runsWithInvalidSignage = emptyList()
         )
-        every { service.findById(checkId) } returns check
+        coEvery { service.findByKey(checkId) } returns Result.success(check)
         coEvery { service.check(check) } returns result
 
         command.parse(arrayOf("$checkId"))
 
         coVerifySequence {
-            service.findById(checkId)
+            service.findByKey(checkId)
             service.check(check)
         }
         assertThat(testConsole.output).isEmpty()
@@ -170,7 +170,7 @@ class EventCheckCommandTest : DIAware,
             every { id } returns checkId
             every { crispyFish } returns null
         }
-        every { service.findById(checkId) } returns check
+        coEvery { service.findByKey(checkId) } returns Result.success(check)
         coEvery { service.check(check) } throws IllegalStateException()
 
         assertThrows<IllegalStateException> {
@@ -178,7 +178,7 @@ class EventCheckCommandTest : DIAware,
         }
 
         coVerifySequence {
-            service.findById(checkId)
+            service.findByKey(checkId)
             service.check(check)
         }
         assertThat(testConsole.output).isEmpty()

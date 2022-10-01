@@ -3,6 +3,8 @@ package tech.coner.trailer.cli.command.event
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -58,7 +60,7 @@ class EventGetCommandTest : DIAware {
     @Test
     fun `It should get event by ID`() {
         val event = TestEvents.Lscc2019.points1
-        every { service.findById(event.id) } returns event
+        coEvery { service.findByKey(event.id) } returns Result.success(event)
         val viewRendered = "view rendered event ${event.id}"
         every { view.render(event) } returns viewRendered
 
@@ -66,8 +68,8 @@ class EventGetCommandTest : DIAware {
             "${event.id}"
         ))
 
-        verifySequence {
-            service.findById(event.id)
+        coVerifySequence {
+            service.findByKey(event.id)
             view.render(event)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)

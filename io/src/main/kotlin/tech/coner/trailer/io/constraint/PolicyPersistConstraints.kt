@@ -4,7 +4,9 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.PolicyResource
+import tech.coner.trailer.datasource.snoozle.entity.EventEntity
 import tech.coner.trailer.io.mapper.EventMapper
+import java.util.*
 
 class PolicyPersistConstraints(
     private val resource: PolicyResource,
@@ -13,18 +15,26 @@ class PolicyPersistConstraints(
 ) : Constraint<Policy>() {
 
     override fun assess(candidate: Policy) {
-        constrain(hasUniqueName(candidate)) { "Policy name is not unique" }
-        constrain(hasFinalizedEvents(candidate)) { "Policy has finalized events" }
+        hasUniqueName(candidate.id to candidate.name).getOrThrow()
+        hasFinalizedEvents(candidate.id).getOrThrow()
     }
 
-    private fun hasUniqueName(candidate: Policy): Boolean = resource
-        .stream { it.id != candidate.id }
-        .noneMatch { candidate.name.equals(it.name, ignoreCase = true) }
+    val hasUniqueName = constraint<Pair<UUID, String>>(
+        { (candidateId, candidateName) ->
+            resource.stream { it.id != candidateId }
+                .noneMatch { candidateName.equals(it.name, ignoreCase = true) }
+        },
+        { "Name is not unique" }
+    )
 
-    private fun hasFinalizedEvents(candidate: Policy): Boolean = eventResource
-        .stream()
-        .filter { it.policyId == candidate.id }
-        .map(eventMapper::toCore)
-        .noneMatch { it.lifecycle == Event.Lifecycle.FINAL }
-
+    val hasFinalizedEvents = constraint<UUID>(
+        { candidateId ->
+            eventResource
+                .stream()
+                .filter { it.policyId == candidateId }
+                .map(eventMapper::toCore)
+                .noneMatch { it.lifecycle == Event.Lifecycle.FINAL }
+        },
+        { "Policy has finalized events" }
+    )
 }

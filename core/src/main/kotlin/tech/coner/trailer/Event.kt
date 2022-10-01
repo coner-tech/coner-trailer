@@ -4,8 +4,10 @@ import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
 
+typealias EventId = UUID
+
 data class Event(
-    val id: UUID = UUID.randomUUID(),
+    val id: EventId = UUID.randomUUID(),
     val name: String,
     val date: LocalDate,
     val lifecycle: Lifecycle,

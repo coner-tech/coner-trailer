@@ -149,4 +149,65 @@ object TestRuns {
             )
         }
     }
+
+    object Lifecycles {
+        private val participants by lazy { TestParticipants.Lifecycles }
+
+        val runsWithoutSignage: List<Run> by lazy {
+            allParticipantsWithAllRuns
+                .map { it.copy(signage = null, participant = null) }
+        }
+        val runsWithoutParticipants: List<Run> by lazy {
+            allParticipantsWithAllRuns
+                .map { it.copy(participant = null) }
+        }
+        val someParticipantsWithSomeRuns: List<Run> by lazy {
+            listOf(allParticipantsWithAllRuns[0])
+        }
+        val someParticipantsWithAllRuns: List<Run> by lazy {
+            mutableListOf<Run>()
+                .apply {
+                    addAll(
+                        allParticipantsWithAllRuns.filter { it.participant == participants.REBECCA_JACKSON }
+                            .also { check(it.size == 2) { "Expected only two runs for Rebecca Jackson" } }
+                    )
+                    add(allParticipantsWithAllRuns.first { it.participant == participants.JIMMY_MCKENZIE })
+                }
+                .sortedBy { it.sequence }
+        }
+        val allParticipantsWithSomeRuns by lazy {
+            listOf(
+                allParticipantsWithAllRuns.first { it.participant == participants.REBECCA_JACKSON },
+                allParticipantsWithAllRuns.first { it.participant == participants.JIMMY_MCKENZIE }
+            )
+        }
+        val allParticipantsWithAllRuns by lazy {
+            listOf(
+                testRun(
+                    sequence = 1,
+                    participant = participants.REBECCA_JACKSON,
+                    time = Time("34.567")
+                    // pax: 26.962
+                ),
+                testRun(
+                    sequence = 2,
+                    participant = participants.JIMMY_MCKENZIE,
+                    time = Time("35.678")
+                    // pax: 29.506
+                ),
+                testRun(
+                    sequence = 3,
+                    participant = participants.REBECCA_JACKSON,
+                    time = Time("34.456")
+                    // pax: 26.876
+                ),
+                testRun(
+                    sequence = 4,
+                    participant = participants.JIMMY_MCKENZIE,
+                    time = Time("35.567")
+                    // pax: 29.414
+                )
+            )
+        }
+    }
 }

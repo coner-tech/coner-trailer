@@ -15,8 +15,8 @@ import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.util.*
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.di.Format
+import tech.coner.trailer.eventresults.EventResultsType
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
@@ -205,12 +205,6 @@ class ConerTrailerCliExecutableIT {
             output().isNotNull().all {
                 contains(event.name)
                 when (format) {
-                    Format.HTML -> {
-                        startsWith("<!DOCTYPE html>")
-                        contains("<table ")
-                        contains("</table>")
-                        endsWith("</html>")
-                    }
                     Format.TEXT -> {
                         contains(eventResultType.titleShort)
                         doesNotContain("<!DOCTYPE html")

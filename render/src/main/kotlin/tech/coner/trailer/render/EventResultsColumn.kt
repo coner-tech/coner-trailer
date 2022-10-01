@@ -5,7 +5,6 @@ enum class EventResultsColumn {
     SIGNAGE,
     NAME,
     CAR_MODEL,
-    RUNS,
     DIFF_FIRST,
     DIFF_PREVIOUS,
     SCORE,

@@ -2,6 +2,7 @@ package tech.coner.trailer
 
 import java.nio.file.Paths
 import java.time.LocalDate
+import kotlin.reflect.KProperty
 
 object TestEvents {
 
@@ -79,6 +80,78 @@ object TestEvents {
                 date = LocalDate.parse("2022-05-15"),
                 policy = TestPolicies.lsccV1
             )
+        }
+    }
+
+    sealed class Lifecycles {
+        protected abstract val lifecycle: Event.Lifecycle
+        object Create : Lifecycles() {
+            override val lifecycle = Event.Lifecycle.CREATE
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutSignage: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
+        }
+        object Pre : Lifecycles() {
+            override val lifecycle = Event.Lifecycle.PRE
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutSignage: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
+        }
+        object Active : Lifecycles() {
+            override val lifecycle = Event.Lifecycle.ACTIVE
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutSignage: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
+        }
+        object Post : Lifecycles() {
+            override val lifecycle = Event.Lifecycle.POST
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutSignage: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
+        }
+        object Final : Lifecycles() {
+            override val lifecycle = Event.Lifecycle.FINAL
+            val noParticipantsYet: Event by Factory()
+            val runsWithoutSignage: Event by Factory()
+            val runsWithoutParticipants: Event by Factory()
+            val participantsWithoutRuns: Event by Factory()
+            val someParticipantsWithSomeRuns: Event by Factory()
+            val someParticipantsWithAllRuns: Event by Factory()
+            val allParticipantsWithSomeRuns: Event by Factory()
+            val allParticipantsWithAllRuns: Event by Factory()
+        }
+
+        private inner class Factory {
+            operator fun getValue(thisRef: Any?, property: KProperty<*>): Event {
+                return Event(
+                    name = "Lifecycle Case: ${lifecycle.name} ${property.name}",
+                    date = LocalDate.parse("2022-08-13"),
+                    lifecycle = lifecycle,
+                    crispyFish = null,
+                    motorsportReg = null,
+                    policy = TestPolicies.standardTest
+                )
+            }
         }
     }
 

@@ -12,11 +12,15 @@ import tech.coner.trailer.render.json.identifier.ParticipantIdentifier
 
 class IndividualEventResultsModel(
     val event: EventIdentifier,
+    val types: Map<String, EventResultsTypeModel>,
     val results: ResultsModel
 ) {
 
-    constructor(event: Event, results: IndividualEventResults) : this(
+    constructor(event: Event, types: List<EventResultsType>, results: IndividualEventResults) : this(
         event = EventIdentifier(event),
+        types = types
+            .map(::EventResultsTypeModel)
+            .associateBy(EventResultsTypeModel::key),
         results = ResultsModel(results)
     )
 
@@ -30,20 +34,20 @@ class IndividualEventResultsModel(
         ) : this(
             type = results.type.key,
             runCount = results.runCount,
-            allByParticipant = results.allByParticipant.map { IndividualParticipantResultModel(it) }
+            allByParticipant = results.resultsByIndividual.map { IndividualParticipantResultModel(it) }
         )
     }
 
     class IndividualParticipantResultModel(
         val participant: ParticipantIdentifier,
-        val results: Map<String, ParticipantResultModel>
+        val results: Map<String, ParticipantResultModel?>
     ) {
         constructor(
-            entry: Map.Entry<Participant, Map<EventResultsType, ParticipantResult>>
+            pair: Pair<Participant, Map<EventResultsType, ParticipantResult?>>
         ) : this(
-            participant = ParticipantIdentifier(entry.key),
-            results = entry.value
-                .map { it.key.key to ParticipantResultModel(it.value) }
+            participant = ParticipantIdentifier(pair.first),
+            results = pair.second
+                .map { it.key.key to it.value?.let(::ParticipantResultModel) }
                 .toMap()
         )
     }

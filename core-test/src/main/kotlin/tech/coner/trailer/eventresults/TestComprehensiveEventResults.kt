@@ -22,7 +22,8 @@ object TestComprehensiveEventResults {
                     )
                 ),
                 clazzEventResults = TestClazzEventResults.Lscc2019.points1,
-                topTimesEventResults = TestTopTimesEventResults.Lscc2019.points1
+                topTimesEventResults = TestTopTimesEventResults.Lscc2019.points1,
+                individualEventResults = TestIndividualEventResults.Lscc2019.points1
             )
     }
 
@@ -43,7 +44,8 @@ object TestComprehensiveEventResults {
                     )
                 ),
                 clazzEventResults = TestClazzEventResults.Lscc2019Simplified.points1,
-                topTimesEventResults = TestTopTimesEventResults.Lscc2019Simplified.points1
+                topTimesEventResults = TestTopTimesEventResults.Lscc2019Simplified.points1,
+                individualEventResults = TestIndividualEventResults.Lscc2019Simplified.points1
             )
     }
 
@@ -64,7 +66,8 @@ object TestComprehensiveEventResults {
                     )
                 ),
                 clazzEventResults = TestClazzEventResults.LsccTieBreaking.points1,
-                topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points1
+                topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points1,
+                individualEventResults = TestIndividualEventResults.LsccTieBreaking.points1
             )
         val points2: ComprehensiveEventResults get() = ComprehensiveEventResults(
             eventContext = TestEventContexts.LsccTieBreaking.points2,
@@ -81,7 +84,8 @@ object TestComprehensiveEventResults {
                 )
             ),
             clazzEventResults = TestClazzEventResults.LsccTieBreaking.points2,
-            topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points2
+            topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points2,
+            individualEventResults = TestIndividualEventResults.LsccTieBreaking.points2
         )
     }
 }

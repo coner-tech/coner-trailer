@@ -18,12 +18,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary .position {
+                .event-results-${results.type.key} table.primary .position {
                     display: none;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("position")
@@ -40,13 +41,16 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Signage(private val responsive: Boolean) : HtmlEventResultsColumn() {
+    class Signage(
+        private val responsive: Boolean,
+        private val participantSignageColumn: HtmlParticipantColumn.Signage = HtmlParticipantColumn.Signage()
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults): Set<String> {
             return if (responsive) {
                 setOf(
                     """
                     @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                        .event-results table.primary th.signage, .event-results table.primary td.signage {
+                        .event-results-${results.type.key} table.primary th.signage, .event-results-${results.type.key} table.primary td.signage {
                             display: none;
                         }
                     }
@@ -56,38 +60,34 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 emptySet()
             }
         }
+
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("signage")
-                scope = ThScope.col
-                text("Signage")
-            }
+            participantSignageColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("signage")
-                text(it.participant.signage?.classingNumber ?: "")
-            }
+            participantSignageColumn.data.invoke(this, it.participant)
         }
     }
 
     class MobilePositionSignage : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            .event-results table.primary th.mobile-position-signage, .event-results table.primary td.mobile-position-signage {
+            .event-results-${results.type.key} table.primary th.mobile-position-signage, .event-results-${results.type.key} table.primary td.mobile-position-signage {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.mobile-position-signage {
+                .event-results-${results.type.key} table.primary th.mobile-position-signage, .event-results-${results.type.key} table.primary td.mobile-position-signage {
                     display: table-cell;
                 }
-                .event-results table.primary th.mobile-position-signage span {
+                .event-results-${results.type.key} table.primary th.mobile-position-signage span, .event-results-${results.type.key} table.primary td.mobile-position-signage span {
                     display: block;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
+
             th {
                 classes = setOf("mobile-position-signage")
                 scope = ThScope.col
@@ -95,9 +95,8 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            th {
+            td {
                 classes = setOf("mobile-position-signage")
-                scope = ThScope.row
                 span {
                     classes = setOf("position")
                     text(it.position)
@@ -136,13 +135,16 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         }
     }
 
-    class Name(private val responsive: Boolean) : HtmlEventResultsColumn() {
+    class Name(
+        private val responsive: Boolean,
+        private val participantNameColumn: HtmlParticipantColumn.Name = HtmlParticipantColumn.Name()
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults): Set<String> {
             return if (responsive) {
                 setOf(
                     """
                     @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                        .event-results table.primary th.name, .event-results table.primary td.name {
+                        .event-results-${results.type.key} table.primary th.name, .event-results-${results.type.key} table.primary td.name {
                             display: none;
                         }
                     } 
@@ -152,55 +154,47 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
                 emptySet()
             }
         }
+
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("name")
-                scope = ThScope.col
-                text("Name")
-            }
+            participantNameColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("name")
-                text(renderName(it.participant))
-            }
+            participantNameColumn.data.invoke(this, it.participant)
         }
     }
-    class CarModel : HtmlEventResultsColumn() {
+
+    class CarModel(
+        private val participantCarModelColumn: HtmlParticipantColumn.CarModel = HtmlParticipantColumn.CarModel()
+    ) : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.car-model, .event-results table.primary td.car-model {
+                .event-results-${results.type.key} table.primary th.car-model, .event-results-${results.type.key} table.primary td.car-model {
                     display: none;
                 }
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("car-model")
-                scope = ThScope.col
-                text("Car Model")
-            }
+            participantCarModelColumn.header.invoke(this)
         }
         override val data: TR.(ParticipantResult) -> Unit = {
-            td {
-                classes = setOf("car-model")
-                text(it.participant.car?.model ?: "")
-            }
+            participantCarModelColumn.data.invoke(this, it.participant)
         }
     }
+
     class MobileNameCarModel : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             """
-            .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
+            .event-results-${results.type.key} table.primary th.mobile-name-car-model, .event-results-${results.type.key} table.primary td.mobile-name-car-model {
                 display: none;
             }
             @media screen and (max-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-results table.primary th.mobile-name-car-model, .event-results table.primary td.mobile-name-car-model {
+                .event-results-${results.type.key} table.primary th.mobile-name-car-model, .event-results-${results.type.key} table.primary td.mobile-name-car-model {
                     display: table-cell;
                 }
-                .event-results table.primary td.mobile-name-car-model span {
+                .event-results-${results.type.key} table.primary td.mobile-name-car-model span {
                     display: block;
                 }
             }
@@ -233,11 +227,12 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             """
-            .event-results table.primary td.score {
+            .event-results-${results.type.key} table.primary td.score {
                 font-weight: bold;
             }
             """.trimIndent()
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("score")
@@ -252,11 +247,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
     }
+
     class DiffFirst : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-first")
@@ -271,11 +268,13 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             }
         }
     }
+
     class DiffPrevious : HtmlEventResultsColumn() {
         override fun buildStyles(event: Event, results: EventResults) = setOf(
             CommonStyles.time,
             CommonStyles.hideDiffOnMobile
         )
+
         override val header: TR.(EventResultsType) -> Unit = {
             th {
                 classes = setOf("diff", "diff-previous")
@@ -287,62 +286,6 @@ abstract class HtmlEventResultsColumn : EventResultsColumnRenderer<
             td {
                 classes = setOf("time", "diff", "diff-previous")
                 text(render(it.diffPrevious))
-            }
-        }
-    }
-
-    class Runs : HtmlEventResultsColumn() {
-        override fun buildStyles(event: Event, results: EventResults) = setOf(
-            CommonStyles.time,
-            """
-            .event-${event.id} th.runs, .event-${event.id} td.runs {
-                display: none;
-            }
-            @media screen and (min-width: ${MediaSize.MOBILE_MAX}px) {
-                .event-${event.id} th.runs, .event-${event.id} td.runs  {
-                    display: table-cell;
-                }
-                .event-${event.id} ol.runs {
-                    padding: 0;
-                    display: grid;
-                    grid-template-columns: 1;
-                    list-style-type: none;
-                    list-style-position: inside;
-                }
-                ol.runs li {
-                    min-width: 100px;
-                }
-                @media screen and (min-width: 1024px) {
-                    .event-${event.id} ol.runs {
-                        grid-template-columns: repeat(${results.runCount}, 1fr);
-                    }
-                }
-            }
-            """.trimIndent()
-        )
-        override val header: TR.(EventResultsType) -> Unit = {
-            th {
-                classes = setOf("runs")
-                scope = ThScope.col
-                text("Runs")
-            }
-        }
-        override val data: TR.(ParticipantResult) -> Unit = { participantResult ->
-            td {
-                classes = setOf("runs")
-                ol {
-                    classes = setOf("runs", "time")
-                    participantResult.scoredRuns.forEachIndexed { index, resultRun ->
-                        render(resultRun.run).let { runText ->
-                            li {
-                                if (index == participantResult.personalBestScoredRunIndex) {
-                                    classes = setOf("best", "fw-bold")
-                                }
-                                text(runText)
-                            }
-                        }
-                    }
-                }
             }
         }
     }

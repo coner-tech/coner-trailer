@@ -4,6 +4,8 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.*
 
 class PaxEventResultsCalculatorTest {
@@ -284,6 +286,187 @@ class PaxEventResultsCalculatorTest {
                 }
             }
         }
+    }
+
+    enum class LifecycleFixtures(
+        val eventContext: EventContext,
+        val expected: OverallEventResults
+    ) {
+        // Event.Lifecycle.CREATE cases
+        CREATE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.Lifecycles.Create.noParticipantsYet,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.noParticipantsYet
+        ),
+        CREATE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.Lifecycles.Create.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.runsWithoutSignage
+        ),
+        CREATE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.Lifecycles.Create.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.runsWithoutParticipants
+        ),
+        CREATE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Create.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.participantsWithoutRuns
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Create.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
+        ),
+        CREATE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Create.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.someParticipantsWithAllRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Create.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
+        ),
+        CREATE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Create.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Create.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.PRE cases
+        PRE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.Lifecycles.Pre.noParticipantsYet,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.noParticipantsYet
+        ),
+        PRE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.Lifecycles.Pre.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.runsWithoutSignage
+        ),
+        PRE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.Lifecycles.Pre.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.runsWithoutParticipants
+        ),
+        PRE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Pre.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.participantsWithoutRuns
+        ),
+        PRE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Pre.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.someParticipantsWithSomeRuns
+        ),
+        PRE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Pre.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.someParticipantsWithAllRuns
+        ),
+        PRE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Pre.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.allParticipantsWithSomeRuns
+        ),
+        PRE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Pre.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Pre.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.ACTIVE cases
+        ACTIVE_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.Lifecycles.Active.noParticipantsYet,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.noParticipantsYet
+        ),
+        ACTIVE_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.Lifecycles.Active.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.runsWithoutSignage
+        ),
+        ACTIVE_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.Lifecycles.Active.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.runsWithoutParticipants
+        ),
+        ACTIVE_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Active.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.participantsWithoutRuns
+        ),
+        ACTIVE_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Active.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.someParticipantsWithSomeRuns
+        ),
+        ACTIVE_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Active.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.someParticipantsWithAllRuns
+        ),
+        ACTIVE_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Active.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.allParticipantsWithSomeRuns
+        ),
+        ACTIVE_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Active.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Active.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.POST cases
+        POST_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.Lifecycles.Post.noParticipantsYet,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.noParticipantsYet
+        ),
+        POST_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.Lifecycles.Post.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.runsWithoutSignage
+        ),
+        POST_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.Lifecycles.Post.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.runsWithoutParticipants
+        ),
+        POST_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Post.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.participantsWithoutRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Post.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.someParticipantsWithSomeRuns
+        ),
+        POST_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Post.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.someParticipantsWithAllRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Post.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.allParticipantsWithSomeRuns
+        ),
+        POST_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Post.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Post.allParticipantsWithAllRuns
+        ),
+        // Event.Lifecycle.FINAL cases
+        FINAL_NO_PARTICIPANTS_YET(
+            eventContext = TestEventContexts.Lifecycles.Final.noParticipantsYet,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.noParticipantsYet
+        ),
+        FINAL_RUNS_WITHOUT_SIGNAGE(
+            eventContext = TestEventContexts.Lifecycles.Final.runsWithoutSignage,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.runsWithoutSignage
+        ),
+        FINAL_RUNS_WITHOUT_PARTICIPANTS(
+            eventContext = TestEventContexts.Lifecycles.Final.runsWithoutParticipants,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.runsWithoutParticipants
+        ),
+        FINAL_PARTICIPANTS_WITHOUT_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Final.participantsWithoutRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.participantsWithoutRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Final.someParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.someParticipantsWithSomeRuns
+        ),
+        FINAL_SOME_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Final.someParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.someParticipantsWithAllRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_SOME_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Final.allParticipantsWithSomeRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.allParticipantsWithSomeRuns
+        ),
+        FINAL_ALL_PARTICIPANTS_WITH_ALL_RUNS(
+            eventContext = TestEventContexts.Lifecycles.Final.allParticipantsWithAllRuns,
+            expected = TestOverallPaxEventResults.Lifecycles.Final.allParticipantsWithAllRuns
+        ),
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    fun `It should calculate expected results for events in various states`(params: LifecycleFixtures) {
+        val subject = createPaxEventResultsCalculator(params.eventContext)
+
+        val actual = subject.calculate()
+
+        assertThat(actual).isEqualTo(params.expected)
     }
 
     private fun createPaxEventResultsCalculator(eventContext: EventContext): PaxEventResultsCalculator {

@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
+import assertk.assertions.isSuccess
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -21,14 +22,13 @@ import tech.coner.trailer.io.mapper.EventMapper
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.*
+import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 import java.nio.file.Path
 import java.util.stream.Stream
-import kotlin.coroutines.CoroutineContext
 
 @ExtendWith(MockKExtension::class)
 class EventServiceTest : CoroutineScope {
@@ -72,7 +72,7 @@ class EventServiceTest : CoroutineScope {
     fun before() {
         dbConfig = TestDatabaseConfigurations(root).foo
         service = EventService(
-            coroutineContext = coroutineContext + Job(),
+            coroutineScope = CoroutineScope(coroutineContext + Job()),
             dbConfig = dbConfig,
             resource = resource,
             mapper = mapper,
@@ -102,20 +102,25 @@ class EventServiceTest : CoroutineScope {
         every { mapper.toSnoozle(create) } returns snoozleEvent
         justRun { resource.create(snoozleEvent) }
 
-        service.create(
-            id = create.id,
-            name = create.name,
-            date = create.date,
-            crispyFishEventControlFile = create.requireCrispyFish().eventControlFile,
-            crispyFishClassDefinitionFile = create.requireCrispyFish().classDefinitionFile,
-            motorsportRegEventId = create.motorsportReg?.id,
-            policy = create.policy
-        )
+        val actual = runBlocking {
+            service.create(CreateEventPayload(
+                id = create.id,
+                name = create.name,
+                date = create.date,
+                crispyFishEventControlFile = create.requireCrispyFish().eventControlFile,
+                crispyFishClassDefinitionFile = create.requireCrispyFish().classDefinitionFile,
+                motorsportRegEventId = create.motorsportReg?.id,
+                policy = create.policy
+            ))
+        }
 
         verifySequence {
             mapper.toSnoozle(create)
             resource.create(snoozleEvent)
         }
+        assertThat(actual)
+            .isSuccess()
+            .isEqualTo(create)
     }
 
     @Test
@@ -126,9 +131,13 @@ class EventServiceTest : CoroutineScope {
         every { resource.read(capture(slot)) } returns snoozleEvent
         every { mapper.toCore(snoozleEvent) } returns event
 
-        val actual = service.findById(event.id)
+        val actual = runBlocking {
+            service.findByKey(event.id)
+        }
 
-        assertThat(actual).isSameAs(event)
+        assertThat(actual)
+            .isSuccess()
+            .isSameAs(event)
         assertThat(slot.captured.id).isSameAs(event.id)
         verifySequence {
             resource.read(any())
@@ -147,9 +156,13 @@ class EventServiceTest : CoroutineScope {
         every { mapper.toCore(match { it.name == event1.name }) } returns event1
         every { mapper.toCore(match { it.name == event2.name }) } returns event2
 
-        val actual = service.findByName(event2.name)
+        val actual = runBlocking {
+            service.findByName(event2.name)
+        }
 
-        assertThat(actual).isSameAs(event2)
+        assertThat(actual)
+            .isSuccess()
+            .isSameAs(event2)
     }
 
     @Test
@@ -168,13 +181,15 @@ class EventServiceTest : CoroutineScope {
         every { mapper.toCore(match { it.name == events[1].name }) } returns events[1]
         every { mapper.toCore(match { it.name == events[2].name }) } returns events[2]
 
-        val actual = service.list()
+        val actual = runBlocking {
+            service.list()
+        }
 
+        verify(exactly = 3) { mapper.toCore(any()) }
         assertThat(actual).all {
             hasSize(3)
             isEqualTo(events)
         }
-        verify(exactly = 3) { mapper.toCore(any()) }
     }
 
     @Test
@@ -266,7 +281,7 @@ class EventServiceTest : CoroutineScope {
         every { mapper.toSnoozle(update) } returns mockk()
         justRun { resource.update(any()) }
 
-        runBlocking {
+        val actual = runBlocking {
             service.update(update)
         }
 
@@ -274,6 +289,9 @@ class EventServiceTest : CoroutineScope {
             mapper.toSnoozle(update)
             resource.update(any())
         }
+        assertThat(actual)
+            .isSuccess()
+            .isSameAs(update)
     }
 
     @Test
@@ -284,7 +302,7 @@ class EventServiceTest : CoroutineScope {
         every { mapper.toSnoozle(delete) } returns snoozleEvent
         every { resource.delete(snoozleEvent) } returns Unit
 
-        assertDoesNotThrow {
+        val actual = runBlocking {
             service.delete(delete)
         }
 
@@ -292,6 +310,9 @@ class EventServiceTest : CoroutineScope {
             mapper.toSnoozle(delete)
             resource.delete(snoozleEvent)
         }
+        assertThat(actual)
+            .isSuccess()
+            .isSameAs(Unit)
     }
 
 

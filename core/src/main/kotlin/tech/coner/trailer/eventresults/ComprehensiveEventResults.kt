@@ -6,7 +6,8 @@ data class ComprehensiveEventResults(
     override val eventContext: EventContext,
     val overallEventResults: List<OverallEventResults>,
     val clazzEventResults: ClazzEventResults,
-    val topTimesEventResults: TopTimesEventResults
+    val topTimesEventResults: TopTimesEventResults,
+    val individualEventResults: IndividualEventResults
 ) : EventResults {
 
     override val type: EventResultsType = StandardEventResultsTypes.comprehensive
@@ -16,6 +17,7 @@ data class ComprehensiveEventResults(
             addAll(overallEventResults)
             add(clazzEventResults)
             add(topTimesEventResults)
+            add(individualEventResults)
         }
     }
 }

@@ -1,25 +1,25 @@
 package tech.coner.trailer.io.service
 
+import kotlinx.coroutines.CoroutineScope
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventId
 import tech.coner.trailer.Person
-import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.entity.EventEntity
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.constraint.EventDeleteConstraints
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.mapper.EventMapper
+import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
+import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
-import java.nio.file.Path
-import java.time.LocalDate
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 class EventService(
-    coroutineContext: CoroutineContext,
+    coroutineScope: CoroutineScope,
     private val dbConfig: DatabaseConfiguration,
     private val resource: EventResource,
     private val mapper: EventMapper,
@@ -30,44 +30,36 @@ class EventService(
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService,
     private val runService: RunService,
     private val participantService: ParticipantService
-) : CoroutineContext by coroutineContext {
+) : CrudService<CreateEventPayload, EventId, Event>,
+    CoroutineScope by coroutineScope {
 
-    fun create(
-        id: UUID? = null,
-        name: String,
-        date: LocalDate,
-        crispyFishEventControlFile: Path,
-        crispyFishClassDefinitionFile: Path,
-        motorsportRegEventId: String?,
-        policy: Policy
-    ): Event {
+    override suspend fun create(payload: CreateEventPayload): Result<Event> = runSuspendCatching {
         val create = Event(
-            id = id ?: UUID.randomUUID(),
-            name = name,
-            date = date,
+            id = payload.id ?: UUID.randomUUID(),
+            name = payload.name,
+            date = payload.date,
             lifecycle = Event.Lifecycle.CREATE,
             crispyFish = Event.CrispyFishMetadata(
-                eventControlFile = dbConfig.asRelativeToCrispyFishDatabase(crispyFishEventControlFile),
-                classDefinitionFile = dbConfig.asRelativeToCrispyFishDatabase(crispyFishClassDefinitionFile),
+                eventControlFile = dbConfig.asRelativeToCrispyFishDatabase(payload.crispyFishEventControlFile),
+                classDefinitionFile = dbConfig.asRelativeToCrispyFishDatabase(payload.crispyFishClassDefinitionFile),
                 peopleMap = emptyMap() // out of scope for add command
             ),
-            motorsportReg = motorsportRegEventId?.let { Event.MotorsportRegMetadata(
+            motorsportReg = payload.motorsportRegEventId?.let { Event.MotorsportRegMetadata(
                 id = it
             ) },
-            policy = policy
+            policy = payload.policy
         )
         persistConstraints.assess(create)
         resource.create(mapper.toSnoozle(create))
-        return create
+        create
     }
 
-    fun findById(id: UUID): Event {
-        val key = EventEntity.Key(id = id)
-        return mapper.toCore(resource.read(key))
+    override suspend fun findByKey(key: EventId): Result<Event> = runSuspendCatching {
+        mapper.toCore(resource.read(EventEntity.Key(id = key)))
     }
 
-    fun findByName(name: String): Event {
-        return resource.stream()
+    suspend fun findByName(name: String): Result<Event> = runSuspendCatching {
+        resource.stream()
                 .filter { it.name == name }
                 .map(mapper::toCore)
                 .findFirst()
@@ -177,26 +169,27 @@ class EventService(
     /**
      * Persist an updated Event.
      *
-     * @param[update] Event to persist
+     * @param[model] Event to persist
      */
-    suspend fun update(update: Event) {
-        persistConstraints.assess(update)
-        val allowUnmappedCrispyFishPeople = when (update.lifecycle) {
+    override suspend fun update(model: Event): Result<Event> = runSuspendCatching {
+        persistConstraints.assess(model)
+        val allowUnmappedCrispyFishPeople = when (model.lifecycle) {
             Event.Lifecycle.CREATE, Event.Lifecycle.PRE -> true
             Event.Lifecycle.ACTIVE, Event.Lifecycle.POST, Event.Lifecycle.FINAL -> false
         }
         if (!allowUnmappedCrispyFishPeople) {
             eventCrispyFishPersonMapVerifier.verify(
-                event = update,
-                context = crispyFishEventMappingContextService.load(update.requireCrispyFish()),
+                event = model,
+                context = crispyFishEventMappingContextService.load(model.requireCrispyFish()),
                 callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
             )
         }
-        resource.update(mapper.toSnoozle(update))
+        resource.update(mapper.toSnoozle(model))
+        model
     }
 
-    fun delete(delete: Event) {
-        deleteConstraints.assess(delete)
-        resource.delete(mapper.toSnoozle(delete))
+    override suspend fun delete(model: Event): Result<Unit> = runSuspendCatching {
+        deleteConstraints.assess(model)
+        resource.delete(mapper.toSnoozle(model))
     }
 }
