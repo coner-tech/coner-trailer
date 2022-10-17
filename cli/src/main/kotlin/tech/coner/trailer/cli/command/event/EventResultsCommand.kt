@@ -83,7 +83,7 @@ class EventResultsCommand(
                 .path(canBeFile = true, canBeDir = true)
         }
     }
-    private val medium: Output? by option(help = "Select output medium")
+    private val medium: Output by option(help = "Select output medium")
         .groupSwitch(
             "--console" to Output.Console,
             "--file" to Output.File()
