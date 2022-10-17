@@ -35,20 +35,20 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.5.31</kotlin.version>
+        <kotlin.version>1.6.21</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlinx.coroutines.version>1.5.2</kotlinx.coroutines.version>
+        <kotlinx.coroutines.version>1.6.4</kotlinx.coroutines.version>
         <kotlinx.html.version>0.7.2</kotlinx.html.version>
-        <kodein-di.version>7.8.0</kodein-di.version>
-        <okhttp3.version>4.9.2</okhttp3.version>
+        <kodein-di.version>7.12.0</kodein-di.version>
+        <okhttp3.version>4.10.0</okhttp3.version>
         <jackson.version>2.13.0</jackson.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
         <assertk.version>0.25</assertk.version>
-        <mockk.version>1.12.3</mockk.version>
+        <mockk.version>1.12.4</mockk.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <awaitility.version>4.1.0</awaitility.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     </properties>
 
