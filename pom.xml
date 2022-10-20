@@ -31,17 +31,21 @@
         <module>io-testsupport</module>
         <module>core-kodein-di</module>
         <module>core-kodein-di-test</module>
+        <module>webapp-results</module>
+        <module>assertk-ktor</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.7.20</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlinx.coroutines.version>1.6.4</kotlinx.coroutines.version>
+        <kotlinx.coroutines.version>1.6.3</kotlinx.coroutines.version>
         <kotlinx.html.version>0.8.0</kotlinx.html.version>
+        <kotlinx.serialization.version>1.4.1</kotlinx.serialization.version>
         <kodein-di.version>7.15.0</kodein-di.version>
         <okhttp3.version>4.10.0</okhttp3.version>
         <jackson.version>2.13.0</jackson.version>
+        <ktor.version>2.1.2</ktor.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
@@ -85,6 +89,11 @@
                 <version>${kodein-di.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.kodein.di</groupId>
+                <artifactId>kodein-di-framework-ktor-server-jvm</artifactId>
+                <version>${kodein-di.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp3.version}</version>
@@ -93,6 +102,26 @@
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-kotlin</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-serialization-json</artifactId>
+                <version>${kotlinx.serialization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.ktor</groupId>
+                <artifactId>ktor-server-core-jvm</artifactId>
+                <version>${ktor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.ktor</groupId>
+                <artifactId>ktor-server-cio-jvm</artifactId>
+                <version>${ktor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.ktor</groupId>
+                <artifactId>ktor-server-resources-jvm</artifactId>
+                <version>${ktor.version}</version>
             </dependency>
 
             <dependency>
@@ -124,6 +153,18 @@
                 <artifactId>awaitility-kotlin</artifactId>
                 <version>${awaitility.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.ktor</groupId>
+                <artifactId>ktor-server-test-host-jvm</artifactId>
+                <version>${ktor.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jetbrains.kotlinx</groupId>
+                        <artifactId>kotlinx-coroutines-bom</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -159,7 +200,17 @@
                         <args>
                             <arg>-Xopt-in=kotlin.io.path.ExperimentalPathApi</arg>
                         </args>
+                        <compilerPlugins>
+                            <plugin>kotlinx-serialization</plugin>
+                        </compilerPlugins>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-serialization</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -278,14 +329,6 @@
     </profiles>
 
     <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jcenter</id>
-            <name>bintray jcenter</name>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
         <repository>
             <snapshots>
                 <enabled>true</enabled>

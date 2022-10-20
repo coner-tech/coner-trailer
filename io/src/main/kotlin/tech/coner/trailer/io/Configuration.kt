@@ -2,12 +2,16 @@ package tech.coner.trailer.io
 
 data class Configuration(
     val databases: Map<String, DatabaseConfiguration>,
-    var defaultDatabaseName: String?
+    val defaultDatabaseName: String?,
+    val webappResultsConfiguration: WebappConfiguration
 ) {
     companion object {
         val DEFAULT = Configuration(
             databases = emptyMap(),
-            defaultDatabaseName = null
+            defaultDatabaseName = null,
+            webappResultsConfiguration = WebappConfiguration(
+                port = 8080
+            )
         )
     }
 }

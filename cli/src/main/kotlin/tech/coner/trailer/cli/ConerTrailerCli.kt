@@ -20,6 +20,8 @@ import tech.coner.trailer.cli.command.policy.*
 import tech.coner.trailer.cli.command.rankingsort.*
 import tech.coner.trailer.cli.command.season.*
 import tech.coner.trailer.cli.command.seasonpointscalculator.*
+import tech.coner.trailer.cli.command.webapp.WebappCommand
+import tech.coner.trailer.cli.command.webapp.WebappResultsCommand
 import tech.coner.trailer.cli.di.cliktModule
 import tech.coner.trailer.cli.di.viewModule
 import tech.coner.trailer.di.*
@@ -129,6 +131,9 @@ object ConerTrailerCli {
                 SeasonPointsCalculatorGetCommand(di, global),
                 SeasonPointsCalculatorListCommand(di, global),
                 SeasonPointsCalculatorSetCommand(di, global)
+            ),
+            WebappCommand(di, global).subcommands(
+                WebappResultsCommand(di, global)
             )
         )
     }

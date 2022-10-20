@@ -11,6 +11,7 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
+import tech.coner.trailer.io.WebappConfiguration
 import java.nio.file.Path
 import kotlin.io.path.*
 
@@ -40,7 +41,10 @@ class ConfigurationRepositoryTest {
             databases = mapOf(
                 testDatabase.name to testDatabase
             ),
-            defaultDatabaseName = testDatabase.name
+            defaultDatabaseName = testDatabase.name,
+            webappResultsConfiguration = WebappConfiguration(
+                port = 8080
+            )
         )
     }
 
@@ -154,7 +158,10 @@ private fun Configuration.toJson() = """
         "databases": {
             ${databases.map { it.toJson() }.joinToString()}
         },
-        "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }}
+        "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
+        "webappResultsConfiguration": {
+            "port": ${webappResultsConfiguration.port} 
+        }
     }
 """.trimIndent()
 

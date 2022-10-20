@@ -6,6 +6,7 @@ import tech.coner.trailer.di.EnvironmentHolder
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.TestEnvironments
+import tech.coner.trailer.io.WebappConfiguration
 import tech.coner.trailer.io.di.ioTestKodeinDi
 import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
 import tech.coner.trailer.io.service.*
@@ -29,7 +30,10 @@ class ServiceContainer(
         databases = mapOf(
             databaseConfiguration.name to databaseConfiguration
         ),
-        defaultDatabaseName = databaseConfiguration.name
+        defaultDatabaseName = databaseConfiguration.name,
+        webappResultsConfiguration = WebappConfiguration(
+            port = 8080
+        )
     )
     private val environment = TestEnvironments.temporary(
         di = ioTestKodeinDi,
