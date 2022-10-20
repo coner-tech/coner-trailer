@@ -5,46 +5,6 @@
 {
   "name":"[C"
 },
-  {
-    "name": "io.ktor.utils.io.pool.DefaultPool",
-    "allDeclaredConstructors": true,
-    "allPublicConstructors": true,
-    "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredFields": true,
-    "fields": [
-      {
-        "name": "top",
-        "allowUnsafeAccess": true
-      }
-    ]
-  },
-  {
-    "name": "io.ktor.network.selector.InterestSuspensionsMap",
-    "allDeclaredConstructors": true,
-    "allPublicConstructors": true,
-    "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredFields": true,
-    "fields": [
-      {
-        "name": "readHandlerReference",
-        "allowUnsafeAccess": true
-      },
-      {
-        "name": "writeHandlerReference",
-        "allowUnsafeAccess": true
-      },
-      {
-        "name": "connectHandlerReference",
-        "allowUnsafeAccess": true
-      },
-      {
-        "name": "acceptHandlerReference",
-        "allowUnsafeAccess": true
-      }
-    ]
-  },
 {
   "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
 },
@@ -153,6 +113,22 @@
 {
   "name":"exploratory.resource.HelloResource$Companion",
   "methods":[{"name":"serializer","parameterTypes":[] }]
+},
+{
+  "name":"io.ktor.network.selector.InterestSuspensionsMap",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true
+},
+{
+  "name":"io.ktor.utils.io.pool.DefaultPool",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true
 },
 {
   "name":"java.io.ObjectInputStream"
@@ -855,7 +831,10 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["int"] }]
+  "methods":[
+    {"name":"<init>","parameterTypes":["int"] }, 
+    {"name":"getPort","parameterTypes":[] }
+  ]
 },
 {
   "name":"tech.coner.trailer.render.json.identifier.EventIdentifier",
