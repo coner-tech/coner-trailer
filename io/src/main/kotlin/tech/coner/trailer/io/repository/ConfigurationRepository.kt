@@ -6,6 +6,7 @@ import java.nio.file.Path
 import kotlin.io.path.bufferedReader
 import kotlin.io.path.bufferedWriter
 import kotlin.io.path.createDirectories
+import kotlin.io.path.createTempFile
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.isDirectory
 import kotlin.io.path.isReadable
@@ -37,7 +38,7 @@ class ConfigurationRepository(
     }
 
     fun save(config: Configuration) {
-        val tempFile = kotlin.io.path.createTempFile()
+        val tempFile = createTempFile()
         try {
             tempFile
                     .bufferedWriter()
