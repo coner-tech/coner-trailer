@@ -1,8 +1,29 @@
-package tech.coner.trailer.seasonpoints
+package tech.coner.trailer.render.html
 
-import kotlinx.html.*
+import kotlinx.html.DIV
+import kotlinx.html.TABLE
+import kotlinx.html.TBODY
+import kotlinx.html.TR
+import kotlinx.html.ThScope
+import kotlinx.html.a
+import kotlinx.html.abbr
+import kotlinx.html.caption
+import kotlinx.html.dd
+import kotlinx.html.div
+import kotlinx.html.dl
+import kotlinx.html.dt
+import kotlinx.html.id
+import kotlinx.html.section
 import kotlinx.html.stream.createHTML
+import kotlinx.html.table
+import kotlinx.html.tbody
+import kotlinx.html.td
+import kotlinx.html.th
+import kotlinx.html.thead
+import kotlinx.html.title
+import kotlinx.html.tr
 import tech.coner.trailer.SeasonEvent
+import tech.coner.trailer.seasonpoints.StandingsReport
 
 class KotlinxHtmlStandingsReportRenderer {
 

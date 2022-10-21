@@ -56,6 +56,10 @@
             <groupId>org.kodein.di</groupId>
             <artifactId>kodein-di-framework-ktor-server-jvm</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-html-jvm</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -1,4 +1,4 @@
-package tech.coner.trailer.seasonpoints
+package tech.coner.trailer.render.html
 
 import assertk.all
 import assertk.assertAll
@@ -10,6 +10,7 @@ import assertk.assertions.prop
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.seasonpoints.TestStandingsReports
 
 class KotlinxHtmlStandingsReportRendererTest {
 
