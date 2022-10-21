@@ -1,10 +1,10 @@
 package tech.coner.trailer.cli.command.webapp
 
 import com.github.ajalt.clikt.parameters.groups.cooccurring
+import exploratory.resultsWebapp
 import org.kodein.di.DI
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
-import exploratory.resultsWebapp
 
 class WebappResultsCommand(
     di: DI,
@@ -19,8 +19,8 @@ class WebappResultsCommand(
     private val config by WebappConfigurationOptions().cooccurring()
 
     override suspend fun coRun() {
-        val config = config?.toIo()
-            ?: global.requireEnvironment().requireConfiguration().webappResultsConfiguration
+        val config = config?.mapToIo()
+            ?: global.requireEnvironment().requireConfiguration().webappResults
         resultsWebapp(di, config)
     }
 }

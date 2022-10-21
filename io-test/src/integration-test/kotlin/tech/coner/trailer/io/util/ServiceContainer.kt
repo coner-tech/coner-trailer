@@ -31,7 +31,7 @@ class ServiceContainer(
             databaseConfiguration.name to databaseConfiguration
         ),
         defaultDatabaseName = databaseConfiguration.name,
-        webappResultsConfiguration = WebappConfiguration(
+        webappResults = WebappConfiguration(
             port = 8080
         )
     )

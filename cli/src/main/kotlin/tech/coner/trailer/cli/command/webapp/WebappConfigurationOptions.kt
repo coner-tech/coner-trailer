@@ -9,7 +9,7 @@ import tech.coner.trailer.io.WebappConfiguration
 class WebappConfigurationOptions : OptionGroup() {
     val port by option().int().required()
 
-    fun toIo() = WebappConfiguration(
+    fun mapToIo() = WebappConfiguration(
         port = port
     )
 }

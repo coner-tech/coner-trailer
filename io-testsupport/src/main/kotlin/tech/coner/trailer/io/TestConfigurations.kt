@@ -16,7 +16,7 @@ class TestConfigurations(
         return Configuration(
             databases = testDatabaseConfigurations.allByName,
             defaultDatabaseName = testDatabaseConfigurations.bar.name,
-            webappResultsConfiguration = WebappConfiguration(
+            webappResults = WebappConfiguration(
                 port = randomAvailablePort()
             )
         )

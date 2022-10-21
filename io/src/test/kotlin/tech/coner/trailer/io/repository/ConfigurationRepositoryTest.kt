@@ -5,15 +5,25 @@ import assertk.assertions.exists
 import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.junit.jupiter.api.*
+import java.nio.file.Path
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
+import kotlin.io.path.exists
+import kotlin.io.path.notExists
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.WebappConfiguration
-import java.nio.file.Path
-import kotlin.io.path.*
 
 class ConfigurationRepositoryTest {
 
@@ -42,7 +52,7 @@ class ConfigurationRepositoryTest {
                 testDatabase.name to testDatabase
             ),
             defaultDatabaseName = testDatabase.name,
-            webappResultsConfiguration = WebappConfiguration(
+            webappResults = WebappConfiguration(
                 port = 8080
             )
         )
@@ -159,8 +169,8 @@ private fun Configuration.toJson() = """
             ${databases.map { it.toJson() }.joinToString()}
         },
         "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
-        "webappResultsConfiguration": {
-            "port": ${webappResultsConfiguration.port} 
+        "webappResults": {
+            "port": ${webappResults.port} 
         }
     }
 """.trimIndent()
