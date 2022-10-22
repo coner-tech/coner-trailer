@@ -1,0 +1,16 @@
+{
+  "name": "coner-trailer-render-html-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sass-compile": "sass ../resources/tech/coner/trailer/render/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css",
+    "sass-watch": "sass --watch ../resources/tech/coner/trailer/render/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "sass": "^1.43.3"
+  }
+}

@@ -12,9 +12,6 @@
     <artifactId>render-html</artifactId>
 
     <properties>
-        <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-        <node.version>v14.19.0</node.version>
-        <bootstrap.version>5.1.3</bootstrap.version>
         <node.directory>src/main/node</node.directory>
     </properties>
 
@@ -82,7 +79,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>${node.directory}</workingDirectory>
+                            <workingDirectory>../webapp-results/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
@@ -96,7 +93,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>${node.directory}</workingDirectory>
+                            <workingDirectory>../webapp-results/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
