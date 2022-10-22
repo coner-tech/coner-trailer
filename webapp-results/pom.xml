@@ -70,6 +70,10 @@
             <artifactId>ktor-server-webjars-jvm</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-server-request-validation-jvm</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>${bootstrap.version}</version>

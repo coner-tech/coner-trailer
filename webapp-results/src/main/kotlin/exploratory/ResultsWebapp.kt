@@ -16,13 +16,13 @@ import tech.coner.trailer.io.WebappConfiguration
 fun resultsWebapp(di: DI, config: WebappConfiguration) {
     embeddedServer(CIO, port = config.port) {
         di {
+            extend(di)
             // scaffold
         }
         install(Resources)
         install(Webjars) {
             path = "assets"
         }
-
         routing {
             subDI {
                 import(exploratoryModule)
