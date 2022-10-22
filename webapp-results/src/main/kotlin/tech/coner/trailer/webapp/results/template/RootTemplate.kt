@@ -4,7 +4,7 @@ import io.ktor.server.html.Placeholder
 import io.ktor.server.html.Template
 import io.ktor.server.html.TemplatePlaceholder
 import io.ktor.server.html.insert
-import kotlinx.html.BODY
+import kotlinx.html.FlowContent
 import kotlinx.html.HTML
 import kotlinx.html.LinkRel
 import kotlinx.html.META
@@ -19,13 +19,13 @@ import kotlinx.html.meta
 import kotlinx.html.nav
 import kotlinx.html.script
 
-class RootTemplate<CT>(
+class RootTemplate<CT : Template<FlowContent>>(
     val contentTemplateFactory: () -> CT
 ) : Template<HTML> {
     val title = Placeholder<TITLE>()
     val additionalMeta = Placeholder<META>()
     val nav = Placeholder<NAV>()
-    val content = TemplatePlaceholder<BODY>()
+    val content = TemplatePlaceholder<CT>()
     override fun HTML.apply() {
         head {
             meta(name = "viewport", content = "width=device-width, initial-scale=1") {
@@ -43,13 +43,10 @@ class RootTemplate<CT>(
         body {
             classes = setOf("container-xl")
             nav {
-                classes = setOf("navbar", "navbar-expand", "navbar-dark", "bg-secondary")
+                classes = setOf("navbar", "navbar-expand", "navbar-dark", "bg-secondary", "text-white")
                 insert(nav)
             }
-            insert(
-                template = contentTemplateFactory(),
-                placeholder = content
-            )
+            insert(contentTemplateFactory(), content)
         }
     }
 }

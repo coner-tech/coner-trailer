@@ -3,13 +3,11 @@ package tech.coner.trailer.webapp.results
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
-import assertk.assertions.isNotNull
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.assertk.ktor.bodyAsText
-import tech.coner.trailer.assertk.ktor.contentType
-import tech.coner.trailer.assertk.ktor.hasSameMainContentType
+import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.isSuccess
 import tech.coner.trailer.assertk.ktor.status
 
@@ -23,7 +21,7 @@ class StaticAssetTest {
 
         assertThat(actual).all {
             status().isSuccess()
-            contentType().isNotNull().hasSameMainContentType(ContentType.Text.CSS)
+            hasContentTypeIgnoringParams(ContentType.Text.CSS)
             bodyAsText().isNotEmpty()
         }
     }
@@ -36,7 +34,7 @@ class StaticAssetTest {
 
         assertThat(actual).all {
             status().isSuccess()
-            contentType().isNotNull().hasSameMainContentType(ContentType.Application.JavaScript)
+            hasContentTypeIgnoringParams(ContentType.Application.JavaScript)
             bodyAsText().isNotEmpty()
         }
     }

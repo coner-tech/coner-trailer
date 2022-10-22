@@ -2,13 +2,16 @@ package exploratory.resource
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import io.ktor.client.request.get
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.resources.href
 import io.ktor.resources.serialization.ResourcesFormat
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.assertk.ktor.bodyAsText
+import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
 
 class HelloResourcesTest {
@@ -21,7 +24,8 @@ class HelloResourcesTest {
 
         assertThat(actual).all {
             status().isEqualTo(HttpStatusCode.OK)
-            bodyAsText().isEqualTo("Hello World")
+            hasContentTypeIgnoringParams(ContentType.Text.Html)
+            bodyAsText().contains("Hello World")
         }
     }
 
@@ -33,7 +37,8 @@ class HelloResourcesTest {
 
         assertThat(actual).all {
             status().isEqualTo(HttpStatusCode.OK)
-            bodyAsText().isEqualTo("Hello subject")
+            hasContentTypeIgnoringParams(ContentType.Text.Html)
+            bodyAsText().contains("Hello subject")
         }
     }
 }
