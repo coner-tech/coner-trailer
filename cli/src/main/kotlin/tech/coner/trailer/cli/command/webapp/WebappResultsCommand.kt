@@ -1,10 +1,10 @@
 package tech.coner.trailer.cli.command.webapp
 
 import com.github.ajalt.clikt.parameters.groups.cooccurring
-import exploratory.resultsWebapp
 import org.kodein.di.DI
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.webapp.results.resultsWebapp
 
 class WebappResultsCommand(
     di: DI,

@@ -1,7 +1,8 @@
-package exploratory
+package tech.coner.trailer.webapp.results
 
-import exploratory.resource.helloRoutes
-import exploratory.resource.staticAssetRoutes
+import exploratory.exploratoryModule
+import exploratory.route.helloRoutes
+import exploratory.route.staticAssetRoutes
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer

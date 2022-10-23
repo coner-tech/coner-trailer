@@ -1,4 +1,4 @@
-package exploratory.resource
+package exploratory.route
 
 import io.ktor.server.http.content.resource
 import io.ktor.server.http.content.static
