@@ -9,6 +9,11 @@ interface Cache<K, V> {
      */
     suspend fun getOrCreate(key: K, create: suspend () -> V): V
 
+    /**
+     * Update a value by key in cache.
+     */
+    suspend fun update(key: K, update: suspend () -> V): V
+
     suspend fun put(key: K, value: V): V
 
     /**

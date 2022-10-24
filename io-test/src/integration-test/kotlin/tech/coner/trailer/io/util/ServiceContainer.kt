@@ -12,6 +12,7 @@ import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
 import tech.coner.trailer.io.service.*
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
+import kotlinx.coroutines.runBlocking
 
 class ServiceContainer(
     val root: Path,
@@ -31,8 +32,11 @@ class ServiceContainer(
             databaseConfiguration.name to databaseConfiguration
         ),
         defaultDatabaseName = databaseConfiguration.name,
-        webappResults = WebappConfiguration(
-            port = 8080
+        webapps = Configuration.Webapps(
+            results = WebappConfiguration(
+                port = 8080,
+                exploratory = true
+            )
         )
     )
     private val environment = TestEnvironments.temporary(
@@ -46,13 +50,15 @@ class ServiceContainer(
         val environmentDi = ioTestKodeinDi.direct.on(environment)
         val configurationService: ConfigurationService = environmentDi.instance()
         configurationService.init()
-        configurationService.addDatabase(ConfigAddDatabaseParam(
-            name = databaseConfiguration.name,
-            crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
-            snoozleDatabase = databaseConfiguration.snoozleDatabase,
-            motorsportReg = null,
-            default = databaseConfiguration.default
-        ))
+        runBlocking {
+            configurationService.addDatabase(ConfigAddDatabaseParam(
+                name = databaseConfiguration.name,
+                crispyFishDatabase = databaseConfiguration.crispyFishDatabase,
+                snoozleDatabase = databaseConfiguration.snoozleDatabase,
+                motorsportReg = null,
+                default = databaseConfiguration.default
+            ))
+        }
         val database: ConerTrailerDatabase = environmentDi.instance()
         database.openAdministrativeSession().getOrThrow()
             .apply {

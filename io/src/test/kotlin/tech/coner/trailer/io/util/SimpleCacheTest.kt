@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Duration
 import kotlin.random.Random
+import kotlinx.coroutines.test.runTest
 
 @ExtendWith(MockKExtension::class)
 class SimpleCacheTest : CoroutineScope {
@@ -25,23 +26,49 @@ class SimpleCacheTest : CoroutineScope {
     inner class GetOrCreateTests {
 
         @Test
-        fun `It should get cached value`() {
+        fun `It should get cached value`() = runTest {
             val cache = SimpleCache<String, Int>()
             val key = "one"
-            runBlocking {
-                cache.put(key, 1)
-            }
+            cache.put(key, 1)
 
-            val actual = runBlocking {
-                cache.getOrCreate(key) { fail("cache executed create function but should not have") }
-            }
+            val actual = cache.getOrCreate(key) { fail("cache executed create function but should not have") }
 
             assertThat(actual).isEqualTo(1)
         }
 
         @Test
-        fun `It should create value and cache if not exists`() {
+        fun `It should create value and cache if not exists`() = runTest {
+            val cache = SimpleCache<String, Int>()
+            val key = "key"
+            val value = 0
 
+            val first = cache.getOrCreate(key) { value }
+            val second = cache.getOrCreate(key) { fail("cache executed create fn but should not have") }
+
+            assertAll {
+                assertThat(first).isEqualTo(value)
+                assertThat(second).isEqualTo(value)
+            }
+        }
+    }
+
+    @Nested
+    inner class UpdateTests {
+
+        @Test
+        fun `It should update value and be retrievable`() = runTest {
+            val cache = SimpleCache<String, Int>()
+            val key = "key"
+            val values = listOf(1, 2)
+            cache.getOrCreate(key) { values[0] }
+
+            val second = cache.update(key) { values[1] }
+            val third = cache.getOrCreate(key) { fail("cache executed create fn but should not have") }
+
+            assertAll {
+                assertThat(second).isEqualTo(2)
+                assertThat(third).isEqualTo(2)
+            }
         }
     }
 
@@ -49,20 +76,17 @@ class SimpleCacheTest : CoroutineScope {
     inner class PutTests {
 
         @Test
-        fun `It should put value and be retrievable`() {
+        fun `It should put value and be retrievable`() = runTest {
             val cache = SimpleCache<String, String>()
             val key = "key"
             val value = "value"
 
-            val actual = runBlocking {
-                cache.put(key, value)
-            }
+            val first = cache.put(key, value)
+            val second = cache.getOrCreate(key) { fail("should not invoke create fn") }
 
-            assertThat(actual).all {
+            assertThat(first).all {
                 isEqualTo(value)
-                isEqualTo(runBlocking {
-                    cache.getOrCreate(key) { fail("should not invoke create fn") }
-                })
+                isEqualTo(second)
             }
         }
     }
@@ -71,32 +95,26 @@ class SimpleCacheTest : CoroutineScope {
     inner class ClearTests {
 
         @Test
-        fun `It should clear when already empty`() {
+        fun `It should clear when already empty`() = runTest {
             val cache = SimpleCache<String, String>()
-            check(runBlocking { cache.isEmpty() }) { "Precondition: cache must initialize empty" }
+            check(cache.isEmpty()) { "Precondition: cache must initialize empty" }
 
-            runBlocking {
-                cache.clear()
-            }
+            cache.clear()
 
-            assertThat(runBlocking { cache.isEmpty() }).isTrue()
+            assertThat(cache.isEmpty()).isTrue()
         }
 
         @Test
-        fun `It should clear when contains items`() {
+        fun `It should clear when contains items`() = runTest {
             val cache = SimpleCache<Int, Int>()
-            runBlocking {
-                for (i in 1..10) {
-                    cache.put(i, i)
-                }
-                check(cache.size() == 10) { "Precondition: cache must be populated" }
+            for (i in 1..10) {
+                cache.put(i, i)
             }
+            check(cache.size() == 10) { "Precondition: cache must be populated" }
 
-            runBlocking {
-                cache.clear()
-            }
+            cache.clear()
 
-            assertThat(runBlocking { cache.isEmpty() }).isTrue()
+            assertThat(cache.isEmpty()).isTrue()
         }
     }
 }

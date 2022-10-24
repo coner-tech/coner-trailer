@@ -9,6 +9,13 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.slot
 import io.mockk.verifySequence
+import java.nio.file.Path
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -18,7 +25,7 @@ import tech.coner.trailer.io.*
 import tech.coner.trailer.io.payload.configuration
 import tech.coner.trailer.io.payload.defaultDbConfig
 import tech.coner.trailer.io.repository.ConfigurationRepository
-import java.nio.file.Path
+import tech.coner.trailer.io.util.SimpleCache
 
 @ExtendWith(MockKExtension::class)
 class ConfigurationServiceTest {
@@ -28,11 +35,20 @@ class ConfigurationServiceTest {
     @TempDir lateinit var root: Path
     @MockK lateinit var repository: ConfigurationRepository
 
+    private val mainThreadSurrogate = newSingleThreadContext("main")
+
     @BeforeEach
     fun before() {
         service = ConfigurationService(
-            repository = repository
+            coroutineContext = mainThreadSurrogate + Job(),
+            repository = repository,
+            cache = SimpleCache()
         )
+    }
+
+    @AfterEach
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -48,7 +64,7 @@ class ConfigurationServiceTest {
     inner class SetDefaultDatabase {
 
         @Test
-        fun `It should set default database by name`() {
+        fun `It should set default database by name`() = runTest {
             val config = TestConfigurations(root).testConfiguration()
             check(config.databases["bar"]?.default == true) { "Prerequisite failed: bar database must be default" }
             check(config.databases["foo"]?.default == false) { "Prerequisite failed: foo database must not be default" }
@@ -81,7 +97,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `When there are no databases, it should fail with not found`() {
+        fun `When there are no databases, it should fail with not found`() = runTest {
             every { repository.load() } returns Configuration.DEFAULT
             check(Configuration.DEFAULT.databases.isEmpty()) { "Prerequisite failed: default configuration is expected to define no databases" }
 
@@ -93,7 +109,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `When called with name that does not exist, it should fail with not found`() {
+        fun `When called with name that does not exist, it should fail with not found`() = runTest {
             val config = TestConfigurations(root).testConfiguration()
             val nameDoesNotExist = "nameDoesNotExist"
             check(!config.databases.containsKey(nameDoesNotExist)) { "Prerequisite failed: test configuration must not contain key $nameDoesNotExist" }
@@ -108,7 +124,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun `It should list databases`() {
+    fun `It should list databases`() = runTest {
         val testConfigurations = TestConfigurations(root)
         val config = testConfigurations.testConfiguration()
         every { repository.load() } returns config
@@ -124,7 +140,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun `It should list databases by name`() {
+    fun `It should list databases by name`() = runTest {
         val testConfigurations = TestConfigurations(root)
         val config = testConfigurations.testConfiguration()
         every { repository.load() } returns config
@@ -150,7 +166,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `It should remove database by name`() {
+        fun `It should remove database by name`() = runTest {
             every { repository.load() } returns config
             check(config.databases.containsKey("foo")) { "Prerequisite failed: must contain foo database" }
             val saveSlot = slot<Configuration>()
@@ -171,7 +187,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `When the default database is removed, it should null out defaultDatabaseName field`() {
+        fun `When the default database is removed, it should null out defaultDatabaseName field`() = runTest {
             every { repository.load() } returns config
             check(config.databases.containsKey("bar")) { "Prerequisite failed: must contain bar database" }
             check(
@@ -192,7 +208,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `When no database with name exists, it should fail with not found`() {
+        fun `When no database with name exists, it should fail with not found`() = runTest {
             every { repository.load() } returns config
             check(!config.databases.containsKey("notFound")) { "Prerequisite failed: must contain database named notFound" }
 
@@ -215,7 +231,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `It should get default database`() {
+        fun `It should get default database`() = runTest {
             every { repository.load() } returns config
 
             val actual = service.getDefaultDatabase()
@@ -226,7 +242,7 @@ class ConfigurationServiceTest {
         }
 
         @Test
-        fun `When no default database is named, it should return null`() {
+        fun `When no default database is named, it should return null`() = runTest {
             every { repository.load() } returns config.copy(defaultDatabaseName = null)
 
             val actual = service.getDefaultDatabase()

@@ -6,6 +6,8 @@ import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -70,12 +72,12 @@ class ConfigDatabaseGetCommandTest : DIAware {
     fun `When given valid name option it should get it`() {
         val render = "view.render(foo) => ${UUID.randomUUID()}"
         val dbConfig = dbConfigs.foo
-        every { service.findDatabaseByName(any()) } returns Result.success(dbConfig)
+        coEvery { service.findDatabaseByName(any()) } returns Result.success(dbConfig)
         every { view.render(any<DatabaseConfiguration>()) }.returns(render)
 
         command.parse(arrayOf(dbConfig.name))
 
-        verifySequence {
+        coVerifySequence {
             service.findDatabaseByName(dbConfig.name)
             view.render(dbConfigs.foo)
         }
@@ -86,13 +88,13 @@ class ConfigDatabaseGetCommandTest : DIAware {
     fun `When given invalid name option it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) { "Failed prerequisite: test database configs expected not to contain baz database"}
-        every { service.findDatabaseByName(any()) } returns Result.failure(NotFoundException("nfe"))
+        coEvery { service.findDatabaseByName(any()) } returns Result.failure(NotFoundException("nfe"))
 
         assertThrows<ProgramResult> {
             command.parse(arrayOf(baz))
         }
 
-        verifySequence {
+        coVerifySequence {
             service.findDatabaseByName(baz)
         }
         confirmVerified(service, view)

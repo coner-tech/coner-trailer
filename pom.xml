@@ -32,7 +32,8 @@
         <module>core-kodein-di</module>
         <module>core-kodein-di-test</module>
         <module>webapp-results</module>
-        <module>assertk-ktor</module>
+
+        <module>testutil/assertk-ktor</module>
     </modules>
 
     <properties>
@@ -182,6 +183,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-test-jvm</artifactId>
+                <version>${kotlinx.coroutines.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -214,7 +221,7 @@
                         <jvmTarget>11</jvmTarget>
                         <javaParameters>true</javaParameters>
                         <args>
-                            <arg>-Xopt-in=kotlin.io.path.ExperimentalPathApi</arg>
+                            <arg>-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi</arg>
                         </args>
                         <compilerPlugins>
                             <plugin>kotlinx-serialization</plugin>

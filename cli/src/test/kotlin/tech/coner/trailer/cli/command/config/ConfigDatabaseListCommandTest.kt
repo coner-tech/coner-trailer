@@ -3,10 +3,13 @@ package tech.coner.trailer.cli.command.config
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verifySequence
+import java.nio.file.Path
+import java.util.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,8 +26,6 @@ import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.ConfigurationService
-import java.nio.file.Path
-import java.util.*
 
 @ExtendWith(MockKExtension::class)
 class ConfigDatabaseListCommandTest : DIAware {
@@ -63,7 +64,7 @@ class ConfigDatabaseListCommandTest : DIAware {
 
     @Test
     fun `It should list databases`() {
-        every { service.listDatabases() } returns dbConfigs.all
+        coEvery { service.listDatabases() } returns Result.success(dbConfigs.all)
         val output = """
             foo => ${UUID.randomUUID()}
             bar => ${UUID.randomUUID()}
@@ -72,7 +73,7 @@ class ConfigDatabaseListCommandTest : DIAware {
 
         command.parse(emptyArray())
 
-        verifySequence {
+        coVerifySequence {
             service.listDatabases()
             view.render(dbConfigs.all)
         }

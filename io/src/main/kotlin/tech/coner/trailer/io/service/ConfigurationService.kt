@@ -1,30 +1,42 @@
 package tech.coner.trailer.io.service
 
+import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
+import tech.coner.trailer.io.Webapp
+import tech.coner.trailer.io.WebappConfiguration
 import tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome
 import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
 import tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome
 import tech.coner.trailer.io.repository.ConfigurationRepository
+import tech.coner.trailer.io.util.Cache
+import tech.coner.trailer.io.util.runSuspendCatching
 
 class ConfigurationService(
-    private val repository: ConfigurationRepository
-) {
+    override val coroutineContext: CoroutineContext,
+    private val repository: ConfigurationRepository,
+    private val cache: Cache<Unit, Configuration>
+) : CoroutineScope {
 
     fun init() {
         repository.init()
     }
 
-    fun get(): Configuration {
-        return repository.load()
-            .let {
-                if (it.webappResults == null) it.copy(webappResults = Configuration.DEFAULT.webappResults)
-                else it
-            }
+    suspend fun get(): Result<Configuration> = runSuspendCatching {
+        cache.getOrCreate(Unit) {
+            repository.load() ?: Configuration.DEFAULT
+        }
     }
 
-    fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> {
-        val config = repository.load()
+    private suspend fun put(config: Configuration): Result<Configuration> = runSuspendCatching {
+        cache.update(Unit) {
+            repository.save(config)
+        }
+    }
+
+    suspend fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> {
+        val config = get().getOrThrow()
         if (config.databases.containsKey(param.name)) {
             return Result.failure(AlreadyExistsException("Database with name already exists"))
         }
@@ -44,16 +56,12 @@ class ConfigurationService(
                 .apply { put(param.name, newDbConfig) },
             defaultDatabaseName = if (param.default) param.name else config.defaultDatabaseName
         )
-        try {
-            repository.save(newConfig)
-        } catch (t: Throwable) {
-            return Result.failure(Exception("Failed to save new config", t))
-        }
-        return Result.success(ConfigAddDatabaseOutcome(configuration = newConfig, addedDbConfig = newDbConfig))
+        return put(config)
+            .map { ConfigAddDatabaseOutcome(configuration = newConfig, addedDbConfig = newDbConfig) }
     }
 
-    fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> {
-        val config = repository.load()
+    suspend fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> {
+        val config = get().getOrThrow()
         val newDefaultDbConfig = config.databases[name]
             ?.copy(default = true)
             ?: return Result.failure(NotFoundException("Database not found with name"))
@@ -67,41 +75,63 @@ class ConfigurationService(
                 },
             defaultDatabaseName = name
         )
-        repository.save(newConfig)
-        return Result.success(ConfigSetDefaultDatabaseOutcome(newConfig, newDefaultDbConfig))
+        return put(newConfig)
+            .map { ConfigSetDefaultDatabaseOutcome(it, newDefaultDbConfig) }
     }
 
-    fun listDatabases(): List<DatabaseConfiguration> {
-        return repository.load().databases.values.toList()
+    suspend fun listDatabases(): Result<List<DatabaseConfiguration>> = runSuspendCatching {
+        get().getOrThrow().databases.values.toList()
             .sortedWith(
                 compareByDescending(DatabaseConfiguration::default)
                     .thenByDescending(DatabaseConfiguration::name)
             )
     }
 
-    fun listDatabasesByName() = listDatabases().associateBy { it.name }
+    suspend fun listDatabasesByName(): Result<Map<String, DatabaseConfiguration>> = runSuspendCatching {
+        listDatabases()
+            .map { dbConfigs -> dbConfigs.associateBy { it.name } }
+            .getOrThrow()
+    }
 
-    fun removeDatabase(name: String): Result<Configuration> {
-        val config = repository.load()
+    suspend fun removeDatabase(name: String): Result<Configuration> = runSuspendCatching {
+        val config = get().getOrThrow()
         val newConfig = config.copy(
             databases = config.databases
                 .toMutableMap()
-                .apply { remove(name) ?: return Result.failure(NotFoundException("Database not found with name")) },
+                .apply { remove(name) ?: throw NotFoundException("Database not found with name") },
             defaultDatabaseName = if (name == config.defaultDatabaseName) null else config.defaultDatabaseName
         )
-        repository.save(newConfig)
-        return Result.success(newConfig)
+        put(newConfig).getOrThrow()
     }
 
-    fun findDatabaseByName(name: String): Result<DatabaseConfiguration> {
-        return listDatabasesByName()[name]
-            ?.let { Result.success(it) }
-            ?: Result.failure(NotFoundException("Database with name not found"))
+    suspend fun findDatabaseByName(name: String): Result<DatabaseConfiguration> = runSuspendCatching {
+        listDatabasesByName().getOrThrow()[name]
+            ?: throw NotFoundException("Database with name not found")
     }
 
-    fun getDefaultDatabase() : DatabaseConfiguration? {
-        val config = repository.load()
-        return config.defaultDatabaseName?.let { config.databases[it] }
+    suspend fun getDefaultDatabase(): Result<DatabaseConfiguration?> = runSuspendCatching {
+        val config = get().getOrThrow()
+        config.defaultDatabaseName?.let { config.databases[it] }
+    }
+
+    suspend fun getWebappConfiguration(webapp: Webapp): Result<WebappConfiguration> = runSuspendCatching {
+        val config = get().getOrThrow()
+        when (webapp) {
+            Webapp.RESULTS -> config.webapps?.results
+                ?: Configuration.DEFAULT.requireWebapps().requireResults()
+        }
+    }
+
+    suspend fun configureWebapp(
+        webapp: Webapp,
+        webappConfig: WebappConfiguration?
+    ): Result<Configuration> = runSuspendCatching {
+        val config = get().getOrThrow()
+        val webapps = config.webapps ?: Configuration.DEFAULT.requireWebapps()
+        val newWebapps = when (webapp) {
+            Webapp.RESULTS -> webapps.copy(results = webappConfig)
+        }
+        put(config.copy(webapps = newWebapps)).getOrThrow()
     }
 
 }

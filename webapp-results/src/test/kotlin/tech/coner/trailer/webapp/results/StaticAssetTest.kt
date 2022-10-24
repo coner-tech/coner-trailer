@@ -4,7 +4,6 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import io.ktor.client.request.get
-import io.ktor.client.utils.EmptyContent.status
 import io.ktor.http.ContentType
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.assertk.ktor.bodyAsText

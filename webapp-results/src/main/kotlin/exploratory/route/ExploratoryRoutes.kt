@@ -48,7 +48,6 @@ fun Routing.exploratoryRoutes() {
     route("/hello") {
         install(RequestValidation) {
             validate<Parameters> {
-                println("parameters")
                 when (val to = it["to"]) {
                     is String -> {
                         if (to.length > 32) ValidationResult.Invalid("Parameters: excessive greeting")

@@ -7,6 +7,8 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -77,7 +79,7 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
             databases = originalConfig.databases.toMutableMap().apply { put(expectedDbConfig.name, expectedDbConfig) },
             defaultDatabaseName = expectedDbConfig.name
         )
-        every {
+        coEvery {
             service.setDefaultDatabase(capture(slot))
         } returns Result.success(ConfigSetDefaultDatabaseOutcome(expectedConfig, expectedDbConfig))
         val viewRender = "view render"
@@ -85,7 +87,7 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
 
         command.parse(arrayOf(originalFooDbConfig.name))
 
-        verifySequence {
+        coVerifySequence {
             service.setDefaultDatabase(originalFooDbConfig.name)
             view.render(expectedDbConfig)
         }
@@ -98,14 +100,14 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
     @Test
     fun `When given invalid name it should fail`() {
         val exception = NotFoundException("Not found")
-        every { service.setDefaultDatabase(any()) } returns Result.failure(exception)
+        coEvery { service.setDefaultDatabase(any()) } returns Result.failure(exception)
         val name = "irrelevant"
 
         val actual = assertThrows<ProgramResult> {
             command.parse(arrayOf(name))
         }
 
-        verifySequence { service.setDefaultDatabase(name) }
+        coVerifySequence { service.setDefaultDatabase(name) }
         verifySequence(inverse = true) { view.render(any<DatabaseConfiguration>()) }
         assertThat(testConsole)
             .error()

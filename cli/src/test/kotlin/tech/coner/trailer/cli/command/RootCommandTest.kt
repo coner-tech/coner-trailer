@@ -30,6 +30,7 @@ import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
+import kotlinx.coroutines.test.runTest
 
 @ExtendWith(MockKExtension::class)
 class RootCommandTest : DIAware {
@@ -77,9 +78,9 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When given --database with existing database name it should use it`() {
+    fun `When given --database with existing database name it should use it`() = runTest {
         arrangeWithDatabases()
-        every { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
+        coEvery { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
 
         command.parse(arrayOf(
             "--database", "foo",
@@ -93,10 +94,10 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When given --database with invalid name it should fail`() {
+    fun `When given --database with invalid name it should fail`() = runTest {
         arrangeWithDatabases()
         val exception = Exception("Database with name not found")
-        every { service.findDatabaseByName(any()) } returns Result.failure(exception)
+        coEvery { service.findDatabaseByName(any()) } returns Result.failure(exception)
         // baz does not exist
 
         val actual = assertThrows<ProgramResult> {
@@ -116,7 +117,7 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When not given --database it should use the default if available`() {
+    fun `When not given --database it should use the default if available`() = runTest {
         arrangeWithDatabases()
         val defaultDatabase = dbConfigs.allByName
             .values
@@ -124,7 +125,7 @@ class RootCommandTest : DIAware {
 
         command.parse(arrayOf("stub"))
 
-        verify { service.getDefaultDatabase() }
+        coVerify { service.getDefaultDatabase() }
         assertThat(global.environment)
             .isNotNull()
             .transform { it.databaseConfiguration }
@@ -187,15 +188,15 @@ class RootCommandTest : DIAware {
             .isEqualTo(overrideConfigDir)
     }
 
-    private fun arrangeWithDatabases() {
-        every { service.get() }.returns(config)
-        every { service.listDatabasesByName() } answers { dbConfigs.allByName }
-        every { service.getDefaultDatabase() } returns(dbConfigs.bar)
+    private fun arrangeWithDatabases() = runTest {
+        coEvery { service.get() }.returns(Result.success(config))
+        coEvery { service.listDatabasesByName() } answers { Result.success(dbConfigs.allByName) }
+        coEvery { service.getDefaultDatabase() } returns(Result.success(dbConfigs.bar))
     }
 
     private fun arrangeWithoutDatabasesCase() {
-        every { service.get() }.returns(Configuration.DEFAULT)
-        every { service.listDatabasesByName() } answers { emptyMap() }
-        every { service.getDefaultDatabase() } returns null
+        coEvery { service.get() }.returns(Result.success(Configuration.DEFAULT))
+        coEvery { service.listDatabasesByName() } answers { Result.success(emptyMap()) }
+        coEvery { service.getDefaultDatabase() } returns Result.success(null)
     }
 }

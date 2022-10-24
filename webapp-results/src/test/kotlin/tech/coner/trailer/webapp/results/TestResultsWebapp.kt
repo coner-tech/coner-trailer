@@ -11,13 +11,13 @@ import kotlinx.coroutines.runBlocking
 import org.kodein.di.bindSingleton
 import org.kodein.di.ktor.di
 
-fun testResultsWebapp(fn: suspend (HttpClient) -> Unit) = testApplication {
+fun testResultsWebapp(exploratory: Boolean = true, fn: suspend (HttpClient) -> Unit) = testApplication {
     application {
         di {
             import(exploratoryModule)
             bindSingleton { ::HelloService }
         }
-        resultsWebappModule()
+        resultsWebappModule(exploratory = exploratory)
     }
     createClient {
         install(ContentNegotiation) {

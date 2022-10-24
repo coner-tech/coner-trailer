@@ -3,6 +3,7 @@ package tech.coner.trailer.io.repository
 import assertk.assertThat
 import assertk.assertions.exists
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import assertk.assertions.isSameAs
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.nio.file.Path
@@ -52,8 +53,11 @@ class ConfigurationRepositoryTest {
                 testDatabase.name to testDatabase
             ),
             defaultDatabaseName = testDatabase.name,
-            webappResults = WebappConfiguration(
-                port = 8080
+            webapps = Configuration.Webapps(
+                results = WebappConfiguration(
+                    port = 8080,
+                    exploratory = false
+                )
             )
         )
     }
@@ -120,10 +124,10 @@ class ConfigurationRepositoryTest {
         }
 
         @Test
-        fun `When configuration does not exist, it should return default configuration`() {
+        fun `When configuration does not exist, it should return null`() {
             val actual = repository.load()
 
-            assertThat(actual).isSameAs(Configuration.DEFAULT)
+            assertThat(actual).isNull()
         }
     }
 
@@ -169,7 +173,9 @@ private fun Configuration.toJson() = """
             ${databases.map { it.toJson() }.joinToString()}
         },
         "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
-        "webappResults": ${webappResults?.let { """{ "port": ${it.port} }""" } ?: "null"}
+        "webapps": ${webapps?.let { """{
+            | "results": ${it.results?.let { results -> """{ "port": ${ results.port} }""" } ?: "null"} }}
+            | }""".trimMargin()} ?: "null" }
     }
 """.trimIndent()
 

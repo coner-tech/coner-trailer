@@ -9,15 +9,12 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.ContentType.Application.Json
 import io.ktor.http.ContentType.Text.Html
 import io.ktor.http.ContentType.Text.Plain
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.parametersOf
-import io.ktor.util.reflect.typeInfo
-import kotlinx.html.InputType
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.assertk.ktor.bodyAsText
@@ -66,6 +63,15 @@ class HelloResourcesTest {
                 status().isEqualTo(HttpStatusCode.BadRequest)
                 hasContentTypeIgnoringParams(Plain)
                 bodyAsText().contains("query parameter", "excessive", ignoreCase = true)
+            }
+        }
+
+        @Test
+        fun `It should be not found when exploratory disabled`() = testResultsWebapp(exploratory = false) { client ->
+            val actual = client.get(url)
+
+            assertThat(actual).all {
+                status().isEqualTo(HttpStatusCode.NotFound)
             }
         }
     }
@@ -125,6 +131,18 @@ class HelloResourcesTest {
                 bodyAsText().contains("object", "excessive", ignoreCase = true)
             }
         }
+
+        @Test
+        fun `It should be not found when exploratory disabled`() = testResultsWebapp(exploratory = false) { client ->
+            val actual = client.post(url) {
+                contentType(Json)
+                setBody(HelloResource("to"))
+            }
+
+            assertThat(actual).all {
+                status().isEqualTo(HttpStatusCode.NotFound)
+            }
+        }
     }
 
     @Nested
@@ -163,6 +181,14 @@ class HelloResourcesTest {
                 bodyAsText().contains("parameters", "excessive", ignoreCase = true)
             }
         }
-    }
 
+        @Test
+        fun `It should be not found when exploratory disabled`() = testResultsWebapp(exploratory = false) { client ->
+            val actual = client.submitForm(url, parametersOf("to", "hello"))
+
+            assertThat(actual).all {
+                status().isEqualTo(HttpStatusCode.NotFound)
+            }
+        }
+    }
 }

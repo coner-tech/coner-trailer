@@ -6,6 +6,8 @@ import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -73,11 +75,11 @@ class ConfigDatabaseRemoveCommandTest : DIAware {
         val newConfig = config.copy(
             databases = emptyMap()
         )
-        every { service.removeDatabase(any()) } returns Result.success(newConfig)
+        coEvery { service.removeDatabase(any()) } returns Result.success(newConfig)
 
         command.parse(arrayOf(dbConfig.name))
 
-        verifySequence {
+        coVerifySequence {
             service.removeDatabase(dbConfig.name)
         }
         assertThat(testConsole).all {
@@ -89,13 +91,13 @@ class ConfigDatabaseRemoveCommandTest : DIAware {
     @Test
     fun `When given invalid name option it should fail`() {
         val exception = Exception("No database found with name")
-        every { service.removeDatabase(any()) } returns Result.failure(exception)
+        coEvery { service.removeDatabase(any()) } returns Result.failure(exception)
 
         assertThrows<ProgramResult> {
             command.parse(arrayOf("baz"))
         }
 
-        verifySequence {
+        coVerifySequence {
             service.removeDatabase("baz")
         }
         assertThat(testConsole).all {

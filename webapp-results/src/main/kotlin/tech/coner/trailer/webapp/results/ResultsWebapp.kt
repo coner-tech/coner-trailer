@@ -29,12 +29,12 @@ fun resultsWebapp(di: DI, config: WebappConfiguration) {
             import(exploratoryModule)
             // scaffold
         }
-        resultsWebappModule()
+        resultsWebappModule(exploratory = config.exploratory)
     }
         .start(wait = true)
 }
 
-fun Application.resultsWebappModule() {
+fun Application.resultsWebappModule(exploratory: Boolean) {
     install(Resources)
     install(Webjars) {
         path = "assets"
@@ -49,6 +49,8 @@ fun Application.resultsWebappModule() {
     }
     routing {
         staticAssetRoutes()
-        exploratoryRoutes()
+        if (exploratory) {
+            exploratoryRoutes()
+        }
     }
 }

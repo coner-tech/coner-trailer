@@ -3,17 +3,26 @@ package tech.coner.trailer.io
 data class Configuration(
     val databases: Map<String, DatabaseConfiguration>,
     val defaultDatabaseName: String?,
-    val webappResults: WebappConfiguration?
+    val webapps: Webapps?
 ) {
     companion object {
         val DEFAULT = Configuration(
             databases = emptyMap(),
             defaultDatabaseName = null,
-            webappResults = WebappConfiguration(
-                port = 8080
+            webapps = Webapps(
+                results = WebappConfiguration(
+                    port = 8080,
+                    exploratory = false
+                )
             )
         )
     }
 
-    fun requireWebappResults() = requireNotNull(webappResults)
+    data class Webapps(
+        val results: WebappConfiguration?
+    ) {
+        fun requireResults() = requireNotNull(results)
+    }
+
+    fun requireWebapps() = requireNotNull(webapps)
 }
