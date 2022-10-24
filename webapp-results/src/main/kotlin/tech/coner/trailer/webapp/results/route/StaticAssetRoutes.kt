@@ -1,11 +1,12 @@
-package exploratory.route
+package tech.coner.trailer.webapp.results.route
 
 import io.ktor.server.http.content.resource
 import io.ktor.server.http.content.static
 import io.ktor.server.http.content.staticBasePackage
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.Routing
 
-fun Route.staticAssetRoutes() {
+fun Routing.staticAssetRoutes() {
     static("/assets") {
         staticBasePackage = "tech/coner/trailer/webapp/static"
         resource("coner-trailer.css")

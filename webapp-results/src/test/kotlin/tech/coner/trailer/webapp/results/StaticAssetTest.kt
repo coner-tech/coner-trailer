@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import io.ktor.client.request.get
+import io.ktor.client.utils.EmptyContent.status
 import io.ktor.http.ContentType
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.assertk.ktor.bodyAsText
@@ -14,7 +15,7 @@ import tech.coner.trailer.assertk.ktor.status
 class StaticAssetTest {
 
     @Test
-    fun `It should serve coner trailer stylesheet`() = testResultsWebapp {
+    fun `It should serve coner trailer stylesheet`() = testResultsWebapp { client ->
         val url = "/assets/coner-trailer.css"
 
         val actual = client.get(url)
@@ -27,7 +28,7 @@ class StaticAssetTest {
     }
 
     @Test
-    fun `It should serve webjar bootstrap js`() = testResultsWebapp {
+    fun `It should serve webjar bootstrap js`() = testResultsWebapp { client ->
         val url = "/assets/bootstrap/bootstrap.bundle.min.js"
 
         val actual = client.get(url)

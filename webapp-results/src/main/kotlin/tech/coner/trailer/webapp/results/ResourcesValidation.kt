@@ -5,19 +5,16 @@ import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.Hook
 import io.ktor.server.application.call
 import io.ktor.server.application.createRouteScopedPlugin
-import io.ktor.server.plugins.requestvalidation.RequestValidationConfig
 import io.ktor.util.AttributeKey
 import io.ktor.util.pipeline.PipelinePhase
 
-val ResourcesValidation = createRouteScopedPlugin<RequestValidationConfig>(
-    "ResourcesValidation",
-    ::RequestValidationConfig
+val ResourcesValidation = createRouteScopedPlugin(
+    "ResourcesValidation"
 ) {
     on(ResourcesValidationHook) { call ->
         println("on ResourcesValidationHook handler")
         try {
-            val resourceInstance = call.attributes[AttributeKey("ResourceInstance")]
-            println(resourceInstance)
+            call.attributes[AttributeKey("ResourceInstance")]
         } catch (_: IllegalStateException) {
             // attr not found
         }
@@ -32,7 +29,6 @@ object ResourcesValidationHook : Hook<suspend (ApplicationCall) -> Unit> {
         pipeline: ApplicationCallPipeline,
         handler: suspend (ApplicationCall) -> Unit
     ) {
-        println("ResourcesValidationHook.install")
         pipeline.insertPhaseAfter(ApplicationCallPipeline.Plugins, resourcesValidationPhase)
         pipeline.intercept(resourcesValidationPhase) { handler(call) }
     }

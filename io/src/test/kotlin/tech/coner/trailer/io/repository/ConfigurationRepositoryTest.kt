@@ -169,9 +169,7 @@ private fun Configuration.toJson() = """
             ${databases.map { it.toJson() }.joinToString()}
         },
         "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
-        "webappResults": {
-            "port": ${webappResults.port} 
-        }
+        "webappResults": ${webappResults?.let { """{ "port": ${it.port} }""" } ?: "null"}
     }
 """.trimIndent()
 

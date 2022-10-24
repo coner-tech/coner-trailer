@@ -20,7 +20,7 @@ class WebappResultsCommand(
 
     override suspend fun coRun() {
         val config = config?.mapToIo()
-            ?: global.requireEnvironment().requireConfiguration().webappResults
+            ?: global.requireEnvironment().requireConfiguration().requireWebappResults()
         resultsWebapp(di, config)
     }
 }

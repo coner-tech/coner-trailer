@@ -1,32 +1,28 @@
 package tech.coner.trailer.webapp.results
 
-import exploratory.resource.staticAssetRoutes
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.resources.Resources
-import io.ktor.server.routing.routing
+import exploratory.exploratoryModule
+import exploratory.service.HelloService
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import io.ktor.server.webjars.Webjars
+import kotlinx.coroutines.runBlocking
+import org.kodein.di.bindSingleton
 import org.kodein.di.ktor.di
 
-fun testResultsWebapp(fn: suspend ApplicationTestBuilder.() -> Unit) = testApplication {
+fun testResultsWebapp(fn: suspend (HttpClient) -> Unit) = testApplication {
     application {
-        scaffoldResultsWebapp()
+        di {
+            import(exploratoryModule)
+            bindSingleton { ::HelloService }
+        }
+        resultsWebappModule()
     }
-    fn()
-}
-
-fun Application.scaffoldResultsWebapp() {
-    di {
-        // scaffold
+    createClient {
+        install(ContentNegotiation) {
+            json()
+        }
     }
-    install(Resources)
-    install(Webjars) {
-        path = "assets"
-    }
-    routing {
-        staticAssetRoutes()
-        // scaffold
-    }
+        .use { runBlocking { fn(it) } }
 }

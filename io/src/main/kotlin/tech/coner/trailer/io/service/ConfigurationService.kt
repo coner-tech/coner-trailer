@@ -17,6 +17,10 @@ class ConfigurationService(
 
     fun get(): Configuration {
         return repository.load()
+            .let {
+                if (it.webappResults == null) it.copy(webappResults = Configuration.DEFAULT.webappResults)
+                else it
+            }
     }
 
     fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> {

@@ -5,6 +5,7 @@ import io.ktor.server.html.Template
 import io.ktor.server.html.TemplatePlaceholder
 import io.ktor.server.html.insert
 import kotlinx.html.FlowContent
+import kotlinx.html.HEAD
 import kotlinx.html.HTML
 import kotlinx.html.LinkRel
 import kotlinx.html.META
@@ -24,21 +25,23 @@ class RootTemplate<CT : Template<FlowContent>>(
 ) : Template<HTML> {
     val title = Placeholder<TITLE>()
     val additionalMeta = Placeholder<META>()
+    val additionalHead = Placeholder<HEAD>()
     val nav = Placeholder<NAV>()
     val content = TemplatePlaceholder<CT>()
     override fun HTML.apply() {
         head {
             meta(name = "viewport", content = "width=device-width, initial-scale=1") {
-                script(src = "/assets/bootstrap/bootstrap.bundle.min.js") {
-                    integrity = "sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                    attributes["crossorigin"] = "anonymous"
-                }
-                link(href = "/assets/coner-trailer.css", rel = LinkRel.stylesheet, type = StyleType.textCss)
                 insert(additionalMeta)
             }
+            script(src = "/assets/bootstrap/bootstrap.bundle.min.js") {
+                integrity = "sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                attributes["crossorigin"] = "anonymous"
+            }
+            link(href = "/assets/coner-trailer.css", rel = LinkRel.stylesheet, type = StyleType.textCss)
             title {
                 insert(title)
             }
+            insert(additionalHead)
         }
         body {
             classes = setOf("container-xl")
