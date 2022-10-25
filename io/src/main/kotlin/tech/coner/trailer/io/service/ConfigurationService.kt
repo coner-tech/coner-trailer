@@ -56,11 +56,11 @@ class ConfigurationService(
                 .apply { put(param.name, newDbConfig) },
             defaultDatabaseName = if (param.default) param.name else config.defaultDatabaseName
         )
-        return put(config)
+        return put(newConfig)
             .map { ConfigAddDatabaseOutcome(configuration = newConfig, addedDbConfig = newDbConfig) }
     }
 
-    suspend fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> {
+    suspend fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> = runSuspendCatching {
         val config = get().getOrThrow()
         val newDefaultDbConfig = config.databases[name]
             ?.copy(default = true)
@@ -75,8 +75,9 @@ class ConfigurationService(
                 },
             defaultDatabaseName = name
         )
-        return put(newConfig)
+        put(newConfig)
             .map { ConfigSetDefaultDatabaseOutcome(it, newDefaultDbConfig) }
+            .getOrThrow()
     }
 
     suspend fun listDatabases(): Result<List<DatabaseConfiguration>> = runSuspendCatching {

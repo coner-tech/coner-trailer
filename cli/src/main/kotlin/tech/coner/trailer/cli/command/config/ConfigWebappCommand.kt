@@ -31,10 +31,9 @@ class ConfigWebappCommand(
 
     private val webapp by option().enum<Webapp>().required()
     private val config by option().groupChoice(
-        "set" to ConfigureWebappOptions.Set(), "unset" to ConfigureWebappOptions.Unset
+        "set" to ConfigureWebappOptions.Set(),
+        "unset" to ConfigureWebappOptions.Unset
     )
-    private val unset by option().flag()
-
     sealed class ConfigureWebappOptions(name: String) : OptionGroup(name) {
 
         class Set : ConfigureWebappOptions("set") {

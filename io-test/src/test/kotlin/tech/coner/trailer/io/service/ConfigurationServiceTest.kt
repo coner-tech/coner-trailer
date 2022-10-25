@@ -10,8 +10,10 @@ import io.mockk.justRun
 import io.mockk.slot
 import io.mockk.verifySequence
 import java.nio.file.Path
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -34,13 +36,13 @@ class ConfigurationServiceTest {
 
     @TempDir lateinit var root: Path
     @MockK lateinit var repository: ConfigurationRepository
-
-    private val mainThreadSurrogate = newSingleThreadContext("main")
+    lateinit var coroutineContext: CoroutineContext
 
     @BeforeEach
     fun before() {
+        coroutineContext = Dispatchers.Default + Job()
         service = ConfigurationService(
-            coroutineContext = mainThreadSurrogate + Job(),
+            coroutineContext = coroutineContext,
             repository = repository,
             cache = SimpleCache()
         )
@@ -48,7 +50,7 @@ class ConfigurationServiceTest {
 
     @AfterEach
     fun tearDown() {
-        Dispatchers.resetMain()
+        coroutineContext.cancel()
     }
 
     @Test
@@ -70,7 +72,7 @@ class ConfigurationServiceTest {
             check(config.databases["foo"]?.default == false) { "Prerequisite failed: foo database must not be default" }
             every { repository.load() } returns config
             val saveSlot = slot<Configuration>()
-            justRun { repository.save(capture(saveSlot)) }
+            every { repository.save(capture(saveSlot)) } answers { saveSlot.captured }
 
             val actual = service.setDefaultDatabase("foo")
 
@@ -131,12 +133,14 @@ class ConfigurationServiceTest {
 
         val actual = service.listDatabases()
 
-        assertThat(actual).isEqualTo(
-            listOf(
-                testConfigurations.testDatabaseConfigurations.bar,
-                testConfigurations.testDatabaseConfigurations.foo
+        assertThat(actual)
+            .isSuccess()
+            .isEqualTo(
+                listOf(
+                    testConfigurations.testDatabaseConfigurations.bar,
+                    testConfigurations.testDatabaseConfigurations.foo
+                )
             )
-        )
     }
 
     @Test
@@ -147,12 +151,14 @@ class ConfigurationServiceTest {
 
         val actual = service.listDatabasesByName()
 
-        assertThat(actual).isEqualTo(
-            mapOf(
-                testConfigurations.testDatabaseConfigurations.bar.let { it.name to it },
-                testConfigurations.testDatabaseConfigurations.foo.let { it.name to it }
+        assertThat(actual)
+            .isSuccess()
+            .isEqualTo(
+                mapOf(
+                    testConfigurations.testDatabaseConfigurations.bar.let { it.name to it },
+                    testConfigurations.testDatabaseConfigurations.foo.let { it.name to it }
+                )
             )
-        )
     }
 
     @Nested
@@ -170,7 +176,7 @@ class ConfigurationServiceTest {
             every { repository.load() } returns config
             check(config.databases.containsKey("foo")) { "Prerequisite failed: must contain foo database" }
             val saveSlot = slot<Configuration>()
-            justRun { repository.save(capture(saveSlot)) }
+            every { repository.save(capture(saveSlot)) } answers { saveSlot.captured }
 
             val actual = service.removeDatabase("foo")
 
@@ -194,7 +200,7 @@ class ConfigurationServiceTest {
                 config.databases["bar"]?.default == true && config.defaultDatabaseName == "bar"
             ) { "Prerequisite failed: bar database must be default" }
             val saveSlot = slot<Configuration>()
-            justRun { repository.save(capture(saveSlot)) }
+            every { repository.save(capture(saveSlot)) } answers { saveSlot.captured }
 
             val actual = service.removeDatabase("bar")
 
@@ -237,6 +243,7 @@ class ConfigurationServiceTest {
             val actual = service.getDefaultDatabase()
 
             assertThat(actual)
+                .isSuccess()
                 .isNotNull()
                 .isSameAs(config.databases["bar"])
         }
@@ -247,7 +254,9 @@ class ConfigurationServiceTest {
 
             val actual = service.getDefaultDatabase()
 
-            assertThat(actual).isNull()
+            assertThat(actual)
+                .isSuccess()
+                .isNull()
         }
     }
 }
