@@ -21,17 +21,5 @@ class WebappCommand(
     name = "webapp",
     help = "Start a webapp"
 ) {
-
-    private val webapp by option().enum<Webapp>().required()
-    private val config by WebappConfigurationOptions().cooccurring()
-
-    private val service: ConfigurationService by instance()
-
-    override suspend fun coRun() {
-        val config = config?.mapToIo()
-            ?: service.getWebappConfiguration(webapp).getOrThrow()
-        when (webapp) {
-            Webapp.RESULTS -> resultsWebapp(di, config)
-        }
-    }
+    override suspend fun coRun() = Unit
 }

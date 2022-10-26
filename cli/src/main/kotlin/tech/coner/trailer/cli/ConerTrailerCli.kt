@@ -58,7 +58,11 @@ object ConerTrailerCli {
                         ConfigDatabaseSnoozleMigrateCommand(di, global)
                     )
                 ),
-                ConfigWebappCommand(di, global)
+                ConfigWebappCommand(di, global).subcommands(
+                    ConfigWebappGetCommand(di, global),
+                    ConfigWebappSetCommand(di, global),
+                    ConfigWebappUnsetCommand(di, global)
+                )
             ),
             ClubCommand(di, global).subcommands(
                 ClubGetCommand(di, global),

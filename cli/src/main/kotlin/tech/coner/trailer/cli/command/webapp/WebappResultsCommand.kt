@@ -20,9 +20,10 @@ class WebappResultsCommand(
     help = "Start the results web server"
 ) {
 
-    private val config by WebappConfigurationOptions().cooccurring()
-
+    override val diContext = diContextEnvironment()
     private val service: ConfigurationService by instance()
+
+    private val config by WebappConfigurationOptions().cooccurring()
 
     override suspend fun coRun() {
         val config = config?.mapToIo()

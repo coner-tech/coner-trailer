@@ -35,10 +35,10 @@ class ConfigurationService(
         }
     }
 
-    suspend fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> {
+    suspend fun addDatabase(param: ConfigAddDatabaseParam): Result<ConfigAddDatabaseOutcome> = runSuspendCatching {
         val config = get().getOrThrow()
         if (config.databases.containsKey(param.name)) {
-            return Result.failure(AlreadyExistsException("Database with name already exists"))
+            throw AlreadyExistsException("Database with name already exists")
         }
         val newDbConfig = DatabaseConfiguration(
             name = param.name,
@@ -56,15 +56,16 @@ class ConfigurationService(
                 .apply { put(param.name, newDbConfig) },
             defaultDatabaseName = if (param.default) param.name else config.defaultDatabaseName
         )
-        return put(newConfig)
+        put(newConfig)
             .map { ConfigAddDatabaseOutcome(configuration = newConfig, addedDbConfig = newDbConfig) }
+            .getOrThrow()
     }
 
     suspend fun setDefaultDatabase(name: String): Result<ConfigSetDefaultDatabaseOutcome> = runSuspendCatching {
         val config = get().getOrThrow()
         val newDefaultDbConfig = config.databases[name]
             ?.copy(default = true)
-            ?: return Result.failure(NotFoundException("Database not found with name"))
+            ?: throw NotFoundException("Database not found with name")
         val newConfig = config.copy(
             databases = config.databases
                 .mapValues {

@@ -8,6 +8,7 @@ import org.kodein.di.*
 import tech.coner.trailer.cli.di.CliCoroutineScope
 import tech.coner.trailer.di.DataSessionHolder
 import kotlin.coroutines.CoroutineContext
+import tech.coner.trailer.di.EnvironmentHolder
 
 abstract class BaseCommand(
     di: DI,
@@ -37,6 +38,11 @@ abstract class BaseCommand(
     }
 
     abstract suspend fun coRun()
+
+    fun <C> C.diContextEnvironment(): DIContext<EnvironmentHolder>
+            where C : BaseCommand {
+        return diContext { global.requireEnvironment() }
+    }
 
     fun <C> C.diContextDataSession(): DIContext<DataSessionHolder>
             where C : BaseCommand {
