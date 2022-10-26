@@ -17,6 +17,7 @@ import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.mockkConstraintModule
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.di.mockkServiceModule
+import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
 
@@ -24,7 +25,9 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
 {
     lateinit var command: C
 
-    override val di = DI.lazy {
+    override val di = DI.lazy() {
+        fullContainerTreeOnError = true
+        fullDescriptionOnError = true
         importAll(
             mockkIoModule,
             mockkConstraintModule,
@@ -44,11 +47,13 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     @TempDir lateinit var root: Path
 
     abstract val setupGlobal: GlobalModel.() -> Unit
+    lateinit var tempEnvironmentTestConfigurations: TestConfigurations
+    lateinit var tempEnvironmentConfiguration: Configuration
     val setupGlobalWithTempEnvironment: GlobalModel.() -> Unit = {
-        val testConfigs = TestConfigurations(root)
-        val config = testConfigs.testConfiguration()
-        val dbConfig = testConfigs.testDatabaseConfigurations.all.single { it.default }
-        environment = TestEnvironments.temporary(di, root, config, dbConfig)
+        tempEnvironmentTestConfigurations = TestConfigurations(root)
+        tempEnvironmentConfiguration = tempEnvironmentTestConfigurations.testConfiguration()
+        val dbConfig = tempEnvironmentTestConfigurations.testDatabaseConfigurations.all.single { it.default }
+        environment = TestEnvironments.temporary(di, root, tempEnvironmentConfiguration, dbConfig)
     }
 
     @BeforeEach

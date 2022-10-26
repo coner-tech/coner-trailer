@@ -2,73 +2,31 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import java.nio.file.Path
 import kotlin.io.path.createFile
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
 
-@ExtendWith(MockKExtension::class)
-class EventAddCommandTest : DIAware {
-
-    lateinit var command: EventAddCommand
-
-    override val di: DI = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
-
-    lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
-
-    @TempDir lateinit var root: Path
-
-    @MockK lateinit var view: EventView
+class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
 
     private val service: EventService by instance()
     private val policyService: PolicyService by instance()
     private val constraints: EventPersistConstraints by instance()
+    private val view: EventView by instance()
 
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        val testConfigs = TestConfigurations(root)
-        global = GlobalModel(
-            environment = TestEnvironments.temporary(
-                di = di,
-                root = root,
-                configuration = testConfigs.testConfiguration(),
-                databaseConfiguration = testConfigs.testDatabaseConfigurations.foo
-            )
-        )
-        command = EventAddCommand(di, global)
-            .context {
-                console = testConsole
-            }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventAddCommand(di, global)
 
     @Test
     fun `It should create event`() {

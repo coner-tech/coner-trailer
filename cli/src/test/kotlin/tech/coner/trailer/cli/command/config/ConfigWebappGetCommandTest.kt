@@ -33,7 +33,7 @@ class ConfigWebappGetCommandTest : BaseConfigCommandTest<ConfigWebappGetCommand>
         val viewRender = "view rendered"
         every { view.render(any()) } returns viewRender
 
-        command.parse(arrayOf("--webapp", "results"))
+        command.parse(arrayOf("results"))
 
         assertThat(testConsole).all {
             output().isEqualTo(viewRender)

@@ -8,7 +8,6 @@ import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.slot
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.instance

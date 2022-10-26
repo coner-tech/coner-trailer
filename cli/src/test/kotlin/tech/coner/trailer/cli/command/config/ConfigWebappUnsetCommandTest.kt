@@ -12,7 +12,6 @@ import org.kodein.di.instance
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.WebappConfigurationView
 import tech.coner.trailer.io.Webapp
 import tech.coner.trailer.io.service.ConfigurationService
 

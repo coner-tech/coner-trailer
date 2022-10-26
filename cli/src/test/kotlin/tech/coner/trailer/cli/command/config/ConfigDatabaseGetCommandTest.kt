@@ -5,68 +5,30 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.clikt.core.context
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
+import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
-import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestDatabaseConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.service.NotFoundException
-import java.nio.file.Path
-import java.util.*
 
-@ExtendWith(MockKExtension::class)
-class ConfigDatabaseGetCommandTest : DIAware {
-
-    lateinit var command: ConfigDatabaseGetCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkIoModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { global.requireEnvironment() }
+class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetCommand>() {
 
     private val service: ConfigurationService by instance()
-    @MockK lateinit var view: DatabaseConfigurationView
+    private val view: DatabaseConfigurationView by instance()
 
-    @TempDir lateinit var root: Path
-
-    lateinit var dbConfigs: TestDatabaseConfigurations
-    lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        val configs = TestConfigurations(root)
-        dbConfigs = configs.testDatabaseConfigurations
-        global = GlobalModel(
-            environment = TestEnvironments.temporary(di, root, configs.testConfiguration(), dbConfigs.foo)
-        )
-        command = ConfigDatabaseGetCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseGetCommand(di, global)
+    private val dbConfigs by lazy { tempEnvironmentTestConfigurations.testDatabaseConfigurations }
 
     @Test
     fun `When given valid name option it should get it`() {
