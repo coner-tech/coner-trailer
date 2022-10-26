@@ -29,7 +29,7 @@ class PolicyDeleteCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
     }
     override val diContext = diContext { command.diContext.value }
 

@@ -8,6 +8,8 @@ import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import java.nio.file.Path
+import kotlin.io.path.createFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,8 +28,6 @@ import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
-import java.nio.file.Path
-import kotlin.io.path.createFile
 
 @ExtendWith(MockKExtension::class)
 class EventAddCommandTest : DIAware {
@@ -36,7 +36,7 @@ class EventAddCommandTest : DIAware {
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bindInstance { view }
     }
     override val diContext = diContext { command.diContext.value }

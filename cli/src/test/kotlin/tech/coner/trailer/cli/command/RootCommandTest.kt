@@ -10,6 +10,9 @@ import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,9 +31,6 @@ import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
-import kotlinx.coroutines.test.runTest
 
 @ExtendWith(MockKExtension::class)
 class RootCommandTest : DIAware {
@@ -39,7 +39,7 @@ class RootCommandTest : DIAware {
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
             serviceArgumentSlot.captured = csa
             service

@@ -27,7 +27,7 @@ class ConfigWebappSetCommand(
     private val view: WebappConfigurationView by instance()
 
     private val webapp: Webapp by argument().enum()
-    private val port: Int by WebappConfigurationOptions().port()
+    private val port: Int by WebappConfigurationOptions(di).port()
 
     override suspend fun coRun() {
         val newWebappConfig = WebappConfiguration(

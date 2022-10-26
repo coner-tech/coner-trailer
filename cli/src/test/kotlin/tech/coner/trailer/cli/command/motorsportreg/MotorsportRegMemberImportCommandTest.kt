@@ -28,7 +28,7 @@ class MotorsportRegMemberImportCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         import(mockkMotorsportRegApiModule)
         bindInstance { view }
     }

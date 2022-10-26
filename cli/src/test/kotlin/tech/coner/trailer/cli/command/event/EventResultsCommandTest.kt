@@ -45,7 +45,7 @@ class EventResultsCommandTest : DIAware {
     override val di = DI.lazy {
         import(testCliktModule)
         import(mockkEventResultsFixture.module)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bindSingleton<OverallEventResultsRenderer<String, *>>(Format.JSON) { jsonOverallEventResultsRenderer }
         bindSingleton<OverallEventResultsRenderer<String, *>>(Format.TEXT) { textOverallEventResultsRenderer }
         bindSingleton<ClazzEventResultsRenderer<String, *>>(Format.JSON) { jsonGroupEventResultsRenderer }

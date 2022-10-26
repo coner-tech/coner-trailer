@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,7 +33,6 @@ import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.render.RunRenderer
-import java.util.*
 
 @ExtendWith(MockKExtension::class)
 class EventCheckCommandTest : DIAware,
@@ -44,7 +44,7 @@ class EventCheckCommandTest : DIAware,
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
         bindFactory { _: Format -> runRenderer }

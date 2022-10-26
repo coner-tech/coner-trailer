@@ -28,7 +28,7 @@ class SeasonPointsCalculatorSetCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bindInstance { view }
         bindInstance { mapper }
     }

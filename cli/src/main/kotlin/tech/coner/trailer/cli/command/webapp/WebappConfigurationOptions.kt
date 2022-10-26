@@ -6,13 +6,19 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.int
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.instance
 import tech.coner.trailer.cli.util.clikt.handle
 import tech.coner.trailer.io.WebappConfiguration
 import tech.coner.trailer.io.constraint.PortConstraints
 
 class WebappConfigurationOptions(
-    private val portConstraint: PortConstraints
-) : OptionGroup() {
+    override val di: DI
+) : OptionGroup(),
+    DIAware {
+
+    private val portConstraints: PortConstraints by instance()
 
     private val port by port()
     private val exploratory by option(hidden = true).flag()
@@ -25,5 +31,5 @@ class WebappConfigurationOptions(
     fun port() = option()
         .int()
         .required()
-        .validate { handle(portConstraint.invoke(it)) }
+        .validate { handle(portConstraints.invoke(it)) }
 }

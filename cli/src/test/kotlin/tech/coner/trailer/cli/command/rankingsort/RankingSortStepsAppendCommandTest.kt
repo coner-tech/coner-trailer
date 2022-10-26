@@ -27,7 +27,7 @@ class RankingSortStepsAppendCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkServiceModule())
+        import(mockkServiceModule)
         bindInstance { view }
     }
     override val diContext = diContext { command.diContext.value }
