@@ -815,6 +815,16 @@
   "name":"tech.coner.trailer.io.Configuration$Companion"
 },
 {
+  "name":"tech.coner.trailer.io.Configuration$Webapps",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, 
+    {"name":"getResults","parameterTypes":[] }
+  ]
+},
+{
   "name":"tech.coner.trailer.io.DatabaseConfiguration",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
@@ -833,6 +843,7 @@
   "queryAllDeclaredConstructors":true,
   "methods":[
     {"name":"<init>","parameterTypes":["int"] }, 
+    {"name":"<init>","parameterTypes":["int","boolean"] }, 
     {"name":"getPort","parameterTypes":[] }
   ]
 },
