@@ -8,7 +8,6 @@ import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verifySequence
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -19,7 +18,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
@@ -32,7 +31,7 @@ class EventGetCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { view }
     }
     override val diContext = diContext { command.diContext.value }

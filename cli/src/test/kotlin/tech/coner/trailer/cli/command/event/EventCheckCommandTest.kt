@@ -27,7 +27,7 @@ import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.Format
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
@@ -44,7 +44,7 @@ class EventCheckCommandTest : DIAware,
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { registrationTableView }
         bindInstance { peopleMapKeyTableView }
         bindFactory { _: Format -> runRenderer }

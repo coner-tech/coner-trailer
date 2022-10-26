@@ -1,8 +1,6 @@
 package tech.coner.trailer.cli.command.config
 
-import com.github.ajalt.clikt.parameters.groups.cooccurring
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.enum
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -28,8 +26,8 @@ class ConfigWebappSetCommand(
     private val service: ConfigurationService by instance()
     private val view: WebappConfigurationView by instance()
 
-    private val webapp by option().enum<Webapp>().required()
-    private val port by WebappConfigurationOptions().port()
+    private val webapp: Webapp by argument().enum()
+    private val port: Int by WebappConfigurationOptions().port()
 
     override suspend fun coRun() {
         val newWebappConfig = WebappConfiguration(

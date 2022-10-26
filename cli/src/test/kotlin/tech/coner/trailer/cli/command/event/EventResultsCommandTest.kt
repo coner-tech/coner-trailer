@@ -19,7 +19,7 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.MockkEventResultsFixture
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.OverallEventResults
 import tech.coner.trailer.io.TestEnvironments
@@ -45,7 +45,7 @@ class EventResultsCommandTest : DIAware {
     override val di = DI.lazy {
         import(testCliktModule)
         import(mockkEventResultsFixture.module)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindSingleton<OverallEventResultsRenderer<String, *>>(Format.JSON) { jsonOverallEventResultsRenderer }
         bindSingleton<OverallEventResultsRenderer<String, *>>(Format.TEXT) { textOverallEventResultsRenderer }
         bindSingleton<ClazzEventResultsRenderer<String, *>>(Format.JSON) { jsonGroupEventResultsRenderer }

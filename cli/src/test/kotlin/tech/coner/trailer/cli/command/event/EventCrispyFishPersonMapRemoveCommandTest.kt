@@ -21,7 +21,7 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
@@ -39,7 +39,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : DIAware,
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { view }
     }
     override val diContext = diContext { command.diContext.value }

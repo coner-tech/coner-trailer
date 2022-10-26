@@ -44,9 +44,8 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
         val viewRender = "view render"
         every { view.render(any()) } returns viewRender
 
-
         command.parse(arrayOf(
-            "--webapp", "results",
+            "results",
             "--port", "${newWebappConfig.port}"
         ))
 

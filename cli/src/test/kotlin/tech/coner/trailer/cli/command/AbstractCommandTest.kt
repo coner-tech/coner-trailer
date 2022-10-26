@@ -14,7 +14,8 @@ import org.kodein.di.DIAware
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.di.mockkViewModule
 import tech.coner.trailer.cli.di.testCliktModule
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkConstraintModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
@@ -26,7 +27,8 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     override val di = DI.lazy {
         importAll(
             mockkIoModule,
-            mockkDatabaseModule(),
+            mockkConstraintModule,
+            mockkServiceModule(),
             testCliktModule,
             mockkViewModule
         )

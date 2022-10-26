@@ -15,7 +15,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventPointsCalculatorView
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventPointsCalculatorService
 import tech.coner.trailer.seasonpoints.TestEventPointsCalculators
@@ -27,7 +27,7 @@ class EventPointsCalculatorGetCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { view }
     }
     override val diContext = diContext { command.diContext.value }

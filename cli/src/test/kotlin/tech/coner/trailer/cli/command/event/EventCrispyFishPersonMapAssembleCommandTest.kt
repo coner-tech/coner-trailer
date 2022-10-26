@@ -20,7 +20,7 @@ import tech.coner.trailer.cli.view.PersonView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.crispyfish.TestRegistrations
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
@@ -38,7 +38,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { CrispyFishRegistrationView() }
         bindInstance { PersonView(testConsole) }
     }

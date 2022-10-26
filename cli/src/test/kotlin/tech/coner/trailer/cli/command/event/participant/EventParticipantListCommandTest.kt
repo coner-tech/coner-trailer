@@ -24,7 +24,7 @@ import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.Format
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
@@ -40,7 +40,7 @@ class EventParticipantListCommandTest : DIAware,
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindFactory { _: Format -> renderer }
     }
     override val diContext = diContext { command.diContext.value }

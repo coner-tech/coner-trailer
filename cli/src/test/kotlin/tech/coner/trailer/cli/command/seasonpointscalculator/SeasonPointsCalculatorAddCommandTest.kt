@@ -15,7 +15,7 @@ import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.RankingSortService
@@ -31,7 +31,7 @@ class SeasonPointsCalculatorAddCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bindInstance { mapper }
         bindInstance { view }
     }

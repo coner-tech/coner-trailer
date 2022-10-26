@@ -23,7 +23,7 @@ import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
@@ -39,7 +39,7 @@ class RootCommandTest : DIAware {
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
             serviceArgumentSlot.captured = csa
             service

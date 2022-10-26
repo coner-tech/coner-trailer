@@ -17,7 +17,7 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.MotorsportRegMemberTableView
 import tech.coner.trailer.client.motorsportreg.model.Member
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.di.mockkMotorsportRegApiModule
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.MotorsportRegMemberService
@@ -29,7 +29,7 @@ class MotorsportRegMemberListCommandTest : DIAware {
 
     override val di = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule())
         import(mockkMotorsportRegApiModule)
         bindInstance { view }
     }

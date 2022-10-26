@@ -6,9 +6,13 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.int
+import tech.coner.trailer.cli.util.clikt.handle
 import tech.coner.trailer.io.WebappConfiguration
+import tech.coner.trailer.io.constraint.PortConstraints
 
-class WebappConfigurationOptions : OptionGroup() {
+class WebappConfigurationOptions(
+    private val portConstraint: PortConstraints
+) : OptionGroup() {
 
     private val port by port()
     private val exploratory by option(hidden = true).flag()
@@ -21,4 +25,5 @@ class WebappConfigurationOptions : OptionGroup() {
     fun port() = option()
         .int()
         .required()
+        .validate { handle(portConstraint.invoke(it)) }
 }

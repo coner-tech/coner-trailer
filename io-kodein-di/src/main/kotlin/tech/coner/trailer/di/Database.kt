@@ -15,6 +15,7 @@ import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier
 
 val databaseModule = DI.Module("coner.trailer.io.database") {
+    TODO("decompose service/constraint/snoozle/mapper modules")
     bind {
         scoped(EnvironmentScope).singleton {
             ConerTrailerDatabase(
@@ -57,7 +58,6 @@ val databaseModule = DI.Module("coner.trailer.io.database") {
         scoped(DataSessionScope).singleton {
             EventPointsCalculatorPersistConstraints(
                 resource = instance(),
-                mapper = instance()
             )
         }
     }
