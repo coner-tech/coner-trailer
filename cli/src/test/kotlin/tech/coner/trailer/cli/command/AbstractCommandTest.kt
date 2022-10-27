@@ -12,6 +12,7 @@ import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.di.mockkRendererModule
 import tech.coner.trailer.cli.di.mockkViewModule
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.di.mockkConstraintModule
@@ -25,7 +26,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
 {
     lateinit var command: C
 
-    override val di = DI.lazy() {
+    override val di = DI.lazy {
         fullContainerTreeOnError = true
         fullDescriptionOnError = true
         importAll(
@@ -33,7 +34,8 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
             mockkConstraintModule,
             mockkServiceModule,
             testCliktModule,
-            mockkViewModule
+            mockkViewModule,
+            mockkRendererModule
         )
     }
 

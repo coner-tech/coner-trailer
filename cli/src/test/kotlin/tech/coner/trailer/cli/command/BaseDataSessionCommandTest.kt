@@ -7,6 +7,8 @@ import tech.coner.trailer.di.mockkSnoozleModule
 
 abstract class BaseDataSessionCommandTest<C : BaseCommand> : AbstractCommandTest<C>() {
     override val di = DI.lazy {
+        fullContainerTreeOnError = true
+        fullDescriptionOnError = true
         extend(super.di)
         import(mockkSnoozleModule)
     }
