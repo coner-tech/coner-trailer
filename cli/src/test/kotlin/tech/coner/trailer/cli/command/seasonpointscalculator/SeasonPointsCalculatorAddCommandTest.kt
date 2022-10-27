@@ -2,57 +2,31 @@ package tech.coner.trailer.cli.command.seasonpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
+import kotlinx.html.CommandType
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.bindSingleton
+import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.RankingSortService
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import tech.coner.trailer.seasonpoints.TestEventPointsCalculators
 import tech.coner.trailer.seasonpoints.TestRankingSorts
 import tech.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 
-@ExtendWith(MockKExtension::class)
-class SeasonPointsCalculatorAddCommandTest : DIAware {
-
-    lateinit var command: SeasonPointsCalculatorAddCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { mapper }
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class SeasonPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<SeasonPointsCalculatorAddCommand>() {
 
     private val rankingSortService: RankingSortService by instance()
     private val service: SeasonPointsCalculatorConfigurationService by instance()
-    @MockK lateinit var mapper: SeasonPointsCalculatorParameterMapper
-    @MockK lateinit var view: SeasonPointsCalculatorConfigurationView
+    private val mapper: SeasonPointsCalculatorParameterMapper by instance()
+    private val view: SeasonPointsCalculatorConfigurationView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = SeasonPointsCalculatorAddCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = SeasonPointsCalculatorAddCommand(di, global)
 
     @Test
     fun `It should create a season points calculator`() {

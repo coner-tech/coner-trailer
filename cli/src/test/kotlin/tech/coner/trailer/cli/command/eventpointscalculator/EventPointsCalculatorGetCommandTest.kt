@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventPointsCalculatorView
@@ -20,32 +21,12 @@ import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventPointsCalculatorService
 import tech.coner.trailer.seasonpoints.TestEventPointsCalculators
 
-@ExtendWith(MockKExtension::class)
-class EventPointsCalculatorGetCommandTest : DIAware {
-
-    lateinit var command: EventPointsCalculatorGetCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class EventPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<EventPointsCalculatorGetCommand>() {
 
     private val service: EventPointsCalculatorService by instance()
-    @MockK lateinit var view: EventPointsCalculatorView
+    private val view: EventPointsCalculatorView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = EventPointsCalculatorGetCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventPointsCalculatorGetCommand(di, global)
 
     @Test
     fun `It should get calculator by id`() {

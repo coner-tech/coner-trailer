@@ -2,53 +2,26 @@ package tech.coner.trailer.cli.command.person
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.TestPeople
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.PersonView
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.mapper.PersonMapper
 import tech.coner.trailer.io.service.PersonService
 
-@ExtendWith(MockKExtension::class)
-class PersonAddCommandTest : DIAware {
-
-    lateinit var command: PersonAddCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class PersonAddCommandTest : BaseDataSessionCommandTest<PersonAddCommand>() {
 
     private val service: PersonService by instance()
     private val mapper: PersonMapper by instance()
-    @MockK lateinit var view: PersonView
+    private val view: PersonView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = PersonAddCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = PersonAddCommand(di, global)
 
     @Test
     fun `It should add person`() {

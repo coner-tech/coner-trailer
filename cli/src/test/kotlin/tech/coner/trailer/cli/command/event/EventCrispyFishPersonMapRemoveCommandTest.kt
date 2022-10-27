@@ -2,70 +2,41 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerifySequence
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import java.nio.file.Paths
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
-import tech.coner.trailer.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.instance
+import tech.coner.trailer.Classing
+import tech.coner.trailer.Event
+import tech.coner.trailer.TestClasses
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestPeople
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
-class EventCrispyFishPersonMapRemoveCommandTest : DIAware,
-    CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Main + Job()
-
-    lateinit var command: EventCrispyFishPersonMapRemoveCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapRemoveCommand>() {
 
     private val service: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    @MockK lateinit var view: EventView
+    private val view: EventView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = EventCrispyFishPersonMapRemoveCommand(di, global)
-            .context { console = testConsole }
-    }
-
-    @AfterEach
-    fun after() {
-        cancel()
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventCrispyFishPersonMapRemoveCommand(di, global)
 
     @Test
     fun `It should remove a force person`(

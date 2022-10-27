@@ -2,50 +2,23 @@ package tech.coner.trailer.cli.command.seasonpointscalculator
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.instance
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import tech.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
 
-@ExtendWith(MockKExtension::class)
-class SeasonPointsCalculatorGetCommandTest : DIAware {
-
-    lateinit var command: SeasonPointsCalculatorGetCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPointsCalculatorGetCommand>() {
 
     private val service: SeasonPointsCalculatorConfigurationService by instance()
-    @MockK lateinit var view: SeasonPointsCalculatorConfigurationView
+    private val view: SeasonPointsCalculatorConfigurationView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = SeasonPointsCalculatorGetCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = SeasonPointsCalculatorGetCommand(di, global)
 
     @Test
     fun `It should get by id`() {

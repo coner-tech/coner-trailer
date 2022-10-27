@@ -30,44 +30,21 @@ import java.nio.file.Path
 import java.time.LocalDate
 import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 
 @ExtendWith(MockKExtension::class)
-class EventSetCommandTest : DIAware,
-    CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Main + Job()
-
-    lateinit var command: EventSetCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
+class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
 
     private val service: EventService by instance()
-    @MockK lateinit var view: EventView
+    private val view: EventView by instance()
 
-    @TempDir lateinit var root: Path
-    lateinit var crispyFish: Path
+    private lateinit var crispyFish: Path
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
+    override fun createCommand(di: DI, global: GlobalModel) = EventSetCommand(di, global)
 
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        crispyFish = root.resolve("crispy-fish").createDirectory()
-        command = EventSetCommand(di, global)
-            .context { console = testConsole }
-    }
-
-    @AfterEach
-    fun after() {
-        cancel()
+    override fun postSetup() {
+        super.postSetup()
+        crispyFish = global.requireEnvironment().requireDatabaseConfiguration().crispyFishDatabase
     }
 
     @Test
