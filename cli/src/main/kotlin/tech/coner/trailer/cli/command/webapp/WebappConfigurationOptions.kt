@@ -3,6 +3,7 @@ package tech.coner.trailer.cli.command.webapp
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
@@ -23,6 +24,11 @@ class WebappConfigurationOptions(
 
     fun exploratory() = option(hidden = true)
         .flag()
+
+    fun portRequired() = option()
+        .int()
+        .required()
+        .validate { handle(portConstraints.invoke(it)) }
 
     fun port() = option()
         .int()

@@ -8,6 +8,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
@@ -33,6 +34,7 @@ fun resultsWebapp(di: DI, config: WebappConfiguration) {
 }
 
 fun Application.resultsWebappModule(exploratory: Boolean) {
+    install(CallLogging)
     install(Resources)
     install(Webjars) {
         path = "assets"
