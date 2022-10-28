@@ -6,6 +6,12 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
+import kotlin.io.path.extension
+import kotlin.io.path.nameWithoutExtension
+import kotlin.io.path.readText
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -22,12 +28,6 @@ import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
-import java.nio.file.Files
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
-import kotlin.io.path.extension
-import kotlin.io.path.nameWithoutExtension
-import kotlin.io.path.readText
 
 class ConerTrailerCliIT {
 
@@ -346,6 +346,12 @@ class ConerTrailerCliIT {
             output().contains("CS 3 ")
             error().isEmpty()
         }
+    }
+
+    @Test
+    fun `It should start webapp results`() {
+
+        command.parse(appArgumentBuilder.webappResults(port = 0))
     }
 
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)

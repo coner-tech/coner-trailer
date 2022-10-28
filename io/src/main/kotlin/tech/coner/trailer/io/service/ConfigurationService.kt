@@ -124,6 +124,17 @@ class ConfigurationService(
         }
     }
 
+    fun mergeWebappConfiguration(
+        original: WebappConfiguration,
+        overridePort: Int?,
+        overrideExploratory: Boolean?
+    ): WebappConfiguration {
+        return original.copy(
+            port = overridePort ?: original.port,
+            exploratory = overrideExploratory ?: original.exploratory
+        )
+    }
+
     suspend fun configureWebapp(
         webapp: Webapp,
         webappConfig: WebappConfiguration?

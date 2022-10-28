@@ -2,6 +2,7 @@ package tech.coner.trailer.di
 
 import org.kodein.di.DI
 import org.kodein.di.bind
+import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 import org.kodein.di.scoped
 import org.kodein.di.singleton
@@ -13,6 +14,7 @@ import tech.coner.trailer.io.constraint.PersonDeleteConstraints
 import tech.coner.trailer.io.constraint.PersonPersistConstraints
 import tech.coner.trailer.io.constraint.PolicyDeleteConstraints
 import tech.coner.trailer.io.constraint.PolicyPersistConstraints
+import tech.coner.trailer.io.constraint.PortConstraints
 import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
 import tech.coner.trailer.io.constraint.SeasonDeleteConstraints
 import tech.coner.trailer.io.constraint.SeasonPersistConstraints
@@ -85,4 +87,5 @@ val constraintModule = DI.Module("tech.coner.trailer.io.constraint") {
             )
         }
     }
+    bindSingleton { PortConstraints() }
 }
