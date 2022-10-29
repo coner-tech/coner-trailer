@@ -14,8 +14,11 @@ import assertk.assertions.startsWith
 import com.github.ajalt.clikt.core.context
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.set
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
@@ -23,6 +26,7 @@ import kotlin.io.path.createDirectory
 import kotlin.io.path.extension
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilNotNull
@@ -34,6 +38,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.assertk.ktor.bodyAsText
+import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.util.ConerTrailerCliProcessExecutor
@@ -43,7 +49,7 @@ import tech.coner.trailer.cli.util.ShadedJarCommandArrayFactory
 import tech.coner.trailer.cli.util.awaitOutcome
 import tech.coner.trailer.cli.util.error
 import tech.coner.trailer.cli.util.exitCode
-import tech.coner.trailer.cli.util.findWebappResultsPort
+import tech.coner.trailer.cli.util.findWebappPort
 import tech.coner.trailer.cli.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.di.Format
@@ -249,18 +255,15 @@ class ConerTrailerCliExecutableIT {
     fun `It should start webapp results`() = runTest {
         arrange { appArgumentBuilder.configureDatabaseAdd("webapp-results") }
 
-        val process = executor.webappResults(port = 0, exploratory = true)
-        try {
-            val port = await.untilNotNull { process.findWebappResultsPort() }
-            val response = HttpClient(CIO).use { client ->
-                client.get("http://localhost:$port/hello")
+        val response = executor.webappResults(port = 0, exploratory = true)
+            .runWebappTest { client ->
+                client.get("/hello")
             }
 
-            assertThat(response).all {
-                status().isEqualTo(HttpStatusCode.OK)
-            }
-        } finally {
-            process.destroyForcibly()
+        assertThat(response).all {
+            status().isEqualTo(HttpStatusCode.OK)
+            hasContentTypeIgnoringParams(ContentType.Text.Html)
+            bodyAsText().contains("Hello World")
         }
     }
 
@@ -270,5 +273,26 @@ class ConerTrailerCliExecutableIT {
                 console = StringBufferConsole()
             }
             .parse(appArgumentBuilder.fn())
+    }
+
+    private fun <T> Process.runWebappTest(fn: suspend (HttpClient) -> T): T {
+        return try {
+            val port = await
+                .untilNotNull { findWebappPort() }
+            HttpClient(CIO) {
+                defaultRequest {
+                    url {
+                        set(
+                            scheme = "http",
+                            host = "localhost",
+                            port = port.toInt()
+                        )
+                    }
+                }
+            }
+                .use { runBlocking { fn(it) } }
+        } finally {
+            destroy()
+        }
     }
 }

@@ -4,27 +4,52 @@ import assertk.all
 import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.*
+import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.PatternLayout
+import ch.qos.logback.classic.joran.JoranConfigurator
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.OutputStreamAppender
+import ch.qos.logback.core.encoder.LayoutWrappingEncoder
+import ch.qos.logback.core.joran.spi.JoranException
+import ch.qos.logback.core.util.StatusPrinter
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.get
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import kotlin.io.path.extension
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import org.awaitility.kotlin.await
+import org.awaitility.kotlin.untilNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.assertk.ktor.bodyAsText
+import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
+import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
+import tech.coner.trailer.cli.util.findWebappPort
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
@@ -52,10 +77,41 @@ class ConerTrailerCliIT {
             crispyFishDir = crispyFishDir
         )
         testConsole = StringBufferConsole()
+        configureLogback()
         command = ConerTrailerCli.createCommands()
             .context {
                 console = testConsole
             }
+    }
+
+    private fun configureLogback() {
+        val context = LoggerFactory.getILoggerFactory() as LoggerContext
+        try {
+            val logbackConfigurator = JoranConfigurator()
+            logbackConfigurator.context = context
+            context.reset()
+            val layout = PatternLayout().also {
+                it.context = context
+                it.start()
+            }
+            val encoder = LayoutWrappingEncoder<ILoggingEvent>().also {
+                it.context = context
+                it.layout = layout
+            }
+            val appender = OutputStreamAppender<ILoggingEvent>().also {
+                it.context = context
+                it.name = "testConsole Appender"
+                it.encoder = encoder
+                it.outputStream = testConsole.outputStream
+            }
+            context.getLogger(Logger.ROOT_LOGGER_NAME).apply {
+                isAdditive = false
+                addAppender(appender)
+            }
+        } catch (je: JoranException) {
+            // StatusPrinter will handle this
+        }
+        StatusPrinter.printInCaseOfErrorsOrWarnings(context)
     }
 
     @Test
@@ -348,5 +404,37 @@ class ConerTrailerCliIT {
         }
     }
 
+    @Test
+    fun `It should start webapp results`() = runTest {
+        command.parse(appArgumentBuilder.configureDatabaseAdd("webapp-results"))
+        val serverJob = launch { command.parse(appArgumentBuilder.webappResults(port = 0, exploratory = true)) }
+
+        val response = runWebappTest { client ->
+            client.get("/hello")
+        }
+
+        assertThat(response).all {
+            status().isEqualTo(HttpStatusCode.OK)
+            hasContentTypeIgnoringParams(ContentType.Text.Html)
+            bodyAsText().contains("Hello World")
+        }
+
+        serverJob.cancel()
+    }
+
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)
+
+    private fun <T> runWebappTest(fn: suspend (HttpClient) -> T): T {
+        val port = await.untilNotNull { testConsole.findWebappPort() }
+        return HttpClient(CIO) {
+            defaultRequest {
+                url(
+                    scheme = "http",
+                    host = "localhost",
+                    port = port.toInt()
+                )
+            }
+        }
+            .use { runBlocking { fn(it) } }
+    }
 }
