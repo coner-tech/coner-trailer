@@ -83,4 +83,14 @@ class ConerTrailerCliProcessExecutor(
         )
     )
 
+    fun webappResults(
+        port: Int? = null,
+        exploratory: Boolean = false
+    ): Process = exec(
+        *appArgumentBuilder.webappResults(
+            port = port,
+            exploratory = exploratory
+        )
+    )
+
 }

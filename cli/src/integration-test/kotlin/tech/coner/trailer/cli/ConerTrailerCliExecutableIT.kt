@@ -2,8 +2,30 @@ package tech.coner.trailer.cli
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.contains
+import assertk.assertions.doesNotContain
+import assertk.assertions.endsWith
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.startsWith
 import com.github.ajalt.clikt.core.context
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.request.get
+import io.ktor.http.HttpStatusCode
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.concurrent.TimeUnit
+import kotlin.io.path.createDirectory
+import kotlin.io.path.extension
+import kotlin.io.path.nameWithoutExtension
+import kotlin.io.path.readText
+import kotlinx.coroutines.test.runTest
+import org.awaitility.kotlin.await
+import org.awaitility.kotlin.untilNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
@@ -12,18 +34,20 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.cli.clikt.StringBufferConsole
-import tech.coner.trailer.cli.util.*
+import tech.coner.trailer.cli.util.ConerTrailerCliProcessExecutor
+import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
+import tech.coner.trailer.cli.util.NativeImageCommandArrayFactory
+import tech.coner.trailer.cli.util.ShadedJarCommandArrayFactory
+import tech.coner.trailer.cli.util.awaitOutcome
+import tech.coner.trailer.cli.util.error
+import tech.coner.trailer.cli.util.exitCode
+import tech.coner.trailer.cli.util.findWebappResultsPort
+import tech.coner.trailer.cli.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
-import java.nio.file.Files
-import java.nio.file.Path
-import java.util.concurrent.TimeUnit
-import kotlin.io.path.createDirectory
-import kotlin.io.path.extension
-import kotlin.io.path.nameWithoutExtension
-import kotlin.io.path.readText
 
 @Timeout(value = 1, unit = TimeUnit.MINUTES)
 class ConerTrailerCliExecutableIT {
@@ -220,7 +244,26 @@ class ConerTrailerCliExecutableIT {
             error().isNull()
         }
     }
-    
+
+    @Test
+    fun `It should start webapp results`() = runTest {
+        arrange { appArgumentBuilder.configureDatabaseAdd("webapp-results") }
+
+        val process = executor.webappResults(port = 0, exploratory = true)
+        try {
+            val port = await.untilNotNull { process.findWebappResultsPort() }
+            val response = HttpClient(CIO).use { client ->
+                client.get("http://localhost:$port/hello")
+            }
+
+            assertThat(response).all {
+                status().isEqualTo(HttpStatusCode.OK)
+            }
+        } finally {
+            process.destroyForcibly()
+        }
+    }
+
     private fun arrange(fn: IntegrationTestAppArgumentBuilder.() -> Array<String>) {
         ConerTrailerCli.createCommands()
             .context {

@@ -348,11 +348,5 @@ class ConerTrailerCliIT {
         }
     }
 
-    @Test
-    fun `It should start webapp results`() {
-
-        command.parse(appArgumentBuilder.webappResults(port = 0))
-    }
-
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)
 }

@@ -2,6 +2,7 @@ package tech.coner.trailer.cli.util
 
 import assertk.Assert
 import assertk.assertions.prop
+import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -38,6 +39,14 @@ fun Process.awaitOutcome(): ProcessOutcome = runBlocking {
         error = errorJob.await(),
         exitCode = exitCode.await()
     )
+}
+
+private val webappPortRegex = Regex("Responding at .*:(\\d*)$")
+fun Process.findWebappResultsPort(): String? {
+    return outputStream
+        .toString()
+        .lines()
+        .firstNotNullOfOrNull { webappPortRegex.matchEntire(it)?.value }
 }
 
 data class ProcessOutcome(
