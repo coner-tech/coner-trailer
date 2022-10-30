@@ -41,7 +41,7 @@ import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.util.ConerTrailerCliProcessExecutor
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.cli.util.NativeImageCommandArrayFactory
@@ -270,7 +270,7 @@ class ConerTrailerCliExecutableIT {
     private fun arrange(fn: IntegrationTestAppArgumentBuilder.() -> Array<String>) {
         ConerTrailerCli.createCommands()
             .context {
-                console = StringBufferConsole()
+                console = StringBuilderConsole()
             }
             .parse(appArgumentBuilder.fn())
     }

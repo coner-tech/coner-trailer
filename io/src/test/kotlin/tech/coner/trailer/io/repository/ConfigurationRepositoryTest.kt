@@ -56,7 +56,8 @@ class ConfigurationRepositoryTest {
             webapps = Configuration.Webapps(
                 results = WebappConfiguration(
                     port = 8080,
-                    exploratory = false
+                    exploratory = false,
+                    wait = true
                 )
             )
         )

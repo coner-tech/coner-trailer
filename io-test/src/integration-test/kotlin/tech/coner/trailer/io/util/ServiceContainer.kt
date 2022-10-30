@@ -35,7 +35,8 @@ class ServiceContainer(
         webapps = Configuration.Webapps(
             results = WebappConfiguration(
                 port = 8080,
-                exploratory = true
+                exploratory = true,
+                wait = true
             )
         )
     )

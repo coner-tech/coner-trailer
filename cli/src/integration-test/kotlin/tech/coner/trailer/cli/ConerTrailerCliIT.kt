@@ -11,6 +11,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.OutputStreamAppender
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder
 import ch.qos.logback.core.joran.spi.JoranException
+import ch.qos.logback.core.layout.EchoLayout
 import ch.qos.logback.core.util.StatusPrinter
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.context
@@ -26,11 +27,11 @@ import kotlin.io.path.createDirectory
 import kotlin.io.path.extension
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilNotNull
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -44,11 +45,12 @@ import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
+import tech.coner.trailer.cli.util.LogbackBuffer
 import tech.coner.trailer.cli.util.findWebappPort
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.di.Format
@@ -64,7 +66,9 @@ class ConerTrailerCliIT {
     lateinit var crispyFishDir: Path
 
     lateinit var appArgumentBuilder: IntegrationTestAppArgumentBuilder
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
+    lateinit var logbackBuffer: LogbackBuffer
+
 
     @BeforeEach
     fun before() {
@@ -76,7 +80,7 @@ class ConerTrailerCliIT {
             snoozleDir = snoozleDir,
             crispyFishDir = crispyFishDir
         )
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         configureLogback()
         command = ConerTrailerCli.createCommands()
             .context {
@@ -85,6 +89,7 @@ class ConerTrailerCliIT {
     }
 
     private fun configureLogback() {
+        logbackBuffer = LogbackBuffer()
         val context = LoggerFactory.getILoggerFactory() as LoggerContext
         try {
             val logbackConfigurator = JoranConfigurator()
@@ -92,6 +97,7 @@ class ConerTrailerCliIT {
             context.reset()
             val layout = PatternLayout().also {
                 it.context = context
+                it.pattern = "[%level] %msg%n"
                 it.start()
             }
             val encoder = LayoutWrappingEncoder<ILoggingEvent>().also {
@@ -102,7 +108,7 @@ class ConerTrailerCliIT {
                 it.context = context
                 it.name = "testConsole Appender"
                 it.encoder = encoder
-                it.outputStream = testConsole.outputStream
+                it.outputStream = logbackBuffer.outputStream
             }
             context.getLogger(Logger.ROOT_LOGGER_NAME).apply {
                 isAdditive = false
@@ -112,6 +118,11 @@ class ConerTrailerCliIT {
             // StatusPrinter will handle this
         }
         StatusPrinter.printInCaseOfErrorsOrWarnings(context)
+    }
+
+    @AfterEach
+    fun after() {
+        logbackBuffer.close()
     }
 
     @Test
@@ -407,25 +418,27 @@ class ConerTrailerCliIT {
     @Test
     fun `It should start webapp results`() = runTest {
         command.parse(appArgumentBuilder.configureDatabaseAdd("webapp-results"))
-        val serverJob = launch { command.parse(appArgumentBuilder.webappResults(port = 0, exploratory = true)) }
+        try {
+            command.parse(appArgumentBuilder.webappResults(port = 0, exploratory = true, wait = false))
 
-        val response = runWebappTest { client ->
-            client.get("/hello")
+            val response = runWebappTest { client ->
+                client.get("/hello")
+            }
+
+            assertThat(response).all {
+                status().isEqualTo(HttpStatusCode.OK)
+                hasContentTypeIgnoringParams(ContentType.Text.Html)
+                bodyAsText().contains("Hello World")
+            }
+        } finally {
+            command.parse(appArgumentBuilder.webappResults(stop = true))
         }
-
-        assertThat(response).all {
-            status().isEqualTo(HttpStatusCode.OK)
-            hasContentTypeIgnoringParams(ContentType.Text.Html)
-            bodyAsText().contains("Hello World")
-        }
-
-        serverJob.cancel()
     }
 
     private fun args(vararg args: String) = appArgumentBuilder.build(*args)
 
     private fun <T> runWebappTest(fn: suspend (HttpClient) -> T): T {
-        val port = await.untilNotNull { testConsole.findWebappPort() }
+        val port = await.untilNotNull { logbackBuffer.findWebappPort() }
         return HttpClient(CIO) {
             defaultRequest {
                 url(

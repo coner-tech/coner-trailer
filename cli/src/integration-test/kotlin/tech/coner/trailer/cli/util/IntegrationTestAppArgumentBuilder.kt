@@ -154,7 +154,9 @@ class IntegrationTestAppArgumentBuilder(
 
     fun webappResults(
         port: Int? = null,
-        exploratory: Boolean? = null
+        exploratory: Boolean? = null,
+        wait: Boolean? = null,
+        stop: Boolean? = null
     ): Array<String> {
         return build(
             *buildList {
@@ -163,7 +165,13 @@ class IntegrationTestAppArgumentBuilder(
                     addAll(listOf("--port", "$port"))
                 }
                 if (exploratory == true) {
-                    addAll(listOf("--exploratory"))
+                    add("--exploratory")
+                }
+                if (wait != null) {
+                    addAll(arrayOf("--wait", "$wait"))
+                }
+                if (stop == true) {
+                    add("--stop")
                 }
             }.toTypedArray()
         )

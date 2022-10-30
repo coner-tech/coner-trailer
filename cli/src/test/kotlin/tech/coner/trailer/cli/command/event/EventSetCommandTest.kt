@@ -2,33 +2,20 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
-import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
 import java.nio.file.Path
 import java.time.LocalDate
-import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 

@@ -21,7 +21,7 @@ import org.kodein.di.ktor.di
 import tech.coner.trailer.io.WebappConfiguration
 import tech.coner.trailer.webapp.results.route.staticAssetRoutes
 
-fun resultsWebapp(di: DI, config: WebappConfiguration) {
+fun resultsWebapp(di: DI, config: WebappConfiguration) =
     embeddedServer(CIO, port = config.port) {
         di {
             extend(di)
@@ -30,8 +30,7 @@ fun resultsWebapp(di: DI, config: WebappConfiguration) {
         }
         resultsWebappModule(exploratory = config.exploratory)
     }
-        .start(wait = true)
-}
+        .start(wait = config.wait)
 
 fun Application.resultsWebappModule(exploratory: Boolean) {
     install(CallLogging)

@@ -2,27 +2,18 @@ package tech.coner.trailer.cli.command.policy
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.kodein.di.*
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestClubs
 import tech.coner.trailer.TestPolicies
-import tech.coner.trailer.cli.clikt.StringBufferConsole
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.PolicyView
-import tech.coner.trailer.di.mockkServiceModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
 
