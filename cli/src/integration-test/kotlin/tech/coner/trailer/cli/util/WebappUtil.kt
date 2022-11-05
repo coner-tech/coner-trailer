@@ -18,4 +18,3 @@ private fun InputStream.findWebappPort() = bufferedReader()
     }
 
 fun Process.findWebappPort(): String? = inputStream.findWebappPort()
-fun StringBufferConsole.findWebappPort(): String? = outputStream.findWebappPort()
