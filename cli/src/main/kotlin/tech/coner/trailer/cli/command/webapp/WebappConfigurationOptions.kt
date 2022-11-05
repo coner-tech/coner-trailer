@@ -33,4 +33,8 @@ class WebappConfigurationOptions(
     fun port() = option()
         .int()
         .validate { handle(portConstraints.invoke(it)) }
+
+    fun wait() = option(hidden = true).flag()
+
+    fun stop() = option(hidden = true).flag()
 }

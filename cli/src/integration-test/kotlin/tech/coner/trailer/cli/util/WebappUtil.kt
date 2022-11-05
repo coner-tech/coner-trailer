@@ -1,7 +1,6 @@
 package tech.coner.trailer.cli.util
 
 import java.io.InputStream
-import tech.coner.trailer.cli.clikt.StringBufferConsole
 
 private val webappPortPattern = Regex("Responding at .*:(\\d*)$")
 

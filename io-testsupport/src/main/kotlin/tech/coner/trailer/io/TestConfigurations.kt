@@ -19,7 +19,8 @@ class TestConfigurations(
             webapps = Configuration.Webapps(
                 results = WebappConfiguration(
                     port = randomAvailablePort(),
-                    exploratory = true
+                    exploratory = true,
+                    wait = true
                 )
             )
         )

@@ -127,11 +127,13 @@ class ConfigurationService(
     fun mergeWebappConfiguration(
         original: WebappConfiguration,
         overridePort: Int?,
-        overrideExploratory: Boolean?
+        overrideExploratory: Boolean?,
+        overrideWait: Boolean?
     ): WebappConfiguration {
         return original.copy(
             port = overridePort ?: original.port,
-            exploratory = overrideExploratory ?: original.exploratory
+            exploratory = overrideExploratory ?: original.exploratory,
+            wait = overrideWait ?: original.wait
         )
     }
 

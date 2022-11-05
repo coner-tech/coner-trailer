@@ -4,10 +4,10 @@ import assertk.Assert
 import assertk.assertions.prop
 import com.github.ajalt.clikt.output.CliktConsole
 
-class StringBufferConsole : CliktConsole {
+class StringBuilderConsole : CliktConsole {
 
-    private var out = StringBuffer()
-    private var err = StringBuffer()
+    private var out = StringBuilder()
+    private var err = StringBuilder()
     private var prompting: Boolean = false
     private var input: String? = null
 
@@ -46,11 +46,11 @@ class StringBufferConsole : CliktConsole {
     }
 
     fun clear() {
-        out = StringBuffer()
-        err = StringBuffer()
+        out = StringBuilder()
+        err = StringBuilder()
     }
 }
 
 
-fun Assert<StringBufferConsole>.output() = prop("output") { it.output }
-fun Assert<StringBufferConsole>.error() = prop("error") { it.error }
+fun Assert<StringBuilderConsole>.output() = prop("output") { it.output }
+fun Assert<StringBuilderConsole>.error() = prop("error") { it.error }

@@ -20,7 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
@@ -39,7 +39,8 @@ class ConerTrailerCliIT {
     lateinit var crispyFishDir: Path
 
     lateinit var appArgumentBuilder: IntegrationTestAppArgumentBuilder
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
+
 
     @BeforeEach
     fun before() {
@@ -51,7 +52,7 @@ class ConerTrailerCliIT {
             snoozleDir = snoozleDir,
             crispyFishDir = crispyFishDir
         )
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         command = ConerTrailerCli.createCommands()
             .context {
                 console = testConsole

@@ -19,7 +19,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.command.config.ConfigCommand
 import tech.coner.trailer.cli.di.testCliktModule
@@ -48,7 +48,7 @@ class RootCommandTest : DIAware {
     }
 
     lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
 
     @MockK lateinit var service: ConfigurationService
     @MockK lateinit var stubService: StubService
@@ -62,7 +62,7 @@ class RootCommandTest : DIAware {
     @BeforeEach
     fun before() {
         global = GlobalModel()
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         command = RootCommand(di, global)
             .context { console = testConsole }
             .subcommands(

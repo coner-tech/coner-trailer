@@ -12,7 +12,8 @@ data class Configuration(
             webapps = Webapps(
                 results = WebappConfiguration(
                     port = 8080,
-                    exploratory = false
+                    exploratory = false,
+                    wait = true
                 )
             )
         )

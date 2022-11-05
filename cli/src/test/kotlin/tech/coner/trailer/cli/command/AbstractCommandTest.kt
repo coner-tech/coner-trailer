@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.di.mockkRendererModule
 import tech.coner.trailer.cli.di.mockkViewModule
 import tech.coner.trailer.cli.di.testCliktModule
@@ -42,7 +42,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     override val coroutineContext = Dispatchers.Default + Job()
 
     lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
 
     open fun preSetup() = Unit
 
@@ -61,7 +61,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     @BeforeEach
     fun setup() {
         preSetup()
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         global = GlobalModel()
             .apply(setupGlobal)
         command = createCommand(di, global)
