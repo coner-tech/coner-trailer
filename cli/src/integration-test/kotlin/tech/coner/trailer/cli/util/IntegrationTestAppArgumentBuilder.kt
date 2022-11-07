@@ -152,26 +152,18 @@ class IntegrationTestAppArgumentBuilder(
         return build("event", "run", "list", "${event.id}")
     }
 
-    fun webappResults(
+    fun webappCompetition(
         port: Int? = null,
-        exploratory: Boolean? = null,
-        wait: Boolean? = null,
-        stop: Boolean? = null
+        exploratory: Boolean? = null
     ): Array<String> {
         return build(
             *buildList {
-                addAll(listOf("webapp", "results"))
+                addAll(listOf("webapp", "competition"))
                 if (port != null) {
                     addAll(listOf("--port", "$port"))
                 }
                 if (exploratory == true) {
                     add("--exploratory")
-                }
-                if (wait != null) {
-                    addAll(arrayOf("--wait", "$wait"))
-                }
-                if (stop == true) {
-                    add("--stop")
                 }
             }.toTypedArray()
         )

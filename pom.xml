@@ -31,7 +31,7 @@
         <module>io-testsupport</module>
         <module>core-kodein-di</module>
         <module>core-kodein-di-test</module>
-        <module>webapp-results</module>
+        <module>webapp-competition</module>
 
         <module>testutil/assertk-ktor</module>
     </modules>

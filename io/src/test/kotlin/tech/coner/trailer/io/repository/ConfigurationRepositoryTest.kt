@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.exists
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -54,10 +53,9 @@ class ConfigurationRepositoryTest {
             ),
             defaultDatabaseName = testDatabase.name,
             webapps = Configuration.Webapps(
-                results = WebappConfiguration(
+                competition = WebappConfiguration(
                     port = 8080,
-                    exploratory = false,
-                    wait = true
+                    exploratory = false
                 )
             )
         )
@@ -175,7 +173,7 @@ private fun Configuration.toJson() = """
         },
         "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
         "webapps": ${webapps?.let { """{
-            | "results": ${it.results?.let { results -> """{ "port": ${ results.port} }""" } ?: "null"} }}
+            | "competition": ${it.competition?.let { results -> """{ "port": ${ results.port} }""" } ?: "null"} }}
             | }""".trimMargin()} ?: "null" }
     }
 """.trimIndent()

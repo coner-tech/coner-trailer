@@ -10,19 +10,18 @@ data class Configuration(
             databases = emptyMap(),
             defaultDatabaseName = null,
             webapps = Webapps(
-                results = WebappConfiguration(
+                competition = WebappConfiguration(
                     port = 8080,
-                    exploratory = false,
-                    wait = true
+                    exploratory = false
                 )
             )
         )
     }
 
     data class Webapps(
-        val results: WebappConfiguration?
+        val competition: WebappConfiguration?
     ) {
-        fun requireResults() = requireNotNull(results)
+        fun requireCompetition() = requireNotNull(competition)
     }
 
     fun requireWebapps() = requireNotNull(webapps)

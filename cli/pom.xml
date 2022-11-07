@@ -76,7 +76,7 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
-            <artifactId>webapp-results</artifactId>
+            <artifactId>webapp-competition</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -28,7 +28,7 @@ class ConfigWebappGetCommandTest : BaseConfigCommandTest<ConfigWebappGetCommand>
 
     @Test
     fun `It should get results webapp config`() {
-        val webappConfig = Configuration.DEFAULT.requireWebapps().requireResults()
+        val webappConfig = Configuration.DEFAULT.requireWebapps().requireCompetition()
         coEvery { service.getWebappConfiguration(Webapp.RESULTS) } returns Result.success(webappConfig)
         val viewRender = "view rendered"
         every { view.render(any()) } returns viewRender

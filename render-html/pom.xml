@@ -79,7 +79,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>../webapp-results/src/main/node</workingDirectory>
+                            <workingDirectory>../webapp-competition/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
@@ -93,7 +93,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>../webapp-results/src/main/node</workingDirectory>
+                            <workingDirectory>../webapp-competition/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>

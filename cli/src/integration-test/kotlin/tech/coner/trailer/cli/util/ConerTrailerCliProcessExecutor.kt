@@ -83,11 +83,11 @@ class ConerTrailerCliProcessExecutor(
         )
     )
 
-    fun webappResults(
+    fun webappCompetition(
         port: Int? = null,
         exploratory: Boolean = false
     ): Process = exec(
-        *appArgumentBuilder.webappResults(
+        *appArgumentBuilder.webappCompetition(
             port = port,
             exploratory = exploratory
         )

@@ -17,10 +17,9 @@ class TestConfigurations(
             databases = testDatabaseConfigurations.allByName,
             defaultDatabaseName = testDatabaseConfigurations.bar.name,
             webapps = Configuration.Webapps(
-                results = WebappConfiguration(
+                competition = WebappConfiguration(
                     port = randomAvailablePort(),
-                    exploratory = true,
-                    wait = true
+                    exploratory = true
                 )
             )
         )

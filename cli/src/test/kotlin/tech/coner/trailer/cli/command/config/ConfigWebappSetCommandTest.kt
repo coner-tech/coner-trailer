@@ -30,13 +30,12 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
     fun `It should set options for results webapp`() {
         val newWebappConfig = WebappConfiguration(
             port = 12345,
-            exploratory = false,
-            wait = true
+            exploratory = false
         )
         val newConfig = global.requireEnvironment().requireConfiguration().let { oldConfig ->
             oldConfig.copy(
                 webapps = oldConfig.requireWebapps().copy(
-                    results = newWebappConfig
+                    competition = newWebappConfig
                 )
             )
         }

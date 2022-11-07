@@ -119,8 +119,8 @@ class ConfigurationService(
     suspend fun getWebappConfiguration(webapp: Webapp): Result<WebappConfiguration> = runSuspendCatching {
         val config = get().getOrThrow()
         when (webapp) {
-            Webapp.RESULTS -> config.webapps?.results
-                ?: Configuration.DEFAULT.requireWebapps().requireResults()
+            Webapp.RESULTS -> config.webapps?.competition
+                ?: Configuration.DEFAULT.requireWebapps().requireCompetition()
         }
     }
 
@@ -128,12 +128,10 @@ class ConfigurationService(
         original: WebappConfiguration,
         overridePort: Int?,
         overrideExploratory: Boolean?,
-        overrideWait: Boolean?
     ): WebappConfiguration {
         return original.copy(
             port = overridePort ?: original.port,
-            exploratory = overrideExploratory ?: original.exploratory,
-            wait = overrideWait ?: original.wait
+            exploratory = overrideExploratory ?: original.exploratory
         )
     }
 
@@ -144,7 +142,7 @@ class ConfigurationService(
         val config = get().getOrThrow()
         val webapps = config.webapps ?: Configuration.DEFAULT.requireWebapps()
         val newWebapps = when (webapp) {
-            Webapp.RESULTS -> webapps.copy(results = webappConfig)
+            Webapp.RESULTS -> webapps.copy(competition = webappConfig)
         }
         put(config.copy(webapps = newWebapps)).getOrThrow()
     }

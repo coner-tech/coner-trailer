@@ -32,8 +32,7 @@ class ConfigWebappSetCommand(
     override suspend fun coRun() {
         val newWebappConfig = WebappConfiguration(
             port = port,
-            exploratory = false,
-            wait = true
+            exploratory = false
         )
         service.configureWebapp(
             webapp = webapp,
