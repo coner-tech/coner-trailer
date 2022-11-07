@@ -70,7 +70,7 @@ class ConerTrailerCliIT {
     fun `It should add a database config`() {
         val databaseName = "arbitrary-database-name"
 
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
 
         assertAll {
             assertThat(testConsole.output, "console output").isNotEmpty()
@@ -81,7 +81,7 @@ class ConerTrailerCliIT {
     @Test
     fun `It should make a motorsportreg request with wrong credentials and get an unauthorized response`() {
         val databaseName = "motorsportreg-wrong-credentials"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
 
         assertThrows<IllegalStateException> {
@@ -99,7 +99,7 @@ class ConerTrailerCliIT {
     @Test
     fun `It should add an event`() {
         val databaseName = "event-and-prerequisites"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val event = TestEvents.Lscc2019Simplified.points1
         command.parse(appArgumentBuilder.clubSet(event.policy.club))
@@ -134,7 +134,7 @@ class ConerTrailerCliIT {
     @Test
     fun `It should add a crispy fish person map entry`() {
         val databaseName = "add-crispy-fish-person-map-entry"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
@@ -171,7 +171,7 @@ class ConerTrailerCliIT {
     fun `It should print event results of all types and all formats`(eventResultType: EventResultsType, format: Format) {
         val event = TestEvents.Lscc2019Simplified.points1
         val databaseName = "print-event-results-${eventResultType.key}-${format.name}"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         command.parse(appArgumentBuilder.clubSet(event.policy.club))
@@ -217,7 +217,7 @@ class ConerTrailerCliIT {
     fun `It should list event participants`() {
         val event = TestEvents.Lscc2019Simplified.points1
         val databaseName = "list-event-participants"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         command.parse(appArgumentBuilder.clubSet(event.policy.club))
@@ -257,7 +257,7 @@ class ConerTrailerCliIT {
     fun `It should list event runs`() {
         val event = TestEvents.Lscc2019Simplified.points1
         val databaseName = "list-event-participants"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         command.parse(appArgumentBuilder.clubSet(event.policy.club))
@@ -328,7 +328,7 @@ class ConerTrailerCliIT {
     @Test
     fun `It should check an event containing runs with invalid signage`() {
         val databaseName = "64-invalid-signage"
-        command.parse(appArgumentBuilder.configureDatabaseAdd(databaseName))
+        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
         command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
         val seasonFixture = SeasonFixture.Issue64CrispyFishStagingLinesInvalidSignage(temp = crispyFishDir)
         val event = seasonFixture.event.coreSeasonEvent.event

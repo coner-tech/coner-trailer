@@ -18,9 +18,7 @@ class StringBuilderConsole : CliktConsole {
 
     override fun print(text: String, error: Boolean) {
         when (error) {
-            false -> {
-                out.append(text)
-            }
+            false -> out.append(text)
             true -> err.append(text)
         }
     }

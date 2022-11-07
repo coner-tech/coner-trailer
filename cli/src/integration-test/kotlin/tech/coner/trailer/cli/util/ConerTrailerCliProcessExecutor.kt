@@ -1,14 +1,14 @@
 package tech.coner.trailer.cli.util
 
+import java.nio.file.Path
+import org.junit.platform.commons.logging.Logger
+import org.junit.platform.commons.logging.LoggerFactory
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
-import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.di.Format
-import org.junit.platform.commons.logging.Logger
-import org.junit.platform.commons.logging.LoggerFactory
-import java.nio.file.Path
+import tech.coner.trailer.eventresults.EventResultsType
 
 
 class ConerTrailerCliProcessExecutor(
@@ -29,9 +29,9 @@ class ConerTrailerCliProcessExecutor(
         return Runtime.getRuntime().exec(commandArray, environment)
     }
 
-    fun configureDatabaseAdd(databaseName: String): Process {
+    fun configDatabaseAdd(databaseName: String): Process {
         return exec(
-            *appArgumentBuilder.configureDatabaseAdd(databaseName)
+            *appArgumentBuilder.configDatabaseAdd(databaseName)
         )
     }
 

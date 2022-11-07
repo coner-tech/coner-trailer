@@ -22,7 +22,7 @@ class IntegrationTestAppArgumentBuilder(
             .toTypedArray()
     }
 
-    fun configureDatabaseAdd(databaseName: String): Array<String> {
+    fun configDatabaseAdd(databaseName: String): Array<String> {
         return build(
             "config", "database", "add",
             "--name", databaseName,
