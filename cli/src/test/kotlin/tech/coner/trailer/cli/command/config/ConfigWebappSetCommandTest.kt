@@ -27,7 +27,7 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
     override fun createCommand(di: DI, global: GlobalModel) = ConfigWebappSetCommand(di, global)
 
     @Test
-    fun `It should set options for results webapp`() {
+    fun `It should set options for competition webapp`() {
         val newWebappConfig = WebappConfiguration(
             port = 12345,
             exploratory = false
@@ -44,7 +44,7 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
         every { view.render(any()) } returns viewRender
 
         command.parse(arrayOf(
-            "results",
+            "competition",
             "--port", "${newWebappConfig.port}"
         ))
 
@@ -53,8 +53,8 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
             error().isEmpty()
         }
         coVerifySequence {
-            service.configureWebapp(Webapp.RESULTS, newWebappConfig)
-            view.render(Webapp.RESULTS to newWebappConfig)
+            service.configureWebapp(Webapp.COMPETITION, newWebappConfig)
+            view.render(Webapp.COMPETITION to newWebappConfig)
         }
         confirmVerified(service, view)
     }

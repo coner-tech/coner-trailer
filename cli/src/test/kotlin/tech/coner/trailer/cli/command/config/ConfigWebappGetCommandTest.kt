@@ -27,21 +27,21 @@ class ConfigWebappGetCommandTest : BaseConfigCommandTest<ConfigWebappGetCommand>
     override fun createCommand(di: DI, global: GlobalModel) = ConfigWebappGetCommand(di, global)
 
     @Test
-    fun `It should get results webapp config`() {
+    fun `It should get competition webapp config`() {
         val webappConfig = Configuration.DEFAULT.requireWebapps().requireCompetition()
-        coEvery { service.getWebappConfiguration(Webapp.RESULTS) } returns Result.success(webappConfig)
+        coEvery { service.getWebappConfiguration(Webapp.COMPETITION) } returns Result.success(webappConfig)
         val viewRender = "view rendered"
         every { view.render(any()) } returns viewRender
 
-        command.parse(arrayOf("results"))
+        command.parse(arrayOf("competition"))
 
         assertThat(testConsole).all {
             output().isEqualTo(viewRender)
             error().isEmpty()
         }
         coVerifySequence {
-            service.getWebappConfiguration(Webapp.RESULTS)
-            view.render(Webapp.RESULTS to webappConfig)
+            service.getWebappConfiguration(Webapp.COMPETITION)
+            view.render(Webapp.COMPETITION to webappConfig)
         }
         confirmVerified(service, view)
     }

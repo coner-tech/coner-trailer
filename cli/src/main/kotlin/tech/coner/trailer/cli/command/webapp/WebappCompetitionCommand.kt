@@ -27,7 +27,7 @@ class WebappCompetitionCommand(
     private val exploratory by options.exploratory()
 
     override suspend fun coRun() {
-        val config = service.getWebappConfiguration(Webapp.RESULTS)
+        val config = service.getWebappConfiguration(Webapp.COMPETITION)
             .map { service.mergeWebappConfiguration(
                 original = it,
                 overridePort = port,

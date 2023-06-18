@@ -119,7 +119,7 @@ class ConfigurationService(
     suspend fun getWebappConfiguration(webapp: Webapp): Result<WebappConfiguration> = runSuspendCatching {
         val config = get().getOrThrow()
         when (webapp) {
-            Webapp.RESULTS -> config.webapps?.competition
+            Webapp.COMPETITION -> config.webapps?.competition
                 ?: Configuration.DEFAULT.requireWebapps().requireCompetition()
         }
     }
@@ -142,7 +142,7 @@ class ConfigurationService(
         val config = get().getOrThrow()
         val webapps = config.webapps ?: Configuration.DEFAULT.requireWebapps()
         val newWebapps = when (webapp) {
-            Webapp.RESULTS -> webapps.copy(competition = webappConfig)
+            Webapp.COMPETITION -> webapps.copy(competition = webappConfig)
         }
         put(config.copy(webapps = newWebapps)).getOrThrow()
     }

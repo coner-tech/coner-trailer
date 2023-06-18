@@ -1110,6 +1110,7 @@
   "queryAllDeclaredConstructors":true,
   "methods":[
     {"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, 
+    {"name":"getCompetition","parameterTypes":[] }, 
     {"name":"getResults","parameterTypes":[] }
   ]
 },

@@ -22,19 +22,19 @@ class ConfigWebappUnsetCommandTest : BaseConfigCommandTest<ConfigWebappUnsetComm
     private val service: ConfigurationService by instance()
 
     @Test
-    fun `It should unset options for results webapp`() {
+    fun `It should unset options for competition webapp`() {
         coEvery {
             service.configureWebapp(any(), any())
         } returns Result.success(global.requireEnvironment().requireConfiguration())
 
-        command.parse(arrayOf("--webapp", "results"))
+        command.parse(arrayOf("--webapp", "competition"))
 
         assertThat(testConsole).all {
             output().isEmpty()
             error().isEmpty()
         }
         coVerify {
-            service.configureWebapp(Webapp.RESULTS, null)
+            service.configureWebapp(Webapp.COMPETITION, null)
         }
         confirmVerified(service)
     }
