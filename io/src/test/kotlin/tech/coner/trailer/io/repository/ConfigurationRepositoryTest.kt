@@ -4,31 +4,23 @@ import assertk.assertThat
 import assertk.assertions.exists
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import java.nio.file.Path
-import kotlin.io.path.absolutePathString
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.exists
-import kotlin.io.path.notExists
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.io.TempDir
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.WebappConfiguration
+import java.nio.file.Path
+import kotlin.io.path.*
 
 class ConfigurationRepositoryTest {
 
     lateinit var repository: ConfigurationRepository
 
+    lateinit var objectMapper: ObjectMapper
     @TempDir lateinit var root: Path
     private val configDir: Path by lazy { root.resolve("config-dir") }
     private val crispyFishDatabase: Path by lazy { root.resolve("crispyFishDatabase").createDirectories() }
@@ -63,9 +55,10 @@ class ConfigurationRepositoryTest {
 
     @BeforeEach
     fun before() {
+        objectMapper = jacksonObjectMapper()
         repository = ConfigurationRepository(
             configDir = configDir,
-            objectMapper = jacksonObjectMapper()
+            objectMapper = objectMapper
         )
     }
 
@@ -115,7 +108,8 @@ class ConfigurationRepositoryTest {
                 .createDirectories()
                 .resolve("config.json")
                 .createFile()
-                .writeText(expected.toJson())
+                .bufferedWriter()
+                .use { objectMapper.writeValue(it, expected) }
 
             val actual = repository.load()
 
@@ -146,7 +140,8 @@ class ConfigurationRepositoryTest {
 
             repository.save(save)
 
-            JSONAssert.assertEquals(save.toJson(), configFile.readText(), JSONCompareMode.STRICT)
+            val expectedSavedJson = objectMapper.writeValueAsString(save)
+            JSONAssert.assertEquals(expectedSavedJson, configFile.readText(), JSONCompareMode.STRICT)
         }
 
         @Test
@@ -155,38 +150,15 @@ class ConfigurationRepositoryTest {
             val oldConfiguration = testConfiguration
             configFile
                 .createFile()
-                .writeText(oldConfiguration.toJson())
+                .bufferedWriter()
+                .use { objectMapper.writeValue(it, oldConfiguration) }
             check(configFile.exists()) { "Failed prerequisite: config.json must exist" }
             val newConfiguration = oldConfiguration.copy(defaultDatabaseName = null)
 
             repository.save(newConfiguration)
 
-            JSONAssert.assertEquals(newConfiguration.toJson(), configFile.readText(), JSONCompareMode.STRICT)
+            val newConfigurationJson = objectMapper.writeValueAsString(newConfiguration)
+            JSONAssert.assertEquals(newConfigurationJson, configFile.readText(), JSONCompareMode.STRICT)
         }
     }
 }
-
-private fun Configuration.toJson() = """
-    {
-        "databases": {
-            ${databases.map { it.toJson() }.joinToString()}
-        },
-        "defaultDatabaseName": ${defaultDatabaseName?.let { "\"$it\"" }},
-        "webapps": ${webapps?.let { """{
-            | "competition": ${it.competition?.let { results -> """{ "port": ${ results.port} }""" } ?: "null"} }}
-            | }""".trimMargin()} ?: "null" }
-    }
-""".trimIndent()
-
-private fun Map.Entry<String, DatabaseConfiguration>.toJson() = """
-    "${value.name}": {
-        "name": "${value.name}",
-        "crispyFishDatabase": "file://${value.crispyFishDatabase.absolutePathString()}/",
-        "snoozleDatabase": "file://${value.snoozleDatabase.absolutePathString()}/",
-        "motorsportReg": {
-            "username": "${value.motorsportReg!!.username!!}",
-            "organizationId": "${value.motorsportReg!!.organizationId!!}"
-        },
-        "default": ${value.default}
-    }
-""".trimIndent()
