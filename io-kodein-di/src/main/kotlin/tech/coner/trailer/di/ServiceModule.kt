@@ -2,11 +2,7 @@ package tech.coner.trailer.di
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import org.kodein.di.scoped
-import org.kodein.di.singleton
+import org.kodein.di.*
 import tech.coner.trailer.io.service.ClassService
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.CrispyFishClassService
@@ -29,57 +25,32 @@ import tech.coner.trailer.io.util.SimpleCache
 val serviceModule = DI.Module("tech.coner.trailer.io.service") {
     bind {
         scoped(DataSessionScope).singleton {
-            ClubService(
-                resource = instance(),
-                mapper = instance()
-            )
+            new(::ClubService)
         }
     }
     bind {
         scoped(DataSessionScope).singleton {
-            EventPointsCalculatorService(
-                resource = instance(),
-                mapper = instance(),
-                persistConstraints = instance()
-            )
+            new(::EventPointsCalculatorService)
         }
     }
     bind {
         scoped(DataSessionScope).singleton {
-            RankingSortService(
-                resource = instance(),
-                mapper = instance(),
-                persistConstraints = instance()
-            )
+            new(::RankingSortService)
         }
     }
     bind {
         scoped(DataSessionScope).singleton {
-            SeasonPointsCalculatorConfigurationService(
-                resource = instance(),
-                mapper = instance(),
-                constraints = instance()
-            )
+            new(::SeasonPointsCalculatorConfigurationService)
         }
     }
     bind {
         scoped(DataSessionScope).singleton {
-            PersonService(
-                persistConstraints = instance(),
-                deleteConstraints = instance(),
-                resource = instance(),
-                mapper = instance()
-            )
+            new(::PersonService)
         }
     }
     bind {
         scoped(DataSessionScope).singleton {
-            SeasonService(
-                resource = instance(),
-                mapper = instance(),
-                persistConstraints = instance(),
-                deleteConstraints = instance()
-            )
+            new(::SeasonService)
         }
     }
     bind {
@@ -119,12 +90,7 @@ val serviceModule = DI.Module("tech.coner.trailer.io.service") {
     }
     bind {
         scoped(DataSessionScope).singleton {
-            PolicyService(
-                persistConstraints = instance(),
-                deleteConstraints = instance(),
-                resource = instance(),
-                mapper = instance()
-            )
+            new(::PolicyService)
         }
     }
     bind {
@@ -137,9 +103,7 @@ val serviceModule = DI.Module("tech.coner.trailer.io.service") {
         }
     }
     bind { scoped(DataSessionScope).singleton {
-        ClassService(
-            crispyFishClassService = instance()
-        )
+        new(::ClassService)
     } }
     bind {
         scoped(DataSessionScope).singleton {

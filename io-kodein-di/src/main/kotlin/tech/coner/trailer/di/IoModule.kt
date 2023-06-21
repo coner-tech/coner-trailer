@@ -38,7 +38,7 @@ val ioModule = DI.Module("coner.trailer.cli.io") {
     bind { scoped(EnvironmentScope).singleton {
         factory<ConfigurationServiceArgument, ConfigurationService>()(context.configurationServiceArgument)
     } }
-    bind<FileOutputDestinationResolver>() with singleton { FileOutputDestinationResolver(
+    bindSingleton<FileOutputDestinationResolver> { FileOutputDestinationResolver(
         eventResultsFileNameGenerator = instance()
     ) }
     bindSingleton { EventResultsFileNameGenerator() }

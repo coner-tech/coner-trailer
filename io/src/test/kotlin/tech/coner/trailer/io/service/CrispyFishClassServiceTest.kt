@@ -4,10 +4,8 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.index
 import assertk.assertions.key
-import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
@@ -17,13 +15,12 @@ import tech.coner.trailer.hasName
 import tech.coner.trailer.hasSort
 import java.nio.file.Path
 
-@ExtendWith(MockKExtension::class)
 class CrispyFishClassServiceTest {
 
     lateinit var service: CrispyFishClassService
 
-    lateinit var seasonFixture: SeasonFixture
     @TempDir lateinit var fixtureRoot: Path
+    lateinit var seasonFixture: SeasonFixture
 
     @BeforeEach
     fun before() {

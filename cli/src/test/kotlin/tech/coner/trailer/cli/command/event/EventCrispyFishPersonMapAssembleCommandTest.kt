@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
+import org.kodein.di.provider
 import tech.coner.crispyfish.model.Signage
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
@@ -39,7 +40,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
     override val di = DI.lazy {
         extend(super.di)
         import(mockkMapperModule)
-        bindSingleton(overrides = true) { EventView() }
+        bindSingleton(overrides = true) { EventView(provider()) }
         bindSingleton(overrides = true) { CrispyFishRegistrationView() }
     }
     private val service: EventService by instance()

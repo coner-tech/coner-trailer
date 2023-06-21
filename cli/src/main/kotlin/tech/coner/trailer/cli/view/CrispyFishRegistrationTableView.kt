@@ -4,10 +4,12 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.crispyfish.model.Registration
 
-class CrispyFishRegistrationTableView : View<Collection<Registration>> {
+class CrispyFishRegistrationTableView(
+    val asciiTableFactory: () -> AsciiTable,
+) : View<Collection<Registration>> {
 
     override fun render(model: Collection<Registration>): String {
-        val at = AsciiTable()
+        val at = asciiTableFactory()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
         at.addRow("First Name", "Last Name", "Signage", "Club Member ID")

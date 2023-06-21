@@ -24,6 +24,6 @@ class PolicyListCommand(
 
     override suspend fun coRun() = diContext.use {
         val policies = service.list()
-        policies.forEach { echo(view.render(it)) }
+        echo(view.render(policies))
     }
 }

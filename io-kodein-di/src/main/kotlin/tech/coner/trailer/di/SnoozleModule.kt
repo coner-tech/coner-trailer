@@ -7,15 +7,7 @@ import org.kodein.di.on
 import org.kodein.di.scoped
 import org.kodein.di.singleton
 import tech.coner.snoozle.db.session.data.DataSession
-import tech.coner.trailer.datasource.snoozle.ClubResource
-import tech.coner.trailer.datasource.snoozle.ConerTrailerDatabase
-import tech.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
-import tech.coner.trailer.datasource.snoozle.EventResource
-import tech.coner.trailer.datasource.snoozle.PersonResource
-import tech.coner.trailer.datasource.snoozle.PolicyResource
-import tech.coner.trailer.datasource.snoozle.RankingSortResource
-import tech.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
-import tech.coner.trailer.datasource.snoozle.SeasonResource
+import tech.coner.trailer.datasource.snoozle.*
 
 val snoozleModule = DI.Module("tech.coner.trailer.datasource.snoozle") {
     bind {
@@ -33,25 +25,25 @@ val snoozleModule = DI.Module("tech.coner.trailer.datasource.snoozle") {
         }
     }
     bind<ClubResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().clubs() }
     }
     bind<EventPointsCalculatorResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().eventPointsCalculators() }
     }
     bind<RankingSortResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().rankingSorts() }
     }
     bind<SeasonPointsCalculatorConfigurationResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().seasonPointsCalculators() }
     }
     bind<PersonResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().persons() }
     }
     bind<SeasonResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().seasons() }
     }
     bind<EventResource> {
-        scoped(DataSessionScope).singleton { instance<DataSession>().entity() }
+        scoped(DataSessionScope).singleton { instance<DataSession>().events() }
     }
-    bind<PolicyResource> { scoped(DataSessionScope).singleton { instance<DataSession>().entity() } }
+    bind<PolicyResource> { scoped(DataSessionScope).singleton { instance<DataSession>().policies() } }
 }

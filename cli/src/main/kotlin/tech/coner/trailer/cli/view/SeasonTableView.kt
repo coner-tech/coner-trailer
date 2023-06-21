@@ -4,9 +4,11 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Season
 
-class SeasonTableView : View<List<Season>> {
+class SeasonTableView(
+    private val asciiTableFactory: () -> AsciiTable
+) : View<List<Season>> {
     override fun render(model: List<Season>): String {
-        val at = AsciiTable()
+        val at = asciiTableFactory()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
         at.addRow("ID", "Name", "Season Points Calculator Config ID", "Take Score Count For Points")

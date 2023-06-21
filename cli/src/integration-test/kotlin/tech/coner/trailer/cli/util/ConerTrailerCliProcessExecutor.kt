@@ -26,7 +26,11 @@ class ConerTrailerCliProcessExecutor(
             }
             .toTypedArray()
         logger.info { commandArray.joinToString(" ") }
-        return Runtime.getRuntime().exec(commandArray, environment)
+        val useEnvironment = buildList {
+            addAll(environment)
+            add("TMP=${System.getProperty("java.io.tmpdir")}")
+        }.toTypedArray()
+        return Runtime.getRuntime().exec(commandArray, useEnvironment)
     }
 
     fun configDatabaseAdd(databaseName: String): Process {

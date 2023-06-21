@@ -4,10 +4,10 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Event
 
-class PeopleMapKeyTableView : View<Collection<Event.CrispyFishMetadata.PeopleMapKey>> {
+class PeopleMapKeyTableView(private val asciiTableFactory: () -> AsciiTable) : View<Collection<Event.CrispyFishMetadata.PeopleMapKey>> {
 
     override fun render(model: Collection<Event.CrispyFishMetadata.PeopleMapKey>): String {
-        val at = AsciiTable()
+        val at = asciiTableFactory()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
         at.addRow("Signage", "First Name", "Last Name")

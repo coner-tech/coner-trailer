@@ -2,17 +2,9 @@ package tech.coner.trailer.io.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.nio.file.Path
-import kotlin.io.path.bufferedReader
-import kotlin.io.path.bufferedWriter
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createTempFile
-import kotlin.io.path.deleteIfExists
-import kotlin.io.path.isDirectory
-import kotlin.io.path.isReadable
-import kotlin.io.path.moveTo
-import kotlin.io.path.notExists
 import tech.coner.trailer.io.Configuration
+import java.nio.file.Path
+import kotlin.io.path.*
 
 class ConfigurationRepository(
     private val configDir: Path,
@@ -38,7 +30,7 @@ class ConfigurationRepository(
     }
 
     fun save(config: Configuration): Configuration {
-        val tempFile = createTempFile()
+        val tempFile = createTempFile(prefix = "coner-trailer.config")
         try {
             tempFile
                     .bufferedWriter()

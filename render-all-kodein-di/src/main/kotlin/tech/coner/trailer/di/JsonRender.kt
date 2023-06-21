@@ -17,7 +17,7 @@ val jsonRenderModule = DI.Module("tech.coner.trailer.render.json") {
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build()
     }
-    bindSingleton<ClazzEventResultsRenderer<String, *>>(format) {JsonClazzEventResultsRenderer(objectMapper) }
+    bindSingleton<ClazzEventResultsRenderer<String, *>>(format) { JsonClazzEventResultsRenderer(objectMapper) }
     bindSingleton<OverallEventResultsRenderer<String, *>>(format) { JsonOverallEventResultsRenderer(objectMapper) }
     bindSingleton<TopTimesEventResultsRenderer<String, *>>(format) { JsonTopTimesEventResultsRenderer(objectMapper) }
     bindSingleton<ComprehensiveEventResultsRenderer<String, *>>(format) { JsonComprehensiveEventResultsRenderer(objectMapper) }

@@ -11,8 +11,12 @@ class StringBuilderConsole : CliktConsole {
     private var prompting: Boolean = false
     private var input: String? = null
 
-    val output: String get() = out.toString().trim()
-    val error: String get() = err.toString().trim()
+    val output: String get() = out.render()
+    val error: String get() = err.render()
+
+    private fun StringBuilder.render() = toString()
+        .trim()
+        .replace("\r\n", "\n") // tests expect unix style line-endings
 
     override val lineSeparator = requireNotNull(System.lineSeparator())
 

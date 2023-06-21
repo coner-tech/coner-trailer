@@ -24,18 +24,15 @@ class PolicyListCommandTest : BaseDataSessionCommandTest<PolicyListCommand>() {
     fun `It should list policies`() {
         val policies = listOf(TestPolicies.lsccV1, TestPolicies.lsccV2)
         every { service.list() } returns policies
-        val renderedV1 = "rendered v1"
-        every { view.render(TestPolicies.lsccV1) } returns renderedV1
-        val renderedV2 = "rendered v2"
-        every { view.render(TestPolicies.lsccV2) } returns renderedV2
+        val viewRender = "rendered policies"
+        every { view.render(policies) } returns viewRender
 
         command.parse(emptyArray())
 
-        assertThat(testConsole.output, "console output").isEqualTo("$renderedV1\n$renderedV2")
+        assertThat(testConsole.output, "console output").isEqualTo(viewRender)
         verifySequence {
             service.list()
-            view.render(TestPolicies.lsccV1)
-            view.render(TestPolicies.lsccV2)
+            view.render(policies)
         }
     }
 }

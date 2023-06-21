@@ -82,6 +82,7 @@ import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalcula
 import tech.coner.trailer.cli.command.webapp.WebappCommand
 import tech.coner.trailer.cli.command.webapp.WebappCompetitionCommand
 import tech.coner.trailer.cli.di.cliktModule
+import tech.coner.trailer.cli.di.utilityModule
 import tech.coner.trailer.cli.di.viewModule
 import tech.coner.trailer.di.allRendererModule
 import tech.coner.trailer.di.constraintModule
@@ -104,6 +105,7 @@ object ConerTrailerCli {
         val di = DI.from(listOf(
             eventResultsModule,
             viewModule,
+            utilityModule,
             ioModule,
             constraintModule,
             mapperModule,

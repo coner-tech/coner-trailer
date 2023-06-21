@@ -15,6 +15,7 @@ import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.di.mockkRendererModule
 import tech.coner.trailer.cli.di.mockkViewModule
 import tech.coner.trailer.cli.di.testCliktModule
+import tech.coner.trailer.cli.di.utilityModule
 import tech.coner.trailer.di.mockkConstraintModule
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.di.mockkServiceModule
@@ -33,6 +34,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
             mockkIoModule,
             mockkConstraintModule,
             mockkServiceModule,
+            utilityModule,
             testCliktModule,
             mockkViewModule,
             mockkRendererModule
