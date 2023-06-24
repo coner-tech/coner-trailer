@@ -1,8 +1,0 @@
-[
-  {
-    "interfaces":["java.util.function.Consumer"]}
-  ,
-  {
-    "interfaces":["tech.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi"]}
-  
-]
