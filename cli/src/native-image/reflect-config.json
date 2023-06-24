@@ -1,0 +1,3700 @@
+[
+{
+  "name":"[B"
+},
+{
+  "name":"[C"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.KeyDeserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"
+},
+{
+  "name":"[Ljava.lang.String;"
+},
+{
+  "name":"[Ljava.math.BigDecimal;"
+},
+{
+  "name":"[Lsun.security.pkcs.SignerInfo;"
+},
+{
+  "name":"android.os.Build"
+},
+{
+  "name":"android.os.Build$VERSION"
+},
+{
+  "name":"com.fasterxml.jackson.databind.ObjectMapper"
+},
+{
+  "name":"com.fasterxml.jackson.databind.ObjectWriter"
+},
+{
+  "name":"com.fasterxml.jackson.databind.ext.Java7HandlersImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.databind.node.ObjectNode"
+},
+{
+  "name":"com.github.ajalt.clikt.output.CliktConsole"
+},
+{
+  "name":"com.sun.crypto.provider.AESCipher$General",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ARCFOURCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ChaCha20Cipher$ChaCha20Poly1305",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESedeCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DHParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.GaloisCounterMode$AESGCM",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.TlsKeyMaterialGenerator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.TlsMasterSecretGenerator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.TlsPrfGenerator$V12",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.CallbackProxy",
+  "methods":[{"name":"callback","parameterTypes":["java.lang.Object[]"] }]
+},
+{
+  "name":"com.sun.jna.platform.win32.Guid$GUID",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+{
+  "name":"com.sun.jna.platform.win32.WinNT$HRESULT",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.ptr.PointerByReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.tools.attach.VirtualMachine"
+},
+{
+  "name":"de.vandermeer.asciitable.AsciiTable"
+},
+{
+  "name":"io.ktor.http.HttpStatusCode"
+},
+{
+  "name":"io.ktor.network.selector.InterestSuspensionsMap",
+  "fields":[{"name":"acceptHandlerReference"}, {"name":"connectHandlerReference"}, {"name":"readHandlerReference"}, {"name":"writeHandlerReference"}]
+},
+{
+  "name":"io.ktor.network.selector.LockFreeMPSCQueue",
+  "fields":[{"name":"_cur"}]
+},
+{
+  "name":"io.ktor.network.selector.LockFreeMPSCQueueCore",
+  "fields":[{"name":"_next"}, {"name":"_state"}]
+},
+{
+  "name":"io.ktor.network.selector.SelectableBase",
+  "fields":[{"name":"_interestedOps"}]
+},
+{
+  "name":"io.ktor.server.cio.internal.WeakTimeoutQueue$WeakTimeoutCoroutine",
+  "fields":[{"name":"state"}]
+},
+{
+  "name":"io.ktor.util.collections.CopyOnWriteHashMap",
+  "fields":[{"name":"current"}]
+},
+{
+  "name":"io.ktor.util.internal.LockFreeLinkedListNode",
+  "fields":[{"name":"_next"}, {"name":"_prev"}, {"name":"_removedRef"}]
+},
+{
+  "name":"io.ktor.utils.io.ByteBufferChannel",
+  "fields":[{"name":"_closed"}, {"name":"_readOp"}, {"name":"_state"}, {"name":"_writeOp"}]
+},
+{
+  "name":"io.ktor.utils.io.core.internal.ChunkBuffer",
+  "fields":[{"name":"nextRef"}, {"name":"refCount"}]
+},
+{
+  "name":"io.ktor.utils.io.internal.CancellableReusableContinuation",
+  "fields":[{"name":"jobCancellationHandler"}, {"name":"state"}]
+},
+{
+  "name":"io.ktor.utils.io.internal.JoiningState",
+  "fields":[{"name":"_closeWaitJob"}]
+},
+{
+  "name":"io.ktor.utils.io.internal.RingBufferCapacity",
+  "fields":[{"name":"_availableForRead$internal"}, {"name":"_availableForWrite$internal"}, {"name":"_pendingToFlush"}]
+},
+{
+  "name":"io.ktor.utils.io.pool.DefaultPool",
+  "fields":[{"name":"top"}]
+},
+{
+  "name":"io.mockk.CapturingSlot"
+},
+{
+  "name":"io.mockk.impl.annotations.MockK",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"name","parameterTypes":[] }, {"name":"relaxUnitFun","parameterTypes":[] }, {"name":"relaxed","parameterTypes":[] }]
+},
+{
+  "name":"io.mockk.junit5.MockKExtension",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.mockk.proxy.jvm.JvmMockKAgentFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.mockk.proxy.jvm.advice.ProxyAdviceId",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.mockk.proxy.jvm.advice.jvm.JvmMockKProxyAdvice",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.mockk.proxy.jvm.advice.jvm.JvmMockKProxyInterceptor",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.mockk.proxy.jvm.dispatcher.JvmMockKDispatcher"
+},
+{
+  "name":"io.mockk.proxy.jvm.dispatcher.JvmMockKWeakMap"
+},
+{
+  "name":"io.mockk.proxy.jvm.dispatcher.JvmMockKWeakMap$StrongKey"
+},
+{
+  "name":"io.mockk.proxy.jvm.dispatcher.JvmMockKWeakMap$WeakKey"
+},
+{
+  "name":"io.mockk.renamed.java.nio.file.Path$Subclass2"
+},
+{
+  "name":"io.mockk.renamed.java.util.Collection$Subclass6"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$4cscpe10"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$5j4bem00"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$61en0h10"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$7m9oaq00"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$9pqdof10"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$g7qoll10"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$ialm8210"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$mf9m8g30"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$q3087630"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$sgdndr30"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$snj05d20"
+},
+{
+  "name":"io.mockk.renamed.java.util.List$Subclass1$auxiliary$t8gh0920"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$076uhg20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$4cscpe10"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$5j4bem00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$6edc2930"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$7m9oaq00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$9i0l1j20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$9olmfo30"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$9pqdof10"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$am2phb20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$cesuuf00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$gtdgr000"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$hqtb1800"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$lehflt00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$q40pg420"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass3$auxiliary$re2fdt00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$076uhg20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$4cscpe10"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$5j4bem00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$6edc2930"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$7m9oaq00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$9i0l1j20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$9olmfo30"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$9pqdof10"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$am2phb20"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$cesuuf00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$gtdgr000"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$hqtb1800"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$lehflt00"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$q40pg420"
+},
+{
+  "name":"io.mockk.renamed.java.util.Map$Subclass5$auxiliary$re2fdt00"
+},
+{
+  "name":"io.mockk.renamed.java.util.function.Predicate$Subclass0"
+},
+{
+  "name":"java.io.Closeable",
+  "methods":[{"name":"list","parameterTypes":[] }]
+},
+{
+  "name":"java.io.File"
+},
+{
+  "name":"java.io.FilePermission"
+},
+{
+  "name":"java.io.ObjectInputStream"
+},
+{
+  "name":"java.io.Serializable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.AutoCloseable",
+  "methods":[{"name":"collect","parameterTypes":["java.util.stream.Collector"] }, {"name":"list","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Boolean"
+},
+{
+  "name":"java.lang.Class",
+  "methods":[{"name":"getAnnotatedInterfaces","parameterTypes":[] }, {"name":"getAnnotatedSuperclass","parameterTypes":[] }, {"name":"getDeclaredMethod","parameterTypes":["java.lang.String","java.lang.Class[]"] }, {"name":"getMethod","parameterTypes":["java.lang.String","java.lang.Class[]"] }, {"name":"getModule","parameterTypes":[] }, {"name":"getNestHost","parameterTypes":[] }, {"name":"getNestMembers","parameterTypes":[] }, {"name":"getPermittedSubclasses","parameterTypes":[] }, {"name":"getRecordComponents","parameterTypes":[] }, {"name":"isNestmateOf","parameterTypes":["java.lang.Class"] }, {"name":"isRecord","parameterTypes":[] }, {"name":"isSealed","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassLoader",
+  "methods":[{"name":"getDefinedPackage","parameterTypes":["java.lang.String"] }, {"name":"getUnnamedModule","parameterTypes":[] }, {"name":"registerAsParallelCapable","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassValue"
+},
+{
+  "name":"java.lang.Comparable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"name","parameterTypes":[] }, {"name":"packages","parameterTypes":[] }, {"name":"rawVersion","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Enum",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"clone","parameterTypes":[] }, {"name":"compareTo","parameterTypes":["java.lang.Enum"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"valueOf","parameterTypes":["java.lang.Class","java.lang.String"] }]
+},
+{
+  "name":"java.lang.Enum$EnumDesc"
+},
+{
+  "name":"java.lang.FunctionalInterface",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.lang.Integer",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.lang.Iterable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"forEach","parameterTypes":["java.util.function.Consumer"] }]
+},
+{
+  "name":"java.lang.Module",
+  "methods":[{"name":"addExports","parameterTypes":["java.lang.String","java.lang.Module"] }, {"name":"canRead","parameterTypes":["java.lang.Module"] }, {"name":"getClassLoader","parameterTypes":[] }, {"name":"getLayer","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getResourceAsStream","parameterTypes":["java.lang.String"] }, {"name":"isExported","parameterTypes":["java.lang.String"] }, {"name":"isExported","parameterTypes":["java.lang.String","java.lang.Module"] }, {"name":"isNamed","parameterTypes":[] }, {"name":"isOpen","parameterTypes":["java.lang.String","java.lang.Module"] }]
+},
+{
+  "name":"java.lang.ModuleLayer",
+  "methods":[{"name":"boot","parameterTypes":[] }, {"name":"configuration","parameterTypes":[] }, {"name":"findLoader","parameterTypes":["java.lang.String"] }, {"name":"parents","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Number",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Object",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"clone","parameterTypes":[] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ProcessHandle",
+  "methods":[{"name":"current","parameterTypes":[] }, {"name":"pid","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Runtime",
+  "methods":[{"name":"version","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Runtime$Version",
+  "methods":[{"name":"major","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.RuntimePermission"
+},
+{
+  "name":"java.lang.SecurityManager",
+  "methods":[{"name":"checkPermission","parameterTypes":["java.security.Permission"] }]
+},
+{
+  "name":"java.lang.StackWalker",
+  "methods":[{"name":"forEach","parameterTypes":["java.util.function.Consumer"] }, {"name":"getInstance","parameterTypes":["java.lang.StackWalker$Option"] }]
+},
+{
+  "name":"java.lang.StackWalker$Option"
+},
+{
+  "name":"java.lang.StackWalker$StackFrame",
+  "methods":[{"name":"getDeclaringClass","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.String"
+},
+{
+  "name":"java.lang.StringBuilder"
+},
+{
+  "name":"java.lang.System",
+  "methods":[{"name":"getSecurityManager","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Thread",
+  "fields":[{"name":"threadLocalRandomProbe"}]
+},
+{
+  "name":"java.lang.Throwable",
+  "methods":[{"name":"addSuppressed","parameterTypes":["java.lang.Throwable"] }]
+},
+{
+  "name":"java.lang.WeakPairMap"
+},
+{
+  "name":"java.lang.WeakPairMap$Pair"
+},
+{
+  "name":"java.lang.WeakPairMap$Pair$Lookup"
+},
+{
+  "name":"java.lang.WeakPairMap$Pair$Weak"
+},
+{
+  "name":"java.lang.WeakPairMap$Pair$Weak$1"
+},
+{
+  "name":"java.lang.WeakPairMap$WeakRefPeer"
+},
+{
+  "name":"java.lang.annotation.Retention",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.annotation.RetentionPolicy"
+},
+{
+  "name":"java.lang.annotation.Target",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.constant.Constable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.constant.ConstantDesc",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.constant.DynamicConstantDesc"
+},
+{
+  "name":"java.lang.invoke.MethodHandle",
+  "methods":[{"name":"bindTo","parameterTypes":["java.lang.Object"] }, {"name":"invokeWithArguments","parameterTypes":["java.lang.Object[]"] }]
+},
+{
+  "name":"java.lang.invoke.MethodHandles",
+  "methods":[{"name":"lookup","parameterTypes":[] }, {"name":"privateLookupIn","parameterTypes":["java.lang.Class","java.lang.invoke.MethodHandles$Lookup"] }]
+},
+{
+  "name":"java.lang.invoke.MethodHandles$Lookup",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Class","int"] }, {"name":"defineClass","parameterTypes":["byte[]"] }, {"name":"findSpecial","parameterTypes":["java.lang.Class","java.lang.String","java.lang.invoke.MethodType","java.lang.Class"] }, {"name":"findVirtual","parameterTypes":["java.lang.Class","java.lang.String","java.lang.invoke.MethodType"] }, {"name":"in","parameterTypes":["java.lang.Class"] }, {"name":"lookupClass","parameterTypes":[] }, {"name":"lookupModes","parameterTypes":[] }, {"name":"unreflectSpecial","parameterTypes":["java.lang.reflect.Method","java.lang.Class"] }]
+},
+{
+  "name":"java.lang.invoke.MethodType",
+  "methods":[{"name":"methodType","parameterTypes":["java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"java.lang.invoke.TypeDescriptor",
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.invoke.TypeDescriptor$OfField",
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.ManagementFactory",
+  "methods":[{"name":"getRuntimeMXBean","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.PlatformManagedObject",
+  "methods":[{"name":"getInputArguments","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.RuntimeMXBean",
+  "methods":[{"name":"getInputArguments","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.Configuration",
+  "methods":[{"name":"modules","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.ModuleDescriptor",
+  "methods":[{"name":"name","parameterTypes":[] }, {"name":"packages","parameterTypes":[] }, {"name":"rawVersion","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.ModuleReader",
+  "methods":[{"name":"list","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.ModuleReference",
+  "methods":[{"name":"descriptor","parameterTypes":[] }, {"name":"location","parameterTypes":[] }, {"name":"open","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.ResolvedModule",
+  "methods":[{"name":"reference","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedArrayType",
+  "methods":[{"name":"getAnnotatedGenericComponentType","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedElement",
+  "methods":[{"name":"getLayer","parameterTypes":[] }, {"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedParameterizedType",
+  "methods":[{"name":"getAnnotatedActualTypeArguments","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedType",
+  "methods":[{"name":"getAnnotatedOwnerType","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedTypeVariable",
+  "methods":[{"name":"getAnnotatedBounds","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedWildcardType",
+  "methods":[{"name":"getAnnotatedLowerBounds","parameterTypes":[] }, {"name":"getAnnotatedUpperBounds","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Executable",
+  "methods":[{"name":"getAnnotatedExceptionTypes","parameterTypes":[] }, {"name":"getAnnotatedParameterTypes","parameterTypes":[] }, {"name":"getAnnotatedReceiverType","parameterTypes":[] }, {"name":"getParameterCount","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Field",
+  "methods":[{"name":"getAnnotatedType","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.GenericDeclaration",
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Method",
+  "methods":[{"name":"getAnnotatedReturnType","parameterTypes":[] }, {"name":"isDefault","parameterTypes":[] }, {"name":"isVarArgs","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Parameter",
+  "methods":[{"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"isNamePresent","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Type",
+  "methods":[{"name":"getModule","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.TypeVariable",
+  "methods":[{"name":"getAnnotatedBounds","parameterTypes":[] }]
+},
+{
+  "name":"java.math.BigDecimal",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.net.NetPermission"
+},
+{
+  "name":"java.net.SocketPermission"
+},
+{
+  "name":"java.net.StandardSocketOptions"
+},
+{
+  "name":"java.net.URLPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"java.nio.Buffer"
+},
+{
+  "name":"java.nio.file.Path",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.nio.file.Watchable",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.security.AccessController",
+  "methods":[{"name":"doPrivileged","parameterTypes":["java.security.PrivilegedAction"] }, {"name":"doPrivileged","parameterTypes":["java.security.PrivilegedExceptionAction"] }]
+},
+{
+  "name":"java.security.AlgorithmParametersSpi"
+},
+{
+  "name":"java.security.AllPermission"
+},
+{
+  "name":"java.security.KeyStoreSpi"
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"java.security.SecurityPermission"
+},
+{
+  "name":"java.security.interfaces.ECPrivateKey"
+},
+{
+  "name":"java.security.interfaces.ECPublicKey"
+},
+{
+  "name":"java.security.interfaces.RSAPrivateKey"
+},
+{
+  "name":"java.security.interfaces.RSAPublicKey"
+},
+{
+  "name":"java.time.LocalDate"
+},
+{
+  "name":"java.util.ArrayList"
+},
+{
+  "name":"java.util.Arrays",
+  "allDeclaredClasses":true
+},
+{
+  "name":"java.util.Arrays$ArrayList"
+},
+{
+  "name":"java.util.Collection",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"parallelStream","parameterTypes":[] }, {"name":"removeIf","parameterTypes":["java.util.function.Predicate"] }, {"name":"stream","parameterTypes":[] }, {"name":"toArray","parameterTypes":["java.util.function.IntFunction"] }]
+},
+{
+  "name":"java.util.Collections",
+  "allDeclaredClasses":true
+},
+{
+  "name":"java.util.Collections$SingletonList"
+},
+{
+  "name":"java.util.Date"
+},
+{
+  "name":"java.util.HashMap"
+},
+{
+  "name":"java.util.LinkedHashMap"
+},
+{
+  "name":"java.util.List",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"add","parameterTypes":["int","java.lang.Object"] }, {"name":"add","parameterTypes":["java.lang.Object"] }, {"name":"addAll","parameterTypes":["int","java.util.Collection"] }, {"name":"addAll","parameterTypes":["java.util.Collection"] }, {"name":"clear","parameterTypes":[] }, {"name":"contains","parameterTypes":["java.lang.Object"] }, {"name":"containsAll","parameterTypes":["java.util.Collection"] }, {"name":"get","parameterTypes":["int"] }, {"name":"indexOf","parameterTypes":["java.lang.Object"] }, {"name":"isEmpty","parameterTypes":[] }, {"name":"iterator","parameterTypes":[] }, {"name":"lastIndexOf","parameterTypes":["java.lang.Object"] }, {"name":"listIterator","parameterTypes":[] }, {"name":"listIterator","parameterTypes":["int"] }, {"name":"remove","parameterTypes":["int"] }, {"name":"remove","parameterTypes":["java.lang.Object"] }, {"name":"removeAll","parameterTypes":["java.util.Collection"] }, {"name":"replaceAll","parameterTypes":["java.util.function.UnaryOperator"] }, {"name":"retainAll","parameterTypes":["java.util.Collection"] }, {"name":"set","parameterTypes":["int","java.lang.Object"] }, {"name":"size","parameterTypes":[] }, {"name":"sort","parameterTypes":["java.util.Comparator"] }, {"name":"spliterator","parameterTypes":[] }, {"name":"subList","parameterTypes":["int","int"] }, {"name":"toArray","parameterTypes":[] }, {"name":"toArray","parameterTypes":["java.lang.Object[]"] }]
+},
+{
+  "name":"java.util.Map",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"clear","parameterTypes":[] }, {"name":"compute","parameterTypes":["java.lang.Object","java.util.function.BiFunction"] }, {"name":"computeIfAbsent","parameterTypes":["java.lang.Object","java.util.function.Function"] }, {"name":"computeIfPresent","parameterTypes":["java.lang.Object","java.util.function.BiFunction"] }, {"name":"containsKey","parameterTypes":["java.lang.Object"] }, {"name":"containsValue","parameterTypes":["java.lang.Object"] }, {"name":"entrySet","parameterTypes":[] }, {"name":"forEach","parameterTypes":["java.util.function.BiConsumer"] }, {"name":"get","parameterTypes":["java.lang.Object"] }, {"name":"getOrDefault","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"isEmpty","parameterTypes":[] }, {"name":"keySet","parameterTypes":[] }, {"name":"merge","parameterTypes":["java.lang.Object","java.lang.Object","java.util.function.BiFunction"] }, {"name":"put","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"putAll","parameterTypes":["java.util.Map"] }, {"name":"putIfAbsent","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"remove","parameterTypes":["java.lang.Object"] }, {"name":"remove","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"replace","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"replace","parameterTypes":["java.lang.Object","java.lang.Object","java.lang.Object"] }, {"name":"replaceAll","parameterTypes":["java.util.function.BiFunction"] }, {"name":"size","parameterTypes":[] }, {"name":"values","parameterTypes":[] }]
+},
+{
+  "name":"java.util.Optional",
+  "methods":[{"name":"get","parameterTypes":[] }, {"name":"isPresent","parameterTypes":[] }]
+},
+{
+  "name":"java.util.PropertyPermission"
+},
+{
+  "name":"java.util.UUID",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.util.concurrent.ForkJoinPool",
+  "methods":[{"name":"<init>","parameterTypes":["int","java.util.concurrent.ForkJoinPool$ForkJoinWorkerThreadFactory","java.lang.Thread$UncaughtExceptionHandler","boolean","int","int","int","java.util.function.Predicate","long","java.util.concurrent.TimeUnit"] }]
+},
+{
+  "name":"java.util.concurrent.ForkJoinTask",
+  "fields":[{"name":"aux"}, {"name":"status"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicBoolean",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicReference",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.Striped64",
+  "fields":[{"name":"base"}, {"name":"cellsBusy"}]
+},
+{
+  "name":"java.util.function.Consumer",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.function.Predicate",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.util.regex.Pattern"
+},
+{
+  "name":"java.util.stream.BaseStream",
+  "methods":[{"name":"collect","parameterTypes":["java.util.stream.Collector"] }]
+},
+{
+  "name":"java.util.stream.Collector"
+},
+{
+  "name":"java.util.stream.Collectors",
+  "methods":[{"name":"toList","parameterTypes":[] }]
+},
+{
+  "name":"java.util.stream.Stream",
+  "methods":[{"name":"collect","parameterTypes":["java.util.stream.Collector"] }]
+},
+{
+  "name":"javax.security.auth.x500.X500Principal",
+  "fields":[{"name":"thisX500Name"}],
+  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
+{
+  "name":"javax.smartcardio.CardPermission"
+},
+{
+  "name":"jdk.internal.ValueBased"
+},
+{
+  "name":"kotlin.Any"
+},
+{
+  "name":"kotlin.Array"
+},
+{
+  "name":"kotlin.Boolean"
+},
+{
+  "name":"kotlin.Comparable"
+},
+{
+  "name":"kotlin.Enum"
+},
+{
+  "name":"kotlin.ExtensionFunctionType"
+},
+{
+  "name":"kotlin.Function0"
+},
+{
+  "name":"kotlin.Function1"
+},
+{
+  "name":"kotlin.Function2"
+},
+{
+  "name":"kotlin.Int"
+},
+{
+  "name":"kotlin.Long"
+},
+{
+  "name":"kotlin.Metadata",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"bv","parameterTypes":[] }, {"name":"d1","parameterTypes":[] }, {"name":"d2","parameterTypes":[] }, {"name":"k","parameterTypes":[] }, {"name":"mv","parameterTypes":[] }, {"name":"pn","parameterTypes":[] }, {"name":"xi","parameterTypes":[] }, {"name":"xs","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.Pair",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"kotlin.ParameterName"
+},
+{
+  "name":"kotlin.Result",
+  "fields":[{"name":"value"}],
+  "methods":[{"name":"box-impl","parameterTypes":["java.lang.Object"] }, {"name":"unbox-impl","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.Result$Companion"
+},
+{
+  "name":"kotlin.Result$Failure"
+},
+{
+  "name":"kotlin.SafePublicationLazyImpl",
+  "fields":[{"name":"_value"}]
+},
+{
+  "name":"kotlin.String"
+},
+{
+  "name":"kotlin.Throwable"
+},
+{
+  "name":"kotlin.Unit",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"kotlin.annotation.MustBeDocumented",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"kotlin.annotation.Retention",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"kotlin.annotation.Target",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"kotlin.collections.Collection"
+},
+{
+  "name":"kotlin.collections.EmptyList"
+},
+{
+  "name":"kotlin.collections.List"
+},
+{
+  "name":"kotlin.collections.Map"
+},
+{
+  "name":"kotlin.coroutines.Continuation"
+},
+{
+  "name":"kotlin.coroutines.CoroutineContext",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"kotlin.coroutines.CoroutineContext$Element"
+},
+{
+  "name":"kotlin.coroutines.CoroutineContext$Key"
+},
+{
+  "name":"kotlin.enums.EnumEntries"
+},
+{
+  "name":"kotlin.internal.jdk8.JDK8PlatformImplementations",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.io.Serializable"
+},
+{
+  "name":"kotlin.jvm.functions.Function0"
+},
+{
+  "name":"kotlin.jvm.functions.Function1"
+},
+{
+  "name":"kotlin.jvm.functions.Function2"
+},
+{
+  "name":"kotlin.jvm.internal.DefaultConstructorMarker"
+},
+{
+  "name":"kotlin.reflect.jvm.internal.ReflectionFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.reflect.jvm.internal.impl.resolve.scopes.DescriptorKindFilter",
+  "allPublicFields":true
+},
+{
+  "name":"kotlin.text.StringBuilder"
+},
+{
+  "name":"kotlinx.coroutines.CancellableContinuationImpl",
+  "fields":[{"name":"_decision"}, {"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.CompletedExceptionally",
+  "fields":[{"name":"_handled"}]
+},
+{
+  "name":"kotlinx.coroutines.CoroutineScope",
+  "allDeclaredFields":true,
+  "allPublicFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"kotlinx.coroutines.DispatchedCoroutine",
+  "fields":[{"name":"_decision"}]
+},
+{
+  "name":"kotlinx.coroutines.EventLoopImplBase",
+  "fields":[{"name":"_delayed"}, {"name":"_queue"}]
+},
+{
+  "name":"kotlinx.coroutines.InvokeOnCancelling",
+  "fields":[{"name":"_invoked"}]
+},
+{
+  "name":"kotlinx.coroutines.JobSupport",
+  "fields":[{"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.channels.AbstractSendChannel",
+  "fields":[{"name":"onCloseHandler"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.AtomicOp",
+  "fields":[{"name":"_consensus"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.DispatchedContinuation",
+  "fields":[{"name":"_reusableCancellableContinuation"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeLinkedListNode",
+  "fields":[{"name":"_next"}, {"name":"_prev"}, {"name":"_removedRef"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeTaskQueue",
+  "fields":[{"name":"_cur"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeTaskQueueCore",
+  "fields":[{"name":"_next"}, {"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.CoroutineScheduler",
+  "fields":[{"name":"_isTerminated"}, {"name":"controlState"}, {"name":"parkedWorkersStack"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.CoroutineScheduler$Worker",
+  "fields":[{"name":"workerCtl"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.WorkQueue",
+  "fields":[{"name":"blockingTasksInBuffer"}, {"name":"consumerIndex"}, {"name":"lastScheduledTask"}, {"name":"producerIndex"}]
+},
+{
+  "name":"kotlinx.coroutines.sync.Mutex"
+},
+{
+  "name":"kotlinx.coroutines.sync.MutexImpl",
+  "fields":[{"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.sync.MutexImpl$LockWaiter",
+  "fields":[{"name":"isTaken"}]
+},
+{
+  "name":"kotlinx.coroutines.test.TestCoroutineScheduler",
+  "fields":[{"name":"count"}]
+},
+{
+  "name":"kotlinx.coroutines.test.TestResult"
+},
+{
+  "name":"kotlinx.coroutines.test.internal.TestMainDispatcher$NonConcurrentlyModifiable",
+  "fields":[{"name":"exceptionWhenReading"}, {"name":"isWriting"}, {"name":"readers"}]
+},
+{
+  "name":"kotlinx.coroutines.test.internal.TestMainDispatcherFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.agent.Installer",
+  "methods":[{"name":"agentmain","parameterTypes":["java.lang.String","java.lang.instrument.Instrumentation"] }, {"name":"getInstrumentation","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$AllArguments",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"nullIfEmpty","parameterTypes":[] }, {"name":"readOnly","parameterTypes":[] }, {"name":"typing","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Argument",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Enter",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"readOnly","parameterTypes":[] }, {"name":"typing","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Exit",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Local",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.asm.Advice$OnMethodEnter",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"inline","parameterTypes":[] }, {"name":"prependLineNumber","parameterTypes":[] }, {"name":"skipOn","parameterTypes":[] }, {"name":"suppress","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$OnMethodExit",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"backupArguments","parameterTypes":[] }, {"name":"inline","parameterTypes":[] }, {"name":"onThrowable","parameterTypes":[] }, {"name":"repeatOn","parameterTypes":[] }, {"name":"suppress","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Origin",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Return",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"readOnly","parameterTypes":[] }, {"name":"typing","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$This",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"optional","parameterTypes":[] }, {"name":"readOnly","parameterTypes":[] }, {"name":"typing","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.asm.Advice$Thrown",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableExceptionType$Dispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedField$Dispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForOwnerType$AnnotatedType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$AnnotatedTypeVariable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$OfFormalTypeVariable$FormalTypeVariable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardLowerBoundType$AnnotatedWildcardType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardUpperBoundType$AnnotatedWildcardType",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.dynamic.loading.ClassInjector$UsingLookup$MethodHandles",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.dynamic.loading.ClassInjector$UsingLookup$MethodHandles$Lookup",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.dynamic.loading.ClassInjector$UsingReflection$System",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.dynamic.loading.ClassInjector$UsingUnsafe$System",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.AllArguments",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"includeSelf","parameterTypes":[] }, {"name":"nullIfEmpty","parameterTypes":[] }, {"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.Argument",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.BindingPriority",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.Default",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.DefaultCall",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.DefaultMethod",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.FieldValue",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.Origin",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"cache","parameterTypes":[] }, {"name":"privileged","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.Super",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.SuperCall",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"fallbackToDefault","parameterTypes":[] }, {"name":"nullIfImpossible","parameterTypes":[] }, {"name":"serializableProxy","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.SuperMethod",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"net.bytebuddy.implementation.bind.annotation.This",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"optional","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.implementation.bytecode.assign.Assigner$Typing"
+},
+{
+  "name":"net.bytebuddy.utility.Invoker",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.utility.Invoker$Dispatcher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.bytebuddy.utility.JavaModule$Module",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"net.bytebuddy.utility.JavaModule$Resolver",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.AntClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.ClassGraphClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.CxfContainerClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.EquinoxClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.EquinoxContextFinderClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.FallbackClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.FelixClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.JBossClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.JPMSClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.OSGiDefaultClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.ParentLastDelegationOrderTestClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.PlexusClassWorldsClassRealmClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.QuarkusClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.SpringBootRestartClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.TomcatWebappClassLoaderBaseHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.URLClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.UnoOneJarClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.WeblogicClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.WebsphereLibertyClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.classloaderhandler.WebsphereTraditionalClassLoaderHandler",
+  "methods":[{"name":"canHandle","parameterTypes":["java.lang.Class","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClassLoaderOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClassLoaderOrder","nonapi.io.github.classgraph.utils.LogNode"] }, {"name":"findClasspathOrder","parameterTypes":["java.lang.ClassLoader","nonapi.io.github.classgraph.classpath.ClasspathOrder","nonapi.io.github.classgraph.scanspec.ScanSpec","nonapi.io.github.classgraph.utils.LogNode"] }]
+},
+{
+  "name":"nonapi.io.github.classgraph.scanspec.ScanSpec",
+  "allDeclaredFields":true
+},
+{
+  "name":"org.apache.maven.surefire.junitplatform.JUnitPlatformProvider",
+  "methods":[{"name":"<init>","parameterTypes":["org.apache.maven.surefire.api.provider.ProviderParameters"] }]
+},
+{
+  "name":"org.apiguardian.api.API",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.internal.AssumptionViolatedException"
+},
+{
+  "name":"org.junit.jupiter.api.BeforeEach",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.junit.jupiter.api.Test",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.api.TestTemplate",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.api.extension.ExtendWith",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.api.io.TempDir",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"cleanup","parameterTypes":[] }]
+},
+{
+  "name":"org.junit.jupiter.params.ParameterizedTest",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.params.ParameterizedTestExtension",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.junit.jupiter.params.provider.ArgumentsProvider",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.params.provider.ArgumentsSource",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.params.provider.EnumArgumentsProvider",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.junit.jupiter.params.provider.EnumSource",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.jupiter.params.support.AnnotationConsumer",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.platform.commons.annotation.Testable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.junit.platform.launcher.LauncherSession",
+  "methods":[{"name":"getLauncher","parameterTypes":[] }]
+},
+{
+  "name":"org.junit.platform.launcher.core.LauncherFactory",
+  "methods":[{"name":"openSession","parameterTypes":[] }]
+},
+{
+  "name":"org.kodein.di.DI"
+},
+{
+  "name":"org.kodein.di.DIAware",
+  "allPublicFields":true,
+  "allDeclaredClasses":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.kodein.di.DIContext"
+},
+{
+  "name":"org.kodein.di.DITrigger"
+},
+{
+  "name":"org.kodein.di.LazyDI"
+},
+{
+  "name":"org.slf4j.Logger"
+},
+{
+  "name":"org.slf4j.impl.StaticLoggerBinder"
+},
+{
+  "name":"sun.misc.Unsafe",
+  "fields":[{"name":"theUnsafe"}],
+  "methods":[{"name":"invokeCleaner","parameterTypes":["java.nio.ByteBuffer"] }]
+},
+{
+  "name":"sun.nio.fs.WindowsPath",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"sun.reflect.ReflectionFactory",
+  "methods":[{"name":"getReflectionFactory","parameterTypes":[] }, {"name":"newConstructorForSerialization","parameterTypes":["java.lang.Class","java.lang.reflect.Constructor"] }]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.DRBG",
+  "methods":[{"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+},
+{
+  "name":"sun.security.provider.DSA$SHA224withDSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.DSA$SHA256withDSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.JavaKeyStore$JKS",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA224",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA512",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.X509Factory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.certpath.PKIXCertPathValidator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.PSSParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAKeyFactory$Legacy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAPSSSignature",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSASignature$SHA224withRSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSASignature$SHA256withRSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.SSLContextImpl$TLSContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.util.ObjectIdentifier"
+},
+{
+  "name":"sun.security.x509.AuthorityInfoAccessExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.AuthorityKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.BasicConstraintsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CRLDistributionPointsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CertificateExtensions"
+},
+{
+  "name":"sun.security.x509.CertificatePoliciesExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.ExtendedKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.IssuerAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.KeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.NetscapeCertTypeExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.PrivateKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.crispyfish.model.Registration",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component10","parameterTypes":[] }, {"name":"component11","parameterTypes":[] }, {"name":"component12","parameterTypes":[] }, {"name":"component13","parameterTypes":[] }, {"name":"component14","parameterTypes":[] }, {"name":"component15","parameterTypes":[] }, {"name":"component16","parameterTypes":[] }, {"name":"component17","parameterTypes":[] }, {"name":"component18","parameterTypes":[] }, {"name":"component19","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component20","parameterTypes":[] }, {"name":"component21","parameterTypes":[] }, {"name":"component22","parameterTypes":[] }, {"name":"component23","parameterTypes":[] }, {"name":"component24","parameterTypes":[] }, {"name":"component25","parameterTypes":[] }, {"name":"component26","parameterTypes":[] }, {"name":"component27","parameterTypes":[] }, {"name":"component28","parameterTypes":[] }, {"name":"component29","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component30","parameterTypes":[] }, {"name":"component31","parameterTypes":[] }, {"name":"component32","parameterTypes":[] }, {"name":"component33","parameterTypes":[] }, {"name":"component34","parameterTypes":[] }, {"name":"component35","parameterTypes":[] }, {"name":"component36","parameterTypes":[] }, {"name":"component37","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"component8","parameterTypes":[] }, {"name":"component9","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","tech.coner.crispyfish.model.Signage","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","boolean","boolean","boolean","boolean","boolean","java.lang.String","java.lang.String","java.lang.String","boolean","boolean","boolean","java.lang.Integer","java.lang.Integer","java.lang.String","tech.coner.crispyfish.model.RegistrationResult","tech.coner.crispyfish.model.RegistrationResult","tech.coner.crispyfish.model.RegistrationResult","java.lang.String","java.lang.String","java.lang.Integer","java.util.List","java.util.Map"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.crispyfish.model.RegistrationResult"
+},
+{
+  "name":"tech.coner.crispyfish.model.RegistrationRun"
+},
+{
+  "name":"tech.coner.crispyfish.model.Signage"
+},
+{
+  "name":"tech.coner.crispyfish.model.StagingRegistration"
+},
+{
+  "name":"tech.coner.crispyfish.model.StagingRun"
+},
+{
+  "name":"tech.coner.snoozle.db.Record",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.snoozle.db.entity.Entity",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.snoozle.db.entity.EntityResource"
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.MetadataRepository"
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","long","tech.coner.snoozle.db.metadata.SessionMetadataEntity$Type"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","long","tech.coner.snoozle.db.metadata.SessionMetadataEntity$Type"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getHost","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getProcessId","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Key"
+},
+{
+  "name":"tech.coner.snoozle.db.metadata.SessionMetadataEntity$Type",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"clone","parameterTypes":[] }, {"name":"compareTo","parameterTypes":["java.lang.Enum"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"tech.coner.snoozle.db.session.Session",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"close-d1pmJ48","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.snoozle.db.session.data.DataSession",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Car",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getColor","parameterTypes":[] }, {"name":"getModel","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Class",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.Integer","boolean","java.math.BigDecimal","tech.coner.trailer.Class$Parent"] }, {"name":"compareTo","parameterTypes":["tech.coner.trailer.Class"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.lang.Integer","boolean","java.math.BigDecimal","tech.coner.trailer.Class$Parent"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getAbbreviation","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParent","parameterTypes":[] }, {"name":"getPaxFactor","parameterTypes":[] }, {"name":"getPaxed","parameterTypes":[] }, {"name":"getSort","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requirePaxFactor","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Class$Parent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int"] }, {"name":"compareTo","parameterTypes":["tech.coner.trailer.Class$Parent"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","int"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getName","parameterTypes":[] }, {"name":"getSort","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Classing",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Club",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Event",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","tech.coner.trailer.Event$Lifecycle","tech.coner.trailer.Event$CrispyFishMetadata","tech.coner.trailer.Event$MotorsportRegMetadata","tech.coner.trailer.Policy"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFish","parameterTypes":[] }, {"name":"getDate","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLifecycle","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireCrispyFish","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Event$CrispyFishMetadata",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Event$CrispyFishMetadata$PeopleMapKey",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.Classing","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Event$Lifecycle"
+},
+{
+  "name":"tech.coner.trailer.Event$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.EventContext"
+},
+{
+  "name":"tech.coner.trailer.EventId"
+},
+{
+  "name":"tech.coner.trailer.Participant"
+},
+{
+  "name":"tech.coner.trailer.Person",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.Person$MotorsportRegMetadata"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Person$MotorsportRegMetadata"
+},
+{
+  "name":"tech.coner.trailer.Policy",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Run",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"component8","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","tech.coner.trailer.Signage","tech.coner.trailer.Participant","int","boolean","boolean","boolean","tech.coner.trailer.Time"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Run$Penalty"
+},
+{
+  "name":"tech.coner.trailer.Season",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.Signage"
+},
+{
+  "name":"tech.coner.trailer.Time",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"<init>","parameterTypes":["java.math.BigDecimal"] }, {"name":"compareTo","parameterTypes":["tech.coner.trailer.Time"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.math.BigDecimal"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getValue","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.Time$Companion",
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.clikt.StringBuilderConsole"
+},
+{
+  "name":"tech.coner.trailer.cli.command.AbstractCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"after","parameterTypes":[] }, {"name":"setup","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.BaseDataSessionCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"tech.coner.trailer.cli.command.GlobalModel"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommand"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"When given --database with existing database name it should use it","parameterTypes":[] }, {"name":"When given --database with invalid name it should fail","parameterTypes":[] }, {"name":"When no database chosen and subcommand permits no database, it should continue without database","parameterTypes":[] }, {"name":"When no database chosen and subcommand requires database choice, it should abort","parameterTypes":[] }, {"name":"When not given --database it should use the default if available","parameterTypes":[] }, {"name":"When not passed --config-dir, it should use default ConfigurationService","parameterTypes":[] }, {"name":"When passed --config-dir, it should use override ConfigurationService","parameterTypes":[] }, {"name":"arrangeWithoutDatabasesCase","parameterTypes":[] }, {"name":"before","parameterTypes":[] }, {"name":"getService","parameterTypes":[] }, {"name":"getStubService","parameterTypes":[] }, {"name":"setService","parameterTypes":["tech.coner.trailer.io.service.ConfigurationService"] }, {"name":"setStubService","parameterTypes":["tech.coner.trailer.cli.service.StubService"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When given --database with existing database name it should use it$1",
+  "methods":[{"name":"invokeSuspend","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When given --database with existing database name it should use it$1$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When given --database with invalid name it should fail$1",
+  "methods":[{"name":"invokeSuspend","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When given --database with invalid name it should fail$1$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When not given --database it should use the default if available$1",
+  "methods":[{"name":"invokeSuspend","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$When not given --database it should use the default if available$1$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithDatabases$1",
+  "methods":[{"name":"invokeSuspend","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithDatabases$1$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithDatabases$1$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithDatabases$1$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithoutDatabasesCase$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithoutDatabasesCase$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.RootCommandTest$arrangeWithoutDatabasesCase$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.StubCommand"
+},
+{
+  "name":"tech.coner.trailer.cli.command.StubCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should run and not blow up","parameterTypes":[] }, {"name":"before","parameterTypes":[] }, {"name":"getStubService","parameterTypes":[] }, {"name":"setStubService","parameterTypes":["tech.coner.trailer.cli.service.StubService"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.BaseConfigCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"When given with valid arguments it should add database and display","parameterTypes":[] }, {"name":"When it fails to add database, it should display error and exit","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommandTest$When given with valid arguments it should add database and display$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommandTest$When given with valid arguments it should add database and display$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommandTest$When it fails to add database, it should display error and exit$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommandTest$When it fails to add database, it should display error and exit$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"When given invalid name option it should fail","parameterTypes":[] }, {"name":"When given valid name option it should get it","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommandTest$When given invalid name option it should fail$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommandTest$When given invalid name option it should fail$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommandTest$When given valid name option it should get it$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommandTest$When given valid name option it should get it$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list databases","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseListCommandTest$It should list databases$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseListCommandTest$It should list databases$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"When given invalid name option it should fail","parameterTypes":[] }, {"name":"When given valid name option it should remove named database","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommandTest$When given invalid name option it should fail$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommandTest$When given invalid name option it should fail$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommandTest$When given valid name option it should remove named database$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommandTest$When given valid name option it should remove named database$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"When given invalid name it should fail","parameterTypes":[] }, {"name":"When given valid name it should set default and succeed","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommandTest$When given invalid name it should fail$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommandTest$When given invalid name it should fail$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommandTest$When given valid name it should set default and succeed$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommandTest$When given valid name it should set default and succeed$5"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get competition webapp config","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappGetCommandTest$It should get competition webapp config$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappGetCommandTest$It should get competition webapp config$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should set options for competition webapp","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappSetCommandTest$It should set options for competition webapp$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappSetCommandTest$It should set options for competition webapp$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappUnsetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should unset options for competition webapp","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappUnsetCommandTest$It should unset options for competition webapp$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.config.ConfigWebappUnsetCommandTest$It should unset options for competition webapp$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should create event","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventAddCommandTest$It should create event$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventAddCommandTest$It should create event$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should check event and finish silently if there are no problems","parameterTypes":[] }, {"name":"It should check event and report fixable problems","parameterTypes":[] }, {"name":"It should throw when event is missing crispy fish metadata","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and finish silently if there are no problems$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and finish silently if there are no problems$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and finish silently if there are no problems$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and report fixable problems$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and report fixable problems$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should check event and report fixable problems$6"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should throw when event is missing crispy fish metadata$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should throw when event is missing crispy fish metadata$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCheckCommandTest$It should throw when event is missing crispy fish metadata$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommand"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should add a force person","parameterTypes":["tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommandTest$It should add a force person$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommandTest$It should add a force person$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommandTest$It should add a force person$5"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAddCommandTest$It should add a force person$7"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAssembleCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should assemble person map in case of registration with club memberId null","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAssembleCommandTest$It should assemble person map in case of registration with club memberId null$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAssembleCommandTest$It should assemble person map in case of registration with club memberId null$10"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAssembleCommandTest$It should assemble person map in case of registration with club memberId null$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapAssembleCommandTest$It should assemble person map in case of registration with club memberId null$8"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommand"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should remove a force person","parameterTypes":["tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommandTest$It should remove a force person$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommandTest$It should remove a force person$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommandTest$It should remove a force person$5"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventCrispyFishPersonMapRemoveCommandTest$It should remove a force person$7"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventDeleteCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should delete event","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventDeleteCommandTest$It should delete event$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventDeleteCommandTest$It should delete event$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventDeleteCommandTest$It should delete event$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get event by ID","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventGetCommandTest$It should get event by ID$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventGetCommandTest$It should get event by ID$3"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list events","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should print results as json to console","parameterTypes":[] }, {"name":"It should print results as plain text to console","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as json to console$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as json to console$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as json to console$5"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as plain text to console$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as plain text to console$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventResultsCommandTest$It should print results as plain text to console$5"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommand"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should keep event properties for options not passed","parameterTypes":["tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext"] }, {"name":"It should set event properties","parameterTypes":["tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should keep event properties for options not passed$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should keep event properties for options not passed$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should keep event properties for options not passed$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should set event properties$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should set event properties$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.EventSetCommandTest$It should set event properties$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.participant.EventParticipantListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list event participants","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.participant.EventParticipantListCommandTest$It should list event participants$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.participant.EventParticipantListCommandTest$It should list event participants$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.participant.EventParticipantListCommandTest$It should list event participants$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.run.EventRunListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list event runs","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.run.EventRunListCommandTest$It should list event runs$1"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.run.EventRunListCommandTest$It should list event runs$2"
+},
+{
+  "name":"tech.coner.trailer.cli.command.event.run.EventRunListCommandTest$It should list event runs$4"
+},
+{
+  "name":"tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should create calculator","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorDeleteCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should delete calculator","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get calculator by id","parameterTypes":[] }, {"name":"It should get calculator by name","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should only rename a calculator","parameterTypes":[] }, {"name":"It should set all properties of calculator","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should actually import members as people","parameterTypes":[] }, {"name":"It should dry-run import members as people","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportSingleCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should actually import single member as person","parameterTypes":[] }, {"name":"It should dry-run import single member as person","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list members","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.person.PersonAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should add person","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.person.PersonGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get a person","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.person.PersonListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list people","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.person.PersonSearchCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should search with contains filters","parameterTypes":[] }, {"name":"It should search with equals filters","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.person.PersonSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should change a person first and last name","parameterTypes":[] }, {"name":"It should set a person club member ID","parameterTypes":[] }, {"name":"It should set a person motorsportreg member ID","parameterTypes":[] }, {"name":"It should unset a person club member ID","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.policy.PolicyAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should add a policy","parameterTypes":["tech.coner.trailer.cli.command.policy.PolicyAddCommandTest$PolicyAddParam"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.policy.PolicyDeleteCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should delete a policy","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.policy.PolicyGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get policy by id","parameterTypes":[] }, {"name":"It should get policy by name","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.policy.PolicyListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list policies","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.policy.PolicySetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should update policy","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.rankingsort.RankingSortAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should add a ranking sort","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.rankingsort.RankingSortStepsAppendCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should append step","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.season.SeasonAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should add a season","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.season.SeasonDeleteCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should delete a season","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.season.SeasonGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get a season","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.season.SeasonListCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should list seasons","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.season.SeasonSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should set a season name","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorAddCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should create a season points calculator","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorGetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should get by id","parameterTypes":[] }, {"name":"It should get by name","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorParameterMapper",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"fromParameter","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorSetCommandTest",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"It should rename a season points calculator","parameterTypes":[] }, {"name":"It should set results type to event points calculator","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.di.TestCliktModuleKt",
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"tech.coner.trailer.cli.service.StubService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doSomething","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.BaseCollectionView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Collection"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.CrispyFishRegistrationTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Collection"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.DatabaseConfigurationView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.io.DatabaseConfiguration"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.EventPointsCalculatorView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Map"] }, {"name":"render","parameterTypes":["tech.coner.trailer.seasonpoints.EventPointsCalculator"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.EventTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.EventView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.Event"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.MotorsportRegMemberTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Collection"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.PeopleMapKeyTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Collection"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.PersonTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.PersonView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.Collection"] }, {"name":"render","parameterTypes":["tech.coner.trailer.Person"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.PolicyView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.Policy"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.RankingSortView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }, {"name":"render","parameterTypes":["tech.coner.trailer.seasonpoints.RankingSort"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.SeasonTableView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.SeasonView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.Season"] }]
+},
+{
+  "name":"tech.coner.trailer.cli.view.View",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.cli.view.WebappConfigurationView",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["kotlin.Pair"] }]
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi"
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.Assignment"
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.GetMembersResponse",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.client.motorsportreg.model.GetMembersResponse$Response"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.client.motorsportreg.model.GetMembersResponse$Response"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.GetMembersResponse$Response",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.List"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.Member",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper"
+},
+{
+  "name":"tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper"
+},
+{
+  "name":"tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"toCore","parameterTypes":["java.util.Map","tech.coner.crispyfish.model.Registration"] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.motorsportreg.mapper.MotorsportRegPersonMapper"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.ClubResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.EventPointsCalculatorResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.EventResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.PersonResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.PolicyResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.RankingSortResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.SeasonResource"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getName","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFish","parameterTypes":[] }, {"name":"getDate","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLifecycle","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPolicyId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassDefinitionFile","parameterTypes":[] }, {"name":"getEventControlFile","parameterTypes":[] }, {"name":"getPeopleMap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.util.Map","java.lang.Integer","java.lang.Integer","int"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.util.Map","java.lang.Integer","java.lang.Integer","int"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getDefaultPoints","parameterTypes":[] }, {"name":"getDidNotFinishPoints","parameterTypes":[] }, {"name":"getDidNotStartPoints","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPositionToPoints","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClubMemberId","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getMemberId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","int","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource"] }, {"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","int","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","int","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource","tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getAuthoritativeParticipantSource","parameterTypes":[] }, {"name":"getAuthoritativeRunSource","parameterTypes":[] }, {"name":"getConePenaltySeconds","parameterTypes":[] }, {"name":"getFinalScoreStyle","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPaxTimeStyle","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource$Type"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource$Type"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getType","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$DataSource$Type",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"clone","parameterTypes":[] }, {"name":"compareTo","parameterTypes":["java.lang.Enum"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.util.List"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getSteps","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step$Type","java.lang.Integer"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step$Type","java.lang.Integer"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.RankingSortEntity$Step$Type",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"clone","parameterTypes":[] }, {"name":"compareTo","parameterTypes":["java.lang.Enum"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.util.List","java.util.UUID","java.lang.Integer"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.util.List","java.util.UUID","java.lang.Integer"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getSeasonEventIds","parameterTypes":[] }, {"name":"getSeasonPointsCalculatorConfigurationId","parameterTypes":[] }, {"name":"getTakeScoreCountForPoints","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.util.Map","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.util.Map","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getRankingSortId","parameterTypes":[] }, {"name":"getResultsTypeKeyToEventPointsCalculatorId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.datasource.snoozle.entity.SeasonPointsCalculatorConfigurationEntity$Key"
+},
+{
+  "name":"tech.coner.trailer.di.ConfigurationServiceArgument"
+},
+{
+  "name":"tech.coner.trailer.di.DataSessionHolder"
+},
+{
+  "name":"tech.coner.trailer.eventresults.AbstractEventResultsCalculator",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.ClazzEventResults"
+},
+{
+  "name":"tech.coner.trailer.eventresults.ComprehensiveEventResults"
+},
+{
+  "name":"tech.coner.trailer.eventresults.EventResults",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.EventResultsCalculator",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.EventResultsType"
+},
+{
+  "name":"tech.coner.trailer.eventresults.FinalScoreFactory"
+},
+{
+  "name":"tech.coner.trailer.eventresults.IndividualEventResults"
+},
+{
+  "name":"tech.coner.trailer.eventresults.OverallEventResults",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.EventContext","tech.coner.trailer.eventresults.EventResultsType","java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.eventresults.OverallEventResultsCalculator",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"calculate","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.eventresults.ParticipantResult"
+},
+{
+  "name":"tech.coner.trailer.eventresults.ParticipantResult$ScoredRunsComparator"
+},
+{
+  "name":"tech.coner.trailer.eventresults.RawEventResultsCalculator",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.ResultRun"
+},
+{
+  "name":"tech.coner.trailer.eventresults.RunEligibilityQualifier"
+},
+{
+  "name":"tech.coner.trailer.eventresults.RunScoreFactory"
+},
+{
+  "name":"tech.coner.trailer.eventresults.Score",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","tech.coner.trailer.eventresults.Score$Penalty","boolean"] }, {"name":"<init>","parameterTypes":["java.math.BigDecimal","tech.coner.trailer.eventresults.Score$Penalty","boolean"] }, {"name":"compareTo","parameterTypes":["tech.coner.trailer.eventresults.Score"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.math.BigDecimal","tech.coner.trailer.eventresults.Score$Penalty","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getPenalty","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.eventresults.Score$Penalty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.Score$Penalty$Cone",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int"] }, {"name":"<init>","parameterTypes":["java.math.BigDecimal","int"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.math.BigDecimal","int"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCount","parameterTypes":[] }, {"name":"getDiff","parameterTypes":[] }, {"name":"getFloor","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.eventresults.Score$Penalty$DidNotFinish",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDiff","parameterTypes":[] }, {"name":"getFloor","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.eventresults.Score$PenaltyInterface",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.trailer.eventresults.TopTimesEventResults"
+},
+{
+  "name":"tech.coner.trailer.io.Configuration",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getDatabases","parameterTypes":[] }, {"name":"getDefaultDatabaseName","parameterTypes":[] }, {"name":"getWebapps","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireWebapps","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.Configuration$Companion",
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.Configuration$Webapps",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCompetition","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireCompetition","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.DatabaseConfiguration",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"asRelativeToCrispyFishDatabase","parameterTypes":["java.nio.file.Path"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFishDatabase","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getSnoozleDatabase","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getOrganizationId","parameterTypes":[] }, {"name":"getUsername","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.TestConfigurations"
+},
+{
+  "name":"tech.coner.trailer.io.TestDatabaseConfigurations"
+},
+{
+  "name":"tech.coner.trailer.io.Webapp"
+},
+{
+  "name":"tech.coner.trailer.io.WebappConfiguration",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["int","boolean"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getExploratory","parameterTypes":[] }, {"name":"getPort","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.Constraint",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"assess","parameterTypes":["java.lang.Object"] }, {"name":"constrain","parameterTypes":["boolean","kotlin.jvm.functions.Function0"] }, {"name":"constraint","parameterTypes":["kotlin.jvm.functions.Function1","kotlin.jvm.functions.Function0"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"invoke-IoAF18A","parameterTypes":["java.lang.Object"] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.Constraint$Subclass7"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.CrispyFishLoadConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.EventDeleteConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.EventPersistConstraints",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"assess","parameterTypes":["tech.coner.trailer.Event"] }, {"name":"constrain","parameterTypes":["boolean","kotlin.jvm.functions.Function0"] }, {"name":"constraint","parameterTypes":["kotlin.jvm.functions.Function1","kotlin.jvm.functions.Function0"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getHasClassDefinitionFileAsRelativePath","parameterTypes":[] }, {"name":"getHasClassDefinitionFileExists","parameterTypes":[] }, {"name":"getHasClassDefinitionFileExtension","parameterTypes":[] }, {"name":"getHasEventControlFileAsRelativePath","parameterTypes":[] }, {"name":"getHasEventControlFileExists","parameterTypes":[] }, {"name":"getHasEventControlFileExtension","parameterTypes":[] }, {"name":"getHasUniqueName","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"invoke-IoAF18A","parameterTypes":["java.lang.Object"] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"assess","parameterTypes":["tech.coner.trailer.seasonpoints.EventPointsCalculator"] }, {"name":"hasUniqueName","parameterTypes":["java.util.UUID","java.lang.String"] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.PersonDeleteConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.PersonPersistConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.PolicyDeleteConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.PolicyPersistConstraints",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"assess","parameterTypes":["tech.coner.trailer.Policy"] }, {"name":"constrain","parameterTypes":["boolean","kotlin.jvm.functions.Function0"] }, {"name":"constraint","parameterTypes":["kotlin.jvm.functions.Function1","kotlin.jvm.functions.Function0"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getHasFinalizedEvents","parameterTypes":[] }, {"name":"getHasUniqueName","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"invoke-IoAF18A","parameterTypes":["java.lang.Object"] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.RankingSortPersistConstraints",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"assess","parameterTypes":["tech.coner.trailer.seasonpoints.RankingSort"] }, {"name":"hasUniqueName","parameterTypes":["java.util.UUID","java.lang.String"] }]
+},
+{
+  "name":"tech.coner.trailer.io.constraint.SeasonDeleteConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.SeasonPersistConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.ClubMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.EventMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.EventPointsCalculatorMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.PersonMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.PolicyMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.RankingSortMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.SeasonMapper"
+},
+{
+  "name":"tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper"
+},
+{
+  "name":"tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome"
+},
+{
+  "name":"tech.coner.trailer.io.payload.ConfigAddDatabaseParam"
+},
+{
+  "name":"tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome"
+},
+{
+  "name":"tech.coner.trailer.io.payload.CreateEventPayload"
+},
+{
+  "name":"tech.coner.trailer.io.payload.EventHealthCheckOutcome",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.repository.ConfigurationRepository"
+},
+{
+  "name":"tech.coner.trailer.io.service.ClassService"
+},
+{
+  "name":"tech.coner.trailer.io.service.ClubService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"createOrUpdate","parameterTypes":["java.lang.String"] }, {"name":"get","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.ConfigurationService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"addDatabase-gIAlu-s","parameterTypes":["tech.coner.trailer.io.payload.ConfigAddDatabaseParam","kotlin.coroutines.Continuation"] }, {"name":"configureWebapp-0E7RQCE","parameterTypes":["tech.coner.trailer.io.Webapp","tech.coner.trailer.io.WebappConfiguration","kotlin.coroutines.Continuation"] }, {"name":"findDatabaseByName-gIAlu-s","parameterTypes":["java.lang.String","kotlin.coroutines.Continuation"] }, {"name":"get-IoAF18A","parameterTypes":["kotlin.coroutines.Continuation"] }, {"name":"getDefaultDatabase-IoAF18A","parameterTypes":["kotlin.coroutines.Continuation"] }, {"name":"getWebappConfiguration-gIAlu-s","parameterTypes":["tech.coner.trailer.io.Webapp","kotlin.coroutines.Continuation"] }, {"name":"init","parameterTypes":[] }, {"name":"listDatabases-IoAF18A","parameterTypes":["kotlin.coroutines.Continuation"] }, {"name":"listDatabasesByName-IoAF18A","parameterTypes":["kotlin.coroutines.Continuation"] }, {"name":"mergeWebappConfiguration","parameterTypes":["tech.coner.trailer.io.WebappConfiguration","java.lang.Integer","java.lang.Boolean"] }, {"name":"put-gIAlu-s","parameterTypes":["tech.coner.trailer.io.Configuration","kotlin.coroutines.Continuation"] }, {"name":"removeDatabase-gIAlu-s","parameterTypes":["java.lang.String","kotlin.coroutines.Continuation"] }, {"name":"setDefaultDatabase-gIAlu-s","parameterTypes":["java.lang.String","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.CreateService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.service.CrispyFishClassService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"loadAllByAbbreviation","parameterTypes":["java.nio.file.Path"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.CrispyFishEventMappingContextService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"fold","parameterTypes":["java.lang.Object","kotlin.jvm.functions.Function2"] }, {"name":"get","parameterTypes":["kotlin.coroutines.CoroutineContext$Key"] }, {"name":"load","parameterTypes":["tech.coner.trailer.Event$CrispyFishMetadata","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.CrispyFishParticipantService"
+},
+{
+  "name":"tech.coner.trailer.io.service.CrispyFishRunService"
+},
+{
+  "name":"tech.coner.trailer.io.service.CrudService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.service.DeleteService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.service.EventContextService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"load-gIAlu-s","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.EventExtendedParametersService"
+},
+{
+  "name":"tech.coner.trailer.io.service.EventPointsCalculatorService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.seasonpoints.EventPointsCalculator"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.seasonpoints.EventPointsCalculator"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"findByName","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }, {"name":"update","parameterTypes":["tech.coner.trailer.seasonpoints.EventPointsCalculator"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.EventService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"check","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }, {"name":"create-gIAlu-s","parameterTypes":["tech.coner.trailer.io.payload.CreateEventPayload","kotlin.coroutines.Continuation"] }, {"name":"delete-gIAlu-s","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }, {"name":"findByKey-gIAlu-s","parameterTypes":["java.util.UUID","kotlin.coroutines.Continuation"] }, {"name":"findByName-gIAlu-s","parameterTypes":["java.lang.String","kotlin.coroutines.Continuation"] }, {"name":"list","parameterTypes":[] }, {"name":"update-gIAlu-s","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.MotorsportRegImportService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"importMembersAsPeople","parameterTypes":["boolean"] }, {"name":"importSingleMemberAsPerson","parameterTypes":["java.lang.String","boolean"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.MotorsportRegImportService$ImportMembersAsPeopleResult",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.service.MotorsportRegMemberService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"findById","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.MotorsportRegPeopleMapService"
+},
+{
+  "name":"tech.coner.trailer.io.service.ParticipantService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"fold","parameterTypes":["java.lang.Object","kotlin.jvm.functions.Function2"] }, {"name":"get","parameterTypes":["kotlin.coroutines.CoroutineContext$Key"] }, {"name":"list-gIAlu-s","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.Person"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.Person"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"list","parameterTypes":[] }, {"name":"search","parameterTypes":["java.util.function.Predicate"] }, {"name":"searchByClubMemberIdFrom","parameterTypes":["tech.coner.crispyfish.model.Registration"] }, {"name":"searchByMotorsportRegMemberIdFrom","parameterTypes":["tech.coner.trailer.client.motorsportreg.model.Assignment"] }, {"name":"searchByNameFrom","parameterTypes":["tech.coner.crispyfish.model.Registration"] }, {"name":"update","parameterTypes":["tech.coner.trailer.Person"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterFirstNameContains"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterFirstNameEquals"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterLastNameContains"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterLastNameEquals"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterMemberIdContains"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterMemberIdEquals"
+},
+{
+  "name":"tech.coner.trailer.io.service.PersonService$FilterMotorsportRegMemberIdEquals"
+},
+{
+  "name":"tech.coner.trailer.io.service.PolicyService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.Policy"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.Policy"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"findByName","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }, {"name":"update","parameterTypes":["tech.coner.trailer.Policy"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.RankingSortService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.seasonpoints.RankingSort"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.seasonpoints.RankingSort"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"findByName","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }, {"name":"update","parameterTypes":["tech.coner.trailer.seasonpoints.RankingSort"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.ReadService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.service.RunService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"fold","parameterTypes":["java.lang.Object","kotlin.jvm.functions.Function2"] }, {"name":"get","parameterTypes":["kotlin.coroutines.CoroutineContext$Key"] }, {"name":"list-gIAlu-s","parameterTypes":["tech.coner.trailer.Event","kotlin.coroutines.Continuation"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"findByName","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }, {"name":"update","parameterTypes":["tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.SeasonService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"create","parameterTypes":["tech.coner.trailer.Season"] }, {"name":"delete","parameterTypes":["tech.coner.trailer.Season"] }, {"name":"findById","parameterTypes":["java.util.UUID"] }, {"name":"findByName","parameterTypes":["java.lang.String"] }, {"name":"list","parameterTypes":[] }, {"name":"update","parameterTypes":["tech.coner.trailer.Season"] }]
+},
+{
+  "name":"tech.coner.trailer.io.service.UpdateService",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.util.Cache"
+},
+{
+  "name":"tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"handleUnmapped","parameterTypes":["tech.coner.trailer.Event$CrispyFishMetadata$PeopleMapKey","tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier$Callback","tech.coner.crispyfish.model.Registration","java.util.Map","java.util.Map"] }, {"name":"verify","parameterTypes":["tech.coner.trailer.Event","tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext","tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier$Callback"] }]
+},
+{
+  "name":"tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier$Callback",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier$Callback$Subclass8"
+},
+{
+  "name":"tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier$ThrowingCallback"
+},
+{
+  "name":"tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier"
+},
+{
+  "name":"tech.coner.trailer.render.EventResultsRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.render.OverallEventResultsRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.render.ParticipantRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"tech.coner.trailer.render.Renderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["tech.coner.trailer.Run"] }, {"name":"render","parameterTypes":["tech.coner.trailer.Time"] }, {"name":"renderName","parameterTypes":["tech.coner.trailer.Participant"] }, {"name":"renderScoreColumnValue","parameterTypes":["tech.coner.trailer.eventresults.ParticipantResult"] }]
+},
+{
+  "name":"tech.coner.trailer.render.RunRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"render","parameterTypes":["java.util.List"] }, {"name":"renderPenalty","parameterTypes":["tech.coner.trailer.Run$Penalty"] }, {"name":"renderPenalty","parameterTypes":["tech.coner.trailer.eventresults.Score$Penalty"] }]
+},
+{
+  "name":"tech.coner.trailer.render.RunRenderer$Companion"
+},
+{
+  "name":"tech.coner.trailer.render.json.JsonOverallEventResultsRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"partial","parameterTypes":["tech.coner.trailer.EventContext","tech.coner.trailer.eventresults.OverallEventResults"] }, {"name":"render","parameterTypes":["tech.coner.trailer.EventContext","tech.coner.trailer.eventresults.OverallEventResults"] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.identifier.EventIdentifier",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.Event"] }, {"name":"getDate","parameterTypes":[] }, {"name":"getKey","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.identifier.ParticipantIdentifier",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.Car","java.lang.String"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.Participant"] }, {"name":"getCar","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getPersonId","parameterTypes":[] }, {"name":"getSignage","parameterTypes":[] }, {"name":"getSponsor","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ClazzEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.EventContext","tech.coner.trailer.eventresults.ClazzEventResults"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.EventIdentifier","java.util.Map","tech.coner.trailer.render.json.model.ClazzEventResultsModel$ResultsModel"] }, {"name":"getClasses","parameterTypes":[] }, {"name":"getEvent","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ClazzEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int","java.util.Map"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ClazzEventResults"] }, {"name":"getClazzParticipantResults","parameterTypes":[] }, {"name":"getRunCount","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Event","tech.coner.trailer.eventresults.ComprehensiveEventResults"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.EventIdentifier","tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel$ResultsModel"] }, {"name":"getEvent","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ComprehensiveEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int","java.util.List","java.util.List"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ComprehensiveEventResults"] }, {"name":"getGroups","parameterTypes":[] }, {"name":"getOveralls","parameterTypes":[] }, {"name":"getRunCount","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.EventResultsTypeModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.EventResultsType"] }, {"name":"getKey","parameterTypes":[] }, {"name":"getPositionColumnHeading","parameterTypes":[] }, {"name":"getScoreColumnHeading","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getTitleShort","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Event","java.util.List","tech.coner.trailer.eventresults.IndividualEventResults"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.EventIdentifier","java.util.Map","tech.coner.trailer.render.json.model.IndividualEventResultsModel$ResultsModel"] }, {"name":"getEvent","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$IndividualParticipantResultModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["kotlin.Pair"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.ParticipantIdentifier","java.util.Map"] }, {"name":"getParticipant","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$ParticipantResultModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["int","tech.coner.trailer.eventresults.Score","tech.coner.trailer.Time","tech.coner.trailer.Time","java.util.List","java.util.List","java.lang.Integer"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ParticipantResult"] }, {"name":"getAllRuns","parameterTypes":[] }, {"name":"getDiffFirst","parameterTypes":[] }, {"name":"getDiffPrevious","parameterTypes":[] }, {"name":"getPersonalBestScoredRunIndex","parameterTypes":[] }, {"name":"getPosition","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }, {"name":"getScoredRuns","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.IndividualEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int","java.util.List"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.IndividualEventResults"] }, {"name":"getAllByParticipant","parameterTypes":[] }, {"name":"getRunCount","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.OverallEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Event","tech.coner.trailer.eventresults.OverallEventResults"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.EventIdentifier","tech.coner.trailer.render.json.model.OverallEventResultsModel$ResultsModel"] }, {"name":"getEvent","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.OverallEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int","java.util.List"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.OverallEventResults"] }, {"name":"getParticipantResults","parameterTypes":[] }, {"name":"getRunCount","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ParticipantResultModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["int","tech.coner.trailer.render.json.model.ScoreModel","tech.coner.trailer.render.json.identifier.ParticipantIdentifier","tech.coner.trailer.Time","tech.coner.trailer.Time","java.util.List","java.lang.Integer"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ParticipantResult"] }, {"name":"getDiffFirst","parameterTypes":[] }, {"name":"getDiffPrevious","parameterTypes":[] }, {"name":"getParticipant","parameterTypes":[] }, {"name":"getPersonalBestScoredRunIndex","parameterTypes":[] }, {"name":"getPosition","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }, {"name":"getScoredRuns","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ResultRunModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ResultRun"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.model.RunModel","tech.coner.trailer.render.json.model.ScoreModel"] }, {"name":"getRun","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.RunModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["int","java.lang.String","int","boolean","boolean","boolean","java.lang.String"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.Run"] }, {"name":"getCones","parameterTypes":[] }, {"name":"getDidNotFinish","parameterTypes":[] }, {"name":"getDisqualified","parameterTypes":[] }, {"name":"getParticipantSignage","parameterTypes":[] }, {"name":"getRerun","parameterTypes":[] }, {"name":"getSequence","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.ScoreModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","tech.coner.trailer.eventresults.Score$Penalty"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.Score"] }, {"name":"getPenalty","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.TopTimesEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Event","tech.coner.trailer.eventresults.TopTimesEventResults"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.render.json.identifier.EventIdentifier","tech.coner.trailer.render.json.model.TopTimesEventResultsModel$ResultsModel"] }, {"name":"getEvent","parameterTypes":[] }, {"name":"getResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.json.model.TopTimesEventResultsModel$ResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.util.Map"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.TopTimesEventResults"] }, {"name":"getTopTimes","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.render.text.TextEventResultsRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"createAsciiTable","parameterTypes":[] }, {"name":"render","parameterTypes":["tech.coner.trailer.EventContext","tech.coner.trailer.eventresults.EventResults"] }]
+},
+{
+  "name":"tech.coner.trailer.render.text.TextOverallEventResultsRenderer",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.seasonpoints.EventPointsCalculator",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.seasonpoints.RankingSort",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.seasonpoints.RankingSort$Step"
+},
+{
+  "name":"tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"tech.coner.trailer.webapp.competition.CompetitionWebappKt$competitionWebapp$1",
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true
+}
+]

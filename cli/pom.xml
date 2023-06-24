@@ -252,17 +252,9 @@
             <id>cli-native</id>
 
             <properties>
-                <graalvm.version>21.2.0</graalvm.version>
+                <graalvm-native-maven-plugin.version>0.9.23</graalvm-native-maven-plugin.version>
                 <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.graalvm.sdk</groupId>
-                    <artifactId>graal-sdk</artifactId>
-                    <version>${graalvm.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
 
             <build>
                 <plugins>
@@ -289,26 +281,30 @@
                     </plugin>
 
                     <plugin>
-                        <groupId>org.graalvm.nativeimage</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
-                        <version>${graalvm.version}</version>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${graalvm-native-maven-plugin.version}</version>
+                        <extensions>true</extensions>
                         <executions>
                             <execution>
-                                <phase>package</phase>
+                                <id>build-native</id>
                                 <goals>
-                                    <goal>native-image</goal>
+                                    <goal>compile-no-fork</goal>
                                 </goals>
+                                <phase>package</phase>
                             </execution>
                         </executions>
                         <configuration>
-                            <skip>false</skip>
                             <imageName>${native-image.filename}</imageName>
                             <buildArgs>
                                 --no-fallback
-                                --allow-incomplete-classpath
                                 --enable-https
-                                -H:+AllowJRTFileSystem
                             </buildArgs>
+                            <metadataRepository>
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                            <skipNativeTests>true</skipNativeTests>
+                            <verbose>true</verbose>
                         </configuration>
                     </plugin>
 
