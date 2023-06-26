@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.EnvironmentScope
@@ -31,7 +31,7 @@ class StubCommandTest : DIAware {
     @MockK lateinit var stubService: StubService
 
     @TempDir lateinit var root: Path
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
     lateinit var global: GlobalModel
 
     @BeforeEach
@@ -39,7 +39,7 @@ class StubCommandTest : DIAware {
         val testConfigurations = TestConfigurations(root)
         global = GlobalModel()
             .apply { environment = TestEnvironments.temporary(di, root, testConfigurations.testConfiguration(), testConfigurations.testDatabaseConfigurations.foo) }
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         command = StubCommand(di, global)
             .context { console = testConsole }
     }

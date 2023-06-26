@@ -4,80 +4,35 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
-import com.github.ajalt.clikt.core.context
-import io.mockk.*
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
+import io.mockk.every
+import io.mockk.mockk
+import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.Format
-import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.render.RunRenderer
-import java.util.*
 
-@ExtendWith(MockKExtension::class)
-class EventCheckCommandTest : DIAware,
-    CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Main + Job()
-
-    lateinit var command: EventCheckCommand
-
-    override val di: DI = DI.lazy {
-        import(testCliktModule)
-        import(mockkDatabaseModule())
-        bindInstance { registrationTableView }
-        bindInstance { peopleMapKeyTableView }
-        bindFactory { _: Format -> runRenderer }
-    }
-    override val diContext = diContext { command.diContext.value }
-
-    lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
-
-    @MockK lateinit var registrationTableView: CrispyFishRegistrationTableView
-    @MockK lateinit var peopleMapKeyTableView: PeopleMapKeyTableView
-    @MockK lateinit var runRenderer: RunRenderer
+class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
 
     private val service: EventService by instance()
+    private val registrationTableView: CrispyFishRegistrationTableView by instance()
+    private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
+    private val runRenderer: RunRenderer by instance { Format.TEXT }
 
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = EventCheckCommand(
-            di = di,
-            global = global
-        )
-            .context {
-                console = testConsole
-            }
-    }
-
-    @AfterEach
-    fun after() {
-        cancel()
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventCheckCommand(di, global)
 
     @Test
     fun `It should check event and report fixable problems`() {

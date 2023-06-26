@@ -6,68 +6,36 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
-import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome
 import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.service.NotFoundException
-import java.nio.file.Path
 
-@ExtendWith(MockKExtension::class)
-class ConfigDatabaseSetDefaultCommandTest : DIAware {
-
-    lateinit var command: ConfigDatabaseSetDefaultCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkIoModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { global.requireEnvironment() }
-
-    @TempDir lateinit var root: Path
+class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabaseSetDefaultCommand>() {
 
     private val service: ConfigurationService by instance()
-    @MockK lateinit var view: DatabaseConfigurationView
+    private val view: DatabaseConfigurationView by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-    lateinit var testConfigs: TestConfigurations
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        testConfigs = TestConfigurations(root)
-        global = GlobalModel(environment = TestEnvironments.temporary(di, root, testConfigs.testConfiguration(), testConfigs.testDatabaseConfigurations.foo))
-        command = ConfigDatabaseSetDefaultCommand(di, global)
-            .context { console = testConsole }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseSetDefaultCommand(di, global)
 
     @Test
     fun `When given valid name it should set default and succeed`() {
         val slot = slot<String>()
         val originalConfig = global.requireEnvironment().requireConfiguration()
-        val originalFooDbConfig = global.requireEnvironment().requireDatabaseConfiguration()
+        val originalFooDbConfig = tempEnvironmentTestConfigurations.testDatabaseConfigurations.foo
         check(originalFooDbConfig.name == "foo") { "Prerequisite failed: expected database named foo"}
         check(!originalFooDbConfig.default) { "Prerequisite failed: expected foo database not default"}
         val expectedDbConfig = originalFooDbConfig.copy(
@@ -77,7 +45,7 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
             databases = originalConfig.databases.toMutableMap().apply { put(expectedDbConfig.name, expectedDbConfig) },
             defaultDatabaseName = expectedDbConfig.name
         )
-        every {
+        coEvery {
             service.setDefaultDatabase(capture(slot))
         } returns Result.success(ConfigSetDefaultDatabaseOutcome(expectedConfig, expectedDbConfig))
         val viewRender = "view render"
@@ -85,7 +53,7 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
 
         command.parse(arrayOf(originalFooDbConfig.name))
 
-        verifySequence {
+        coVerifySequence {
             service.setDefaultDatabase(originalFooDbConfig.name)
             view.render(expectedDbConfig)
         }
@@ -98,14 +66,14 @@ class ConfigDatabaseSetDefaultCommandTest : DIAware {
     @Test
     fun `When given invalid name it should fail`() {
         val exception = NotFoundException("Not found")
-        every { service.setDefaultDatabase(any()) } returns Result.failure(exception)
+        coEvery { service.setDefaultDatabase(any()) } returns Result.failure(exception)
         val name = "irrelevant"
 
         val actual = assertThrows<ProgramResult> {
             command.parse(arrayOf(name))
         }
 
-        verifySequence { service.setDefaultDatabase(name) }
+        coVerifySequence { service.setDefaultDatabase(name) }
         verifySequence(inverse = true) { view.render(any<DatabaseConfiguration>()) }
         assertThat(testConsole)
             .error()

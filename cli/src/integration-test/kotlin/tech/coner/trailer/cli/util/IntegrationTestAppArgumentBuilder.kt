@@ -1,10 +1,13 @@
 package tech.coner.trailer.cli.util
 
-import tech.coner.trailer.*
-import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.di.Format
 import java.nio.file.Path
-import java.util.*
+import tech.coner.trailer.Club
+import tech.coner.trailer.Event
+import tech.coner.trailer.Participant
+import tech.coner.trailer.Person
+import tech.coner.trailer.Policy
+import tech.coner.trailer.di.Format
+import tech.coner.trailer.eventresults.EventResultsType
 
 
 class IntegrationTestAppArgumentBuilder(
@@ -19,7 +22,7 @@ class IntegrationTestAppArgumentBuilder(
             .toTypedArray()
     }
 
-    fun configureDatabaseAdd(databaseName: String): Array<String> {
+    fun configDatabaseAdd(databaseName: String): Array<String> {
         return build(
             "config", "database", "add",
             "--name", databaseName,
@@ -147,5 +150,22 @@ class IntegrationTestAppArgumentBuilder(
 
     fun eventRunList(event: Event): Array<String> {
         return build("event", "run", "list", "${event.id}")
+    }
+
+    fun webappCompetition(
+        port: Int? = null,
+        exploratory: Boolean? = null
+    ): Array<String> {
+        return build(
+            *buildList {
+                addAll(listOf("webapp", "competition"))
+                if (port != null) {
+                    addAll(listOf("--port", "$port"))
+                }
+                if (exploratory == true) {
+                    add("--exploratory")
+                }
+            }.toTypedArray()
+        )
     }
 }

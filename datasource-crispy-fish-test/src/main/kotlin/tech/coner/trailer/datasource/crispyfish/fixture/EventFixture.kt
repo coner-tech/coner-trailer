@@ -5,10 +5,7 @@ import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
 import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
 import tech.coner.trailer.SeasonEvent
 import java.nio.file.Path
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.extension
-import kotlin.io.path.writeText
+import kotlin.io.path.*
 
 class EventFixture(
     private val seasonFixture: SeasonFixture,
@@ -23,7 +20,7 @@ class EventFixture(
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.extension == "ecf")
-        val ecfName = "/${coreSeasonEvent.event.crispyFish?.eventControlFile}"
+        val ecfName = "/${coreSeasonEvent.event.crispyFish?.eventControlFile?.invariantSeparatorsPathString}"
         ecfPath = install(ecfName)
         rggPath = install(ecfName.replace(".ecf", ".rgg"))
         st1Path = install(ecfName.replace(".ecf", ".st1"))

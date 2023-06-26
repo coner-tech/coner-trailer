@@ -10,26 +10,27 @@ import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.command.config.ConfigCommand
 import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.di.mockkDatabaseModule
+import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
 
 @ExtendWith(MockKExtension::class)
 class RootCommandTest : DIAware {
@@ -38,7 +39,7 @@ class RootCommandTest : DIAware {
 
     override val di: DI = DI.lazy {
         import(testCliktModule)
-        import(mockkDatabaseModule())
+        import(mockkServiceModule)
         bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
             serviceArgumentSlot.captured = csa
             service
@@ -47,7 +48,7 @@ class RootCommandTest : DIAware {
     }
 
     lateinit var global: GlobalModel
-    lateinit var testConsole: StringBufferConsole
+    lateinit var testConsole: StringBuilderConsole
 
     @MockK lateinit var service: ConfigurationService
     @MockK lateinit var stubService: StubService
@@ -61,7 +62,7 @@ class RootCommandTest : DIAware {
     @BeforeEach
     fun before() {
         global = GlobalModel()
-        testConsole = StringBufferConsole()
+        testConsole = StringBuilderConsole()
         command = RootCommand(di, global)
             .context { console = testConsole }
             .subcommands(
@@ -77,9 +78,9 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When given --database with existing database name it should use it`() {
+    fun `When given --database with existing database name it should use it`() = runTest {
         arrangeWithDatabases()
-        every { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
+        coEvery { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
 
         command.parse(arrayOf(
             "--database", "foo",
@@ -93,10 +94,10 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When given --database with invalid name it should fail`() {
+    fun `When given --database with invalid name it should fail`() = runTest {
         arrangeWithDatabases()
         val exception = Exception("Database with name not found")
-        every { service.findDatabaseByName(any()) } returns Result.failure(exception)
+        coEvery { service.findDatabaseByName(any()) } returns Result.failure(exception)
         // baz does not exist
 
         val actual = assertThrows<ProgramResult> {
@@ -116,7 +117,7 @@ class RootCommandTest : DIAware {
     }
 
     @Test
-    fun `When not given --database it should use the default if available`() {
+    fun `When not given --database it should use the default if available`() = runTest {
         arrangeWithDatabases()
         val defaultDatabase = dbConfigs.allByName
             .values
@@ -124,7 +125,7 @@ class RootCommandTest : DIAware {
 
         command.parse(arrayOf("stub"))
 
-        verify { service.getDefaultDatabase() }
+        coVerify { service.getDefaultDatabase() }
         assertThat(global.environment)
             .isNotNull()
             .transform { it.databaseConfiguration }
@@ -187,15 +188,15 @@ class RootCommandTest : DIAware {
             .isEqualTo(overrideConfigDir)
     }
 
-    private fun arrangeWithDatabases() {
-        every { service.get() }.returns(config)
-        every { service.listDatabasesByName() } answers { dbConfigs.allByName }
-        every { service.getDefaultDatabase() } returns(dbConfigs.bar)
+    private fun arrangeWithDatabases() = runTest {
+        coEvery { service.get() }.returns(Result.success(config))
+        coEvery { service.listDatabasesByName() } answers { Result.success(dbConfigs.allByName) }
+        coEvery { service.getDefaultDatabase() } returns(Result.success(dbConfigs.bar))
     }
 
     private fun arrangeWithoutDatabasesCase() {
-        every { service.get() }.returns(Configuration.DEFAULT)
-        every { service.listDatabasesByName() } answers { emptyMap() }
-        every { service.getDefaultDatabase() } returns null
+        coEvery { service.get() }.returns(Result.success(Configuration.DEFAULT))
+        coEvery { service.listDatabasesByName() } answers { Result.success(emptyMap()) }
+        coEvery { service.getDefaultDatabase() } returns Result.success(null)
     }
 }

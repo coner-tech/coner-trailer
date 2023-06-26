@@ -16,6 +16,7 @@ abstract class AbstractEventResultsCalculator<ER : EventResults>(
     protected fun EventContext.buildRunsByParticipant(): Map<Participant, List<Run>> {
         return runs
             .filter { it.participant != null }
+            .filter { !it.rerun }
             .groupBy { it.participant!! }
     }
 

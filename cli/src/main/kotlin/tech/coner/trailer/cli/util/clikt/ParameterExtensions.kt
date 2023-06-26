@@ -3,6 +3,7 @@ package tech.coner.trailer.cli.util.clikt
 import com.github.ajalt.clikt.parameters.arguments.ArgumentTransformContext
 import com.github.ajalt.clikt.parameters.options.OptionCallTransformContext
 import com.github.ajalt.clikt.parameters.options.OptionTransformContext
+import com.github.ajalt.clikt.parameters.options.OptionValidator
 import tech.coner.trailer.io.DatabaseConfiguration
 import java.nio.file.Path
 import java.time.LocalDate

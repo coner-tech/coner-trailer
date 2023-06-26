@@ -12,9 +12,6 @@
     <artifactId>render-html</artifactId>
 
     <properties>
-        <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-        <node.version>v14.19.0</node.version>
-        <bootstrap.version>5.1.3</bootstrap.version>
         <node.directory>src/main/node</node.directory>
     </properties>
 
@@ -32,6 +29,36 @@
             <groupId>tech.coner.trailer</groupId>
             <artifactId>render-json</artifactId>
             <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-html-jvm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>core-test</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -52,7 +79,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>${node.directory}</workingDirectory>
+                            <workingDirectory>../webapp-competition/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
@@ -66,7 +93,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <workingDirectory>${node.directory}</workingDirectory>
+                            <workingDirectory>../webapp-competition/src/main/node</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>

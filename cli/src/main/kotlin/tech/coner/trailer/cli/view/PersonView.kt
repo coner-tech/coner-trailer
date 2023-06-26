@@ -5,7 +5,10 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Person
 
-class PersonView(override val console: CliktConsole) : BaseCollectionView<Person>() {
+class PersonView(
+    override val console: CliktConsole,
+    private val asciiTableFactory: () -> AsciiTable
+) : BaseCollectionView<Person>() {
 
     override fun render(model: Person) = """
         ${model.firstName} ${model.lastName}
@@ -18,7 +21,7 @@ class PersonView(override val console: CliktConsole) : BaseCollectionView<Person
     """.trimIndent()
 
     override fun render(models: Collection<Person>): String {
-        val at = AsciiTable()
+        val at = asciiTableFactory()
         at.renderer.cwc = CWC_LongestLine()
         at.addRule()
         at.addRow("ID", "First Name", "Last Name", "Club Member ID", "MotorsportReg Member ID")

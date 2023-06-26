@@ -5,67 +5,33 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.clikt.core.context
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
 import io.mockk.slot
-import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
+import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.io.DatabaseConfiguration
-import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome
 import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
 import tech.coner.trailer.io.service.ConfigurationService
-import java.nio.file.Path
-import java.util.*
 
-@ExtendWith(MockKExtension::class)
-class ConfigDatabaseAddCommandTest : DIAware {
-
-    lateinit var command: ConfigDatabaseAddCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkIoModule)
-        bindInstance { view }
-    }
-    override val diContext = diContext { global.requireEnvironment() }
+class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddCommand>() {
 
     private val service: ConfigurationService by instance()
-    @MockK lateinit var view: DatabaseConfigurationView
+    private val view: DatabaseConfigurationView by instance()
 
-    @TempDir lateinit var root: Path
+    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseAddCommand(di, global)
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-    lateinit var dbConfig: DatabaseConfiguration
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        val configs = TestConfigurations(root)
-        dbConfig = configs.testDatabaseConfigurations.bar
-        global = GlobalModel(
-            environment = TestEnvironments.temporary(di, root, configs.testConfiguration(), dbConfig)
-        )
-        command = ConfigDatabaseAddCommand(di, global)
-            .context { console = testConsole }
-    }
+    private val dbConfig by lazy { global.requireEnvironment().requireDatabaseConfiguration() }
 
     @Test
     fun `When given with valid arguments it should add database and display`() {
@@ -79,7 +45,7 @@ class ConfigDatabaseAddCommandTest : DIAware {
             ),
             default = dbConfig.default
         )
-        every {
+        coEvery {
             service.addDatabase(any())
         } returns Result.success(ConfigAddDatabaseOutcome(
             configuration = global.requireEnvironment().requireConfiguration(),
@@ -98,7 +64,7 @@ class ConfigDatabaseAddCommandTest : DIAware {
             "--default"
         ))
 
-        verifySequence {
+        coVerifySequence {
             service.addDatabase(expectedParam)
             view.render(dbConfig)
         }
@@ -109,7 +75,7 @@ class ConfigDatabaseAddCommandTest : DIAware {
     @Test
     fun `When it fails to add database, it should display error and exit`() {
         val exception = Exception("Something went wrong")
-        every {
+        coEvery {
             service.addDatabase(any())
         } returns Result.failure(exception)
 
@@ -124,7 +90,7 @@ class ConfigDatabaseAddCommandTest : DIAware {
             ))
         }
 
-        verifySequence {
+        coVerifySequence {
             service.addDatabase(any())
         }
         confirmVerified(service, view)

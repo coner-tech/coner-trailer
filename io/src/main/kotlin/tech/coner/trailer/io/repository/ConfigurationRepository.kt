@@ -22,15 +22,24 @@ class ConfigurationRepository(
         check(configDir.isDirectory()) { "$configDir is not a directory" }
     }
 
-    fun load(): Configuration {
+    fun load(): Configuration? {
         return when {
             configFile.isReadable() -> configFile.bufferedReader().use { objectMapper.readValue(it) }
-            else -> Configuration.DEFAULT
+            else -> null
         }
     }
 
-    fun save(config: Configuration) {
-        configFile.bufferedWriter().use { objectMapper.writeValue(it, config) }
+    fun save(config: Configuration): Configuration {
+        val tempFile = createTempFile(prefix = "coner-trailer.config")
+        try {
+            tempFile
+                    .bufferedWriter()
+                    .use { objectMapper.writeValue(it, config) }
+            tempFile.moveTo(configFile, overwrite = true)
+        } finally {
+            tempFile.deleteIfExists()
+        }
+        return config
     }
 
 }

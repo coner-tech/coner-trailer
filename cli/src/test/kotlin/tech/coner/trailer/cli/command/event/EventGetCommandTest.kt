@@ -2,60 +2,24 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import io.mockk.verifySequence
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 import tech.coner.trailer.TestEvents
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
 import tech.coner.trailer.cli.view.EventView
-import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.TestConfigurations
-import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.io.service.EventService
-import java.nio.file.Path
 
-@ExtendWith(MockKExtension::class)
-class EventGetCommandTest : DIAware {
-
-    lateinit var command: EventGetCommand
-
-    override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkDatabaseModule())
-        bindInstance { view }
-    }
-    override val diContext = diContext { command.diContext.value }
-
-    @TempDir lateinit var root: Path
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
+class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
 
     private val service: EventService by instance()
-    @MockK lateinit var view: EventView
+    private val view: EventView by instance()
 
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        val testConfigs = TestConfigurations(root)
-        global = GlobalModel(
-            environment = TestEnvironments.temporary(di, root, testConfigs.testConfiguration(), testConfigs.testDatabaseConfigurations.foo)
-        )
-        command = EventGetCommand(di, global)
-            .context {
-                console = testConsole
-            }
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventGetCommand(di, global)
 
     @Test
     fun `It should get event by ID`() {

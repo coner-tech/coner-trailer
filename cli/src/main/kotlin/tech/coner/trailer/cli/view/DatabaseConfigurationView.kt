@@ -7,12 +7,12 @@ class DatabaseConfigurationView(
         override val console: CliktConsole
 ) : BaseCollectionView<DatabaseConfiguration>() {
 
-    override fun render(config: DatabaseConfiguration) = """
-        |${config.name} ${if (config.default) "[Default]" else ""}
-        |    Crispy Fish:        ${config.crispyFishDatabase}
-        |    Snoozle:            ${config.snoozleDatabase}
+    override fun render(model: DatabaseConfiguration) = """
+        |${model.name} ${if (model.default) "[Default]" else ""}
+        |    Crispy Fish:        ${model.crispyFishDatabase}
+        |    Snoozle:            ${model.snoozleDatabase}
         |    MotorsportReg:      
-        |${render(config.motorsportReg)}
+        |${render(model.motorsportReg)}
         """.trimMargin()
 
     private fun render(model: DatabaseConfiguration.MotorsportReg?): String = model?.let {

@@ -1,13 +1,11 @@
 package tech.coner.trailer.io.constraint
 
+import java.util.UUID
 import tech.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
-import tech.coner.trailer.io.mapper.EventPointsCalculatorMapper
 import tech.coner.trailer.seasonpoints.EventPointsCalculator
-import java.util.*
 
 class EventPointsCalculatorPersistConstraints(
         private val resource: EventPointsCalculatorResource,
-        private val mapper: EventPointsCalculatorMapper
 ) : Constraint<EventPointsCalculator>() {
 
     override fun assess(candidate: EventPointsCalculator) {

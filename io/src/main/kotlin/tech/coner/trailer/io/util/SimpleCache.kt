@@ -17,6 +17,16 @@ class SimpleCache<K, V> : Cache<K, V> {
         }
     }
 
+    override suspend fun update(key: K, update: suspend () -> V): V {
+        return cacheKeySynchronizer.synchronizeValue(key) {
+            val value = update()
+            storeMutex.withLock {
+                store[key] = value
+            }
+            value
+        }
+    }
+
     override suspend fun put(key: K, value: V): V {
         cacheKeySynchronizer.synchronize(key) {
             storeMutex.withLock {

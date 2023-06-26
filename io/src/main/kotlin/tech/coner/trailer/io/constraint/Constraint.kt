@@ -28,6 +28,5 @@ abstract class Constraint<T> {
                 throw ConstraintViolationException(violationMessageFn())
             }
         }
-
     }
 }

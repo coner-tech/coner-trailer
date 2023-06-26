@@ -22,8 +22,10 @@ import java.util.logging.Logger.global
 
 class RootCommand(
     di: DI,
-    private val global: GlobalModel
-) : CliktCommand(
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
     name = "coner-trailer-cli"
 ), DIAware by di {
 
@@ -68,7 +70,7 @@ class RootCommand(
         )
     }
 
-    override fun run() {
+    override suspend fun coRun() {
         // TODO: first-run setup
         val configurationServiceArgument = configDir?.let { ConfigurationServiceArgument.Override(it) }
             ?: ConfigurationServiceArgument.Default
@@ -82,7 +84,7 @@ class RootCommand(
                         throw ProgramResult(1)
                     }
             }
-            ?: configurationService.getDefaultDatabase()
+            ?: configurationService.getDefaultDatabase().getOrThrow()
         currentContext.invokedSubcommand?.also { subcommand ->
             if (dbConfig == null && subcommand !is PermitNoDatabaseChosen) {
                 echo(
@@ -95,7 +97,7 @@ class RootCommand(
         global.environment = EnvironmentHolderImpl(
             di = di,
             configurationServiceArgument = configurationServiceArgument,
-            configuration = configurationService.get(),
+            configuration = configurationService.get().getOrThrow(),
             databaseConfiguration = dbConfig,
             motorsportRegCredentialSupplier = { assembleMotorsportRegBasicCredentials(dbConfig) }
         )

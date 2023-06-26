@@ -1,6 +1,7 @@
 package tech.coner.trailer.io.payload
 
 import java.nio.file.Path
+import tech.coner.trailer.io.WebappConfiguration
 
 data class ConfigAddDatabaseParam(
     val name: String,

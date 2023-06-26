@@ -3,6 +3,7 @@ package tech.coner.trailer.datasource.snoozle
 import tech.coner.snoozle.db.Database
 import tech.coner.snoozle.db.PathPart
 import tech.coner.snoozle.db.entity.EntityResource
+import tech.coner.snoozle.db.session.data.DataSession
 import tech.coner.trailer.datasource.snoozle.entity.*
 import java.nio.file.Path
 
@@ -61,10 +62,25 @@ class ConerTrailerDatabase(root: Path) : Database(root) {
 }
 
 typealias ClubResource = EntityResource<ClubEntity.Key, ClubEntity>
+fun DataSession.clubs(): ClubResource = entity()
+
 typealias EventPointsCalculatorResource = EntityResource<EventPointsCalculatorEntity.Key, EventPointsCalculatorEntity>
+fun DataSession.eventPointsCalculators(): EventPointsCalculatorResource = entity()
+
 typealias RankingSortResource = EntityResource<RankingSortEntity.Key, RankingSortEntity>
+fun DataSession.rankingSorts(): RankingSortResource = entity()
+
 typealias SeasonPointsCalculatorConfigurationResource = EntityResource<SeasonPointsCalculatorConfigurationEntity.Key, SeasonPointsCalculatorConfigurationEntity>
+fun DataSession.seasonPointsCalculators(): SeasonPointsCalculatorConfigurationResource = entity()
+
 typealias PersonResource = EntityResource<PersonEntity.Key, PersonEntity>
+fun DataSession.persons(): PersonResource = entity()
+
 typealias SeasonResource = EntityResource<SeasonEntity.Key, SeasonEntity>
+fun DataSession.seasons(): SeasonResource = entity()
+
 typealias EventResource = EntityResource<EventEntity.Key, EventEntity>
+fun DataSession.events(): EventResource = entity()
+
 typealias PolicyResource = EntityResource<PolicyEntity.Key, PolicyEntity>
+fun DataSession.policies(): PolicyResource = entity()

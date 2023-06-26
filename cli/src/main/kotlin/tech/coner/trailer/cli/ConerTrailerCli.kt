@@ -2,6 +2,8 @@ package tech.coner.trailer.cli
 
 import com.github.ajalt.clikt.core.subcommands
 import org.kodein.di.DI
+import org.kodein.di.direct
+import org.kodein.di.instance
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.command.club.ClubCommand
@@ -20,8 +22,13 @@ import tech.coner.trailer.cli.command.policy.*
 import tech.coner.trailer.cli.command.rankingsort.*
 import tech.coner.trailer.cli.command.season.*
 import tech.coner.trailer.cli.command.seasonpointscalculator.*
+import tech.coner.trailer.cli.command.webapp.WebappCommand
+import tech.coner.trailer.cli.command.webapp.WebappCompetitionCommand
+import tech.coner.trailer.cli.di.cliServiceModule
 import tech.coner.trailer.cli.di.cliktModule
+import tech.coner.trailer.cli.di.utilityModule
 import tech.coner.trailer.cli.di.viewModule
+import tech.coner.trailer.cli.service.FeatureService
 import tech.coner.trailer.di.*
 
 object ConerTrailerCli {
@@ -35,13 +42,20 @@ object ConerTrailerCli {
         val di = DI.from(listOf(
             eventResultsModule,
             viewModule,
+            utilityModule,
             ioModule,
-            databaseModule,
+            constraintModule,
+            mapperModule,
+            serviceModule,
+            snoozleModule,
+            verifierModule,
             motorsportRegApiModule,
+            cliServiceModule,
             cliktModule,
             allRendererModule
         ))
         val global = GlobalModel()
+        val features = di.direct.instance<FeatureService>().get()
         return RootCommand(di, global).subcommands(
             ConfigCommand(di, global).subcommands(
                 ConfigDatabaseCommand(di, global).subcommands(
@@ -55,6 +69,11 @@ object ConerTrailerCli {
                         ConfigDatabaseSnoozleInitializeCommand(di, global),
                         ConfigDatabaseSnoozleMigrateCommand(di, global)
                     )
+                ),
+                ConfigWebappCommand(di, global).subcommands(
+                    ConfigWebappGetCommand(di, global),
+                    ConfigWebappSetCommand(di, global),
+                    ConfigWebappUnsetCommand(di, global)
                 )
             ),
             ClubCommand(di, global).subcommands(
@@ -129,7 +148,16 @@ object ConerTrailerCli {
                 SeasonPointsCalculatorGetCommand(di, global),
                 SeasonPointsCalculatorListCommand(di, global),
                 SeasonPointsCalculatorSetCommand(di, global)
-            )
+            ),
         )
+            .apply {
+                if (features.contains(Feature.WEBAPP)) {
+                    subcommands(
+                        WebappCommand(di, global).subcommands(
+                            WebappCompetitionCommand(di, global)
+                        )
+                    )
+                }
+            }
     }
 }

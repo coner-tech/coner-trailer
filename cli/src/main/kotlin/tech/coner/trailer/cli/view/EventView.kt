@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
 
-class EventView : View<Event> {
+class EventView(private val asciiTableFactory: () -> AsciiTable) : View<Event> {
 
     override fun render(model: Event) = """
         ${model.name}
@@ -25,7 +25,7 @@ class EventView : View<Event> {
 
     private fun renderPeopleMap(model: Event): String {
         val content = if (model.crispyFish?.peopleMap?.isNotEmpty() == true) {
-            val at = AsciiTable()
+            val at = asciiTableFactory()
             at.renderer.cwc = CWC_LongestLine()
             at.addRule()
             at.addRow("Signage", "Person ID")

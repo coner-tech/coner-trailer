@@ -1,49 +1,48 @@
 package tech.coner.trailer.cli.command.event
 
-import com.github.ajalt.clikt.core.context
-import io.mockk.*
-import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.*
+import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerifySequence
+import io.mockk.every
+import io.mockk.slot
+import java.nio.file.Paths
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.bindSingleton
+import org.kodein.di.instance
+import org.kodein.di.provider
 import tech.coner.crispyfish.model.Signage
-import tech.coner.trailer.*
-import tech.coner.trailer.cli.clikt.StringBufferConsole
+import tech.coner.trailer.Event
+import tech.coner.trailer.Person
+import tech.coner.trailer.TestClasses
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.di.testCliktModule
+import tech.coner.trailer.cli.di.viewModule
 import tech.coner.trailer.cli.view.CrispyFishRegistrationView
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.crispyfish.TestRegistrations
-import tech.coner.trailer.di.mockkDatabaseModule
-import tech.coner.trailer.io.TestEnvironments
+import tech.coner.trailer.di.mockkMapperModule
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
-import java.nio.file.Paths
 
-@ExtendWith(MockKExtension::class)
-class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Default + Job()
-
-    lateinit var command: EventCrispyFishPersonMapAssembleCommand
+class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapAssembleCommand>() {
 
     override val di = DI.lazy {
-        import(testCliktModule)
-        import(mockkDatabaseModule())
-        bindInstance { CrispyFishRegistrationView() }
-        bindInstance { PersonView(testConsole) }
+        extend(super.di)
+        import(mockkMapperModule)
+        bindSingleton(overrides = true) { EventView(provider()) }
+        bindSingleton(overrides = true) { CrispyFishRegistrationView() }
     }
-    override val diContext = diContext { command.diContext.value }
-
     private val service: EventService by instance()
     private val personService: PersonService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
@@ -51,22 +50,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : DIAware, CoroutineScope {
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
 
-    lateinit var testConsole: StringBufferConsole
-    lateinit var global: GlobalModel
-
-    @BeforeEach
-    fun before() {
-        testConsole = StringBufferConsole()
-        global = GlobalModel()
-            .apply { environment = TestEnvironments.mock() }
-        command = EventCrispyFishPersonMapAssembleCommand(di, global)
-            .context { console = testConsole }
-    }
-
-    @AfterEach
-    fun after() {
-        cancel()
-    }
+    override fun createCommand(di: DI, global: GlobalModel) = EventCrispyFishPersonMapAssembleCommand(di, global)
 
     @Test
     fun `It should assemble person map in case of registration with club memberId null`() {

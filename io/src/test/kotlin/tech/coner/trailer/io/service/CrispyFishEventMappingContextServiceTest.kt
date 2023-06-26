@@ -20,8 +20,8 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
     override val coroutineContext = Dispatchers.Default + Job()
     lateinit var service: CrispyFishEventMappingContextService
 
-    lateinit var fixture: SeasonFixture
     @TempDir lateinit var fixtureRoot: Path
+    lateinit var fixture: SeasonFixture
 
     @BeforeEach
     fun before() {

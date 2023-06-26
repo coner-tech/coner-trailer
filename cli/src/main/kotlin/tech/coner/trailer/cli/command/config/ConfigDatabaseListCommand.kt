@@ -24,6 +24,6 @@ class ConfigDatabaseListCommand(
     private val view: DatabaseConfigurationView by instance()
 
     override suspend fun coRun() {
-        echo(view.render(service.listDatabases()))
+        echo(view.render(service.listDatabases().getOrThrow()))
     }
 }
