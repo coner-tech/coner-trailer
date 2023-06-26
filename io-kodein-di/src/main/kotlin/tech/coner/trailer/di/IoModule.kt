@@ -8,14 +8,7 @@ import java.nio.file.Paths
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import net.harawata.appdirs.AppDirsFactory
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.bindMultiton
-import org.kodein.di.bindSingleton
-import org.kodein.di.factory
-import org.kodein.di.instance
-import org.kodein.di.scoped
-import org.kodein.di.singleton
+import org.kodein.di.*
 import tech.coner.trailer.eventresults.EventResultsFileNameGenerator
 import tech.coner.trailer.io.repository.ConfigurationRepository
 import tech.coner.trailer.io.service.ConfigurationService

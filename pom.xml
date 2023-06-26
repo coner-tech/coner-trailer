@@ -49,6 +49,7 @@
 
         <kotlin.version>1.8.22</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
         <kotlinx.coroutines.version>1.6.3</kotlinx.coroutines.version>
         <kotlinx.html.version>0.8.0</kotlinx.html.version>
         <kotlinx.serialization.version>1.4.1</kotlinx.serialization.version>
@@ -259,6 +260,11 @@
                             <version>${kotlin.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>${properties-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
