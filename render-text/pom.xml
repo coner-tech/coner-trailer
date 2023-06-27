@@ -26,6 +26,10 @@
             <artifactId>asciitable</artifactId>
             <version>${asciitable.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.ajalt.mordant</groupId>
+            <artifactId>mordant-jvm</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

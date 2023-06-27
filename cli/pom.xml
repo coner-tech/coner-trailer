@@ -14,7 +14,6 @@
 
     <properties>
         <clikt.version>3.5.0</clikt.version>
-        <mordant.version>2.0.0-beta13</mordant.version>
 
         <feature.webapp.enable>false</feature.webapp.enable>
     </properties>
@@ -90,7 +89,6 @@
         <dependency>
             <groupId>com.github.ajalt.mordant</groupId>
             <artifactId>mordant-jvm</artifactId>
-            <version>${mordant.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
