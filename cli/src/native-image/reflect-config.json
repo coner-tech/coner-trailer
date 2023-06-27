@@ -53,6 +53,10 @@
   "name":"com.github.ajalt.clikt.output.CliktConsole"
 },
 {
+  "name":"com.github.ajalt.mordant.internal.PosixLibC$winsize",
+  "allDeclaredFields":true
+},
+{
   "name":"com.github.ajalt.mordant.internal.WinKernel32Lib$CONSOLE_SCREEN_BUFFER_INFO",
   "allDeclaredFields":true
 },
@@ -1570,6 +1574,10 @@
 {
   "name":"sun.security.provider.JavaKeyStore$JKS",
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.NativePRNG",
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
 },
 {
   "name":"sun.security.provider.SHA",
