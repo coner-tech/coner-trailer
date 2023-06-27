@@ -1,5 +1,8 @@
 [
   {
+    "interfaces":["com.github.ajalt.mordant.internal.WinKernel32Lib"]
+  },
+  {
     "interfaces":["com.sun.jna.platform.win32.Ole32"]
   },
   {

@@ -2,7 +2,9 @@ package tech.coner.trailer.cli.di
 
 import com.github.ajalt.clikt.output.defaultCliktConsole
 import org.kodein.di.*
+import tech.coner.trailer.Event
 import tech.coner.trailer.cli.view.*
+import tech.coner.trailer.cli.view.mordant.MordantEventTableView
 
 val viewModule = DI.Module("coner.trailer.cli.view") {
     bindInstance { defaultCliktConsole() }
@@ -30,7 +32,7 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<SeasonTableView>() with provider { SeasonTableView(asciiTableFactory = provider()) }
     bind<PolicyView>() with provider { PolicyView(console = instance()) }
     bind<EventView>() with provider { EventView(asciiTableFactory = provider()) }
-    bind<EventTableView>() with provider { EventTableView(asciiTableFactory = provider()) }
+    bind<View<List<Event>>>() with provider { MordantEventTableView(terminal = instance()) }
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView(asciiTableFactory = provider()) }
     bind<PeopleMapKeyTableView>() with provider { PeopleMapKeyTableView(asciiTableFactory = provider()) }

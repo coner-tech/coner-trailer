@@ -24,10 +24,7 @@ import tech.coner.trailer.cli.command.season.*
 import tech.coner.trailer.cli.command.seasonpointscalculator.*
 import tech.coner.trailer.cli.command.webapp.WebappCommand
 import tech.coner.trailer.cli.command.webapp.WebappCompetitionCommand
-import tech.coner.trailer.cli.di.cliServiceModule
-import tech.coner.trailer.cli.di.cliktModule
-import tech.coner.trailer.cli.di.utilityModule
-import tech.coner.trailer.cli.di.viewModule
+import tech.coner.trailer.cli.di.*
 import tech.coner.trailer.cli.service.FeatureService
 import tech.coner.trailer.di.*
 
@@ -42,6 +39,7 @@ object ConerTrailerCli {
         val di = DI.from(listOf(
             eventResultsModule,
             viewModule,
+            mordantModule,
             utilityModule,
             ioModule,
             constraintModule,
