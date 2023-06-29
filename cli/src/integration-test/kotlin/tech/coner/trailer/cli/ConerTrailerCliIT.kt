@@ -196,11 +196,12 @@ class ConerTrailerCliIT {
                 when (format) {
                     Format.TEXT -> {
                         contains(eventResultType.titleShort)
-                        contains("────")
-                        contains("┼")
-                        contains("┴")
-                        doesNotContain("<html>")
-                        doesNotContain("</html>")
+                        contains("───")
+                        contains("─┬─")
+                        contains("─┴─")
+                        contains("│")
+                        contains("├")
+                        contains("┤")
                     }
                     Format.JSON -> {
                         startsWith("{")
