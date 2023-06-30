@@ -1,6 +1,7 @@
 package tech.coner.trailer.render.text
 
 import com.github.ajalt.mordant.rendering.TextAlign
+import com.github.ajalt.mordant.rendering.TextStyles
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.SectionBuilder
 import com.github.ajalt.mordant.table.TableBuilder
@@ -24,12 +25,13 @@ class MordantClazzEventResultsRenderer(
                 terminal.render(
                     table {
                         tableBorders = Borders.ALL
+                        val captionStyle = TextStyles.bold
                         captionTop(
-                            text = buildString {
-                                appendLine(eventContext.event.name)
-                                appendLine(eventContext.event.date)
-                                appendLine(results.type.title)
-                            },
+                            text =  """
+                                ${captionStyle(eventContext.event.name)}
+                                ${captionStyle(eventContext.event.date.toString())}
+                                ${captionStyle(results.type.title)}
+                                """.trimIndent(),
                             align = TextAlign.LEFT
                         )
                         partial(eventContext, results).invoke(this)
@@ -46,7 +48,9 @@ class MordantClazzEventResultsRenderer(
 
     protected fun TableBuilder.appendHeader(results: EventResults) {
         header {
-            row("Pos.", "Signage", "Name", "Car", results.type.scoreColumnHeading, "Diff. 1st", "Diff. Prev.")
+            row("Pos.", "Signage", "Name", "Car", results.type.scoreColumnHeading, "Diff. 1st", "Diff. Prev.") {
+                style(bold = true)
+            }
         }
     }
 
@@ -54,14 +58,16 @@ class MordantClazzEventResultsRenderer(
         body {
             results.groupParticipantResults.forEach { (group, participantResults) ->
                 appendGroup(group, participantResults)
-
             }
         }
     }
 
     protected fun SectionBuilder.appendGroup(group: Class, participantResults: List<ParticipantResult>) {
         row {
-            cell(group.name) { columnSpan = 7 }
+            cell(group.name) {
+                columnSpan = 7
+                style(bold = true)
+            }
         }
         participantResults.forEachIndexed { index, participantResult ->
             row {
