@@ -7,16 +7,17 @@ import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.instance
+import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.EventTableView
+import tech.coner.trailer.cli.view.View
 import tech.coner.trailer.io.service.EventService
 
 class EventListCommandTest : BaseDataSessionCommandTest<EventListCommand>() {
 
     private val service: EventService by instance()
-    private val view: EventTableView by instance()
+    private val view: View<List<Event>> by instance()
 
     override fun createCommand(di: DI, global: GlobalModel) = EventListCommand(di, global)
 

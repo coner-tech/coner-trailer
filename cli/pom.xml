@@ -14,6 +14,7 @@
 
     <properties>
         <clikt.version>3.5.0</clikt.version>
+
         <feature.webapp.enable>false</feature.webapp.enable>
     </properties>
 
@@ -62,11 +63,6 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
-            <artifactId>render-html</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>tech.coner.trailer</groupId>
             <artifactId>render-text</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
@@ -84,6 +80,10 @@
             <groupId>com.github.ajalt.clikt</groupId>
             <artifactId>clikt-jvm</artifactId>
             <version>${clikt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ajalt.mordant</groupId>
+            <artifactId>mordant-jvm</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

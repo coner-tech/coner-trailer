@@ -19,6 +19,8 @@
   }, {
     "pattern":"\\Qcli.properties\\E"
   }, {
+    "pattern":"\\Qcom/sun/jna/linux-x86-64/libjnidispatch.so\\E"
+  }, {
     "pattern":"\\Qcom/sun/jna/win32-x86-64/jnidispatch.dll\\E"
   }, {
     "pattern":"\\Qio/mockk/proxy/jvm/advice/jvm/JvmMockKProxyAdvice.class\\E"

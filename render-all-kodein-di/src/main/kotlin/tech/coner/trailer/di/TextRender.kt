@@ -7,12 +7,12 @@ import tech.coner.trailer.render.text.*
 val textRenderModule = DI.Module("tech.coner.trailer.render.text") {
     val format = Format.TEXT
     bindSingleton<OverallEventResultsRenderer<String, *>>(format) { TextOverallEventResultsRenderer() }
-    bindSingleton<ClazzEventResultsRenderer<String, *>>(format) { TextClazzEventResultsRenderer() }
+    bindSingleton<ClazzEventResultsRenderer<String, *>>(format) { MordantClazzEventResultsRenderer(instance()) }
     bindSingleton<TopTimesEventResultsRenderer<String, *>>(format) { TextTopTimesEventResultsRenderer() }
     bindSingleton<ComprehensiveEventResultsRenderer<String, *>>(format) { TextComprehensiveEventResultsRenderer(
-        overallRenderer = instance<OverallEventResultsRenderer<String, *>>(format) as TextOverallEventResultsRenderer,
-        clazzRenderer = instance<ClazzEventResultsRenderer<String, *>>(format) as TextClazzEventResultsRenderer,
-        topTimesRenderer = instance<TopTimesEventResultsRenderer<String, *>>(format) as TextTopTimesEventResultsRenderer
+        overallRenderer = TextOverallEventResultsRenderer(),
+        clazzRenderer = MordantClazzEventResultsRenderer(instance()),
+        topTimesRenderer = TextTopTimesEventResultsRenderer()
     ) }
     bind<IndividualEventResultsRenderer<String, *>>(format) with singleton { TextIndividualEventResultsRenderer() }
 }

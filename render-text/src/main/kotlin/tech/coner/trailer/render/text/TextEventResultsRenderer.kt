@@ -29,6 +29,18 @@ abstract class TextEventResultsRenderer<ER : EventResults>(
     protected fun createAsciiTable() = AsciiTable()
         .also { it.renderer.cwc = CWC_LongestLine() }
 
+    protected fun AsciiTable.appendData(participantResult: ParticipantResult) {
+        addRow(
+            "${participantResult.position}",
+            participantResult.participant.signage?.classingNumber ?: "",
+            renderName(participantResult.participant),
+            participantResult.participant.car?.model ?: "",
+            renderScoreColumnValue(participantResult),
+            renderDiffColumnValue(participantResult, participantResult.diffFirst),
+            renderDiffColumnValue(participantResult, participantResult.diffPrevious)
+        )
+    }
+
     protected fun AsciiTable.appendHeader() {
         addRule()
         addRow(
@@ -41,18 +53,6 @@ abstract class TextEventResultsRenderer<ER : EventResults>(
             "Diff. Prev.",
         )
         addRule()
-    }
-
-    protected fun AsciiTable.appendData(participantResult: ParticipantResult) {
-        addRow(
-            "${participantResult.position}",
-            participantResult.participant.signage?.classingNumber ?: "",
-            renderName(participantResult.participant),
-            participantResult.participant.car?.model ?: "",
-            renderScoreColumnValue(participantResult),
-            renderDiffColumnValue(participantResult, participantResult.diffFirst),
-            renderDiffColumnValue(participantResult, participantResult.diffPrevious)
-        )
     }
 
     private fun renderDiffColumnValue(participantResult: ParticipantResult, diff: Time?) = when (participantResult.position) {

@@ -23,7 +23,6 @@
         <module>cli</module>
         <module>io-test</module>
         <module>render</module>
-        <module>render-html</module>
         <module>render-text</module>
         <module>render-all-kodein-di</module>
         <module>render-json</module>
@@ -59,6 +58,7 @@
         <ktor.version>2.1.2</ktor.version>
         <bootstrap.version>5.1.3</bootstrap.version>
         <logback.version>1.4.4</logback.version>
+        <mordant.version>2.0.0-beta14</mordant.version>
 
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
         <assertk.version>0.26.1</assertk.version>
@@ -164,6 +164,11 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ajalt.mordant</groupId>
+                <artifactId>mordant-jvm</artifactId>
+                <version>${mordant.version}</version>
             </dependency>
 
             <dependency>

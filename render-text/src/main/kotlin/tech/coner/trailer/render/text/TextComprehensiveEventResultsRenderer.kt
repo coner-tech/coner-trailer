@@ -6,7 +6,7 @@ import tech.coner.trailer.render.ComprehensiveEventResultsRenderer
 
 class TextComprehensiveEventResultsRenderer(
     private val overallRenderer: TextOverallEventResultsRenderer,
-    private val clazzRenderer: TextClazzEventResultsRenderer,
+    private val clazzRenderer: MordantClazzEventResultsRenderer,
     private val topTimesRenderer: TextTopTimesEventResultsRenderer,
 ) : TextEventResultsRenderer<ComprehensiveEventResults>(),
     ComprehensiveEventResultsRenderer<String, () -> String> {

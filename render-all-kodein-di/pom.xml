@@ -25,11 +25,6 @@
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>tech.coner.trailer</groupId>
-            <artifactId>render-html</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
         </dependency>
