@@ -21,7 +21,7 @@ object TestComprehensiveEventResults {
                         participantResults = listOf(),
                     )
                 ),
-                clazzEventResults = TestClazzEventResults.Lscc2019.points1,
+                classEventResults = TestClazzEventResults.Lscc2019.points1,
                 topTimesEventResults = TestTopTimesEventResults.Lscc2019.points1,
                 individualEventResults = TestIndividualEventResults.Lscc2019.points1
             )
@@ -43,7 +43,7 @@ object TestComprehensiveEventResults {
                         participantResults = emptyList()
                     )
                 ),
-                clazzEventResults = TestClazzEventResults.Lscc2019Simplified.points1,
+                classEventResults = TestClazzEventResults.Lscc2019Simplified.points1,
                 topTimesEventResults = TestTopTimesEventResults.Lscc2019Simplified.points1,
                 individualEventResults = TestIndividualEventResults.Lscc2019Simplified.points1
             )
@@ -65,7 +65,7 @@ object TestComprehensiveEventResults {
                         participantResults = emptyList(),
                     )
                 ),
-                clazzEventResults = TestClazzEventResults.LsccTieBreaking.points1,
+                classEventResults = TestClazzEventResults.LsccTieBreaking.points1,
                 topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points1,
                 individualEventResults = TestIndividualEventResults.LsccTieBreaking.points1
             )
@@ -83,7 +83,7 @@ object TestComprehensiveEventResults {
                     participantResults = emptyList(),
                 )
             ),
-            clazzEventResults = TestClazzEventResults.LsccTieBreaking.points2,
+            classEventResults = TestClazzEventResults.LsccTieBreaking.points2,
             topTimesEventResults = TestTopTimesEventResults.LsccTieBreaking.points2,
             individualEventResults = TestIndividualEventResults.LsccTieBreaking.points2
         )

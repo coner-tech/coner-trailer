@@ -12,6 +12,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
 import tech.coner.trailer.EventContext
+import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -23,6 +24,7 @@ import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.render.*
+import tech.coner.trailer.render.eventresults.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
@@ -97,15 +99,13 @@ class EventResultsCommand(
         }
         eventResultsSessionContainer.diContext.use {
             val render = when (type) {
-                StandardEventResultsTypes.raw -> renderOverallType(
-                    eventContext = eventContext,
-                    results = eventResultsSessionContainer.rawCalculator(eventContext).calculate()
-                )
+                StandardEventResultsTypes.raw -> eventResultsSessionContainer.rawCalculator(eventContext)
+                    .calculate()
+                    .let { retrieveRenderer(it).render(it) }
                 StandardEventResultsTypes.pax -> renderOverallType(
-                    eventContext = eventContext,
                     results = eventResultsSessionContainer.paxCalculator(eventContext).calculate()
                 )
-                StandardEventResultsTypes.clazz -> renderGroupType(
+                StandardEventResultsTypes.clazz -> renderClassType(
                     eventContext = eventContext,
                     results = eventResultsSessionContainer.clazzCalculator(eventContext).calculate()
                 )
@@ -138,28 +138,37 @@ class EventResultsCommand(
         }
     }
 
-    private fun renderOverallType(eventContext: EventContext, results: OverallEventResults): String {
-        val renderer = di.direct.instance<OverallEventResultsRenderer<String, *>>(format)
-        return renderer.render(eventContext, results)
+    private inline fun <ER : EventResults, reified ERR : EventResultsRenderer<ER>> retrieveRenderer(results: ER): ERR {
+        return di.direct.factory<Policy, ERR>(format).invoke(results.eventContext.event.policy)
     }
 
-    private fun renderGroupType(eventContext: EventContext, results: ClazzEventResults): String {
-        val renderer = di.direct.instance<ClazzEventResultsRenderer<String, *>>(format)
-        return renderer.render(eventContext, results)
+    private fun renderOverallType(results: OverallEventResults): String {
+        return di.direct.factory<Policy, OverallEventResultsRenderer>(format)
+            .invoke(results.eventContext.event.policy)
+            .render(results)
+    }
+
+    private fun renderClassType(eventContext: EventContext, results: ClassEventResults): String {
+        return di.direct.factory<Policy, ClassEventResultsRenderer>(format)
+            .invoke(results.eventContext.event.policy)
+            .render(results)
     }
 
     private fun renderTopTimesType(eventContext: EventContext, results: TopTimesEventResults): String {
-        val renderer: TopTimesEventResultsRenderer<String, *> = di.direct.instance(format)
-        return renderer.render(eventContext, results)
+        return di.direct.factory<Policy, TopTimesEventResultsRenderer>(format)
+            .invoke(results.eventContext.event.policy)
+            .render(results)
     }
 
     private fun renderComprehensiveType(eventContext: EventContext, results: ComprehensiveEventResults): String {
-        val renderer = di.direct.instance<ComprehensiveEventResultsRenderer<String, *>>(format)
-        return renderer.render(eventContext, results)
+        return di.direct.factory<Policy, ComprehensiveEventResultsRenderer>(format)
+            .invoke(results.eventContext.event.policy)
+            .render(results)
     }
 
     private fun renderIndividualType(eventContext: EventContext, results: IndividualEventResults): String {
-        val renderer = di.direct.instance<IndividualEventResultsRenderer<String, *>>(format)
-        return renderer.render(eventContext, results)
+        return di.direct.factory<Policy, IndividualEventResultsRenderer>(format)
+            .invoke(results.eventContext.event.policy)
+            .render(results)
     }
 }

@@ -8,7 +8,7 @@ object TestClazzEventResults {
 
         private val policy = TestPolicies.lsccV1
 
-        val points1 = ClazzEventResults(
+        val points1 = ClassEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.NOV to listOf(
@@ -313,7 +313,7 @@ object TestClazzEventResults {
     }
 
     object Lscc2019Simplified {
-        val points1: ClazzEventResults = ClazzEventResults(
+        val points1: ClassEventResults = ClassEventResults(
             eventContext = TestEventContexts.Lscc2019Simplified.points1,
             groupParticipantResults = sortedMapOf(
                 TestClasses.Lscc2019.HS to listOf(
@@ -793,8 +793,8 @@ object TestClazzEventResults {
     }
 
     object LsccTieBreaking {
-        val points1: ClazzEventResults
-            get() = ClazzEventResults(
+        val points1: ClassEventResults
+            get() = ClassEventResults(
                 eventContext = TestEventContexts.LsccTieBreaking.points1,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(
@@ -824,8 +824,8 @@ object TestClazzEventResults {
                     ClazzEventResults.ParentClassTopTime(
                 ))*/
             )
-        val points2: ClazzEventResults
-            get() = ClazzEventResults(
+        val points2: ClassEventResults
+            get() = ClassEventResults(
                 eventContext = TestEventContexts.LsccTieBreaking.points2,
                 groupParticipantResults = sortedMapOf(
                     TestClasses.Lscc2019.HS to listOf(
@@ -885,32 +885,32 @@ object TestClazzEventResults {
         object Create {
             private val eventContexts = TestEventContexts.Lifecycles.Create
             val noParticipantsYet by lazy {
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.noParticipantsYet,
                     groupParticipantResults = sortedMapOf()
                 )
             }
             val runsWithoutSignage by lazy {
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.runsWithoutSignage,
                     groupParticipantResults = sortedMapOf()
                 )
             }
             val runsWithoutParticipants by lazy {
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.runsWithoutParticipants,
                     groupParticipantResults = sortedMapOf()
                 )
             }
             val participantsWithoutRuns by lazy {
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.participantsWithoutRuns,
                     groupParticipantResults = sortedMapOf()
                 )
             }
             val someParticipantsWithSomeRuns by lazy {
                 val rawResults = TestOverallRawEventResults.Lifecycles.Create.someParticipantsWithSomeRuns
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.someParticipantsWithSomeRuns,
                     groupParticipantResults = sortedMapOf(
                         classes.HS to listOf(
@@ -923,7 +923,7 @@ object TestClazzEventResults {
             }
             val someParticipantsWithAllRuns by lazy {
                 val rawResults = TestOverallRawEventResults.Lifecycles.Create.someParticipantsWithAllRuns
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.someParticipantsWithAllRuns,
                     groupParticipantResults = sortedMapOf(
                         classes.HS to listOf(
@@ -941,7 +941,7 @@ object TestClazzEventResults {
             }
             val allParticipantsWithSomeRuns by lazy {
                 val rawResults = TestOverallRawEventResults.Lifecycles.Create.allParticipantsWithSomeRuns
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.allParticipantsWithSomeRuns,
                     groupParticipantResults = sortedMapOf(
                         classes.HS to listOf(
@@ -959,7 +959,7 @@ object TestClazzEventResults {
             }
             val allParticipantsWithAllRuns by lazy {
                 val rawResults = TestOverallRawEventResults.Lifecycles.Create.allParticipantsWithAllRuns
-                ClazzEventResults(
+                ClassEventResults(
                     eventContext = eventContexts.allParticipantsWithAllRuns,
                     groupParticipantResults = sortedMapOf(
                         classes.HS to listOf(
@@ -978,140 +978,140 @@ object TestClazzEventResults {
         }
         object Pre {
             private val eventContexts = TestEventContexts.Lifecycles.Pre
-            val noParticipantsYet: ClazzEventResults by lazy {
+            val noParticipantsYet: ClassEventResults by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
             }
-            val runsWithoutSignage: ClazzEventResults by lazy {
+            val runsWithoutSignage: ClassEventResults by lazy {
                 Create.runsWithoutSignage
                     .copy(eventContext = eventContexts.runsWithoutSignage)
             }
-            val runsWithoutParticipants: ClazzEventResults by lazy {
+            val runsWithoutParticipants: ClassEventResults by lazy {
                 Create.runsWithoutParticipants
                     .copy(eventContext = eventContexts.runsWithoutParticipants)
             }
-            val participantsWithoutRuns: ClazzEventResults by lazy {
+            val participantsWithoutRuns: ClassEventResults by lazy {
                 Create.participantsWithoutRuns
                     .copy(eventContext = eventContexts.participantsWithoutRuns)
             }
-            val someParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val someParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
             }
-            val someParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val someParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
             }
-            val allParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val allParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
             }
-            val allParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val allParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
             }
         }
         object Active {
             private val eventContexts = TestEventContexts.Lifecycles.Active
-            val noParticipantsYet: ClazzEventResults by lazy {
+            val noParticipantsYet: ClassEventResults by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
             }
-            val runsWithoutSignage: ClazzEventResults by lazy {
+            val runsWithoutSignage: ClassEventResults by lazy {
                 Create.runsWithoutSignage
                     .copy(eventContext = eventContexts.runsWithoutSignage)
             }
-            val runsWithoutParticipants: ClazzEventResults by lazy {
+            val runsWithoutParticipants: ClassEventResults by lazy {
                 Create.runsWithoutParticipants
                     .copy(eventContext = eventContexts.runsWithoutParticipants)
             }
-            val participantsWithoutRuns: ClazzEventResults by lazy {
+            val participantsWithoutRuns: ClassEventResults by lazy {
                 Create.participantsWithoutRuns
                     .copy(eventContext = eventContexts.participantsWithoutRuns)
             }
-            val someParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val someParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
             }
-            val someParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val someParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
             }
-            val allParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val allParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
             }
-            val allParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val allParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
             }
         }
         object Post {
             private val eventContexts = TestEventContexts.Lifecycles.Post
-            val noParticipantsYet: ClazzEventResults by lazy {
+            val noParticipantsYet: ClassEventResults by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
             }
-            val runsWithoutSignage: ClazzEventResults by lazy {
+            val runsWithoutSignage: ClassEventResults by lazy {
                 Create.runsWithoutSignage
                     .copy(eventContext = eventContexts.runsWithoutSignage)
             }
-            val runsWithoutParticipants: ClazzEventResults by lazy {
+            val runsWithoutParticipants: ClassEventResults by lazy {
                 Create.runsWithoutParticipants
                     .copy(eventContext = eventContexts.runsWithoutParticipants)
             }
-            val participantsWithoutRuns: ClazzEventResults by lazy {
+            val participantsWithoutRuns: ClassEventResults by lazy {
                 Create.participantsWithoutRuns
                     .copy(eventContext = eventContexts.participantsWithoutRuns)
             }
-            val someParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val someParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
             }
-            val someParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val someParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
             }
-            val allParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val allParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
             }
-            val allParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val allParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
             }
         }
         object Final {
             private val eventContexts = TestEventContexts.Lifecycles.Final
-            val noParticipantsYet: ClazzEventResults by lazy {
+            val noParticipantsYet: ClassEventResults by lazy {
                 Create.noParticipantsYet
                     .copy(eventContext = eventContexts.noParticipantsYet)
             }
-            val runsWithoutSignage: ClazzEventResults by lazy {
+            val runsWithoutSignage: ClassEventResults by lazy {
                 Create.runsWithoutSignage
                     .copy(eventContext = eventContexts.runsWithoutSignage)
             }
-            val runsWithoutParticipants: ClazzEventResults by lazy {
+            val runsWithoutParticipants: ClassEventResults by lazy {
                 Create.runsWithoutParticipants
                     .copy(eventContext = eventContexts.runsWithoutParticipants)
             }
-            val participantsWithoutRuns: ClazzEventResults by lazy {
+            val participantsWithoutRuns: ClassEventResults by lazy {
                 Create.participantsWithoutRuns
                     .copy(eventContext = eventContexts.participantsWithoutRuns)
             }
-            val someParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val someParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.someParticipantsWithSomeRuns)
             }
-            val someParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val someParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.someParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.someParticipantsWithAllRuns)
             }
-            val allParticipantsWithSomeRuns: ClazzEventResults by lazy {
+            val allParticipantsWithSomeRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithSomeRuns
                     .copy(eventContext = eventContexts.allParticipantsWithSomeRuns)
             }
-            val allParticipantsWithAllRuns: ClazzEventResults by lazy {
+            val allParticipantsWithAllRuns: ClassEventResults by lazy {
                 Create.allParticipantsWithAllRuns
                     .copy(eventContext = eventContexts.allParticipantsWithAllRuns)
             }

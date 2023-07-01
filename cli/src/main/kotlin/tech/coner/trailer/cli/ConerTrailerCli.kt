@@ -49,8 +49,9 @@ object ConerTrailerCli {
             verifierModule,
             motorsportRegApiModule,
             cliServiceModule,
-            cliktModule,
-            allRendererModule
+            textRenderModule,
+            jsonRenderModule,
+            cliktModule
         ))
         val global = GlobalModel()
         val features = di.direct.instance<FeatureService>().get()

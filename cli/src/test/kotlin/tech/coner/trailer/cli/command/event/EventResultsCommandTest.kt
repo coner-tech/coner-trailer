@@ -9,8 +9,10 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
+import org.kodein.di.bindFactory
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
+import tech.coner.trailer.Policy
 import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
@@ -18,15 +20,13 @@ import tech.coner.trailer.di.Format
 import tech.coner.trailer.di.MockkEventResultsFixture
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.OverallEventResults
+import tech.coner.trailer.eventresults.TestOverallRawEventResults
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.OverallEventResultsRenderer
-import tech.coner.trailer.render.json.JsonClazzEventResultsRenderer
-import tech.coner.trailer.render.json.JsonIndividualEventResultsRenderer
-import tech.coner.trailer.render.json.JsonOverallEventResultsRenderer
-import tech.coner.trailer.render.text.TextClazzEventResultsRenderer
-import tech.coner.trailer.render.text.TextOverallEventResultsRenderer
+import tech.coner.trailer.render.eventresults.OverallEventResultsRenderer
+import tech.coner.trailer.render.json.eventresults.JsonOverallEventResultsRenderer
+import tech.coner.trailer.render.text.eventresults.TextOverallEventResultsRenderer
 
 class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>() {
 
@@ -35,8 +35,8 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
         fullDescriptionOnError = true
         extend(super.di)
         import(mockkEventResultsFixture.module)
-        bindSingleton<OverallEventResultsRenderer<String, *>>(Format.JSON) { jsonOverallEventResultsRenderer }
-        bindSingleton<OverallEventResultsRenderer<String, *>>(Format.TEXT) { textOverallEventResultsRenderer }
+        bindFactory<Policy, OverallEventResultsRenderer>(Format.JSON) { jsonOverallEventResultsRenderer }
+        bindFactory<Policy, OverallEventResultsRenderer>(Format.TEXT) { textOverallEventResultsRenderer }
     }
 
     private val eventService: EventService by lazy { command.dataSessionContainer.eventService }
@@ -52,15 +52,15 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
 
     @Test
     fun `It should print results as json to console`() {
-        val eventContext = TestEventContexts.Lscc2019.points1
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
         coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
-        val results = mockk<OverallEventResults>()
+        val results = TestOverallRawEventResults.Lscc2019Simplified.points1
         every { rawCalculator.calculate() } returns results
         val render = "json"
-        every { jsonOverallEventResultsRenderer.render(eventContext, results) } returns render
+        every { jsonOverallEventResultsRenderer.render(results) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -72,21 +72,21 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
             eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
-            jsonOverallEventResultsRenderer.render(eventContext, results)
+            jsonOverallEventResultsRenderer.render(results)
         }
     }
 
     @Test
     fun `It should print results as plain text to console`() {
-        val eventContext = TestEventContexts.Lscc2019.points1
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val event = eventContext.event
         val rawCalculator = mockkEventResultsFixture.rawCalculator
         coEvery { eventService.findByKey(event.id) } returns Result.success(event)
         coEvery { eventContextService.load(event) } returns Result.success(eventContext)
-        val results = mockk<OverallEventResults>()
+        val results = TestOverallRawEventResults.Lscc2019Simplified.points1
         every { rawCalculator.calculate() } returns results
         val render = "plain text"
-        every { textOverallEventResultsRenderer.render(eventContext, results) } returns render
+        every { textOverallEventResultsRenderer.render(results) } returns render
 
         command.parse(arrayOf(
             "${event.id}",
@@ -99,7 +99,7 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
             eventService.findByKey(event.id)
             eventContextService.load(event)
             rawCalculator.calculate()
-            textOverallEventResultsRenderer.render(eventContext, results)
+            textOverallEventResultsRenderer.render(results)
         }
     }
 }

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>render-text</artifactId>
+    <description>Render Coner Trailer models to text. Built to support human-readable text-based terminal UI.</description>
 
     <properties>
         <asciitable.version>0.3.2</asciitable.version>

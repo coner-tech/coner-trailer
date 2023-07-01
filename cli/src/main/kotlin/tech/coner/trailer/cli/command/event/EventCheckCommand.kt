@@ -3,7 +3,9 @@ package tech.coner.trailer.cli.command.event
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.kodein.di.DI
+import org.kodein.di.factory
 import org.kodein.di.instance
+import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -12,7 +14,7 @@ import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.RunRenderer
+import tech.coner.trailer.render.RunsRenderer
 import java.util.*
 
 class EventCheckCommand(
@@ -29,7 +31,7 @@ class EventCheckCommand(
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runRenderer: RunRenderer by instance { Format.TEXT }
+    private val runRendererFactory: (Policy) -> RunsRenderer by factory(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -70,7 +72,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(runRenderer.render(result.runsWithInvalidSignage))
+            echo(runRendererFactory(check.policy).render(result.runsWithInvalidSignage))
         }
     }
 }

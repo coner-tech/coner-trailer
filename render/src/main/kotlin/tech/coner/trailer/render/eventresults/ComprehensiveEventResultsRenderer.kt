@@ -1,0 +1,5 @@
+package tech.coner.trailer.render.eventresults
+
+import tech.coner.trailer.eventresults.ComprehensiveEventResults
+
+interface ComprehensiveEventResultsRenderer : EventResultsRenderer<ComprehensiveEventResults>

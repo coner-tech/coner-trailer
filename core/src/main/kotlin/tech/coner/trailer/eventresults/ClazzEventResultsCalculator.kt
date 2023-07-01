@@ -10,7 +10,7 @@ class ClazzEventResultsCalculator(
     runEligibilityQualifier: RunEligibilityQualifier,
     runScoreFactory: ClazzRunScoreFactory,
     finalScoreFactory: FinalScoreFactory,
-) : AbstractEventResultsCalculator<ClazzEventResults>(
+) : AbstractEventResultsCalculator<ClassEventResults>(
     eventContext = eventContext,
     scoredRunsComparator = scoredRunsComparator,
     runEligibilityQualifier = runEligibilityQualifier,
@@ -32,8 +32,8 @@ class ClazzEventResultsCalculator(
         finalScoreFactory = finalScoreFactory
     )
 
-    override fun calculate(): ClazzEventResults {
-        return ClazzEventResults(
+    override fun calculate(): ClassEventResults {
+        return ClassEventResults(
             eventContext = eventContext,
             groupParticipantResults = eventContext.buildParticipantResultsUnranked()
                 .groupBy { it.participant.resultGroup }

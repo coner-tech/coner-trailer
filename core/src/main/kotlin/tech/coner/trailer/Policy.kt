@@ -14,7 +14,8 @@ data class Policy(
     val finalScoreStyle: FinalScoreStyle,
     val authoritativeParticipantDataSource: DataSource?,
     val authoritativeRunDataSource: DataSource?,
-    val topTimesEventResultsMethod: EventResultsType
+    val topTimesEventResultsMethod: EventResultsType,
+    val signageStyle: SignageStyle
 ) {
 
     sealed class DataSource {

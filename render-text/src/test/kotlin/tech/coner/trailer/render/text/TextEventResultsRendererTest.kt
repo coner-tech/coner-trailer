@@ -7,6 +7,7 @@ import tech.coner.trailer.EventContext
 import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.eventresults.TestOverallRawEventResults
+import tech.coner.trailer.render.text.eventresults.TextEventResultsRenderer
 
 class TextEventResultsRendererTest {
 
@@ -14,15 +15,21 @@ class TextEventResultsRendererTest {
 
     @Test
     fun `It should include header`() {
-        renderer = object : TextEventResultsRenderer<EventResults>() {
-            override fun partial(eventContext: EventContext, results: EventResults): () -> String = {
-                ""
+        renderer = object : TextEventResultsRenderer<EventResults>(
+            signageRenderer = { "signage" },
+            participantNameRenderer = { "participantName" },
+            carModelRenderer = { "carModel" },
+            participantResultScoreRenderer = { "participantResultScore" },
+            participantResultDiffRenderer = { "participantResultDiff" }
+        ) {
+            override fun StringBuilder.renderPartial(model: EventResults) {
+                // not a concern under test
             }
         }
-        val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val eventResults = TestOverallRawEventResults.Lscc2019Simplified.points1
+        val eventContext = eventResults.eventContext
 
-        val actual = renderer.render(eventContext, eventResults)
+        val actual = renderer.render(eventResults)
 
         assertThat(actual)
             .startsWith("""

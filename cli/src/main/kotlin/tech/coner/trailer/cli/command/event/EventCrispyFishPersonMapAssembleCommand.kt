@@ -190,7 +190,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                 override fun onUnused(key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) {
                     enter()
                     echo("Found unused mapping. Ignoring.")
-                    echo("Signage: ${key.classing.abbreviation} ${key.number}")
+                    echo("Signage: ${("${key.classing.group?.abbreviation} ${key.classing.handicap.abbreviation} ${key.number}")}")
                     echo("Name: ${key.firstName} ${key.lastName}")
                     echo("Person:")
                     echo(personView.render(person))

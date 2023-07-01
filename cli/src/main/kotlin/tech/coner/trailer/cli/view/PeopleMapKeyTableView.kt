@@ -13,7 +13,7 @@ class PeopleMapKeyTableView(private val asciiTableFactory: () -> AsciiTable) : V
         at.addRow("Signage", "First Name", "Last Name")
         at.addRule()
         for (key in model) {
-            at.addRow("${key.classing.abbreviation} ${key.number}", key.firstName, key.lastName)
+            at.addRow("${key.classing.group?.abbreviation} ${key.classing.handicap.abbreviation} ${key.number}".trim(), key.firstName, key.lastName)
             at.addRule()
         }
         return at.render()

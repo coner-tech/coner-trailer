@@ -16,7 +16,8 @@ object TestPolicies {
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
         authoritativeParticipantDataSource = Policy.DataSource.CrispyFish,
         authoritativeRunDataSource = Policy.DataSource.CrispyFish,
-        topTimesEventResultsMethod = StandardEventResultsTypes.pax
+        topTimesEventResultsMethod = StandardEventResultsTypes.pax,
+        signageStyle = SignageStyle.CLASSING_NUMBER
     ) }
 
     val lsccV2: Policy by lazy { Policy(
@@ -28,7 +29,8 @@ object TestPolicies {
         finalScoreStyle = FinalScoreStyle.AUTOCROSS,
         authoritativeParticipantDataSource = Policy.DataSource.CrispyFish,
         authoritativeRunDataSource = Policy.DataSource.CrispyFish,
-        topTimesEventResultsMethod = StandardEventResultsTypes.pax
+        topTimesEventResultsMethod = StandardEventResultsTypes.pax,
+        signageStyle = SignageStyle.CLASSING_NUMBER
     ) }
 
     val standardTest by lazy {
@@ -41,7 +43,15 @@ object TestPolicies {
             finalScoreStyle = FinalScoreStyle.AUTOCROSS,
             authoritativeParticipantDataSource = null,
             authoritativeRunDataSource = null,
-            topTimesEventResultsMethod = StandardEventResultsTypes.pax
+            topTimesEventResultsMethod = StandardEventResultsTypes.pax,
+            signageStyle = SignageStyle.CLASSING_NUMBER
+        )
+    }
+
+    val standardWithSignageStyleNumberClassing by lazy {
+        standardTest.copy(
+            id = UUID.randomUUID(),
+            signageStyle = SignageStyle.NUMBER_CLASSING
         )
     }
 }

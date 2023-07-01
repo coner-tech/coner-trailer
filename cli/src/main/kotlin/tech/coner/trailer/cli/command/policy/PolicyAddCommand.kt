@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Policy
+import tech.coner.trailer.SignageStyle
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -79,7 +80,8 @@ class PolicyAddCommand(
             finalScoreStyle = finalScoreStyle,
             authoritativeParticipantDataSource = authoritativeParticipantDataSource,
             authoritativeRunDataSource = authoritativeRunDataSource,
-            topTimesEventResultsMethod = topTimesEventResultsMethod
+            topTimesEventResultsMethod = topTimesEventResultsMethod,
+            signageStyle = SignageStyle.CLASSING_NUMBER
         )
         service.create(create)
         echo(view.render(create))

@@ -10,10 +10,4 @@ data class IndividualEventResults(
 ) : EventResults {
 
     override val type: EventResultsType = StandardEventResultsTypes.individual
-
-    object Comparators {
-        val standard = compareBy<Pair<Participant, Map<EventResultsType, ParticipantResult?>>> { it.first.lastName }
-            .thenBy { it.first.lastName }
-            .thenBy { it.first.signage?.classingNumber }
-    }
 }

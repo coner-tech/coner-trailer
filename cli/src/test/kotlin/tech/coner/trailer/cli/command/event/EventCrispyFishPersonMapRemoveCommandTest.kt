@@ -79,7 +79,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
 
         command.parse(arrayOf(
             "${event.id}",
-            "--handicap", classing.abbreviation,
+            "--handicap", classing.handicap.abbreviation,
             "--number", number,
             "--first-name", person.firstName,
             "--last-name", person.lastName,

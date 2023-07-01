@@ -1,6 +1,7 @@
 package tech.coner.trailer.io.mapper
 
 import tech.coner.trailer.Policy
+import tech.coner.trailer.SignageStyle
 import tech.coner.trailer.datasource.snoozle.entity.PolicyEntity
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
@@ -38,7 +39,8 @@ class PolicyMapper(
             authoritativeRunDataSource = when (snoozle.authoritativeRunSource.type) {
                 PolicyEntity.DataSource.Type.CRISPY_FISH -> Policy.DataSource.CrispyFish
             },
-            topTimesEventResultsMethod = StandardEventResultsTypes.pax //  TODO: support configuring as raw or pax
+            topTimesEventResultsMethod = StandardEventResultsTypes.pax, //  TODO: support configuring as raw or pax
+            signageStyle = SignageStyle.CLASSING_NUMBER, // TODO: support configuring
         )
     }
 }

@@ -14,7 +14,7 @@ class ComprehensiveEventResultsCalculator(
         return ComprehensiveEventResults(
             eventContext = eventContext,
             overallEventResults = overallEventResultsCalculators.map { it.calculate() },
-            clazzEventResults = clazzEventResultsCalculator.calculate(),
+            classEventResults = clazzEventResultsCalculator.calculate(),
             topTimesEventResults = topTimesEventResultsCalculator.calculate(),
             individualEventResults = individualEventResultsCalculator.calculate()
         )

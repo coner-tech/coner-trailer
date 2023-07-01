@@ -12,9 +12,11 @@ import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DI
+import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
+import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
@@ -23,24 +25,27 @@ import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.di.Format
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.RunRenderer
+import tech.coner.trailer.render.RunsRenderer
 
 class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
 
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runRenderer: RunRenderer by instance { Format.TEXT }
+    private val runRendererFactory: (Policy) -> RunsRenderer by factory(Format.TEXT)
+   lateinit var runRenderer: RunsRenderer
 
     override fun createCommand(di: DI, global: GlobalModel) = EventCheckCommand(di, global)
 
     @Test
     fun `It should check event and report fixable problems`() {
         val checkId = UUID.randomUUID()
+        val checkPolicy: Policy = mockk()
         val checkCrispyFish: Event.CrispyFishMetadata = mockk()
         val checkMotorsportReg: Event.MotorsportRegMetadata = mockk()
         val check: Event = mockk {
             every { id } returns checkId
+            every { policy } returns checkPolicy
             every { crispyFish } returns checkCrispyFish
             every { motorsportReg } returns checkMotorsportReg
         }
@@ -59,7 +64,8 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         coEvery { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
-        every { runRenderer.render(runs = any()) } returns "textRunRenderer rendered"
+        runRenderer = runRendererFactory(check.policy)
+        every { runRenderer.render(any()) } returns "textRunRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 

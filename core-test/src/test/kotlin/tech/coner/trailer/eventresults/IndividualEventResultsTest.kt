@@ -15,18 +15,4 @@ class IndividualEventResultsTest {
 
         assertThat(actual).resultsByParticipant().hasSize(2)
     }
-
-    @Nested
-    inner class AllByParticipantComparatorTest {
-
-        @Test
-        fun `It should compare participants by last name first`() {
-            val jackson = TestParticipants.Lifecycles.REBECCA_JACKSON to emptyMap<EventResultsType, ParticipantResult?>()
-            val mckenzie = TestParticipants.Lifecycles.JIMMY_MCKENZIE to emptyMap<EventResultsType, ParticipantResult?>()
-
-            val actual = IndividualEventResults.Comparators.standard.compare(mckenzie, jackson)
-
-            assertThat(actual).isNotEqualTo(0)
-        }
-    }
 }

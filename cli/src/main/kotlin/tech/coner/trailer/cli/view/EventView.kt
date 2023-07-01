@@ -31,7 +31,7 @@ class EventView(private val asciiTableFactory: () -> AsciiTable) : View<Event> {
             at.addRow("Signage", "Person ID")
             at.addRule()
             model.crispyFish?.peopleMap?.forEach { (key: Event.CrispyFishMetadata.PeopleMapKey, person: Person) ->
-                at.addRow("${key.classing.abbreviation} ${key.number}", "${person.id}")
+                at.addRow("${key.classing.group?.abbreviation} ${key.classing.handicap.abbreviation} ${key.number}".trim(), "${person.id}")
             }
             at.addRule()
             at.render()
