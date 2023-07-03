@@ -12,9 +12,9 @@ import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.RunsRenderer
+import tech.coner.trailer.render.view.RunsViewRenderer
 import java.util.*
 
 class EventCheckCommand(
@@ -31,7 +31,7 @@ class EventCheckCommand(
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runRendererFactory: (Policy) -> RunsRenderer by factory(Format.TEXT)
+    private val runsViewRendererFactory: (Policy) -> RunsViewRenderer by factory(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -72,7 +72,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(runRendererFactory(check.policy).render(result.runsWithInvalidSignage))
+            echo(runsViewRendererFactory(check.policy).render(result.runsWithInvalidSignage))
         }
     }
 }

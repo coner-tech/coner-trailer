@@ -7,7 +7,7 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.EventResultsType
 
 

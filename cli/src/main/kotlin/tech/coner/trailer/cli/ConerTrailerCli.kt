@@ -27,6 +27,8 @@ import tech.coner.trailer.cli.command.webapp.WebappCompetitionCommand
 import tech.coner.trailer.cli.di.*
 import tech.coner.trailer.cli.service.FeatureService
 import tech.coner.trailer.di.*
+import tech.coner.trailer.di.render.json.view.jsonViewRenderModule
+import tech.coner.trailer.di.render.text.view.textViewRendererModule
 
 object ConerTrailerCli {
 
@@ -49,8 +51,8 @@ object ConerTrailerCli {
             verifierModule,
             motorsportRegApiModule,
             cliServiceModule,
-            textRenderModule,
-            jsonRenderModule,
+            textViewRendererModule,
+            jsonViewRenderModule,
             cliktModule
         ))
         val global = GlobalModel()

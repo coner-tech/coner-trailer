@@ -1,7 +1,7 @@
 package tech.coner.trailer.cli.util
 
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import org.junit.jupiter.params.provider.Arguments
 import java.util.stream.Stream
 

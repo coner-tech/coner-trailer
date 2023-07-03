@@ -9,10 +9,10 @@ import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.render.ParticipantsRenderer
+import tech.coner.trailer.render.view.ParticipantsViewRenderer
 import java.util.*
 
 class EventParticipantListCommand(
@@ -28,7 +28,7 @@ class EventParticipantListCommand(
     override val diContext = diContextDataSession()
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val rendererFactory: (Policy) -> ParticipantsRenderer by factory(Format.TEXT)
+    private val rendererFactory: (Policy) -> ParticipantsViewRenderer by factory(Format.TEXT)
 
     private val eventId: UUID by argument().convert { toUuid(it) }
 

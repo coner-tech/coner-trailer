@@ -15,17 +15,17 @@ import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.render.ParticipantsRenderer
+import tech.coner.trailer.render.view.ParticipantsViewRenderer
 
 class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticipantListCommand>() {
 
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val rendererFactory: (Policy) -> ParticipantsRenderer by factory(Format.TEXT)
-    lateinit var renderer: ParticipantsRenderer
+    private val viewRendererFactory: (Policy) -> ParticipantsViewRenderer by factory(Format.TEXT)
+    lateinit var viewRenderer: ParticipantsViewRenderer
 
     override fun createCommand(di: DI, global: GlobalModel) = EventParticipantListCommand(di, global)
 
@@ -38,16 +38,16 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
         )
         coEvery { eventService.findByKey(any()) } returns Result.success(event)
         coEvery { participantService.list(any()) } returns Result.success(participants)
-        renderer = rendererFactory(event.policy)
-        val render = "participantRenderer rendered participants"
-        every { renderer.render(participants) } returns render
+        viewRenderer = viewRendererFactory(event.policy)
+        val render = "viewRenderer rendered"
+        every { viewRenderer.render(participants) } returns render
 
         command.parse(arrayOf("${event.id}"))
 
         coVerifySequence {
             eventService.findByKey(event.id)
             participantService.list(event)
-            renderer.render(participants)
+            viewRenderer.render(participants)
         }
         assertThat(testConsole).output().isEqualTo(render)
     }

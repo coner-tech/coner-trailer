@@ -18,13 +18,12 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.di.EventResultsSession
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.*
-import tech.coner.trailer.render.eventresults.*
+import tech.coner.trailer.render.view.eventresults.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
@@ -99,28 +98,12 @@ class EventResultsCommand(
         }
         eventResultsSessionContainer.diContext.use {
             val render = when (type) {
-                StandardEventResultsTypes.raw -> eventResultsSessionContainer.rawCalculator(eventContext)
-                    .calculate()
-                    .let { retrieveRenderer(it).render(it) }
-                StandardEventResultsTypes.pax -> renderOverallType(
-                    results = eventResultsSessionContainer.paxCalculator(eventContext).calculate()
-                )
-                StandardEventResultsTypes.clazz -> renderClassType(
-                    eventContext = eventContext,
-                    results = eventResultsSessionContainer.clazzCalculator(eventContext).calculate()
-                )
-                StandardEventResultsTypes.topTimes -> renderTopTimesType(
-                    eventContext = eventContext,
-                    results = eventResultsSessionContainer.topTimesCalculator(eventContext).calculate()
-                )
-                StandardEventResultsTypes.comprehensive -> renderComprehensiveType(
-                    eventContext = eventContext,
-                    results = eventResultsSessionContainer.comprehensiveCalculator(eventContext).calculate()
-                )
-                StandardEventResultsTypes.individual -> renderIndividualType(
-                    eventContext = eventContext,
-                    results = eventResultsSessionContainer.individualCalculator(eventContext).calculate()
-                )
+                StandardEventResultsTypes.raw -> calculateAndRender(eventResultsSessionContainer.rawCalculator(eventContext))
+                StandardEventResultsTypes.pax -> calculateAndRender(eventResultsSessionContainer.paxCalculator(eventContext))
+                StandardEventResultsTypes.clazz -> calculateAndRender(eventResultsSessionContainer.clazzCalculator(eventContext))
+                StandardEventResultsTypes.topTimes -> calculateAndRender(eventResultsSessionContainer.topTimesCalculator(eventContext))
+                StandardEventResultsTypes.comprehensive -> calculateAndRender(eventResultsSessionContainer.comprehensiveCalculator(eventContext))
+                StandardEventResultsTypes.individual -> calculateAndRender(eventResultsSessionContainer.individualCalculator(eventContext))
                 else -> throw UnsupportedOperationException()
             }
             when (val output = medium) {
@@ -138,37 +121,12 @@ class EventResultsCommand(
         }
     }
 
-    private inline fun <ER : EventResults, reified ERR : EventResultsRenderer<ER>> retrieveRenderer(results: ER): ERR {
+    private inline fun <reified ER : EventResults> calculateAndRender(calculator: EventResultsCalculator<ER>): String {
+        return calculator.calculate()
+            .let { retrieveRenderer(it).render(it) }
+    }
+
+    private inline fun <reified ER : EventResults, reified ERR : EventResultsViewRenderer<ER>> retrieveRenderer(results: ER): ERR {
         return di.direct.factory<Policy, ERR>(format).invoke(results.eventContext.event.policy)
-    }
-
-    private fun renderOverallType(results: OverallEventResults): String {
-        return di.direct.factory<Policy, OverallEventResultsRenderer>(format)
-            .invoke(results.eventContext.event.policy)
-            .render(results)
-    }
-
-    private fun renderClassType(eventContext: EventContext, results: ClassEventResults): String {
-        return di.direct.factory<Policy, ClassEventResultsRenderer>(format)
-            .invoke(results.eventContext.event.policy)
-            .render(results)
-    }
-
-    private fun renderTopTimesType(eventContext: EventContext, results: TopTimesEventResults): String {
-        return di.direct.factory<Policy, TopTimesEventResultsRenderer>(format)
-            .invoke(results.eventContext.event.policy)
-            .render(results)
-    }
-
-    private fun renderComprehensiveType(eventContext: EventContext, results: ComprehensiveEventResults): String {
-        return di.direct.factory<Policy, ComprehensiveEventResultsRenderer>(format)
-            .invoke(results.eventContext.event.policy)
-            .render(results)
-    }
-
-    private fun renderIndividualType(eventContext: EventContext, results: IndividualEventResults): String {
-        return di.direct.factory<Policy, IndividualEventResultsRenderer>(format)
-            .invoke(results.eventContext.event.policy)
-            .render(results)
     }
 }

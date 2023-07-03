@@ -26,7 +26,7 @@ import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.di.Format
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.EventResultsType
 
 class ConerTrailerCliIT {
