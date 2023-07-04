@@ -19,8 +19,7 @@ class TextNullableParticipantNamePropertyRenderer(
 
 class TextParticipantNamePropertyRenderer : ParticipantNamePropertyRenderer {
 
-    override fun render(model: Participant) = when {
-        model.firstName?.isNotBlank() == true && model.lastName?.isNotBlank() == true -> "${model.firstName} ${model.lastName}"
-        else -> "{unknown}"
+    override fun render(model: Participant): String {
+        return "${model.firstName} ${model.lastName}".trim()
     }
 }
