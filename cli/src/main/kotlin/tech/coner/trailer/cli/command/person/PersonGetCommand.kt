@@ -8,8 +8,10 @@ import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.PersonViewRenderer
 import java.util.*
 
 class PersonGetCommand(
@@ -24,7 +26,7 @@ class PersonGetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PersonService by instance()
-    private val view: PersonView by instance()
+    private val view: PersonViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument()
         .convert { toUuid(it) }

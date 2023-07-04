@@ -5,15 +5,16 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.PersonViewRenderer
 import java.util.*
 
 class PersonAddCommand(
@@ -28,7 +29,7 @@ class PersonAddCommand(
 
     override val diContext = diContextDataSession()
     private val service: PersonService by instance()
-    private val view: PersonView by instance()
+    private val view: PersonViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by option(hidden = true)
             .convert { toUuid(it) }

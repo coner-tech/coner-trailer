@@ -168,6 +168,11 @@
             <artifactId>ktor-client-cio-jvm</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>render-all-mockk-testsupport</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

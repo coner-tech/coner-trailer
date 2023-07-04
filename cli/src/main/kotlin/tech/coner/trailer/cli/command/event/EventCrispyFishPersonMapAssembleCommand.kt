@@ -4,9 +4,7 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import kotlinx.html.Entities
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Classing
@@ -17,14 +15,16 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationView
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.render.view.PersonViewRenderer
 import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
@@ -46,7 +46,7 @@ class EventCrispyFishPersonMapAssembleCommand(
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
     private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
-    private val personView: PersonView by instance()
+    private val textPersonViewRenderer: PersonViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -74,7 +74,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     echo(crispyFishRegistrationView.render(registration))
                     val (key, person) = entry
                     echo("Person:")
-                    echo(personView.render(person))
+                    echo(textPersonViewRenderer.render(person))
                     peopleMap[key] = person
                     exit()
                 }
@@ -125,7 +125,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     echo(crispyFishRegistrationView.render(registration))
                     val (key, person) = entry
                     echo("Person:")
-                    echo(personView.render(person))
+                    echo(textPersonViewRenderer.render(person))
                     peopleMap[key] = person
                     exit()
                 }
@@ -182,7 +182,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     echo("Found unmapped registration with exact club member and name match.")
                     echo(crispyFishRegistrationView.render(registration))
                     echo("Auto-mapping to person:")
-                    echo(personView.render(person))
+                    echo(textPersonViewRenderer.render(person))
                     peopleMap[key] = person
                     exit()
                 }
@@ -193,7 +193,7 @@ class EventCrispyFishPersonMapAssembleCommand(
                     echo("Signage: ${("${key.classing.group?.abbreviation} ${key.classing.handicap.abbreviation} ${key.number}")}")
                     echo("Name: ${key.firstName} ${key.lastName}")
                     echo("Person:")
-                    echo(personView.render(person))
+                    echo(textPersonViewRenderer.render(person))
                     exit()
                 }
 

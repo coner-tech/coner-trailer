@@ -21,10 +21,7 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<SeasonPointsCalculatorConfigurationView>() with provider { SeasonPointsCalculatorConfigurationView(
         console = instance()
     ) }
-    bind<PersonView>() with provider { PersonView(
-        console = instance(),
-        asciiTableFactory = provider()
-    ) }
+
     bind<PersonTableView>() with provider { PersonTableView(asciiTableFactory = provider()) }
     bind<MotosportRegMemberView>() with provider { MotosportRegMemberView(console = instance()) }
     bind<MotorsportRegMemberTableView>() with provider { MotorsportRegMemberTableView(asciiTableFactory = provider()) }

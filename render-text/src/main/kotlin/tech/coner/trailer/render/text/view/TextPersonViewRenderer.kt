@@ -1,14 +1,17 @@
-package tech.coner.trailer.cli.view
+package tech.coner.trailer.render.text.view
 
-import com.github.ajalt.clikt.output.CliktConsole
 import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Person
+import tech.coner.trailer.render.view.BaseCollectionViewRenderer
+import tech.coner.trailer.render.view.PersonCollectionViewRenderer
 
-class PersonView(
-    override val console: CliktConsole,
+class TextPersonViewRenderer(
+    lineSeparator: String,
     private val asciiTableFactory: () -> AsciiTable
-) : BaseCollectionView<Person>() {
+) : BaseCollectionViewRenderer<Person>(
+    lineSeparator = lineSeparator
+), PersonCollectionViewRenderer {
 
     override fun render(model: Person) = """
         ${model.firstName} ${model.lastName}

@@ -33,6 +33,7 @@
         <module>webapp-competition</module>
 
         <module>testutil/assertk-ktor</module>
+        <module>render-all-mockk-testsupport</module>
     </modules>
 
     <properties>

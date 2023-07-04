@@ -8,8 +8,9 @@ import tech.coner.trailer.Person
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.PersonCollectionViewRenderer
 import java.util.function.Predicate
 
 class PersonSearchCommand(
@@ -24,7 +25,7 @@ class PersonSearchCommand(
 
     override val diContext = diContextDataSession()
     private val service: PersonService by instance()
-    private val view: PersonView by instance()
+    private val view: PersonCollectionViewRenderer by instance(Format.TEXT)
 
     private val clubMemberIdEquals: PersonService.FilterMemberIdEquals? by option("--club-member-id-equals")
         .convert { PersonService.FilterMemberIdEquals(it) }

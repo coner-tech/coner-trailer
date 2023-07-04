@@ -10,13 +10,14 @@ import org.kodein.di.instance
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.PersonView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.PersonViewRenderer
 
 class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
 
     private val service: PersonService by instance()
-    private val view: PersonView by instance()
+    private val view: PersonViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = PersonGetCommand(di, global)
 

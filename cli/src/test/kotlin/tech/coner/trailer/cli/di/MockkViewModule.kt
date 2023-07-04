@@ -5,6 +5,7 @@ import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.view.*
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 
 val mockkViewModule = DI.Module("mockk for tech.coner.trailer.cli.view") {
     bindSingleton<CrispyFishRegistrationView> { mockk() }
@@ -16,7 +17,7 @@ val mockkViewModule = DI.Module("mockk for tech.coner.trailer.cli.view") {
     bindSingleton<MotorsportRegMemberTableView> { mockk() }
     bindSingleton<PeopleMapKeyTableView> { mockk() }
     bindSingleton<PersonTableView> { mockk() }
-    bindSingleton<PersonView> { mockk() }
+    bindSingleton<TextPersonViewRenderer> { mockk() }
     bindSingleton<PolicyView> { mockk() }
     bindSingleton<RankingSortView> { mockk() }
     bindSingleton<SeasonPointsCalculatorConfigurationView> { mockk() }
