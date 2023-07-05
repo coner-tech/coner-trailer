@@ -6,9 +6,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import kotlinx.html.Entities
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.Classing
 import tech.coner.trailer.Event
@@ -16,10 +14,11 @@ import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.EventView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.EventViewRenderer
 import java.util.*
 
 class EventCrispyFishPersonMapRemoveCommand(
@@ -36,7 +35,7 @@ class EventCrispyFishPersonMapRemoveCommand(
     private val service: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val group: String? by option()
@@ -78,6 +77,6 @@ class EventCrispyFishPersonMapRemoveCommand(
         )
         val set = event.copy(crispyFish = setCrispyFish)
         service.update(set)
-        echo(view.render(set))
+        echo(view(set))
     }
 }

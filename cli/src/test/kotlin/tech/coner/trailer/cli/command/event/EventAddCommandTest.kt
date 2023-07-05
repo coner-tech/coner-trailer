@@ -13,18 +13,19 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.EventView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.EventViewRenderer
 
 class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
 
     private val service: EventService by instance()
     private val policyService: PolicyService by instance()
     private val constraints: EventPersistConstraints by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = EventAddCommand(di, global)
 
@@ -43,7 +44,7 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
             service.create(any())
         } returns Result.success(create)
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
-        every { view.render(create) } returns viewRendered
+        every { view(create) } returns viewRendered
 
         command.parse(
             arrayOf(
@@ -68,7 +69,7 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
                 motorsportRegEventId = create.motorsportReg?.id,
                 policy = create.policy
             ))
-            view.render(create)
+            view(create)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

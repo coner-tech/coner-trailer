@@ -5,7 +5,6 @@ import org.kodein.di.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.view.*
 import tech.coner.trailer.cli.view.mordant.MordantEventTableView
-import tech.coner.trailer.render.text.view.TextClubViewRenderer
 
 val viewModule = DI.Module("coner.trailer.cli.view") {
     bindInstance { defaultCliktConsole() }
@@ -27,7 +26,6 @@ val viewModule = DI.Module("coner.trailer.cli.view") {
     bind<SeasonView>() with provider { SeasonView() }
     bind<SeasonTableView>() with provider { SeasonTableView(asciiTableFactory = provider()) }
     bind<PolicyView>() with provider { PolicyView(console = instance()) }
-    bind<EventView>() with provider { EventView(asciiTableFactory = provider()) }
     bind<View<List<Event>>>() with provider { MordantEventTableView(terminal = instance()) }
     bind<CrispyFishRegistrationView>() with provider { CrispyFishRegistrationView() }
     bind<CrispyFishRegistrationTableView>() with provider { CrispyFishRegistrationTableView(asciiTableFactory = provider()) }

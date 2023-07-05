@@ -19,6 +19,14 @@ val textPropertyRenderModule = DI.Module("tech.coner.trailer.render.text.propert
     // Club
     bindSingleton<ClubNamePropertyRenderer>(format) { TextClubNamePropertyRenderer() }
 
+    // Event
+    bindSingleton<EventIdPropertyRenderer>(format) { TextEventIdPropertyRenderer() }
+    bindSingleton<EventDatePropertyRenderer>(format) { TextEventDatePropertyRenderer() }
+    bindSingleton<EventLifecyclePropertyRenderer>(format) { TextEventLifecyclePropertyRenderer() }
+    bindSingleton<EventCrispyFishEventControlFilePropertyRenderer>(format) { TextEventCrispyFishEventControlFilePropertyRenderer() }
+    bindSingleton<EventCrispyFishClassDefinitionFilePropertyRenderer>(format) { TextEventCrispyFishClassDefinitionFilePropertyRenderer() }
+    bindSingleton<EventMotorsportRegIdPropertyRenderer>(format) { TextEventMotorsportRegIdPropertyRenderer() }
+
     // Participant
     bindSingleton<ParticipantNamePropertyRenderer>(format) { TextParticipantNamePropertyRenderer() }
     bindSingleton<NullableParticipantNamePropertyRenderer>(format) {
@@ -49,6 +57,10 @@ val textPropertyRenderModule = DI.Module("tech.coner.trailer.render.text.propert
     bindSingleton<PersonLastNamePropertyRenderer>(format) { TextPersonLastNamePropertyRenderer() }
     bindSingleton<PersonClubMemberIdPropertyRenderer>(format) { TextPersonClubMemberIdPropertyRenderer() }
     bindSingleton<PersonMotorsportRegMemberIdPropertyRenderer>(format) { TextPersonMotorsportRegMemberIdPropertyRenderer() }
+
+    // Policy
+    bindSingleton<PolicyIdPropertyRenderer>(format) { TextPolicyIdPropertyRenderer() }
+    bindSingleton<PolicyNamePropertyRenderer>(format) { TextPolicyNamePropertyRenderer() }
 
     // Run
     bindSingleton<RunSequencePropertyRenderer>(format) { TextRunSequencePropertyRenderer() }

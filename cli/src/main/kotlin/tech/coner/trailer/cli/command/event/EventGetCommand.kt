@@ -3,14 +3,14 @@ package tech.coner.trailer.cli.command.event
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.EventView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
+import tech.coner.trailer.render.view.EventViewRenderer
 import java.util.*
 
 class EventGetCommand(
@@ -25,12 +25,12 @@ class EventGetCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
 
     override suspend fun coRun() = diContext.use {
         val get = service.findByKey(id).getOrThrow()
-        echo(view.render(get))
+        echo(view(get))
     }
 }

@@ -20,12 +20,13 @@ import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.render.view.EventViewRenderer
 
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapAddCommand>() {
@@ -34,7 +35,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = EventCrispyFishPersonMapAddCommand(di, global)
 
@@ -73,7 +74,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
         coEvery { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
         coJustRun { service.update(set) }
         val viewRender = "view rendered"
-        every { view.render(set) } returns viewRender
+        every { view(set) } returns viewRender
 
         command.parse(arrayOf(
             "${event.id}",
@@ -89,7 +90,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
             crispyFishClassService.loadAllByAbbreviation(any())
             personService.findById(person.id)
             service.update(set)
-            view.render(set)
+            view(set)
         }
         assertThat(testConsole.output).isEqualTo(viewRender)
     }

@@ -1,16 +1,11 @@
 package tech.coner.trailer.di.render.text.view
 
-import org.kodein.di.DI
-import org.kodein.di.bindSingleton
-import org.kodein.di.instance
-import org.kodein.di.provider
+import org.kodein.di.*
 import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.di.render.text.property.textPropertyRenderModule
 import tech.coner.trailer.eventresults.*
-import tech.coner.trailer.render.text.view.TextClubViewRenderer
-import tech.coner.trailer.render.text.view.TextParticipantsViewRenderer
-import tech.coner.trailer.render.text.view.TextPersonViewRenderer
-import tech.coner.trailer.render.text.view.TextRunsViewRenderer
+import tech.coner.trailer.render.property.*
+import tech.coner.trailer.render.text.view.*
 import tech.coner.trailer.render.text.view.eventresults.*
 import tech.coner.trailer.render.view.*
 import tech.coner.trailer.render.view.eventresults.EventResultsViewRenderer
@@ -19,11 +14,15 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
     import(textPropertyRenderModule)
     val format = Format.TEXT
     val lineSeparator = System.lineSeparator()
+
+    // Club
     bindSingleton<ClubViewRenderer>(format) {
         TextClubViewRenderer(
             clubNamePropertyRenderer = instance(format)
         )
     }
+
+    // Person
     bindSingleton<PersonViewRenderer>(format) { instance<PersonCollectionViewRenderer>(format) }
     bindSingleton<PersonCollectionViewRenderer>(format) {
         TextPersonViewRenderer(
@@ -36,6 +35,25 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
             personMotorsportRegMemberIdPropertyRenderer = instance(format)
         )
     }
+
+    // Events
+    bindSingleton<EventViewRenderer>(format) {
+        TextEventViewRenderer(
+            asciiTableFactory = provider(),
+            eventIdPropertyRenderer = instance(format),
+            eventDatePropertyRenderer = instance(format),
+            eventLifecyclePropertyRenderer = instance(format),
+            eventCrispyFishEventControlFilePropertyRenderer = instance(format),
+            eventCrispyFishClassDefinitionFilePropertyRenderer = instance(format),
+            eventMotorsportRegIdPropertyRenderer = instance(format),
+            policyIdPropertyRenderer = instance(format),
+            policyNamePropertyRenderer = instance(format),
+            signagePropertyRenderer = instance(format),
+            personIdPropertyRenderer = instance(format)
+        )
+    }
+
+    // Event Results
     bindSingleton<EventResultsViewRenderer<OverallEventResults>>(format) {
         TextOverallEventResultsViewRenderer(
             signagePropertyRenderer = instance(format),
@@ -85,6 +103,15 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
             participantResultScoreRenderer = instance(format)
         )
     }
+
+    // Participants
+    bindSingleton<ParticipantsViewRenderer>(format) {
+        TextParticipantsViewRenderer(
+            signagePropertyRenderer = instance(format)
+        )
+    }
+
+    // Runs
     bindSingleton<RunsViewRenderer>(format) {
         TextRunsViewRenderer(
             runSequencePropertyRenderer = instance(format),
@@ -95,11 +122,6 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
             nullableTimePropertyRenderer = instance(format),
             penaltiesPropertyRenderer = instance(format),
             runRerunPropertyRenderer = instance(format)
-        )
-    }
-    bindSingleton<ParticipantsViewRenderer>(format) {
-        TextParticipantsViewRenderer(
-            signagePropertyRenderer = instance(format)
         )
     }
 }

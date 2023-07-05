@@ -35,7 +35,9 @@ data class Event(
             val number: String,
             val firstName: String,
             val lastName: String
-        )
+        ) {
+            val signage get() = Signage(classing, number)
+        }
     }
 
     data class MotorsportRegMetadata(

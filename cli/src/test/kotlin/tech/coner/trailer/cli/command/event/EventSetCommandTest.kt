@@ -11,19 +11,20 @@ import org.kodein.di.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.service.EventService
 import java.nio.file.Path
 import java.time.LocalDate
 import kotlin.io.path.createFile
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
+import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.render.view.EventViewRenderer
 
 @ExtendWith(MockKExtension::class)
 class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
 
     private val service: EventService by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
 
     private lateinit var crispyFish: Path
 
@@ -56,7 +57,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         coEvery { service.findByKey(original.id) } returns Result.success(original)
         coJustRun { service.update(any()) }
         val viewRendered = "view rendered set event named: ${set.name}"
-        every { view.render(any()) } returns viewRendered
+        every { view(any()) } returns viewRendered
 
         command.parse(arrayOf(
             "${original.id}",
@@ -72,7 +73,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         coVerifySequence {
             service.findByKey(original.id)
             service.update(set)
-            view.render(set)
+            view(set)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
@@ -88,7 +89,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
             service.update(original)
         }
         val viewRendered = "view rendered set event named: ${original.name}"
-        every { view.render(eq(original)) } returns viewRendered
+        every { view(eq(original)) } returns viewRendered
 
         command.parse(arrayOf(
             "${original.id}",
@@ -97,7 +98,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         coVerifySequence {
             service.findByKey(original.id)
             service.update(original)
-            view.render(original)
+            view(original)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

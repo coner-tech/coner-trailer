@@ -18,12 +18,13 @@ import tech.coner.trailer.cli.util.clikt.handle
 import tech.coner.trailer.cli.util.clikt.toCrispyFishRelativePath
 import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.di.DataSessionHolder
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.EventViewRenderer
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
@@ -42,7 +43,7 @@ class EventAddCommand(
 
     private val constraints: EventPersistConstraints by instance()
     private val service: EventService by instance()
-    private val view: EventView by instance()
+    private val view: EventViewRenderer by instance(Format.TEXT)
     private val policyService: PolicyService by instance()
 
     private val id: UUID? by option(hidden = true)
@@ -106,6 +107,6 @@ class EventAddCommand(
             policy = policy
         ))
             .getOrThrow()
-        echo(view.render(created))
+        echo(view(created))
     }
 }
