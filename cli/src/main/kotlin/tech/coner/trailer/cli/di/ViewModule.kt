@@ -5,10 +5,10 @@ import org.kodein.di.*
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.view.*
 import tech.coner.trailer.cli.view.mordant.MordantEventTableView
+import tech.coner.trailer.render.text.view.TextClubViewRenderer
 
 val viewModule = DI.Module("coner.trailer.cli.view") {
     bindInstance { defaultCliktConsole() }
-    bind<ClubView>() with provider { ClubView() }
     bind<DatabaseConfigurationView>() with provider { DatabaseConfigurationView(
         console = instance()
     ) }

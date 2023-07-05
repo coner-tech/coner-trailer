@@ -16,6 +16,9 @@ val textPropertyRenderModule = DI.Module("tech.coner.trailer.render.text.propert
     bindSingleton<CarModelPropertyRenderer>(format) { TextCarModelPropertyRenderer() }
     bindSingleton<CarColorPropertyRenderer>(format) { TextCarColorPropertyRenderer() }
 
+    // Club
+    bindSingleton<ClubNamePropertyRenderer>(format) { TextClubNamePropertyRenderer() }
+
     // Participant
     bindSingleton<ParticipantNamePropertyRenderer>(format) { TextParticipantNamePropertyRenderer() }
     bindSingleton<NullableParticipantNamePropertyRenderer>(format) {
