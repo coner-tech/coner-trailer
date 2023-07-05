@@ -24,7 +24,7 @@ class TextOverallEventResultsViewRenderer(
         val at = createAsciiTable()
         at.appendHeader()
         for (participantResult in model.participantResults) {
-            at.appendData(participantResult)
+            at.appendData(model, participantResult)
         }
         at.addRule()
         appendLine(at.render())

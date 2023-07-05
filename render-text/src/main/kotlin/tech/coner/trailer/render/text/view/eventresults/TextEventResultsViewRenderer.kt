@@ -36,10 +36,10 @@ abstract class TextEventResultsViewRenderer<ER : EventResults>(
     protected fun createAsciiTable() = AsciiTable()
         .also { it.renderer.cwc = CWC_LongestLine() }
 
-    protected fun AsciiTable.appendData(participantResult: ParticipantResult) {
+    protected fun AsciiTable.appendData(results: ER, participantResult: ParticipantResult) {
         addRow(
             "${participantResult.position}",
-            signagePropertyRenderer(participantResult.participant.signage),
+            signagePropertyRenderer(participantResult.participant.signage, results.eventContext.event.policy),
             participantNamePropertyRenderer(participantResult.participant),
             carModelPropertyRenderer(participantResult.participant.car),
             participantResultScoreRenderer(participantResult),

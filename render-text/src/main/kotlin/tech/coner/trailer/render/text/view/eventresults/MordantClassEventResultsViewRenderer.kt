@@ -65,12 +65,16 @@ class MordantClassEventResultsViewRenderer(
     protected fun TableBuilder.appendBody(results: ClassEventResults) {
         body {
             results.groupParticipantResults.forEach { (group, participantResults) ->
-                appendGroup(group, participantResults)
+                appendGroup(results, group, participantResults)
             }
         }
     }
 
-    protected fun SectionBuilder.appendGroup(group: Class, participantResults: List<ParticipantResult>) {
+    protected fun SectionBuilder.appendGroup(
+        results: ClassEventResults,
+        group: Class,
+        participantResults: List<ParticipantResult>
+    ) {
         row {
             cell(group.name) {
                 columnSpan = 7
@@ -82,7 +86,7 @@ class MordantClassEventResultsViewRenderer(
                 cellBorders = Borders.LEFT_RIGHT
                 cells(
                     "${participantResult.position}",
-                    signagePropertyRenderer(participantResult.participant.signage),
+                    signagePropertyRenderer(participantResult.participant.signage, results.eventContext.event.policy),
                     participantNamePropertyRenderer(participantResult.participant),
                     carModelPropertyRenderer(participantResult.participant.car),
                     participantResultScoreRenderer(participantResult),

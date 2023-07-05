@@ -24,8 +24,7 @@ class EventRunListCommandTest : BaseDataSessionCommandTest<EventRunListCommand>(
 
     private val eventService: EventService by instance()
     private val runService: RunService by instance()
-    private val viewRendererFactory: (Policy) -> RunsViewRenderer by factory(Format.TEXT)
-    lateinit var viewRenderer: RunsViewRenderer
+    private val viewRenderer: RunsViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = EventRunListCommand(di, global)
 
@@ -35,16 +34,15 @@ class EventRunListCommandTest : BaseDataSessionCommandTest<EventRunListCommand>(
         val runs = emptyList<Run>()
         coEvery { eventService.findByKey(any()) } returns Result.success(event)
         coEvery { runService.list(any()) } returns Result.success(runs)
-        viewRenderer = viewRendererFactory(event.policy)
         val render = "viewRenderer rendered runs"
-        every { viewRenderer.render(runs) } returns render
+        every { viewRenderer(runs, event.policy) } returns render
 
         command.parse(arrayOf("${event.id}"))
 
         coVerifySequence {
             eventService.findByKey(event.id)
             runService.list(event)
-            viewRenderer.render(runs)
+            viewRenderer(runs, event.policy)
         }
         assertThat(testConsole).output().isEqualTo(render)
     }

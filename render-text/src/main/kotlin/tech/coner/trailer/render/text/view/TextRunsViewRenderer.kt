@@ -17,17 +17,17 @@ class TextRunsViewRenderer(
     private val runRerunPropertyRenderer: RunRerunPropertyRenderer
 ) : RunsViewRenderer {
 
-    override fun render(model: Collection<Run>): String {
+    override fun render(model: RunsViewRenderer.Model): String {
         val at = AsciiTable().apply {
             renderer.cwc = CWC_LongestLine()
         }
         at.addRule()
         at.addRow("Sequence", "Signage", "Name", "Car Model", "Car Color", "Time", "Penalties", "Rerun")
         at.addRule()
-        model.forEach { run ->
+        model.runs.forEach { run ->
             at.addRow(
                 runSequencePropertyRenderer(run),
-                signagePropertyRenderer(run.participant?.signage, ),
+                signagePropertyRenderer(run.participant?.signage, model.policy),
                 nullableParticipantNamePropertyRenderer(run.participant),
                 carModelPropertyRenderer(run.participant?.car),
                 carColorPropertyRenderer(run.participant?.car),

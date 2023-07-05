@@ -12,7 +12,6 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import org.kodein.di.*
 import tech.coner.trailer.EventContext
-import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -23,7 +22,7 @@ import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.view.eventresults.*
+import tech.coner.trailer.render.view.eventresults.EventResultsViewRenderer
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
@@ -121,12 +120,8 @@ class EventResultsCommand(
         }
     }
 
-    private inline fun <reified ER : EventResults> calculateAndRender(calculator: EventResultsCalculator<ER>): String {
-        return calculator.calculate()
-            .let { retrieveRenderer(it).render(it) }
-    }
-
-    private inline fun <reified ER : EventResults, reified ERR : EventResultsViewRenderer<ER>> retrieveRenderer(results: ER): ERR {
-        return di.direct.factory<Policy, ERR>(format).invoke(results.eventContext.event.policy)
+    private inline fun <reified M : EventResults, reified R : EventResultsViewRenderer<M>> calculateAndRender(calculator: EventResultsCalculator<M>): String {
+        val renderer: R = di.direct.instance<R>(format)
+        return renderer(calculator.calculate())
     }
 }

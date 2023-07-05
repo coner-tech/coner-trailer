@@ -16,4 +16,4 @@ import tech.coner.trailer.render.Renderer
  *
  * @param Model the model whose named property it will render
  */
-interface PropertyRenderer<Model> : Renderer<Model>
+fun interface PropertyRenderer<Model> : Renderer<Model>

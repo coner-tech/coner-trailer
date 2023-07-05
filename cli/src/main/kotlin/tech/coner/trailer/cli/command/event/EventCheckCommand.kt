@@ -31,7 +31,7 @@ class EventCheckCommand(
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runsViewRendererFactory: (Policy) -> RunsViewRenderer by factory(Format.TEXT)
+    private val runsViewRenderer: RunsViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -72,7 +72,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(runsViewRendererFactory(check.policy).render(result.runsWithInvalidSignage))
+            echo(runsViewRenderer(result.runsWithInvalidSignage, check.policy))
         }
     }
 }

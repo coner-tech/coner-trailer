@@ -54,9 +54,9 @@ class TextSignagePropertyRendererTest {
     @ParameterizedTest
     @EnumSource
     fun `It should render signage correctly`(param: SignageStringParam) {
-        val renderer = TextSignagePropertyRenderer(param.policy)
+        val renderer = TextSignagePropertyRenderer()
 
-        val actual = renderer(param.participant.signage)
+        val actual = renderer(param.participant.signage, param.policy)
 
         assertThat(actual).isEqualTo(param.expected)
     }

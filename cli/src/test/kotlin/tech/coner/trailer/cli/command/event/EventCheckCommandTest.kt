@@ -32,8 +32,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runsViewRendererFactory: (Policy) -> RunsViewRenderer by factory(Format.TEXT)
-   lateinit var runsViewRenderer: RunsViewRenderer
+    private val runsViewRenderer: RunsViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = EventCheckCommand(di, global)
 
@@ -64,8 +63,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         coEvery { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
-        runsViewRenderer = runsViewRendererFactory(check.policy)
-        every { runsViewRenderer.render(any()) } returns "runsViewRenderer rendered"
+        every { runsViewRenderer(any(), any()) } returns "runsViewRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 
@@ -79,7 +77,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations)
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
-            runsViewRenderer.render(result.runsWithInvalidSignage)
+            runsViewRenderer(result.runsWithInvalidSignage, checkPolicy)
         }
         assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")

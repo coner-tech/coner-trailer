@@ -5,9 +5,8 @@ import tech.coner.trailer.Policy
 import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.di.render.text.property.textPropertyRenderModule
 import tech.coner.trailer.eventresults.*
-import tech.coner.trailer.render.property.SignagePropertyRenderer
-import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 import tech.coner.trailer.render.text.view.TextParticipantsViewRenderer
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
 import tech.coner.trailer.render.text.view.TextRunsViewRenderer
 import tech.coner.trailer.render.text.view.eventresults.*
 import tech.coner.trailer.render.view.ParticipantsViewRenderer
@@ -24,62 +23,67 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
     bindSingleton<PersonCollectionViewRenderer>(format) {
         TextPersonViewRenderer(
             lineSeparator = lineSeparator,
-            asciiTableFactory = provider()
+            asciiTableFactory = provider(),
+            personIdPropertyRenderer = instance(format),
+            personFirstNamePropertyRenderer = instance(format),
+            personLastNamePropertyRenderer = instance(format),
+            personClubMemberIdPropertyRenderer = instance(format),
+            personMotorsportRegMemberIdPropertyRenderer = instance(format)
         )
     }
-    bindFactory<Policy, EventResultsViewRenderer<OverallEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<OverallEventResults>>(format) {
         TextOverallEventResultsViewRenderer(
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             participantNamePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             participantResultDiffPropertyRenderer = instance(format),
             participantResultScoreRenderer = instance(format)
         )
     }
-    bindFactory<Policy, EventResultsViewRenderer<ClassEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<ClassEventResults>>(format) {
         MordantClassEventResultsViewRenderer(
             terminal = instance(),
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             participantNamePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             participantResultScoreRenderer = instance(format),
             participantResultDiffPropertyRenderer = instance(format)
         )
     }
-    bindFactory<Policy, EventResultsViewRenderer<TopTimesEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<TopTimesEventResults>>(format) {
         TextTopTimesEventResultsViewRenderer(
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             participantNamePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             participantResultScoreRenderer = instance(format),
             participantResultDiffPropertyRenderer = instance(format)
         )
     }
-    bindFactory<Policy, EventResultsViewRenderer<ComprehensiveEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<ComprehensiveEventResults>>(format) {
         TextComprehensiveEventResultsViewRenderer(
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             participantNamePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             participantResultDiffPropertyRenderer = instance(format),
             participantResultScoreRenderer = instance(format),
-            overallRenderer = factory<Policy, EventResultsViewRenderer<OverallEventResults>>(format).invoke(it),
-            classRenderer = factory<Policy, EventResultsViewRenderer<ClassEventResults>>(format).invoke(it),
-            topTimesRenderer = factory<Policy, EventResultsViewRenderer<TopTimesEventResults>>(format).invoke(it)
+            overallRenderer = instance(format),
+            classRenderer = instance(format),
+            topTimesRenderer = instance(format)
         )
     }
-    bindFactory<Policy, EventResultsViewRenderer<IndividualEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<IndividualEventResults>>(format) {
         TextIndividualEventResultsViewRenderer(
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             participantNamePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             participantResultDiffPropertyRenderer = instance(format),
             participantResultScoreRenderer = instance(format)
         )
     }
-    bindFactory<Policy, RunsViewRenderer>(format) {
+    bindSingleton<RunsViewRenderer>(format) {
         TextRunsViewRenderer(
             runSequencePropertyRenderer = instance(format),
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it),
+            signagePropertyRenderer = instance(format),
             carModelPropertyRenderer = instance(format),
             carColorPropertyRenderer = instance(format),
             nullableParticipantNamePropertyRenderer = instance(format),
@@ -88,9 +92,9 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
             runRerunPropertyRenderer = instance(format)
         )
     }
-    bindFactory<Policy, ParticipantsViewRenderer>(format) {
+    bindSingleton<ParticipantsViewRenderer>(format) {
         TextParticipantsViewRenderer(
-            signagePropertyRenderer = factory<Policy, SignagePropertyRenderer>(format).invoke(it)
+            signagePropertyRenderer = instance(format)
         )
     }
 }

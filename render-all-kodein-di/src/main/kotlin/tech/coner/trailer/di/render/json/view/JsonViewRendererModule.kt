@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonMapperBuilder
 import org.kodein.di.DI
 import org.kodein.di.bindFactory
+import org.kodein.di.bindSingleton
 import tech.coner.trailer.Policy
 import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.*
@@ -20,19 +21,19 @@ val jsonViewRenderModule = DI.Module("tech.coner.trailer.render.json.view") {
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build()
     }
-    bindFactory<Policy, EventResultsViewRenderer<ClassEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<ClassEventResults>>(format) {
         JsonClassEventResultsViewRenderer(objectMapper)
     }
-    bindFactory<Policy, EventResultsViewRenderer<OverallEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<OverallEventResults>>(format) {
         JsonOverallEventResultsViewRenderer(objectMapper)
     }
-    bindFactory<Policy, EventResultsViewRenderer<TopTimesEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<TopTimesEventResults>>(format) {
         JsonTopTimesEventResultsViewRenderer(objectMapper)
     }
-    bindFactory<Policy, EventResultsViewRenderer<ComprehensiveEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<ComprehensiveEventResults>>(format) {
         JsonComprehensiveEventResultsViewRenderer(objectMapper)
     }
-    bindFactory<Policy, EventResultsViewRenderer<IndividualEventResults>>(format) {
+    bindSingleton<EventResultsViewRenderer<IndividualEventResults>>(format) {
         JsonIndividualEventResultsViewRenderer(objectMapper)
     }
 }

@@ -16,7 +16,6 @@ val mockkViewModule = DI.Module("mockk for tech.coner.trailer.cli.view") {
     bindSingleton<EventPointsCalculatorView> { mockk() }
     bindSingleton<MotorsportRegMemberTableView> { mockk() }
     bindSingleton<PeopleMapKeyTableView> { mockk() }
-    bindSingleton<PersonTableView> { mockk() }
     bindSingleton<TextPersonViewRenderer> { mockk() }
     bindSingleton<PolicyView> { mockk() }
     bindSingleton<RankingSortView> { mockk() }

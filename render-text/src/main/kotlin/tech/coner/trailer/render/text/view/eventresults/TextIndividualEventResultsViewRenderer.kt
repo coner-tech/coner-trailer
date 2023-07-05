@@ -37,7 +37,7 @@ class TextIndividualEventResultsViewRenderer(
         model.resultsByIndividual.forEach { (participant, individualParticipantResults) ->
             val resultsText = mutableListOf(
                 participantNamePropertyRenderer(participant),
-                signagePropertyRenderer(participant.signage),
+                signagePropertyRenderer(participant.signage, model.eventContext.event.policy),
                 carModelPropertyRenderer(participant.car)
 
             )

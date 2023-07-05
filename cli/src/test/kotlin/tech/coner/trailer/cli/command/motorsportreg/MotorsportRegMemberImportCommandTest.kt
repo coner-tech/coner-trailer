@@ -10,13 +10,14 @@ import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.PersonTableView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.MotorsportRegImportService
+import tech.coner.trailer.render.view.PersonCollectionViewRenderer
 
 class MotorsportRegMemberImportCommandTest : BaseDataSessionCommandTest<MotorsportRegMemberImportCommand>() {
 
     private val service: MotorsportRegImportService by instance()
-    private val view: PersonTableView by instance()
+    private val view: PersonCollectionViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = MotorsportRegMemberImportCommand(di, global)
 
