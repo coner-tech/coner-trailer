@@ -4,7 +4,6 @@ import org.kodein.di.*
 import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.di.render.text.property.textPropertyRenderModule
 import tech.coner.trailer.eventresults.*
-import tech.coner.trailer.render.property.*
 import tech.coner.trailer.render.text.view.*
 import tech.coner.trailer.render.text.view.eventresults.*
 import tech.coner.trailer.render.view.*
@@ -19,20 +18,6 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
     bindSingleton<ClubViewRenderer>(format) {
         TextClubViewRenderer(
             clubNamePropertyRenderer = instance(format)
-        )
-    }
-
-    // Person
-    bindSingleton<PersonViewRenderer>(format) { instance<PersonCollectionViewRenderer>(format) }
-    bindSingleton<PersonCollectionViewRenderer>(format) {
-        TextPersonViewRenderer(
-            lineSeparator = lineSeparator,
-            asciiTableFactory = provider(),
-            personIdPropertyRenderer = instance(format),
-            personFirstNamePropertyRenderer = instance(format),
-            personLastNamePropertyRenderer = instance(format),
-            personClubMemberIdPropertyRenderer = instance(format),
-            personMotorsportRegMemberIdPropertyRenderer = instance(format)
         )
     }
 
@@ -108,6 +93,33 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
     bindSingleton<ParticipantsViewRenderer>(format) {
         TextParticipantsViewRenderer(
             signagePropertyRenderer = instance(format)
+        )
+    }
+
+    // Person
+    bindSingleton<PersonViewRenderer>(format) { instance<PersonCollectionViewRenderer>(format) }
+    bindSingleton<PersonCollectionViewRenderer>(format) {
+        TextPersonViewRenderer(
+            lineSeparator = lineSeparator,
+            asciiTableFactory = provider(),
+            personIdPropertyRenderer = instance(format),
+            personFirstNamePropertyRenderer = instance(format),
+            personLastNamePropertyRenderer = instance(format),
+            personClubMemberIdPropertyRenderer = instance(format),
+            personMotorsportRegMemberIdPropertyRenderer = instance(format)
+        )
+    }
+
+    // Policy
+    bindSingleton<PolicyViewRenderer>(format) { instance<PolicyCollectionViewRenderer>(format) }
+    bindSingleton<PolicyCollectionViewRenderer>(format) {
+        TextPolicyViewRenderer(
+            lineSeparator = lineSeparator,
+            policyIdPropertyRenderer = instance(format),
+            policyNamePropertyRenderer = instance(format),
+            policyConePenaltySecondsPropertyRenderer = instance(format),
+            policyPaxTimeStylePropertyRenderer = instance(format),
+            policyFinalScoreStylePropertyRenderer = instance(format)
         )
     }
 

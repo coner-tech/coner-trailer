@@ -8,6 +8,9 @@ abstract class BaseCollectionViewRenderer<Model>(
 
     override fun render(models: Collection<Model>): String {
         return models
-            .joinToString(separator = lineSeparator) { render(it) }
+            .joinToString(
+                separator = "$lineSeparator$lineSeparator",
+                transform = ::render
+            )
     }
 }

@@ -13,15 +13,16 @@ import tech.coner.trailer.TestClubs
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.PolicyViewRenderer
 
 class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
     private val service: PolicyService by instance()
     private val clubService: ClubService by instance()
-    private val view: PolicyView by instance()
+    private val view: PolicyViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = PolicyAddCommand(di, global)
 
@@ -36,7 +37,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
         every { clubService.get() } returns TestClubs.lscc
         justRun { service.create(param.policy) }
         val render = "view rendered"
-        every { view.render(param.policy) } returns render
+        every { view(param.policy) } returns render
 
         command.parse(arrayOf(
             "--id", "${param.policy.id}",
@@ -48,7 +49,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
         verifySequence {
             service.create(param.policy)
-            view.render(param.policy)
+            view(param.policy)
         }
         assertThat(testConsole.output).isEqualTo(render)
     }

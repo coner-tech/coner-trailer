@@ -10,13 +10,14 @@ import org.kodein.di.instance
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.PolicyCollectionViewRenderer
 
 class PolicyListCommandTest : BaseDataSessionCommandTest<PolicyListCommand>() {
 
     private val service: PolicyService by instance()
-    private val view: PolicyView by instance()
+    private val view: PolicyCollectionViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = PolicyListCommand(di, global)
 
@@ -25,14 +26,14 @@ class PolicyListCommandTest : BaseDataSessionCommandTest<PolicyListCommand>() {
         val policies = listOf(TestPolicies.lsccV1, TestPolicies.lsccV2)
         every { service.list() } returns policies
         val viewRender = "rendered policies"
-        every { view.render(policies) } returns viewRender
+        every { view(policies) } returns viewRender
 
         command.parse(emptyArray())
 
         assertThat(testConsole.output, "console output").isEqualTo(viewRender)
         verifySequence {
             service.list()
-            view.render(policies)
+            view(policies)
         }
     }
 }

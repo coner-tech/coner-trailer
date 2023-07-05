@@ -61,6 +61,9 @@ val textPropertyRenderModule = DI.Module("tech.coner.trailer.render.text.propert
     // Policy
     bindSingleton<PolicyIdPropertyRenderer>(format) { TextPolicyIdPropertyRenderer() }
     bindSingleton<PolicyNamePropertyRenderer>(format) { TextPolicyNamePropertyRenderer() }
+    bindSingleton<PolicyConePenaltySecondsPropertyRenderer>(format) { TextPolicyConePenaltySecondsPropertyRenderer() }
+    bindSingleton<PolicyPaxTimeStylePropertyRenderer>(format) { TextPolicyPaxTimeStylePropertyRenderer() }
+    bindSingleton<PolicyFinalScoreStylePropertyRenderer>(format) { TextPolicyFinalScoreStylePropertyRenderer() }
 
     // Run
     bindSingleton<RunSequencePropertyRenderer>(format) { TextRunSequencePropertyRenderer() }

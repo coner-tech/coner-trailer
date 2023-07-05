@@ -7,16 +7,16 @@ import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.PolicyViewRenderer
 import java.util.*
 
 class PolicySetCommand(
@@ -31,7 +31,7 @@ class PolicySetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val view: PolicyView by instance()
+    private val view: PolicyViewRenderer by instance(Format.TEXT)
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val name: String? by option()
@@ -51,6 +51,6 @@ class PolicySetCommand(
             finalScoreStyle = finalScoreStyle ?: it.finalScoreStyle
         ) }
         service.update(set)
-        echo(view.render(set))
+        echo(view(set))
     }
 }

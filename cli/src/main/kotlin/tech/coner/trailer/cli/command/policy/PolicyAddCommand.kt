@@ -12,7 +12,7 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.handle
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
@@ -20,6 +20,7 @@ import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.constraint.PolicyPersistConstraints
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.PolicyViewRenderer
 import java.util.*
 
 class PolicyAddCommand(
@@ -36,7 +37,7 @@ class PolicyAddCommand(
     private val constraints: PolicyPersistConstraints by instance()
     private val clubService: ClubService by instance()
     private val service: PolicyService by instance()
-    private val view: PolicyView by instance()
+    private val view: PolicyViewRenderer by instance(Format.TEXT)
 
     private val id: UUID? by option(hidden = true)
         .convert { toUuid(it) }
@@ -84,6 +85,6 @@ class PolicyAddCommand(
             signageStyle = SignageStyle.CLASSING_NUMBER
         )
         service.create(create)
-        echo(view.render(create))
+        echo(view(create))
     }
 }

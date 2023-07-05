@@ -1,19 +1,18 @@
 package tech.coner.trailer.cli.command.policy
 
-import com.github.ajalt.clikt.output.TermUi.echo
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.cli.view.PolicyView
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.render.view.PolicyViewRenderer
 import java.util.*
 
 class PolicyGetCommand(
@@ -28,7 +27,7 @@ class PolicyGetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val view: PolicyView by instance()
+    private val view: PolicyViewRenderer by instance(Format.TEXT)
 
     private val find: Find by mutuallyExclusiveOptions(
         option("--id").convert { Find.ById(id = toUuid(it)) },
@@ -44,6 +43,6 @@ class PolicyGetCommand(
             is Find.ById -> service.findById(find.id)
             is Find.ByName -> service.findByName(find.name)
         }
-        echo(view.render(policy))
+        echo(view(policy))
     }
 }
