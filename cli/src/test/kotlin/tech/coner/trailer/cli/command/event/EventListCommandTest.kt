@@ -7,17 +7,17 @@ import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.instance
-import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.cli.view.View
+import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
+import tech.coner.trailer.render.view.EventCollectionViewRenderer
 
 class EventListCommandTest : BaseDataSessionCommandTest<EventListCommand>() {
 
     private val service: EventService by instance()
-    private val view: View<List<Event>> by instance()
+    private val view: EventCollectionViewRenderer by instance(Format.TEXT)
 
     override fun createCommand(di: DI, global: GlobalModel) = EventListCommand(di, global)
 
@@ -30,13 +30,13 @@ class EventListCommandTest : BaseDataSessionCommandTest<EventListCommand>() {
         )
         every { service.list() } returns events
         val viewRendered = "view rendered events"
-        every { view.render(events) } returns viewRendered
+        every { view(events) } returns viewRendered
 
         command.parse(emptyArray())
 
         verifySequence {
             service.list()
-            view.render(events)
+            view(events)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

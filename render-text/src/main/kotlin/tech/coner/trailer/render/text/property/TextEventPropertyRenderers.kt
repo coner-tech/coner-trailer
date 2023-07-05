@@ -1,11 +1,22 @@
 package tech.coner.trailer.render.text.property
 
 import tech.coner.trailer.Event
-import tech.coner.trailer.render.property.*
+import tech.coner.trailer.render.property.EventCrispyFishClassDefinitionFilePropertyRenderer
+import tech.coner.trailer.render.property.EventCrispyFishEventControlFilePropertyRenderer
+import tech.coner.trailer.render.property.EventDatePropertyRenderer
+import tech.coner.trailer.render.property.EventIdPropertyRenderer
+import tech.coner.trailer.render.property.EventLifecyclePropertyRenderer
+import tech.coner.trailer.render.property.EventMotorsportRegIdPropertyRenderer
+import tech.coner.trailer.render.property.EventNamePropertyRenderer
 
 class TextEventIdPropertyRenderer : EventIdPropertyRenderer {
     override fun render(model: Event): String {
         return model.id.toString()
+    }
+}
+class TextEventNamePropertyRenderer : EventNamePropertyRenderer {
+    override fun render(model: Event): String {
+        return model.name
     }
 }
 class TextEventDatePropertyRenderer : EventDatePropertyRenderer {

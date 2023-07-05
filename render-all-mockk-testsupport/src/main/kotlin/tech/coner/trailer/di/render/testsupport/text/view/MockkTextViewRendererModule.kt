@@ -5,7 +5,13 @@ import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 import tech.coner.trailer.di.render.Format
-import tech.coner.trailer.render.view.*
+import tech.coner.trailer.render.view.ClubViewRenderer
+import tech.coner.trailer.render.view.EventCollectionViewRenderer
+import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.render.view.PersonCollectionViewRenderer
+import tech.coner.trailer.render.view.PersonViewRenderer
+import tech.coner.trailer.render.view.PolicyCollectionViewRenderer
+import tech.coner.trailer.render.view.PolicyViewRenderer
 
 val mockkTextViewRendererModule = DI.Module("tech.coner.trailer.testsupport.render.text.view") {
     val format = Format.TEXT
@@ -15,6 +21,7 @@ val mockkTextViewRendererModule = DI.Module("tech.coner.trailer.testsupport.rend
 
     // Event
     bindSingleton<EventViewRenderer>(format) { mockk() }
+    bindSingleton<EventCollectionViewRenderer>(format) { mockk() }
 
     // Person
     bindSingleton<PersonViewRenderer>(format) { instance<PersonCollectionViewRenderer>(format) }

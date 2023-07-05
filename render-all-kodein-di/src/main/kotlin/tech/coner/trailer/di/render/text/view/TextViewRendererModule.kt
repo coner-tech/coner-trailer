@@ -1,12 +1,37 @@
 package tech.coner.trailer.di.render.text.view
 
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.bindSingleton
+import org.kodein.di.instance
+import org.kodein.di.provider
 import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.di.render.text.property.textPropertyRenderModule
-import tech.coner.trailer.eventresults.*
-import tech.coner.trailer.render.text.view.*
-import tech.coner.trailer.render.text.view.eventresults.*
-import tech.coner.trailer.render.view.*
+import tech.coner.trailer.eventresults.ClassEventResults
+import tech.coner.trailer.eventresults.ComprehensiveEventResults
+import tech.coner.trailer.eventresults.IndividualEventResults
+import tech.coner.trailer.eventresults.OverallEventResults
+import tech.coner.trailer.eventresults.TopTimesEventResults
+import tech.coner.trailer.render.text.view.TextClubViewRenderer
+import tech.coner.trailer.render.text.view.TextEventCollectionViewRenderer
+import tech.coner.trailer.render.text.view.TextEventViewRenderer
+import tech.coner.trailer.render.text.view.TextParticipantsViewRenderer
+import tech.coner.trailer.render.text.view.TextPersonViewRenderer
+import tech.coner.trailer.render.text.view.TextPolicyViewRenderer
+import tech.coner.trailer.render.text.view.TextRunsViewRenderer
+import tech.coner.trailer.render.text.view.eventresults.MordantClassEventResultsViewRenderer
+import tech.coner.trailer.render.text.view.eventresults.TextComprehensiveEventResultsViewRenderer
+import tech.coner.trailer.render.text.view.eventresults.TextIndividualEventResultsViewRenderer
+import tech.coner.trailer.render.text.view.eventresults.TextOverallEventResultsViewRenderer
+import tech.coner.trailer.render.text.view.eventresults.TextTopTimesEventResultsViewRenderer
+import tech.coner.trailer.render.view.ClubViewRenderer
+import tech.coner.trailer.render.view.EventCollectionViewRenderer
+import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.render.view.ParticipantsViewRenderer
+import tech.coner.trailer.render.view.PersonCollectionViewRenderer
+import tech.coner.trailer.render.view.PersonViewRenderer
+import tech.coner.trailer.render.view.PolicyCollectionViewRenderer
+import tech.coner.trailer.render.view.PolicyViewRenderer
+import tech.coner.trailer.render.view.RunsViewRenderer
 import tech.coner.trailer.render.view.eventresults.EventResultsViewRenderer
 
 val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
@@ -26,6 +51,7 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
         TextEventViewRenderer(
             asciiTableFactory = provider(),
             eventIdPropertyRenderer = instance(format),
+            eventNamePropertyRenderer = instance(format),
             eventDatePropertyRenderer = instance(format),
             eventLifecyclePropertyRenderer = instance(format),
             eventCrispyFishEventControlFilePropertyRenderer = instance(format),
@@ -35,6 +61,15 @@ val textViewRendererModule = DI.Module("tech.coner.trailer.render.text.view") {
             policyNamePropertyRenderer = instance(format),
             signagePropertyRenderer = instance(format),
             personIdPropertyRenderer = instance(format)
+        )
+    }
+    bindSingleton<EventCollectionViewRenderer>(format) {
+        TextEventCollectionViewRenderer(
+            terminal = instance(),
+            eventIdPropertyRenderer = instance(format),
+            eventNamePropertyRenderer = instance(format),
+            eventDatePropertyRenderer = instance(format),
+            policyNamePropertyRenderer = instance(format)
         )
     }
 

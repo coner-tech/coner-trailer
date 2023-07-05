@@ -4,12 +4,23 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestLine
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
-import tech.coner.trailer.render.property.*
+import tech.coner.trailer.render.property.EventCrispyFishClassDefinitionFilePropertyRenderer
+import tech.coner.trailer.render.property.EventCrispyFishEventControlFilePropertyRenderer
+import tech.coner.trailer.render.property.EventDatePropertyRenderer
+import tech.coner.trailer.render.property.EventIdPropertyRenderer
+import tech.coner.trailer.render.property.EventLifecyclePropertyRenderer
+import tech.coner.trailer.render.property.EventMotorsportRegIdPropertyRenderer
+import tech.coner.trailer.render.property.EventNamePropertyRenderer
+import tech.coner.trailer.render.property.PersonIdPropertyRenderer
+import tech.coner.trailer.render.property.PolicyIdPropertyRenderer
+import tech.coner.trailer.render.property.PolicyNamePropertyRenderer
+import tech.coner.trailer.render.property.SignagePropertyRenderer
 import tech.coner.trailer.render.view.EventViewRenderer
 
 class TextEventViewRenderer(
     private val asciiTableFactory: () -> AsciiTable,
     private val eventIdPropertyRenderer: EventIdPropertyRenderer,
+    private val eventNamePropertyRenderer: EventNamePropertyRenderer,
     private val eventDatePropertyRenderer: EventDatePropertyRenderer,
     private val eventLifecyclePropertyRenderer: EventLifecyclePropertyRenderer,
     private val eventCrispyFishEventControlFilePropertyRenderer: EventCrispyFishEventControlFilePropertyRenderer,
@@ -22,8 +33,8 @@ class TextEventViewRenderer(
 ) : EventViewRenderer {
 
     override fun render(model: Event) = """
-        ${model.name}
             ID:         ${eventIdPropertyRenderer(model)}
+            Name:       ${eventNamePropertyRenderer(model)}
             Date:       ${eventDatePropertyRenderer(model)}
             Lifecycle:  ${eventLifecyclePropertyRenderer(model)}
             Crispy Fish:
