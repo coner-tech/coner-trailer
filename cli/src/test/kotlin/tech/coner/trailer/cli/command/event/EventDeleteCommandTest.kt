@@ -4,18 +4,18 @@ import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.io.service.EventService
 
 class EventDeleteCommandTest : BaseDataSessionCommandTest<EventDeleteCommand>() {
 
     private val service: EventService by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventDeleteCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventDeleteCommand>()
 
     @Test
     fun `It should delete event`() {

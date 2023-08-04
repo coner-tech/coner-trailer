@@ -5,10 +5,10 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.RankingSortView
 import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
 import tech.coner.trailer.io.service.RankingSortService
@@ -21,7 +21,7 @@ class RankingSortAddCommandTest : BaseDataSessionCommandTest<RankingSortAddComma
     private val service: RankingSortService by instance()
     private val view: RankingSortView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = RankingSortAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<RankingSortAddCommand>()
 
     @Test
     fun `It should add a ranking sort`() {

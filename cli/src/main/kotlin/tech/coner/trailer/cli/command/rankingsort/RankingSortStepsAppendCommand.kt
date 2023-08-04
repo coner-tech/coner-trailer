@@ -3,6 +3,7 @@ package tech.coner.trailer.cli.command.rankingsort
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.required
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -34,7 +35,7 @@ class RankingSortStepsAppendCommand(
     private val step: RankingSortStepOptionGroup by rankingSortStepOptions()
         .required()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val rankingSort: RankingSort = service.findById(id)
         val update = rankingSort.copy(
             steps = rankingSort.steps.toMutableList().apply {

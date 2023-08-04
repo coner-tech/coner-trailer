@@ -4,18 +4,18 @@ import io.mockk.every
 import io.mockk.justRun
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.TestSeasons
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.io.service.SeasonService
 
 class SeasonDeleteCommandTest : BaseDataSessionCommandTest<SeasonDeleteCommand>() {
 
     private val service: SeasonService by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = SeasonDeleteCommand(di, global)
+    override fun DirectDI.createCommand() = instance<SeasonDeleteCommand>()
 
     @Test
     fun `It should delete a season`() {

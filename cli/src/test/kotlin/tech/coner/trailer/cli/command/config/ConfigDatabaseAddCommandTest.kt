@@ -5,31 +5,27 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
-import io.mockk.coEvery
-import io.mockk.coVerifySequence
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.slot
-import java.util.UUID
+import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome
 import tech.coner.trailer.io.payload.ConfigAddDatabaseParam
 import tech.coner.trailer.io.service.ConfigurationService
+import java.util.*
 
 class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddCommand>() {
 
     private val service: ConfigurationService by instance()
     private val view: DatabaseConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigDatabaseAddCommand>()
 
     private val dbConfig by lazy { global.requireEnvironment().requireDatabaseConfiguration() }
 

@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -36,7 +37,7 @@ class SeasonSetCommand(
     private val seasonPointsCalculatorConfigurationId: UUID? by option().convert { toUuid(it) }
     private val takeScoreCountForPoints: Int? by option().int()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val season = service.findById(id)
         val set = season.copy(
             name = name ?: season.name,

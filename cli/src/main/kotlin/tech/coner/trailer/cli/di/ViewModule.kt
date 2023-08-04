@@ -1,24 +1,11 @@
 package tech.coner.trailer.cli.di
 
 import com.github.ajalt.clikt.output.defaultCliktConsole
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.bindInstance
-import org.kodein.di.bindProvider
-import org.kodein.di.instance
-import org.kodein.di.provider
-import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
-import tech.coner.trailer.cli.view.CrispyFishRegistrationView
-import tech.coner.trailer.cli.view.DatabaseConfigurationView
-import tech.coner.trailer.cli.view.EventPointsCalculatorView
-import tech.coner.trailer.cli.view.MotorsportRegMemberTableView
-import tech.coner.trailer.cli.view.MotosportRegMemberView
-import tech.coner.trailer.cli.view.PeopleMapKeyTableView
-import tech.coner.trailer.cli.view.RankingSortView
-import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
-import tech.coner.trailer.cli.view.SeasonTableView
-import tech.coner.trailer.cli.view.SeasonView
-import tech.coner.trailer.cli.view.WebappConfigurationView
+import org.kodein.di.*
+import tech.coner.trailer.cli.presentation.model.BaseCommandErrorModel
+import tech.coner.trailer.cli.presentation.view.BaseCommandErrorView
+import tech.coner.trailer.cli.view.*
+import tech.coner.trailer.presentation.text.view.TextView
 
 val viewModule = DI.Module("coner.trailer.cli.view") {
     bindInstance { defaultCliktConsole() }

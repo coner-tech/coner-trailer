@@ -19,7 +19,7 @@ abstract class Constraint<T> {
         if (!satisfied) throw ConstraintViolationException(message())
     }
 
-    fun <V> constraint(
+    protected fun <V> constraint(
         assessFn: (V) -> Boolean,
         violationMessageFn: () -> String
     ): Constraint<V> = object : Constraint<V>() {

@@ -2,6 +2,7 @@ package tech.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.enum
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -26,7 +27,7 @@ class ConfigWebappGetCommand(
 
     private val webapp: Webapp by argument().enum()
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val config = service.getWebappConfiguration(webapp).getOrThrow()
         echo(view.render(webapp to config))
     }

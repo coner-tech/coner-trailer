@@ -5,13 +5,9 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.core.subcommands
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,37 +17,18 @@ import org.junit.jupiter.api.io.TempDir
 import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
-import tech.coner.trailer.cli.command.config.ConfigCommand
-import tech.coner.trailer.cli.di.testCliktModule
-import tech.coner.trailer.cli.service.StubService
 import tech.coner.trailer.di.ConfigurationServiceArgument
-import tech.coner.trailer.di.EnvironmentScope
-import tech.coner.trailer.di.mockkServiceModule
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
 
 @ExtendWith(MockKExtension::class)
-class RootCommandTest : DIAware {
-
-    lateinit var command: RootCommand
-
-    override val di: DI = DI.lazy {
-        import(testCliktModule)
-        import(mockkServiceModule)
-        bind<ConfigurationService>() with factory { csa: ConfigurationServiceArgument ->
-            serviceArgumentSlot.captured = csa
-            service
-        }
-        bind { scoped(EnvironmentScope).singleton { stubService } }
-    }
-
-    lateinit var global: GlobalModel
-    lateinit var testConsole: StringBuilderConsole
+class RootCommandTest : AbstractCommandTest<RootCommand>() {
 
     @MockK lateinit var service: ConfigurationService
-    @MockK lateinit var stubService: StubService
 
     @TempDir lateinit var temp: Path
 
@@ -59,19 +36,15 @@ class RootCommandTest : DIAware {
     lateinit var dbConfigs: TestDatabaseConfigurations
     lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
 
-    @BeforeEach
-    fun before() {
-        global = GlobalModel()
-        testConsole = StringBuilderConsole()
-        command = RootCommand(di, global)
-            .context { console = testConsole }
-            .subcommands(
-                StubCommand(di, global),
-                ConfigCommand(di, global)
-            )
+    override fun DirectDI.createCommand() = instance<RootCommand>()
+
+    override val setupGlobal: GlobalModel.() -> Unit
+        get() = TODO("Not yet implemented")
+
+    override fun postSetup() {
+        super.postSetup()
         serviceArgumentSlot = slot()
         justRun { service.init() }
-        justRun { stubService.doSomething() }
         val configs = TestConfigurations(temp)
         config = configs.testConfiguration()
         dbConfigs = configs.testDatabaseConfigurations
@@ -137,7 +110,7 @@ class RootCommandTest : DIAware {
         arrangeWithoutDatabasesCase()
 
         assertThrows<Abort> {
-            command.parse(arrayOf("stub"))
+            command.parse(arrayOf("club"))
         }
 
         assertThat(testConsole.error).all {

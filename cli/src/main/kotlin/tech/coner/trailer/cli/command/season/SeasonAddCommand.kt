@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Season
@@ -48,7 +49,7 @@ class SeasonAddCommand(
     ).required()
     private val takeScoreCountForPoints: Int? by option().int()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val create = Season(
             id = id ?: UUID.randomUUID(),
             name = name,

@@ -9,25 +9,25 @@ import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
-import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.io.service.NotFoundException
+import java.util.*
 
 class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetCommand>() {
 
     private val service: ConfigurationService by instance()
     private val view: DatabaseConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseGetCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigDatabaseGetCommand>()
     private val dbConfigs by lazy { tempEnvironmentTestConfigurations.testDatabaseConfigurations }
 
     @Test

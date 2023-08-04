@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.command.webapp
 
 import io.ktor.server.engine.stopServerOnCancellation
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -26,7 +27,7 @@ class WebappCompetitionCommand(
     private val port by options.port()
     private val exploratory by options.exploratory()
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val config = service.getWebappConfiguration(Webapp.COMPETITION)
             .map { service.mergeWebappConfiguration(
                 original = it,

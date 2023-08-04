@@ -9,11 +9,11 @@ import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.WebappConfigurationView
 import tech.coner.trailer.io.Webapp
 import tech.coner.trailer.io.WebappConfiguration
@@ -24,7 +24,7 @@ class ConfigWebappSetCommandTest : BaseConfigCommandTest<ConfigWebappSetCommand>
     private val service: ConfigurationService by instance()
     private val view: WebappConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigWebappSetCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigWebappSetCommand>()
 
     @Test
     fun `It should set options for competition webapp`() {

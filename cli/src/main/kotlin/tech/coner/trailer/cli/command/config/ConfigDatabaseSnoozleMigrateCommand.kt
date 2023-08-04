@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -55,7 +56,7 @@ class ConfigDatabaseSnoozleMigrateCommand(
         )
         .required()
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val adminSession = database.openAdministrativeSession()
             .getOrElse {
                 echo("Failed to open administrative session: ${it.message}", err = true)

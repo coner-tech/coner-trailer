@@ -5,8 +5,8 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -67,7 +67,7 @@ class EventPointsCalculatorSetCommand(
     private val defaultPoints: Int? by option()
             .int()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val old = service.findById(id)
         val update = EventPointsCalculator(
                 id = old.id,

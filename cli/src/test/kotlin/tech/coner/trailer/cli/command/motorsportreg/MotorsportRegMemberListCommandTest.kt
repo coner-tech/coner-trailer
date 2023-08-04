@@ -6,10 +6,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.MotorsportRegMemberTableView
 import tech.coner.trailer.client.motorsportreg.model.Member
 import tech.coner.trailer.io.service.MotorsportRegMemberService
@@ -19,7 +19,7 @@ class MotorsportRegMemberListCommandTest : BaseDataSessionCommandTest<Motorsport
     private val service: MotorsportRegMemberService by instance()
     private val view: MotorsportRegMemberTableView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = MotorsportRegMemberListCommand(di, global)
+    override fun DirectDI.createCommand() = instance<MotorsportRegMemberListCommand>()
 
     @Test
     fun `It should list members`() {

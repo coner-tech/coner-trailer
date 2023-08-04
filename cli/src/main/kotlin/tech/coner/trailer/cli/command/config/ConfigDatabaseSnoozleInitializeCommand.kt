@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.command.config
 
 import com.github.ajalt.clikt.core.ProgramResult
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -24,7 +25,7 @@ class ConfigDatabaseSnoozleInitializeCommand(
 
     private val database: ConerTrailerDatabase by instance()
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val adminSession = database.openAdministrativeSession()
             .getOrElse {
                 echo("Failed to open administrative session: ${it.message}", err = true)

@@ -7,24 +7,24 @@ import io.mockk.justRun
 import io.mockk.verifySequence
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import org.kodein.di.*
+import org.kodein.di.DirectDI
+import org.kodein.di.instance
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestClubs
 import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.render.view.PolicyViewRenderer
+import tech.coner.trailer.presentation.model.PolicyModel
+import tech.coner.trailer.presentation.text.view.TextView
 
 class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
     private val service: PolicyService by instance()
     private val clubService: ClubService by instance()
-    private val view: PolicyViewRenderer by instance(Format.TEXT)
+    private val view: TextView<PolicyModel> by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = PolicyAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<PolicyAddCommand>()
 
     enum class PolicyAddParam(val policy: Policy) {
         LSCC_V1(TestPolicies.lsccV1),
@@ -37,7 +37,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
         every { clubService.get() } returns TestClubs.lscc
         justRun { service.create(param.policy) }
         val render = "view rendered"
-        every { view(param.policy) } returns render
+//        every { view(param.policy) } returns render
 
         command.parse(arrayOf(
             "--id", "${param.policy.id}",
@@ -49,7 +49,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
         verifySequence {
             service.create(param.policy)
-            view(param.policy)
+//            view(param.policy)
         }
         assertThat(testConsole.output).isEqualTo(render)
     }

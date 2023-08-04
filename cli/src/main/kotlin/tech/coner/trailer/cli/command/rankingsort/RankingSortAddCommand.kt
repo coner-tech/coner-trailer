@@ -2,6 +2,7 @@ package tech.coner.trailer.cli.command.rankingsort
 
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.*
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -40,7 +41,7 @@ class RankingSortAddCommand(
     private val step: RankingSortStepOptionGroup by rankingSortStepOptions()
         .required()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val create = RankingSort(
             id = id,
             name = name,

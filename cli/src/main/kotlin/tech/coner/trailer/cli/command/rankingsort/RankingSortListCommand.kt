@@ -1,5 +1,6 @@
 package tech.coner.trailer.cli.command.rankingsort
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -22,7 +23,7 @@ class RankingSortListCommand(
     private val service: RankingSortService by instance()
     private val view: RankingSortView by instance()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         echo(view.render(service.list()))
     }
 }

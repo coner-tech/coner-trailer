@@ -5,10 +5,11 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.*
+import org.kodein.di.DirectDI
+import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.TestSeasons
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.SeasonTableView
 import tech.coner.trailer.io.service.SeasonService
 
@@ -17,7 +18,7 @@ class SeasonListCommandTest : BaseDataSessionCommandTest<SeasonListCommand>() {
     private val service: SeasonService by instance()
     private val view: SeasonTableView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = SeasonListCommand(di, global)
+    override fun DirectDI.createCommand() = instance<SeasonListCommand>()
 
     @Test
     fun `It should list seasons`() {

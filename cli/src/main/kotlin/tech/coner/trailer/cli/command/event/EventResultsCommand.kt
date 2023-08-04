@@ -5,11 +5,11 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.defaultByName
 import com.github.ajalt.clikt.parameters.groups.groupSwitch
-import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.*
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.cli.command.BaseCommand
@@ -17,12 +17,15 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.di.EventResultsSession
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.render.view.eventresults.EventResultsViewRenderer
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.adapter.eventresults.*
+import tech.coner.trailer.presentation.model.eventresults.EventResultsModel
+import tech.coner.trailer.presentation.text.view.TextView
+import tech.coner.trailer.presentation.text.view.eventresults.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
@@ -47,19 +50,37 @@ class EventResultsCommand(
     }
     internal val dataSessionContainer = DataSessionContainer(di)
 
-    internal inner class EventResultsSessionContainer(
+    internal inner class CalculatorsContainer(
         override val di: DI
     ) : DIAware {
         override val diContext = diContext { EventResultsSession() }
 
-        val rawCalculator: (EventContext) -> RawEventResultsCalculator by factory()
-        val paxCalculator: (EventContext) -> PaxEventResultsCalculator by factory()
-        val clazzCalculator: (EventContext) -> ClazzEventResultsCalculator by factory()
-        val topTimesCalculator: (EventContext) -> TopTimesEventResultsCalculator by factory()
-        val comprehensiveCalculator: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
-        val individualCalculator: (EventContext) -> IndividualEventResultsCalculator by factory()
+        val raw: (EventContext) -> RawEventResultsCalculator by factory()
+        val pax: (EventContext) -> PaxEventResultsCalculator by factory()
+        val clazz: (EventContext) -> ClazzEventResultsCalculator by factory()
+        val topTimes: (EventContext) -> TopTimesEventResultsCalculator by factory()
+        val comprehensive: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
+        val individual: (EventContext) -> IndividualEventResultsCalculator by factory()
     }
-    internal val eventResultsSessionContainer = EventResultsSessionContainer(di)
+    internal val calculators = CalculatorsContainer(di)
+    
+    internal inner class ViewsContainer(override val di: DI) : DIAware {
+        val clazz: MordantClassEventResultsView by instance()
+        val comprehensive: TextComprehensiveEventResultsView by instance()
+        val individual: TextIndividualEventResultsView by instance()
+        val overall: TextOverallEventResultsView by instance()
+        val topTimes: TextTopTimesEventResultsView by instance()
+    }
+    internal val views = ViewsContainer(di)
+
+    internal inner class AdaptersContainer(override val di: DI) : DIAware {
+        val clazz: ClassEventResultsModelAdapter by instance()
+        val comprehensive: ComprehensiveEventResultsModelAdapter by instance()
+        val individual: IndividualEventResultsModelAdapter by instance()
+        val overall: OverallEventResultsModelAdapter by instance()
+        val topTimes: TopTimesEventResultsModelAdapter by instance()
+    }
+    internal val adapters = AdaptersContainer(di)
 
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -67,12 +88,6 @@ class EventResultsCommand(
     private val type: EventResultsType by option()
         .choice(StandardEventResultsTypes.all.associateBy { it.key.lowercase() })
         .required()
-    private val format: Format by option(help = "Select output format")
-        .choice(
-            "json" to Format.JSON,
-            "text" to Format.TEXT,
-        )
-        .default(Format.JSON)
     sealed class Output(help: String) : OptionGroup(help = help) {
         object Console : Output(help = "Output to console")
         class File : Output(help = "Output to file") {
@@ -90,19 +105,19 @@ class EventResultsCommand(
         )
         .defaultByName("--console")
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val eventContext = dataSessionContainer.diContext.use {
             val event = dataSessionContainer.eventService.findByKey(id).getOrThrow()
             dataSessionContainer.eventContextService.load(event).getOrThrow()
         }
-        eventResultsSessionContainer.diContext.use {
+        calculators.diContext.use {
             val render = when (type) {
-                StandardEventResultsTypes.raw -> calculateAndRender(eventResultsSessionContainer.rawCalculator(eventContext))
-                StandardEventResultsTypes.pax -> calculateAndRender(eventResultsSessionContainer.paxCalculator(eventContext))
-                StandardEventResultsTypes.clazz -> calculateAndRender(eventResultsSessionContainer.clazzCalculator(eventContext))
-                StandardEventResultsTypes.topTimes -> calculateAndRender(eventResultsSessionContainer.topTimesCalculator(eventContext))
-                StandardEventResultsTypes.comprehensive -> calculateAndRender(eventResultsSessionContainer.comprehensiveCalculator(eventContext))
-                StandardEventResultsTypes.individual -> calculateAndRender(eventResultsSessionContainer.individualCalculator(eventContext))
+                StandardEventResultsTypes.raw -> handle(calculators.raw(eventContext), adapters.overall, views.overall)
+                StandardEventResultsTypes.pax -> handle(calculators.pax(eventContext), adapters.overall, views.overall)
+                StandardEventResultsTypes.clazz -> handle(calculators.clazz(eventContext), adapters.clazz, views.clazz)
+                StandardEventResultsTypes.topTimes -> handle(calculators.topTimes(eventContext), adapters.topTimes, views.topTimes)
+                StandardEventResultsTypes.comprehensive -> handle(calculators.comprehensive(eventContext), adapters.comprehensive, views.comprehensive)
+                StandardEventResultsTypes.individual -> handle(calculators.individual(eventContext), adapters.individual, views.individual)
                 else -> throw UnsupportedOperationException()
             }
             when (val output = medium) {
@@ -111,7 +126,7 @@ class EventResultsCommand(
                     val actualDestination = fileOutputResolver.forEventResults(
                         event = eventContext.event,
                         type = type,
-                        defaultExtension = format.extension,
+                        defaultExtension = "txt",
                         path = output.output
                     )
                     actualDestination.writeText(render)
@@ -120,8 +135,11 @@ class EventResultsCommand(
         }
     }
 
-    private inline fun <reified M : EventResults, reified R : EventResultsViewRenderer<M>> calculateAndRender(calculator: EventResultsCalculator<M>): String {
-        val renderer: R = di.direct.instance<R>(format)
-        return renderer(calculator.calculate())
+    private fun <ER : EventResults, ERC : EventResultsCalculator<ER>, ERM : EventResultsModel<ER>> handle(
+        calculator: ERC,
+        adapter: Adapter<ER, ERM>,
+        view: TextView<ERM>
+    ): String {
+        return view(adapter(calculator.calculate()))
     }
 }

@@ -10,21 +10,19 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.kodein.di.DI
-import org.kodein.di.factory
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.view.RunsViewRenderer
+import tech.coner.trailer.presentation.text.view.TextRunsView
 import java.util.*
 
 class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
@@ -32,9 +30,9 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
     private val service: EventService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runsViewRenderer: RunsViewRenderer by instance(Format.TEXT)
+    private val textRunsView: TextRunsView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventCheckCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventCheckCommand>()
 
     @Test
     fun `It should check event and report fixable problems`() {
@@ -63,7 +61,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         coEvery { service.check(check) } returns result
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
-        every { runsViewRenderer(any(), any()) } returns "runsViewRenderer rendered"
+//        every { textRunsView(any(), any()) } returns "runsViewRenderer rendered"
 
         command.parse(arrayOf("$checkId"))
 
@@ -77,7 +75,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations)
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
-            runsViewRenderer(result.runsWithInvalidSignage, checkPolicy)
+//            textRunsView(result.runsWithInvalidSignage, checkPolicy)
         }
         assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sass-compile": "sass ../resources/tech/coner/trailer/render/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css",
-    "sass-watch": "sass --watch ../resources/tech/coner/trailer/render/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css"
+    "sass-compile": "sass ../resources/tech/coner/trailer/presentation/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css",
+    "sass-watch": "sass --watch ../resources/tech/coner/trailer/presentation/html/coner-trailer.scss ../../../target/classes/tech/coner/trailer/webapp/static/coner-trailer.css"
   },
   "author": "",
   "license": "GPL-3.0-or-later",

@@ -2,16 +2,18 @@ package tech.coner.trailer.cli.command.person
 
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.render.view.PersonCollectionViewRenderer
-import java.util.function.Predicate
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.model.PersonCollectionModel
+import tech.coner.trailer.presentation.model.PersonDetailModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 
 class PersonSearchCommand(
     di: DI,
@@ -25,7 +27,8 @@ class PersonSearchCommand(
 
     override val diContext = diContextDataSession()
     private val service: PersonService by instance()
-    private val view: PersonCollectionViewRenderer by instance(Format.TEXT)
+    private val adapter: Adapter<Collection<Person>, PersonCollectionModel> by instance()
+    private val view: TextCollectionView<PersonDetailModel, PersonCollectionModel> by instance()
 
     private val clubMemberIdEquals: PersonService.FilterMemberIdEquals? by option("--club-member-id-equals")
         .convert { PersonService.FilterMemberIdEquals(it) }
@@ -40,8 +43,8 @@ class PersonSearchCommand(
     private val lastNameContains: PersonService.FilterLastNameContains? by option("--last-name-contains")
         .convert { PersonService.FilterLastNameContains(it) }
 
-    override suspend fun coRun() = diContext.use {
-        val filters: List<Predicate<Person>> = listOfNotNull(
+    override suspend fun CoroutineScope.coRun() = diContext.use {
+        val filters = listOfNotNull(
             clubMemberIdEquals,
             clubMemberIdContains,
             firstNameEquals,
@@ -49,8 +52,8 @@ class PersonSearchCommand(
             lastNameEquals,
             lastNameContains
         )
-        val filter = filters.reduce { acc, filter -> acc.and(filter) }
-        val search = service.search(filter)
-        echo(view.render(search))
+            .reduce { acc, filter -> acc.and(filter) }
+        val search = service.search(filters)
+        echo(view(adapter(search)))
     }
 }

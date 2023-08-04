@@ -1,5 +1,6 @@
 package tech.coner.trailer.cli.command.rankingsort
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -12,5 +13,5 @@ class RankingSortCommand(
     global = global
 ) {
 
-    override suspend fun coRun() = Unit
+    override suspend fun CoroutineScope.coRun() = Unit
 }

@@ -1,5 +1,6 @@
 package tech.coner.trailer.cli.command.seasonpointscalculator
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -13,5 +14,5 @@ class SeasonPointsCalculatorCommand(
     name = "season-points-calculator",
     help = "Manage the season points calculators"
 ) {
-    override suspend fun coRun() = Unit
+    override suspend fun CoroutineScope.coRun() = Unit
 }

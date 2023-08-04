@@ -3,10 +3,10 @@ package tech.coner.trailer.cli.command.eventpointscalculator
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.io.service.EventPointsCalculatorService
 import tech.coner.trailer.seasonpoints.TestEventPointsCalculators
 
@@ -14,7 +14,7 @@ class EventPointsCalculatorDeleteCommandTest : BaseDataSessionCommandTest<EventP
 
     private val service: EventPointsCalculatorService by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventPointsCalculatorDeleteCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventPointsCalculatorDeleteCommand>()
 
     @Test
     fun `It should delete calculator`() {

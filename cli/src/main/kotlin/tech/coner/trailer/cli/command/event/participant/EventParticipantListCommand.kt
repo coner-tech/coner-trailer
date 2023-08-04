@@ -2,15 +2,16 @@ package tech.coner.trailer.cli.command.event.participant
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.render.view.ParticipantsViewRenderer
+import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
+import tech.coner.trailer.presentation.text.view.TextParticipantsView
 import java.util.*
 
 class EventParticipantListCommand(
@@ -26,13 +27,14 @@ class EventParticipantListCommand(
     override val diContext = diContextDataSession()
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val viewRenderer: ParticipantsViewRenderer by instance(Format.TEXT)
+    private val adapter: ParticipantCollectionModelAdapter by instance()
+    private val view: TextParticipantsView by instance()
 
     private val eventId: UUID by argument().convert { toUuid(it) }
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         val event = eventService.findByKey(eventId).getOrThrow()
         val participants = participantService.list(event).getOrThrow()
-        echo(viewRenderer(participants, event.policy))
+        echo(this@EventParticipantListCommand.view(this@EventParticipantListCommand.adapter(participants, event)))
     }
 }

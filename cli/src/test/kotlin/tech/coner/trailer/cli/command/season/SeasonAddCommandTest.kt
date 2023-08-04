@@ -6,11 +6,11 @@ import io.mockk.every
 import io.mockk.justRun
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.TestSeasons
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.SeasonView
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import tech.coner.trailer.io.service.SeasonService
@@ -22,7 +22,7 @@ class SeasonAddCommandTest : BaseDataSessionCommandTest<SeasonAddCommand>() {
     private val spccService: SeasonPointsCalculatorConfigurationService by instance()
     private val view: SeasonView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = SeasonAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<SeasonAddCommand>()
 
     @Test
     fun `It should add a season`() {

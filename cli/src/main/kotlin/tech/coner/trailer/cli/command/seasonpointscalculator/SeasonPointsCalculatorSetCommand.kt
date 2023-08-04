@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.pair
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -48,13 +49,15 @@ class SeasonPointsCalculatorSetCommand(
                 ?: fail("No ranking sort found with name: $it")
         }
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val current = service.findById(id)
         val update = SeasonPointsCalculatorConfiguration(
             id = current.id,
             name = name ?: current.name,
             eventResultsTypeToEventPointsCalculator = when {
-                resultsTypeKeyToEventPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(resultsTypeKeyToEventPointsCalculatorNamed)
+                resultsTypeKeyToEventPointsCalculatorNamed.isNotEmpty() -> mapper.fromParameter(
+                    resultsTypeKeyToEventPointsCalculatorNamed
+                )
                 else -> current.eventResultsTypeToEventPointsCalculator
             },
             rankingSort = rankingSortNamed ?: current.rankingSort

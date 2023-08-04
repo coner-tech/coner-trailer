@@ -1,5 +1,6 @@
 package tech.coner.trailer.cli.command.config
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.diContext
 import org.kodein.di.instance
@@ -23,7 +24,7 @@ class ConfigDatabaseListCommand(
     private val service: ConfigurationService by instance()
     private val view: DatabaseConfigurationView by instance()
 
-    override suspend fun coRun() {
+    override suspend fun CoroutineScope.coRun() {
         echo(view.render(service.listDatabases().getOrThrow()))
     }
 }

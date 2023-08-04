@@ -6,18 +6,14 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
-import io.mockk.coEvery
-import io.mockk.coVerifySequence
-import io.mockk.every
-import io.mockk.slot
-import io.mockk.verifySequence
+import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome
@@ -29,7 +25,7 @@ class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabase
     private val service: ConfigurationService by instance()
     private val view: DatabaseConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseSetDefaultCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigDatabaseSetDefaultCommand>()
 
     @Test
     fun `When given valid name it should set default and succeed`() {

@@ -5,10 +5,10 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.EventPointsCalculatorView
 import tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
 import tech.coner.trailer.io.service.EventPointsCalculatorService
@@ -20,7 +20,7 @@ class EventPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<EventPoin
     private val service: EventPointsCalculatorService by instance()
     private val view: EventPointsCalculatorView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventPointsCalculatorAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventPointsCalculatorAddCommand>()
 
     @Test
     fun `It should create calculator`() {

@@ -5,15 +5,15 @@ import assertk.assertions.isEqualTo
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
-import java.util.UUID
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
+import java.util.*
 
 class ConfigDatabaseListCommandTest : BaseConfigCommandTest<ConfigDatabaseListCommand>() {
 
@@ -22,7 +22,7 @@ class ConfigDatabaseListCommandTest : BaseConfigCommandTest<ConfigDatabaseListCo
 
     private val dbConfigs: TestDatabaseConfigurations by lazy { tempEnvironmentTestConfigurations.testDatabaseConfigurations }
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseListCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigDatabaseListCommand>()
 
     @Test
     fun `It should list databases`() {

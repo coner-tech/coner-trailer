@@ -1,7 +1,7 @@
 package tech.coner.trailer.cli.command.eventpointscalculator
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -23,7 +23,7 @@ class EventPointsCalculatorListCommand(
     private val service: EventPointsCalculatorService by instance()
     private val view: EventPointsCalculatorView by instance()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         echo(view.render(service.list()))
     }
 }

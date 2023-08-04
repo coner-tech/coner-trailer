@@ -3,8 +3,12 @@ package tech.coner.trailer.cli.command.event
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.groups.required
-import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.options.convert
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.path
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.DIContext
@@ -19,12 +23,13 @@ import tech.coner.trailer.cli.util.clikt.toCrispyFishRelativePath
 import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.di.DataSessionHolder
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
@@ -43,7 +48,8 @@ class EventAddCommand(
 
     private val constraints: EventPersistConstraints by instance()
     private val service: EventService by instance()
-    private val view: EventViewRenderer by instance(Format.TEXT)
+    private val view: TextView<EventDetailModel> by instance()
+    private val adapter: EventDetailModelAdapter by instance()
     private val policyService: PolicyService by instance()
 
     private val id: UUID? by option(hidden = true)
@@ -96,7 +102,7 @@ class EventAddCommand(
     private val policy: Policy by policySelectOptionGroup { policyService }
         .required()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val created = service.create(CreateEventPayload(
             id = id,
             name = name,
@@ -107,6 +113,6 @@ class EventAddCommand(
             policy = policy
         ))
             .getOrThrow()
-        echo(view(created))
+        echo(view(adapter(created)))
     }
 }

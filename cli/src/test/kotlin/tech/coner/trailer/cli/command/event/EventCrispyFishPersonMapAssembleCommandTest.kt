@@ -1,18 +1,11 @@
 package tech.coner.trailer.cli.command.event
 
-import io.mockk.coEvery
-import io.mockk.coJustRun
-import io.mockk.coVerifySequence
-import io.mockk.every
-import io.mockk.slot
-import java.nio.file.Paths
+import io.mockk.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
-import org.kodein.di.bindSingleton
-import org.kodein.di.instance
+import org.kodein.di.*
 import tech.coner.crispyfish.model.Signage
 import tech.coner.trailer.Event
 import tech.coner.trailer.Person
@@ -20,7 +13,7 @@ import tech.coner.trailer.TestClasses
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapAssembleCommand
 import tech.coner.trailer.cli.view.CrispyFishRegistrationView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -31,6 +24,7 @@ import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
+import java.nio.file.Paths
 
 class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapAssembleCommand>() {
 
@@ -46,7 +40,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventCrispyFishPersonMapAssembleCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventCrispyFishPersonMapAssembleCommand>()
 
     @Test
     fun `It should assemble person map in case of registration with club memberId null`() {

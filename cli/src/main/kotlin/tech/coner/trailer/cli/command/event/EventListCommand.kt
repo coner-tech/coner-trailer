@@ -1,13 +1,16 @@
 package tech.coner.trailer.cli.command.event
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.view.EventCollectionViewRenderer
+import tech.coner.trailer.presentation.adapter.EventDetailCollectionModelAdapter
+import tech.coner.trailer.presentation.model.EventDetailCollectionModel
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 
 class EventListCommand(
     di: DI,
@@ -21,9 +24,10 @@ class EventListCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val view: EventCollectionViewRenderer by instance(Format.TEXT)
+    private val adapter: EventDetailCollectionModelAdapter by instance()
+    private val view: TextCollectionView<EventDetailModel, EventDetailCollectionModel> by instance()
 
-    override suspend fun coRun() = diContext.use {
-        echo(view(service.list()))
+    override suspend fun CoroutineScope.coRun() = diContext.use {
+        echo(view(adapter(service.list())))
     }
 }

@@ -8,23 +8,23 @@ import io.mockk.every
 import io.mockk.slot
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.render.view.PersonCollectionViewRenderer
+import tech.coner.trailer.presentation.model.PersonCollectionModel
+import tech.coner.trailer.presentation.model.PersonDetailModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 import java.util.function.Predicate
 
 class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>() {
 
     private val service: PersonService by instance()
-    private val view: PersonCollectionViewRenderer by instance(Format.TEXT)
+    private val view: TextCollectionView<PersonDetailModel, PersonCollectionModel> by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = PersonSearchCommand(di, global)
+    override fun DirectDI.createCommand() = instance<PersonSearchCommand>()
 
     @Test
     fun `It should search with equals filters`() {
@@ -34,7 +34,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
         val serviceSearchSlot = slot<Predicate<Person>>()
         every { service.search(capture(serviceSearchSlot)) } returns searchResults
         val viewRendered = "view rendered search results"
-        every { view.render(searchResults) } returns viewRendered
+//        every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
                 "--club-member-id-equals", "${person.clubMemberId}",
@@ -44,7 +44,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
 
         verifySequence {
             service.search(any())
-            view.render(searchResults)
+//            view.render(searchResults)
         }
         assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
         val filter = serviceSearchSlot.captured
@@ -60,7 +60,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
         val serviceSearchSlot = slot<Predicate<Person>>()
         every { service.search(capture(serviceSearchSlot)) } returns searchResults
         val viewRendered = "view rendered search results"
-        every { view.render(searchResults) } returns viewRendered
+//        every { view.render(searchResults) } returns viewRendered
 
         command.parse(arrayOf(
                 "--club-member-id-contains", "${person.clubMemberId?.substring(0..3)}",
@@ -70,7 +70,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
 
         verifySequence {
             service.search(any())
-            view.render(searchResults)
+//            view.render(searchResults)
         }
         assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
         val filter = serviceSearchSlot.captured

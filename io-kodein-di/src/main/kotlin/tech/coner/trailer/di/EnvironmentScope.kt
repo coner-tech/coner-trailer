@@ -29,8 +29,11 @@ class EnvironmentHolderImpl(
     override val motorsportRegCredentialSupplier: () -> MotorsportRegBasicCredentials
 ) : EnvironmentHolder, DIAware by di {
 
+    private var dataSession: DataSessionHolder? = null
+
     override fun openDataSession(): DataSessionHolder {
         return DataSessionHolderImpl(di, this)
+            .also { dataSession = it }
     }
 
     override var registry: ScopeRegistry? = null

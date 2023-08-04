@@ -17,7 +17,7 @@ import tech.coner.trailer.cli.util.error
 import tech.coner.trailer.cli.util.exitCode
 import tech.coner.trailer.cli.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
 
 class EventResultsCommandExecutableIT : BaseExecutableIT() {

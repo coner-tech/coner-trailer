@@ -6,5 +6,4 @@ import org.kodein.di.bindProvider
 
 val mordantModule = DI.Module("coner.trailer.cli.mordant") {
     bindProvider { Terminal() }
-
 }

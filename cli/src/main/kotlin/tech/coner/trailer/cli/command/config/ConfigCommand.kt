@@ -1,5 +1,6 @@
 package tech.coner.trailer.cli.command.config
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -15,5 +16,5 @@ class ConfigCommand(
     help = "Grouping of configuration commands"
 ), PermitNoDatabaseChosen {
 
-    override suspend fun coRun() = Unit
+    override suspend fun CoroutineScope.coRun() = Unit
 }

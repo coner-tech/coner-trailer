@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Event
@@ -17,9 +18,10 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
@@ -36,7 +38,8 @@ class EventSetCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val view: EventViewRenderer by instance(Format.TEXT)
+    private val adapter: EventDetailModelAdapter by instance()
+    private val view: TextView<EventDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val name: String? by option(help = "Name of the Event")
@@ -97,7 +100,7 @@ class EventSetCommand(
         object Unset : MotorsportRegOptions()
     }
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val event = service.findByKey(id).getOrThrow()
         val crispyFish = when (val crispyFishOptions = crispyFish) {
             is CrispyFishOptions.Set -> {
@@ -127,6 +130,6 @@ class EventSetCommand(
             motorsportReg = motorsportReg
         )
         service.update(set)
-        echo(view(set))
+        echo(view(adapter(set)))
     }
 }

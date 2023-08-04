@@ -6,17 +6,19 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.render.view.PolicyViewRenderer
+import tech.coner.trailer.presentation.adapter.PolicyModelAdapter
+import tech.coner.trailer.presentation.model.PolicyModel
+import tech.coner.trailer.presentation.text.view.TextView
 import java.util.*
 
 class PolicySetCommand(
@@ -31,7 +33,8 @@ class PolicySetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val view: PolicyViewRenderer by instance(Format.TEXT)
+    private val adapter: PolicyModelAdapter by instance()
+    private val view: TextView<PolicyModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
     private val name: String? by option()
@@ -43,7 +46,7 @@ class PolicySetCommand(
     private val finalScoreStyle: FinalScoreStyle? by option()
         .choice(FinalScoreStyle.values().associateBy { it.name.toLowerCase() })
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val set = service.findById(id).let { it.copy(
             name = name ?: it.name,
             conePenaltySeconds = conePenaltySeconds ?: it.conePenaltySeconds,
@@ -51,6 +54,6 @@ class PolicySetCommand(
             finalScoreStyle = finalScoreStyle ?: it.finalScoreStyle
         ) }
         service.update(set)
-        echo(view(set))
+        echo(view(adapter(set)))
     }
 }

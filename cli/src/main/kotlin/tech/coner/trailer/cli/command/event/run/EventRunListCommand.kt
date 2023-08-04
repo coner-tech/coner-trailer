@@ -2,15 +2,16 @@ package tech.coner.trailer.cli.command.event.run
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.util.clikt.toUuid
-import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.io.service.RunService
-import tech.coner.trailer.render.view.RunsViewRenderer
+import tech.coner.trailer.presentation.adapter.RunCollectionModelAdapter
+import tech.coner.trailer.presentation.text.view.TextRunsView
 import java.util.*
 
 class EventRunListCommand(
@@ -26,14 +27,15 @@ class EventRunListCommand(
     override val diContext = diContextDataSession()
 
     private val eventService: EventService by instance()
-    private val runService: RunService by instance()
-    private val viewRenderer: RunsViewRenderer by instance(Format.TEXT)
+    private val eventContextService: EventContextService by instance()
+    private val adapter: RunCollectionModelAdapter by instance()
+    private val view: TextRunsView by instance()
 
     private val eventId: UUID by argument().convert { toUuid(it) }
 
-    override suspend fun coRun() {
-        val event = eventService.findByKey(eventId).getOrThrow()
-        val runs = runService.list(event).getOrThrow()
-        echo(viewRenderer(runs, event.policy))
+    override suspend fun CoroutineScope.coRun() {
+        val eventContext = eventService.findByKey(eventId).getOrThrow()
+            .let { eventContextService.load(it).getOrThrow() }
+        echo(this@EventRunListCommand.view(this@EventRunListCommand.adapter(eventContext)))
     }
 }

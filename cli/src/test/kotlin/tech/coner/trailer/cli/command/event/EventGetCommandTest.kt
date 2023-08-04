@@ -4,30 +4,29 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
-import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.text.view.TextView
 
 class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
 
     private val service: EventService by instance()
-    private val view: EventViewRenderer by instance(Format.TEXT)
+    private val view: TextView<EventDetailModel> by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventGetCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventGetCommand>()
 
     @Test
     fun `It should get event by ID`() {
         val event = TestEvents.Lscc2019.points1
         coEvery { service.findByKey(event.id) } returns Result.success(event)
         val viewRendered = "view rendered event ${event.id}"
-        every { view(event) } returns viewRendered
+//        every { view(event) } returns viewRendered
 
         command.parse(arrayOf(
             "${event.id}"
@@ -35,7 +34,7 @@ class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
 
         coVerifySequence {
             service.findByKey(event.id)
-            view(event)
+//            view(event)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

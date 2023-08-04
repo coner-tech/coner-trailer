@@ -1,13 +1,14 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
@@ -18,7 +19,6 @@ import tech.coner.trailer.di.EnvironmentHolderImpl
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
 import java.nio.file.Path
-import java.util.logging.Logger.global
 
 class RootCommand(
     di: DI,
@@ -70,11 +70,15 @@ class RootCommand(
         )
     }
 
-    override suspend fun coRun() {
+    private val verbose: Boolean by option().flag()
+
+    override suspend fun CoroutineScope.coRun() {
         // TODO: first-run setup
+        global.verbose = verbose
         val configurationServiceArgument = configDir?.let { ConfigurationServiceArgument.Override(it) }
             ?: ConfigurationServiceArgument.Default
-        val configurationService: ConfigurationService = configurationServiceFactory(configurationServiceArgument)
+        val configurationService: ConfigurationService =
+            this@RootCommand.configurationServiceFactory(configurationServiceArgument)
         configurationService.init()
         val dbConfig = database
             ?.let { dbName ->

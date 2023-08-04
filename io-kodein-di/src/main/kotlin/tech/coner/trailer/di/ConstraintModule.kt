@@ -6,21 +6,16 @@ import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 import org.kodein.di.scoped
 import org.kodein.di.singleton
-import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
-import tech.coner.trailer.io.constraint.EventDeleteConstraints
-import tech.coner.trailer.io.constraint.EventPersistConstraints
-import tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
-import tech.coner.trailer.io.constraint.PersonDeleteConstraints
-import tech.coner.trailer.io.constraint.PersonPersistConstraints
-import tech.coner.trailer.io.constraint.PolicyDeleteConstraints
-import tech.coner.trailer.io.constraint.PolicyPersistConstraints
-import tech.coner.trailer.io.constraint.PortConstraints
-import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
-import tech.coner.trailer.io.constraint.SeasonDeleteConstraints
-import tech.coner.trailer.io.constraint.SeasonPersistConstraints
-import tech.coner.trailer.io.constraint.SeasonPointsCalculatorConfigurationConstraints
+import tech.coner.trailer.io.constraint.*
 
 val constraintModule = DI.Module("tech.coner.trailer.io.constraint") {
+    // Club
+    bind {
+        scoped(DataSessionScope).singleton {
+            ClubPersistConstraints()
+        }
+    }
+
     bind {
         scoped(DataSessionScope).singleton {
             EventPointsCalculatorPersistConstraints(

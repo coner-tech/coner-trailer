@@ -3,14 +3,13 @@ package tech.coner.trailer.cli.command.seasonpointscalculator
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.verifySequence
-import kotlinx.html.CommandType
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
-import org.kodein.di.bindSingleton
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.service.RankingSortService
@@ -26,7 +25,7 @@ class SeasonPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<SeasonPo
     private val mapper: SeasonPointsCalculatorParameterMapper by instance()
     private val view: SeasonPointsCalculatorConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = SeasonPointsCalculatorAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<SeasonPointsCalculatorAddCommand>()
 
     @Test
     fun `It should create a season points calculator`() {
@@ -41,7 +40,7 @@ class SeasonPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<SeasonPo
                 StandardEventResultsTypes.pax.key to overallCalculator.name
         )
         every { mapper.fromParameter(resultsTypeToEventPointsCalculatorNamed) } returns create.eventResultsTypeToEventPointsCalculator
-        every { service.create(eq(create)) } answers { Unit }
+        justRun { service.create(create) }
         val rtktperpcn = "--results-type-key-to-event-points-calculator-named"
         val viewRendered = "view rendered ${create.name}"
         every { view.render(create) } returns viewRendered

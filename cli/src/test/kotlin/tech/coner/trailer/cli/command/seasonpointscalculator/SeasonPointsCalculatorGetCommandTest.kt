@@ -5,10 +5,10 @@ import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.SeasonPointsCalculatorConfigurationView
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
 import tech.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
@@ -18,7 +18,7 @@ class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPo
     private val service: SeasonPointsCalculatorConfigurationService by instance()
     private val view: SeasonPointsCalculatorConfigurationView by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = SeasonPointsCalculatorGetCommand(di, global)
+    override fun DirectDI.createCommand() = instance<SeasonPointsCalculatorGetCommand>()
 
     @Test
     fun `It should get by id`() {

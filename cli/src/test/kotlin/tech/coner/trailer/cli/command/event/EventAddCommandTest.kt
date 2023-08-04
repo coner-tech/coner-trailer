@@ -5,29 +5,32 @@ import assertk.assertions.isEqualTo
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
-import kotlin.io.path.createFile
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.render.Format
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.render.view.EventViewRenderer
+import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.text.view.TextView
+import kotlin.io.path.createFile
 
 class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
 
     private val service: EventService by instance()
     private val policyService: PolicyService by instance()
     private val constraints: EventPersistConstraints by instance()
-    private val view: EventViewRenderer by instance(Format.TEXT)
+    private val adapter: EventDetailModelAdapter by instance()
+    private val view: TextView<EventDetailModel> by instance()
 
-    override fun createCommand(di: DI, global: GlobalModel) = EventAddCommand(di, global)
+    override fun DirectDI.createCommand() = instance<EventAddCommand>()
 
     @Test
     fun `It should create event`() {
@@ -43,8 +46,10 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
         coEvery {
             service.create(any())
         } returns Result.success(create)
+        val presentationModel: EventDetailModel = mockk()
+        every { adapter(create) } returns presentationModel
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
-        every { view(create) } returns viewRendered
+        every { view.invoke(presentationModel) } returns viewRendered
 
         command.parse(
             arrayOf(
@@ -69,7 +74,7 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
                 motorsportRegEventId = create.motorsportReg?.id,
                 policy = create.policy
             ))
-            view(create)
+            view(adapter(create))
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }

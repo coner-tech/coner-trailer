@@ -1,6 +1,9 @@
 package tech.coner.trailer.di
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.runBlocking
 import org.kodein.di.*
 import org.kodein.di.bindings.Scope
 import org.kodein.di.bindings.ScopeCloseable
@@ -8,7 +11,6 @@ import org.kodein.di.bindings.ScopeRegistry
 import org.kodein.di.bindings.StandardScopeRegistry
 import tech.coner.snoozle.db.session.data.DataSession
 import tech.coner.trailer.io.util.Cache
-import kotlin.coroutines.CoroutineContext
 
 interface DataSessionHolder : ScopeCloseable,
     CoroutineScope {
@@ -19,11 +21,12 @@ interface DataSessionHolder : ScopeCloseable,
 open class DataSessionHolderImpl(
     di: DI,
     override val environment: EnvironmentHolder
-) : DataSessionHolder, DIAware by di {
+) : DataSessionHolder,
+    DIAware by di,
+    CoroutineScope by CoroutineScope(Dispatchers.Default)
+{
     override var registry: ScopeRegistry? = null
     override val diContext = diContext { this }
-
-    override val coroutineContext = Dispatchers.IO + Job()
 
     private val dataSession: DataSession by instance()
     private val caches: List<Cache<*, *>> by allInstances()
@@ -33,7 +36,7 @@ open class DataSessionHolderImpl(
             .onFailure { throw Exception("Failed to close data session", it) }
         runBlocking { caches.forEach { it.clear() } }
         registry?.clear()
-        coroutineContext.cancel()
+        cancel()
     }
 }
 

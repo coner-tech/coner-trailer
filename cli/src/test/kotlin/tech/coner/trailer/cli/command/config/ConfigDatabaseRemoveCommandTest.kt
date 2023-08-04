@@ -9,11 +9,11 @@ import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.service.ConfigurationService
 
@@ -25,7 +25,7 @@ class ConfigDatabaseRemoveCommandTest : BaseConfigCommandTest<ConfigDatabaseRemo
     private val config by lazy { tempEnvironmentConfiguration }
     private val dbConfig by lazy { tempEnvironmentTestConfigurations.testDatabaseConfigurations.foo }
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigDatabaseRemoveCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigDatabaseRemoveCommand>()
 
     @Test
     fun `When given valid name option it should remove named database`() {

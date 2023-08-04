@@ -1,12 +1,16 @@
 package tech.coner.trailer.cli.command.club
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
-import tech.coner.trailer.di.render.Format
-import tech.coner.trailer.io.service.ClubService
-import tech.coner.trailer.render.view.ClubViewRenderer
+import tech.coner.trailer.cli.di.use
+import tech.coner.trailer.cli.util.succeedOrThrow
+import tech.coner.trailer.presentation.model.ClubModel
+import tech.coner.trailer.presentation.presenter.club.ClubPresenter
+import tech.coner.trailer.presentation.text.view.TextView
 
 class ClubGetCommand(
     di: DI,
@@ -20,10 +24,14 @@ class ClubGetCommand(
 
     override val diContext = diContextDataSession()
 
-    private val service: ClubService by instance()
-    private val view: ClubViewRenderer by instance(Format.TEXT)
+    private val presenter: ClubPresenter by instance()
+    val textView: TextView<ClubModel> by instance()
 
-    override suspend fun coRun() {
-        echo(view(service.get()))
+    override suspend fun CoroutineScope.coRun() = diContext.use {
+        backgroundCoroutineScope.launch { presenter.load() }
+        presenter.awaitLoadedItemModel()
+            .succeedOrThrow {
+                echo(textView(it))
+            }
     }
 }

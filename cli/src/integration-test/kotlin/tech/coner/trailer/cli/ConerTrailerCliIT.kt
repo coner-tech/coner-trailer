@@ -24,13 +24,15 @@ import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
+import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
 
 class ConerTrailerCliIT {
 
+    lateinit var invocation: Invocation
     lateinit var command: RootCommand
 
     @TempDir lateinit var testDir: Path
@@ -53,7 +55,8 @@ class ConerTrailerCliIT {
             crispyFishDir = crispyFishDir
         )
         testConsole = StringBuilderConsole()
-        command = ConerTrailerCli.createCommands()
+        invocation = ConerTrailerCli.createInvocation()
+        command = ConerTrailerCli.createRootCommand(invocation)
             .context {
                 console = testConsole
             }

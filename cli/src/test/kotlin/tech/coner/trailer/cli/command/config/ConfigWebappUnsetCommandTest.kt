@@ -7,17 +7,17 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import org.junit.jupiter.api.Test
-import org.kodein.di.DI
+import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
-import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.io.Webapp
 import tech.coner.trailer.io.service.ConfigurationService
 
 class ConfigWebappUnsetCommandTest : BaseConfigCommandTest<ConfigWebappUnsetCommand>() {
 
-    override fun createCommand(di: DI, global: GlobalModel) = ConfigWebappUnsetCommand(di, global)
+    override fun DirectDI.createCommand() = instance<ConfigWebappUnsetCommand>()
 
     private val service: ConfigurationService by instance()
 

@@ -26,10 +26,10 @@ class EventPointsCalculatorService(
 
     fun findByName(name: String): EventPointsCalculator {
         return resource.stream()
-                .filter { it.name == name }
-                .findFirst()
-                .map(mapper::fromSnoozle)
-                .orElseThrow { NotFoundException("No EventPointsCalculator found with name: $name") }
+            .filter { it.name == name }
+            .findFirst()
+            .map(mapper::fromSnoozle)
+            .orElseThrow { NotFoundException("No EventPointsCalculator found with name: $name") }
     }
 
     fun list(): List<EventPointsCalculator> {

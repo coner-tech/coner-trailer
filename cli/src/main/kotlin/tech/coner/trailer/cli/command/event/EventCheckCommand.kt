@@ -2,19 +2,19 @@ package tech.coner.trailer.cli.command.event
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
-import org.kodein.di.factory
 import org.kodein.di.instance
-import tech.coner.trailer.Policy
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
-import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.render.view.RunsViewRenderer
+import tech.coner.trailer.presentation.adapter.RunCollectionModelAdapter
+import tech.coner.trailer.presentation.text.view.TextRunsView
 import java.util.*
 
 class EventCheckCommand(
@@ -28,16 +28,19 @@ class EventCheckCommand(
 ) {
 
     override val diContext = diContextDataSession()
-    private val service: EventService by instance()
+    private val eventService: EventService by instance()
+    private val eventContextService: EventContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runsViewRenderer: RunsViewRenderer by instance(Format.TEXT)
+    private val runCollectionModelAdapter: RunCollectionModelAdapter by instance()
+    private val runsViewRenderer: TextRunsView by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
 
-    override suspend fun coRun() = diContext.use {
-        val check = service.findByKey(id).getOrThrow()
-        val result = service.check(check)
+    override suspend fun CoroutineScope.coRun() = diContext.use {
+        val check = eventService.findByKey(id).getOrThrow()
+        val eventContext = eventContextService.load(check).getOrThrow()
+        val result = eventService.check(check)
         if (result.unmappable.isNotEmpty()) {
             echo("Found unmappable registration(s):")
             echo(registrationTableView.render(result.unmappable))
@@ -72,7 +75,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(runsViewRenderer(result.runsWithInvalidSignage, check.policy))
+            echo(runsViewRenderer(runCollectionModelAdapter(eventContext)))
         }
     }
 }

@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.command.seasonpointscalculator
 
 import com.github.ajalt.clikt.parameters.options.*
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -47,7 +48,7 @@ class SeasonPointsCalculatorAddCommand(
         }
         .required()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val create = SeasonPointsCalculatorConfiguration(
             id = id,
             name = name,

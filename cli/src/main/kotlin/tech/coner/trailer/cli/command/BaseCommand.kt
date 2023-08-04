@@ -1,14 +1,18 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.plus
+import com.github.ajalt.mordant.terminal.Terminal
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import org.kodein.di.*
-import tech.coner.trailer.cli.di.CliCoroutineScope
+import tech.coner.trailer.cli.presentation.model.BaseCommandErrorModel
+import tech.coner.trailer.cli.util.CliBackgroundCoroutineScope
+import tech.coner.trailer.cli.util.CliMainCoroutineScope
 import tech.coner.trailer.di.DataSessionHolder
-import kotlin.coroutines.CoroutineContext
 import tech.coner.trailer.di.EnvironmentHolder
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.text.view.TextView
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseCommand(
     di: DI,
@@ -30,14 +34,32 @@ abstract class BaseCommand(
     autoCompleteEnvvar = autoCompleteEnvvar
 ),
     DIAware by di,
-    CoroutineContext by di.direct.instance<CliCoroutineScope>().coroutineContext + Job()
+    CoroutineContext by di.direct.instance<CliMainCoroutineScope>().coroutineContext
 {
 
+    val backgroundCoroutineScope: CliBackgroundCoroutineScope by lazy { direct.instance<CliBackgroundCoroutineScope>() }
+
+    private inner class InvocationContainer(di: DIAware) : DIAware by di {
+        override val diContext = diContext { global.invocation }
+        val errorAdapter: Adapter<Throwable, BaseCommandErrorModel> by instance()
+        val errorView: TextView<BaseCommandErrorModel> by instance()
+    }
+    private val invocationDi = InvocationContainer(di)
+
     override fun run() = runBlocking {
-        coRun()
+        try {
+            coRun()
+        } catch (t: Throwable) {
+            with (invocationDi) {
+                echo(
+                    message = errorView(errorAdapter(t)),
+                    err = true
+                )
+            }
+        }
     }
 
-    abstract suspend fun coRun()
+    abstract suspend fun CoroutineScope.coRun()
 
     fun <C> C.diContextEnvironment(): DIContext<EnvironmentHolder>
             where C : BaseCommand {

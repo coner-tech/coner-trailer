@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
 import com.github.ajalt.clikt.parameters.groups.required
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -39,7 +40,7 @@ class SeasonPointsCalculatorGetCommand(
             .convert { Query.ByName(it) }
     ).required()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val get = when(val query = query) {
             is Query.ById -> service.findById(query.id)
             is Query.ByName -> service.findByName(query.name)

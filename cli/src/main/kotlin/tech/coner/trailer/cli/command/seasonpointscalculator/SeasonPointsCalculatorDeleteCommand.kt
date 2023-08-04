@@ -2,6 +2,7 @@ package tech.coner.trailer.cli.command.seasonpointscalculator
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
@@ -27,7 +28,7 @@ class SeasonPointsCalculatorDeleteCommand(
     private val id: UUID by argument()
         .convert { toUuid(it) }
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val delete = service.findById(id)
         service.delete(delete)
     }

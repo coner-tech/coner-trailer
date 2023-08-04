@@ -1,13 +1,17 @@
 package tech.coner.trailer.cli.command.policy
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
-import tech.coner.trailer.di.render.Format
+import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.render.view.PolicyCollectionViewRenderer
+import tech.coner.trailer.presentation.adapter.PolicyCollectionModelAdapter
+import tech.coner.trailer.presentation.model.PolicyCollectionModel
+import tech.coner.trailer.presentation.model.PolicyModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 
 class PolicyListCommand(
     di: DI,
@@ -21,10 +25,11 @@ class PolicyListCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val view: PolicyCollectionViewRenderer by instance(Format.TEXT)
+    private val adapter: PolicyCollectionModelAdapter by instance()
+    private val view: TextCollectionView<PolicyModel, PolicyCollectionModel> by instance()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val policies = service.list()
-        echo(view(policies))
+        echo(view(adapter(PolicyCollection(policies))))
     }
 }

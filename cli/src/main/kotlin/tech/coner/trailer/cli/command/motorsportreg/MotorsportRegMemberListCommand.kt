@@ -1,7 +1,7 @@
 package tech.coner.trailer.cli.command.motorsportreg
 
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
@@ -23,7 +23,7 @@ class MotorsportRegMemberListCommand(
     private val service: MotorsportRegMemberService by instance()
     private val view: MotorsportRegMemberTableView by instance()
 
-    override suspend fun coRun() = diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
         val members = service.list()
         echo(view.render(members))
     }

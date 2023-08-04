@@ -1,18 +1,13 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.context
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.cli.ConerTrailerCli
 import tech.coner.trailer.cli.clikt.StringBuilderConsole
-import tech.coner.trailer.cli.util.ConerTrailerCliProcessExecutor
-import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
-import tech.coner.trailer.cli.util.NativeImageCommandArrayFactory
-import tech.coner.trailer.cli.util.ProcessOutcome
-import tech.coner.trailer.cli.util.ShadedJarCommandArrayFactory
-import tech.coner.trailer.cli.util.awaitOutcome
+import tech.coner.trailer.cli.util.*
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
 
 abstract class BaseExecutableIT {
 
@@ -29,7 +24,8 @@ abstract class BaseExecutableIT {
     }
 
     protected fun arrange(fn: IntegrationTestAppArgumentBuilder.() -> Array<String>) {
-        ConerTrailerCli.createCommands()
+        val invocation = ConerTrailerCli.createInvocation()
+        ConerTrailerCli.createRootCommand(invocation)
             .context {
                 console = StringBuilderConsole()
             }
