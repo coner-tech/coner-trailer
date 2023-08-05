@@ -12,25 +12,30 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.direct
+import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.NotFoundException
 import tech.coner.trailer.presentation.model.ClubModel
+import tech.coner.trailer.presentation.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.club.ClubPresenter
+import tech.coner.trailer.presentation.presenter.club.ClubPresenterFactory
 import tech.coner.trailer.presentation.text.view.TextView
 
 class ClubGetCommandTest : BaseDataSessionCommandTest<ClubGetCommand>() {
 
     override fun DirectDI.createCommand() = instance<ClubGetCommand>()
 
+    private lateinit var presenterFactory: ClubPresenterFactory
     private lateinit var presenter: ClubPresenter
     private lateinit var textView: TextView<ClubModel>
 
     override fun postSetup() {
         val directDi = direct
-        presenter = directDi.instance()
+        presenterFactory = directDi.factory()
+        presenter = presenterFactory(Presenter.Argument.Nothing)
         textView = directDi.instance()
     }
 

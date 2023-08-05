@@ -7,6 +7,7 @@ import tech.coner.trailer.cli.di.*
 import tech.coner.trailer.cli.di.command.commandModule
 import tech.coner.trailer.cli.di.command.mockkParameterMapperModule
 import tech.coner.trailer.di.*
+import tech.coner.trailer.presentation.testsupport.di.adapter.mockkPresentationAdapterModule
 import tech.coner.trailer.presentation.testsupport.di.presenter.mockkPresenterModule
 import tech.coner.trailer.presentation.testsupport.di.view.text.mockkTextViewModule
 
@@ -32,6 +33,7 @@ private val dataSessionCommandTestDi = DI {
         cliPresentationViewModule,
         mockkTextViewModule,
         mockkPresenterModule,
+        mockkPresentationAdapterModule,
         cliPresentationAdapterModule,
         cliktModule,
         mockkParameterMapperModule,

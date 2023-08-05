@@ -36,7 +36,7 @@ class PersonGetCommand(
         .convert { toUuid(it) }
 
     override suspend fun CoroutineScope.coRun() = diContext.use {
-        val presenter = presenterFactory(PersonDetailPresenter.Argument(id))
+        val presenter = presenterFactory(PersonDetailPresenter.Argument.GetById(id))
         backgroundCoroutineScope.launch { presenter.load() }
         presenter.awaitLoadedItemModel()
             .succeedOrThrow {

@@ -3,13 +3,15 @@ package tech.coner.trailer.cli.command.club
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kodein.di.DI
+import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.succeedOrThrow
 import tech.coner.trailer.presentation.model.ClubModel
-import tech.coner.trailer.presentation.presenter.club.ClubPresenter
+import tech.coner.trailer.presentation.presenter.Presenter
+import tech.coner.trailer.presentation.presenter.club.ClubPresenterFactory
 import tech.coner.trailer.presentation.text.view.TextView
 
 class ClubGetCommand(
@@ -24,10 +26,11 @@ class ClubGetCommand(
 
     override val diContext = diContextDataSession()
 
-    private val presenter: ClubPresenter by instance()
+    private val presenterFactory: ClubPresenterFactory by factory()
     val textView: TextView<ClubModel> by instance()
 
     override suspend fun CoroutineScope.coRun() = diContext.use {
+        val presenter = presenterFactory(Presenter.Argument.Nothing)
         backgroundCoroutineScope.launch { presenter.load() }
         presenter.awaitLoadedItemModel()
             .succeedOrThrow {

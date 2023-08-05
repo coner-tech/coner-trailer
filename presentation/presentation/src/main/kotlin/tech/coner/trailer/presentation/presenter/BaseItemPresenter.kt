@@ -2,26 +2,27 @@ package tech.coner.trailer.presentation.presenter
 
 import kotlinx.coroutines.flow.*
 import tech.coner.trailer.presentation.adapter.Adapter
-import tech.coner.trailer.presentation.model.util.ModelValidationException
 import tech.coner.trailer.presentation.model.util.ItemModel
 import tech.coner.trailer.presentation.model.util.ModelNotReadyToCommitException
+import tech.coner.trailer.presentation.model.util.ModelValidationException
 
 /**
  * A base presenter that deals with a loadable entity as the focus of its state
  */
 abstract class BaseItemPresenter<
-        E,
-        A : Adapter<E, IM>,
-        IM : ItemModel<E, *, A>
-        > : Presenter {
+        ARGUMENT : Presenter.Argument,
+        ENTITY,
+        ADAPTER : Adapter<ENTITY, ITEM_MODEL>,
+        ITEM_MODEL : ItemModel<ENTITY, *, ADAPTER>
+        > : BasePresenter<ARGUMENT>() {
 
-    abstract val entityDefault: E
+    abstract val entityDefault: ENTITY
 
-    protected abstract val adapter: A
+    protected abstract val adapter: ADAPTER
 
     private val _itemModelFlow by lazy { MutableStateFlow(Result.success(adapter(entityDefault))) }
-    val itemModelFlow: StateFlow<Result<IM>> by lazy { _itemModelFlow.asStateFlow() }
-    val itemModel: IM
+    val itemModelFlow: StateFlow<Result<ITEM_MODEL>> by lazy { _itemModelFlow.asStateFlow() }
+    val itemModel: ITEM_MODEL
         get() = itemModelFlow.value.getOrThrow()
 
     private val _loadingFlow = MutableStateFlow(false)
@@ -43,10 +44,10 @@ abstract class BaseItemPresenter<
         _loadingFlow.emit(false)
     }
 
-    suspend fun awaitLoadedItemModel(): Result<IM> {
+    suspend fun awaitLoadedItemModel(): Result<ITEM_MODEL> {
         return itemModelFlow.zip(loadedFlow) { model, loaded -> model to loaded }
             .mapNotNull { item ->
-                val (result: Result<IM>, loaded) = item
+                val (result: Result<ITEM_MODEL>, loaded) = item
                 when {
                     loaded && result.isSuccess -> result
                     result.isFailure -> result
@@ -56,44 +57,34 @@ abstract class BaseItemPresenter<
             .first()
     }
 
-    protected abstract suspend fun performLoad(): Result<E>
+    protected abstract suspend fun performLoad(): Result<ENTITY>
 
-    suspend fun commit(): Result<IM> {
-        return flow<Result<IM>> {
-            _itemModelFlow.update { result ->
-                val itemModel = result.getOrNull()
-                if (itemModel != null) {
-                    // itemModel can be validated
-                    if (itemModel.isValid) {
-                        // itemModel is valid
-                        Result.success(adapter(itemModel.itemValue))
-                            .also { emit(it) }
-                    } else {
-                        // itemModel is invalid
-                        result // will retain the same result/model unchanged
-                            .also {
-                                emit(
-                                    itemModel.validatedItemFlow.value.violations
-                                        .let { Result.failure<IM>(ModelValidationException(it)) }
-                                )
-                            }
-                    }
+    fun commit(): Result<ITEM_MODEL> {
+        var commitReturn: Result<ITEM_MODEL> = _itemModelFlow.value
+        _itemModelFlow.update { result ->
+            val itemModel = result.getOrNull()
+            if (itemModel != null) {
+                // itemModel can be validated
+                if (itemModel.isValid) {
+                    // itemModel is valid
+                    Result.success(adapter(itemModel.itemValue))
+                        .also { commitReturn = it }
                 } else {
-                    // itemModel isn't ready for validation
-                    // perhaps there was a failure loading it
+                    // itemModel is invalid
+                    commitReturn =  itemModel.validatedItemFlow.value.violations
+                        .let { Result.failure(ModelValidationException(it)) }
                     result // will retain the same result/model unchanged
-                        .also {
-                            //
-                            emit(
-                                it.exceptionOrNull()
-                                    ?.let { Result.failure(ModelNotReadyToCommitException(it)) }
-                                    ?: Result.failure(Exception("Failed to find cause of commit not ready."))
-                            )
-                        }
                 }
+            } else {
+                // itemModel isn't ready for validation
+                // perhaps there was a failure loading it
+                commitReturn = result.exceptionOrNull()
+                    ?.let { Result.failure(ModelNotReadyToCommitException(it)) }
+                    ?: Result.failure(Exception("Failed to find cause of commit not ready."))
+                result // will retain the same result/model unchanged
             }
         }
-            .single()
+        return commitReturn
     }
 
     fun rollback() {

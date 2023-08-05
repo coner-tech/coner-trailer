@@ -7,19 +7,31 @@ import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.presentation.adapter.PersonDetailModelAdapter
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.presenter.BaseItemPresenter
+import tech.coner.trailer.presentation.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
 import java.util.*
 
 class PersonDetailPresenter(
-    private val argument: Argument,
+    override val argument: Argument,
     coroutineScope: PresenterCoroutineScope,
     private val service: PersonService,
     override val adapter: PersonDetailModelAdapter,
 ) : BaseItemPresenter<
+        PersonDetailPresenter.Argument,
         Person,
         PersonDetailModelAdapter,
         PersonDetailModel,
         >(), CoroutineScope by coroutineScope {
+
+    override fun processArgument() {
+        when (argument) {
+            Argument.Create -> { /* no-op */ }
+            is Argument.GetById -> {
+                itemModel.setId(argument.id)
+                commit()
+            }
+        }
+    }
 
     override val entityDefault: Person = Person(
         clubMemberId = "",
@@ -29,12 +41,17 @@ class PersonDetailPresenter(
     )
 
     override suspend fun performLoad(): Result<Person> = runSuspendCatching {
-        service.findById(argument.id)
+        service.findById(itemModel.original.id)
     }
 
-    data class Argument(
-        val id: UUID
-    )
+    fun create() {
+        service.create(itemModel.original)
+    }
+
+    sealed class Argument : Presenter.Argument {
+        object Create : Argument()
+        data class GetById(val id: UUID) : Argument()
+    }
 }
 
 typealias PersonDetailPresenterFactory = (PersonDetailPresenter.Argument) -> PersonDetailPresenter

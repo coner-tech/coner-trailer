@@ -29,7 +29,7 @@ class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
 
     override fun DirectDI.createCommand() = instance<PersonGetCommand>()
 
-    private val validPresenterArgument = PersonDetailPresenter.Argument(TestPeople.ANASTASIA_RIGLER.id)
+    private val validPresenterArgument = PersonDetailPresenter.Argument.GetById(TestPeople.ANASTASIA_RIGLER.id)
 
     private lateinit var presenterFactory: PersonDetailPresenterFactory
     private lateinit var textView: TextView<PersonDetailModel>

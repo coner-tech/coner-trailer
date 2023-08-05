@@ -1,10 +1,7 @@
 package tech.coner.trailer.presentation.di.adapter
 
 import org.kodein.di.*
-import tech.coner.trailer.Class
-import tech.coner.trailer.Club
-import tech.coner.trailer.Event
-import tech.coner.trailer.Person
+import tech.coner.trailer.*
 import tech.coner.trailer.di.DataSessionScope
 import tech.coner.trailer.presentation.adapter.*
 import tech.coner.trailer.presentation.adapter.eventresults.*
@@ -73,7 +70,8 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::PolicyConePenaltySecondsStringFieldAdapter) }
     bindSingleton { new(::PolicyPaxTimeStyleStringFieldAdapter) }
     bindSingleton { new(::PolicyFinalScoreStyleStringFieldAdapter) }
-    bindSingleton { new(::PolicyModelAdapter) }
+    bind { scoped(DataSessionScope).singleton { new(::PolicyModelAdapter) } }
+    bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { instance<PolicyModelAdapter>() } }
 
     // Run
     bindSingleton { new(::RunSequenceStringFieldAdapter) }

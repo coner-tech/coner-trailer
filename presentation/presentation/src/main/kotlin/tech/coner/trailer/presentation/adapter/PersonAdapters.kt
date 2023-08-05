@@ -46,7 +46,7 @@ class PersonDetailModelAdapter(
     val firstName: PersonFirstNameStringFieldAdapter,
     val lastName: PersonLastNameStringFieldAdapter,
     val clubMemberId: PersonClubMemberIdStringFieldAdapter,
-    val motorsportRegId: PersonMotorsportRegMemberIdStringFieldAdapter,
+    val motorsportRegMemberId: PersonMotorsportRegMemberIdStringFieldAdapter,
     val personPersistConstraints: PersonPersistConstraints
 ) : Adapter<Person, PersonDetailModel> {
     override fun invoke(model: Person): PersonDetailModel {

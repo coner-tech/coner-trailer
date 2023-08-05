@@ -8,14 +8,18 @@ import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.presentation.adapter.ClubModelAdapter
 import tech.coner.trailer.presentation.model.ClubModel
 import tech.coner.trailer.presentation.presenter.BaseItemPresenter
+import tech.coner.trailer.presentation.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
 
 class ClubPresenter(
+    override val argument: Presenter.Argument.Nothing,
     coroutineScope: PresenterCoroutineScope,
     private val service: ClubService,
     override val adapter: ClubModelAdapter
-) : BaseItemPresenter<Club, ClubModelAdapter, ClubModel>(),
+) : BaseItemPresenter<Presenter.Argument.Nothing, Club, ClubModelAdapter, ClubModel>(),
     CoroutineScope by coroutineScope {
+
+    override fun processArgument() = Unit // no-op
 
     override val entityDefault = Club("")
 
@@ -31,3 +35,5 @@ class ClubPresenter(
         service.createOrUpdate(name = itemModel.itemValue.name)
     }
 }
+
+typealias ClubPresenterFactory = (Presenter.Argument.Nothing) -> ClubPresenter
