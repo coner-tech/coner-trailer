@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import kotlinx.html.Entities
+import java.util.UUID
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Classing
@@ -18,7 +18,6 @@ import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import java.util.*
 
 class EventCrispyFishPersonMapAddCommand(
     di: DI,

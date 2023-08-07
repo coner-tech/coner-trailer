@@ -4,9 +4,8 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import kotlinx.html.Entities
+import java.util.UUID
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Classing
@@ -25,7 +24,6 @@ import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
-import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
     di: DI,

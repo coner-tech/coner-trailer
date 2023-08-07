@@ -9,10 +9,10 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
-import kotlinx.html.Entities
-import kotlinx.html.InputType
+import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import org.kodein.di.DI
-import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.cli.command.BaseCommand
@@ -22,9 +22,6 @@ import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.cli.view.EventView
 import tech.coner.trailer.io.service.EventService
-import java.nio.file.Path
-import java.time.LocalDate
-import java.util.*
 
 class EventSetCommand(
     di: DI,
