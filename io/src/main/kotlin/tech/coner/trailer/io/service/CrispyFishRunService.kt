@@ -15,7 +15,7 @@ class CrispyFishRunService(
 ) : CoroutineContext by coroutineContext {
     suspend fun list(event: Event): Result<List<Run>> = try {
         val eventCrispyFish = event.requireCrispyFish()
-        val context = crispyFishEventMappingContextService.load(eventCrispyFish)
+        val context = crispyFishEventMappingContextService.load(event, eventCrispyFish)
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)
         val runs = context.staging
             .mapIndexed { index, stagingRun ->

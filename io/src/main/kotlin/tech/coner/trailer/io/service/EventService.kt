@@ -82,7 +82,7 @@ class EventService(
         val unmappedClubMemberIdMatchButNameMismatchRegistrations = mutableListOf<Registration>()
         val unmappedExactMatchRegistrations = mutableListOf<Registration>()
         val unusedPeopleMapKeys = mutableListOf<Event.CrispyFishMetadata.PeopleMapKey>()
-        val context = crispyFishEventMappingContextService.load(check.requireCrispyFish())
+        val context = crispyFishEventMappingContextService.load(check, check.requireCrispyFish())
         val participants = participantService.list(check).getOrThrow()
         val runs = runService.list(check).getOrThrow()
         eventCrispyFishPersonMapVerifier.verify(
@@ -180,7 +180,7 @@ class EventService(
         if (!allowUnmappedCrispyFishPeople) {
             eventCrispyFishPersonMapVerifier.verify(
                 event = model,
-                context = crispyFishEventMappingContextService.load(model.requireCrispyFish()),
+                context = crispyFishEventMappingContextService.load(model, model.requireCrispyFish()),
                 callback = EventCrispyFishPersonMapVerifier.ThrowingCallback()
             )
         }

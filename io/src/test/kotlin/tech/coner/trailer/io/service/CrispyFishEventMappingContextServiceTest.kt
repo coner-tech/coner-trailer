@@ -10,10 +10,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
+import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishStagingLogRepository
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.SimpleCache
 import java.nio.file.Path
-import java.time.Duration
 
 class CrispyFishEventMappingContextServiceTest : CoroutineScope {
 
@@ -30,7 +30,8 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
             coroutineContext = coroutineContext + Job(),
             cache = SimpleCache(),
             crispyFishDatabase = fixtureRoot,
-            loadConstraints = CrispyFishLoadConstraints(fixtureRoot)
+            loadConstraints = CrispyFishLoadConstraints(fixtureRoot),
+            stagingLogRepository = CrispyFishStagingLogRepository()
         )
     }
 
@@ -38,7 +39,7 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
     fun `It should load CrispyFishEventMappingContext`() {
         val event = fixture.events.first().coreSeasonEvent.event
 
-        val actual = runBlocking { service.load(event.crispyFish!!) }
+        val actual = runBlocking { service.load(event, event.crispyFish!!) }
 
         assertThat(actual.allRegistrations).hasSize(7)
     }
