@@ -4,10 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.verifySequence
-import kotlinx.html.CommandType
 import org.junit.jupiter.api.Test
 import org.kodein.di.DI
-import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel

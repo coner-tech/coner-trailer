@@ -1,13 +1,11 @@
 package tech.coner.trailer.cli.command.webapp
 
-import io.ktor.server.engine.stopServerOnCancellation
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.io.Webapp
 import tech.coner.trailer.io.service.ConfigurationService
-import tech.coner.trailer.webapp.competition.competitionWebapp
 
 class WebappCompetitionCommand(
     di: DI,
@@ -34,8 +32,8 @@ class WebappCompetitionCommand(
                 overrideExploratory = exploratory
             ) }
             .getOrThrow()
-        competitionWebapp(di, config)
-            .stopServerOnCancellation()
+//        competitionWebapp(di, config)
+//            .stopServerOnCancellation()
     }
 
 
