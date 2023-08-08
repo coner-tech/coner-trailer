@@ -13,7 +13,7 @@ class EventExtendedParametersService(
     suspend fun load(event: Event): Result<EventExtendedParameters> = runCatching {
         when (event.policy.requireAuthoritativeParticipantDataSource()) {
             Policy.DataSource.CrispyFish -> EventExtendedParameters(
-                runsPerParticipant = crispyFishEventMappingContextService.load(event.requireCrispyFish()).runCount
+                runsPerParticipant = crispyFishEventMappingContextService.load(event, event.requireCrispyFish()).runCount
             )
         }
     }

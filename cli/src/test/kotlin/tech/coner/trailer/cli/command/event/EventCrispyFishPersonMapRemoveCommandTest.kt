@@ -8,16 +8,11 @@ import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import java.nio.file.Paths
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DI
 import org.kodein.di.instance
-import tech.coner.trailer.Classing
-import tech.coner.trailer.Event
-import tech.coner.trailer.TestClasses
-import tech.coner.trailer.TestEvents
-import tech.coner.trailer.TestPeople
+import tech.coner.trailer.*
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.EventView
@@ -26,6 +21,7 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
+import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapRemoveCommand>() {
@@ -70,7 +66,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
                 peopleMap = emptyMap()
             )
         )
-        coEvery { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
+        coEvery { crispyFishEventMappingContextService.load(set, set.crispyFish!!) } returns context
         coJustRun {
             service.update(set)
         }

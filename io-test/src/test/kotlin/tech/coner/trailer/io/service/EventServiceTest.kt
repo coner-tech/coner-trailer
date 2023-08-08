@@ -207,7 +207,7 @@ class EventServiceTest : CoroutineScope {
             }
         }
         val context: CrispyFishEventMappingContext = mockk()
-        coEvery { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        coEvery { crispyFishEventMappingContextService.load(check, eventCrispyFish) } returns context
         val callbackSlot: CapturingSlot<EventCrispyFishPersonMapVerifier.Callback> = slot()
         every {
             eventCrispyFishPersonMapVerifier.verify(

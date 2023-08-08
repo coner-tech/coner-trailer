@@ -14,7 +14,7 @@ class CrispyFishParticipantService(
 
     suspend fun list(event: Event): Result<List<Participant>> = try {
         val eventCrispyFish = event.requireCrispyFish()
-        val context = crispyFishEventMappingContextService.load(eventCrispyFish)
+        val context = crispyFishEventMappingContextService.load(event, eventCrispyFish)
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(eventCrispyFish.classDefinitionFile)
         val participants = context.allRegistrations
             .map { registration ->
