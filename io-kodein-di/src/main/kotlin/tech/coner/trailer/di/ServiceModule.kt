@@ -3,7 +3,6 @@ package tech.coner.trailer.di
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import org.kodein.di.*
-import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishEventStagingLogRepository
 import tech.coner.trailer.io.service.ClassService
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.CrispyFishClassService

@@ -8,6 +8,7 @@ import tech.coner.crispyfish.CrispyFishEventFactory
 import tech.coner.crispyfish.model.EventDay
 import tech.coner.trailer.Event
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishStagingLogRepository
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.Cache
 
