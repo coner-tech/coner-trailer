@@ -1,9 +1,9 @@
 package tech.coner.trailer.datasource.crispyfish.fixture
 
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.*
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.seasonpoints.TestSeasonPointsCalculatorConfigurations
-import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDate
@@ -154,7 +154,6 @@ sealed class SeasonFixture(
     }
 
     val classDefinitionPath: Path
-    val classDefinitionFile: ClassDefinitionFile
 
     init {
         javaClass.getResourceAsStream("/seasons/$path/${classDefinitionFixture.fileName}").use {
@@ -164,15 +163,12 @@ sealed class SeasonFixture(
             path.createFile()
             path.writeText(text)
             classDefinitionPath = path
-            classDefinitionFile = ClassDefinitionFile(
-                file = path.toFile()
-            )
         }
     }
 
-    val classDefinitions = classDefinitionFile.mapper().all()
-    val categories = classDefinitions.filter { it.paxed }
-    val handicaps = classDefinitions.filter { !it.paxed }
+    val classDefinitions = CrispyFish.classDefinitions(classDefinitionPath).queryAllClassDefinitions()
+    val categories = classDefinitions.categories
+    val handicaps = classDefinitions.handicaps
     val groupingMapper = CrispyFishClassingMapper()
 }
 

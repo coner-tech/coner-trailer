@@ -7,6 +7,7 @@ import assertk.assertions.key
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
@@ -28,7 +29,8 @@ class CrispyFishClassServiceTest {
         val classParentMapper = CrispyFishClassParentMapper()
         seasonFixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishClassService(
-            crispyFishRoot = fixtureRoot.toFile(),
+            crispyFishRoot = fixtureRoot,
+            crispyFishClassDefinitionsFactory = CrispyFish.classDefinitions,
             classMapper = classMapper,
             classParentMapper = classParentMapper
         )

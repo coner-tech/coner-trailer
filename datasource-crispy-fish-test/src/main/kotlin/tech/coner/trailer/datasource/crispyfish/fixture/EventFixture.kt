@@ -1,8 +1,6 @@
 package tech.coner.trailer.datasource.crispyfish.fixture
 
-import tech.coner.crispyfish.filetype.ecf.EventControlFile
-import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.SeasonEvent
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -26,16 +24,7 @@ class EventFixture(
         st1Path = install(ecfName.replace(".ecf", ".st1"))
     }
 
-    fun eventControlFile(): EventControlFile {
-        return EventControlFile(
-            file = ecfPath.toFile(),
-            classDefinitionFile = seasonFixture.classDefinitionFile,
-            conePenalty = conePenalty,
-            isTwoDayEvent = false,
-            ecfAssistant = EventControlFileAssistant(),
-            stagingFileAssistant = StagingFileAssistant()
-        )
-    }
+    fun crispyFishEvent() = CrispyFish.event(ecfPath)
 
     private fun install(name: String) = javaClass.getResourceAsStream(name).use {
         val text = it.bufferedReader().readText()

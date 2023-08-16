@@ -9,8 +9,8 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishEventStagingLogRepository
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.SimpleCache
 import java.nio.file.Path
@@ -28,10 +28,11 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
         fixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishEventMappingContextService(
             coroutineContext = coroutineContext + Job(),
-            cache = SimpleCache(),
+            nonActiveCache = SimpleCache(),
             crispyFishDatabase = fixtureRoot,
             loadConstraints = CrispyFishLoadConstraints(fixtureRoot),
-            stagingLogRepository = CrispyFishEventStagingLogRepository()
+            crispyFishClassDefinitionsFactory = CrispyFish.classDefinitions,
+            crispyFishEventFactory = CrispyFish.event
         )
     }
 

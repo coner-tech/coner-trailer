@@ -3,23 +3,8 @@ package tech.coner.trailer.di
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import org.kodein.di.*
-import tech.coner.trailer.io.service.ClassService
-import tech.coner.trailer.io.service.ClubService
-import tech.coner.trailer.io.service.CrispyFishClassService
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
-import tech.coner.trailer.io.service.CrispyFishParticipantService
-import tech.coner.trailer.io.service.CrispyFishRunService
-import tech.coner.trailer.io.service.EventContextService
-import tech.coner.trailer.io.service.EventExtendedParametersService
-import tech.coner.trailer.io.service.EventPointsCalculatorService
-import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.io.service.RankingSortService
-import tech.coner.trailer.io.service.RunService
-import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
-import tech.coner.trailer.io.service.SeasonService
+import tech.coner.crispyfish.CrispyFish
+import tech.coner.trailer.io.service.*
 import tech.coner.trailer.io.util.SimpleCache
 
 val serviceModule = DI.Module("tech.coner.trailer.io.service") {
@@ -80,17 +65,13 @@ val serviceModule = DI.Module("tech.coner.trailer.io.service") {
     }
     bind {
         scoped(DataSessionScope).singleton {
-            new(::CrispyFishEventStagingLogRepository)
-        }
-    }
-    bind {
-        scoped(DataSessionScope).singleton {
             CrispyFishEventMappingContextService(
                 coroutineContext = context.coroutineContext + Job(),
-                cache = SimpleCache(),
+                nonActiveCache = SimpleCache(),
                 crispyFishDatabase = context.environment.requireDatabaseConfiguration().crispyFishDatabase,
                 loadConstraints = instance(),
-                stagingLogRepository = instance()
+                crispyFishClassDefinitionsFactory = CrispyFish.classDefinitions,
+                crispyFishEventFactory = CrispyFish.event
             )
         }
     }
@@ -102,7 +83,8 @@ val serviceModule = DI.Module("tech.coner.trailer.io.service") {
     bind {
         scoped(DataSessionScope).singleton {
             CrispyFishClassService(
-                crispyFishRoot = context.environment.requireDatabaseConfiguration().crispyFishDatabase.toFile(),
+                crispyFishRoot = context.environment.requireDatabaseConfiguration().crispyFishDatabase,
+                crispyFishClassDefinitionsFactory = CrispyFish.classDefinitions,
                 classMapper = instance(),
                 classParentMapper = instance()
             )
