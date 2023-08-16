@@ -1,22 +1,23 @@
 package tech.coner.trailer.io.service
 
-import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
-import tech.coner.crispyfish.filetype.ecf.EventControlFile
+import java.nio.file.Path
+import kotlin.coroutines.CoroutineContext
+import tech.coner.crispyfish.CrispyFishClassDefinitions
+import tech.coner.crispyfish.CrispyFishClassDefinitionsFactory
+import tech.coner.crispyfish.CrispyFishEventFactory
 import tech.coner.crispyfish.model.EventDay
 import tech.coner.trailer.Event
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
-import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishStagingLogRepository
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.Cache
-import java.nio.file.Path
-import kotlin.coroutines.CoroutineContext
 
 class CrispyFishEventMappingContextService(
     coroutineContext: CoroutineContext,
     private val cache: Cache<CrispyFishEventMappingContext.Key, CrispyFishEventMappingContext>,
     private val crispyFishDatabase: Path,
     private val loadConstraints: CrispyFishLoadConstraints,
-    private val stagingLogRepository: CrispyFishStagingLogRepository,
+    private val crispyFishClassDefinitionsFactory: CrispyFishClassDefinitionsFactory
+    private val crispyFishEventFactory: CrispyFishEventFactory
 ) : CoroutineContext by coroutineContext {
 
     suspend fun load(
@@ -35,15 +36,11 @@ class CrispyFishEventMappingContextService(
 
     private fun performLoad(event: Event, key: CrispyFishEventMappingContext.Key): CrispyFishEventMappingContext {
         loadConstraints.assess(key)
-        val classDefinitionFile = ClassDefinitionFile(key.classDefinitionFile.toFile())
-        val eventControlFile = EventControlFile(
-            file = key.eventControlFile.toFile(),
-            classDefinitionFile = classDefinitionFile,
-            isTwoDayEvent = false,
-            conePenalty = 2
-        )
-        val allRegistrations = eventControlFile.queryRegistrations()
-        val registrationsBySignage = allRegistrations.associateBy { it.signage }
+        val crispyFishClassDefinitions = crispyFishClassDefinitionsFactory(key.classDefinitionFile)
+        val crispyFishEvent = crispyFishEventFactory(key.eventControlFile)
+        val allClassDefinitions = crispyFishClassDefinitions.queryAllClassDefinitions()
+        val allRegistrations = crispyFishEvent.queryAllRegistrations(allClassDefinitions)
+        val registrationsBySignage = crispyFishEvent.queryAllRegistrationsBySignage(allClassDefinitions, allRegistrations)
         val allRuns = when (event.lifecycle) {
             Event.Lifecycle.ACTIVE -> stagingLogRepository.getDistinctRuns(eventControlFile, EventDay.ONE)
             else -> eventControlFile.queryStagingRuns(EventDay.ONE)

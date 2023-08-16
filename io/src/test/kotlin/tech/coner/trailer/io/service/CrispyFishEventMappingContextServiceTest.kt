@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishStagingLogRepository
+import tech.coner.trailer.datasource.crispyfish.repository.CrispyFishEventStagingLogRepository
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.SimpleCache
 import java.nio.file.Path
@@ -31,7 +31,7 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
             cache = SimpleCache(),
             crispyFishDatabase = fixtureRoot,
             loadConstraints = CrispyFishLoadConstraints(fixtureRoot),
-            stagingLogRepository = CrispyFishStagingLogRepository()
+            stagingLogRepository = CrispyFishEventStagingLogRepository()
         )
     }
 
