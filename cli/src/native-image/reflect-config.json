@@ -2896,7 +2896,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassing","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getNumber","parameterTypes":[] }, {"name":"getPersonId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity",
@@ -2916,7 +2916,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getGroup","parameterTypes":[] }, {"name":"getHandicap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity",
