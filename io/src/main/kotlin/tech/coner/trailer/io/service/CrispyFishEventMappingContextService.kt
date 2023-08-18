@@ -64,7 +64,7 @@ class CrispyFishEventMappingContextService(
 
     private fun AllStagingLogRows.toStagingRuns(): List<StagingRun> {
         return value
-            .groupBy(StagingLogRow::sequenceRow)
+            .groupBy(StagingLogRow::stagingRunIndex)
             .map { it.value.last().stagingRun }
     }
 }
