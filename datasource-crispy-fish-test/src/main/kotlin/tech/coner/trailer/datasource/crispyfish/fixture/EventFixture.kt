@@ -1,8 +1,6 @@
 package tech.coner.trailer.datasource.crispyfish.fixture
 
-import tech.coner.crispyfish.filetype.ecf.EventControlFile
-import tech.coner.crispyfish.filetype.ecf.EventControlFileAssistant
-import tech.coner.crispyfish.filetype.staging.StagingFileAssistant
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.SeasonEvent
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -17,6 +15,7 @@ class EventFixture(
     val ecfPath: Path
     val rggPath: Path
     val st1Path: Path
+    val st1LogPath: Path
 
     init {
         require(coreSeasonEvent.event.crispyFish?.eventControlFile?.extension == "ecf")
@@ -24,25 +23,17 @@ class EventFixture(
         ecfPath = install(ecfName)
         rggPath = install(ecfName.replace(".ecf", ".rgg"))
         st1Path = install(ecfName.replace(".ecf", ".st1"))
+        st1LogPath = install(ecfName.replace(".ecf", ".st1_log"))
     }
 
-    fun eventControlFile(): EventControlFile {
-        return EventControlFile(
-            file = ecfPath.toFile(),
-            classDefinitionFile = seasonFixture.classDefinitionFile,
-            conePenalty = conePenalty,
-            isTwoDayEvent = false,
-            ecfAssistant = EventControlFileAssistant(),
-            stagingFileAssistant = StagingFileAssistant()
-        )
-    }
+    fun crispyFishEvent() = CrispyFish.event(ecfPath)
 
     private fun install(name: String) = javaClass.getResourceAsStream(name).use {
         val text = it.bufferedReader().readText()
-        val ecfPath = temp.resolve(name.substring(1))
-        ecfPath.parent.createDirectories()
-        ecfPath.createFile()
-        ecfPath.writeText(text)
-        ecfPath
+        val path = temp.resolve(name.substring(1))
+        path.parent.createDirectories()
+        path.createFile()
+        path.writeText(text)
+        path
     }
 }
