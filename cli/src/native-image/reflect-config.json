@@ -2782,7 +2782,25 @@
   "name":"tech.coner.trailer.client.motorsportreg.AuthenticatedMotorsportRegApi"
 },
 {
-  "name":"tech.coner.trailer.client.motorsportreg.model.Assignment"
+  "name":"tech.coner.trailer.client.motorsportreg.model.Assignment",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component10","parameterTypes":[] }, {"name":"component11","parameterTypes":[] }, {"name":"component12","parameterTypes":[] }, {"name":"component13","parameterTypes":[] }, {"name":"component14","parameterTypes":[] }, {"name":"component15","parameterTypes":[] }, {"name":"component16","parameterTypes":[] }, {"name":"component17","parameterTypes":[] }, {"name":"component18","parameterTypes":[] }, {"name":"component19","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component20","parameterTypes":[] }, {"name":"component21","parameterTypes":[] }, {"name":"component22","parameterTypes":[] }, {"name":"component23","parameterTypes":[] }, {"name":"component24","parameterTypes":[] }, {"name":"component25","parameterTypes":[] }, {"name":"component26","parameterTypes":[] }, {"name":"component27","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"component8","parameterTypes":[] }, {"name":"component9","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.client.motorsportreg.model.GetEventAssignmentsResponse$Response",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.List"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.client.motorsportreg.model.GetMembersResponse",
