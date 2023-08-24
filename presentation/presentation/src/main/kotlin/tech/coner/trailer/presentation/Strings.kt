@@ -5,6 +5,9 @@ object Strings {
     const val abbreviationDidNotFinish = "DNF"
     const val abbreviationRerun = "RRN"
 
+    // Constraints
+    const val constraintsEventRunLatestCountMustBeGreaterThanZero = "Count must be greater than or equal to 1"
+
     // Error messages
     const val errorUnknownMessage = "Something went wrong"
 

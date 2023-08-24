@@ -28,6 +28,7 @@ val mockkTextViewModule = DI.Module("tech.coner.trailer.testsupport.render.text.
 
     // Runs
     bindSingleton<TextView<RunCollectionModel>> { mockk() }
+    bindSingleton<TextCollectionView<RunModel, RunCollectionModel>> { mockk() }
 
     // MockK bindings for package: tech.coner.trailer.render.text.view.eventresults
 

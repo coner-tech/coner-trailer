@@ -17,6 +17,7 @@ import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapR
 import tech.coner.trailer.cli.command.event.participant.EventParticipantCommand
 import tech.coner.trailer.cli.command.event.participant.EventParticipantListCommand
 import tech.coner.trailer.cli.command.event.run.EventRunCommand
+import tech.coner.trailer.cli.command.event.run.EventRunLatestCommand
 import tech.coner.trailer.cli.command.event.run.EventRunListCommand
 import tech.coner.trailer.cli.command.eventpointscalculator.*
 import tech.coner.trailer.cli.command.motorsportreg.*
@@ -188,11 +189,13 @@ val commandModule = DI.Module("tech.coner.trailer.cli.command") {
         scoped(InvocationScope).singleton {
             new(::EventRunCommand)
                 .subcommands(
-                    instance<EventRunListCommand>()
+                    instance<EventRunListCommand>(),
+                    instance<EventRunLatestCommand>()
                 )
         }
     }
     bind { scoped(InvocationScope).singleton { new(::EventRunListCommand) } }
+    bind { scoped(InvocationScope).singleton { new(::EventRunLatestCommand) } }
 
     // Policy
     bind {

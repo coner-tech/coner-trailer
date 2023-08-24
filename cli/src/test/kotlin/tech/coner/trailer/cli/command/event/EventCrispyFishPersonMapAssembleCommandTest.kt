@@ -14,6 +14,7 @@ import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapAssembleCommand
+import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.view.CrispyFishRegistrationView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -68,7 +69,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
             staging = emptyList(),
             runCount = 0
         )
-        coEvery { crispyFishEventMappingContextService.load(eventCrispyFish) } returns context
+        coEvery { crispyFishEventMappingContextService.load(event, eventCrispyFish) } returns context
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
         val callbackSlot = slot<EventCrispyFishPersonMapVerifier.Callback>()
         every {

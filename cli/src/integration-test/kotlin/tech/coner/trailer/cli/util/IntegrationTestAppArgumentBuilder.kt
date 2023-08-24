@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.util
 
-import java.nio.file.Path
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
@@ -8,6 +7,9 @@ import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
 import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
+import java.nio.file.Path
+import java.time.LocalDate
+import java.util.*
 
 
 class IntegrationTestAppArgumentBuilder(
@@ -81,6 +83,32 @@ class IntegrationTestAppArgumentBuilder(
             "event", "check",
             "${event.id}"
         )
+    }
+
+    fun eventSet(
+        eventId: UUID,
+        name: String? = null,
+        date: LocalDate? = null,
+        lifecycle: Event.Lifecycle? = null,
+        setCrispyFishMetadata: Event.CrispyFishMetadata? = null,
+        unsetCrispyFishMetadata: Unit? = null,
+    ): Array<String> {
+        return buildList {
+            addAll(listOf("event", "set"))
+            name?.also { addAll(listOf("--name", it)) }
+            date?.also { addAll(listOf("--date", "$it")) }
+            lifecycle?.also { addAll(listOf("--lifecycle", lifecycle.name)) }
+            setCrispyFishMetadata?.also {
+                addAll(listOf(
+                    "--crispy-fish", "set",
+                    "--class-definition-file", "${it.classDefinitionFile}",
+                    "--event-control-file", "${it.eventControlFile}"
+                ))
+            }
+            unsetCrispyFishMetadata?.also { addAll(listOf("--crispy-fish", "unset")) }
+            add("$eventId")
+        }
+            .let { build(*it.toTypedArray()) }
     }
 
     fun personAdd(person: Person): Array<String> {

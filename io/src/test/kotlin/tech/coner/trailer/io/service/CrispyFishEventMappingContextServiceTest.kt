@@ -9,11 +9,11 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import tech.coner.crispyfish.CrispyFish
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.io.constraint.CrispyFishLoadConstraints
 import tech.coner.trailer.io.util.SimpleCache
 import java.nio.file.Path
-import java.time.Duration
 
 class CrispyFishEventMappingContextServiceTest : CoroutineScope {
 
@@ -28,9 +28,11 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
         fixture = SeasonFixture.Lscc2019Simplified(fixtureRoot)
         service = CrispyFishEventMappingContextService(
             coroutineContext = coroutineContext + Job(),
-            cache = SimpleCache(),
+            nonActiveCache = SimpleCache(),
             crispyFishDatabase = fixtureRoot,
-            loadConstraints = CrispyFishLoadConstraints(fixtureRoot)
+            loadConstraints = CrispyFishLoadConstraints(fixtureRoot),
+            crispyFishClassDefinitionsFactory = CrispyFish.classDefinitions,
+            crispyFishEventFactory = CrispyFish.event
         )
     }
 
@@ -38,7 +40,7 @@ class CrispyFishEventMappingContextServiceTest : CoroutineScope {
     fun `It should load CrispyFishEventMappingContext`() {
         val event = fixture.events.first().coreSeasonEvent.event
 
-        val actual = runBlocking { service.load(event.crispyFish!!) }
+        val actual = runBlocking { service.load(event, event.crispyFish!!) }
 
         assertThat(actual.allRegistrations).hasSize(7)
     }

@@ -54,7 +54,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
             )
         )
         coEvery { service.findByKey(original.id) } returns Result.success(original)
-        coJustRun { service.update(any()) }
+        coEvery { service.update(any()) } returns Result.success(set)
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view(any()) } returns viewRendered
 
@@ -84,9 +84,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         val original = TestEvents.Lscc2019.points1
         val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
         coEvery { service.findByKey(original.id) } returns Result.success(original)
-        coJustRun {
-            service.update(original)
-        }
+        coEvery { service.update(original) } returns Result.success(original)
         val viewRendered = "view rendered set event named: ${original.name}"
 //        every { view(eq(original)) } returns viewRendered
 

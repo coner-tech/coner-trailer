@@ -61,7 +61,7 @@ class EventCrispyFishPersonMapAssembleCommand(
         }
         val allClassesByAbbreviation = crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
         val peopleMap = mutableMapOf<Event.CrispyFishMetadata.PeopleMapKey, Person>()
-        val context = crispyFishEventMappingContextService.load(crispyFish)
+        val context = crispyFishEventMappingContextService.load(event, crispyFish)
         eventCrispyFishPersonMapVerifier.verify(
             event = event,
             callback = object : EventCrispyFishPersonMapVerifier.Callback {

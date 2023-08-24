@@ -1,14 +1,14 @@
 package tech.coner.trailer.io.service
 
-import tech.coner.crispyfish.filetype.classdefinition.ClassDefinitionFile
+import tech.coner.crispyfish.CrispyFishClassDefinitionsFactory
 import tech.coner.trailer.Class
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
-import java.io.File
 import java.nio.file.Path
 
 class CrispyFishClassService(
-    private val crispyFishRoot: File,
+    private val crispyFishRoot: Path,
+    private val crispyFishClassDefinitionsFactory: CrispyFishClassDefinitionsFactory,
     private val classMapper: CrispyFishClassMapper,
     private val classParentMapper: CrispyFishClassParentMapper
 ) {
@@ -16,13 +16,12 @@ class CrispyFishClassService(
     fun loadAllClasses(
         crispyFishClassDefinitionFile: Path
     ): List<Class> {
-        val allClassDefinitions = ClassDefinitionFile(
-            file = crispyFishRoot.resolve(crispyFishClassDefinitionFile.toFile())
-        ).mapper().all()
+        val allClassDefinitions = crispyFishClassDefinitionsFactory(crispyFishRoot.resolve(crispyFishClassDefinitionFile))
+            .queryAllClassDefinitions()
         val allClassParentsByName = classParentMapper
-            .toCores(allClassDefinitions)
+            .toCores(allClassDefinitions.combined)
             .associateBy { it.name }
-        return allClassDefinitions.mapIndexed { index, cfClassDefinition ->
+        return allClassDefinitions.combined.mapIndexed { index, cfClassDefinition ->
             classMapper.toCore(
                 allClassParentsByName = allClassParentsByName,
                 index = index,

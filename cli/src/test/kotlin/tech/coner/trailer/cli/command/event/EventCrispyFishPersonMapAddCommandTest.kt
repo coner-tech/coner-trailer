@@ -68,7 +68,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
                 peopleMap = mapOf(key to person)
             )
         )
-        coEvery { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
+        coEvery { crispyFishEventMappingContextService.load(set, set.crispyFish!!) } returns context
         coJustRun { service.update(set) }
         val viewRender = "view rendered"
 //        every { view(set) } returns viewRender

@@ -30,7 +30,7 @@
         <module>io-testsupport</module>
         <module>core-kodein-di</module>
         <module>core-kodein-di-test</module>
-        <module>webapp-competition</module>
+<!--        <module>webapp-competition</module>-->
 
         <module>testutil/assertk-ktor</module>
         <module>presentation/presentation-all-testsupport-mockk</module>

@@ -1,21 +1,19 @@
 package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Event
-import tech.coner.trailer.EventContext
 import tech.coner.trailer.Run
 import tech.coner.trailer.presentation.Strings
-import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 
 class RunSequenceStringFieldAdapter : StringFieldAdapter<Run> {
     override operator fun invoke(model: Run): String {
-        return if (model.rerun) Strings.abbreviationRerun else ""
+        return model.sequence.toString()
     }
 }
 
 class RunRerunStringFieldAdapter : StringFieldAdapter<Run> {
     override operator fun invoke(model: Run): String {
-        return model.sequence.toString()
+        return if (model.rerun) Strings.abbreviationRerun else ""
     }
 }
 
@@ -43,14 +41,4 @@ class RunModelAdapter(
         val run: Run,
         val event: Event
     )
-}
-
-class RunCollectionModelAdapter(
-    private val runAdapter: RunModelAdapter
-) : Adapter<EventContext, RunCollectionModel> {
-    override fun invoke(model: EventContext): RunCollectionModel {
-        return RunCollectionModel(
-            items = model.runs.map { runAdapter(it, model.event) }
-        )
-    }
 }

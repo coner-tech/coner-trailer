@@ -48,9 +48,8 @@ class EventSetCommand(
     ).convert { toLocalDate(it) }
     private val lifecycle: Event.Lifecycle? by option()
         .choice(
-            choices = Event.Lifecycle.values()
-                .map { it.name.toLowerCase() to it }
-                .toMap()
+            choices = Event.Lifecycle.values().associateBy { it.name },
+            ignoreCase = true
         )
     private val crispyFish: CrispyFishOptions? by option(
         help = "Whether to set or unset the crispy fish metadata. Must use \"set\" in conjunction with any crispy-fish-related properties."
@@ -122,13 +121,13 @@ class EventSetCommand(
             MotorsportRegOptions.Unset -> null
             else -> event.motorsportReg
         }
-        val set = event.copy(
+        val set = service.update(event.copy(
             name = name ?: event.name,
             date = date ?: event.date,
             lifecycle = lifecycle ?: event.lifecycle,
             crispyFish = crispyFish ?: event.crispyFish,
             motorsportReg = motorsportReg
-        )
+        )).getOrThrow()
         service.update(set)
         echo(view(adapter(set)))
     }

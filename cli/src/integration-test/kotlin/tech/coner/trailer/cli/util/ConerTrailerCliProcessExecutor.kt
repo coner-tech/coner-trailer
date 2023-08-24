@@ -9,6 +9,8 @@ import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
 import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
+import java.time.LocalDate
+import java.util.*
 
 
 class ConerTrailerCliProcessExecutor(
@@ -53,6 +55,26 @@ class ConerTrailerCliProcessExecutor(
                 event = event,
                 crispyFishEventControlFile = crispyFishEventControlFile,
                 crispyFishClassDefinitionFile = crispyFishClassDefinitionFile
+            )
+        )
+    }
+
+    fun eventSet(
+        eventId: UUID,
+        name: String? = null,
+        date: LocalDate? = null,
+        lifecycle: Event.Lifecycle? = null,
+        setCrispyFishMetadata: Event.CrispyFishMetadata? = null,
+        unsetCrispyFishMetadata: Unit? = null
+    ): Process {
+        return exec(
+            *appArgumentBuilder.eventSet(
+                eventId = eventId,
+                name = name,
+                date = date,
+                lifecycle = lifecycle,
+                setCrispyFishMetadata = setCrispyFishMetadata,
+                unsetCrispyFishMetadata = unsetCrispyFishMetadata
             )
         )
     }

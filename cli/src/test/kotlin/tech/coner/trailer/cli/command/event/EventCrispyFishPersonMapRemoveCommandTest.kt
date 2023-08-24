@@ -68,7 +68,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
                 peopleMap = emptyMap()
             )
         )
-        coEvery { crispyFishEventMappingContextService.load(set.crispyFish!!) } returns context
+        coEvery { crispyFishEventMappingContextService.load(set, set.crispyFish!!) } returns context
         coJustRun {
             service.update(set)
         }

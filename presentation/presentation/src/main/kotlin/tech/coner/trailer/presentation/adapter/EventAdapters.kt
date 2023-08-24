@@ -51,7 +51,6 @@ class EventDetailModelAdapter(
     val motorsportRegId: EventMotorsportRegIdStringFieldAdapter,
     val policyId: PolicyIdStringFieldAdapter,
     val policyName: PolicyNameStringFieldAdapter,
-
 ) : Adapter<Event, EventDetailModel> {
     override fun invoke(model: Event): EventDetailModel {
         return EventDetailModel(

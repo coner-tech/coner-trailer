@@ -6,6 +6,7 @@ import tech.coner.trailer.di.DataSessionScope
 import tech.coner.trailer.presentation.adapter.*
 import tech.coner.trailer.presentation.adapter.eventresults.*
 import tech.coner.trailer.presentation.model.*
+import tech.coner.trailer.presentation.state.EventRunLatestState
 
 val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapter") {
     // Bindings for package: tech.coner.trailer.render.adapter
@@ -38,7 +39,15 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::EventMotorsportRegIdStringFieldAdapter) }
     bindSingleton { new(::EventDetailModelAdapter) }
     bindSingleton<Adapter<Event, EventDetailModel>> { instance<EventDetailModelAdapter>() }
+    bindSingleton { new(::EventDetailCollectionModelAdapter) }
+    bindSingleton<Adapter<Collection<Event>, EventDetailCollectionModel>> { instance<EventDetailCollectionModelAdapter>() }
     bindSingleton { new(::EventCrispyFishPeopleMapModelAdapter) }
+
+    // Event Run Latest
+    bindSingleton<Adapter<EventRunLatestState, EventRunLatestModel>> { instance<EventRunLatestModelAdapter>() }
+    bindSingleton { new(::EventRunLatestModelAdapter) }
+    bindSingleton<Adapter<EventRunLatestState, RunCollectionModel>> { instance<EventRunLatestCollectionModelAdapter>() }
+    bindSingleton { new(::EventRunLatestCollectionModelAdapter) }
 
     // Participant
     bindSingleton { new(::ParticipantFirstNameStringFieldAdapter) }

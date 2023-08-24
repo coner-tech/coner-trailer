@@ -57,8 +57,8 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
 
         assertThat(testConsole).output().isEqualTo(textViewRenders)
         coVerify {
-            presenter.awaitLoadedItemModel()
             presenter.load()
+            presenter.awaitLoadedItemModel()
         }
         coVerifyOrder {
             model.name = club.name
