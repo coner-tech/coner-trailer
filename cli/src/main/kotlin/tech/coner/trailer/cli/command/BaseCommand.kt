@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.mordant.terminal.Terminal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
@@ -55,6 +56,11 @@ abstract class BaseCommand(
                     message = errorView(errorAdapter(t)),
                     err = true
                 )
+                val statusCode = when (t) {
+                    is ProgramResult -> t.statusCode
+                    else -> 1
+                }
+                throw ProgramResult(statusCode)
             }
         }
     }

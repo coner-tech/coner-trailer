@@ -8,6 +8,7 @@ import org.kodein.di.diContext
 import org.kodein.di.instance
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.util.succeedOrThrow
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.service.ConfigurationService
 
@@ -30,10 +31,6 @@ class ConfigDatabaseGetCommand(
 
     override suspend fun CoroutineScope.coRun() {
         service.findDatabaseByName(name)
-            .onSuccess { echo(view.render(it)) }
-            .onFailure {
-                echo("Failed to find database by name: ${it.message}", err = true)
-                throw ProgramResult(1)
-            }
+            .succeedOrThrow { echo(view.render(it)) }
     }
 }

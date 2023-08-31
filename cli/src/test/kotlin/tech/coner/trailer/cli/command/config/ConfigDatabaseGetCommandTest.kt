@@ -2,8 +2,7 @@ package tech.coner.trailer.cli.command.config
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.isEmpty
+import assertk.assertions.*
 import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
@@ -50,7 +49,9 @@ class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetComm
     fun `When given invalid name option it should fail`() {
         val baz = "baz"
         check(!dbConfigs.allByName.contains(baz)) { "Failed prerequisite: test database configs expected not to contain baz database"}
-        coEvery { service.findDatabaseByName(any()) } returns Result.failure(NotFoundException("nfe"))
+        val exception = NotFoundException("nfe")
+        coEvery { service.findDatabaseByName(any()) } returns Result.failure(exception)
+        arrangeDefaultErrorHandling()
 
         assertThrows<ProgramResult> {
             command.parse(arrayOf(baz))
@@ -60,10 +61,6 @@ class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetComm
             service.findDatabaseByName(baz)
         }
         confirmVerified(service, view)
-        assertThat(testConsole).error().all {
-            contains("Failed to find database by name")
-            contains("nfe")
-        }
-        assertThat(testConsole).output().isEmpty()
+        verifyDefaultErrorHandlingInvoked(exception)
     }
 }

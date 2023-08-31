@@ -2,10 +2,7 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.coEvery
-import io.mockk.coJustRun
-import io.mockk.coVerifySequence
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Test
@@ -21,6 +18,7 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Paths
@@ -32,6 +30,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
+    private val adapter: EventDetailModelAdapter by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCrispyFishPersonMapAddCommand>()
@@ -69,9 +68,11 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
             )
         )
         coEvery { crispyFishEventMappingContextService.load(set, set.crispyFish!!) } returns context
-        coJustRun { service.update(set) }
+        coJustRun { service.update(any()) }
+        val model: EventDetailModel = mockk()
+        every { adapter(any()) } returns model
         val viewRender = "view rendered"
-//        every { view(set) } returns viewRender
+        every { view(any()) } returns viewRender
 
         command.parse(arrayOf(
             "${event.id}",
@@ -87,7 +88,8 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
             crispyFishClassService.loadAllByAbbreviation(any())
             personService.findById(person.id)
             service.update(set)
-//            view(set)
+            adapter(set)
+            view(model)
         }
         assertThat(testConsole.output).isEqualTo(viewRender)
     }
