@@ -3,9 +3,7 @@ package tech.coner.trailer.cli.command
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.context
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verifySequence
+import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -19,6 +17,7 @@ import org.kodein.di.*
 import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.di.*
+import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.di.command.commandModule
 import tech.coner.trailer.cli.di.command.mockkParameterMapperModule
 import tech.coner.trailer.cli.presentation.model.BaseCommandErrorModel
@@ -82,7 +81,8 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     }
 
     @AfterEach
-    fun after() {
+    fun afterAbstract() {
+        clearAllMocks()
         mainThreadSurrogate.close()
         command.cancel()
     }
