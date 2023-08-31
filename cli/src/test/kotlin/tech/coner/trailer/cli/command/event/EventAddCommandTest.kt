@@ -9,7 +9,6 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
@@ -37,19 +36,17 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
         val create = TestEvents.Lscc2019.points1.copy(
             motorsportReg = Event.MotorsportRegMetadata(id = "motorsportreg-event-id")
         )
-        every { policyService.findById(create.policy.id) } returns create.policy
+        every { policyService.findById(any()) } returns create.policy
         val crispyFishRoot = global.requireEnvironment().requireDatabaseConfiguration().crispyFishDatabase
         val crispyFishEventControlFile = crispyFishRoot.resolve(create.requireCrispyFish().eventControlFile)
             .also { it.createFile() }
         val crispyFishClassDefinitionFile = crispyFishRoot.resolve(create.requireCrispyFish().classDefinitionFile)
             .also { it.createFile() }
-        coEvery {
-            service.create(any())
-        } returns Result.success(create)
+        coEvery { service.create(any()) } returns Result.success(create)
         val presentationModel: EventDetailModel = mockk()
-        every { adapter(create) } returns presentationModel
+        every { adapter(any()) } returns presentationModel
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
-        every { view.invoke(presentationModel) } returns viewRendered
+        every { view.invoke(any()) } returns viewRendered
 
         command.parse(
             arrayOf(
@@ -74,7 +71,8 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
                 motorsportRegEventId = create.motorsportReg?.id,
                 policy = create.policy
             ))
-            view(adapter(create))
+            adapter(create)
+            view(presentationModel)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
