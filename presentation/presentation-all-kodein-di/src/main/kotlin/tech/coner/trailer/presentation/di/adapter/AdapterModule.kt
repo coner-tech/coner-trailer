@@ -24,6 +24,11 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::ClassModelAdapter) }
     bindSingleton<Adapter<Class, ClassModel>> { instance<ClassModelAdapter>() }
 
+    // Class Parent
+    bindSingleton { new(::ClassParentNameStringFieldAdapter) }
+    bindSingleton { new(::ClassParentModelAdapter) }
+    bindSingleton<Adapter<Class.Parent, ClassParentModel>> { instance<ClassParentModelAdapter>() }
+
     // Club
     bind { scoped(DataSessionScope).singleton { new(::ClubModelAdapter) } }
     bind<Adapter<Club, ClubModel>> { scoped(DataSessionScope).singleton { instance<ClubModelAdapter>() } }

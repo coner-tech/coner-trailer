@@ -7,8 +7,8 @@ import tech.coner.trailer.cli.di.command.commandModule
 import tech.coner.trailer.cli.di.command.parameterMapperModule
 import tech.coner.trailer.di.*
 import tech.coner.trailer.presentation.di.presenter.presenterModule
-import tech.coner.trailer.presentation.di.view.json.jsonViewRenderModule
-import tech.coner.trailer.presentation.di.view.text.textWidgetModule
+import tech.coner.trailer.presentation.di.view.json.jsonViewModule
+import tech.coner.trailer.presentation.di.view.text.textViewModule
 
 private val di = DI {
     importAll(
@@ -24,8 +24,8 @@ private val di = DI {
         verifierModule,
         motorsportRegApiModule,
         cliServiceModule,
-        textWidgetModule,
-        jsonViewRenderModule,
+        textViewModule,
+        jsonViewModule,
         presenterModule,
         cliktModule,
         cliPresentationAdapterModule,

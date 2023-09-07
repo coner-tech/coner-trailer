@@ -1,4 +1,4 @@
-package tech.coner.trailer.presentation.json.internal.model
+package tech.coner.trailer.presentation.view.json.internal.model
 
 import tech.coner.trailer.Run
 import tech.coner.trailer.Signage

@@ -7,11 +7,11 @@ import tech.coner.trailer.presentation.model.eventresults.*
 import tech.coner.trailer.presentation.text.view.*
 import tech.coner.trailer.presentation.text.view.eventresults.*
 
-val textWidgetModule = DI.Module("tech.coner.trailer.text.view") {
+val textViewModule = DI.Module("tech.coner.trailer.presentation.view.text") {
     import(presentationAdapterModule)
     val lineSeparator = System.lineSeparator()
 
-    // Bindings for package: tech.coner.trailer.render.text.view
+    // Bindings for package: tech.coner.trailer.presentation.view.text
 
     // Club
     bindSingleton<TextView<ClubModel>> {

@@ -4,9 +4,12 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.groups.groupChoice
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
@@ -18,6 +21,7 @@ import tech.coner.trailer.di.ConfigurationServiceFactory
 import tech.coner.trailer.di.EnvironmentHolderImpl
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
+import tech.coner.trailer.presentation.di.Format
 import java.nio.file.Path
 
 class RootCommand(
@@ -70,6 +74,13 @@ class RootCommand(
         )
     }
 
+    private val format by option()
+        .choice(
+            "text" to Format.TEXT,
+            "json" to Format.JSON
+        )
+        .default(Format.TEXT)
+
     private val verbose: Boolean by option().flag()
 
     override suspend fun CoroutineScope.coRun() {
@@ -98,6 +109,7 @@ class RootCommand(
                 throw Abort()
             }
         }
+        global.format = format
         global.environment = EnvironmentHolderImpl(
             di = di,
             configurationServiceArgument = configurationServiceArgument,

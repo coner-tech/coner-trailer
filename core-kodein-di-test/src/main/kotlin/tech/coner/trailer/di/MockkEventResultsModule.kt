@@ -5,51 +5,23 @@ import org.kodein.di.*
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.eventresults.*
 
-class MockkEventResultsFixture {
-
-    val rawCalculator: RawEventResultsCalculator by lazy { mockk() }
-    val paxCalculator: PaxEventResultsCalculator by lazy { mockk() }
-    val clazzCalculator: ClazzEventResultsCalculator by lazy { mockk() }
-    val topTimesCalculator: TopTimesEventResultsCalculator by lazy { mockk() }
-    val comprehensiveCalculator: ComprehensiveEventResultsCalculator by lazy { mockk() }
-    val individualCalculator: IndividualEventResultsCalculator by lazy { mockk() }
-
-    val module = DI.Module("mockk for tech.coner.trailer.eventresults") {
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    rawCalculator
-                }
-        }
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    paxCalculator
-                }
-        }
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    clazzCalculator
-                }
-        }
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    topTimesCalculator
-                }
-        }
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    comprehensiveCalculator
-                }
-        }
-        bind {
-            scoped(EventResultsSessionScope)
-                .factory { _: EventContext ->
-                    individualCalculator
-                }
-        }
+val mockkEventResults = DI.Module("tech.coner.trailer.eventresults mockk") {
+    bind<RawEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
+    }
+    bind<PaxEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
+    }
+    bind<ClazzEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
+    }
+    bind<TopTimesEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
+    }
+    bind<ComprehensiveEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
+    }
+    bind<IndividualEventResultsCalculator> {
+        scoped(EventResultsSessionScope).multiton { _: EventContext -> mockk() }
     }
 }

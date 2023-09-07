@@ -1,7 +1,7 @@
-package tech.coner.trailer.presentation.json.internal.model
+package tech.coner.trailer.presentation.view.json.internal.model
 
 import tech.coner.trailer.eventresults.ComprehensiveEventResults
-import tech.coner.trailer.presentation.json.internal.identifier.EventIdentifier
+import tech.coner.trailer.presentation.view.json.internal.identifier.EventIdentifier
 
 class ComprehensiveEventResultsModel(
     val event: EventIdentifier,

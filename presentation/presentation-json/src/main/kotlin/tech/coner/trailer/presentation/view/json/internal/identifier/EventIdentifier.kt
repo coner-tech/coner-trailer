@@ -1,4 +1,4 @@
-package tech.coner.trailer.presentation.json.internal.identifier
+package tech.coner.trailer.presentation.view.json.internal.identifier
 
 import tech.coner.trailer.Event
 import java.time.LocalDate

@@ -1,9 +1,9 @@
-package tech.coner.trailer.presentation.json.eventresults
+package tech.coner.trailer.presentation.view.json.eventresults
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.ObjectWriter
 import tech.coner.trailer.eventresults.OverallEventResults
-import tech.coner.trailer.presentation.json.internal.model.OverallEventResultsModel
+import tech.coner.trailer.presentation.view.json.internal.model.OverallEventResultsModel
 
 class JsonOverallEventResultsViewRenderer(
     objectMapper: ObjectMapper

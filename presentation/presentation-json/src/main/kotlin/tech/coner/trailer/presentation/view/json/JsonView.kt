@@ -1,4 +1,4 @@
-package tech.coner.trailer.presentation.json
+package tech.coner.trailer.presentation.view.json
 
 import tech.coner.trailer.presentation.model.Model
 import tech.coner.trailer.presentation.view.View

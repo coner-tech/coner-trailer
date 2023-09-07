@@ -1,7 +1,7 @@
-package tech.coner.trailer.presentation.json.internal.model
+package tech.coner.trailer.presentation.view.json.internal.model
 
 import tech.coner.trailer.eventresults.TopTimesEventResults
-import tech.coner.trailer.presentation.json.internal.identifier.EventIdentifier
+import tech.coner.trailer.presentation.view.json.internal.identifier.EventIdentifier
 
 class TopTimesEventResultsModel(
     val event: EventIdentifier,

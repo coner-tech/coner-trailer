@@ -1,8 +1,8 @@
-package tech.coner.trailer.presentation.json.internal.model
+package tech.coner.trailer.presentation.view.json.internal.model
 
 import tech.coner.trailer.Time
 import tech.coner.trailer.eventresults.ParticipantResult
-import tech.coner.trailer.presentation.json.internal.identifier.ParticipantIdentifier
+import tech.coner.trailer.presentation.view.json.internal.identifier.ParticipantIdentifier
 
 class ParticipantResultModel(
     val position: Int,

@@ -7,14 +7,23 @@ import org.kodein.di.scoped
 import org.kodein.di.singleton
 import tech.coner.trailer.Policy
 import tech.coner.trailer.di.DataSessionScope
+import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
 import tech.coner.trailer.presentation.model.PolicyModel
+import tech.coner.trailer.presentation.model.eventresults.*
 
 val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapter mockk") {
 
     // Event Detail
     bind<EventDetailModelAdapter> { scoped(DataSessionScope).singleton { mockk() } }
+
+    // Event Results
+    bind<Adapter<OverallEventResults, OverallEventResultsModel>> { singleton { mockk() } }
+    bind<Adapter<ClassEventResults, ClassEventResultsModel>> { singleton { mockk() } }
+    bind<Adapter<TopTimesEventResults, TopTimesEventResultsModel>> { singleton { mockk() } }
+    bind<Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel>> { singleton { mockk() } }
+    bind<Adapter<IndividualEventResults, IndividualEventResultsModel>> { singleton { mockk() } }
 
     // Policy
     bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { mockk() } }

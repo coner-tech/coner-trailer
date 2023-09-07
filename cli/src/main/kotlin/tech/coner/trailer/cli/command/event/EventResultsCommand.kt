@@ -22,10 +22,11 @@ import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
 import tech.coner.trailer.presentation.adapter.Adapter
-import tech.coner.trailer.presentation.adapter.eventresults.*
-import tech.coner.trailer.presentation.model.eventresults.EventResultsModel
+import tech.coner.trailer.presentation.di.Format
+import tech.coner.trailer.presentation.view.json.JsonView
+import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.model.eventresults.*
 import tech.coner.trailer.presentation.text.view.TextView
-import tech.coner.trailer.presentation.text.view.eventresults.*
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.writeText
@@ -40,21 +41,21 @@ class EventResultsCommand(
     help = "Event Results"
 ) {
 
-    internal inner class DataSessionContainer(
-        override val di: DI
+    override val diContext = diContextDataSession()
+
+    internal inner class ServicesContainer(
+        override val di: DI,
+        override val diContext: DIContext<*>
     ) : DIAware {
-        override val diContext = diContextDataSession()
-
-        val eventService: EventService by instance()
-        val eventContextService: EventContextService by instance()
+        val events: EventService by instance()
+        val eventContexts: EventContextService by instance()
     }
-    internal val dataSessionContainer = DataSessionContainer(di)
+    internal val services = ServicesContainer(di, diContext)
 
-    internal inner class CalculatorsContainer(
+    internal inner class CalculatorFactoriesContainer(
         override val di: DI
     ) : DIAware {
         override val diContext = diContext { EventResultsSession() }
-
         val raw: (EventContext) -> RawEventResultsCalculator by factory()
         val pax: (EventContext) -> PaxEventResultsCalculator by factory()
         val clazz: (EventContext) -> ClazzEventResultsCalculator by factory()
@@ -62,25 +63,28 @@ class EventResultsCommand(
         val comprehensive: (EventContext) -> ComprehensiveEventResultsCalculator by factory()
         val individual: (EventContext) -> IndividualEventResultsCalculator by factory()
     }
-    internal val calculators = CalculatorsContainer(di)
-    
-    internal inner class ViewsContainer(override val di: DI) : DIAware {
-        val clazz: MordantClassEventResultsView by instance()
-        val comprehensive: TextComprehensiveEventResultsView by instance()
-        val individual: TextIndividualEventResultsView by instance()
-        val overall: TextOverallEventResultsView by instance()
-        val topTimes: TextTopTimesEventResultsView by instance()
-    }
-    internal val views = ViewsContainer(di)
+    internal val calculatorFactories = CalculatorFactoriesContainer(di)
 
-    internal inner class AdaptersContainer(override val di: DI) : DIAware {
-        val clazz: ClassEventResultsModelAdapter by instance()
-        val comprehensive: ComprehensiveEventResultsModelAdapter by instance()
-        val individual: IndividualEventResultsModelAdapter by instance()
-        val overall: OverallEventResultsModelAdapter by instance()
-        val topTimes: TopTimesEventResultsModelAdapter by instance()
+    internal inner class AdaptersContainer(
+        override val di: DI
+    ) : DIAware {
+        val clazz: Adapter<ClassEventResults, ClassEventResultsModel> by instance()
+        val comprehensive: Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel> by instance()
+        val individual: Adapter<IndividualEventResults, IndividualEventResultsModel> by instance()
+        val overall: Adapter<OverallEventResults, OverallEventResultsModel> by instance()
+        val topTimes: Adapter<TopTimesEventResults, TopTimesEventResultsModel> by instance()
     }
-    internal val adapters = AdaptersContainer(di)
+    internal val adapters: AdaptersContainer = AdaptersContainer(di)
+    
+    internal inner class TextViewsContainer(override val di: DI) : DIAware {
+        val clazz: TextView<ClassEventResultsModel> by instance()
+        val comprehensive: TextView<ComprehensiveEventResultsModel> by instance()
+        val individual: TextView<IndividualEventResultsModel> by instance()
+        val overall: TextView<OverallEventResultsModel> by instance()
+        val topTimes: TextView<TopTimesEventResultsModel> by instance()
+    }
+    internal val textViews = TextViewsContainer(di)
+    internal val jsonView: JsonView<Model> by instance()
 
     private val fileOutputResolver: FileOutputDestinationResolver by instance()
 
@@ -105,19 +109,17 @@ class EventResultsCommand(
         )
         .defaultByName("--console")
 
-    override suspend fun CoroutineScope.coRun() {
-        val eventContext = dataSessionContainer.diContext.use {
-            val event = dataSessionContainer.eventService.findByKey(id).getOrThrow()
-            dataSessionContainer.eventContextService.load(event).getOrThrow()
-        }
-        calculators.diContext.use {
+    override suspend fun CoroutineScope.coRun() = diContext.use {
+        val event = services.events.findByKey(id).getOrThrow()
+        val eventContext = services.eventContexts.load(event).getOrThrow()
+        calculatorFactories.diContext.use {
             val render = when (type) {
-                StandardEventResultsTypes.raw -> handle(calculators.raw(eventContext), adapters.overall, views.overall)
-                StandardEventResultsTypes.pax -> handle(calculators.pax(eventContext), adapters.overall, views.overall)
-                StandardEventResultsTypes.clazz -> handle(calculators.clazz(eventContext), adapters.clazz, views.clazz)
-                StandardEventResultsTypes.topTimes -> handle(calculators.topTimes(eventContext), adapters.topTimes, views.topTimes)
-                StandardEventResultsTypes.comprehensive -> handle(calculators.comprehensive(eventContext), adapters.comprehensive, views.comprehensive)
-                StandardEventResultsTypes.individual -> handle(calculators.individual(eventContext), adapters.individual, views.individual)
+                StandardEventResultsTypes.raw -> handle(calculatorFactories.raw(eventContext), adapters.overall, textViews.overall)
+                StandardEventResultsTypes.pax -> handle(calculatorFactories.pax(eventContext), adapters.overall, textViews.overall)
+                StandardEventResultsTypes.clazz -> handle(calculatorFactories.clazz(eventContext), adapters.clazz, textViews.clazz)
+                StandardEventResultsTypes.topTimes -> handle(calculatorFactories.topTimes(eventContext), adapters.topTimes, textViews.topTimes)
+                StandardEventResultsTypes.comprehensive -> handle(calculatorFactories.comprehensive(eventContext), adapters.comprehensive, textViews.comprehensive)
+                StandardEventResultsTypes.individual -> handle(calculatorFactories.individual(eventContext), adapters.individual, textViews.individual)
                 else -> throw UnsupportedOperationException()
             }
             when (val output = medium) {
@@ -138,8 +140,13 @@ class EventResultsCommand(
     private fun <ER : EventResults, ERC : EventResultsCalculator<ER>, ERM : EventResultsModel<ER>> handle(
         calculator: ERC,
         adapter: Adapter<ER, ERM>,
-        view: TextView<ERM>
+        textView: TextView<ERM>,
     ): String {
-        return view(adapter(calculator.calculate()))
+        val results = calculator.calculate()
+        val model = adapter(results)
+        return when (global.format) {
+            Format.TEXT -> textView(model)
+            Format.JSON -> jsonView(model)
+        }
     }
 }

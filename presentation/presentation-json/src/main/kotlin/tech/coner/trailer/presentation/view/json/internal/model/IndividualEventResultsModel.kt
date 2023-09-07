@@ -1,4 +1,4 @@
-package tech.coner.trailer.presentation.json.internal.model
+package tech.coner.trailer.presentation.view.json.internal.model
 
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Time
@@ -6,8 +6,8 @@ import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.IndividualEventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.Score
-import tech.coner.trailer.presentation.json.internal.identifier.EventIdentifier
-import tech.coner.trailer.presentation.json.internal.identifier.ParticipantIdentifier
+import tech.coner.trailer.presentation.view.json.internal.identifier.EventIdentifier
+import tech.coner.trailer.presentation.view.json.internal.identifier.ParticipantIdentifier
 
 class IndividualEventResultsModel(
     val event: EventIdentifier,

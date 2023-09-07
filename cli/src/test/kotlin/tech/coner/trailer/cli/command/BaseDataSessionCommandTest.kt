@@ -9,6 +9,7 @@ import tech.coner.trailer.cli.di.command.mockkParameterMapperModule
 import tech.coner.trailer.di.*
 import tech.coner.trailer.presentation.testsupport.di.adapter.mockkPresentationAdapterModule
 import tech.coner.trailer.presentation.testsupport.di.presenter.mockkPresenterModule
+import tech.coner.trailer.presentation.testsupport.di.view.json.mockkJsonViewModule
 import tech.coner.trailer.presentation.testsupport.di.view.text.mockkTextViewModule
 
 abstract class BaseDataSessionCommandTest<C : BaseCommand> : AbstractCommandTest<C>() {
@@ -28,10 +29,12 @@ private val dataSessionCommandTestDi = DI {
         utilityModule, // TODO: eliminate, command to interact with presentation layer only
         mockkSnoozleModule, // TODO: eliminate, command to interact with presentation layer only
         mockkMotorsportRegApiModule, // TODO: eliminate, command to interact with presentation layer only
+        mockkEventResults, // TODO: eliminate, command to interact with presentation layer only
         mordantModule,
         mockkViewModule,
         cliPresentationViewModule,
         mockkTextViewModule,
+        mockkJsonViewModule,
         mockkPresenterModule,
         mockkPresentationAdapterModule,
         cliPresentationAdapterModule,
