@@ -25,21 +25,20 @@ import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
+import tech.coner.trailer.presentation.model.PersonDetailModel
+import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Paths
 
 class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapAssembleCommand>() {
 
-    override val di = DI.lazy {
-        extend(super.di)
-        import(mockkMapperModule)
-        bindSingleton(overrides = true) { CrispyFishRegistrationView() }
-    }
     private val service: EventService by instance()
     private val personService: PersonService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val crispyFishClassingMapper: CrispyFishClassingMapper by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
+    private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
+    private val personView: TextView<PersonDetailModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCrispyFishPersonMapAssembleCommand>()
 
@@ -87,12 +86,11 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
         }
         val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage?.classing)
         every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
-
+        val crispyFishRegistrationViewRendered = "crispyFishRegistrationViewRendered"
+        every { crispyFishRegistrationView.render(any()) } returns crispyFishRegistrationViewRendered
         coJustRun { service.update(any()) }
 
-        runBlocking {
-            command.parse(arrayOf("${event.id}"))
-        }
+        command.parse(arrayOf("${event.id}"))
 
         val update = event.copy(
             crispyFish = eventCrispyFish.copy(
@@ -110,6 +108,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
             service.findByKey(event.id)
             service.update(update)
         }
+        testConsole.output.contains(crispyFishRegistrationViewRendered)
     }
 
 }

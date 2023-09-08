@@ -23,6 +23,7 @@ private val dataSessionCommandTestDi = DI {
     fullDescriptionOnError = true
     bindSingleton { di }
     importAll(
+        mockkMapperModule, // TODO: eliminate, command to interact with presentation layer only
         mockkIoModule, // TODO: eliminate, command to interact with presentation layer only
         mockkConstraintModule, // TODO: eliminate, command to interact with presentation layer only
         mockkServiceModule, // TODO: eliminate, command to interact with presentation layer only
@@ -32,12 +33,12 @@ private val dataSessionCommandTestDi = DI {
         mockkEventResults, // TODO: eliminate, command to interact with presentation layer only
         mordantModule,
         mockkViewModule,
-        cliPresentationViewModule,
         mockkTextViewModule,
         mockkJsonViewModule,
         mockkPresenterModule,
         mockkPresentationAdapterModule,
-        cliPresentationAdapterModule,
+        mockkCliPresentationAdapterModule,
+        mockkCliPresentationViewModule,
         cliktModule,
         mockkParameterMapperModule,
         commandModule

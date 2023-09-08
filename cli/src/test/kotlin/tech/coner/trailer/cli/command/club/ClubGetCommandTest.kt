@@ -1,10 +1,10 @@
 package tech.coner.trailer.cli.command.club
 
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.isEmpty
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEmpty
+import assertk.assertions.*
+import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -65,13 +65,14 @@ class ClubGetCommandTest : BaseDataSessionCommandTest<ClubGetCommand>() {
         val exception = NotFoundException("fail on purpose")
         coEvery { presenter.load() } coAnswers { loaded.unlock() }
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { loaded.withLock { Result.failure(exception) } }
+        arrangeDefaultErrorHandling()
 
-        command.parse(emptyArray())
-
-        assertThat(testConsole).all {
-            error().isNotEmpty()
-            output().isEmpty()
+        assertFailure {
+            command.parse(emptyArray())
         }
+            .isInstanceOf(ProgramResult::class)
+
+        verifyDefaultErrorHandlingInvoked(exception)
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()

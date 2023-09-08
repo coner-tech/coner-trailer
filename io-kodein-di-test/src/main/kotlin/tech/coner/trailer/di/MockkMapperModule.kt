@@ -19,7 +19,7 @@ import tech.coner.trailer.io.mapper.RankingSortMapper
 import tech.coner.trailer.io.mapper.SeasonMapper
 import tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 
-val mockkMapperModule = DI.Module("mockk for tech.coner.trailer.io.mapper") {
+val mockkMapperModule = DI.Module("tech.coner.trailer.io.mapper mockk") {
     bind<ClubMapper> {
         scoped(DataSessionScope).singleton { mockk() }
     }
