@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   ci-jvm:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v2
@@ -27,6 +28,7 @@ jobs:
 
   ci-graalvm:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v2
