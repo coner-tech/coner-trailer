@@ -41,7 +41,24 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     lateinit var errorAdapter: Adapter<Throwable, BaseCommandErrorModel>
     lateinit var errorView: TextView<BaseCommandErrorModel>
 
-    override val di = abstractCommandTestDi
+    override val di = DI {
+        fullContainerTreeOnError = true
+        fullDescriptionOnError = true
+        bindSingleton { di }
+        importAll(
+            mockkIoModule,
+            mockkConstraintModule, // considering an exception to use constraints to drive clikt param validation (maybe these should move to presenter though?)
+            mockkServiceModule, // TODO: eliminate, command to interact with presenter only
+            utilityModule,
+            mockkViewModule, // TODO: eliminate, command to interact with presenter only
+            presenterModule,
+            mockkCliPresentationViewModule,
+            mockkCliPresentationAdapterModule,
+            mockkParameterMapperModule,
+            cliktModule,
+            commandModule
+        )
+    }
 
     private val mainThreadSurrogate = newSingleThreadContext("CLI Main Thread Test Surrogate")
     override val coroutineContext: CoroutineContext = mainThreadSurrogate
@@ -82,7 +99,6 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
 
     @AfterEach
     fun afterAbstract() {
-        clearAllMocks()
         mainThreadSurrogate.close()
         command.cancel()
     }
@@ -106,24 +122,4 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
         }
         assertThat(testConsole).error().isEqualTo(defaultErrorHandlingViewRenders)
     }
-}
-
-private val abstractCommandTestDi = DI {
-    fullContainerTreeOnError = true
-    fullDescriptionOnError = true
-    bindSingleton { di }
-    importAll(
-        mockkIoModule,
-        mockkConstraintModule, // considering an exception to use constraints to drive clikt param validation (maybe these should move to presenter though?)
-        mockkServiceModule, // TODO: eliminate, command to interact with presenter only
-        utilityModule,
-        mockkViewModule, // TODO: eliminate, command to interact with presenter only
-        presenterModule,
-        mockkCliPresentationViewModule,
-        mockkCliPresentationAdapterModule,
-        mockkParameterMapperModule,
-        cliktModule,
-        commandModule
-    )
-
 }

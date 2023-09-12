@@ -13,35 +13,33 @@ import tech.coner.trailer.presentation.testsupport.di.view.json.mockkJsonViewMod
 import tech.coner.trailer.presentation.testsupport.di.view.text.mockkTextViewModule
 
 abstract class BaseDataSessionCommandTest<C : BaseCommand> : AbstractCommandTest<C>() {
-    override val di = dataSessionCommandTestDi
+    override val di = DI {
+        fullContainerTreeOnError = true
+        fullDescriptionOnError = true
+        bindSingleton { di }
+        importAll(
+            mockkMapperModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkIoModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkConstraintModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkServiceModule, // TODO: eliminate, command to interact with presentation layer only
+            utilityModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkSnoozleModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkMotorsportRegApiModule, // TODO: eliminate, command to interact with presentation layer only
+            mockkEventResults, // TODO: eliminate, command to interact with presentation layer only
+            mordantModule,
+            mockkViewModule,
+            mockkTextViewModule,
+            mockkJsonViewModule,
+            mockkPresenterModule,
+            mockkPresentationAdapterModule,
+            mockkCliPresentationAdapterModule,
+            mockkCliPresentationViewModule,
+            cliktModule,
+            mockkParameterMapperModule,
+            commandModule
+        )
+        bind<SeasonPointsCalculatorParameterMapper> { scoped(DataSessionScope).singleton { mockk() } }
+    }
     override val diContext = diContext { command.diContext.value as DataSessionHolder }
     override val setupGlobal = setupGlobalWithTempEnvironment
-}
-
-private val dataSessionCommandTestDi = DI {
-    fullContainerTreeOnError = true
-    fullDescriptionOnError = true
-    bindSingleton { di }
-    importAll(
-        mockkMapperModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkIoModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkConstraintModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkServiceModule, // TODO: eliminate, command to interact with presentation layer only
-        utilityModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkSnoozleModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkMotorsportRegApiModule, // TODO: eliminate, command to interact with presentation layer only
-        mockkEventResults, // TODO: eliminate, command to interact with presentation layer only
-        mordantModule,
-        mockkViewModule,
-        mockkTextViewModule,
-        mockkJsonViewModule,
-        mockkPresenterModule,
-        mockkPresentationAdapterModule,
-        mockkCliPresentationAdapterModule,
-        mockkCliPresentationViewModule,
-        cliktModule,
-        mockkParameterMapperModule,
-        commandModule
-    )
-    bind<SeasonPointsCalculatorParameterMapper> { scoped(DataSessionScope).singleton { mockk() } }
 }
