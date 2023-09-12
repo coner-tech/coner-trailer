@@ -4,22 +4,27 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.justRun
+import io.mockk.mockk
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import org.kodein.di.on
+import tech.coner.trailer.Policy
 import tech.coner.trailer.TestPolicies
+import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 
 class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
 
     private val service: PolicyService by instance()
+    private val adapter: Adapter<Policy, PolicyModel> by instance()
     private val view: TextView<PolicyModel> by instance()
 
     override fun DirectDI.createCommand() = instance<PolicySetCommand>()
@@ -33,10 +38,12 @@ class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
             finalScoreStyle = FinalScoreStyle.AUTOCROSS,
             paxTimeStyle = PaxTimeStyle.FAIR
         )
-        every { service.findById(original.id) } returns original
-        justRun { service.update(set) }
+        every { service.findById(any()) } returns original
+        justRun { service.update(any()) }
+        val model: PolicyModel = mockk()
+        every { adapter(any()) } returns model
         val viewRender = "view rendered"
-//        every { view(set) } returns viewRender
+        every { view(any()) } returns viewRender
 
         command.parse(arrayOf(
             "${original.id}",
@@ -49,8 +56,9 @@ class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
         verifySequence {
             service.findById(original.id)
             service.update(set)
-//            view(set)
+            adapter(set)
+            view(model)
         }
-        assertThat(testConsole.output, "console output").isEqualTo(viewRender)
+        assertThat(testConsole).output().isEqualTo(viewRender)
     }
 }
