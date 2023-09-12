@@ -8,6 +8,7 @@ import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.PolicyCollectionModelAdapter
 import tech.coner.trailer.presentation.model.PolicyCollectionModel
 import tech.coner.trailer.presentation.model.PolicyModel
@@ -25,11 +26,11 @@ class PolicyListCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val adapter: PolicyCollectionModelAdapter by instance()
+    private val adapter: Adapter<PolicyCollection, PolicyCollectionModel> by instance()
     private val view: TextCollectionView<PolicyModel, PolicyCollectionModel> by instance()
 
     override suspend fun CoroutineScope.coRun() = diContext.use {
         val policies = service.list()
-        echo(view(adapter(PolicyCollection(policies))))
+        echo(view(adapter(policies)))
     }
 }

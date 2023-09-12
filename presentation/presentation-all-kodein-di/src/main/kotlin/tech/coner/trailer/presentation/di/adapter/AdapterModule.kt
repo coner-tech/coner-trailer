@@ -3,6 +3,7 @@ package tech.coner.trailer.presentation.di.adapter
 import org.kodein.di.*
 import tech.coner.trailer.*
 import tech.coner.trailer.di.DataSessionScope
+import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.*
 import tech.coner.trailer.presentation.adapter.eventresults.*
 import tech.coner.trailer.presentation.model.*
@@ -86,6 +87,8 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::PolicyFinalScoreStyleStringFieldAdapter) }
     bind { scoped(DataSessionScope).singleton { new(::PolicyModelAdapter) } }
     bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { instance<PolicyModelAdapter>() } }
+    bind { scoped(DataSessionScope).singleton { new(::PolicyCollectionModelAdapter) } }
+    bind<Adapter<PolicyCollection, PolicyCollectionModel>> { scoped(DataSessionScope).singleton { instance<PolicyCollectionModelAdapter>() } }
 
     // Run
     bindSingleton { new(::RunSequenceStringFieldAdapter) }

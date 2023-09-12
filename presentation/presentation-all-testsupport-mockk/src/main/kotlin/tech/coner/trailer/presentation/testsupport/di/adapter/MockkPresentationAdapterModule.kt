@@ -8,8 +8,10 @@ import org.kodein.di.singleton
 import tech.coner.trailer.Policy
 import tech.coner.trailer.di.DataSessionScope
 import tech.coner.trailer.eventresults.*
+import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.PolicyCollectionModel
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.model.eventresults.*
 
@@ -27,4 +29,5 @@ val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.
 
     // Policy
     bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { mockk() } }
+    bind<Adapter<PolicyCollection, PolicyCollectionModel>> { scoped(DataSessionScope).singleton { mockk() } }
 }

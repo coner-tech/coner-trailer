@@ -6,6 +6,7 @@ import tech.coner.trailer.datasource.snoozle.entity.PolicyEntity
 import tech.coner.trailer.io.constraint.PolicyDeleteConstraints
 import tech.coner.trailer.io.constraint.PolicyPersistConstraints
 import tech.coner.trailer.io.mapper.PolicyMapper
+import tech.coner.trailer.io.model.PolicyCollection
 import java.util.*
 
 class PolicyService(
@@ -32,11 +33,12 @@ class PolicyService(
         return mapper.toCore(entity)
     }
 
-    fun list(): List<Policy> {
+    fun list(): PolicyCollection {
         return resource.stream()
             .sorted(compareBy(PolicyEntity::name))
             .map(mapper::toCore)
             .toList()
+            .let { PolicyCollection(it) }
     }
 
     fun update(update: Policy) {
