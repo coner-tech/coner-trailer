@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.justRun
+import io.mockk.mockk
 import io.mockk.verifySequence
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -15,6 +16,7 @@ import tech.coner.trailer.TestPolicies
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 
@@ -22,6 +24,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
     private val service: PolicyService by instance()
     private val clubService: ClubService by instance()
+    private val adapter: Adapter<Policy, PolicyModel> by instance()
     private val view: TextView<PolicyModel> by instance()
 
     override fun DirectDI.createCommand() = instance<PolicyAddCommand>()
@@ -37,7 +40,9 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
         every { clubService.get() } returns TestClubs.lscc
         justRun { service.create(param.policy) }
         val render = "view rendered"
-//        every { view(param.policy) } returns render
+        val model: PolicyModel = mockk()
+        every { adapter(any()) } returns model
+        every { view(any()) } returns render
 
         command.parse(arrayOf(
             "--id", "${param.policy.id}",
@@ -49,7 +54,8 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
 
         verifySequence {
             service.create(param.policy)
-//            view(param.policy)
+            adapter(param.policy)
+            view(model)
         }
         assertThat(testConsole.output).isEqualTo(render)
     }
