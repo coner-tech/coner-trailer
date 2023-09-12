@@ -5,12 +5,14 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.scoped
 import org.kodein.di.singleton
+import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
 import tech.coner.trailer.di.DataSessionScope
 import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.model.PolicyCollectionModel
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.model.eventresults.*
@@ -26,6 +28,9 @@ val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.
     bind<Adapter<TopTimesEventResults, TopTimesEventResultsModel>> { singleton { mockk() } }
     bind<Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel>> { singleton { mockk() } }
     bind<Adapter<IndividualEventResults, IndividualEventResultsModel>> { singleton { mockk() } }
+
+    // Person
+    bind<Adapter<Person, PersonDetailModel>> { singleton { mockk() } }
 
     // Policy
     bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { mockk() } }
