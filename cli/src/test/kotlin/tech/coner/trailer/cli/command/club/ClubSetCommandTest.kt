@@ -5,6 +5,7 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.MissingOption
+import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -79,22 +80,24 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
 
     @Test
     fun `It should error if club fails to load`() = runTest {
+        arrangeDefaultErrorHandling()
         val club = TestClubs.lscc
         val exception = ReadException("corrupt club")
         val mutex = Mutex(locked = true)
         coEvery { presenter.load() } coAnswers { mutex.unlock() }
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { Result.failure(exception) } }
 
-        command.parse(arrayOf("--name", club.name))
-
-        assertThat(testConsole).all {
-            error().contains(exception.message)
-            output().isEmpty()
+        assertFailure {
+            command.parse(arrayOf("--name", club.name))
         }
+            .isInstanceOf<ProgramResult>()
+
+        assertThat(testConsole).output().isEmpty()
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()
         }
         confirmVerified(presenter, textView)
+        verifyDefaultErrorHandlingInvoked(exception)
     }
 }
