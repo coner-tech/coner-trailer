@@ -26,6 +26,7 @@ class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
         val event = TestEvents.Lscc2019.points1
         coEvery { service.findByKey(event.id) } returns Result.success(event)
         val viewRendered = "view rendered event ${event.id}"
+
 //        every { view(event) } returns viewRendered
 
         command.parse(arrayOf(
