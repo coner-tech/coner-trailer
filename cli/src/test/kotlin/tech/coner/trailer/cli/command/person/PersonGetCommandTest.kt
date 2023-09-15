@@ -6,6 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.messageContains
 import com.github.ajalt.clikt.core.MissingArgument
+import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -88,15 +89,17 @@ class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
         val mutex = Mutex(locked = true)
         coEvery { presenter.load() } coAnswers { mutex.unlock() }
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { throw exception } }
+        arrangeDefaultErrorHandling()
 
         assertFailure {
             command.parse(arrayOf(validPresenterArgument.id.toString()))
         }
-            .isEqualTo(exception)
+            .isInstanceOf<ProgramResult>()
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()
         }
         confirmVerified(presenter, textView)
+        verifyDefaultErrorHandlingInvoked(exception)
     }
 }
