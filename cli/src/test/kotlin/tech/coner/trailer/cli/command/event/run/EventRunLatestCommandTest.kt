@@ -5,6 +5,7 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.*
 import com.github.ajalt.clikt.core.BadParameterValue
+import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -99,8 +100,10 @@ class EventRunLatestCommandTest : BaseDataSessionCommandTest<EventRunLatestComma
     @ValueSource(ints = [0, -1, -2, -4, -8, -16, -32, -64])
     fun `It should fail to validate when specified count is less than 1`(count: Int) {
         val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        arrangeDefaultErrorHandling()
         val fixture = arrangeValidEvent()
-        coEvery { presenter.commit() } answers { Result.failure(ConstraintViolationException(Strings.constraintsEventRunLatestCountMustBeGreaterThanZero)) }
+        val throwable = ConstraintViolationException(Strings.constraintsEventRunLatestCountMustBeGreaterThanZero)
+        coEvery { presenter.commit() } answers { Result.failure(throwable) }
 
         assertFailure {
             command.parse(arrayOf(
@@ -108,15 +111,10 @@ class EventRunLatestCommandTest : BaseDataSessionCommandTest<EventRunLatestComma
                 "${eventContext.event.id}"
             ))
         }
-            .isInstanceOf(ConstraintViolationException::class)
-            .all {
-                hasMessage(Strings.constraintsEventRunLatestCountMustBeGreaterThanZero)
-            }
+            .isInstanceOf(ProgramResult::class)
 
-        assertThat(testConsole).all {
-            output().isEmpty()
-            error().isEmpty()
-        }
+        verifyDefaultErrorHandlingInvoked(throwable)
+        assertThat(testConsole).output().isEmpty()
         coVerify {
             presenter.load()
             presenter.awaitLoadedItemModel()
