@@ -54,7 +54,7 @@ class PersonAddCommand(
         presenter.commit()
             .succeedOrThrow {
                 presenter.create()
-                view(it)
+                echo(view(it))
             }
     }
 }
