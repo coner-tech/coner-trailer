@@ -53,6 +53,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
             error().isEmpty()
         }
         verifySequence {
+            // https://github.com/coner-tech/coner-trailer/issues/102 testing smell
             service.search(any()) // verified with filter behavior assertions below
             adapter(searchResults)
             view(model)
@@ -86,6 +87,7 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
             error().isEmpty()
         }
         verifySequence {
+            // https://github.com/coner-tech/coner-trailer/issues/102 testing smell
             service.search(any()) // verified with filter behavior assertions below
             adapter(searchResults)
             view(model)
