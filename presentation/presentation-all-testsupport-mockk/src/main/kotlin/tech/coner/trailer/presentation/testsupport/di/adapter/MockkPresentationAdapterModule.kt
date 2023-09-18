@@ -12,6 +12,7 @@ import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.model.PolicyCollectionModel
 import tech.coner.trailer.presentation.model.PolicyModel
@@ -31,6 +32,7 @@ val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.
 
     // Person
     bind<Adapter<Person, PersonDetailModel>> { singleton { mockk() } }
+    bind<Adapter<Collection<Person>, PersonCollectionModel>> { singleton { mockk() } }
 
     // Policy
     bind<Adapter<Policy, PolicyModel>> { scoped(DataSessionScope).singleton { mockk() } }

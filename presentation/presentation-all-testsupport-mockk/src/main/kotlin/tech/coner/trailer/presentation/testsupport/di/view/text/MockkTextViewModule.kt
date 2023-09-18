@@ -22,6 +22,7 @@ val mockkTextViewModule = DI.Module("tech.coner.trailer.testsupport.render.text.
 
     // Person
     bindSingleton<TextView<PersonDetailModel>> { mockk() }
+    bindSingleton<TextCollectionView<PersonDetailModel, PersonCollectionModel>> { mockk() }
 
     // Policy
     bindSingleton<TextView<PolicyModel>> { mockk() }
