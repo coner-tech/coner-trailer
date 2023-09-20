@@ -70,10 +70,9 @@ class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddComm
 
     @Test
     fun `When it fails to add database, it should display error and exit`() {
+        arrangeDefaultErrorHandling()
         val exception = Exception("Something went wrong")
-        coEvery {
-            service.addDatabase(any())
-        } returns Result.failure(exception)
+        coEvery { service.addDatabase(any()) } returns Result.failure(exception)
 
         assertThrows<ProgramResult> {
             command.parse(arrayOf(
@@ -86,14 +85,10 @@ class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddComm
             ))
         }
 
+        verifyDefaultErrorHandlingInvoked(exception)
         coVerifySequence {
             service.addDatabase(any())
         }
         confirmVerified(service, view)
-        assertThat(testConsole).error()
-            .all {
-                contains("Failed to add database")
-                contains(exception.message!!)
-            }
     }
 }
