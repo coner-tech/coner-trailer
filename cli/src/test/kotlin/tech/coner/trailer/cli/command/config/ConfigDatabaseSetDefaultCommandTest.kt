@@ -1,9 +1,7 @@
 package tech.coner.trailer.cli.command.config
 
-import assertk.all
 import assertk.assertAll
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.*
@@ -11,8 +9,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
-import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
@@ -64,18 +60,14 @@ class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabase
         val exception = NotFoundException("Not found")
         coEvery { service.setDefaultDatabase(any()) } returns Result.failure(exception)
         val name = "irrelevant"
+        arrangeDefaultErrorHandling()
 
-        val actual = assertThrows<ProgramResult> {
+        assertThrows<ProgramResult> {
             command.parse(arrayOf(name))
         }
 
+        verifyDefaultErrorHandlingInvoked(exception)
         coVerifySequence { service.setDefaultDatabase(name) }
-        verifySequence(inverse = true) { view.render(any<DatabaseConfiguration>()) }
-        assertThat(testConsole)
-            .error()
-            .all {
-                contains("Failed to set default database")
-                contains(exception.message!!)
-            }
+        confirmVerified(service, view)
     }
 }
