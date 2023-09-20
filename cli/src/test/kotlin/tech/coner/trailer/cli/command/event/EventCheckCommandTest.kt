@@ -4,33 +4,38 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
-import io.mockk.coEvery
-import io.mockk.coVerifySequence
-import io.mockk.every
-import io.mockk.mockk
+import com.github.ajalt.clikt.core.ProgramResult
+import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.crispyfish.model.Registration
 import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
+import tech.coner.trailer.Run
+import tech.coner.trailer.TestEventContexts
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
+import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.text.view.TextRunsView
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.model.RunCollectionModel
+import tech.coner.trailer.presentation.model.RunModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 import java.util.*
 
 class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
 
-    private val service: EventService by instance()
+    private val eventService: EventService by instance()
+    private val eventContextService: EventContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val textRunsView: TextRunsView by instance()
+    private val runCollectionModelAdapter: Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
+    private val runsTextView: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCheckCommand>()
 
@@ -46,6 +51,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             every { crispyFish } returns checkCrispyFish
             every { motorsportReg } returns checkMotorsportReg
         }
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val result = EventHealthCheckOutcome(
             unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = listOf(mockk<Registration>() to mockk()),
@@ -57,17 +63,21 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             unusedPeopleMapKeys = listOf(mockk()),
             runsWithInvalidSignage = listOf(mockk())
         )
-        coEvery { service.findByKey(checkId) } returns Result.success(check)
-        coEvery { service.check(check) } returns result
+        coEvery { eventService.findByKey(checkId) } returns Result.success(check)
+        coEvery { eventService.check(check) } returns result
+        coEvery { eventContextService.load(check) } returns Result.success(eventContext)
         every { registrationTableView.render(any()) } returns "registrationTableView rendered"
         every { peopleMapKeyTableView.render(any()) } returns "peopleMapKeyTableView rendered"
-//        every { textRunsView(any(), any()) } returns "runsViewRenderer rendered"
+        val runsWithInvalidSignageModel: RunCollectionModel = mockk()
+        every { runCollectionModelAdapter(any()) } returns runsWithInvalidSignageModel
+        every { runsTextView(any()) } returns "runsTextView rendered"
 
         command.parse(arrayOf("$checkId"))
 
         coVerifySequence {
-            service.findByKey(checkId)
-            service.check(check)
+            eventService.findByKey(checkId)
+            eventContextService.load(check)
+            eventService.check(check)
             registrationTableView.render(listOf(result.unmappedMotorsportRegPersonMatches.single().first))
             registrationTableView.render(result.unmappedClubMemberIdNullRegistrations)
             registrationTableView.render(result.unmappedClubMemberIdNotFoundRegistrations)
@@ -75,8 +85,17 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             registrationTableView.render(result.unmappedClubMemberIdMatchButNameMismatchRegistrations)
             registrationTableView.render(result.unmappedExactMatchRegistrations)
             peopleMapKeyTableView.render(result.unusedPeopleMapKeys)
-//            textRunsView(result.runsWithInvalidSignage, checkPolicy)
+            runCollectionModelAdapter(check to result.runsWithInvalidSignage)
+            runsTextView(runsWithInvalidSignageModel)
         }
+        confirmVerified(
+            eventService,
+            eventContextService,
+            registrationTableView,
+            peopleMapKeyTableView,
+            runCollectionModelAdapter,
+            runsTextView
+        )
         assertThat(testConsole.output).all {
             contains("Found unmapped registration(s) with club member ID null")
             contains("Found unmapped registration(s) with club member ID not found")
@@ -96,7 +115,8 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             every { id } returns checkId
             every { crispyFish } returns checkCrispyFish
         }
-        val context: CrispyFishEventMappingContext = mockk()
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        coEvery { eventContextService.load(any()) } returns Result.success(eventContext)
         val result = EventHealthCheckOutcome(
             unmappable = emptyList(),
             unmappedMotorsportRegPersonMatches = emptyList(),
@@ -108,15 +128,17 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             unusedPeopleMapKeys = emptyList(),
             runsWithInvalidSignage = emptyList()
         )
-        coEvery { service.findByKey(checkId) } returns Result.success(check)
-        coEvery { service.check(check) } returns result
+        coEvery { eventService.findByKey(checkId) } returns Result.success(check)
+        coEvery { eventService.check(check) } returns result
 
         command.parse(arrayOf("$checkId"))
 
         coVerifySequence {
-            service.findByKey(checkId)
-            service.check(check)
+            eventService.findByKey(checkId)
+            eventContextService.load(check)
+            eventService.check(check)
         }
+        confirmVerified(eventService, eventContextService)
         assertThat(testConsole.output).isEmpty()
     }
 
@@ -127,16 +149,22 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             every { id } returns checkId
             every { crispyFish } returns null
         }
-        coEvery { service.findByKey(checkId) } returns Result.success(check)
-        coEvery { service.check(check) } throws IllegalStateException()
+        val eventContext = TestEventContexts.Lscc2019Simplified.points1
+        coEvery { eventService.findByKey(any()) } returns Result.success(check)
+        coEvery { eventContextService.load(any()) } returns Result.success(eventContext)
+        val exception = IllegalStateException()
+        coEvery { eventService.check(any()) } throws exception
+        arrangeDefaultErrorHandling()
 
-        assertThrows<IllegalStateException> {
+        assertThrows<ProgramResult> {
             command.parse(arrayOf("$checkId"))
         }
 
+        verifyDefaultErrorHandlingInvoked(exception)
         coVerifySequence {
-            service.findByKey(checkId)
-            service.check(check)
+            eventService.findByKey(checkId)
+            eventContextService.load(check)
+            eventService.check(check)
         }
         assertThat(testConsole.output).isEmpty()
     }

@@ -94,7 +94,9 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::RunSequenceStringFieldAdapter) }
     bindSingleton { new(::RunRerunStringFieldAdapter) }
     bindSingleton { new(::RunModelAdapter) }
-    bindSingleton { new(::RunCollectionModelAdapter) }
+    bindSingleton { new(::EventContextRunCollectionModelAdapter) }
+    bind<Adapter<EventContext, RunCollectionModel>> { scoped(DataSessionScope).singleton { instance<EventContextRunCollectionModelAdapter>() } }
+    bind<Adapter<Pair<Event, Collection<Run>>, RunCollectionModel>> { scoped(DataSessionScope).singleton { new(::ArbitraryRunsCollectionModelAdapter) } }
 
     // Signage
     bindSingleton { new(::SignageStringFieldAdapter) }

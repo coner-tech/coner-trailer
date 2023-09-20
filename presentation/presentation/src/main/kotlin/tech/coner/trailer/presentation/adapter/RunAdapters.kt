@@ -1,8 +1,10 @@
 package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
 import tech.coner.trailer.Run
 import tech.coner.trailer.presentation.Strings
+import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 
 class RunSequenceStringFieldAdapter : StringFieldAdapter<Run> {
@@ -41,4 +43,25 @@ class RunModelAdapter(
         val run: Run,
         val event: Event
     )
+}
+
+class EventContextRunCollectionModelAdapter(
+    private val runAdapter: RunModelAdapter
+) : Adapter<EventContext, RunCollectionModel> {
+    override fun invoke(model: EventContext): RunCollectionModel {
+        return RunCollectionModel(
+            items = model.runs.map { runAdapter(it, model.event) }
+        )
+    }
+}
+
+class ArbitraryRunsCollectionModelAdapter(
+    private val runAdapter: RunModelAdapter
+) : Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> {
+
+    override fun invoke(model: Pair<Event, Collection<Run>>): RunCollectionModel {
+        return RunCollectionModel(
+            items = model.second.map { runAdapter(it, model.first) }
+        )
+    }
 }

@@ -5,6 +5,9 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
+import tech.coner.trailer.Event
+import tech.coner.trailer.EventContext
+import tech.coner.trailer.Run
 import tech.coner.trailer.cli.command.BaseCommand
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.di.use
@@ -13,8 +16,10 @@ import tech.coner.trailer.cli.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.cli.view.PeopleMapKeyTableView
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.RunCollectionModelAdapter
-import tech.coner.trailer.presentation.text.view.TextRunsView
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.model.RunCollectionModel
+import tech.coner.trailer.presentation.model.RunModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
 import java.util.*
 
 class EventCheckCommand(
@@ -32,8 +37,8 @@ class EventCheckCommand(
     private val eventContextService: EventContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runCollectionModelAdapter: RunCollectionModelAdapter by instance()
-    private val runsViewRenderer: TextRunsView by instance()
+    private val runCollectionModelAdapter: Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
+    private val runsTextView: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
 
@@ -75,7 +80,7 @@ class EventCheckCommand(
         }
         if (result.runsWithInvalidSignage.isNotEmpty()) {
             echo("Found runs with invalid signage:")
-            echo(runsViewRenderer(runCollectionModelAdapter(eventContext)))
+            echo(runsTextView(runCollectionModelAdapter(check to result.runsWithInvalidSignage)))
         }
     }
 }
