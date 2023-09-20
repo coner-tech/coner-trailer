@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command.config
 
-import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.parameters.arguments.argument
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
@@ -32,10 +31,6 @@ class ConfigDatabaseRemoveCommand(
     private val name: String by argument()
 
     override suspend fun CoroutineScope.coRun() {
-        service.removeDatabase(name)
-            .onFailure {
-                echo("Failed to remove database: ${it.message}", err = true)
-                throw ProgramResult(1)
-            }
+        service.removeDatabase(name).getOrThrow()
     }
 }

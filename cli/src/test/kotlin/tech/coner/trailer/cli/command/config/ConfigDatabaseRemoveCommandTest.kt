@@ -7,11 +7,11 @@ import assertk.assertions.isEmpty
 import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
+import io.mockk.confirmVerified
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.view.DatabaseConfigurationView
@@ -49,20 +49,16 @@ class ConfigDatabaseRemoveCommandTest : BaseConfigCommandTest<ConfigDatabaseRemo
     fun `When given invalid name option it should fail`() {
         val exception = Exception("No database found with name")
         coEvery { service.removeDatabase(any()) } returns Result.failure(exception)
+        arrangeDefaultErrorHandling()
 
         assertThrows<ProgramResult> {
             command.parse(arrayOf("baz"))
         }
 
+        verifyDefaultErrorHandlingInvoked(exception)
         coVerifySequence {
             service.removeDatabase("baz")
         }
-        assertThat(testConsole).all {
-            error().all {
-                contains("Failed to remove database")
-                contains(exception.message!!)
-            }
-            output().isEmpty()
-        }
+        confirmVerified(service, view)
     }
 }
