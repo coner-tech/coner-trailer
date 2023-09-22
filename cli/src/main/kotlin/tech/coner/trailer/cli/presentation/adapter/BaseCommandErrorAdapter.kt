@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.presentation.adapter
 
 import tech.coner.trailer.cli.command.GlobalModel
+import tech.coner.trailer.cli.command.NoDatabaseChosenException
 import tech.coner.trailer.cli.entity.Error
 import tech.coner.trailer.cli.presentation.model.BaseCommandErrorModel
 import tech.coner.trailer.io.service.NotFoundException
@@ -18,12 +19,19 @@ class BaseCommandErrorAdapter(
     override fun invoke(model: Throwable): BaseCommandErrorModel {
         return when (model) {
             is ModelValidationException -> model.toError()
+            is NoDatabaseChosenException -> model.toError()
             is NotFoundException -> model.toError()
             is ReadException -> model.toError()
             else -> throw model
         }
             .let { error -> BaseCommandErrorModel(error, global) }
     }
+
+    private fun NoDatabaseChosenException.toError() = Error.Single(
+        title = Strings.errorNoDatabaseChosenTitle,
+        message = Strings.errorNoDatabaseChosenMessage,
+        cause = this
+    )
 
     private fun ModelValidationException.toError(): Error {
         val title = Strings.errorValidationTitle

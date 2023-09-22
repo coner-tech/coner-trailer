@@ -1,13 +1,10 @@
 package tech.coner.trailer.cli.command
 
-import assertk.all
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isSameAs
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.coEvery
@@ -143,16 +140,13 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
     @Test
     fun `When no database chosen and subcommand requires database choice, it should abort`() {
         arrangeWithoutDatabasesCase()
+        arrangeDefaultErrorHandling()
 
-        assertThrows<Abort> {
+        assertThrows<ProgramResult> {
             command.parse(arrayOf("club"))
         }
 
-        assertThat(testConsole.error).all {
-            contains("Command requires database but no database was selected.")
-            contains("coner-trailer-cli config database")
-        }
-        verifyDefaultErrorHandlingInvoked()
+        verifyDefaultErrorHandlingInvoked(NoDatabaseChosenException())
     }
 
     @Test

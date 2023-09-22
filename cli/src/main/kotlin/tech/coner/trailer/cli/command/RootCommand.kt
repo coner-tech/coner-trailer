@@ -1,6 +1,5 @@
 package tech.coner.trailer.cli.command
 
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
@@ -97,12 +96,7 @@ class RootCommand(
             ?: configurationService.getDefaultDatabase().getOrThrow()
         currentContext.invokedSubcommand?.also { subcommand ->
             if (dbConfig == null && subcommand !is PermitNoDatabaseChosen) {
-                // TODO: throw custom exception to be intercepted by BaseCommand error handling
-                echo(
-                    message = "Command requires database but no database was selected. See: coner-trailer-cli config database",
-                    err = true
-                )
-                throw Abort()
+                throw NoDatabaseChosenException()
             }
         }
         global.format = format

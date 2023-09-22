@@ -11,6 +11,9 @@ object Strings {
     // Error messages
     const val errorUnknownMessage = "Something went wrong"
 
+    const val errorNoDatabaseChosenTitle = "No database chosen"
+    const val errorNoDatabaseChosenMessage = "No database argument was given and/or no default database was configured, and invoked subcommand requires one. See: coner-trailer-cli config database"
+
     const val errorRecordNotFoundTitle = "Record not found"
 
     const val errorReadTitle = "Failed to read a record from storage"
