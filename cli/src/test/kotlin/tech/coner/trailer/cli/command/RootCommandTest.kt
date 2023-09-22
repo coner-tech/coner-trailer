@@ -2,28 +2,44 @@ package tech.coner.trailer.cli.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.contains
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isSameAs
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.ProgramResult
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifySequence
+import io.mockk.every
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
+import io.mockk.mockk
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.*
-import tech.coner.trailer.cli.clikt.error
+import org.kodein.di.DI
+import org.kodein.di.DirectDI
+import org.kodein.di.bindMultiton
+import org.kodein.di.direct
+import org.kodein.di.factory
+import org.kodein.di.instance
 import tech.coner.trailer.cli.service.FeatureService
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.ConfigurationServiceFactory
+import tech.coner.trailer.di.configDir
+import tech.coner.trailer.di.isDefaultInstance
+import tech.coner.trailer.di.isOverrideInstance
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
 
 @ExtendWith(MockKExtension::class)
 class RootCommandTest : AbstractCommandTest<RootCommand>() {
@@ -32,12 +48,15 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
 
     lateinit var config: Configuration
     lateinit var dbConfigs: TestDatabaseConfigurations
-    lateinit var serviceArgumentSlot: CapturingSlot<ConfigurationServiceArgument>
+    lateinit var configurationServiceArgument: ConfigurationServiceArgument
     lateinit var serviceFactory: ConfigurationServiceFactory
     lateinit var service: ConfigurationService
 
     override val extraModule = DI.Module("RootCommandTest.extraModule") {
-        bindMultiton<ConfigurationServiceArgument, ConfigurationService>(overrides = true) { _ -> mockk() }
+        bindMultiton<ConfigurationServiceArgument, ConfigurationService>(overrides = true) { argument ->
+            configurationServiceArgument = argument
+            mockk()
+        }
     }
 
     override fun DirectDI.createCommand() = instance<RootCommand>()
@@ -57,7 +76,6 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         val directDi = direct
         serviceFactory = directDi.factory()
         service = serviceFactory(ConfigurationServiceArgument.Default)
-        serviceArgumentSlot = slot()
         justRun { service.init() }
         val configs = TestConfigurations(temp)
         config = configs.testConfiguration()
@@ -134,6 +152,7 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
             contains("Command requires database but no database was selected.")
             contains("coner-trailer-cli config database")
         }
+        verifyDefaultErrorHandlingInvoked()
     }
 
     @Test
@@ -153,10 +172,10 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         arrangeWithDatabases()
 
         command.parse(arrayOf("config"))
-        val actualServiceArgument = serviceArgumentSlot.captured
 
-        assertThat(actualServiceArgument, "service factory argument")
-            .isSameAs(ConfigurationServiceArgument.Default)
+        val actualConfigurationServiceArgument = configurationServiceArgument
+        assertThat(actualConfigurationServiceArgument)
+            .isDefaultInstance()
     }
 
     @Test
@@ -171,11 +190,11 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
             "--config-dir", "$overrideConfigDir",
             "config"
         ))
-        val actualServiceArgument = serviceArgumentSlot.captured
+        val actualConfigurationServiceArgument = configurationServiceArgument
 
-        assertThat(actualServiceArgument, "service factory argument")
-            .isInstanceOf(ConfigurationServiceArgument.Override::class)
-            .prop("configDir", ConfigurationServiceArgument.Override::configDir)
+        assertThat(actualConfigurationServiceArgument, "service factory argument")
+            .isOverrideInstance()
+            .configDir()
             .isEqualTo(overrideConfigDir)
     }
 

@@ -1,21 +1,19 @@
 package tech.coner.trailer.cli.command
 
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
-import com.github.ajalt.clikt.parameters.groups.groupChoice
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import java.nio.file.Path
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
-import tech.coner.trailer.cli.util.succeedOrThrow
 import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.ConfigurationServiceFactory
@@ -23,7 +21,6 @@ import tech.coner.trailer.di.EnvironmentHolderImpl
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
 import tech.coner.trailer.presentation.di.Format
-import java.nio.file.Path
 
 class RootCommand(
     di: DI,
@@ -100,6 +97,7 @@ class RootCommand(
             ?: configurationService.getDefaultDatabase().getOrThrow()
         currentContext.invokedSubcommand?.also { subcommand ->
             if (dbConfig == null && subcommand !is PermitNoDatabaseChosen) {
+                // TODO: throw custom exception to be intercepted by BaseCommand error handling
                 echo(
                     message = "Command requires database but no database was selected. See: coner-trailer-cli config database",
                     err = true
