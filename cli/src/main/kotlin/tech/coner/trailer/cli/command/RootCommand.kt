@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.factory
+import tech.coner.trailer.cli.util.succeedOrThrow
 import tech.coner.trailer.client.motorsportreg.MotorsportRegBasicCredentials
 import tech.coner.trailer.di.ConfigurationServiceArgument
 import tech.coner.trailer.di.ConfigurationServiceFactory
@@ -89,15 +90,12 @@ class RootCommand(
         val configurationServiceArgument = configDir?.let { ConfigurationServiceArgument.Override(it) }
             ?: ConfigurationServiceArgument.Default
         val configurationService: ConfigurationService =
-            this@RootCommand.configurationServiceFactory(configurationServiceArgument)
+            configurationServiceFactory(configurationServiceArgument)
         configurationService.init()
         val dbConfig = database
             ?.let { dbName ->
                 configurationService.findDatabaseByName(dbName)
-                    .getOrElse {
-                        echo("Failed to find database by name: ${it.message}", err = true)
-                        throw ProgramResult(1)
-                    }
+                    .getOrThrow()
             }
             ?: configurationService.getDefaultDatabase().getOrThrow()
         currentContext.invokedSubcommand?.also { subcommand ->

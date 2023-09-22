@@ -1,49 +1,12 @@
 package tech.coner.trailer.di
 
 import io.mockk.mockk
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.scoped
-import org.kodein.di.singleton
-import tech.coner.trailer.datasource.crispyfish.CrispyFishClassMapper
-import tech.coner.trailer.datasource.crispyfish.CrispyFishClassParentMapper
-import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
-import tech.coner.trailer.datasource.crispyfish.CrispyFishParticipantMapper
-import tech.coner.trailer.datasource.crispyfish.CrispyFishPersonMapper
-import tech.coner.trailer.datasource.snoozle.ClubResource
-import tech.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
-import tech.coner.trailer.datasource.snoozle.EventResource
-import tech.coner.trailer.datasource.snoozle.PersonResource
-import tech.coner.trailer.datasource.snoozle.PolicyResource
-import tech.coner.trailer.datasource.snoozle.RankingSortResource
-import tech.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
-import tech.coner.trailer.datasource.snoozle.SeasonResource
-import tech.coner.trailer.io.mapper.ClubMapper
-import tech.coner.trailer.io.mapper.EventMapper
-import tech.coner.trailer.io.mapper.EventPointsCalculatorMapper
-import tech.coner.trailer.io.mapper.PersonMapper
-import tech.coner.trailer.io.mapper.PolicyMapper
-import tech.coner.trailer.io.mapper.RankingSortMapper
-import tech.coner.trailer.io.mapper.SeasonMapper
-import tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
-import tech.coner.trailer.io.service.ClubService
-import tech.coner.trailer.io.service.CrispyFishClassService
-import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
-import tech.coner.trailer.io.service.CrispyFishParticipantService
-import tech.coner.trailer.io.service.CrispyFishRunService
-import tech.coner.trailer.io.service.EventContextService
-import tech.coner.trailer.io.service.EventPointsCalculatorService
-import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.io.service.RankingSortService
-import tech.coner.trailer.io.service.RunService
-import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
-import tech.coner.trailer.io.service.SeasonService
+import org.kodein.di.*
+import tech.coner.trailer.io.service.*
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 
 val mockkServiceModule = DI.Module("mockk for coner.trailer.io.service") {
+    bindMultiton<ConfigurationServiceArgument, ConfigurationService> { _ -> mockk() }
 
     bind<ClubService> {
         scoped(DataSessionScope).singleton { mockk() }

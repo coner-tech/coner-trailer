@@ -39,6 +39,7 @@ abstract class BaseDataSessionCommandTest<C : BaseCommand> : AbstractCommandTest
             commandModule
         )
         bind<SeasonPointsCalculatorParameterMapper> { scoped(DataSessionScope).singleton { mockk() } }
+        extraModule?.also { import(it) }
     }
     override val diContext = diContext { command.diContext.value as DataSessionHolder }
     override val setupGlobal = setupGlobalWithTempEnvironment

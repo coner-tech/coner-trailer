@@ -41,6 +41,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     lateinit var errorAdapter: Adapter<Throwable, BaseCommandErrorModel>
     lateinit var errorView: TextView<BaseCommandErrorModel>
 
+    protected open val extraModule: DI.Module? = null
     override val di = DI {
         fullContainerTreeOnError = true
         fullDescriptionOnError = true
@@ -49,6 +50,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
             mockkIoModule,
             mockkConstraintModule, // considering an exception to use constraints to drive clikt param validation (maybe these should move to presenter though?)
             mockkServiceModule, // TODO: eliminate, command to interact with presenter only
+            mockkCliServiceModule, // TODO: eliminate, command to interact with presenter only
             utilityModule,
             mockkViewModule, // TODO: eliminate, command to interact with presenter only
             presenterModule,
@@ -58,6 +60,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
             cliktModule,
             commandModule
         )
+        extraModule?.also { import(it) }
     }
 
     private val mainThreadSurrogate = newSingleThreadContext("CLI Main Thread Test Surrogate")
