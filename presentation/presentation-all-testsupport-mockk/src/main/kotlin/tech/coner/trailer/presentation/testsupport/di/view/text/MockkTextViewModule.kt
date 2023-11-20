@@ -3,10 +3,23 @@ package tech.coner.trailer.presentation.testsupport.di.view.text
 import io.mockk.mockk
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
-import tech.coner.trailer.presentation.model.*
-import tech.coner.trailer.presentation.model.eventresults.*
-import tech.coner.trailer.presentation.text.view.*
-import tech.coner.trailer.presentation.text.view.eventresults.*
+import tech.coner.trailer.presentation.model.ClubModel
+import tech.coner.trailer.presentation.model.EventDetailCollectionModel
+import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.model.ParticipantModel
+import tech.coner.trailer.presentation.model.PersonCollectionModel
+import tech.coner.trailer.presentation.model.PersonDetailModel
+import tech.coner.trailer.presentation.model.PolicyCollectionModel
+import tech.coner.trailer.presentation.model.PolicyModel
+import tech.coner.trailer.presentation.model.RunCollectionModel
+import tech.coner.trailer.presentation.model.RunModel
+import tech.coner.trailer.presentation.model.eventresults.ClassEventResultsModel
+import tech.coner.trailer.presentation.model.eventresults.ComprehensiveEventResultsModel
+import tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsModel
+import tech.coner.trailer.presentation.model.eventresults.OverallEventResultsModel
+import tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsModel
+import tech.coner.trailer.presentation.text.view.TextCollectionView
+import tech.coner.trailer.presentation.text.view.TextView
 
 val mockkTextViewModule = DI.Module("tech.coner.trailer.testsupport.render.text.view") {
     // MockK bindings for package: tech.coner.trailer.render.text.view
@@ -16,6 +29,7 @@ val mockkTextViewModule = DI.Module("tech.coner.trailer.testsupport.render.text.
 
     // Events
     bindSingleton<TextView<EventDetailModel>> { mockk() }
+    bindSingleton<TextCollectionView<EventDetailModel, EventDetailCollectionModel>> { mockk() }
 
     // Participants
     bindSingleton<TextView<ParticipantModel>> { mockk() }
