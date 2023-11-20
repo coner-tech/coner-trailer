@@ -1,12 +1,30 @@
 package tech.coner.trailer.cli.command
 
 import io.mockk.mockk
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.bindSingleton
+import org.kodein.di.diContext
+import org.kodein.di.scoped
+import org.kodein.di.singleton
 import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorParameterMapper
-import tech.coner.trailer.cli.di.*
+import tech.coner.trailer.cli.di.cliktModule
 import tech.coner.trailer.cli.di.command.commandModule
 import tech.coner.trailer.cli.di.command.mockkParameterMapperModule
-import tech.coner.trailer.di.*
+import tech.coner.trailer.cli.di.mockkCliPresentationAdapterModule
+import tech.coner.trailer.cli.di.mockkCliPresentationViewModule
+import tech.coner.trailer.cli.di.mockkViewModule
+import tech.coner.trailer.cli.di.mordantModule
+import tech.coner.trailer.cli.di.utilityModule
+import tech.coner.trailer.di.DataSessionHolder
+import tech.coner.trailer.di.DataSessionScope
+import tech.coner.trailer.di.mockkConstraintModule
+import tech.coner.trailer.di.mockkEventResults
+import tech.coner.trailer.di.mockkIoModule
+import tech.coner.trailer.di.mockkMapperModule
+import tech.coner.trailer.di.mockkMotorsportRegApiModule
+import tech.coner.trailer.di.mockkServiceModule
+import tech.coner.trailer.di.mockkSnoozleModule
 import tech.coner.trailer.presentation.testsupport.di.adapter.mockkPresentationAdapterModule
 import tech.coner.trailer.presentation.testsupport.di.presenter.mockkPresenterModule
 import tech.coner.trailer.presentation.testsupport.di.view.json.mockkJsonViewModule
@@ -39,7 +57,6 @@ abstract class BaseDataSessionCommandTest<C : BaseCommand> : AbstractCommandTest
             commandModule
         )
         bind<SeasonPointsCalculatorParameterMapper> { scoped(DataSessionScope).singleton { mockk() } }
-        extraModule?.also { import(it) }
     }
     override val diContext = diContext { command.diContext.value as DataSessionHolder }
     override val setupGlobal = setupGlobalWithTempEnvironment
