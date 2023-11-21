@@ -2,8 +2,8 @@ package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
-import tech.coner.trailer.presentation.model.ParticipantModel
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
+import tech.coner.trailer.presentation.model.ParticipantModel
 
 class ParticipantFirstNameStringFieldAdapter : StringFieldAdapter<Participant> {
     override fun invoke(model: Participant): String {
@@ -76,7 +76,7 @@ class ParticipantCollectionModelAdapter(
 
     operator fun invoke(participants: Collection<Participant>, event: Event) = invoke(Input(participants, event))
 
-    class Input(
+    data class Input(
         val participants: Collection<Participant>,
         val event: Event
     )

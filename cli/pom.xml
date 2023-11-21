@@ -215,6 +215,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmTarget>17</jvmTarget>
+                </configuration>
             </plugin>
 
             <plugin>

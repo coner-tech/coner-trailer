@@ -20,7 +20,9 @@ import tech.coner.trailer.eventresults.TopTimesEventResults
 import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
 import tech.coner.trailer.presentation.model.EventDetailCollectionModel
+import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.model.PolicyCollectionModel
@@ -44,6 +46,9 @@ val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.
     bind<Adapter<TopTimesEventResults, TopTimesEventResultsModel>> { singleton { mockk() } }
     bind<Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel>> { singleton { mockk() } }
     bind<Adapter<IndividualEventResults, IndividualEventResultsModel>> { singleton { mockk() } }
+
+    // Participant
+    bindSingleton<Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel>> { mockk() }
 
     // Person
     bind<Adapter<Person, PersonDetailModel>> { singleton { mockk() } }

@@ -4,16 +4,19 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
+import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.ParticipantModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -22,7 +25,8 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
 
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val viewRenderer: TextCollectionView<ParticipantModel, ParticipantCollectionModel> by instance()
+    private val adapter: Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> by instance()
+    private val view: TextCollectionView<ParticipantModel, ParticipantCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventParticipantListCommand>()
 
@@ -35,15 +39,18 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
         )
         coEvery { eventService.findByKey(any()) } returns Result.success(event)
         coEvery { participantService.list(any()) } returns Result.success(participants)
+        val model: ParticipantCollectionModel = mockk()
+        every { adapter(any()) } returns model
         val render = "viewRenderer rendered"
-//        every { viewRenderer(participants, event.policy) } returns render
+        every { view(any()) } returns render
 
         command.parse(arrayOf("${event.id}"))
 
         coVerifySequence {
             eventService.findByKey(event.id)
             participantService.list(event)
-//            viewRenderer(participants, event.policy)
+            adapter(ParticipantCollectionModelAdapter.Input(participants, event))
+            view(model)
         }
         assertThat(testConsole).output().isEqualTo(render)
     }

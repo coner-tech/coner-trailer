@@ -6,6 +6,7 @@ import org.kodein.di.bindSingleton
 import tech.coner.trailer.presentation.model.ClubModel
 import tech.coner.trailer.presentation.model.EventDetailCollectionModel
 import tech.coner.trailer.presentation.model.EventDetailModel
+import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.ParticipantModel
 import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
@@ -33,6 +34,7 @@ val mockkTextViewModule = DI.Module("tech.coner.trailer.testsupport.render.text.
 
     // Participants
     bindSingleton<TextView<ParticipantModel>> { mockk() }
+    bindSingleton<TextCollectionView<ParticipantModel, ParticipantCollectionModel>> { mockk() }
 
     // Person
     bindSingleton<TextView<PersonDetailModel>> { mockk() }
