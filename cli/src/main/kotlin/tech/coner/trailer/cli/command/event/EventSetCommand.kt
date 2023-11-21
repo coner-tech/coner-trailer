@@ -9,6 +9,9 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -19,12 +22,9 @@ import tech.coner.trailer.cli.di.use
 import tech.coner.trailer.cli.util.clikt.toLocalDate
 import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.nio.file.Path
-import java.time.LocalDate
-import java.util.*
 
 class EventSetCommand(
     di: DI,
@@ -38,7 +38,7 @@ class EventSetCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val adapter: EventDetailModelAdapter by instance()
+    private val adapter: Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }
@@ -128,7 +128,6 @@ class EventSetCommand(
             crispyFish = crispyFish ?: event.crispyFish,
             motorsportReg = motorsportReg
         )).getOrThrow()
-        service.update(set)
         echo(view(adapter(set)))
     }
 }

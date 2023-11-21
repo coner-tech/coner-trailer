@@ -2,27 +2,33 @@ package tech.coner.trailer.cli.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import java.nio.file.Path
+import java.time.LocalDate
+import kotlin.io.path.createFile
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.kodein.di.*
+import org.kodein.di.DirectDI
+import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.service.EventService
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.nio.file.Path
-import java.time.LocalDate
-import kotlin.io.path.createFile
 
 @ExtendWith(MockKExtension::class)
 class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
 
     private val service: EventService by instance()
+    private val adapter: Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private lateinit var crispyFish: Path
@@ -55,6 +61,8 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         )
         coEvery { service.findByKey(original.id) } returns Result.success(original)
         coEvery { service.update(any()) } returns Result.success(set)
+        val model: EventDetailModel = mockk()
+        every { adapter(any()) } returns model
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view(any()) } returns viewRendered
 
@@ -72,7 +80,8 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         coVerifySequence {
             service.findByKey(original.id)
             service.update(set)
-//            view(set)
+            adapter(set)
+            view(model)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
@@ -85,8 +94,10 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         val crispyFish = checkNotNull(original.crispyFish) { "Expected event.crispyFish to be not null" }
         coEvery { service.findByKey(original.id) } returns Result.success(original)
         coEvery { service.update(original) } returns Result.success(original)
+        val model: EventDetailModel = mockk()
+        every { adapter(any()) } returns model
         val viewRendered = "view rendered set event named: ${original.name}"
-//        every { view(eq(original)) } returns viewRendered
+        every { view(any()) } returns viewRendered
 
         command.parse(arrayOf(
             "${original.id}",
@@ -95,7 +106,8 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         coVerifySequence {
             service.findByKey(original.id)
             service.update(original)
-//            view(original)
+            adapter(original)
+            view(model)
         }
         assertThat(testConsole.output).isEqualTo(viewRendered)
     }
