@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -18,10 +19,9 @@ import tech.coner.trailer.cli.util.clikt.toUuid
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.util.*
 
 class EventCrispyFishPersonMapRemoveCommand(
     di: DI,
@@ -37,7 +37,7 @@ class EventCrispyFishPersonMapRemoveCommand(
     private val service: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
-    private val adapter: EventDetailModelAdapter by instance()
+    private val adapter: Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

@@ -4,6 +4,7 @@ import io.mockk.mockk
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.bindSingleton
+import org.kodein.di.instance
 import org.kodein.di.scoped
 import org.kodein.di.singleton
 import tech.coner.trailer.Event
@@ -22,6 +23,7 @@ import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
 import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
 import tech.coner.trailer.presentation.model.EventDetailCollectionModel
+import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
@@ -37,7 +39,8 @@ import tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsMo
 val mockkPresentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapter mockk") {
 
     // Event Detail
-    bind<EventDetailModelAdapter> { scoped(DataSessionScope).singleton { mockk() } }
+    bindSingleton<EventDetailModelAdapter> { mockk() }
+    bindSingleton<Adapter<Event, EventDetailModel>> { instance<EventDetailModelAdapter>() }
     bindSingleton<Adapter<Collection<Event>, EventDetailCollectionModel>> { mockk() }
 
     // Event Results

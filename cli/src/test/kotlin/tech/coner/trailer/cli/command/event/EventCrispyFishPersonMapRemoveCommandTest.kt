@@ -8,12 +8,17 @@ import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import java.nio.file.Paths
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
-import tech.coner.trailer.*
+import tech.coner.trailer.Classing
+import tech.coner.trailer.Event
+import tech.coner.trailer.TestClasses
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestPeople
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
 import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapRemoveCommand
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -21,9 +26,9 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
+import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapRemoveCommand>() {
@@ -32,12 +37,13 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
+    private val adapter: Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCrispyFishPersonMapRemoveCommand>()
 
     @Test
-    fun `It should remove a force person`(
+    fun `It should remove specific person from crispy fish person map`(
         @MockK context: CrispyFishEventMappingContext
     ) {
         val person = TestPeople.REBECCA_JACKSON
@@ -60,20 +66,20 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
         val event = TestEvents.Lscc2019.points1.copy(
             crispyFish = crispyFish
         )
-        coEvery { service.findByKey(event.id) } returns Result.success(event)
+        coEvery { service.findByKey(any()) } returns Result.success(event)
         every { crispyFishClassService.loadAllByAbbreviation(any()) } returns TestClasses.Lscc2019.allByAbbreviation
-        every { personService.findById(person.id) } returns person
+        every { personService.findById(any()) } returns person
         val set = event.copy(
             crispyFish = crispyFish.copy(
                 peopleMap = emptyMap()
             )
         )
-        coEvery { crispyFishEventMappingContextService.load(set, set.crispyFish!!) } returns context
-        coJustRun {
-            service.update(set)
-        }
+        coEvery { crispyFishEventMappingContextService.load(any(), any()) } returns context
+        coJustRun {service.update(any()) }
         val viewRender = "view rendered"
-//        every { view(set) } returns viewRender
+        val model: EventDetailModel = mockk()
+        every { adapter(any()) } returns model
+        every { view(any()) } returns viewRender
 
         command.parse(arrayOf(
             "${event.id}",
@@ -89,7 +95,8 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
             crispyFishClassService.loadAllByAbbreviation(crispyFish.classDefinitionFile)
             personService.findById(person.id)
             service.update(set)
-//            view(set)
+            adapter(set)
+            view(model)
         }
         assertThat(testConsole.output).isEqualTo(viewRender)
     }
