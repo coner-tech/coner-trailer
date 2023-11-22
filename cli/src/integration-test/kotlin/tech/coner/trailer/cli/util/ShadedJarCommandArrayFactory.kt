@@ -1,11 +1,17 @@
 package tech.coner.trailer.cli.util
 
+import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
 
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
 
 class ShadedJarCommandArrayFactory : ProcessCommandArrayFactory {
+
+    private val pathToJava: Path
+        get() = Path(System.getProperty("java.home"), "bin", "java")
 
     override fun build(): Array<String> {
         return fromSystemProperty()
@@ -14,7 +20,7 @@ class ShadedJarCommandArrayFactory : ProcessCommandArrayFactory {
 
     private fun fromSystemProperty(): Array<String>? = try {
         val shadedJar = System.getProperty("coner-trailer-cli.shaded-jar")
-        shadedJar?.let { arrayOf("java", "-jar", it) }
+        shadedJar?.let { arrayOf(pathToJava.absolutePathString(), "-jar", it) }
     } catch (t: Throwable) {
         null
     }
@@ -24,6 +30,6 @@ class ShadedJarCommandArrayFactory : ProcessCommandArrayFactory {
         val shadedJarPath = outputDirectory.listDirectoryEntries()
             .singleOrNull { it.name.endsWith("-shaded.jar") }
             ?: throw IllegalStateException("Shaded jar not found")
-        return arrayOf("java", "-jar", "target/${shadedJarPath.name}")
+        return arrayOf(pathToJava.absolutePathString(), "-jar", "target/${shadedJarPath.name}")
     }
 }
