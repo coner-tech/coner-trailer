@@ -1,15 +1,15 @@
 package tech.coner.trailer.cli.util
 
+import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
-import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
-import java.nio.file.Path
-import java.time.LocalDate
-import java.util.*
+import tech.coner.trailer.presentation.di.Format
 
 
 class IntegrationTestAppArgumentBuilder(
@@ -135,10 +135,9 @@ class IntegrationTestAppArgumentBuilder(
         event: Event,
         participant: Participant
     ): Array<String> {
-        val argumentBuilder = mutableListOf<String>().apply {
+        return buildList {
             addAll(arrayOf(
-                "event", "crispy-fish-person-map-add",
-                "${event.id}"
+                "event", "crispy-fish", "person-map-add",
             ))
             participant.signage?.classing?.group?.abbreviation?.also {
                 addAll(arrayOf("--group", it))
@@ -150,8 +149,10 @@ class IntegrationTestAppArgumentBuilder(
                 "--last-name", participant.lastName!!,
                 "--person-id", "${participant.person!!.id}"
             ))
+            add("${event.id}")
         }
-        return build(*argumentBuilder.toTypedArray())
+            .toTypedArray()
+            .let { build(*it) }
     }
 
     fun eventResults(
@@ -161,12 +162,14 @@ class IntegrationTestAppArgumentBuilder(
         output: String? = null,
     ): Array<String> {
         return build(
-            *mutableListOf("event", "results").apply {
+            *buildList {
+                addAll(format?.let { arrayOf("--format", format.name.lowercase()) } ?: emptyArray())
+                addAll(listOf("event", "results"))
                 add("${event.id}")
                 addAll(arrayOf("--type", type.key))
-                addAll(format?.let { arrayOf("--format", format.name.lowercase()) } ?: emptyArray())
                 if (output != null) add("--$output")
-            }.toTypedArray()
+            }
+                .toTypedArray()
         )
     }
 

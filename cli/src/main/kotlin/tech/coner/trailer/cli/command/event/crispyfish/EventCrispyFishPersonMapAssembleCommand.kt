@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -26,7 +27,6 @@ import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.util.*
 
 class EventCrispyFishPersonMapAssembleCommand(
     di: DI,
@@ -34,7 +34,7 @@ class EventCrispyFishPersonMapAssembleCommand(
 ) : BaseCommand(
     di = di,
     global = global,
-    name = "crispy-fish-person-map-assemble",
+    name = "person-map-assemble",
     help = "Interactively assemble the Crispy Fish person map for an event"
 ) {
 

@@ -29,7 +29,7 @@ class EventCrispyFishPersonMapRemoveCommand(
 ) : BaseCommand(
     di = di,
     global = global,
-    name = "crispy-fish-person-map-remove",
+    name = "person-map-remove",
     help = "Remove a Crispy Fish Person Map entry"
 ) {
 

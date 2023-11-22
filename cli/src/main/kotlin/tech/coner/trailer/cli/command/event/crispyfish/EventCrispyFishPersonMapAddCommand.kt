@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -20,7 +21,6 @@ import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
-import java.util.*
 
 class EventCrispyFishPersonMapAddCommand(
     di: DI,
@@ -28,7 +28,7 @@ class EventCrispyFishPersonMapAddCommand(
 ) : BaseCommand(
     di = di,
     global = global,
-    name = "crispy-fish-person-map-add",
+    name = "person-map-add",
     help = "Add a Crispy Fish Person Map entry"
 ) {
 

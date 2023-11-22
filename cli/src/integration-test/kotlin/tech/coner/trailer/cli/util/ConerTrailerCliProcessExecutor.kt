@@ -1,16 +1,17 @@
 package tech.coner.trailer.cli.util
 
 import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import org.junit.platform.commons.logging.Logger
 import org.junit.platform.commons.logging.LoggerFactory
+import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
-import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
-import java.time.LocalDate
-import java.util.*
+import tech.coner.trailer.presentation.di.Format
 
 
 class ConerTrailerCliProcessExecutor(
@@ -33,6 +34,12 @@ class ConerTrailerCliProcessExecutor(
             add("TMP=${System.getProperty("java.io.tmpdir")}")
         }.toTypedArray()
         return Runtime.getRuntime().exec(commandArray, useEnvironment)
+    }
+
+    fun clubSet(club: Club): Process {
+        return exec(
+            *appArgumentBuilder.clubSet(club)
+        )
     }
 
     fun configDatabaseAdd(databaseName: String): Process {
