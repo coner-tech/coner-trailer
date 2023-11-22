@@ -12,6 +12,8 @@ abstract class EventResultsModel<ER : EventResults> : Model {
         get() = adapter.eventNameAdapter(eventResults.eventContext.event)
     val eventDate
         get() = adapter.eventDateAdapter(eventResults.eventContext.event)
+    val eventResultsTypeKey
+        get() = adapter.eventResultsTypeKeyAdapter(eventResults)
     val eventResultsTypeTitle
         get() = adapter.eventResultsTypeTitleAdapter(eventResults)
     val eventResultsTypeScoreColumnHeading

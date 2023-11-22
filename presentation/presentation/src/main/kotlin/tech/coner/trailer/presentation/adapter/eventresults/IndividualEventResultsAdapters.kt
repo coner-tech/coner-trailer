@@ -13,6 +13,7 @@ class IndividualEventResultsModelAdapter(
     override val participantResultAdapter: ParticipantResultModelAdapter,
     override val eventNameAdapter: EventNameStringFieldAdapter,
     override val eventDateAdapter: EventDateStringFieldAdapter,
+    override val eventResultsTypeKeyAdapter: EventResultsTypeKeyStringFieldAdapter,
     override val eventResultsTypeTitleAdapter: EventResultsTypeTitleStringFieldAdapter,
     override val eventResultsTypeScoreColumnHeadingAdapter: EventResultsTypeScoreColumnHeadingStringFieldAdapter,
     val innerEventResultsTypes: IndividualInnerEventResultsTypesCollectionModelAdapter,

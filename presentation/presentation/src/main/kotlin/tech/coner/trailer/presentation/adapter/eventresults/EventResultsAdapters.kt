@@ -7,6 +7,12 @@ import tech.coner.trailer.presentation.adapter.EventNameStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.eventresults.EventResultsModel
 
+class EventResultsTypeKeyStringFieldAdapter : StringFieldAdapter<EventResults> {
+    override fun invoke(model: EventResults): String {
+        return model.type.key
+    }
+}
+
 class EventResultsTypeTitleStringFieldAdapter : StringFieldAdapter<EventResults> {
     override fun invoke(model: EventResults): String {
         return model.type.title
@@ -23,6 +29,7 @@ abstract class EventResultsModelAdapter<ER : EventResults, ERM : EventResultsMod
     abstract val participantResultAdapter: ParticipantResultModelAdapter
     abstract val eventNameAdapter: EventNameStringFieldAdapter
     abstract val eventDateAdapter: EventDateStringFieldAdapter
+    abstract val eventResultsTypeKeyAdapter: EventResultsTypeKeyStringFieldAdapter
     abstract val eventResultsTypeTitleAdapter: EventResultsTypeTitleStringFieldAdapter
     abstract val eventResultsTypeScoreColumnHeadingAdapter: EventResultsTypeScoreColumnHeadingStringFieldAdapter
 }
