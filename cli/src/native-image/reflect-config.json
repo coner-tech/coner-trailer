@@ -466,6 +466,9 @@
   "methods":[{"name":"forEach","parameterTypes":["java.util.function.Consumer"] }]
 },
 {
+  "name":"java.lang.Long"
+},
+{
   "name":"java.lang.Module",
   "methods":[{"name":"addExports","parameterTypes":["java.lang.String","java.lang.Module"] }, {"name":"canRead","parameterTypes":["java.lang.Module"] }, {"name":"getClassLoader","parameterTypes":[] }, {"name":"getLayer","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getResourceAsStream","parameterTypes":["java.lang.String"] }, {"name":"isExported","parameterTypes":["java.lang.String"] }, {"name":"isExported","parameterTypes":["java.lang.String","java.lang.Module"] }, {"name":"isNamed","parameterTypes":[] }, {"name":"isOpen","parameterTypes":["java.lang.String","java.lang.Module"] }]
 },
@@ -1036,7 +1039,7 @@
 },
 {
   "name":"kotlinx.coroutines.CancellableContinuationImpl",
-  "fields":[{"name":"_decision"}, {"name":"_state"}]
+  "fields":[{"name":"_decision"}, {"name":"_decisionAndIndex"}, {"name":"_parentHandle"}, {"name":"_state"}]
 },
 {
   "name":"kotlinx.coroutines.CompletedExceptionally",
@@ -1057,7 +1060,7 @@
 },
 {
   "name":"kotlinx.coroutines.EventLoopImplBase",
-  "fields":[{"name":"_delayed"}, {"name":"_queue"}]
+  "fields":[{"name":"_delayed"}, {"name":"_isCompleted"}, {"name":"_queue"}]
 },
 {
   "name":"kotlinx.coroutines.InvokeOnCancelling",
@@ -1065,7 +1068,11 @@
 },
 {
   "name":"kotlinx.coroutines.JobSupport",
-  "fields":[{"name":"_state"}]
+  "fields":[{"name":"_parentHandle"}, {"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.JobSupport$Finishing",
+  "fields":[{"name":"_exceptionsHolder"}, {"name":"_isCompleting"}, {"name":"_rootCause"}]
 },
 {
   "name":"kotlinx.coroutines.channels.AbstractSendChannel",
@@ -1076,8 +1083,16 @@
   "fields":[{"name":"_consensus"}]
 },
 {
+  "name":"kotlinx.coroutines.internal.ConcurrentLinkedListNode",
+  "fields":[{"name":"_next"}, {"name":"_prev"}]
+},
+{
   "name":"kotlinx.coroutines.internal.DispatchedContinuation",
   "fields":[{"name":"_reusableCancellableContinuation"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LimitedDispatcher",
+  "fields":[{"name":"runningWorkers"}]
 },
 {
   "name":"kotlinx.coroutines.internal.LockFreeLinkedListNode",
@@ -1090,6 +1105,10 @@
 {
   "name":"kotlinx.coroutines.internal.LockFreeTaskQueueCore",
   "fields":[{"name":"_next"}, {"name":"_state"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.Segment",
+  "fields":[{"name":"cleanedAndPointers"}]
 },
 {
   "name":"kotlinx.coroutines.scheduling.CoroutineScheduler",
@@ -1108,11 +1127,15 @@
 },
 {
   "name":"kotlinx.coroutines.sync.MutexImpl",
-  "fields":[{"name":"_state"}]
+  "fields":[{"name":"_state"}, {"name":"owner"}]
 },
 {
   "name":"kotlinx.coroutines.sync.MutexImpl$LockWaiter",
   "fields":[{"name":"isTaken"}]
+},
+{
+  "name":"kotlinx.coroutines.sync.SemaphoreImpl",
+  "fields":[{"name":"_availablePermits"}, {"name":"deqIdx"}, {"name":"enqIdx"}, {"name":"head"}, {"name":"tail"}]
 },
 {
   "name":"kotlinx.coroutines.test.TestCoroutineScheduler",
@@ -2899,7 +2922,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getName","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getName","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.ClubEntity$Key"
@@ -2909,14 +2932,14 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFish","parameterTypes":[] }, {"name":"getDate","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLifecycle","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPolicyId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.time.LocalDate","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata","tech.coner.trailer.datasource.snoozle.entity.EventEntity$MotorsportRegMetadata","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFish","parameterTypes":[] }, {"name":"getDate","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLifecycle","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPolicyId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$CrispyFishMetadata",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassDefinitionFile","parameterTypes":[] }, {"name":"getEventControlFile","parameterTypes":[] }, {"name":"getPeopleMap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.util.List","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String","java.util.List"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassDefinitionFile","parameterTypes":[] }, {"name":"getEventControlFile","parameterTypes":[] }, {"name":"getPeopleMap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$Key"
@@ -2926,14 +2949,14 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventEntity$PersonMapEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassing","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getNumber","parameterTypes":[] }, {"name":"getPersonId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.datasource.snoozle.entity.ParticipantEntity$Classing","java.lang.String","java.lang.String","java.lang.String","java.util.UUID"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClassing","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getNumber","parameterTypes":[] }, {"name":"getPersonId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.EventPointsCalculatorEntity",
@@ -2953,14 +2976,14 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getGroup","parameterTypes":[] }, {"name":"getHandicap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getGroup","parameterTypes":[] }, {"name":"getHandicap","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClubMemberId","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"<init>","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.UUID","java.lang.String","java.lang.String","java.lang.String","tech.coner.trailer.datasource.snoozle.entity.PersonEntity$MotorsportRegMetadata"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClubMemberId","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PersonEntity$Key"
@@ -2970,7 +2993,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getMemberId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getMemberId","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.datasource.snoozle.entity.PolicyEntity",
@@ -3159,7 +3182,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getDatabases","parameterTypes":[] }, {"name":"getDefaultDatabaseName","parameterTypes":[] }, {"name":"getWebapps","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireWebapps","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"<init>","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.util.Map","java.lang.String","tech.coner.trailer.io.Configuration$Webapps"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getDatabases","parameterTypes":[] }, {"name":"getDefaultDatabaseName","parameterTypes":[] }, {"name":"getWebapps","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireWebapps","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.io.Configuration$Companion",
@@ -3170,21 +3193,21 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCompetition","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireCompetition","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"<init>","parameterTypes":["tech.coner.trailer.io.WebappConfiguration","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.io.WebappConfiguration"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCompetition","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"requireCompetition","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.io.DatabaseConfiguration",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"asRelativeToCrispyFishDatabase","parameterTypes":["java.nio.file.Path"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFishDatabase","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getSnoozleDatabase","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"asRelativeToCrispyFishDatabase","parameterTypes":["java.nio.file.Path"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.nio.file.Path","java.nio.file.Path","tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCrispyFishDatabase","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getMotorsportReg","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getSnoozleDatabase","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.io.DatabaseConfiguration$MotorsportReg",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getOrganizationId","parameterTypes":[] }, {"name":"getUsername","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getOrganizationId","parameterTypes":[] }, {"name":"getUsername","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.io.TestConfigurations"
@@ -3200,7 +3223,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["int","boolean"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getExploratory","parameterTypes":[] }, {"name":"getPort","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["int","boolean"] }, {"name":"<init>","parameterTypes":["int","boolean","int","kotlin.jvm.internal.DefaultConstructorMarker"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","boolean"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getExploratory","parameterTypes":[] }, {"name":"getPort","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.io.constraint.Constraint",
@@ -3545,6 +3568,179 @@
 },
 {
   "name":"tech.coner.trailer.io.verifier.RunWithInvalidSignageVerifier"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.ClassModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.ParticipantModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.ClassEventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.ClassParticipantResultsCollectionModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.ComprehensiveEventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.EventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.IndividualEventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.OverallEventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.ParticipantResultModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.adapter.eventresults.TopTimesEventResultsModelAdapter"
+},
+{
+  "name":"tech.coner.trailer.presentation.model.ClassModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Class","tech.coner.trailer.presentation.adapter.ClassModelAdapter"] }, {"name":"getAbbreviation","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPaxFactor","parameterTypes":[] }, {"name":"getPaxed","parameterTypes":[] }, {"name":"getSort","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.ClassParentModel"
+},
+{
+  "name":"tech.coner.trailer.presentation.model.CollectionModel",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.trailer.presentation.model.Model",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"tech.coner.trailer.presentation.model.ParticipantModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.Participant","tech.coner.trailer.Event","tech.coner.trailer.presentation.adapter.ParticipantModelAdapter"] }, {"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"copy","parameterTypes":["tech.coner.trailer.Participant","tech.coner.trailer.Event","tech.coner.trailer.presentation.adapter.ParticipantModelAdapter"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCarColor","parameterTypes":[] }, {"name":"getCarModel","parameterTypes":[] }, {"name":"getClubMemberId","parameterTypes":[] }, {"name":"getFirstName","parameterTypes":[] }, {"name":"getFullName","parameterTypes":[] }, {"name":"getLastName","parameterTypes":[] }, {"name":"getSignage","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.ClassEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ClassEventResults","tech.coner.trailer.presentation.adapter.eventresults.ClassEventResultsModelAdapter","tech.coner.trailer.presentation.model.eventresults.ClassParticipantResultsCollectionModel"] }, {"name":"getAdapter","parameterTypes":[] }, {"name":"getClassEventResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.ClassParticipantResultsCollectionModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Collection","tech.coner.trailer.eventresults.ClassEventResults","tech.coner.trailer.presentation.adapter.eventresults.ClassParticipantResultsCollectionModelAdapter"] }, {"name":"getItems","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.ClassParticipantResultsCollectionModel$Item",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.presentation.model.ClassModel","java.util.List"] }, {"name":"getClazz","parameterTypes":[] }, {"name":"getParticipantResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.ComprehensiveEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.ComprehensiveEventResults","tech.coner.trailer.presentation.adapter.eventresults.ComprehensiveEventResultsModelAdapter","java.util.Collection","tech.coner.trailer.presentation.model.eventresults.ClassEventResultsModel","tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsModel"] }, {"name":"getAdapter","parameterTypes":[] }, {"name":"getClassEventResults","parameterTypes":[] }, {"name":"getEventResults","parameterTypes":[] }, {"name":"getOverallEventResults","parameterTypes":[] }, {"name":"getTopTimesEventResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.EventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getAdapter","parameterTypes":[] }, {"name":"getEventDate","parameterTypes":[] }, {"name":"getEventName","parameterTypes":[] }, {"name":"getEventResults","parameterTypes":[] }, {"name":"getEventResultsTypeKey","parameterTypes":[] }, {"name":"getEventResultsTypeScoreColumnHeading","parameterTypes":[] }, {"name":"getEventResultsTypeTitle","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.EventResultsTypeModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.EventResultsType"] }, {"name":"getPositionColumnHeading","parameterTypes":[] }, {"name":"getScoreColumnHeading","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getTitleShort","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.EventResultsTypesCollectionModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Collection"] }, {"name":"getItems","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsCollectionModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Collection"] }, {"name":"getItems","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsCollectionModel$Item",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.presentation.model.ParticipantModel","java.util.List"] }, {"name":"getParticipant","parameterTypes":[] }, {"name":"getTypedParticipantResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsCollectionModel$TypedParticipantResultModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.presentation.model.eventresults.EventResultsTypeModel","tech.coner.trailer.presentation.model.eventresults.ParticipantResultModel"] }, {"name":"getPosition","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.IndividualEventResults","tech.coner.trailer.presentation.adapter.eventresults.IndividualEventResultsModelAdapter","tech.coner.trailer.presentation.model.eventresults.EventResultsTypesCollectionModel","tech.coner.trailer.presentation.model.eventresults.IndividualEventResultsCollectionModel"] }, {"name":"getAdapter","parameterTypes":[] }, {"name":"getEventResults","parameterTypes":[] }, {"name":"getInnerEventResultsTypes","parameterTypes":[] }, {"name":"getResultsByIndividual","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.OverallEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.OverallEventResults","tech.coner.trailer.presentation.adapter.eventresults.OverallEventResultsModelAdapter","tech.coner.trailer.presentation.model.eventresults.OverallParticipantResultsCollectionModel"] }, {"name":"getAdapter","parameterTypes":[] }, {"name":"getEventResults","parameterTypes":[] }, {"name":"getParticipantResults","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.OverallParticipantResultsCollectionModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Collection"] }, {"name":"getItems","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.ParticipantResultModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.EventResults","tech.coner.trailer.eventresults.ParticipantResult","tech.coner.trailer.presentation.adapter.eventresults.ParticipantResultModelAdapter"] }, {"name":"getCarModel","parameterTypes":[] }, {"name":"getDiffFirst","parameterTypes":[] }, {"name":"getDiffPrevious","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPosition","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }, {"name":"getSignage","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsCollectionModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Collection"] }, {"name":"getItems","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsCollectionModel$Item",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.presentation.model.ClassParentModel","tech.coner.trailer.presentation.model.eventresults.ParticipantResultModel"] }, {"name":"getClassParentName","parameterTypes":[] }, {"name":"getParticipantName","parameterTypes":[] }, {"name":"getScore","parameterTypes":[] }]
+},
+{
+  "name":"tech.coner.trailer.presentation.model.eventresults.TopTimesEventResultsModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["tech.coner.trailer.eventresults.TopTimesEventResults","tech.coner.trailer.presentation.adapter.eventresults.TopTimesEventResultsModelAdapter"] }, {"name":"getAdapter","parameterTypes":[] }, {"name":"getEventResults","parameterTypes":[] }, {"name":"getTopTimes","parameterTypes":[] }]
 },
 {
   "name":"tech.coner.trailer.render.EventResultsRenderer",
