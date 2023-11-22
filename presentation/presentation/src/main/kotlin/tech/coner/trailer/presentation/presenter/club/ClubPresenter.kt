@@ -1,7 +1,6 @@
 package tech.coner.trailer.presentation.presenter.club
 
 import kotlinx.coroutines.CoroutineScope
-import tech.coner.snoozle.db.entity.EntityIoException
 import tech.coner.trailer.Club
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.util.runSuspendCatching
@@ -24,11 +23,7 @@ class ClubPresenter(
     override val entityDefault = Club("")
 
     override suspend fun performLoad(): Result<Club> = runSuspendCatching {
-        try {
-            service.get()
-        } catch (notFound: EntityIoException.NotFound) {
-            entityDefault
-        }
+        service.get()
     }
 
     suspend fun createOrUpdate() {

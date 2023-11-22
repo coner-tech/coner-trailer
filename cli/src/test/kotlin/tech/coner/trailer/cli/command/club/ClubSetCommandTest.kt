@@ -1,14 +1,18 @@
 package tech.coner.trailer.cli.command.club
 
-import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.messageContains
 import com.github.ajalt.clikt.core.MissingOption
-import com.github.ajalt.clikt.core.ProgramResult
-import io.mockk.*
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerifyOrder
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.justRun
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
@@ -16,10 +20,8 @@ import org.kodein.di.direct
 import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.TestClubs
-import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.BaseDataSessionCommandTest
-import tech.coner.trailer.io.service.ReadException
 import tech.coner.trailer.presentation.model.ClubModel
 import tech.coner.trailer.presentation.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.club.ClubPresenter
@@ -43,12 +45,10 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
 
     @Test
     fun `It should set club name`() = runTest {
-        val mutex = Mutex(locked = true)
         val club = TestClubs.lscc
         val textViewRenders = "club"
         val model: ClubModel = mockk()
-        coEvery { presenter.load() } coAnswers { mutex.unlock() }
-        coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { Result.success(model) } }
+        every { presenter.itemModel } returns model
         justRun { model.name = any() }
         coEvery { presenter.commit() } returns Result.success(model)
         coJustRun { presenter.createOrUpdate() }
@@ -57,11 +57,8 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
         command.parse(arrayOf("--name", club.name))
 
         assertThat(testConsole).output().isEqualTo(textViewRenders)
-        coVerify {
-            presenter.load()
-            presenter.awaitLoadedItemModel()
-        }
         coVerifyOrder {
+            presenter.itemModel
             model.name = club.name
             presenter.commit()
             presenter.createOrUpdate()
@@ -76,28 +73,5 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
             .isInstanceOf<MissingOption>()
             .messageContains("--name")
         confirmVerified(presenter, textView)
-    }
-
-    @Test
-    fun `It should error if club fails to load`() = runTest {
-        arrangeDefaultErrorHandling()
-        val club = TestClubs.lscc
-        val exception = ReadException("corrupt club")
-        val mutex = Mutex(locked = true)
-        coEvery { presenter.load() } coAnswers { mutex.unlock() }
-        coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { Result.failure(exception) } }
-
-        assertFailure {
-            command.parse(arrayOf("--name", club.name))
-        }
-            .isInstanceOf<ProgramResult>()
-
-        assertThat(testConsole).output().isEmpty()
-        coVerifyAll {
-            presenter.load()
-            presenter.awaitLoadedItemModel()
-        }
-        confirmVerified(presenter, textView)
-        verifyDefaultErrorHandlingInvoked(exception)
     }
 }

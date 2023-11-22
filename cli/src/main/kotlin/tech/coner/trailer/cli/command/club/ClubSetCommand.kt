@@ -3,7 +3,6 @@ package tech.coner.trailer.cli.command.club
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.kodein.di.DI
 import org.kodein.di.factory
 import org.kodein.di.instance
@@ -35,11 +34,7 @@ class ClubSetCommand(
 
     override suspend fun CoroutineScope.coRun() = diContext.use {
         val presenter = presenterFactory(Presenter.Argument.Nothing)
-        backgroundCoroutineScope.launch { presenter.load() }
-        presenter.awaitLoadedItemModel()
-            .succeedOrThrow {
-                it.name = name
-            }
+        presenter.itemModel.name = name
         presenter.commit()
             .succeedOrThrow {
                 presenter.createOrUpdate()
