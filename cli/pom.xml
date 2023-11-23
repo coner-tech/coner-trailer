@@ -71,11 +71,11 @@
             <artifactId>presentation-all-kodein-di</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>tech.coner.trailer</groupId>-->
-<!--            <artifactId>webapp-competition</artifactId>-->
-<!--            <version>0.1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>webapp-competition</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
             <artifactId>clikt-jvm</artifactId>
@@ -360,6 +360,20 @@
             <properties>
                 <feature.webapp.enable>true</feature.webapp.enable>
             </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <environmentVariables>
+                                <FEATURE_WEBAPP_COMPETITION>true</FEATURE_WEBAPP_COMPETITION>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 

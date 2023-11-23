@@ -15,8 +15,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilNotNull
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
@@ -26,7 +26,7 @@ import tech.coner.trailer.cli.util.findWebappPort
 class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
 
     @Test
-    @Disabled
+    @EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_COMPETITION", matches = "true")
     fun `It should start webapp competition server`() = runTest {
         arrange { configDatabaseAdd("webapp-competition") }
 
