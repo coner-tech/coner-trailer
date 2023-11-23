@@ -20,6 +20,10 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { clubSet(club) }
     }
 
+    fun configDatabaseAdd(databaseName: String): Process {
+        return execSubcommand { configDatabaseAdd(databaseName) }
+    }
+
     fun eventAddCrispyFish(event: Event, crispyFishEventControlFile: Path, crispyFishClassDefinitionFile: Path): Process {
         return execSubcommand { eventAddCrispyFish(event = event, crispyFishEventControlFile = crispyFishEventControlFile, crispyFishClassDefinitionFile = crispyFishClassDefinitionFile) }
     }

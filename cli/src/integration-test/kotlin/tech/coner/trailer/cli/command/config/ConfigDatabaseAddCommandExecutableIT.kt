@@ -19,7 +19,7 @@ class ConfigDatabaseAddCommandExecutableIT : BaseExecutableIT() {
     fun `It should add a database config`() {
         val databaseName = "arbitrary-database-name"
 
-        val processOutcome = testCommand { configDatabaseAdd(databaseName) }
+        val processOutcome = newTestCommand { configDatabaseAdd(databaseName) }
 
         assertThat(processOutcome).all {
             isSuccess()
