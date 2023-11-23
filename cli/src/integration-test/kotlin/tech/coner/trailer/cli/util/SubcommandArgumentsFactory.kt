@@ -45,6 +45,10 @@ class SubcommandArgumentsFactory(
         "--policy-id", "${event.policy.id}"
     )
 
+    fun eventCheck(event: Event) = SubcommandArguments(
+        "event", "check", "${event.id}"
+    )
+
     fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant) = SubcommandArguments {
         addAll(listOf(
             "event", "crispy-fish", "person-map-add",

@@ -29,6 +29,10 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { eventAddCrispyFish(event = event, crispyFishEventControlFile = crispyFishEventControlFile, crispyFishClassDefinitionFile = crispyFishClassDefinitionFile) }
     }
 
+    fun eventCheck(event: Event): Process {
+        return execSubcommand { eventCheck(event) }
+    }
+
     fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant): Process {
         return execSubcommand { eventCrispyFishPersonMapAdd(event, participant) }
     }

@@ -11,14 +11,11 @@ import com.github.ajalt.clikt.core.context
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.cli.clikt.StringBuilderConsole
-import tech.coner.trailer.cli.clikt.error
-import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
@@ -109,30 +106,6 @@ class ConerTrailerCliIT {
                 }
             }
             assertThat(testConsole.error, "error").isEmpty()
-        }
-    }
-
-    @Test
-    fun `It should check an event containing runs with invalid signage`() {
-        val databaseName = "64-invalid-signage"
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-        val seasonFixture = SeasonFixture.Issue64CrispyFishStagingLinesInvalidSignage(temp = crispyFishDir)
-        val event = seasonFixture.event.coreSeasonEvent.event
-        command.parse(appArgumentBuilder.clubSet(event.policy.club))
-        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
-        command.parse(appArgumentBuilder.eventAddCrispyFish(
-            event = event,
-            crispyFishEventControlFile = seasonFixture.event.ecfPath,
-            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
-        ))
-        testConsole.clear()
-
-        command.parse(appArgumentBuilder.eventCheck(event))
-
-        assertThat(testConsole).all {
-            output().contains("CS 3 ")
-            error().isEmpty()
         }
     }
 
