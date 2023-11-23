@@ -15,7 +15,7 @@ class RootCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should print help`() {
-        val processOutcome = testCommand { exec("--help") }
+        val processOutcome = newTestCommand { root(help = true) }
 
         assertThat(processOutcome).all {
             exitCode().isEqualTo(0)

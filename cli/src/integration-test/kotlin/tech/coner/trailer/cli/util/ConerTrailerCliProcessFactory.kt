@@ -10,6 +10,12 @@ class ConerTrailerCliProcessFactory(
     private val subcommandArgumentsFactory: SubcommandArgumentsFactory
 ) {
 
+    fun root(help: Boolean? = null): Process {
+        return exec(CommandParameters.builder(configDir) {
+            this.help = help
+        })
+    }
+
     fun clubSet(club: Club): Process {
         return execSubcommand { clubSet(club) }
     }
@@ -31,6 +37,7 @@ class ConerTrailerCliProcessFactory(
             addAll(processCommandArrayFactory.build())
             if (args.verbose == true) add("-v")
             args.format?.also { addAll(listOf("--format", it)) }
+            if (args.help == true) add("--help")
             args.subcommandArguments?.also { addAll(it.args) }
         }
             .toTypedArray()

@@ -3,8 +3,12 @@ package tech.coner.trailer.cli
 import assertk.all
 import assertk.assertAll
 import assertk.assertThat
-import assertk.assertions.*
-import com.github.ajalt.clikt.core.PrintHelpMessage
+import assertk.assertions.contains
+import assertk.assertions.endsWith
+import assertk.assertions.index
+import assertk.assertions.isEmpty
+import assertk.assertions.isNotEmpty
+import assertk.assertions.startsWith
 import com.github.ajalt.clikt.core.context
 import java.nio.file.Files
 import java.nio.file.Path
@@ -28,8 +32,8 @@ import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
 import tech.coner.trailer.cli.util.SubcommandArgumentsFactory
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
-import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
+import tech.coner.trailer.presentation.di.Format
 
 class ConerTrailerCliIT {
 
@@ -66,13 +70,6 @@ class ConerTrailerCliIT {
             .context {
                 console = testConsole
             }
-    }
-
-    @Test
-    fun `It should print help`() {
-        assertThrows<PrintHelpMessage> {
-            command.parse(args("--help"))
-        }
     }
 
     @Test

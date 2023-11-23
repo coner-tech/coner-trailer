@@ -10,6 +10,7 @@ data class CommandParameters(
     val motorsportRegOrganizationId: String?,
     val format: String?,
     val verbose: Boolean?,
+    val help: Boolean?,
     val subcommandArguments: SubcommandArguments?,
     val subcommandEnvironmentVariables: SubcommandEnvironmentVariables?
 ) {
@@ -21,6 +22,7 @@ data class CommandParameters(
         var motorsportRegOrganizationId: String? = null,
         var format: String? = null,
         var verbose: Boolean? = null,
+        var help: Boolean? = null,
         var subcommandArguments: SubcommandArguments? = null,
         var subcommandEnvironmentVariables: SubcommandEnvironmentVariables? = null
     )
@@ -38,6 +40,7 @@ data class CommandParameters(
                         motorsportRegOrganizationId = it.motorsportRegOrganizationId,
                         format = it.format,
                         verbose = it.verbose,
+                        help = it.help,
                         subcommandArguments = it.subcommandArguments,
                         subcommandEnvironmentVariables = it.subcommandEnvironmentVariables
                     )
