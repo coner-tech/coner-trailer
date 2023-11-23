@@ -24,7 +24,7 @@ jobs:
 
 
       - name: Verify
-        run: ./mvnw -T 1C -P ci verify
+        run: ./mvnw -T 1C -P ci,feature-webapp verify
 
   ci-graalvm:
     runs-on: ubuntu-latest
@@ -47,4 +47,4 @@ jobs:
           node-version: 'latest'
 
       - name: Verify
-        run: ./mvnw -T 1C -P ci,cli-native verify
+        run: ./mvnw -T 1C -P ci,feature-webapp,cli-native verify

@@ -356,7 +356,7 @@
         </profile>
         <profile>
             <!-- enable webapp features -->
-            <id>cli-feature-webapp</id>
+            <id>feature-webapp</id>
             <properties>
                 <feature.webapp.enable>true</feature.webapp.enable>
             </properties>
@@ -368,7 +368,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
                             <environmentVariables>
-                                <FEATURE_WEBAPP_COMPETITION>true</FEATURE_WEBAPP_COMPETITION>
+                                <FEATURE_WEBAPP_ENABLE>true</FEATURE_WEBAPP_ENABLE>
                             </environmentVariables>
                         </configuration>
                     </plugin>

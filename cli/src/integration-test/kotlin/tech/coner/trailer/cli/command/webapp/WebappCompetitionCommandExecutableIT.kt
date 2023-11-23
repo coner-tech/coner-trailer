@@ -23,10 +23,10 @@ import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.cli.command.BaseExecutableIT
 import tech.coner.trailer.cli.util.findWebappPort
 
+@EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_ENABLE", matches = "true")
 class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_COMPETITION", matches = "true")
     fun `It should start webapp competition server`() = runTest {
         newArrange { configDatabaseAdd("webapp-competition") }
 

@@ -17,11 +17,13 @@ import io.ktor.http.contentType
 import io.ktor.http.parametersOf
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.webapp.competition.testCompetitionWebapp
 
+@EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_ENABLE", matches = "true")
 class HelloResourcesTest {
 
     private val url = "/hello"

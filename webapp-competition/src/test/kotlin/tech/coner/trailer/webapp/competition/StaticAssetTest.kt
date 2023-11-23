@@ -6,11 +6,13 @@ import assertk.assertions.isNotEmpty
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.isSuccess
 import tech.coner.trailer.assertk.ktor.status
 
+@EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_ENABLE", matches = "true")
 class StaticAssetTest {
 
     @Test
