@@ -114,46 +114,6 @@ class ConerTrailerCliIT {
     }
 
     @Test
-    fun `It should list event participants`() {
-        val event = TestEvents.Lscc2019Simplified.points1
-        val databaseName = "list-event-participants"
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
-        command.parse(appArgumentBuilder.clubSet(event.policy.club))
-        command.parse(appArgumentBuilder.policyAdd(policy = event.policy))
-        command.parse(appArgumentBuilder.eventAddCrispyFish(
-            event = event,
-            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
-            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
-        ))
-        testConsole.clear()
-
-        command.parse(appArgumentBuilder.eventParticipantList(event = event))
-
-        assertThat(testConsole).all {
-            output().transform { it.lines() }.all {
-                index(1).all {
-                    contains("Signage")
-                    contains("First Name")
-                    contains("Last Name")
-                    contains("Member ID")
-                    contains("Car Model")
-                    contains("Car Color")
-                }
-                index(3).contains("HS 1")
-                index(4).contains("Anastasia")
-                index(5).contains("Drake")
-                index(6).contains("1994 Mazda Miata")
-                index(7).contains("WorldRallyBlue")
-                index(8).contains("NOV ES 18")
-                index(9).contains("Bryant")
-            }
-            error().isEmpty()
-        }
-    }
-
-    @Test
     fun `It should list event runs`() {
         val event = TestEvents.Lscc2019Simplified.points1
         val databaseName = "list-event-participants"

@@ -33,6 +33,10 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { eventCrispyFishPersonMapAdd(event, participant) }
     }
 
+    fun eventParticipantList(event: Event): Process {
+        return execSubcommand { eventParticipantList(event) }
+    }
+
     fun motorsportregMemberList(
         motorsportRegUsername: String,
         motorsportRegPassword: String,

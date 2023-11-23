@@ -33,7 +33,7 @@ data class CommandParameters(
                 .apply(fn)
                 .let {
                     CommandParameters(
-                        configDir = configDir,
+                        configDir = it.configDir,
                         database = it.database,
                         motorsportRegUsername = it.motorsportRegUsername,
                         motorsportRegPassword = it.motorsportRegPassword,

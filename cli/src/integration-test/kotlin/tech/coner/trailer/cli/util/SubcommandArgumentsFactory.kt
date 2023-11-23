@@ -45,7 +45,7 @@ class SubcommandArgumentsFactory(
         "--policy-id", "${event.policy.id}"
     )
 
-    fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant) = SubcommandArguments(buildList {
+    fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant) = SubcommandArguments {
         addAll(listOf(
             "event", "crispy-fish", "person-map-add",
             "--handicap", participant.signage?.classing?.handicap?.abbreviation!!,
@@ -58,8 +58,11 @@ class SubcommandArgumentsFactory(
             addAll(listOf("--group", it))
         }
         add("${event.id}")
-    })
+    }
 
+    fun eventParticipantList(event: Event) = SubcommandArguments(
+        "event", "participant", "list", "${event.id}"
+    )
 
     fun motorsportregMemberList() = SubcommandArguments(
         "motorsportreg", "member", "list"
@@ -67,7 +70,7 @@ class SubcommandArgumentsFactory(
 
     fun personAdd(
         person: Person
-    ) = SubcommandArguments(buildList {
+    ) = SubcommandArguments {
         addAll(listOf(
             "person", "add",
             "--id", "${person.id}",
@@ -80,7 +83,7 @@ class SubcommandArgumentsFactory(
         person.motorsportReg?.memberId?.also {
             addAll(listOf("--motorsportreg-member-id", it))
         }
-    })
+    }
 
     fun policyAdd(
         policy: Policy

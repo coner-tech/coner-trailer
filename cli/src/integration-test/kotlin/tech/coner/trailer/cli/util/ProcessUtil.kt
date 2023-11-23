@@ -12,7 +12,7 @@ fun Process.awaitOutcome(): ProcessOutcome = runBlocking {
     val outputJob = async {
         val outputBuilder = StringBuilder()
         inputStream.bufferedReader().use { reader ->
-            reader.lines().forEachOrdered { outputBuilder.append(it) }
+            reader.lines().forEachOrdered { outputBuilder.appendLine(it) }
         }
         outputBuilder.toString().ifEmpty { null }
     }
