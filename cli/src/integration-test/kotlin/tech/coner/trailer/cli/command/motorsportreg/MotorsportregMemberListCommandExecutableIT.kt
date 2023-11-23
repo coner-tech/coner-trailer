@@ -7,7 +7,6 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.cli.command.BaseExecutableIT
-import tech.coner.trailer.cli.util.EnvironmentArgumentBuilder
 import tech.coner.trailer.cli.util.error
 import tech.coner.trailer.cli.util.exitCode
 
@@ -16,19 +15,14 @@ class MotorsportregMemberListCommandExecutableIT : BaseExecutableIT() {
     @Test
     fun `It should make a motorsportreg request with wrong credentials and get an unauthorized response`() {
         val databaseName = "motorsportreg-wrong-credentials"
-        arrange { configDatabaseAdd(databaseName) }
-        arrange { configureDatabaseSnoozleInitialize() }
+        newArrange { configDatabaseAdd(databaseName) }
+        newArrange { configureDatabaseSnoozleInitialize() }
 
-        val processOutcome = testCommand {
-            exec(
-                "motorsportreg", "member", "list",
-                environment = EnvironmentArgumentBuilder()
-                    .apply {
-                        motorsportregUsername = "wrong"
-                        motorsportregPassword = "wrong"
-                        motorsportregOrganizationId = "wrong"
-                    }
-                    .build()
+        val processOutcome = newTestCommand {
+            motorsportregMemberList(
+                motorsportRegUsername = "wrong",
+                motorsportRegPassword = "wrong",
+                motorsportRegOrganizationId = "wrong"
             )
         }
 

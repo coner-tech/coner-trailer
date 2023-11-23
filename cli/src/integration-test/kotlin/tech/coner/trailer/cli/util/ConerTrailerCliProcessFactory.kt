@@ -28,9 +28,29 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { eventAddCrispyFish(event = event, crispyFishEventControlFile = crispyFishEventControlFile, crispyFishClassDefinitionFile = crispyFishClassDefinitionFile) }
     }
 
-    private fun execSubcommand(fn: (SubcommandArgumentsFactory).() -> SubcommandArguments): Process {
+    fun motorsportregMemberList(
+        motorsportRegUsername: String,
+        motorsportRegPassword: String,
+        motorsportRegOrganizationId: String
+    ): Process {
+        return execSubcommand(
+            motorsportRegUsername = motorsportRegUsername,
+            motorsportRegPassword = motorsportRegPassword,
+            motorsportRegOrganizationId = motorsportRegOrganizationId
+        ) { motorsportregMemberList() }
+    }
+
+    private fun execSubcommand(
+        motorsportRegUsername: String? = null,
+        motorsportRegPassword: String? = null,
+        motorsportRegOrganizationId: String? = null,
+        fn: (SubcommandArgumentsFactory).() -> SubcommandArguments
+    ): Process {
         return exec(
             CommandParameters.builder(configDir) {
+                this.motorsportRegUsername = motorsportRegUsername
+                this.motorsportRegPassword = motorsportRegPassword
+                this.motorsportRegOrganizationId = motorsportRegOrganizationId
                 subcommandArguments = fn.invoke(subcommandArgumentsFactory)
             }
         )

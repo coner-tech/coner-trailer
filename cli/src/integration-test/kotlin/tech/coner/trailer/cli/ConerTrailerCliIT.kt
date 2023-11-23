@@ -17,7 +17,6 @@ import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -69,24 +68,6 @@ class ConerTrailerCliIT {
             .context {
                 console = testConsole
             }
-    }
-
-    @Test
-    fun `It should make a motorsportreg request with wrong credentials and get an unauthorized response`() {
-        val databaseName = "motorsportreg-wrong-credentials"
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-
-        assertThrows<IllegalStateException> {
-            command.parse(args(
-                "--motorsportreg-username", "wrong",
-                "--motorsportreg-password", "wrong",
-                "--motorsportreg-organization-id", "wrong",
-                "motorsportreg",
-                "member",
-                "list"
-            ))
-        }
     }
 
     @Test

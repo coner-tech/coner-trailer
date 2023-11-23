@@ -43,6 +43,10 @@ class SubcommandArgumentsFactory(
         "--policy-id", "${event.policy.id}"
     )
 
+    fun motorsportregMemberList() = SubcommandArguments(
+        "motorsportreg", "member", "list"
+    )
+
     fun policyAdd(
         policy: Policy
     ) = SubcommandArguments(
