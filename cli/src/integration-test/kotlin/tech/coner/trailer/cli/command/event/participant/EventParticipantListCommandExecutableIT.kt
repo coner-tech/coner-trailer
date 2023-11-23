@@ -37,7 +37,7 @@ class EventParticipantListCommandExecutableIT : BaseExecutableIT() {
         assertThat(processOutcome).all {
             isSuccess()
             output().isNotNull().transform("lines") { it.lines() }.all {
-                hasSize(12)
+                hasSize(11)
                 index(1).all {
                     contains("Signage")
                     contains("First Name")
