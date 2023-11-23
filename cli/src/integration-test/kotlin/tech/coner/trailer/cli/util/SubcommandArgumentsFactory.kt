@@ -3,6 +3,8 @@ package tech.coner.trailer.cli.util
 import java.nio.file.Path
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
+import tech.coner.trailer.Participant
+import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
 
 class SubcommandArgumentsFactory(
@@ -43,9 +45,42 @@ class SubcommandArgumentsFactory(
         "--policy-id", "${event.policy.id}"
     )
 
+    fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant) = SubcommandArguments(buildList {
+        addAll(listOf(
+            "event", "crispy-fish", "person-map-add",
+            "--handicap", participant.signage?.classing?.handicap?.abbreviation!!,
+            "--number", participant.signage?.number!!,
+            "--first-name", participant.firstName!!,
+            "--last-name", participant.lastName!!,
+            "--person-id", "${participant.person!!.id}"
+        ))
+        participant.signage?.classing?.group?.abbreviation?.also {
+            addAll(listOf("--group", it))
+        }
+        add("${event.id}")
+    })
+
+
     fun motorsportregMemberList() = SubcommandArguments(
         "motorsportreg", "member", "list"
     )
+
+    fun personAdd(
+        person: Person
+    ) = SubcommandArguments(buildList {
+        addAll(listOf(
+            "person", "add",
+            "--id", "${person.id}",
+            "--first-name", person.firstName,
+            "--last-name", person.lastName
+        ))
+        person.clubMemberId?.also {
+            addAll(listOf("--club-member-id", it))
+        }
+        person.motorsportReg?.memberId?.also {
+            addAll(listOf("--motorsportreg-member-id", it))
+        }
+    })
 
     fun policyAdd(
         policy: Policy

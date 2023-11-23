@@ -9,19 +9,14 @@ import assertk.assertions.index
 import assertk.assertions.isEmpty
 import assertk.assertions.startsWith
 import com.github.ajalt.clikt.core.context
-import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
-import kotlin.io.path.extension
-import kotlin.io.path.nameWithoutExtension
-import kotlin.io.path.readText
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import tech.coner.trailer.TestEvents
-import tech.coner.trailer.TestParticipants
 import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.clikt.error
 import tech.coner.trailer.cli.clikt.output
@@ -68,41 +63,6 @@ class ConerTrailerCliIT {
             .context {
                 console = testConsole
             }
-    }
-
-    @Test
-    fun `It should add a crispy fish person map entry`() {
-        val databaseName = "add-crispy-fish-person-map-entry"
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-        val event = TestEvents.Lscc2019Simplified.points1
-        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
-        command.parse(appArgumentBuilder.clubSet(event.policy.club))
-        command.parse(appArgumentBuilder.policyAdd(event.policy))
-        val participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF
-        command.parse(appArgumentBuilder.personAdd(participant.person!!))
-        command.parse(appArgumentBuilder.eventAddCrispyFish(
-            event = event,
-            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
-            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
-        ))
-
-        command.parse(appArgumentBuilder.eventCrispyFishPersonMapAdd(
-            event = event,
-            participant = participant
-        ))
-
-        assertAll {
-            assertThat(testConsole.output, "output").all {
-                contains(event.name)
-                contains("${event.date}")
-                contains(participant.signage!!.classing!!.group!!.abbreviation)
-                contains(participant.signage!!.classing!!.handicap.abbreviation)
-                contains(participant.signage!!.number!!)
-                contains("${participant.person!!.id}")
-            }
-            assertThat(testConsole.error, "error").isEmpty()
-        }
     }
 
     @ParameterizedTest

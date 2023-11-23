@@ -1,4 +1,4 @@
-package tech.coner.trailer.cli.command.event
+package tech.coner.trailer.cli.command.event.crispyfish
 
 import assertk.all
 import assertk.assertThat
@@ -20,21 +20,21 @@ class EventCrispyFishPersonMapAddCommandExecutableIT : BaseExecutableIT() {
     @Test
     fun `It should add a crispy fish person map entry`() {
         val databaseName = "add-crispy-fish-person-map-entry"
-        arrange { configDatabaseAdd(databaseName) }
+        newArrange { configDatabaseAdd(databaseName) }
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
         val participant = TestParticipants.Lscc2019Points1.BRANDY_HUFF
-        arrange { configureDatabaseSnoozleInitialize() }
-        arrange { clubSet(event.policy.club) }
-        arrange { policyAdd(event.policy) }
-        arrange { personAdd(participant.person!!) }
-        arrange { eventAddCrispyFish(
+        newArrange { configureDatabaseSnoozleInitialize() }
+        newArrange { clubSet(event.policy.club) }
+        newArrange { policyAdd(event.policy) }
+        newArrange { personAdd(participant.person!!) }
+        newArrange { eventAddCrispyFish(
             event = event,
             crispyFishEventControlFile = seasonFixture.event1.ecfPath,
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ) }
 
-        val processOutcome = testCommand { eventCrispyFishPersonMapAdd(
+        val processOutcome = newTestCommand { eventCrispyFishPersonMapAdd(
             event = event,
             participant = participant
         ) }

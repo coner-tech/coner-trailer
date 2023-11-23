@@ -3,6 +3,7 @@ package tech.coner.trailer.cli.util
 import java.nio.file.Path
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
+import tech.coner.trailer.Participant
 
 class ConerTrailerCliProcessFactory(
     private val configDir: Path,
@@ -26,6 +27,10 @@ class ConerTrailerCliProcessFactory(
 
     fun eventAddCrispyFish(event: Event, crispyFishEventControlFile: Path, crispyFishClassDefinitionFile: Path): Process {
         return execSubcommand { eventAddCrispyFish(event = event, crispyFishEventControlFile = crispyFishEventControlFile, crispyFishClassDefinitionFile = crispyFishClassDefinitionFile) }
+    }
+
+    fun eventCrispyFishPersonMapAdd(event: Event, participant: Participant): Process {
+        return execSubcommand { eventCrispyFishPersonMapAdd(event, participant) }
     }
 
     fun motorsportregMemberList(
