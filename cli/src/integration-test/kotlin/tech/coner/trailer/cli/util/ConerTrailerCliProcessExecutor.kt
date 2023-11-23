@@ -36,6 +36,7 @@ class ConerTrailerCliProcessExecutor(
         return Runtime.getRuntime().exec(commandArray, useEnvironment)
     }
 
+    @Deprecated(MIGRATE_TO_FACTORY)
     fun clubSet(club: Club): Process {
         return exec(
             *appArgumentBuilder.clubSet(club)
@@ -127,3 +128,5 @@ class ConerTrailerCliProcessExecutor(
     )
 
 }
+
+const val MIGRATE_TO_FACTORY = "Migrate to same method in ConerTrailerCliProcessFactory"

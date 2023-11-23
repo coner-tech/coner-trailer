@@ -26,6 +26,7 @@ import tech.coner.trailer.cli.clikt.output
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
+import tech.coner.trailer.cli.util.SubcommandArgumentsFactory
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.eventresults.EventResultsType
@@ -40,6 +41,7 @@ class ConerTrailerCliIT {
     lateinit var snoozleDir: Path
     lateinit var crispyFishDir: Path
 
+    lateinit var argumentsFactory: SubcommandArgumentsFactory
     lateinit var appArgumentBuilder: IntegrationTestAppArgumentBuilder
     lateinit var testConsole: StringBuilderConsole
 
@@ -49,6 +51,10 @@ class ConerTrailerCliIT {
         configDir = testDir.resolve("config").apply { createDirectory() }
         snoozleDir = testDir.resolve("snoozle").apply { createDirectory() }
         crispyFishDir = testDir.resolve("crispy-fish").apply { createDirectory() }
+        argumentsFactory = SubcommandArgumentsFactory(
+            snoozleDir = snoozleDir,
+            crispyFishDir = crispyFishDir
+        )
         appArgumentBuilder = IntegrationTestAppArgumentBuilder(
             configDir = configDir,
             snoozleDir = snoozleDir,

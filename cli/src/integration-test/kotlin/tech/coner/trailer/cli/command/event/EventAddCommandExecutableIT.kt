@@ -24,14 +24,14 @@ class EventAddCommandExecutableIT : BaseExecutableIT() {
     @Test
     fun `It should add an event`() {
         val databaseName = "event-and-prerequisites"
-        arrange { configDatabaseAdd(databaseName) }
+        newArrange { configDatabaseAdd(databaseName) }
         val event = TestEvents.Lscc2019Simplified.points1
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
-        arrange { configureDatabaseSnoozleInitialize() }
-        arrange { clubSet(event.policy.club) }
-        arrange { policyAdd(policy = event.policy) }
+        newArrange { configureDatabaseSnoozleInitialize() }
+        newArrange { clubSet(event.policy.club) }
+        newArrange { policyAdd(event.policy) }
 
-        val processOutcome = testCommand { eventAddCrispyFish(
+        val processOutcome = newTestCommand { eventAddCrispyFish(
             event = event,
             crispyFishEventControlFile = seasonFixture.event1.ecfPath,
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath

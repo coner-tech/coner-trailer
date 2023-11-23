@@ -37,7 +37,8 @@ class RootCommand(
             Override the configuration directory. 
             This is mainly for development/testing. 
             The app will choose a sensible location automatically if omitted.
-            """.trimIndent()
+            """.trimIndent(),
+        envvar = "CONER_TRAILER_CONFIG_DIR"
     )
         .path(
             mustExist = true,
@@ -53,7 +54,8 @@ class RootCommand(
                 |Name of the database to use instead of the default.
                 |   Will use the default configured database if not specified. 
                 |   See: coner-trailer-cli config database
-                """.trimMargin()
+                """.trimMargin(),
+        envvar = "CONER_TRAILER_DATABASE"
     )
     private val motorsportReg: MotorsportRegCredentials? by MotorsportRegCredentials()
     class MotorsportRegCredentials : OptionGroup() {
