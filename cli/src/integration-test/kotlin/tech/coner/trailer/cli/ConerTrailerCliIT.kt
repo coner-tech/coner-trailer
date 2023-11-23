@@ -71,41 +71,6 @@ class ConerTrailerCliIT {
     }
 
     @Test
-    fun `It should add an event`() {
-        val databaseName = "event-and-prerequisites"
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-        command.parse(appArgumentBuilder.configureDatabaseSnoozleInitialize())
-        val event = TestEvents.Lscc2019Simplified.points1
-        command.parse(appArgumentBuilder.clubSet(event.policy.club))
-        val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
-        command.parse(appArgumentBuilder.policyAdd(event.policy))
-
-        command.parse(appArgumentBuilder.eventAddCrispyFish(
-            event = event,
-            crispyFishEventControlFile = seasonFixture.event1.ecfPath,
-            crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
-        ))
-
-        assertAll {
-            assertThat(testConsole.output, "output").all {
-                contains(event.name)
-                contains("${event.date}")
-            }
-            assertThat(testConsole.error, "error").isEmpty()
-        }
-        val fileStream = Files.find(snoozleDir, 4, { path, attrs ->
-            attrs.isRegularFile
-                    && path.nameWithoutExtension == "${event.id}"
-                    && path.extension == "json"
-        })
-        val eventEntity = fileStream.toList().single()
-        assertThat(eventEntity.readText(), "persisted event entity").all {
-            contains("${event.id}")
-            contains(event.name)
-        }
-    }
-
-    @Test
     fun `It should add a crispy fish person map entry`() {
         val databaseName = "add-crispy-fish-person-map-entry"
         command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))

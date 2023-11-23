@@ -3,13 +3,10 @@ package tech.coner.trailer.cli.command.event
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.exists
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import java.nio.file.Files
-import java.nio.file.Path
-import kotlin.io.path.extension
-import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.TestEvents
@@ -45,15 +42,13 @@ class EventAddCommandExecutableIT : BaseExecutableIT() {
             }
             error().isNull()
         }
-        val files = Files.find(snoozleDir, 4, { path, attrs ->
-            attrs.isRegularFile
-                    && path.nameWithoutExtension == "${event.id}"
-                    && path.extension == "json"
-        })
-        val eventEntity: Path = files.toList().single()
-        assertThat(eventEntity.readText(), "persisted event entity").all {
-            contains("${event.id}")
-            contains(event.name)
+        val eventFile = snoozleDir.resolve("events").resolve("${event.id}.json")
+        assertThat(eventFile, "event file").all {
+            exists()
+            transform("contents") { it.readText() }.all {
+                contains("${event.id}")
+                contains(event.name)
+            }
         }
     }
 }
