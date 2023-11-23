@@ -28,9 +28,9 @@ class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
     @Test
     @EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_COMPETITION", matches = "true")
     fun `It should start webapp competition server`() = runTest {
-        arrange { configDatabaseAdd("webapp-competition") }
+        newArrange { configDatabaseAdd("webapp-competition") }
 
-        val response = testCommandAsync { webappCompetition(port = 0, exploratory = true) }
+        val response = newTestCommandAsync { webappCompetition(port = 0, exploratory = true) }
             .runWebappTest { client ->
                 client.get("/hello")
             }

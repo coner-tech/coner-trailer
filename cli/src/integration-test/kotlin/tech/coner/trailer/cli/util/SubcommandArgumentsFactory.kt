@@ -143,4 +143,13 @@ class SubcommandArgumentsFactory(
         "--final-score-style", policy.finalScoreStyle.name.toLowerCase()
     )
 
+    fun webappCompetition(
+        port: Int? = null,
+        exploratory: Boolean? = null
+    ) = SubcommandArguments {
+        addAll(listOf("webapp", "competition"))
+        port?.also { addAll(listOf("--port", "$it")) }
+        exploratory?.takeIf { it }?.also { add("--exploratory") }
+    }
+
 }

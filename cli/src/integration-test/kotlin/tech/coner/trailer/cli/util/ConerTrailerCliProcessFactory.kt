@@ -87,6 +87,13 @@ class ConerTrailerCliProcessFactory(
         ) { motorsportregMemberList() }
     }
 
+    fun webappCompetition(
+        port: Int? = null,
+        exploratory: Boolean? = null
+    ): Process {
+        return execSubcommand { webappCompetition(port, exploratory) }
+    }
+
     private fun execSubcommand(
         format: Format? = null,
         motorsportRegUsername: String? = null,
