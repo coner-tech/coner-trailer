@@ -1,6 +1,8 @@
 package tech.coner.trailer.cli.util
 
 import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
@@ -51,6 +53,26 @@ class ConerTrailerCliProcessFactory(
 
     fun eventRunList(event: Event): Process {
         return execSubcommand { eventRunList(event) }
+    }
+
+    fun eventSet(
+        eventId: UUID,
+        name: String? = null,
+        date: LocalDate? = null,
+        lifecycle: Event.Lifecycle? = null,
+        setCrispyFishMetadata: Event.CrispyFishMetadata? = null,
+        unsetCrispyFishMetadata: Unit? = null
+    ): Process {
+        return execSubcommand {
+            eventSet(
+                eventId = eventId,
+                name = name,
+                date = date,
+                lifecycle = lifecycle,
+                setCrispyFishMetadata = setCrispyFishMetadata,
+                unsetCrispyFishMetadata = unsetCrispyFishMetadata
+            )
+        }
     }
 
     fun motorsportregMemberList(

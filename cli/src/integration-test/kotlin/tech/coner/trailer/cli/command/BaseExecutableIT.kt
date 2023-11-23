@@ -54,6 +54,7 @@ abstract class BaseExecutableIT {
             .parse(arguments)
     }
 
+    @Deprecated("Uses non-type-safe array of strings argument builder")
     protected fun testCommand(fn: ConerTrailerCliProcessExecutor.() -> Process): ProcessOutcome {
         return testCommandAsync(fn)
             .awaitOutcome()

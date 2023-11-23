@@ -1,6 +1,8 @@
 package tech.coner.trailer.cli.util
 
 import java.nio.file.Path
+import java.time.LocalDate
+import java.util.UUID
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
@@ -85,6 +87,29 @@ class SubcommandArgumentsFactory(
     fun eventRunList(event: Event) = SubcommandArguments(
         "event", "run", "list", "${event.id}"
     )
+
+    fun eventSet(
+        eventId: UUID,
+        name: String? = null,
+        date: LocalDate? = null,
+        lifecycle: Event.Lifecycle? = null,
+        setCrispyFishMetadata: Event.CrispyFishMetadata? = null,
+        unsetCrispyFishMetadata: Unit? = null,
+    ) = SubcommandArguments {
+        addAll(listOf("event", "set"))
+        name?.also { addAll(listOf("--name", it)) }
+        date?.also { addAll(listOf("--date", "$it")) }
+        lifecycle?.also { addAll(listOf("--lifecycle", it.name)) }
+        setCrispyFishMetadata?.also {
+            addAll(listOf(
+                "--crispy-fish", "set",
+                "--class-definition-file", "${it.classDefinitionFile}",
+                "--event-control-file", "${it.eventControlFile}"
+            ))
+        }
+        unsetCrispyFishMetadata?.also { addAll(listOf("--crispy-fish", "unset")) }
+        add("$eventId")
+    }
 
     fun motorsportregMemberList() = SubcommandArguments(
         "motorsportreg", "member", "list"
