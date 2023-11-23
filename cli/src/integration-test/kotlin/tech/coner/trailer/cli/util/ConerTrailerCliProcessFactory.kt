@@ -37,6 +37,10 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { eventParticipantList(event) }
     }
 
+    fun eventRunList(event: Event): Process {
+        return execSubcommand { eventRunList(event) }
+    }
+
     fun motorsportregMemberList(
         motorsportRegUsername: String,
         motorsportRegPassword: String,

@@ -64,6 +64,10 @@ class SubcommandArgumentsFactory(
         "event", "participant", "list", "${event.id}"
     )
 
+    fun eventRunList(event: Event) = SubcommandArguments(
+        "event", "run", "list", "${event.id}"
+    )
+
     fun motorsportregMemberList() = SubcommandArguments(
         "motorsportreg", "member", "list"
     )
