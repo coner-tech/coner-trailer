@@ -1079,6 +1079,10 @@
   "fields":[{"name":"onCloseHandler"}]
 },
 {
+  "name":"kotlinx.coroutines.channels.BufferedChannel",
+  "fields":[{"name":"_closeCause"}, {"name":"bufferEnd"}, {"name":"bufferEndSegment"}, {"name":"closeHandler"}, {"name":"completedExpandBuffersAndPauseFlag"}, {"name":"receiveSegment"}, {"name":"receivers"}, {"name":"sendSegment"}, {"name":"sendersAndCloseStatus"}]
+},
+{
   "name":"kotlinx.coroutines.internal.AtomicOp",
   "fields":[{"name":"_consensus"}]
 },

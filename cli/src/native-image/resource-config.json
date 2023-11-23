@@ -47,6 +47,8 @@
   }, {
     "pattern":"\\Qkotlin/reflect/reflect.kotlin_builtins\\E"
   }, {
+    "pattern":"\\Qorg/fusesource/jansi/internal/native/Linux/x86_64/libjansi.so\\E"
+  }, {
     "pattern":"\\Qorg/fusesource/jansi/internal/native/Windows/x86_64/jansi.dll\\E"
   }, {
     "pattern":"\\Qorg/fusesource/jansi/jansi.properties\\E"
