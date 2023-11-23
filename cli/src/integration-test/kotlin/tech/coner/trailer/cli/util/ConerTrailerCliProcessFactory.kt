@@ -4,6 +4,8 @@ import java.nio.file.Path
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
+import tech.coner.trailer.eventresults.EventResultsType
+import tech.coner.trailer.presentation.di.Format
 
 class ConerTrailerCliProcessFactory(
     private val configDir: Path,
@@ -41,6 +43,12 @@ class ConerTrailerCliProcessFactory(
         return execSubcommand { eventParticipantList(event) }
     }
 
+    fun eventResults(event: Event, eventResultsType: EventResultsType, output: String? = null, format: Format? = null, ): Process {
+        return execSubcommand(format = format) {
+            eventResults(event, eventResultsType, output)
+        }
+    }
+
     fun eventRunList(event: Event): Process {
         return execSubcommand { eventRunList(event) }
     }
@@ -58,6 +66,7 @@ class ConerTrailerCliProcessFactory(
     }
 
     private fun execSubcommand(
+        format: Format? = null,
         motorsportRegUsername: String? = null,
         motorsportRegPassword: String? = null,
         motorsportRegOrganizationId: String? = null,
@@ -65,6 +74,7 @@ class ConerTrailerCliProcessFactory(
     ): Process {
         return exec(
             CommandParameters.builder(configDir) {
+                this.format = format
                 this.motorsportRegUsername = motorsportRegUsername
                 this.motorsportRegPassword = motorsportRegPassword
                 this.motorsportRegOrganizationId = motorsportRegOrganizationId
@@ -77,7 +87,7 @@ class ConerTrailerCliProcessFactory(
         val commandArray = buildList {
             addAll(processCommandArrayFactory.build())
             if (args.verbose == true) add("-v")
-            args.format?.also { addAll(listOf("--format", it)) }
+            args.format?.also { addAll(listOf("--format", it.name.lowercase())) }
             if (args.help == true) add("--help")
             args.subcommandArguments?.also { addAll(it.args) }
         }

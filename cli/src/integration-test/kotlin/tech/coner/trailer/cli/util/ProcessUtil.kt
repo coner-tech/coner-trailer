@@ -14,7 +14,9 @@ fun Process.awaitOutcome(): ProcessOutcome = runBlocking {
         inputStream.bufferedReader().use { reader ->
             reader.lines().forEachOrdered { outputBuilder.appendLine(it) }
         }
-        outputBuilder.toString().ifEmpty { null }
+        outputBuilder.toString()
+            .trim()
+            .ifEmpty { null }
     }
     val errorJob = async {
         val errorBuilder = StringBuilder()

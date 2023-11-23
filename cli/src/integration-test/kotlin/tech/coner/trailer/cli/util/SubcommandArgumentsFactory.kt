@@ -6,6 +6,7 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person
 import tech.coner.trailer.Policy
+import tech.coner.trailer.eventresults.EventResultsType
 
 class SubcommandArgumentsFactory(
     private val snoozleDir: Path,
@@ -67,6 +68,19 @@ class SubcommandArgumentsFactory(
     fun eventParticipantList(event: Event) = SubcommandArguments(
         "event", "participant", "list", "${event.id}"
     )
+
+    fun eventResults(
+        event: Event,
+        type: EventResultsType,
+        output: String? = null
+    ) = SubcommandArguments {
+        addAll(listOf(
+            "event", "results",
+            "--type", "${type.key}"
+        ))
+        output?.also { add("--$output") }
+        add("${event.id}")
+    }
 
     fun eventRunList(event: Event) = SubcommandArguments(
         "event", "run", "list", "${event.id}"

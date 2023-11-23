@@ -27,20 +27,20 @@ class EventResultsCommandExecutableIT : BaseExecutableIT() {
     fun `It should print event results of all types and all formats`(eventResultType: EventResultsType, format: Format) {
         val event = TestEvents.Lscc2019Simplified.points1
         val databaseName = "print-event-results-${eventResultType.key}-${format.name}"
-        arrange { configDatabaseAdd(databaseName) }
+        newArrange { configDatabaseAdd(databaseName) }
         val seasonFixture = SeasonFixture.Lscc2019Simplified(crispyFishDir)
-        arrange { configureDatabaseSnoozleInitialize() }
-        arrange { clubSet(event.policy.club) }
-        arrange { policyAdd(event.policy) }
-        arrange { eventAddCrispyFish(
+        newArrange { configureDatabaseSnoozleInitialize() }
+        newArrange { clubSet(event.policy.club) }
+        newArrange { policyAdd(event.policy) }
+        newArrange { eventAddCrispyFish(
             event = event,
             crispyFishEventControlFile = seasonFixture.event1.ecfPath,
             crispyFishClassDefinitionFile = seasonFixture.classDefinitionPath
         ) }
 
-        val processOutcome = testCommand { eventResults(
+        val processOutcome = newTestCommand { eventResults(
             event = event,
-            type = eventResultType,
+            eventResultsType = eventResultType,
             format = format,
             output = "console"
         ) }
