@@ -7,7 +7,6 @@ import assertk.assertions.contains
 import assertk.assertions.endsWith
 import assertk.assertions.index
 import assertk.assertions.isEmpty
-import assertk.assertions.isNotEmpty
 import assertk.assertions.startsWith
 import com.github.ajalt.clikt.core.context
 import java.nio.file.Files
@@ -70,18 +69,6 @@ class ConerTrailerCliIT {
             .context {
                 console = testConsole
             }
-    }
-
-    @Test
-    fun `It should add a database config`() {
-        val databaseName = "arbitrary-database-name"
-
-        command.parse(appArgumentBuilder.configDatabaseAdd(databaseName))
-
-        assertAll {
-            assertThat(testConsole.output, "console output").isNotEmpty()
-            assertThat(testConsole.error, "console errors").isEmpty()
-        }
     }
 
     @Test

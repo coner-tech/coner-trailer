@@ -1,6 +1,7 @@
 package tech.coner.trailer.cli.util
 
 import assertk.Assert
+import assertk.assertions.isEqualTo
 import assertk.assertions.prop
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -49,4 +50,5 @@ data class ProcessOutcome(
 fun Assert<ProcessOutcome>.output() = prop("output") { it.output }
 fun Assert<ProcessOutcome>.error() = prop("error") { it.error }
 fun Assert<ProcessOutcome>.exitCode() = prop("exitCode") { it.exitCode }
+fun Assert<ProcessOutcome>.isSuccess() = exitCode().isEqualTo(0)
 
