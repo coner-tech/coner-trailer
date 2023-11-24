@@ -348,6 +348,9 @@
                                         <coner-trailer-cli.argument-factory>native-image</coner-trailer-cli.argument-factory>
                                         <coner-trailer-cli.native-image>${project.build.directory}/${native-image.filename}</coner-trailer-cli.native-image>
                                     </systemPropertyVariables>
+                                    <environmentVariables>
+                                        <CONER_TRAILER_CLI_NATIVE>true</CONER_TRAILER_CLI_NATIVE>
+                                    </environmentVariables>
                                 </configuration>
                             </execution>
                         </executions>

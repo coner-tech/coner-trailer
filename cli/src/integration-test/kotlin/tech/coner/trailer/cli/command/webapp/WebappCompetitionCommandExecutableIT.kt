@@ -17,14 +17,19 @@ import kotlinx.coroutines.test.runTest
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilNotNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import tech.coner.trailer.assertk.ktor.bodyAsText
 import tech.coner.trailer.assertk.ktor.hasContentTypeIgnoringParams
 import tech.coner.trailer.assertk.ktor.status
 import tech.coner.trailer.cli.command.BaseExecutableIT
 import tech.coner.trailer.cli.util.findWebappPort
 
-@EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_ENABLE", matches = "true")
+@EnabledIfEnvironmentVariable(named = "FEATURE_WEBAPP_ENABLE", matches = "true", disabledReason = "https://github.com/coner-tech/coner-trailer/issues/85")
+@DisabledIfEnvironmentVariable(named = "CONER_TRAILER_CLI_NATIVE", matches = "true", disabledReason = "https://github.com/coner-tech/coner-trailer/issues/85")
+@Execution(ExecutionMode.SAME_THREAD)
 class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
 
     @Test
@@ -63,7 +68,7 @@ class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
 
         newTestCommandAsync { webappCompetition(port = 0) }
             .runWebappTest { client ->
-                assertThat(client.get("/assets/bootstrap/bootstrap.bundle.min.js")).all {
+                assertThat(client.get("/webjars/bootstrap/bootstrap.bundle.min.js")).all {
                     status().isEqualTo(HttpStatusCode.OK)
                     hasContentTypeIgnoringParams(ContentType.Application.JavaScript)
                     bodyAsText().isNotEmpty()

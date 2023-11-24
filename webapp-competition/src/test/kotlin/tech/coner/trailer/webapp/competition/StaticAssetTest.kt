@@ -30,7 +30,7 @@ class StaticAssetTest {
 
     @Test
     fun `It should serve webjar bootstrap js`() = testCompetitionWebapp { client ->
-        val url = "/assets/bootstrap/bootstrap.bundle.min.js"
+        val url = "/webjars/bootstrap/bootstrap.bundle.min.js"
 
         val actual = client.get(url)
 
