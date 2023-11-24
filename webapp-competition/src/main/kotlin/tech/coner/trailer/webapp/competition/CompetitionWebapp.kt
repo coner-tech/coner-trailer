@@ -35,9 +35,7 @@ fun competitionWebapp(di: DI, config: WebappConfiguration) =
 fun Application.competitionWebappModule(exploratory: Boolean) {
     install(CallLogging)
     install(Resources)
-    install(Webjars) {
-        path = "assets"
-    }
+    install(Webjars)
     install(ContentNegotiation) {
         json()
     }

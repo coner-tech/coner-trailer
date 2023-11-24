@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEmpty
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.defaultRequest
@@ -40,6 +41,34 @@ class WebappCompetitionCommandExecutableIT : BaseExecutableIT() {
             hasContentTypeIgnoringParams(ContentType.Text.Html)
             bodyAsText().contains("Hello World")
         }
+    }
+
+    @Test
+    fun `It should respond with static assets`() = runTest {
+        newArrange { configDatabaseAdd("webapp-competition-static-assets") }
+
+        newTestCommandAsync { webappCompetition(port = 0, exploratory = true) }
+            .runWebappTest { client ->
+                assertThat(client.get("/assets/coner-trailer.css")).all {
+                    status().isEqualTo(HttpStatusCode.OK)
+                    hasContentTypeIgnoringParams(ContentType.Text.CSS)
+                    bodyAsText().isNotEmpty()
+                }
+            }
+    }
+
+    @Test
+    fun `It should respond with webjar assets`() = runTest {
+        newArrange { configDatabaseAdd("webapp-competition-webjar-assets") }
+
+        newTestCommandAsync { webappCompetition(port = 0) }
+            .runWebappTest { client ->
+                assertThat(client.get("/assets/bootstrap/bootstrap.bundle.min.js")).all {
+                    status().isEqualTo(HttpStatusCode.OK)
+                    hasContentTypeIgnoringParams(ContentType.Application.JavaScript)
+                    bodyAsText().isNotEmpty()
+                }
+            }
     }
 
     private fun <T> Process.runWebappTest(fn: suspend (HttpClient) -> T): T {

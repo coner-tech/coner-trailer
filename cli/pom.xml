@@ -323,6 +323,7 @@
                             <buildArgs>
                                 --no-fallback
                                 --enable-https
+                                -H:+AllowJRTFileSystem
                             </buildArgs>
                             <metadataRepository>
                                 <enabled>true</enabled>

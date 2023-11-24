@@ -33,7 +33,7 @@ class RootTemplate<CT : Template<FlowContent>>(
             meta(name = "viewport", content = "width=device-width, initial-scale=1") {
                 insert(additionalMeta)
             }
-            script(src = "/assets/bootstrap/bootstrap.bundle.min.js") {
+            script(src = "/webjars/bootstrap/bootstrap.bundle.min.js") {
                 integrity = "sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
                 attributes["crossorigin"] = "anonymous"
             }
