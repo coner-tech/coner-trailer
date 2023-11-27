@@ -276,7 +276,7 @@
             <id>cli-native</id>
 
             <properties>
-                <graalvm-native-maven-plugin.version>0.9.23</graalvm-native-maven-plugin.version>
+                <graalvm-native-maven-plugin.version>0.9.28</graalvm-native-maven-plugin.version>
                 <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
             </properties>
 
