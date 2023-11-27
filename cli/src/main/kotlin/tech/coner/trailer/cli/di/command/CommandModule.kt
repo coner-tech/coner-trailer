@@ -1,15 +1,36 @@
 package tech.coner.trailer.cli.di.command
 
 import com.github.ajalt.clikt.core.subcommands
-import org.kodein.di.*
-import tech.coner.trailer.cli.Feature
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.bindProvider
+import org.kodein.di.instance
+import org.kodein.di.new
+import org.kodein.di.scoped
+import org.kodein.di.singleton
 import tech.coner.trailer.cli.command.GlobalModel
 import tech.coner.trailer.cli.command.RootCommand
 import tech.coner.trailer.cli.command.club.ClubCommand
 import tech.coner.trailer.cli.command.club.ClubGetCommand
 import tech.coner.trailer.cli.command.club.ClubSetCommand
-import tech.coner.trailer.cli.command.config.*
-import tech.coner.trailer.cli.command.event.*
+import tech.coner.trailer.cli.command.config.ConfigCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseAddCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseGetCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseListCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseRemoveCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseSetDefaultCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseSnoozleCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseSnoozleInitializeCommand
+import tech.coner.trailer.cli.command.config.ConfigDatabaseSnoozleMigrateCommand
+import tech.coner.trailer.cli.command.event.EventAddCommand
+import tech.coner.trailer.cli.command.event.EventCheckCommand
+import tech.coner.trailer.cli.command.event.EventCommand
+import tech.coner.trailer.cli.command.event.EventDeleteCommand
+import tech.coner.trailer.cli.command.event.EventGetCommand
+import tech.coner.trailer.cli.command.event.EventListCommand
+import tech.coner.trailer.cli.command.event.EventResultsCommand
+import tech.coner.trailer.cli.command.event.EventSetCommand
 import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishCommand
 import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapAddCommand
 import tech.coner.trailer.cli.command.event.crispyfish.EventCrispyFishPersonMapAssembleCommand
@@ -19,15 +40,49 @@ import tech.coner.trailer.cli.command.event.participant.EventParticipantListComm
 import tech.coner.trailer.cli.command.event.run.EventRunCommand
 import tech.coner.trailer.cli.command.event.run.EventRunLatestCommand
 import tech.coner.trailer.cli.command.event.run.EventRunListCommand
-import tech.coner.trailer.cli.command.eventpointscalculator.*
-import tech.coner.trailer.cli.command.motorsportreg.*
-import tech.coner.trailer.cli.command.person.*
-import tech.coner.trailer.cli.command.policy.*
-import tech.coner.trailer.cli.command.rankingsort.*
-import tech.coner.trailer.cli.command.season.*
-import tech.coner.trailer.cli.command.seasonpointscalculator.*
-import tech.coner.trailer.cli.command.webapp.WebappCommand
-import tech.coner.trailer.cli.command.webapp.WebappCompetitionCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorAddCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorDeleteCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorGetCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorListCommand
+import tech.coner.trailer.cli.command.eventpointscalculator.EventPointsCalculatorSetCommand
+import tech.coner.trailer.cli.command.motorsportreg.MotorsportRegCommand
+import tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberCommand
+import tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportCommand
+import tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberImportSingleCommand
+import tech.coner.trailer.cli.command.motorsportreg.MotorsportRegMemberListCommand
+import tech.coner.trailer.cli.command.person.PersonAddCommand
+import tech.coner.trailer.cli.command.person.PersonCommand
+import tech.coner.trailer.cli.command.person.PersonDeleteCommand
+import tech.coner.trailer.cli.command.person.PersonGetCommand
+import tech.coner.trailer.cli.command.person.PersonListCommand
+import tech.coner.trailer.cli.command.person.PersonSearchCommand
+import tech.coner.trailer.cli.command.person.PersonSetCommand
+import tech.coner.trailer.cli.command.policy.PolicyAddCommand
+import tech.coner.trailer.cli.command.policy.PolicyCommand
+import tech.coner.trailer.cli.command.policy.PolicyDeleteCommand
+import tech.coner.trailer.cli.command.policy.PolicyGetCommand
+import tech.coner.trailer.cli.command.policy.PolicyListCommand
+import tech.coner.trailer.cli.command.policy.PolicySetCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortAddCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortDeleteCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortGetCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortListCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortSetCommand
+import tech.coner.trailer.cli.command.rankingsort.RankingSortStepsAppendCommand
+import tech.coner.trailer.cli.command.season.SeasonAddCommand
+import tech.coner.trailer.cli.command.season.SeasonCommand
+import tech.coner.trailer.cli.command.season.SeasonDeleteCommand
+import tech.coner.trailer.cli.command.season.SeasonGetCommand
+import tech.coner.trailer.cli.command.season.SeasonListCommand
+import tech.coner.trailer.cli.command.season.SeasonSetCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorAddCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorDeleteCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorGetCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorListCommand
+import tech.coner.trailer.cli.command.seasonpointscalculator.SeasonPointsCalculatorSetCommand
 import tech.coner.trailer.cli.di.Invocation
 import tech.coner.trailer.cli.di.InvocationScope
 import tech.coner.trailer.cli.service.FeatureService
@@ -59,7 +114,6 @@ val commandModule = DI.Module("tech.coner.trailer.cli.command") {
             new(::ConfigCommand)
                 .subcommands(
                     instance<ConfigDatabaseCommand>(),
-                    instance<ConfigWebappCommand>()
                 )
         }
     }
@@ -96,22 +150,6 @@ val commandModule = DI.Module("tech.coner.trailer.cli.command") {
     }
     bind { scoped(InvocationScope).singleton { new(::ConfigDatabaseSnoozleInitializeCommand) } }
     bind { scoped(InvocationScope).singleton { new(::ConfigDatabaseSnoozleMigrateCommand) } }
-
-
-    // Config Webapp
-    bind {
-        scoped(InvocationScope).singleton {
-            new(::ConfigWebappCommand)
-                .subcommands(
-                    instance<ConfigWebappGetCommand>(),
-                    instance<ConfigWebappSetCommand>(),
-                    instance<ConfigWebappUnsetCommand>()
-                )
-        }
-    }
-    bind { scoped(InvocationScope).singleton { new(::ConfigWebappGetCommand) } }
-    bind { scoped(InvocationScope).singleton { new(::ConfigWebappSetCommand) } }
-    bind { scoped(InvocationScope).singleton { new(::ConfigWebappUnsetCommand) } }
 
     // Event
     bind {
@@ -300,9 +338,6 @@ val commandModule = DI.Module("tech.coner.trailer.cli.command") {
                         add(instance<RankingSortCommand>())
                         add(instance<SeasonCommand>())
                         add(instance<SeasonPointsCalculatorCommand>())
-                        if (features.contains(Feature.WEBAPP)) {
-                            add(instance<WebappCommand>())
-                        }
                     }
                 )
         }
@@ -345,15 +380,4 @@ val commandModule = DI.Module("tech.coner.trailer.cli.command") {
     bind { scoped(InvocationScope).singleton { new(::SeasonPointsCalculatorGetCommand) } }
     bind { scoped(InvocationScope).singleton { new(::SeasonPointsCalculatorListCommand) } }
     bind { scoped(InvocationScope).singleton { new(::SeasonPointsCalculatorSetCommand) } }
-
-    // Webapp
-    bind {
-        scoped(InvocationScope).singleton {
-            new(::WebappCommand)
-                .subcommands(
-                    instance<WebappCompetitionCommand>()
-                )
-        }
-    }
-    bind { scoped(InvocationScope).singleton { new(::WebappCompetitionCommand) }}
 }

@@ -358,27 +358,6 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <!-- enable webapp features -->
-            <id>feature-webapp</id>
-            <properties>
-                <feature.webapp.enable>true</feature.webapp.enable>
-            </properties>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <environmentVariables>
-                                <FEATURE_WEBAPP_ENABLE>true</FEATURE_WEBAPP_ENABLE>
-                            </environmentVariables>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 
 </project>

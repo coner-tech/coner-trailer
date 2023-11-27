@@ -9,9 +9,6 @@ class FeatureService(
 
     fun get(): Set<Feature> {
         return buildSet {
-            if (propertiesReader.read("feature.webapp.enable").toBoolean()) {
-                add(Feature.WEBAPP)
-            }
         }
     }
 }
