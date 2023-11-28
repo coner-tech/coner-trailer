@@ -22,29 +22,5 @@ jobs:
         with:
           node-version: 'latest'
 
-
       - name: Verify
         run: ./mvnw -T 1C -P ci verify
-
-  ci-graalvm:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@v1
-        with:
-          java-version: '17'
-          distribution: 'graalvm-community'
-          components: 'native-image'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'
-
-      - name: Verify
-        run: ./mvnw -T 1C -P ci,cli-native verify

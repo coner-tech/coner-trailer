@@ -14,8 +14,6 @@
 
     <properties>
         <clikt.version>3.5.0</clikt.version>
-
-        <feature.webapp.enable>false</feature.webapp.enable>
     </properties>
 
     <dependencies>
@@ -272,92 +270,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>cli-native</id>
-
-            <properties>
-                <graalvm-native-maven-plugin.version>0.9.28</graalvm-native-maven-plugin.version>
-                <native-image.filename>${project.build.finalName}-${os.name}-${os.arch}</native-image.filename>
-            </properties>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-native-image-config-directory</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/native-image</directory>
-                                        </resource>
-                                    </resources>
-                                    <outputDirectory>${project.build.outputDirectory}/META-INF/native-image</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.graalvm.buildtools</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <version>${graalvm-native-maven-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <executions>
-                            <execution>
-                                <id>build-native</id>
-                                <goals>
-                                    <goal>compile-no-fork</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <imageName>${native-image.filename}</imageName>
-                            <buildArgs>
-                                --no-fallback
-                                --enable-https
-                                -H:+AllowJRTFileSystem
-                            </buildArgs>
-                            <metadataRepository>
-                                <enabled>true</enabled>
-                            </metadataRepository>
-                            <skipNativeTests>true</skipNativeTests>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                                <configuration>
-                                    <systemPropertyVariables>
-                                        <coner-trailer-cli.argument-factory>native-image</coner-trailer-cli.argument-factory>
-                                        <coner-trailer-cli.native-image>${project.build.directory}/${native-image.filename}</coner-trailer-cli.native-image>
-                                    </systemPropertyVariables>
-                                    <environmentVariables>
-                                        <CONER_TRAILER_CLI_NATIVE>true</CONER_TRAILER_CLI_NATIVE>
-                                    </environmentVariables>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 
 </project>

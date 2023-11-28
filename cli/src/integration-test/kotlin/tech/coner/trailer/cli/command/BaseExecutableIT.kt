@@ -10,7 +10,6 @@ import tech.coner.trailer.cli.clikt.StringBuilderConsole
 import tech.coner.trailer.cli.util.ConerTrailerCliProcessExecutor
 import tech.coner.trailer.cli.util.ConerTrailerCliProcessFactory
 import tech.coner.trailer.cli.util.IntegrationTestAppArgumentBuilder
-import tech.coner.trailer.cli.util.NativeImageCommandArrayFactory
 import tech.coner.trailer.cli.util.ProcessOutcome
 import tech.coner.trailer.cli.util.ShadedJarCommandArrayFactory
 import tech.coner.trailer.cli.util.SubcommandArguments
@@ -91,7 +90,6 @@ abstract class BaseExecutableIT {
 
     private fun createProcessCommandArrayFactory() = when (System.getProperty("coner-trailer-cli.argument-factory", "shaded-jar")) {
         "shaded-jar" -> ShadedJarCommandArrayFactory()
-        "native-image" -> NativeImageCommandArrayFactory()
         else -> throw IllegalStateException("Unknown argument factory")
     }
 
