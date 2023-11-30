@@ -1,0 +1,17 @@
+package tech.coner.trailer.app.admin.command.policy
+
+import kotlinx.coroutines.CoroutineScope
+import org.kodein.di.DI
+import tech.coner.trailer.app.admin.command.BaseCommand
+import tech.coner.trailer.app.admin.command.GlobalModel
+
+class PolicyCommand(
+    di: DI,
+    global: GlobalModel
+) : BaseCommand(
+    di = di,
+    global = global,
+    help = "Manage policies"
+) {
+    override suspend fun CoroutineScope.coRun() {}
+}

@@ -20,7 +20,7 @@
         <module>datasource-motorsportreg</module>
         <module>io</module>
         <module>io-kodein-di</module>
-        <module>cli</module>
+        <module>admin</module>
         <module>io-test</module>
         <module>presentation/presentation</module>
         <module>presentation/presentation-text</module>
