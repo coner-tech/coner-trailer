@@ -61,7 +61,7 @@
         <mordant.version>2.1.0</mordant.version>
 
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
-        <assertk.version>0.27.0</assertk.version>
+        <assertk.version>0.28.0</assertk.version>
         <mockk.version>1.13.6</mockk.version>
         <jsoup.version>1.15.3</jsoup.version>
         <awaitility.version>4.2.0</awaitility.version>
