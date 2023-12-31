@@ -5,7 +5,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.*
@@ -34,7 +34,7 @@ class CrispyFishClassMapperTest {
             hasName(input.name)
             sort().isEqualTo(0)
             parent().isNotNull().name().isEqualTo(input.groupName)
-            paxFactor().isSameAs(input.paxFactor)
+            paxFactor().isSameInstanceAs(input.paxFactor)
             paxed().isFalse()
         }
     }

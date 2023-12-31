@@ -1,7 +1,7 @@
 package tech.coner.trailer.eventresults
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -37,7 +37,7 @@ class IndividualEventResultsServiceTest {
 
         val actual: IndividualEventResults = service.build(event)
 
-        assertThat(actual).isSameAs(individualEventResults)
+        assertThat(actual).isSameInstanceAs(individualEventResults)
         verifySequence {
             comprehensiveEventResultsService.build(event)
         }

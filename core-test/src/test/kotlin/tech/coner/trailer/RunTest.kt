@@ -78,7 +78,7 @@ class RunTest {
                 didNotFinish = true
             )
 
-            assertThat(run).effectivePenalty().isSameAs(Run.Penalty.Disqualified)
+            assertThat(run).effectivePenalty().isSameInstanceAs(Run.Penalty.Disqualified)
         }
 
         @Test
@@ -88,7 +88,7 @@ class RunTest {
                 didNotFinish = true
             )
 
-            assertThat(run).effectivePenalty().isSameAs(Run.Penalty.DidNotFinish)
+            assertThat(run).effectivePenalty().isSameInstanceAs(Run.Penalty.DidNotFinish)
         }
     }
 
@@ -135,7 +135,7 @@ class RunTest {
 
             assertThat(run).supersededPenalties().isNotNull().all {
                 hasSize(2)
-                index(0).isSameAs(Run.Penalty.DidNotFinish)
+                index(0).isSameInstanceAs(Run.Penalty.DidNotFinish)
                 index(1).isInstanceOf(Run.Penalty.Cone::class)
             }
         }

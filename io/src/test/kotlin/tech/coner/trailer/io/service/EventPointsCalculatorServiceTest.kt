@@ -2,7 +2,7 @@ package tech.coner.trailer.io.service
 
 import assertk.assertThat
 import assertk.assertions.hasSize
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.BeforeEach
@@ -62,8 +62,8 @@ class EventPointsCalculatorServiceTest {
 
         val actual = service.findById(calculator.id)
 
-        assertThat(actual).isSameAs(calculator)
-        assertThat(slot.captured.id).isSameAs(calculator.id)
+        assertThat(actual).isSameInstanceAs(calculator)
+        assertThat(slot.captured.id).isSameInstanceAs(calculator.id)
         verifySequence {
             resource.read(any())
             mapper.fromSnoozle(any())
@@ -83,7 +83,7 @@ class EventPointsCalculatorServiceTest {
 
         val actual = service.findByName(lsccOverall.name)
 
-        assertThat(actual).isSameAs(lsccOverall)
+        assertThat(actual).isSameInstanceAs(lsccOverall)
     }
 
     @Test

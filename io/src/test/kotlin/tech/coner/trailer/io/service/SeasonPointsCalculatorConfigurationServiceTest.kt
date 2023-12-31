@@ -1,7 +1,7 @@
 package tech.coner.trailer.io.service
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -72,7 +72,7 @@ class SeasonPointsCalculatorConfigurationServiceTest {
             resource.read(match { it.id == find.id })
             mapper.fromSnoozle(findEntity)
         }
-        assertThat(actual).isSameAs(find)
+        assertThat(actual).isSameInstanceAs(find)
     }
 
     @Test
@@ -98,7 +98,7 @@ class SeasonPointsCalculatorConfigurationServiceTest {
         verify(exactly = 0) {
             lscc2019SimplifiedEntity.name
         }
-        assertThat(actual).isSameAs(lscc2019)
+        assertThat(actual).isSameInstanceAs(lscc2019)
     }
 
     @Test

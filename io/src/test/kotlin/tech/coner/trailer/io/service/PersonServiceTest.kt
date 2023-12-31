@@ -2,7 +2,7 @@ package tech.coner.trailer.io.service
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -70,7 +70,7 @@ class PersonServiceTest {
             resource.read(match { it.id == person.id })
             mapper.fromSnoozle(personEntity)
         }
-        assertThat(actual).isSameAs(person)
+        assertThat(actual).isSameInstanceAs(person)
     }
 
     @Test

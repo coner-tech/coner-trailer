@@ -84,7 +84,7 @@ class ConfigurationServiceTest {
                 .isSuccess()
                 .all {
                     configuration().all {
-                        isSameAs(saveSlot.captured)
+                        isSameInstanceAs(saveSlot.captured)
                         databases().all {
                             key("foo").default().isTrue()
                             key("bar").default().isFalse()
@@ -183,7 +183,7 @@ class ConfigurationServiceTest {
             assertThat(actual)
                 .isSuccess()
                 .all {
-                    isSameAs(saveSlot.captured)
+                    isSameInstanceAs(saveSlot.captured)
                     databases().matchesPredicate { !it.containsKey("foo") }
                 }
             verifySequence {
@@ -207,7 +207,7 @@ class ConfigurationServiceTest {
             assertThat(actual)
                 .isSuccess()
                 .all {
-                    isSameAs(saveSlot.captured)
+                    isSameInstanceAs(saveSlot.captured)
                     databases().matchesPredicate { !it.containsKey("bar") }
                     defaultDatabaseName().isNull()
                 }
@@ -245,7 +245,7 @@ class ConfigurationServiceTest {
             assertThat(actual)
                 .isSuccess()
                 .isNotNull()
-                .isSameAs(config.databases["bar"])
+                .isSameInstanceAs(config.databases["bar"])
         }
 
         @Test

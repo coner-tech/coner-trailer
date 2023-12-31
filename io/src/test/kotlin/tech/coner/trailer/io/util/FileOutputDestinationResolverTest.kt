@@ -2,7 +2,7 @@ package tech.coner.trailer.io.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.BeforeEach
@@ -57,6 +57,6 @@ class FileOutputDestinationResolverTest {
             resolver.process(regularFile) { throw Exception("Should not invoke generator") }
         }
 
-        assertThat(actual).isSameAs(regularFile)
+        assertThat(actual).isSameInstanceAs(regularFile)
     }
 }

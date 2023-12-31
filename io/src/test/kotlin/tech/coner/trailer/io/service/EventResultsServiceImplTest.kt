@@ -1,7 +1,7 @@
 package tech.coner.trailer.io.service
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -40,7 +40,7 @@ class EventResultsServiceImplTest {
         verifySequence {
             crispyFishEventResultsService.buildRawResults(event)
         }
-        assertThat(actual).isSameAs(results)
+        assertThat(actual).isSameInstanceAs(results)
     }
 
     @Test
@@ -55,7 +55,7 @@ class EventResultsServiceImplTest {
         verifySequence {
             crispyFishEventResultsService.buildPaxResults(event)
         }
-        assertThat(actual).isSameAs(results)
+        assertThat(actual).isSameInstanceAs(results)
     }
 
     @Test
@@ -70,7 +70,7 @@ class EventResultsServiceImplTest {
         verifySequence {
             crispyFishEventResultsService.buildClassResults(event)
         }
-        assertThat(actual).isSameAs(results)
+        assertThat(actual).isSameInstanceAs(results)
     }
 
 }

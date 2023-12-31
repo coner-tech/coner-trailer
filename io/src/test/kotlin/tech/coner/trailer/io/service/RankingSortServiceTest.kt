@@ -1,7 +1,7 @@
 package tech.coner.trailer.io.service
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -69,7 +69,7 @@ class RankingSortServiceTest {
             resource.read(match { it.id == rankingSort.id })
             mapper.fromSnoozle(rankingSortEntity)
         }
-        assertThat(actual).isSameAs(rankingSort)
+        assertThat(actual).isSameInstanceAs(rankingSort)
     }
 
     @Test

@@ -4,7 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isSuccess
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -137,8 +137,8 @@ class EventServiceTest : CoroutineScope {
 
         assertThat(actual)
             .isSuccess()
-            .isSameAs(event)
-        assertThat(slot.captured.id).isSameAs(event.id)
+            .isSameInstanceAs(event)
+        assertThat(slot.captured.id).isSameInstanceAs(event.id)
         verifySequence {
             resource.read(any())
             mapper.toCore(any())
@@ -162,7 +162,7 @@ class EventServiceTest : CoroutineScope {
 
         assertThat(actual)
             .isSuccess()
-            .isSameAs(event2)
+            .isSameInstanceAs(event2)
     }
 
     @Test
@@ -291,7 +291,7 @@ class EventServiceTest : CoroutineScope {
         }
         assertThat(actual)
             .isSuccess()
-            .isSameAs(update)
+            .isSameInstanceAs(update)
     }
 
     @Test
@@ -312,7 +312,7 @@ class EventServiceTest : CoroutineScope {
         }
         assertThat(actual)
             .isSuccess()
-            .isSameAs(Unit)
+            .isSameInstanceAs(Unit)
     }
 
 

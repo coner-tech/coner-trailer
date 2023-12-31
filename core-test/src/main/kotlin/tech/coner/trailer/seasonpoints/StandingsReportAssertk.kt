@@ -2,7 +2,7 @@ package tech.coner.trailer.seasonpoints
 
 import assertk.Assert
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.prop
 import tech.coner.trailer.Person
 
@@ -18,7 +18,7 @@ fun Assert<StandingsReport.Standing>.score() = prop("score") { it.score }
 fun Assert<StandingsReport.Standing>.hasScore(expected: Int) = score().isEqualTo(expected)
 
 fun Assert<StandingsReport.Standing>.person() = prop("person") { it.person }
-fun Assert<StandingsReport.Standing>.hasPerson(expected: Person) = person().isSameAs(expected)
+fun Assert<StandingsReport.Standing>.hasPerson(expected: Person) = person().isSameInstanceAs(expected)
 
 fun Assert<StandingsReport.Standing>.tie() = prop("tie") { it.tie }
 fun Assert<StandingsReport.Standing>.isTie() = tie().isEqualTo(true)

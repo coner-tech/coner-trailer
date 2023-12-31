@@ -6,7 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.ProgramResult
 import io.mockk.coEvery
@@ -105,7 +105,7 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         assertThat(global.environment)
             .isNotNull()
             .transform { it.databaseConfiguration }
-            .isSameAs(dbConfigs.foo)
+            .isSameInstanceAs(dbConfigs.foo)
     }
 
     @Test
@@ -151,7 +151,7 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         assertThat(global.environment)
             .isNotNull()
             .transform { it.databaseConfiguration }
-            .isSameAs(defaultDatabase)
+            .isSameInstanceAs(defaultDatabase)
     }
 
     @Test
