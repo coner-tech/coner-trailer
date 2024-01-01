@@ -12,10 +12,6 @@
 
     <artifactId>io</artifactId>
 
-    <properties>
-        <appdirs.version>1.2.1</appdirs.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
