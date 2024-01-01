@@ -58,7 +58,7 @@
         <ktor.version>2.3.7</ktor.version>
         <bootstrap.version>5.1.3</bootstrap.version>
         <logback.version>1.4.14</logback.version>
-        <mordant.version>2.1.0</mordant.version>
+        <mordant.version>2.2.0</mordant.version>
 
         <junit.jupiter.version>5.10.1</junit.jupiter.version>
         <assertk.version>0.28.0</assertk.version>
