@@ -117,11 +117,6 @@
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kotlinx-serialization-json</artifactId>
-                <version>${kotlinx.serialization.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>io.ktor</groupId>
                 <artifactId>ktor-server-core-jvm</artifactId>
                 <version>${ktor.version}</version>
@@ -257,9 +252,6 @@
                             <arg>-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi</arg>
                             <arg>-opt-in=kotlinx.coroutines.FlowPreview</arg>
                         </args>
-                        <compilerPlugins>
-                            <plugin>kotlinx-serialization</plugin>
-                        </compilerPlugins>
                     </configuration>
                     <dependencies>
                         <dependency>
