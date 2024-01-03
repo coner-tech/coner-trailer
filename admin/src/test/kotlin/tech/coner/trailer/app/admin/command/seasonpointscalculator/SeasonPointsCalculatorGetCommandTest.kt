@@ -1,12 +1,17 @@
 package tech.coner.trailer.app.admin.command.seasonpointscalculator
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.SeasonPointsCalculatorConfigurationView
 import tech.coner.trailer.io.service.SeasonPointsCalculatorConfigurationService
@@ -26,7 +31,7 @@ class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPo
         val viewRendered = "view rendered ${get.name}"
         every { view.render(get) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--id", get.id.toString()
         ))
 
@@ -34,7 +39,10 @@ class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPo
             service.findById(eq(get.id))
             view.render(get)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -44,7 +52,7 @@ class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPo
         val viewRendered = "view rendered ${get.name}"
         every { view.render(get) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--name", get.name
         ))
 
@@ -52,6 +60,9 @@ class SeasonPointsCalculatorGetCommandTest : BaseDataSessionCommandTest<SeasonPo
             service.findByName(get.name)
             view.render(get)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

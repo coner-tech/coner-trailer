@@ -1,6 +1,7 @@
 package tech.coner.trailer.app.admin.command
 
 import com.github.ajalt.clikt.core.UsageError
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.provideDelegate
 import com.github.ajalt.clikt.parameters.options.default
@@ -8,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.path
+import com.github.ajalt.mordant.terminal.ConversionResult
 import java.nio.file.Path
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
@@ -115,24 +117,27 @@ class RootCommand(
         return MotorsportRegBasicCredentials(
             username = motorsportReg?.username
                 ?: database?.motorsportReg?.username
-                ?: prompt(
-                    text = "MotorsportReg Username"
+                ?: terminal.prompt(
+                    prompt = "MotorsportReg Username"
                 ) {
-                    it.ifBlank { throw UsageError("Missing MotorsportReg Username") }
+                    if (it.isNotBlank()) ConversionResult.Valid(it)
+                    else ConversionResult.Invalid("Missing MotorsportReg Username")
                 }!!,
             password = motorsportReg?.password
-                ?: prompt(
-                    text = "MotorsportReg Password",
+                ?: terminal.prompt(
+                    prompt = "MotorsportReg Password",
                     hideInput = true
                 ) {
-                    it.ifBlank { throw UsageError("Missing MotorsportReg Password") }
+                    if (it.isNotBlank()) ConversionResult.Valid(it)
+                    else ConversionResult.Invalid("Missing MotorsportReg Password")
                 }!!,
             organizationId = motorsportReg?.organizationId
                 ?: database?.motorsportReg?.organizationId
-                ?: prompt(
-                    text = "MotorsportReg Organization ID"
+                ?: terminal.prompt(
+                    prompt = "MotorsportReg Organization ID"
                 ) {
-                    it.ifBlank { throw UsageError("Missing MotorsportReg Organization ID") }
+                    if (it.isNotBlank()) ConversionResult.Valid(it)
+                    else ConversionResult.Invalid("Missing MotorsportReg Organization ID")
                 }!!
         )
     }

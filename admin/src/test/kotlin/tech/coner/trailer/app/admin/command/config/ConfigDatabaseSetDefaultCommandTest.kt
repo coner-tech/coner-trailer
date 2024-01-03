@@ -1,15 +1,17 @@
 package tech.coner.trailer.app.admin.command.config
 
+import assertk.all
 import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.payload.ConfigSetDefaultDatabaseOutcome
@@ -43,7 +45,7 @@ class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabase
         val viewRender = "view render"
         every { view.render(any<DatabaseConfiguration>()) } returns viewRender
 
-        command.parse(arrayOf(originalFooDbConfig.name))
+        val testResult = command.test(arrayOf(originalFooDbConfig.name))
 
         coVerifySequence {
             service.setDefaultDatabase(originalFooDbConfig.name)
@@ -51,7 +53,10 @@ class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabase
         }
         assertAll {
             assertThat(slot.captured, "database name passed").isEqualTo(expectedDbConfig.name)
-            assertThat(testConsole).output().isEqualTo(viewRender)
+            assertThat(testResult).all {
+                statusCode().isZero()
+                stdout().isEqualTo(viewRender)
+            }
         }
     }
 
@@ -62,11 +67,9 @@ class ConfigDatabaseSetDefaultCommandTest : BaseConfigCommandTest<ConfigDatabase
         val name = "irrelevant"
         arrangeDefaultErrorHandling()
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf(name))
-        }
+        val testResult = command.test(arrayOf(name))
 
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
         coVerifySequence { service.setDefaultDatabase(name) }
         confirmVerified(service, view)
     }

@@ -1,11 +1,12 @@
 package tech.coner.trailer.app.admin.command.event.run
 
 import assertk.all
-import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.*
-import com.github.ajalt.clikt.core.BadParameterValue
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotZero
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -17,8 +18,9 @@ import org.kodein.di.direct
 import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stderr
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.constraint.ConstraintViolationException
 import tech.coner.trailer.presentation.Strings
@@ -53,11 +55,12 @@ class EventRunLatestCommandTest : BaseDataSessionCommandTest<EventRunLatestComma
         val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val fixture = arrangeValidEvent()
 
-        command.parse(arrayOf("${eventContext.event.id}"))
+        val testResult = command.test(arrayOf("${eventContext.event.id}"))
 
-        assertThat(testConsole).all {
-            output().isEqualTo(rendered)
-            error().isEmpty()
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(rendered)
+            stderr().isEmpty()
         }
         coVerify {
             presenter.load()
@@ -75,14 +78,15 @@ class EventRunLatestCommandTest : BaseDataSessionCommandTest<EventRunLatestComma
         val eventContext = TestEventContexts.Lscc2019Simplified.points1
         val fixture = arrangeValidEvent()
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--count", "$count",
             "${eventContext.event.id}"
         ))
 
-        assertThat(testConsole).all {
-            output().isEqualTo(rendered)
-            error().isEmpty()
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(rendered)
+            stderr().isEmpty()
         }
         coVerify {
             presenter.load()
@@ -105,16 +109,16 @@ class EventRunLatestCommandTest : BaseDataSessionCommandTest<EventRunLatestComma
         val throwable = ConstraintViolationException(Strings.constraintsEventRunLatestCountMustBeGreaterThanZero)
         coEvery { presenter.commit() } answers { Result.failure(throwable) }
 
-        assertFailure {
-            command.parse(arrayOf(
-                "--count", "$count",
-                "${eventContext.event.id}"
-            ))
-        }
-            .isInstanceOf(ProgramResult::class)
+        val testResult = command.test(arrayOf(
+            "--count", "$count",
+            "${eventContext.event.id}"
+        ))
 
-        verifyDefaultErrorHandlingInvoked(throwable)
-        assertThat(testConsole).output().isEmpty()
+        verifyDefaultErrorHandlingInvoked(testResult, throwable)
+        assertThat(testResult).all {
+            statusCode().isNotZero()
+            stdout().isEmpty()
+        }
         coVerify {
             presenter.load()
             presenter.awaitLoadedItemModel()

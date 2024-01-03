@@ -2,23 +2,16 @@ package tech.coner.trailer.app.admin.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.coEvery
-import io.mockk.coJustRun
-import io.mockk.coVerifySequence
-import io.mockk.every
+import com.github.ajalt.clikt.testing.test
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import java.nio.file.Paths
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import tech.coner.trailer.Classing
-import tech.coner.trailer.Event
-import tech.coner.trailer.TestClasses
-import tech.coner.trailer.TestEvents
-import tech.coner.trailer.TestPeople
+import tech.coner.trailer.*
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.command.event.crispyfish.EventCrispyFishPersonMapRemoveCommand
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -29,6 +22,7 @@ import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
+import java.nio.file.Paths
 
 @ExtendWith(MockKExtension::class)
 class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<EventCrispyFishPersonMapRemoveCommand>() {
@@ -81,7 +75,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
         every { adapter(any()) } returns model
         every { view(any()) } returns viewRender
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${event.id}",
             "--handicap", classing.handicap.abbreviation,
             "--number", number,
@@ -98,6 +92,6 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
             adapter(set)
             view(model)
         }
-        assertThat(testConsole.output).isEqualTo(viewRender)
+        assertThat(testResult).stdout().isEqualTo(viewRender)
     }
 }

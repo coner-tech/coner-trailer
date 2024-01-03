@@ -1,10 +1,11 @@
 package tech.coner.trailer.app.admin.command.club
 
 import assertk.all
-import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.*
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotZero
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -14,8 +15,8 @@ import org.kodein.di.DirectDI
 import org.kodein.di.direct
 import org.kodein.di.factory
 import org.kodein.di.instance
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.NotFoundException
 import tech.coner.trailer.presentation.model.ClubModel
@@ -48,9 +49,12 @@ class ClubGetCommandTest : BaseDataSessionCommandTest<ClubGetCommand>() {
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { loaded.withLock { Result.success(model) } }
         every { textView(any()) } returns textViewRenders
 
-        command.parse(emptyArray())
+        val testResult = command.test(emptyArray())
 
-        assertThat(testConsole).output().isEqualTo(textViewRenders)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(textViewRenders)
+        }
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()
@@ -67,12 +71,10 @@ class ClubGetCommandTest : BaseDataSessionCommandTest<ClubGetCommand>() {
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { loaded.withLock { Result.failure(exception) } }
         arrangeDefaultErrorHandling()
 
-        assertFailure {
-            command.parse(emptyArray())
-        }
-            .isInstanceOf(ProgramResult::class)
+        val testResult = command.test(emptyArray())
 
-        verifyDefaultErrorHandlingInvoked(exception)
+        assertThat(testResult).statusCode().isNotZero()
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()

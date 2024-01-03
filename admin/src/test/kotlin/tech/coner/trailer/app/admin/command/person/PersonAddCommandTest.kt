@@ -1,13 +1,18 @@
 package tech.coner.trailer.app.admin.command.person
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.TestPeople
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.presenter.person.PersonDetailPresenter
@@ -39,7 +44,7 @@ class PersonAddCommandTest : BaseDataSessionCommandTest<PersonAddCommand>() {
         val viewRendered = "view rendered ${person.lastName} ${person.lastName}"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--id", person.id.toString(),
                 "--club-member-id", "${person.clubMemberId}",
                 "--first-name", person.firstName,
@@ -47,7 +52,10 @@ class PersonAddCommandTest : BaseDataSessionCommandTest<PersonAddCommand>() {
                 "--motorsportreg-member-id", "${person.motorsportReg?.memberId}"
         ))
 
-        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
         verifySequence {
             presenter.itemModel
             initialModel.setId(person.id)

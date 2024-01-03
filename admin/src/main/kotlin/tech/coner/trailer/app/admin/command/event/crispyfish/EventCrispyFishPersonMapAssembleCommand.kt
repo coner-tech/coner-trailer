@@ -2,8 +2,10 @@ package tech.coner.trailer.app.admin.command.event.crispyfish
 
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.UsageError
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
+import com.github.ajalt.mordant.terminal.ConversionResult
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
@@ -222,18 +224,30 @@ class EventCrispyFishPersonMapAssembleCommand(
                     echo("$createNewPerson: Create new person from registration")
                     val abort = suggestions.size + 2
                     echo("$abort: Abort")
-                    val person = prompt(text = "", promptSuffix = "> "  ) { input ->
-                        val decision = input.toIntOrNull()
-                        when {
-                            suggestions.isNotEmpty()
-                                    && decision != null
-                                    && decision in suggestions.indices -> suggestions[decision]
-                            decision == providePersonId -> promptPersonId()
-                            decision == createNewPerson -> createNewPerson(registration)
-                            decision == abort -> null
-                            else -> throw UsageError("Not a valid choice: $input")
-                        }
-                    } ?: throw Abort()
+                    val decision = terminal.prompt(prompt = "", promptSuffix = "> ") { input ->
+                        input
+                            .toIntOrNull()
+                            .let { decision: Int? ->
+                                when {
+                                    suggestions.isNotEmpty()
+                                            && decision in suggestions.indices -> ConversionResult.Valid(decision)
+                                    decision == providePersonId -> ConversionResult.Valid(decision)
+                                    decision == createNewPerson -> ConversionResult.Valid(decision)
+                                    decision == abort -> ConversionResult.Valid(decision)
+                                    else -> ConversionResult.Invalid("Not a valid choice: $input")
+                                }
+                            }
+                    }
+                    val person: Person? = when {
+                        suggestions.isNotEmpty()
+                                && decision != null
+                                && decision in suggestions.indices -> suggestions[decision]
+                        decision == providePersonId -> promptPersonId()
+                        decision == createNewPerson -> createNewPerson(registration)
+                        decision == abort -> null
+                        else -> throw Abort() // should not occur
+                    }
+                    if (person == null) return
                     val classing = crispyFishClassingMapper.toCore(
                         allClassesByAbbreviation = allClassesByAbbreviation,
                         cfRegistration = registration
@@ -247,13 +261,17 @@ class EventCrispyFishPersonMapAssembleCommand(
                     peopleMap[key] = person
                 }
 
-                private fun promptPersonId(): Person {
-                    return checkNotNull(prompt("Person ID") { input ->
-                        val personId = runCatching { UUID.fromString(input) }.getOrNull()
-                            ?: throw UsageError("Invalid person ID format: $input")
-                        runCatching { personService.findById(personId) }.getOrNull()
-                            ?: throw UsageError("No person found with ID: $input")
-                    }) { "Failed to convert input to person" }
+                private fun promptPersonId(): Person? {
+                    return terminal.prompt("Person ID") { input ->
+                        val personId: UUID = runCatching { UUID.fromString(input) }
+                            .getOrNull()
+                            ?: return@prompt ConversionResult.Invalid("Invalid person ID format: $input")
+                        personId.let {
+                            runCatching { personService.findById(it) }
+                                .map { ConversionResult.Valid(it) }
+                                .getOrElse { ConversionResult.Invalid("No person found with ID: $personId") }
+                        }
+                    }
                 }
 
                 private fun createNewPerson(registration: Registration): Person {

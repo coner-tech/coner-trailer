@@ -1,7 +1,10 @@
 package tech.coner.trailer.app.admin.command.motorsportreg
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifySequence
@@ -10,6 +13,8 @@ import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.MotorsportRegImportService
 import tech.coner.trailer.presentation.adapter.Adapter
@@ -47,7 +52,7 @@ class MotorsportRegMemberImportSingleCommandTest : BaseDataSessionCommandTest<Mo
         val viewRenderedUpdated = "view rendered updated"
         every { view(updatedModel) } returns viewRenderedUpdated
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${person.motorsportReg?.memberId}"
         ))
 
@@ -61,13 +66,16 @@ class MotorsportRegMemberImportSingleCommandTest : BaseDataSessionCommandTest<Mo
             adapter(result.updated)
             view(updatedModel)
         }
-        assertThat(testConsole.output).isEqualTo("""
-            Created: (0)
-            $viewRenderedCreated
-            
-            Updated: (1)
-            $viewRenderedUpdated
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo("""
+                Created: (0)
+                $viewRenderedCreated
+                
+                Updated: (1)
+                $viewRenderedUpdated
         """.trimIndent())
+        }
     }
 
     @Test
@@ -90,7 +98,7 @@ class MotorsportRegMemberImportSingleCommandTest : BaseDataSessionCommandTest<Mo
         val viewRenderedUpdated = "view rendered updated"
         every { view(updatedModel) } returns viewRenderedUpdated
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${person.motorsportReg?.memberId}",
                 "--dry-run"
         ))
@@ -105,12 +113,15 @@ class MotorsportRegMemberImportSingleCommandTest : BaseDataSessionCommandTest<Mo
             adapter(result.updated)
             view(updatedModel)
         }
-        assertThat(testConsole.output).isEqualTo("""
-            Created: (1)
-            $viewRenderedCreated
-            
-            Updated: (0)
-            $viewRenderedUpdated
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo("""
+                Created: (1)
+                $viewRenderedCreated
+                
+                Updated: (0)
+                $viewRenderedUpdated
         """.trimIndent())
+        }
     }
 }

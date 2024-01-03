@@ -1,13 +1,17 @@
 package tech.coner.trailer.app.admin.command.eventpointscalculator
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.EventPointsCalculatorView
 import tech.coner.trailer.io.service.EventPointsCalculatorService
@@ -39,7 +43,7 @@ class EventPointsCalculatorSetCommandTest : BaseDataSessionCommandTest<EventPoin
         val viewRendered = "view rendered ${set.name}"
         every { view.render(eq(set)) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 set.id.toString(),
                 "--name", set.name,
                 "--did-not-start-points", set.didNotStartPoints.toString(),
@@ -55,7 +59,10 @@ class EventPointsCalculatorSetCommandTest : BaseDataSessionCommandTest<EventPoin
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -69,7 +76,7 @@ class EventPointsCalculatorSetCommandTest : BaseDataSessionCommandTest<EventPoin
         val viewRendered = "view rendered ${set.name}"
         every { view.render(eq(set)) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 set.id.toString(),
                 "--name", set.name
         ))
@@ -79,6 +86,9 @@ class EventPointsCalculatorSetCommandTest : BaseDataSessionCommandTest<EventPoin
             service.update(eq(set))
             view.render(eq(set))
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

@@ -1,27 +1,22 @@
 package tech.coner.trailer.app.admin.command
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.context
+import assertk.assertions.isNotZero
+import com.github.ajalt.clikt.testing.CliktCommandTestResult
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifySequence
-import java.nio.file.Path
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.newSingleThreadContext
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DIAware
-import org.kodein.di.DirectDI
-import org.kodein.di.direct
-import org.kodein.di.instance
-import org.kodein.di.on
-import org.kodein.di.provider
-import tech.coner.trailer.app.admin.clikt.StringBuilderConsole
-import tech.coner.trailer.app.admin.clikt.error
+import org.kodein.di.*
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stderr
 import tech.coner.trailer.app.admin.di.Invocation
 import tech.coner.trailer.app.admin.presentation.model.BaseCommandErrorModel
 import tech.coner.trailer.io.Configuration
@@ -29,6 +24,8 @@ import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.text.view.TextView
+import java.nio.file.Path
+import kotlin.coroutines.CoroutineContext
 
 abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
 {
@@ -40,8 +37,6 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
 
     private val mainThreadSurrogate = newSingleThreadContext("CLI Main Thread Test Surrogate")
     override val coroutineContext: CoroutineContext = mainThreadSurrogate
-
-    lateinit var testConsole: StringBuilderConsole
 
     open fun preSetup() = Unit
 
@@ -60,7 +55,6 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     @BeforeEach
     fun setup() {
         preSetup()
-        testConsole = StringBuilderConsole()
         val direct = di.direct
         invocation = direct.provider<Invocation>().invoke()
         val invocationDirect = direct.on(invocation)
@@ -69,9 +63,6 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
         errorView = invocationDirect.instance()
         global.apply(setupGlobal)
         command = invocationDirect.createCommand()
-            .context {
-                console = testConsole
-            }
         postSetup()
     }
 
@@ -93,11 +84,14 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
         every { errorView(any()) } returns defaultErrorHandlingViewRenders
     }
 
-    protected fun verifyDefaultErrorHandlingInvoked(t: Throwable) {
+    protected fun verifyDefaultErrorHandlingInvoked(result: CliktCommandTestResult, t: Throwable) {
         verifySequence {
             errorAdapter(t)
             errorView(errorModel)
         }
-        assertThat(testConsole).error().isEqualTo(defaultErrorHandlingViewRenders)
+        assertThat(result).all {
+            statusCode().isNotZero()
+            stderr().isEqualTo(defaultErrorHandlingViewRenders)
+        }
     }
 }

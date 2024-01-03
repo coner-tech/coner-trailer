@@ -1,13 +1,17 @@
 package tech.coner.trailer.app.admin.command.rankingsort
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.RankingSortView
 import tech.coner.trailer.io.constraint.RankingSortPersistConstraints
@@ -36,7 +40,7 @@ class RankingSortAddCommandTest : BaseDataSessionCommandTest<RankingSortAddComma
         val viewRendered = "view rendered ${rankingSort.name}"
         every { view.render(rankingSort) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--id", rankingSort.id.toString(),
                 "--name", rankingSort.name,
                 "--score-descending"
@@ -47,6 +51,9 @@ class RankingSortAddCommandTest : BaseDataSessionCommandTest<RankingSortAddComma
             service.create(eq(rankingSort))
             view.render(eq(rankingSort))
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

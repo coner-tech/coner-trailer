@@ -1,10 +1,10 @@
 package tech.coner.trailer.app.admin.view
 
-import com.github.ajalt.clikt.output.CliktConsole
+import com.github.ajalt.mordant.terminal.Terminal
 import tech.coner.trailer.client.motorsportreg.model.Member
 
 class MotosportRegMemberView(
-        override val console: CliktConsole
+    override val terminal: Terminal
 ) : BaseCollectionView<Member>() {
     override fun render(model: Member): String {
         return """

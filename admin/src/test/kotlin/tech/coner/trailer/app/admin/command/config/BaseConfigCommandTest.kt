@@ -5,13 +5,9 @@ import org.kodein.di.bindSingleton
 import org.kodein.di.diContext
 import tech.coner.trailer.app.admin.command.AbstractCommandTest
 import tech.coner.trailer.app.admin.command.BaseCommand
-import tech.coner.trailer.app.admin.di.cliktModule
+import tech.coner.trailer.app.admin.di.*
 import tech.coner.trailer.app.admin.di.command.commandModule
 import tech.coner.trailer.app.admin.di.command.mockkParameterMapperModule
-import tech.coner.trailer.app.admin.di.mockkCliPresentationAdapterModule
-import tech.coner.trailer.app.admin.di.mockkCliPresentationViewModule
-import tech.coner.trailer.app.admin.di.mockkViewModule
-import tech.coner.trailer.app.admin.di.utilityModule
 import tech.coner.trailer.di.mockkConstraintModule
 import tech.coner.trailer.di.mockkIoModule
 import tech.coner.trailer.di.mockkServiceModule

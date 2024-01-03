@@ -1,14 +1,18 @@
 package tech.coner.trailer.app.admin.command.motorsportreg
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.MotorsportRegMemberTableView
 import tech.coner.trailer.client.motorsportreg.model.Member
@@ -28,12 +32,15 @@ class MotorsportRegMemberListCommandTest : BaseDataSessionCommandTest<Motorsport
         val viewRendersMembers = "view renders members"
         every { view.render(members) } returns viewRendersMembers
 
-        command.parse(arrayOf())
+        val testResult = command.test(arrayOf())
 
         verifySequence {
             service.list()
             view.render(any())
         }
-        assertThat(testConsole.output, "console output").isEqualTo(viewRendersMembers)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendersMembers)
+        }
     }
 }

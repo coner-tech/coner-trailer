@@ -1,9 +1,9 @@
 package tech.coner.trailer.app.admin.view
 
-import com.github.ajalt.clikt.output.CliktConsole
+import com.github.ajalt.mordant.terminal.Terminal
 import tech.coner.trailer.seasonpoints.RankingSort
 
-class RankingSortView(override val console: CliktConsole) : BaseCollectionView<RankingSort>() {
+class RankingSortView(override val terminal: Terminal) : BaseCollectionView<RankingSort>() {
     override fun render(model: RankingSort) = """
         |${model.name}
         |    ID:     ${model.id}
@@ -17,7 +17,7 @@ class RankingSortView(override val console: CliktConsole) : BaseCollectionView<R
                 is RankingSort.Step.ScoreDescending -> "Score Descending"
                 is RankingSort.Step.PositionFinishCountDescending -> "Position Finish Count Descending: ${it.position}"
             }
-        }.joinToString(separator = console.lineSeparator) {
+        }.joinToString(separator = System.lineSeparator()) {
             "- $it".prependIndent(" ".repeat(12))
         }
     }

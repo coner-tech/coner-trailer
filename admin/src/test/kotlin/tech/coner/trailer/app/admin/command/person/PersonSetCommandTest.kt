@@ -1,14 +1,18 @@
 package tech.coner.trailer.app.admin.command.person
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.presentation.adapter.Adapter
@@ -37,7 +41,7 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
         every { adapter(any()) } returns model
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${original.id}",
                 "--first-name", set.firstName,
                 "--last-name", set.lastName,
@@ -50,7 +54,10 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
             view(model)
         }
         confirmVerified(service, adapter, view)
-        assertThat(testConsole).output().isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -66,7 +73,7 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
         every { adapter(any()) } returns model
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${original.id}",
                 "--club-member-id", "${set.clubMemberId}"
         ))
@@ -78,7 +85,10 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
             view(model)
         }
         confirmVerified(service, adapter, view)
-        assertThat(testConsole).output().isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -94,7 +104,7 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
         every { adapter(any()) } returns model
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${original.id}",
                 "--club-member-id", "null"
         ))
@@ -106,7 +116,10 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
             view(model)
         }
         confirmVerified(service, adapter, view)
-        assertThat(testConsole).output().isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -124,7 +137,7 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
         val viewRendered = "view rendered memberId = ${set.clubMemberId}"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${original.id}",
                 "--motorsportreg-member-id", "set"
         ))
@@ -136,7 +149,10 @@ class PersonSetCommandTest : BaseDataSessionCommandTest<PersonSetCommand>() {
             view(model)
         }
         confirmVerified(service, adapter, view)
-        assertThat(testConsole).output().isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
 }

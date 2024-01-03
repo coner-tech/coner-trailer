@@ -1,10 +1,10 @@
 package tech.coner.trailer.app.admin.command
 
-import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.testing.CliktCommandTestResult
+import com.github.ajalt.clikt.testing.test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
 import tech.coner.trailer.app.admin.ConerTrailerAdmin
-import tech.coner.trailer.app.admin.clikt.StringBuilderConsole
 import tech.coner.trailer.app.admin.util.*
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
@@ -24,17 +24,14 @@ abstract class BaseExecutableIT {
         crispyFishDir = testDir.resolve("crispy-fish").apply { createDirectory() }
     }
 
-    protected fun arrange(fn: SubcommandArgumentsFactory.() -> SubcommandArguments) {
+    protected fun arrange(fn: SubcommandArgumentsFactory.() -> SubcommandArguments): CliktCommandTestResult {
         val invocation = ConerTrailerAdmin.createInvocation()
         val arguments = buildList {
             addAll(listOf("--config-dir", "$configDir"))
             addAll(fn(createSubcommandArgumentsFactory()).args)
         }
-        ConerTrailerAdmin.createRootCommand(invocation)
-            .context {
-                console = StringBuilderConsole()
-            }
-            .parse(arguments)
+        return ConerTrailerAdmin.createRootCommand(invocation)
+            .test(arguments)
     }
 
     protected fun testCommand(fn: ConerTrailerCliProcessFactory.() -> Process): ProcessOutcome {

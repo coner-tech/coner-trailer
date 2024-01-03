@@ -1,19 +1,24 @@
 package tech.coner.trailer.app.admin.command.policy
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import io.mockk.*
-import org.junit.jupiter.api.AfterEach
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestPolicies
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.PolicyService
 import tech.coner.trailer.presentation.adapter.Adapter
-import tech.coner.trailer.presentation.adapter.PolicyModelAdapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 
@@ -34,11 +39,14 @@ class PolicyGetCommandTest : BaseDataSessionCommandTest<PolicyGetCommand>() {
         val viewRender = "view rendered"
         every { view(model) } returns viewRender
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--id", "${policy.id}"
         ))
 
-        assertThat(testConsole.output).isEqualTo(viewRender)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRender)
+        }
         verifySequence {
             service.findById(policy.id)
             adapter(policy)
@@ -56,11 +64,14 @@ class PolicyGetCommandTest : BaseDataSessionCommandTest<PolicyGetCommand>() {
         val viewRender = "view rendered"
         every { view(model) } returns viewRender
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--name", policy.name
         ))
 
-        assertThat(testConsole.output).isEqualTo(viewRender)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRender)
+        }
         verifySequence {
             service.findByName(policy.name)
             adapter(policy)

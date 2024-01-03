@@ -2,17 +2,15 @@ package tech.coner.trailer.app.admin.command.config
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.payload.ConfigAddDatabaseOutcome
@@ -51,7 +49,7 @@ class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddComm
         val viewSlot = slot<DatabaseConfiguration>()
         every { view.render(capture(viewSlot)) } returns render
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--name", dbConfig.name,
             "--crispy-fish-database", dbConfig.crispyFishDatabase.toString(),
             "--snoozle-database", dbConfig.snoozleDatabase.toString(),
@@ -65,7 +63,10 @@ class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddComm
             view.render(dbConfig)
         }
         confirmVerified(service, view)
-        assertThat(testConsole).output().isEqualTo(render)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(render)
+        }
     }
 
     @Test
@@ -74,18 +75,16 @@ class ConfigDatabaseAddCommandTest : BaseConfigCommandTest<ConfigDatabaseAddComm
         val exception = Exception("Something went wrong")
         coEvery { service.addDatabase(any()) } returns Result.failure(exception)
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf(
-                "--name", dbConfig.name,
-                "--crispy-fish-database", dbConfig.crispyFishDatabase.toString(),
-                "--snoozle-database", dbConfig.snoozleDatabase.toString(),
-                "--motorsportreg-username", "${dbConfig.motorsportReg?.username}",
-                "--motorsportreg-organization-id", "${dbConfig.motorsportReg?.organizationId}",
-                "--default"
-            ))
-        }
+        val testResult = command.test(arrayOf(
+            "--name", dbConfig.name,
+            "--crispy-fish-database", dbConfig.crispyFishDatabase.toString(),
+            "--snoozle-database", dbConfig.snoozleDatabase.toString(),
+            "--motorsportreg-username", "${dbConfig.motorsportReg?.username}",
+            "--motorsportreg-organization-id", "${dbConfig.motorsportReg?.organizationId}",
+            "--default"
+        ))
 
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
         coVerifySequence {
             service.addDatabase(any())
         }

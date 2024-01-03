@@ -1,8 +1,12 @@
 package tech.coner.trailer.app.admin.command.event
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility
 import org.junit.jupiter.api.Test
 import org.kodein.di.*
@@ -12,14 +16,14 @@ import tech.coner.trailer.Person
 import tech.coner.trailer.TestClasses
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.command.event.crispyfish.EventCrispyFishPersonMapAssembleCommand
-import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.view.CrispyFishRegistrationView
 import tech.coner.trailer.datasource.crispyfish.CrispyFishClassingMapper
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.datasource.crispyfish.TestRegistrations
-import tech.coner.trailer.di.mockkMapperModule
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
@@ -80,9 +84,6 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
         } answers  {
             val callback = callbackSlot.captured
             launch { callback.onUnmappedClubMemberIdNull(unmappedClubMemberIdNull) }
-            Awaitility.await().until { testConsole.output.endsWith(">") }
-            testConsole.writeInput("0")
-            Awaitility.await().until { testConsole.output.endsWith("<<<") }
         }
         val classing = checkNotNull(TestParticipants.Lscc2019Points1.REBECCA_JACKSON.signage?.classing)
         every { crispyFishClassingMapper.toCore(any(), unmappedClubMemberIdNull) } returns classing
@@ -90,7 +91,7 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
         every { crispyFishRegistrationView.render(any()) } returns crispyFishRegistrationViewRendered
         coJustRun { service.update(any()) }
 
-        command.parse(arrayOf("${event.id}"))
+        val testResult = command.test(arrayOf("${event.id}"), stdin = "0")
 
         val update = event.copy(
             crispyFish = eventCrispyFish.copy(
@@ -108,7 +109,10 @@ class EventCrispyFishPersonMapAssembleCommandTest : BaseDataSessionCommandTest<E
             service.findByKey(event.id)
             service.update(update)
         }
-        testConsole.output.contains(crispyFishRegistrationViewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().contains(crispyFishRegistrationViewRendered)
+        }
     }
 
 }

@@ -1,13 +1,18 @@
 package tech.coner.trailer.app.admin.command.seasonpointscalculator
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.SeasonPointsCalculatorConfigurationView
 import tech.coner.trailer.eventresults.StandardEventResultsTypes
@@ -44,7 +49,7 @@ class SeasonPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<SeasonPo
         val viewRendered = "view rendered ${create.name}"
         every { view.render(create) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--id", create.id.toString(),
                 "--name", create.name,
                 rtktperpcn, StandardEventResultsTypes.clazz.key, groupingCalculator.name,
@@ -59,6 +64,9 @@ class SeasonPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<SeasonPo
             service.create(eq(create))
             view.render(create)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

@@ -1,7 +1,10 @@
 package tech.coner.trailer.app.admin.command.season
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.verifySequence
@@ -9,6 +12,8 @@ import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.TestSeasons
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.SeasonView
 import tech.coner.trailer.io.service.SeasonService
@@ -33,7 +38,7 @@ class SeasonSetCommandTest : BaseDataSessionCommandTest<SeasonSetCommand>() {
         val viewRendered = "view rendered"
         every { view.render(update) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${update.id}",
                 "--name", update.name
         ))
@@ -43,6 +48,9 @@ class SeasonSetCommandTest : BaseDataSessionCommandTest<SeasonSetCommand>() {
             service.update(update)
             view.render(update)
         }
-        assertThat(testConsole.output, "console output").isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

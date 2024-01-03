@@ -1,13 +1,17 @@
 package tech.coner.trailer.app.admin.command.eventpointscalculator
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.EventPointsCalculatorView
 import tech.coner.trailer.io.constraint.EventPointsCalculatorPersistConstraints
@@ -30,7 +34,7 @@ class EventPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<EventPoin
         val viewRenders = "created ${calculator.id}"
         every { view.render(eq(calculator)) } returns viewRenders
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--id", calculator.id.toString(),
             "--name", calculator.name,
             "--position-to-points", "1", "9",
@@ -45,6 +49,9 @@ class EventPointsCalculatorAddCommandTest : BaseDataSessionCommandTest<EventPoin
             service.create(eq(calculator))
             view.render(eq(calculator))
         }
-        assertThat(testConsole.output).isEqualTo(viewRenders)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRenders)
+        }
     }
 }

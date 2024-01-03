@@ -2,18 +2,17 @@ package tech.coner.trailer.app.admin.command.person
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isEmpty
-import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
+import assertk.assertions.*
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Person
 import tech.coner.trailer.TestPeople
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stderr
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.presentation.adapter.Adapter
@@ -42,15 +41,16 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
         val viewRendered = "view rendered search results"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--club-member-id-equals", "${person.clubMemberId}",
                 "--first-name-equals", person.firstName,
                 "--last-name-equals", person.lastName
         ))
 
-        assertThat(testConsole).all {
-            output().isEqualTo(viewRendered)
-            error().isEmpty()
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+            stderr().isEmpty()
         }
         verifySequence {
             // https://github.com/coner-tech/coner-trailer/issues/102 testing smell
@@ -76,15 +76,16 @@ class PersonSearchCommandTest : BaseDataSessionCommandTest<PersonSearchCommand>(
         val viewRendered = "view rendered search results"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "--club-member-id-contains", "${person.clubMemberId?.substring(0..3)}",
                 "--first-name-contains", person.firstName.substring(0..3),
                 "--last-name-contains", person.lastName.substring(0..3)
         ))
 
-        assertThat(testConsole).all {
-            output().isEqualTo(viewRendered)
-            error().isEmpty()
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+            stderr().isEmpty()
         }
         verifySequence {
             // https://github.com/coner-tech/coner-trailer/issues/102 testing smell

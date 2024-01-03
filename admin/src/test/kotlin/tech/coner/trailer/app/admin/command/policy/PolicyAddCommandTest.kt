@@ -1,7 +1,10 @@
 package tech.coner.trailer.app.admin.command.policy
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -13,6 +16,8 @@ import org.kodein.di.instance
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestClubs
 import tech.coner.trailer.TestPolicies
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
@@ -44,7 +49,7 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
         every { adapter(any()) } returns model
         every { view(any()) } returns render
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "--id", "${param.policy.id}",
             "--name", param.policy.name,
             "--cone-penalty-seconds", "${param.policy.conePenaltySeconds}",
@@ -57,6 +62,9 @@ class PolicyAddCommandTest : BaseDataSessionCommandTest<PolicyAddCommand>() {
             adapter(param.policy)
             view(model)
         }
-        assertThat(testConsole.output).isEqualTo(render)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(render)
+        }
     }
 }

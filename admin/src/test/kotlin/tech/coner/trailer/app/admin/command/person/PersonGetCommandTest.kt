@@ -1,12 +1,11 @@
 package tech.coner.trailer.app.admin.command.person
 
+import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
-import assertk.assertions.messageContains
-import com.github.ajalt.clikt.core.MissingArgument
+import assertk.assertions.*
 import com.github.ajalt.clikt.core.ProgramResult
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -17,10 +16,8 @@ import org.kodein.di.direct
 import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.TestPeople
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.*
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
-import tech.coner.trailer.app.admin.command.util.clikt.isBadParameter
-import tech.coner.trailer.app.admin.command.util.clikt.isInvalidUUID
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.presenter.person.PersonDetailPresenter
 import tech.coner.trailer.presentation.presenter.person.PersonDetailPresenterFactory
@@ -51,7 +48,7 @@ class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
         val textViewRenders = "view rendered model"
         every { textView(model) } returns textViewRenders
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             validPresenterArgument.id.toString()
         ))
 
@@ -60,30 +57,35 @@ class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
             presenter.load()
             textView(model)
         }
-        assertThat(testConsole).output().isEqualTo(textViewRenders)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(textViewRenders)
+        }
         confirmVerified(presenter, textView)
     }
 
     @Test
-    fun `It should throw when id argument is missing`() {
-        assertFailure {
-            command.parse(emptyArray())
+    fun `It should error when id argument is missing`() {
+        val testResult = command.test(emptyArray())
+
+        assertThat(testResult).all {
+            statusCode().isNotZero()
+            stderr().contains("Error: missing argument <id>")
         }
-            .isInstanceOf<MissingArgument>()
-            .messageContains("ID")
     }
 
     @Test
-    fun `It should throw when id argument is not valid`() {
-        assertFailure {
-            command.parse(arrayOf("id argument position but not a valid uuid"))
+    fun `It should error when id argument is not valid`() {
+        val testResult = command.test(arrayOf("id argument position but not a valid uuid"))
+
+        assertThat(testResult).all {
+            statusCode().isNotZero()
+            stderr().contains("Not a UUID")
         }
-            .isBadParameter()
-            .isInvalidUUID()
     }
 
     @Test
-    fun `It should throw when presenter fails to load`() = runTest {
+    fun `It should error when presenter fails to load`() = runTest {
         val presenter = presenterFactory(validPresenterArgument)
         val exception = Exception("deliberate failure")
         val mutex = Mutex(locked = true)
@@ -91,15 +93,13 @@ class PersonGetCommandTest : BaseDataSessionCommandTest<PersonGetCommand>() {
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { throw exception } }
         arrangeDefaultErrorHandling()
 
-        assertFailure {
-            command.parse(arrayOf(validPresenterArgument.id.toString()))
-        }
-            .isInstanceOf<ProgramResult>()
+        val testResult = command.test(arrayOf(validPresenterArgument.id.toString()))
+
         coVerifyAll {
             presenter.load()
             presenter.awaitLoadedItemModel()
         }
         confirmVerified(presenter, textView)
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
     }
 }

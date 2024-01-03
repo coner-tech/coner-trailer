@@ -1,15 +1,18 @@
 package tech.coner.trailer.app.admin.command.config
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.view.DatabaseConfigurationView
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
@@ -33,12 +36,15 @@ class ConfigDatabaseListCommandTest : BaseConfigCommandTest<ConfigDatabaseListCo
         """.trimIndent()
         every { view.render(dbConfigs.all) } returns(output)
 
-        command.parse(emptyArray())
+        val testResult = command.test(emptyArray())
 
         coVerifySequence {
             service.listDatabases()
             view.render(dbConfigs.all)
         }
-        assertThat(testConsole).output().isEqualTo(output)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(output)
+        }
     }
 }

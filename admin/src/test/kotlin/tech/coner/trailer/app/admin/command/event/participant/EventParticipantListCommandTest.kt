@@ -1,7 +1,10 @@
 package tech.coner.trailer.app.admin.command.event.participant
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
@@ -11,7 +14,8 @@ import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
@@ -44,7 +48,7 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
         val render = "viewRenderer rendered"
         every { view(any()) } returns render
 
-        command.parse(arrayOf("${event.id}"))
+        val testResult = command.test(arrayOf("${event.id}"))
 
         coVerifySequence {
             eventService.findByKey(event.id)
@@ -52,6 +56,9 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
             adapter(ParticipantCollectionModelAdapter.Input(participants, event))
             view(model)
         }
-        assertThat(testConsole).output().isEqualTo(render)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(render)
+        }
     }
 }

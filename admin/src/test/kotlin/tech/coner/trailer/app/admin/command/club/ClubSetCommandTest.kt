@@ -1,18 +1,13 @@
 package tech.coner.trailer.app.admin.command.club
 
-import assertk.assertFailure
+import assertk.all
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
-import assertk.assertions.messageContains
-import com.github.ajalt.clikt.core.MissingOption
-import io.mockk.coEvery
-import io.mockk.coJustRun
-import io.mockk.coVerifyOrder
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.justRun
-import io.mockk.mockk
+import assertk.assertions.isNotZero
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
+import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
@@ -20,7 +15,9 @@ import org.kodein.di.direct
 import org.kodein.di.factory
 import org.kodein.di.instance
 import tech.coner.trailer.TestClubs
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stderr
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.presentation.model.ClubModel
 import tech.coner.trailer.presentation.presenter.Presenter
@@ -54,9 +51,12 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
         coJustRun { presenter.createOrUpdate() }
         every { textView(any()) } returns textViewRenders
 
-        command.parse(arrayOf("--name", club.name))
+        val testResult = command.test(arrayOf("--name", club.name))
 
-        assertThat(testConsole).output().isEqualTo(textViewRenders)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(textViewRenders)
+        }
         coVerifyOrder {
             presenter.itemModel
             model.name = club.name
@@ -69,9 +69,12 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
 
     @Test
     fun `It should fail without club name argument`() = runTest {
-        assertFailure { command.parse(emptyList()) }
-            .isInstanceOf<MissingOption>()
-            .messageContains("--name")
+        val testResult = command.test(emptyList())
+
+        assertThat(testResult).all {
+            statusCode().isNotZero()
+            stderr().contains("--name")
+        }
         confirmVerified(presenter, textView)
     }
 }

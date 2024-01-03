@@ -1,7 +1,11 @@
 package tech.coner.trailer.app.admin.command.event
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.CliktCommandTestResult
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -11,7 +15,8 @@ import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.TestEventContexts
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.eventresults.*
@@ -59,12 +64,15 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
         every { adapter(any()) } returns model
         every { command.jsonView(model) } returns render
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${event.id}",
             "--type", "raw"
         ))
 
-        assertThat(testConsole.output).isEqualTo(render)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(render)
+        }
         coVerifySequence {
             command.services.events.findByKey(event.id)
             command.services.eventContexts.load(event)
@@ -99,13 +107,13 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
         val global: GlobalModel = global
         global.format = Format.TEXT
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${eventContext.event.id}",
             "--type", eventResultsType.key,
         ))
 
         verifyCommon(eventResultsType)
-        verifyTextViews(eventResultsType)
+        verifyTextViews(testResult, eventResultsType)
     }
 
     private fun arrangeCommon() {
@@ -183,7 +191,7 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
         )
     }
 
-    fun verifyTextViews(eventResultsType: EventResultsType) {
+    fun verifyTextViews(testResult: CliktCommandTestResult, eventResultsType: EventResultsType) {
         val expectedOutput = when (eventResultsType) {
             StandardEventResultsTypes.raw -> {
                 verify { command.textViews.overall(rawResultsModel) }
@@ -220,6 +228,6 @@ class EventResultsCommandTest : BaseDataSessionCommandTest<EventResultsCommand>(
             command.textViews.comprehensive,
             command.textViews.individual
         )
-        assertThat(testConsole).output().isEqualTo(expectedOutput)
+        assertThat(testResult).stdout().isEqualTo(expectedOutput)
     }
 }

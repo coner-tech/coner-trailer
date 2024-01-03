@@ -2,6 +2,7 @@ package tech.coner.trailer.app.admin.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
@@ -11,6 +12,7 @@ import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.constraint.EventPersistConstraints
 import tech.coner.trailer.io.payload.CreateEventPayload
@@ -48,7 +50,7 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
         val viewRendered = "view rendered ${create.id} with crispy fish ${create.crispyFish}"
         every { view.invoke(any()) } returns viewRendered
 
-        command.parse(
+        val testResult = command.test(
             arrayOf(
                 "--id", "${create.id}",
                 "--name", create.name,
@@ -74,6 +76,6 @@ class EventAddCommandTest : BaseDataSessionCommandTest<EventAddCommand>() {
             adapter(create)
             view(presentationModel)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).stdout().isEqualTo(viewRendered)
     }
 }

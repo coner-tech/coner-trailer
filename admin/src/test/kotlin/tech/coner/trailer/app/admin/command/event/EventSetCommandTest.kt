@@ -1,28 +1,33 @@
 package tech.coner.trailer.app.admin.command.event
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import java.nio.file.Path
-import java.time.LocalDate
-import kotlin.io.path.createFile
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.presentation.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
+import java.nio.file.Path
+import java.time.LocalDate
+import kotlin.io.path.createFile
 
 @ExtendWith(MockKExtension::class)
 class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
@@ -66,7 +71,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         val viewRendered = "view rendered set event named: ${set.name}"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${original.id}",
             "--name", set.name,
             "--date", "${set.date}",
@@ -83,7 +88,10 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
             adapter(set)
             view(model)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
     @Test
@@ -99,7 +107,7 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
         val viewRendered = "view rendered set event named: ${original.name}"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${original.id}",
         ))
 
@@ -109,7 +117,10 @@ class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
             adapter(original)
             view(model)
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 
 }

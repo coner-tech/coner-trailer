@@ -1,13 +1,17 @@
 package tech.coner.trailer.app.admin.command.event
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.TestEvents
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.presentation.adapter.EventDetailModelAdapter
@@ -31,7 +35,7 @@ class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
         val viewRendered = "view rendered event ${event.id}"
         every { view(any()) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${event.id}"
         ))
 
@@ -41,6 +45,9 @@ class EventGetCommandTest : BaseDataSessionCommandTest<EventGetCommand>() {
             view(model)
         }
         confirmVerified(service, adapter, view)
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

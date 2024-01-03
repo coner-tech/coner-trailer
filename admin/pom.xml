@@ -12,10 +12,6 @@
 
     <artifactId>admin</artifactId>
 
-    <properties>
-        <clikt.version>3.5.0</clikt.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>

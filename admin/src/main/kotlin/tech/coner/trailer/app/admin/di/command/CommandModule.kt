@@ -1,6 +1,7 @@
 package tech.coner.trailer.app.admin.di.command
 
 import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.mordant.terminal.Terminal
 import org.kodein.di.*
 import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.command.RootCommand

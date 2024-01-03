@@ -2,18 +2,18 @@ package tech.coner.trailer.app.admin.command.config
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEmpty
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stderr
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.view.DatabaseConfigurationView
 import tech.coner.trailer.io.service.ConfigurationService
 
@@ -34,14 +34,15 @@ class ConfigDatabaseRemoveCommandTest : BaseConfigCommandTest<ConfigDatabaseRemo
         )
         coEvery { service.removeDatabase(any()) } returns Result.success(newConfig)
 
-        command.parse(arrayOf(dbConfig.name))
+        val testResult = command.test(arrayOf(dbConfig.name))
 
         coVerifySequence {
             service.removeDatabase(dbConfig.name)
         }
-        assertThat(testConsole).all {
-            output().isEmpty()
-            error().isEmpty()
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEmpty()
+            stderr().isEmpty()
         }
     }
 
@@ -51,11 +52,9 @@ class ConfigDatabaseRemoveCommandTest : BaseConfigCommandTest<ConfigDatabaseRemo
         coEvery { service.removeDatabase(any()) } returns Result.failure(exception)
         arrangeDefaultErrorHandling()
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf("baz"))
-        }
+        val testResult = command.test(arrayOf("baz"))
 
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
         coVerifySequence {
             service.removeDatabase("baz")
         }

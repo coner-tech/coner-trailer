@@ -2,6 +2,7 @@ package tech.coner.trailer.app.admin.command.event
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -9,8 +10,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.*
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.command.event.crispyfish.EventCrispyFishPersonMapAddCommand
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
@@ -74,7 +75,7 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
         val viewRender = "view rendered"
         every { view(any()) } returns viewRender
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${event.id}",
             "--handicap", classing.handicap.abbreviation,
             "--number", number,
@@ -91,6 +92,6 @@ class EventCrispyFishPersonMapAddCommandTest : BaseDataSessionCommandTest<EventC
             adapter(set)
             view(model)
         }
-        assertThat(testConsole.output).isEqualTo(viewRender)
+        assertThat(testResult).stdout().isEqualTo(viewRender)
     }
 }

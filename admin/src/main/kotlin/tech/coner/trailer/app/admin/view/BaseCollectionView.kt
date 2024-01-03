@@ -1,11 +1,11 @@
 package tech.coner.trailer.app.admin.view
 
-import com.github.ajalt.clikt.output.CliktConsole
+import com.github.ajalt.mordant.terminal.Terminal
 
 abstract class BaseCollectionView<M> : View<M> {
-    abstract val console: CliktConsole
+    abstract val terminal: Terminal
 
     open fun render(models: Collection<M>) = models.joinToString(
-            separator = console.lineSeparator
+            separator = System.lineSeparator()
     ) { render(it) }
 }

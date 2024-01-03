@@ -4,7 +4,9 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
+import assertk.assertions.isNotZero
 import com.github.ajalt.clikt.core.ProgramResult
+import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -15,10 +17,11 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.Run
 import tech.coner.trailer.TestEventContexts
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.app.admin.view.PeopleMapKeyTableView
-import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
@@ -72,7 +75,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         every { runCollectionModelAdapter(any()) } returns runsWithInvalidSignageModel
         every { runsTextView(any()) } returns "runsTextView rendered"
 
-        command.parse(arrayOf("$checkId"))
+        val testResult = command.test(arrayOf("$checkId"))
 
         coVerifySequence {
             eventService.findByKey(checkId)
@@ -96,7 +99,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             runCollectionModelAdapter,
             runsTextView
         )
-        assertThat(testConsole.output).all {
+        assertThat(testResult).stdout().all {
             contains("Found unmapped registration(s) with club member ID null")
             contains("Found unmapped registration(s) with club member ID not found")
             contains("Found unmapped registration(s) with club member ID ambiguous")
@@ -131,7 +134,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         coEvery { eventService.findByKey(checkId) } returns Result.success(check)
         coEvery { eventService.check(check) } returns result
 
-        command.parse(arrayOf("$checkId"))
+        val testResult = command.test(arrayOf("$checkId"))
 
         coVerifySequence {
             eventService.findByKey(checkId)
@@ -139,7 +142,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
             eventService.check(check)
         }
         confirmVerified(eventService, eventContextService)
-        assertThat(testConsole.output).isEmpty()
+        assertThat(testResult).stdout().isEmpty()
     }
 
     @Test
@@ -156,16 +159,15 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
         coEvery { eventService.check(any()) } throws exception
         arrangeDefaultErrorHandling()
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf("$checkId"))
-        }
+        val testResult = command.test(arrayOf("$checkId"))
 
-        verifyDefaultErrorHandlingInvoked(exception)
+        assertThat(testResult).statusCode().isNotZero()
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
         coVerifySequence {
             eventService.findByKey(checkId)
             eventContextService.load(check)
             eventService.check(check)
         }
-        assertThat(testConsole.output).isEmpty()
+        assertThat(testResult).stdout().isEmpty()
     }
 }

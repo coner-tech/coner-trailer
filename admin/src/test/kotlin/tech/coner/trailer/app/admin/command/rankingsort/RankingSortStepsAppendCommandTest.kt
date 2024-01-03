@@ -1,12 +1,17 @@
 package tech.coner.trailer.app.admin.command.rankingsort
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.app.admin.view.RankingSortView
 import tech.coner.trailer.io.service.RankingSortService
@@ -37,7 +42,7 @@ class RankingSortStepsAppendCommandTest : BaseDataSessionCommandTest<RankingSort
         val viewRendered = "view rendered ${expected.name}"
         every { view.render(eq(expected)) } returns viewRendered
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 before.id.toString(),
                 "--position-finish-count-descending", "--position", "1"
         ))
@@ -47,6 +52,9 @@ class RankingSortStepsAppendCommandTest : BaseDataSessionCommandTest<RankingSort
             service.update(eq(expected))
             view.render(eq(expected))
         }
-        assertThat(testConsole.output).isEqualTo(viewRendered)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRendered)
+        }
     }
 }

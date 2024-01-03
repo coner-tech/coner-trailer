@@ -1,7 +1,10 @@
 package tech.coner.trailer.app.admin.command.policy
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -9,10 +12,10 @@ import io.mockk.verifySequence
 import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
 import tech.coner.trailer.Policy
 import tech.coner.trailer.TestPolicies
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
@@ -45,7 +48,7 @@ class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
         val viewRender = "view rendered"
         every { view(any()) } returns viewRender
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
             "${original.id}",
             "--name", set.name,
             "--cone-penalty-seconds", "${set.conePenaltySeconds}",
@@ -59,6 +62,9 @@ class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
             adapter(set)
             view(model)
         }
-        assertThat(testConsole).output().isEqualTo(viewRender)
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEqualTo(viewRender)
+        }
     }
 }

@@ -1,20 +1,18 @@
 package tech.coner.trailer.app.admin.command.config
 
-import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
-import com.github.ajalt.clikt.core.ProgramResult
+import assertk.assertions.contains
+import assertk.assertions.isNotZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import org.kodein.di.on
-import tech.coner.trailer.app.admin.clikt.error
-import tech.coner.trailer.app.admin.clikt.output
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.view.DatabaseConfigurationView
 import tech.coner.trailer.io.DatabaseConfiguration
 import tech.coner.trailer.io.service.ConfigurationService
@@ -36,13 +34,13 @@ class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetComm
         coEvery { service.findDatabaseByName(any()) } returns Result.success(dbConfig)
         every { view.render(any<DatabaseConfiguration>()) }.returns(render)
 
-        command.parse(arrayOf(dbConfig.name))
+        val testResult = command.test(arrayOf(dbConfig.name))
 
         coVerifySequence {
             service.findDatabaseByName(dbConfig.name)
             view.render(dbConfigs.foo)
         }
-        assertThat(testConsole).output().contains(render)
+        assertThat(testResult).stdout().contains(render)
     }
 
     @Test
@@ -53,14 +51,13 @@ class ConfigDatabaseGetCommandTest : BaseConfigCommandTest<ConfigDatabaseGetComm
         coEvery { service.findDatabaseByName(any()) } returns Result.failure(exception)
         arrangeDefaultErrorHandling()
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf(baz))
-        }
+        val testResult = command.test(arrayOf(baz))
 
+        assertThat(testResult).statusCode().isNotZero()
         coVerifySequence {
             service.findDatabaseByName(baz)
         }
         confirmVerified(service, view)
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
     }
 }

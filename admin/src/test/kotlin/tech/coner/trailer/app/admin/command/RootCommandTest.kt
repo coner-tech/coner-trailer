@@ -2,49 +2,31 @@ package tech.coner.trailer.app.admin.command
 
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
-import assertk.assertions.isSameInstanceAs
+import assertk.assertions.*
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.ProgramResult
-import io.mockk.coEvery
-import io.mockk.coJustRun
-import io.mockk.coVerify
-import io.mockk.coVerifySequence
-import io.mockk.every
+import com.github.ajalt.clikt.testing.test
+import io.mockk.*
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import java.nio.file.Path
-import kotlin.io.path.createDirectory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DI
-import org.kodein.di.DirectDI
-import org.kodein.di.bindMultiton
-import org.kodein.di.bindSingleton
-import org.kodein.di.direct
-import org.kodein.di.factory
-import org.kodein.di.instance
-import tech.coner.trailer.app.admin.clikt.command
+import org.kodein.di.*
+import tech.coner.trailer.app.admin.clikt.statusCode
 import tech.coner.trailer.app.admin.command.config.ConfigCommand
 import tech.coner.trailer.app.admin.di.cliktModule
 import tech.coner.trailer.app.admin.di.command.commandModule
 import tech.coner.trailer.app.admin.di.mockkCliPresentationAdapterModule
 import tech.coner.trailer.app.admin.di.mockkCliPresentationViewModule
-import tech.coner.trailer.di.ConfigurationServiceArgument
-import tech.coner.trailer.di.configDir
-import tech.coner.trailer.di.isDefaultInstance
-import tech.coner.trailer.di.isOverrideInstance
-import tech.coner.trailer.di.mockkServiceModule
+import tech.coner.trailer.di.*
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestDatabaseConfigurations
 import tech.coner.trailer.io.service.ConfigurationService
+import java.nio.file.Path
+import kotlin.io.path.createDirectory
 
 @ExtendWith(MockKExtension::class)
 class RootCommandTest : AbstractCommandTest<RootCommand>() {
@@ -91,16 +73,12 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         arrangeWithDatabases()
         coEvery { service.findDatabaseByName(any()) }.returns(Result.success((dbConfigs.foo)))
 
-        assertFailure {
-            command.parse(arrayOf(
-                "--database", "foo",
-                "config"
-            ))
-        }
-            .isInstanceOf<PrintHelpMessage>()
-            .command()
-            .isInstanceOf<ConfigCommand>()
+        val testResult = command.test(arrayOf(
+            "--database", "foo",
+            "config"
+        ))
 
+        assertThat(testResult).statusCode().isZero()
         assertThat(actualConfigurationServiceArgument).isEqualTo(expectConfigurationServiceArgument)
         assertThat(global.environment)
             .isNotNull()
@@ -116,20 +94,18 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         arrangeDefaultErrorHandling()
 
         // baz does not exist
-        assertFailure {
-            command.parse(arrayOf(
-                "--database", "baz",
-                "config"
-            ))
-        }
-            .isInstanceOf<ProgramResult>()
+        val testResult = command.test(arrayOf(
+            "--database", "baz",
+            "config"
+        ))
 
+        assertThat(testResult).statusCode().isNotZero()
         assertThat(actualConfigurationServiceArgument).isEqualTo(expectConfigurationServiceArgument)
         coVerifySequence {
             service.init()
             service.findDatabaseByName("baz")
         }
-        verifyDefaultErrorHandlingInvoked(exception)
+        verifyDefaultErrorHandlingInvoked(testResult, exception)
     }
 
     @Test
@@ -139,13 +115,9 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
             .values
             .single { it.default }
 
-        assertFailure {
-            command.parse(arrayOf("config"))
-        }
-            .isInstanceOf<PrintHelpMessage>()
-            .command()
-            .isInstanceOf<ConfigCommand>()
+        val testResult = command.test(arrayOf("config"))
 
+        assertThat(testResult).statusCode().isZero()
         assertThat(actualConfigurationServiceArgument).isEqualTo(expectConfigurationServiceArgument)
         coVerify { service.getDefaultDatabase() }
         assertThat(global.environment)
@@ -159,25 +131,20 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         arrangeWithoutDatabasesCase()
         arrangeDefaultErrorHandling()
 
-        assertThrows<ProgramResult> {
-            command.parse(arrayOf("club"))
-        }
+        val testResult = command.test(arrayOf("club"))
 
+        assertThat(testResult).statusCode().isNotZero()
         assertThat(actualConfigurationServiceArgument).isEqualTo(expectConfigurationServiceArgument)
-        verifyDefaultErrorHandlingInvoked(NoDatabaseChosenException())
+        verifyDefaultErrorHandlingInvoked(testResult, NoDatabaseChosenException())
     }
 
     @Test
     fun `When no database chosen and subcommand permits no database, it should continue without database`() {
         arrangeWithoutDatabasesCase()
 
-        assertFailure {
-            command.parse(arrayOf("config"))
-        }
-            .isInstanceOf<PrintHelpMessage>()
-            .command()
-            .isInstanceOf<ConfigCommand>()
+        val testResult = command.test(arrayOf("config"))
 
+        assertThat(testResult).statusCode().isZero()
         assertThat(actualConfigurationServiceArgument).isEqualTo(expectConfigurationServiceArgument)
         assertThat(global.environment)
             .isNotNull()
@@ -189,13 +156,9 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
     fun `When not passed --config-dir, it should use default ConfigurationService`() {
         arrangeWithDatabases()
 
-        assertFailure {
-            command.parse(emptyArray())
-        }
-            .isInstanceOf<PrintHelpMessage>()
-            .command()
-            .isInstanceOf<RootCommand>()
+        val testResult = command.test(emptyArray())
 
+        assertThat(testResult).statusCode().isZero()
         assertThat(actualConfigurationServiceArgument)
             .isDefaultInstance()
     }
@@ -207,15 +170,11 @@ class RootCommandTest : AbstractCommandTest<RootCommand>() {
         }
         arrangeWithDatabases(overrideConfigDir)
 
-        assertFailure {
-            command.parse(arrayOf(
-                "--config-dir", "$overrideConfigDir",
-            ))
-        }
-            .isInstanceOf<PrintHelpMessage>()
-            .command()
-            .isInstanceOf<RootCommand>()
+        val testResult = command.test(arrayOf(
+            "--config-dir", "$overrideConfigDir",
+        ))
 
+        assertThat(testResult).statusCode().isZero()
         assertThat(actualConfigurationServiceArgument, "service factory argument")
             .isOverrideInstance()
             .configDir()

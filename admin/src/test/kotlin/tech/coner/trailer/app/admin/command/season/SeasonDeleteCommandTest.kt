@@ -1,5 +1,10 @@
 package tech.coner.trailer.app.admin.command.season
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.isEmpty
+import assertk.assertions.isZero
+import com.github.ajalt.clikt.testing.test
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.verifySequence
@@ -7,6 +12,8 @@ import org.junit.jupiter.api.Test
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.trailer.TestSeasons
+import tech.coner.trailer.app.admin.clikt.statusCode
+import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.SeasonService
 
@@ -22,13 +29,17 @@ class SeasonDeleteCommandTest : BaseDataSessionCommandTest<SeasonDeleteCommand>(
         every { service.findById(delete.id) } returns delete
         justRun { service.delete(delete) }
 
-        command.parse(arrayOf(
+        val testResult = command.test(arrayOf(
                 "${delete.id}"
         ))
 
         verifySequence {
             service.findById(delete.id)
             service.delete(delete)
+        }
+        assertThat(testResult).all {
+            statusCode().isZero()
+            stdout().isEmpty()
         }
     }
 }
