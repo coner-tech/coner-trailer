@@ -23,7 +23,14 @@ class PersonDetailPresenter(
         PersonDetailModel,
         >(), CoroutineScope by coroutineScope {
 
-    override fun processArgument() {
+    override val entityDefault: Person = Person(
+        clubMemberId = "",
+        firstName = "",
+        lastName = "",
+        motorsportReg = null
+    )
+
+    init {
         when (argument) {
             Argument.Create -> { /* no-op */ }
             is Argument.GetById -> {
@@ -33,19 +40,16 @@ class PersonDetailPresenter(
         }
     }
 
-    override val entityDefault: Person = Person(
-        clubMemberId = "",
-        firstName = "",
-        lastName = "",
-        motorsportReg = null
-    )
-
     override suspend fun performLoad(): Result<Person> = runSuspendCatching {
         service.findById(itemModel.original.id)
     }
 
     fun create() {
         service.create(itemModel.original)
+    }
+
+    fun delete() {
+        service.delete(itemModel.original)
     }
 
     sealed class Argument : Presenter.Argument {

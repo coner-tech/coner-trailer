@@ -18,8 +18,6 @@ class ClubPresenter(
 ) : BaseItemPresenter<Presenter.Argument.Nothing, Club, ClubModelAdapter, ClubModel>(),
     CoroutineScope by coroutineScope {
 
-    override fun processArgument() = Unit // no-op
-
     override val entityDefault = Club("")
 
     override suspend fun performLoad(): Result<Club> = runSuspendCatching {

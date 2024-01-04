@@ -1,10 +1,7 @@
 package tech.coner.trailer.presentation.presenter.run
 
 import kotlinx.coroutines.CoroutineScope
-import tech.coner.trailer.Event
-import tech.coner.trailer.EventContext
 import tech.coner.trailer.EventId
-import tech.coner.trailer.Policy
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.runSuspendCatching
@@ -14,7 +11,6 @@ import tech.coner.trailer.presentation.presenter.BaseItemPresenter
 import tech.coner.trailer.presentation.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
 import tech.coner.trailer.presentation.state.EventRunLatestState
-import java.time.LocalDate
 
 class EventRunLatestPresenter(
     override val argument: Argument,
@@ -39,8 +35,6 @@ class EventRunLatestPresenter(
             count = itemModel.itemValue.count
         )
     }
-
-    override fun processArgument() = Unit // no-op
 
     data class Argument(val eventId: EventId) : Presenter.Argument
 }

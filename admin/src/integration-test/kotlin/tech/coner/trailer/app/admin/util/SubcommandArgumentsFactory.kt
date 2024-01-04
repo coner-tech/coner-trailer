@@ -136,6 +136,17 @@ class SubcommandArgumentsFactory(
         }
     }
 
+    fun personDelete(
+        person: Person
+    ) = SubcommandArguments {
+        addAll(
+            listOf(
+                "person", "delete",
+                "${person.id}"
+            )
+        )
+    }
+
     fun policyAdd(
         policy: Policy
     ) = SubcommandArguments(

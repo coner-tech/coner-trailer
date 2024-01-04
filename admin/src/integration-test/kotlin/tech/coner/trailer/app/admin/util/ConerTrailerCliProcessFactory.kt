@@ -3,6 +3,7 @@ package tech.coner.trailer.app.admin.util
 import tech.coner.trailer.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
+import tech.coner.trailer.Person
 import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.presentation.di.Format
 import java.nio.file.Path
@@ -100,6 +101,12 @@ class ConerTrailerCliProcessFactory(
             motorsportRegPassword = motorsportRegPassword,
             motorsportRegOrganizationId = motorsportRegOrganizationId
         ) { motorsportregMemberList() }
+    }
+
+    fun personDelete(
+        person: Person
+    ): Process {
+        return execSubcommand { personDelete(person) }
     }
 
     fun webappCompetition(
