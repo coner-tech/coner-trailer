@@ -6,11 +6,12 @@ import assertk.assertions.contains
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 
-class EventCheckCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class EventCheckCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should check an event containing runs with invalid signage`() {

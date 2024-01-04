@@ -5,12 +5,13 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.TestClubs
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.exitCode
 import tech.coner.trailer.app.admin.util.output
 import kotlin.io.path.readText
 
-class ClubSetCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class ClubSetCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should set club in newly created database`() {

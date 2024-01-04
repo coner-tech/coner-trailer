@@ -8,11 +8,12 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.TestEvents
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 
-class EventRunListCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class EventRunListCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should list event runs`() {

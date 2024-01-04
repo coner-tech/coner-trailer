@@ -6,10 +6,11 @@ import assertk.assertions.contains
 import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.exitCode
 
-class MotorsportregMemberListCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class MotorsportregMemberListCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should make a motorsportreg request with wrong credentials and get an unauthorized response`() {

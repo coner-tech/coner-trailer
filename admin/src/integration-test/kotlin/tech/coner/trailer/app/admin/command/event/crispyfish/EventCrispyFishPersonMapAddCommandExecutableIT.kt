@@ -9,12 +9,13 @@ import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.exitCode
 import tech.coner.trailer.app.admin.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 
-class EventCrispyFishPersonMapAddCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class EventCrispyFishPersonMapAddCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should add a crispy fish person map entry`() {

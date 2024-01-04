@@ -5,12 +5,13 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
 import tech.coner.trailer.TestEvents
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.isSuccess
 import tech.coner.trailer.app.admin.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 
-class EventParticipantListCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class EventParticipantListCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should list event participants`() {

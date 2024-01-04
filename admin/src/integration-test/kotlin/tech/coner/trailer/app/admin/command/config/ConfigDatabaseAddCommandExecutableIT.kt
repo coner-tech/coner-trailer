@@ -7,12 +7,13 @@ import assertk.assertions.exists
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.isSuccess
 import tech.coner.trailer.app.admin.util.output
 import kotlin.io.path.readText
 
-class ConfigDatabaseAddCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class ConfigDatabaseAddCommandExecutableIT : BaseExecutableIT() {
 
     @Test
     fun `It should add a database config`() {

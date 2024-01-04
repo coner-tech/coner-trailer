@@ -11,13 +11,14 @@ import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.Event
 import tech.coner.trailer.TestEvents
 import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.app.admin.command.BaseExecutableIT
 import tech.coner.trailer.app.admin.util.error
 import tech.coner.trailer.app.admin.util.isSuccess
 import tech.coner.trailer.app.admin.util.output
 import tech.coner.trailer.datasource.crispyfish.fixture.SeasonFixture
 import kotlin.io.path.readText
 
-class EventSetCommandExecutableIT : tech.coner.trailer.app.admin.command.BaseExecutableIT() {
+class EventSetCommandExecutableIT : BaseExecutableIT() {
 
     @ParameterizedTest
     @EnumSource(Event.Lifecycle::class)
