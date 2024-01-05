@@ -39,7 +39,7 @@ class PersonAddCommandTest : BaseDataSessionCommandTest<PersonAddCommand>() {
         val committedModel: PersonDetailModel = mockk()
         every { presenter.itemModel } returns initialModel
         every { presenter.commit() } returns Result.success(committedModel)
-        justRun { presenter.create() }
+        coJustRun { presenter.create() }
         val person = TestPeople.ANASTASIA_RIGLER
         val viewRendered = "view rendered ${person.lastName} ${person.lastName}"
         every { view(any()) } returns viewRendered
@@ -56,7 +56,7 @@ class PersonAddCommandTest : BaseDataSessionCommandTest<PersonAddCommand>() {
             statusCode().isZero()
             stdout().isEqualTo(viewRendered)
         }
-        verifySequence {
+        coVerifySequence {
             presenter.itemModel
             initialModel.setId(person.id)
             initialModel.setClubMemberId(person.clubMemberId!!)

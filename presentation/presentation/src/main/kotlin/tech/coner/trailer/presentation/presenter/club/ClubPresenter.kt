@@ -24,8 +24,8 @@ class ClubPresenter(
         service.get()
     }
 
-    suspend fun createOrUpdate() {
-        service.createOrUpdate(name = itemModel.itemValue.name)
+    suspend fun createOrUpdate() = runSuspendCatching {
+        service.createOrUpdate(name = itemModel.itemValue.name).getOrThrow()
     }
 }
 

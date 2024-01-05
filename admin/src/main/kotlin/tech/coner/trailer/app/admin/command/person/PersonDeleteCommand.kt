@@ -36,7 +36,7 @@ class PersonDeleteCommand(
         backgroundCoroutineScope.launch { presenter.load() }
         presenter.awaitLoadedItemModel()
             .succeedOrThrow {
-                presenter.delete()
+                presenter.delete().getOrThrow()
             }
     }
 }

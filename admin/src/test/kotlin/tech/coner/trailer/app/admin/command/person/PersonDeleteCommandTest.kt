@@ -45,7 +45,7 @@ class PersonDeleteCommandTest : BaseDataSessionCommandTest<PersonDeleteCommand>(
         val mutex = Mutex(locked = true)
         coEvery { presenter.awaitLoadedItemModel() } coAnswers { mutex.withLock { Result.success(model) } }
         coEvery { presenter.load() } coAnswers { mutex.unlock() }
-        justRun { presenter.delete() }
+        coJustRun { presenter.delete() }
 
         val testResult = command.test(arrayOf(
             validPresenterArgument.id.toString()

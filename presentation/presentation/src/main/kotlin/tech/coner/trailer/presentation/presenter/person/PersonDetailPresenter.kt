@@ -44,11 +44,11 @@ class PersonDetailPresenter(
         service.findById(itemModel.original.id)
     }
 
-    fun create() {
+    suspend fun create() = runSuspendCatching {
         service.create(itemModel.original)
     }
 
-    fun delete() {
+    suspend fun delete() = runSuspendCatching {
         service.delete(itemModel.original)
     }
 

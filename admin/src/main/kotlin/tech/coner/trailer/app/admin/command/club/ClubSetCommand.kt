@@ -37,7 +37,7 @@ class ClubSetCommand(
         presenter.itemModel.name = name
         presenter.commit()
             .succeedOrThrow {
-                presenter.createOrUpdate()
+                presenter.createOrUpdate().getOrThrow()
                 echo(textView(it))
             }
     }

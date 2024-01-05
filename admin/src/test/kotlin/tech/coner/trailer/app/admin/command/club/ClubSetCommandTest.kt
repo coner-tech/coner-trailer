@@ -48,7 +48,7 @@ class ClubSetCommandTest : BaseDataSessionCommandTest<ClubSetCommand>() {
         every { presenter.itemModel } returns model
         justRun { model.name = any() }
         coEvery { presenter.commit() } returns Result.success(model)
-        coJustRun { presenter.createOrUpdate() }
+        coEvery { presenter.createOrUpdate() } returns Result.success(club)
         every { textView(any()) } returns textViewRenders
 
         val testResult = command.test(arrayOf("--name", club.name))
