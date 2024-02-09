@@ -7,12 +7,12 @@ import tech.coner.trailer.app.admin.presentation.model.BaseCommandErrorModel
 import tech.coner.trailer.io.service.NotFoundException
 import tech.coner.trailer.io.service.ReadException
 import tech.coner.trailer.presentation.Strings
-import tech.coner.trailer.presentation.adapter.Adapter
-import tech.coner.trailer.presentation.model.util.ModelValidationException
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.model.ModelValidationException
 
 class BaseCommandErrorAdapter(
     private val global: GlobalModel
-) : Adapter<Throwable, BaseCommandErrorModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<Throwable, BaseCommandErrorModel> {
 
 
 

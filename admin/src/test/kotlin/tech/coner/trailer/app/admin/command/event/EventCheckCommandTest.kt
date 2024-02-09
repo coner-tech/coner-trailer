@@ -5,11 +5,9 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isNotZero
-import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.testing.test
 import io.mockk.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
 import tech.coner.crispyfish.model.Registration
@@ -25,7 +23,7 @@ import tech.coner.trailer.app.admin.view.PeopleMapKeyTableView
 import tech.coner.trailer.io.payload.EventHealthCheckOutcome
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -37,7 +35,7 @@ class EventCheckCommandTest : BaseDataSessionCommandTest<EventCheckCommand>() {
     private val eventContextService: EventContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runCollectionModelAdapter: Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
+    private val runCollectionModelAdapter: tech.coner.trailer.presentation.library.adapter.Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
     private val runsTextView: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCheckCommand>()

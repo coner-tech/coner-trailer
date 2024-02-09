@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.model.eventresults
 
 import tech.coner.trailer.eventresults.EventResultsType
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.Model
 
 class EventResultsTypeModel(
     private val eventResultsType: EventResultsType

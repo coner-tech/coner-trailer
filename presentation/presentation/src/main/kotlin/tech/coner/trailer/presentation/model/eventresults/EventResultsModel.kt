@@ -2,7 +2,7 @@ package tech.coner.trailer.presentation.model.eventresults
 
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.presentation.adapter.eventresults.EventResultsModelAdapter
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.Model
 
 abstract class EventResultsModel<ER : EventResults> : Model {
     protected abstract val eventResults: ER

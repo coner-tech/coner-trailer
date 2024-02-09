@@ -20,7 +20,7 @@ import tech.coner.trailer.eventresults.StandardEventResultsTypes
 import tech.coner.trailer.io.constraint.PolicyPersistConstraints
 import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.util.*
@@ -39,7 +39,7 @@ class PolicyAddCommand(
     private val constraints: PolicyPersistConstraints by instance()
     private val clubService: ClubService by instance()
     private val service: PolicyService by instance()
-    private val adapter: Adapter<Policy, PolicyModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Policy, PolicyModel> by instance()
     private val textWidget: TextView<PolicyModel> by instance()
 
     private val id: UUID? by option(hidden = true)

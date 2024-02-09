@@ -21,10 +21,10 @@ import tech.coner.trailer.eventresults.*
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.FileOutputDestinationResolver
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.di.Format
 import tech.coner.trailer.presentation.view.json.JsonView
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.Model
 import tech.coner.trailer.presentation.model.eventresults.*
 import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Path
@@ -68,11 +68,11 @@ class EventResultsCommand(
     internal inner class AdaptersContainer(
         override val di: DI
     ) : DIAware {
-        val clazz: Adapter<ClassEventResults, ClassEventResultsModel> by instance()
-        val comprehensive: Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel> by instance()
-        val individual: Adapter<IndividualEventResults, IndividualEventResultsModel> by instance()
-        val overall: Adapter<OverallEventResults, OverallEventResultsModel> by instance()
-        val topTimes: Adapter<TopTimesEventResults, TopTimesEventResultsModel> by instance()
+        val clazz: tech.coner.trailer.presentation.library.adapter.Adapter<ClassEventResults, ClassEventResultsModel> by instance()
+        val comprehensive: tech.coner.trailer.presentation.library.adapter.Adapter<ComprehensiveEventResults, ComprehensiveEventResultsModel> by instance()
+        val individual: tech.coner.trailer.presentation.library.adapter.Adapter<IndividualEventResults, IndividualEventResultsModel> by instance()
+        val overall: tech.coner.trailer.presentation.library.adapter.Adapter<OverallEventResults, OverallEventResultsModel> by instance()
+        val topTimes: tech.coner.trailer.presentation.library.adapter.Adapter<TopTimesEventResults, TopTimesEventResultsModel> by instance()
     }
     internal val adapters: AdaptersContainer = AdaptersContainer(di)
     
@@ -139,7 +139,7 @@ class EventResultsCommand(
 
     private fun <ER : EventResults, ERC : EventResultsCalculator<ER>, ERM : EventResultsModel<ER>> handle(
         calculator: ERC,
-        adapter: Adapter<ER, ERM>,
+        adapter: tech.coner.trailer.presentation.library.adapter.Adapter<ER, ERM>,
         textView: TextView<ERM>,
     ): String {
         val results = calculator.calculate()

@@ -1,40 +1,46 @@
 package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Event
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.ListAdapter
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.model.EventDetailCollectionModel
 
-class EventIdStringFieldAdapter : StringFieldAdapter<Event> {
+class EventIdStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.id.toString()
     }
 }
-class EventNameStringFieldAdapter : StringFieldAdapter<Event> {
+class EventNameStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.name
     }
 }
-class EventDateStringFieldAdapter : StringFieldAdapter<Event> {
+class EventDateStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.date.toString()
     }
 }
-class EventLifecycleStringFieldAdapter : StringFieldAdapter<Event> {
+class EventLifecycleStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.lifecycle.name.lowercase()
     }
 }
-class EventCrispyFishEventControlFileStringFieldAdapter : StringFieldAdapter<Event> {
+class EventCrispyFishEventControlFileStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.crispyFish?.eventControlFile?.toString() ?: ""
     }
 }
-class EventCrispyFishClassDefinitionFileStringFieldAdapter : StringFieldAdapter<Event> {
+class EventCrispyFishClassDefinitionFileStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.crispyFish?.classDefinitionFile?.toString() ?: ""
     }
 }
-class EventMotorsportRegIdStringFieldAdapter : StringFieldAdapter<Event> {
+class EventMotorsportRegIdStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Event> {
     override operator fun invoke(model: Event): String {
         return model.motorsportReg?.id ?: ""
     }
@@ -51,7 +57,7 @@ class EventDetailModelAdapter(
     val motorsportRegId: EventMotorsportRegIdStringFieldAdapter,
     val policyId: PolicyIdStringFieldAdapter,
     val policyName: PolicyNameStringFieldAdapter,
-) : Adapter<Event, EventDetailModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<Event, EventDetailModel> {
     override fun invoke(model: Event): EventDetailModel {
         return EventDetailModel(
             event = model,
@@ -64,7 +70,7 @@ class EventCrispyFishPeopleMapModelAdapter(
     val signage: SignageStringFieldAdapter,
     val personId: PersonIdStringFieldAdapter,
     val personName: PersonFullNameStringFieldAdapter
-) : ListAdapter<Event, EventDetailModel.CrispyFishPeopleMapModel> {
+) : tech.coner.trailer.presentation.library.adapter.ListAdapter<Event, EventDetailModel.CrispyFishPeopleMapModel> {
     override fun invoke(model: Event): List<EventDetailModel.CrispyFishPeopleMapModel> {
         return model.crispyFish?.peopleMap
             ?.map {
@@ -80,7 +86,7 @@ class EventCrispyFishPeopleMapModelAdapter(
 
 class EventDetailCollectionModelAdapter(
     private val eventDetailAdapter: EventDetailModelAdapter
-) : Adapter<Collection<Event>, EventDetailCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<Collection<Event>, EventDetailCollectionModel> {
     override fun invoke(model: Collection<Event>): EventDetailCollectionModel {
         return EventDetailCollectionModel(
             items = model.map(eventDetailAdapter::invoke)

@@ -12,7 +12,7 @@ import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -31,7 +31,7 @@ class EventRunListCommand(
 
     private val eventService: EventService by instance()
     private val eventContextService: EventContextService by instance()
-    private val adapter: Adapter<EventContext, RunCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<EventContext, RunCollectionModel> by instance()
     private val view: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     private val eventId: UUID by argument().convert { toUuid(it) }

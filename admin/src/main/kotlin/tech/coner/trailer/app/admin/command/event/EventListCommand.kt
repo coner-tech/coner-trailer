@@ -8,7 +8,7 @@ import tech.coner.trailer.app.admin.command.BaseCommand
 import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.di.use
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailCollectionModel
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -25,7 +25,7 @@ class EventListCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val adapter: Adapter<Collection<Event>, EventDetailCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Collection<Event>, EventDetailCollectionModel> by instance()
     private val view: TextCollectionView<EventDetailModel, EventDetailCollectionModel> by instance()
 
     override suspend fun CoroutineScope.coRun() = diContext.use {

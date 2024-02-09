@@ -22,7 +22,7 @@ import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Path
@@ -33,7 +33,7 @@ import kotlin.io.path.createFile
 class EventSetCommandTest : BaseDataSessionCommandTest<EventSetCommand>() {
 
     private val service: EventService by instance()
-    private val adapter: Adapter<Event, EventDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private lateinit var crispyFish: Path

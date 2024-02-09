@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.adapter.eventresults
 
 import tech.coner.trailer.eventresults.OverallEventResults
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDateStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.EventNameStringFieldAdapter
 import tech.coner.trailer.presentation.model.eventresults.OverallEventResultsModel
@@ -27,7 +27,7 @@ class OverallEventResultsModelAdapter(
 
 class OverallParticipantResultsCollectionModelAdapter(
     private val participantResultAdapter: ParticipantResultModelAdapter
-) : Adapter<OverallEventResults, OverallParticipantResultsCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<OverallEventResults, OverallParticipantResultsCollectionModel> {
     override fun invoke(model: OverallEventResults): OverallParticipantResultsCollectionModel {
         return OverallParticipantResultsCollectionModel(
             items = model.participantResults.map { participantResultAdapter(it, model) }

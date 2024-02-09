@@ -1,7 +1,6 @@
 package tech.coner.trailer.app.admin.command.event.crispyfish
 
 import com.github.ajalt.clikt.core.Abort
-import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
@@ -26,7 +25,7 @@ import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.verifier.EventCrispyFishPersonMapVerifier
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 
@@ -49,7 +48,7 @@ class EventCrispyFishPersonMapAssembleCommand(
     private val eventCrispyFishPersonMapVerifier: EventCrispyFishPersonMapVerifier by instance()
     private val crispyFishRegistrationView: CrispyFishRegistrationView by instance()
     private val crispyFishPersonMapper: CrispyFishPersonMapper by instance()
-    private val adapter: Adapter<Person, PersonDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Person, PersonDetailModel> by instance()
     private val personView: TextView<PersonDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

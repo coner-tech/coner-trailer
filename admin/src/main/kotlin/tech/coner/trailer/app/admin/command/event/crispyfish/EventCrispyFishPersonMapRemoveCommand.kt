@@ -19,7 +19,7 @@ import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 
@@ -37,7 +37,7 @@ class EventCrispyFishPersonMapRemoveCommand(
     private val service: EventService by instance()
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
-    private val adapter: Adapter<Event, EventDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

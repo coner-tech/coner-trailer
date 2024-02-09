@@ -22,7 +22,7 @@ import tech.coner.trailer.app.admin.presentation.model.BaseCommandErrorModel
 import tech.coner.trailer.io.Configuration
 import tech.coner.trailer.io.TestConfigurations
 import tech.coner.trailer.io.TestEnvironments
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Path
 import kotlin.coroutines.CoroutineContext
@@ -32,7 +32,7 @@ abstract class AbstractCommandTest<C : BaseCommand> : DIAware, CoroutineScope
     lateinit var invocation: Invocation
     lateinit var global: GlobalModel
     lateinit var command: C
-    lateinit var errorAdapter: Adapter<Throwable, BaseCommandErrorModel>
+    lateinit var errorAdapter: tech.coner.trailer.presentation.library.adapter.Adapter<Throwable, BaseCommandErrorModel>
     lateinit var errorView: TextView<BaseCommandErrorModel>
 
     private val mainThreadSurrogate = newSingleThreadContext("CLI Main Thread Test Surrogate")

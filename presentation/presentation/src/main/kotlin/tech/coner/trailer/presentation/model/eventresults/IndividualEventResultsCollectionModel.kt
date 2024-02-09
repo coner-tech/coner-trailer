@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.model.eventresults
 
-import tech.coner.trailer.presentation.model.CollectionModel
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.CollectionModel
+import tech.coner.trailer.presentation.library.model.Model
 import tech.coner.trailer.presentation.model.ParticipantModel
 
 class IndividualEventResultsCollectionModel(

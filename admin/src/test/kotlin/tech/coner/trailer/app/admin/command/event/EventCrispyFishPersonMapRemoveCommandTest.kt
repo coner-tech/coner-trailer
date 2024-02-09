@@ -19,7 +19,7 @@ import tech.coner.trailer.io.service.CrispyFishClassService
 import tech.coner.trailer.io.service.CrispyFishEventMappingContextService
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.nio.file.Paths
@@ -31,7 +31,7 @@ class EventCrispyFishPersonMapRemoveCommandTest : BaseDataSessionCommandTest<Eve
     private val crispyFishClassService: CrispyFishClassService by instance()
     private val personService: PersonService by instance()
     private val crispyFishEventMappingContextService: CrispyFishEventMappingContextService by instance()
-    private val adapter: Adapter<Event, EventDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventCrispyFishPersonMapRemoveCommand>()

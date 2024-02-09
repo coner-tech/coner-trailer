@@ -2,6 +2,7 @@ package tech.coner.trailer.presentation.model
 
 import tech.coner.trailer.Class
 import tech.coner.trailer.presentation.adapter.ClassModelAdapter
+import tech.coner.trailer.presentation.library.model.Model
 
 class ClassModel(
     private val clazz: Class,

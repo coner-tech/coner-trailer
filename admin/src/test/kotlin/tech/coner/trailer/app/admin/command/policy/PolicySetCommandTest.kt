@@ -20,14 +20,14 @@ import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 
 class PolicySetCommandTest : BaseDataSessionCommandTest<PolicySetCommand>() {
 
     private val service: PolicyService by instance()
-    private val adapter: Adapter<Policy, PolicyModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Policy, PolicyModel> by instance()
     private val view: TextView<PolicyModel> by instance()
 
     override fun DirectDI.createCommand() = instance<PolicySetCommand>()

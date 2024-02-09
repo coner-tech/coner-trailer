@@ -11,7 +11,7 @@ import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.ParticipantModel
@@ -30,7 +30,7 @@ class EventParticipantListCommand(
     override val diContext = diContextDataSession()
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val adapter: Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> by instance()
     private val view: TextCollectionView<ParticipantModel, ParticipantCollectionModel> by instance()
 
     private val eventId: UUID by argument().convert { toUuid(it) }

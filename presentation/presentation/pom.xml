@@ -27,14 +27,38 @@
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>io-kodein-di</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
+            <artifactId>presentation-library</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.kodein.di</groupId>
+            <artifactId>kodein-di-jvm</artifactId>
         </dependency>
 
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>core-test</artifactId>
             <version>0.1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-test-jvm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>app.cash.turbine</groupId>
+            <artifactId>turbine-jvm</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

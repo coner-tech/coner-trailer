@@ -7,9 +7,9 @@ import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.presentation.adapter.EventRunLatestModelAdapter
 import tech.coner.trailer.presentation.model.EventRunLatestModel
-import tech.coner.trailer.presentation.presenter.BaseItemPresenter
-import tech.coner.trailer.presentation.presenter.Presenter
-import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
+import tech.coner.trailer.presentation.library.presenter.BaseItemPresenter
+import tech.coner.trailer.presentation.library.presenter.Presenter
+import tech.coner.trailer.presentation.library.presenter.PresenterCoroutineScope
 import tech.coner.trailer.presentation.state.EventRunLatestState
 
 class EventRunLatestPresenter(

@@ -4,16 +4,18 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.EventContext
 import tech.coner.trailer.Run
 import tech.coner.trailer.presentation.Strings
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 
-class RunSequenceStringFieldAdapter : StringFieldAdapter<Run> {
+class RunSequenceStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Run> {
     override operator fun invoke(model: Run): String {
         return model.sequence.toString()
     }
 }
 
-class RunRerunStringFieldAdapter : StringFieldAdapter<Run> {
+class RunRerunStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Run> {
     override operator fun invoke(model: Run): String {
         return if (model.rerun) Strings.abbreviationRerun else ""
     }
@@ -28,7 +30,7 @@ class RunModelAdapter(
     val nullableTimeStringFieldAdapter: NullableTimeStringFieldAdapter,
     val penaltyCollectionStringFieldAdapter: PenaltyCollectionStringFieldAdapter,
     val rerunStringFieldAdapter: RunRerunStringFieldAdapter
-) : Adapter<RunModelAdapter.Input, RunModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<RunModelAdapter.Input, RunModel> {
     override fun invoke(model: Input): RunModel {
         return RunModel(
             event = model.event,
@@ -47,7 +49,7 @@ class RunModelAdapter(
 
 class EventContextRunCollectionModelAdapter(
     private val runAdapter: RunModelAdapter
-) : Adapter<EventContext, RunCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<EventContext, RunCollectionModel> {
     override fun invoke(model: EventContext): RunCollectionModel {
         return RunCollectionModel(
             items = model.runs.map { runAdapter(it, model.event) }
@@ -57,7 +59,7 @@ class EventContextRunCollectionModelAdapter(
 
 class ArbitraryRunsCollectionModelAdapter(
     private val runAdapter: RunModelAdapter
-) : Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> {
 
     override fun invoke(model: Pair<Event, Collection<Run>>): RunCollectionModel {
         return RunCollectionModel(

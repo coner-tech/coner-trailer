@@ -6,12 +6,12 @@ import org.kodein.di.bind
 import org.kodein.di.scoped
 import org.kodein.di.singleton
 import tech.coner.trailer.app.admin.presentation.model.BaseCommandErrorModel
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 
 val mockkCliPresentationAdapterModule = DI.Module("tech.coner.trailer.app.admin.presentation.adapter mockk") {
 
     // Base Command Error
-    bind<Adapter<Throwable, BaseCommandErrorModel>> {
+    bind<tech.coner.trailer.presentation.library.adapter.Adapter<Throwable, BaseCommandErrorModel>> {
         scoped(InvocationScope).singleton { mockk() }
     }
 }

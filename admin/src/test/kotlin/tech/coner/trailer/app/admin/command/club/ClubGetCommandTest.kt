@@ -20,7 +20,7 @@ import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.NotFoundException
 import tech.coner.trailer.presentation.model.ClubModel
-import tech.coner.trailer.presentation.presenter.Presenter
+import tech.coner.trailer.presentation.library.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.club.ClubPresenter
 import tech.coner.trailer.presentation.presenter.club.ClubPresenterFactory
 import tech.coner.trailer.presentation.text.view.TextView

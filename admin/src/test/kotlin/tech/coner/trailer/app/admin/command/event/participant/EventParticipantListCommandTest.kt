@@ -19,7 +19,7 @@ import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.EventService
 import tech.coner.trailer.io.service.ParticipantService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.ParticipantCollectionModelAdapter
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.ParticipantModel
@@ -29,7 +29,7 @@ class EventParticipantListCommandTest : BaseDataSessionCommandTest<EventParticip
 
     private val eventService: EventService by instance()
     private val participantService: ParticipantService by instance()
-    private val adapter: Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> by instance()
     private val view: TextCollectionView<ParticipantModel, ParticipantCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventParticipantListCommand>()

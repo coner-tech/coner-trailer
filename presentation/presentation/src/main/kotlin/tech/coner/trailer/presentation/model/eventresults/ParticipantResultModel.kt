@@ -3,7 +3,7 @@ package tech.coner.trailer.presentation.model.eventresults
 import tech.coner.trailer.eventresults.EventResults
 import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.presentation.adapter.eventresults.ParticipantResultModelAdapter
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.Model
 
 class ParticipantResultModel(
     private val eventResults: EventResults,

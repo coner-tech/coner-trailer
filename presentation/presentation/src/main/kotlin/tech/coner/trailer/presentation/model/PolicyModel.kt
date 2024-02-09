@@ -2,6 +2,7 @@ package tech.coner.trailer.presentation.model
 
 import tech.coner.trailer.Policy
 import tech.coner.trailer.presentation.adapter.PolicyModelAdapter
+import tech.coner.trailer.presentation.library.model.Model
 
 class PolicyModel(
     private val policy: Policy,

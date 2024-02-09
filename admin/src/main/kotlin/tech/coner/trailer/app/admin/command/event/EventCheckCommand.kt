@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.DI
 import org.kodein.di.instance
 import tech.coner.trailer.Event
-import tech.coner.trailer.EventContext
 import tech.coner.trailer.Run
 import tech.coner.trailer.app.admin.command.BaseCommand
 import tech.coner.trailer.app.admin.command.GlobalModel
@@ -16,7 +15,7 @@ import tech.coner.trailer.app.admin.view.CrispyFishRegistrationTableView
 import tech.coner.trailer.app.admin.view.PeopleMapKeyTableView
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -37,7 +36,7 @@ class EventCheckCommand(
     private val eventContextService: EventContextService by instance()
     private val registrationTableView: CrispyFishRegistrationTableView by instance()
     private val peopleMapKeyTableView: PeopleMapKeyTableView by instance()
-    private val runCollectionModelAdapter: Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
+    private val runCollectionModelAdapter: tech.coner.trailer.presentation.library.adapter.Adapter<Pair<Event, Collection<Run>>, RunCollectionModel> by instance()
     private val runsTextView: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

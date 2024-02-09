@@ -2,7 +2,6 @@ package tech.coner.trailer.app.admin.command
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.mordant.terminal.Terminal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import org.kodein.di.*
@@ -11,7 +10,7 @@ import tech.coner.trailer.app.admin.util.CliBackgroundCoroutineScope
 import tech.coner.trailer.app.admin.util.CliMainCoroutineScope
 import tech.coner.trailer.di.DataSessionHolder
 import tech.coner.trailer.di.EnvironmentHolder
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.text.view.TextView
 import kotlin.coroutines.CoroutineContext
 
@@ -42,7 +41,7 @@ abstract class BaseCommand(
 
     private inner class InvocationContainer(di: DIAware) : DIAware by di {
         override val diContext = diContext { global.invocation }
-        val errorAdapter: Adapter<Throwable, BaseCommandErrorModel> by instance()
+        val errorAdapter: tech.coner.trailer.presentation.library.adapter.Adapter<Throwable, BaseCommandErrorModel> by instance()
         val errorView: TextView<BaseCommandErrorModel> by instance()
     }
     private val invocationDi = InvocationContainer(di)

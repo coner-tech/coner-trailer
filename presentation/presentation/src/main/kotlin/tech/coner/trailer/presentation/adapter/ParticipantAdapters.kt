@@ -2,22 +2,27 @@ package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.ParticipantCollectionModel
 import tech.coner.trailer.presentation.model.ParticipantModel
 
-class ParticipantFirstNameStringFieldAdapter : StringFieldAdapter<Participant> {
+class ParticipantFirstNameStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Participant> {
     override fun invoke(model: Participant): String {
         return model.firstName ?: ""
     }
 }
 
-class ParticipantLastNameStringFieldAdapter : StringFieldAdapter<Participant> {
+class ParticipantLastNameStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Participant> {
     override fun invoke(model: Participant): String {
         return model.lastName ?: ""
     }
 }
 
-class ParticipantFullNameStringFieldAdapter : StringFieldAdapter<Participant> {
+class ParticipantFullNameStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Participant> {
     override operator fun invoke(model: Participant): String {
         return "${model.firstName} ${model.lastName}".trim()
     }
@@ -25,7 +30,7 @@ class ParticipantFullNameStringFieldAdapter : StringFieldAdapter<Participant> {
 
 class NullableParticipantFullNameStringFieldAdapter(
     private val adapter: ParticipantFullNameStringFieldAdapter
-) : StringFieldAdapter<Participant?> {
+) : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Participant?> {
     override operator fun invoke(model: Participant?): String {
         return model?.let(adapter::invoke) ?: ""
     }
@@ -33,7 +38,7 @@ class NullableParticipantFullNameStringFieldAdapter(
 
 class ParticipantClubMemberIdStringFieldAdapter(
     private val personClubMemberIdStringFieldAdapter: PersonClubMemberIdStringFieldAdapter
-) : StringFieldAdapter<Participant> {
+) : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Participant> {
     override fun invoke(model: Participant): String {
         return model.person?.let(personClubMemberIdStringFieldAdapter::invoke) ?: ""
     }
@@ -47,7 +52,7 @@ class ParticipantModelAdapter(
     val clubMemberIdAdapter: ParticipantClubMemberIdStringFieldAdapter,
     val carModelAdapter: CarModelStringFieldAdapter,
     val carColorAdapter: CarColorStringFieldAdapter
-) : Adapter<ParticipantModelAdapter.Input, ParticipantModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<ParticipantModelAdapter.Input, ParticipantModel> {
     override fun invoke(model: Input): ParticipantModel {
         return ParticipantModel(
             participant = model.participant,
@@ -66,7 +71,7 @@ class ParticipantModelAdapter(
 
 class ParticipantCollectionModelAdapter(
     private val participantAdapter: ParticipantModelAdapter
-) : Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<ParticipantCollectionModelAdapter.Input, ParticipantCollectionModel> {
 
     override fun invoke(model: Input): ParticipantCollectionModel {
         return ParticipantCollectionModel(

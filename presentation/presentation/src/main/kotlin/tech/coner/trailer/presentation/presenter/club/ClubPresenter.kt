@@ -6,9 +6,9 @@ import tech.coner.trailer.io.service.ClubService
 import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.presentation.adapter.ClubModelAdapter
 import tech.coner.trailer.presentation.model.ClubModel
-import tech.coner.trailer.presentation.presenter.BaseItemPresenter
-import tech.coner.trailer.presentation.presenter.Presenter
-import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
+import tech.coner.trailer.presentation.library.presenter.BaseItemPresenter
+import tech.coner.trailer.presentation.library.presenter.Presenter
+import tech.coner.trailer.presentation.library.presenter.PresenterCoroutineScope
 
 class ClubPresenter(
     override val argument: Presenter.Argument.Nothing,

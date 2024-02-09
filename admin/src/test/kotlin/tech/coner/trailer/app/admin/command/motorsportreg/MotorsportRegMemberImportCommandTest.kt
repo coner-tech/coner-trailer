@@ -16,7 +16,7 @@ import tech.coner.trailer.app.admin.clikt.statusCode
 import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.MotorsportRegImportService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -24,7 +24,7 @@ import tech.coner.trailer.presentation.text.view.TextCollectionView
 class MotorsportRegMemberImportCommandTest : BaseDataSessionCommandTest<MotorsportRegMemberImportCommand>() {
 
     private val service: MotorsportRegImportService by instance()
-    private val adapter: Adapter<Collection<Person>, PersonCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Collection<Person>, PersonCollectionModel> by instance()
     private val view: TextCollectionView<PersonDetailModel, PersonCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<MotorsportRegMemberImportCommand>()

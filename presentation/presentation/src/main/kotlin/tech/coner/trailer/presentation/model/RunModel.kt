@@ -3,6 +3,7 @@ package tech.coner.trailer.presentation.model
 import tech.coner.trailer.Event
 import tech.coner.trailer.Run
 import tech.coner.trailer.presentation.adapter.RunModelAdapter
+import tech.coner.trailer.presentation.library.model.Model
 
 class RunModel(
     private val event: Event,

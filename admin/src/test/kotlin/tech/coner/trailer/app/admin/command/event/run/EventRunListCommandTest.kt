@@ -20,7 +20,7 @@ import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
 import tech.coner.trailer.io.service.EventContextService
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.RunCollectionModel
 import tech.coner.trailer.presentation.model.RunModel
 import tech.coner.trailer.presentation.text.view.TextCollectionView
@@ -29,7 +29,7 @@ class EventRunListCommandTest : BaseDataSessionCommandTest<EventRunListCommand>(
 
     private val eventService: EventService by instance()
     private val eventContextService: EventContextService by instance()
-    private val adapter: Adapter<EventContext, RunCollectionModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<EventContext, RunCollectionModel> by instance()
     private val view: TextCollectionView<RunModel, RunCollectionModel> by instance()
 
     override fun DirectDI.createCommand() = instance<EventRunListCommand>()

@@ -13,7 +13,7 @@ import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.di.use
 import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.PersonService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PersonDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.util.*
@@ -30,7 +30,7 @@ class PersonSetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PersonService by instance()
-    private val adapter: Adapter<Person, PersonDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Person, PersonDetailModel> by instance()
     private val view: TextView<PersonDetailModel> by instance()
 
     private val id: UUID by argument()

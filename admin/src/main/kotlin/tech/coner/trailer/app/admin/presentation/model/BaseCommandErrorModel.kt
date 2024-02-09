@@ -2,7 +2,7 @@ package tech.coner.trailer.app.admin.presentation.model
 
 import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.entity.Error
-import tech.coner.trailer.presentation.model.Model
+import tech.coner.trailer.presentation.library.model.Model
 
 class BaseCommandErrorModel(
     private val error: Error,

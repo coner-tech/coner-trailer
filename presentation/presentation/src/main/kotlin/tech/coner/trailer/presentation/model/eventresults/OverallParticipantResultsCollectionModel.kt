@@ -1,6 +1,6 @@
 package tech.coner.trailer.presentation.model.eventresults
 
-import tech.coner.trailer.presentation.model.CollectionModel
+import tech.coner.trailer.presentation.library.model.CollectionModel
 
 class OverallParticipantResultsCollectionModel(
     override val items: Collection<ParticipantResultModel>

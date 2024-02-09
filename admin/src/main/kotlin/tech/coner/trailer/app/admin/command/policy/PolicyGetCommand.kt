@@ -13,8 +13,7 @@ import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.di.use
 import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.PolicyService
-import tech.coner.trailer.presentation.adapter.Adapter
-import tech.coner.trailer.presentation.adapter.PolicyModelAdapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.PolicyModel
 import tech.coner.trailer.presentation.text.view.TextView
 import java.util.*
@@ -31,7 +30,7 @@ class PolicyGetCommand(
 
     override val diContext = diContextDataSession()
     private val service: PolicyService by instance()
-    private val adapter: Adapter<Policy, PolicyModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Policy, PolicyModel> by instance()
     private val view: TextView<PolicyModel> by instance()
 
     private val find: Find by mutuallyExclusiveOptions(

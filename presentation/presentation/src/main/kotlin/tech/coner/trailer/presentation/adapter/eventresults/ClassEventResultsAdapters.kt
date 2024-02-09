@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.adapter.eventresults
 
 import tech.coner.trailer.eventresults.ClassEventResults
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.ClassModelAdapter
 import tech.coner.trailer.presentation.adapter.EventDateStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.EventNameStringFieldAdapter
@@ -30,7 +30,7 @@ class ClassEventResultsModelAdapter(
 class ClassParticipantResultsCollectionModelAdapter(
     private val classModelAdapter: ClassModelAdapter,
     private val participantResultModelAdapter: ParticipantResultModelAdapter,
-) : Adapter<ClassEventResults, ClassParticipantResultsCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<ClassEventResults, ClassParticipantResultsCollectionModel> {
     override fun invoke(model: ClassEventResults): ClassParticipantResultsCollectionModel {
         return ClassParticipantResultsCollectionModel(
             items = model.groupParticipantResults

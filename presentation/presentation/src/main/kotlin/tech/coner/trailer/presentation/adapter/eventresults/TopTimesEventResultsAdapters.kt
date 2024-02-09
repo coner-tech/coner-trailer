@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.adapter.eventresults
 
 import tech.coner.trailer.eventresults.TopTimesEventResults
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.ClassParentModelAdapter
 import tech.coner.trailer.presentation.adapter.EventDateStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.EventNameStringFieldAdapter
@@ -28,7 +28,7 @@ class TopTimesEventResultsModelAdapter(
 class TopTimesEventResultsCollectionModelAdapter(
     private val classParentModelAdapter: ClassParentModelAdapter,
     private val participantResultModelAdapter: ParticipantResultModelAdapter
-) : Adapter<TopTimesEventResults, TopTimesEventResultsCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<TopTimesEventResults, TopTimesEventResultsCollectionModel> {
     override fun invoke(model: TopTimesEventResults): TopTimesEventResultsCollectionModel {
         return TopTimesEventResultsCollectionModel(
             items = model.topTimes.map { (classParent, participantResult) ->

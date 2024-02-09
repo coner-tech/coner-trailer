@@ -10,7 +10,7 @@ import tech.coner.trailer.app.admin.command.GlobalModel
 import tech.coner.trailer.app.admin.di.use
 import tech.coner.trailer.app.admin.util.succeedOrThrow
 import tech.coner.trailer.presentation.model.ClubModel
-import tech.coner.trailer.presentation.presenter.Presenter
+import tech.coner.trailer.presentation.library.presenter.Presenter
 import tech.coner.trailer.presentation.presenter.club.ClubPresenterFactory
 import tech.coner.trailer.presentation.text.view.TextView
 

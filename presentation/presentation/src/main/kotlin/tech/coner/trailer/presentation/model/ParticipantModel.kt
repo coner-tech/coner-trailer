@@ -3,6 +3,7 @@ package tech.coner.trailer.presentation.model
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.presentation.adapter.ParticipantModelAdapter
+import tech.coner.trailer.presentation.library.model.Model
 
 data class ParticipantModel(
     private val participant: Participant,

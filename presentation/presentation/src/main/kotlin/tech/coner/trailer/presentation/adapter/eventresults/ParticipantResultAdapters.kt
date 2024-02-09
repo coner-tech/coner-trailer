@@ -6,9 +6,12 @@ import tech.coner.trailer.eventresults.ParticipantResult
 import tech.coner.trailer.eventresults.Score
 import tech.coner.trailer.presentation.Strings
 import tech.coner.trailer.presentation.adapter.*
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.eventresults.ParticipantResultModel
 
-class ParticipantResultPositionStringFieldAdapter : StringFieldAdapter<ParticipantResult> {
+class ParticipantResultPositionStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<ParticipantResult> {
     override fun invoke(model: ParticipantResult): String {
         return "${model.position}"
     }
@@ -21,7 +24,7 @@ class ParticipantResultPositionStringFieldAdapter : StringFieldAdapter<Participa
  */
 class ParticipantResultDiffStringFieldAdapter(
     private val nullableTimeStringFieldAdapter: NullableTimeStringFieldAdapter
-) : StringFieldAdapter<ParticipantResultDiffStringFieldAdapter.Model> {
+) : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<ParticipantResultDiffStringFieldAdapter.Model> {
 
     override fun invoke(model: Model): String {
         return when (model.participantResult.position) {
@@ -52,7 +55,8 @@ class ParticipantResultDiffStringFieldAdapter(
 /**
  * Render the score of a participant result
  */
-class ParticipantResultScoreStringFieldAdapter : StringFieldAdapter<ParticipantResult> {
+class ParticipantResultScoreStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<ParticipantResult> {
     override fun invoke(model: ParticipantResult): String {
         return when (model.score.penalty) {
             Score.Penalty.DidNotFinish -> Strings.abbreviationDidNotFinish
@@ -69,7 +73,7 @@ class ParticipantResultModelAdapter(
     val carModelAdapter: CarModelStringFieldAdapter,
     val scoreAdapter: ParticipantResultScoreStringFieldAdapter,
     val diffAdapter: ParticipantResultDiffStringFieldAdapter
-) : Adapter<ParticipantResultModelAdapter.Input, ParticipantResultModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<ParticipantResultModelAdapter.Input, ParticipantResultModel> {
     override fun invoke(model: Input): ParticipantResultModel {
         return ParticipantResultModel(
             eventResults = model.eventResults,

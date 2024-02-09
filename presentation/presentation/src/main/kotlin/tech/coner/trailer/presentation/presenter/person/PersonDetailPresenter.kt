@@ -6,9 +6,9 @@ import tech.coner.trailer.io.service.PersonService
 import tech.coner.trailer.io.util.runSuspendCatching
 import tech.coner.trailer.presentation.adapter.PersonDetailModelAdapter
 import tech.coner.trailer.presentation.model.PersonDetailModel
-import tech.coner.trailer.presentation.presenter.BaseItemPresenter
-import tech.coner.trailer.presentation.presenter.Presenter
-import tech.coner.trailer.presentation.presenter.PresenterCoroutineScope
+import tech.coner.trailer.presentation.library.presenter.BaseItemPresenter
+import tech.coner.trailer.presentation.library.presenter.Presenter
+import tech.coner.trailer.presentation.library.presenter.PresenterCoroutineScope
 import java.util.*
 
 class PersonDetailPresenter(

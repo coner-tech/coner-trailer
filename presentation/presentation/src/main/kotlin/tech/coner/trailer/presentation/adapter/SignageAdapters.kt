@@ -3,8 +3,10 @@ package tech.coner.trailer.presentation.adapter
 import tech.coner.trailer.Policy
 import tech.coner.trailer.Signage
 import tech.coner.trailer.SignageStyle
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 
-class SignageStringFieldAdapter : StringFieldAdapter<SignageStringFieldAdapter.Input> {
+class SignageStringFieldAdapter :
+    tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<SignageStringFieldAdapter.Input> {
     override operator fun invoke(model: Input): String {
         val groupAbbreviation = model.signage?.classing?.group?.abbreviation ?: ""
         val handicapAbbreviation = model.signage?.classing?.handicap?.abbreviation ?: ""

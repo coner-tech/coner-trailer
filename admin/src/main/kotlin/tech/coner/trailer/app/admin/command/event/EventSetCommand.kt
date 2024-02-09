@@ -22,7 +22,7 @@ import tech.coner.trailer.app.admin.di.use
 import tech.coner.trailer.app.admin.util.clikt.toLocalDate
 import tech.coner.trailer.app.admin.util.clikt.toUuid
 import tech.coner.trailer.io.service.EventService
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.model.EventDetailModel
 import tech.coner.trailer.presentation.text.view.TextView
 
@@ -38,7 +38,7 @@ class EventSetCommand(
 
     override val diContext = diContextDataSession()
     private val service: EventService by instance()
-    private val adapter: Adapter<Event, EventDetailModel> by instance()
+    private val adapter: tech.coner.trailer.presentation.library.adapter.Adapter<Event, EventDetailModel> by instance()
     private val view: TextView<EventDetailModel> by instance()
 
     private val id: UUID by argument().convert { toUuid(it) }

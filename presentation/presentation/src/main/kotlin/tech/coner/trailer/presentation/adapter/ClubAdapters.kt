@@ -2,9 +2,11 @@ package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Club
 import tech.coner.trailer.io.constraint.ClubPersistConstraints
+import tech.coner.trailer.presentation.library.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.ClubModel
 
-class ClubNameStringFieldAdapter : StringFieldAdapter<Club> {
+class ClubNameStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Club> {
     override operator fun invoke(model: Club): String {
         return model.name
     }
@@ -13,12 +15,12 @@ class ClubNameStringFieldAdapter : StringFieldAdapter<Club> {
 class ClubModelAdapter(
     val name: ClubNameStringFieldAdapter,
     private val clubPersistConstraints: ClubPersistConstraints
-) : Adapter<Club, ClubModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<Club, ClubModel> {
     override fun invoke(model: Club): ClubModel {
         return ClubModel(
             original = model,
-            adapter = this,
-            constraints = clubPersistConstraints
+            constraints = clubPersistConstraints,
+            adapter = this
         )
     }
 

@@ -1,7 +1,7 @@
 package tech.coner.trailer.presentation.adapter.eventresults
 
 import tech.coner.trailer.eventresults.IndividualEventResults
-import tech.coner.trailer.presentation.adapter.Adapter
+import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.adapter.EventDateStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.EventNameStringFieldAdapter
 import tech.coner.trailer.presentation.adapter.ParticipantModelAdapter
@@ -31,7 +31,7 @@ class IndividualEventResultsModelAdapter(
 
 class IndividualInnerEventResultsTypesCollectionModelAdapter(
     private val eventResultsTypeAdapter: EventResultsTypeModelAdapter
-) : Adapter<IndividualEventResults, EventResultsTypesCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<IndividualEventResults, EventResultsTypesCollectionModel> {
     override fun invoke(model: IndividualEventResults): EventResultsTypesCollectionModel {
         return EventResultsTypesCollectionModel(
             items = model.innerEventResultsTypes.map { eventResultsTypeAdapter(it) }
@@ -44,7 +44,7 @@ class IndividualEventResultsCollectionModelAdapter(
     private val participantAdapter: ParticipantModelAdapter,
     private val eventResultsTypeAdapter: EventResultsTypeModelAdapter,
     private val participantResultAdapter: ParticipantResultModelAdapter
-) : Adapter<IndividualEventResults, IndividualEventResultsCollectionModel> {
+) : tech.coner.trailer.presentation.library.adapter.Adapter<IndividualEventResults, IndividualEventResultsCollectionModel> {
     override fun invoke(model: IndividualEventResults): IndividualEventResultsCollectionModel {
         return IndividualEventResultsCollectionModel(
             items = model.resultsByIndividual

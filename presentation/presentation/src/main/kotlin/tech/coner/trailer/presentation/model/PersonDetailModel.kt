@@ -3,14 +3,14 @@ package tech.coner.trailer.presentation.model
 import tech.coner.trailer.Person
 import tech.coner.trailer.io.constraint.PersonPersistConstraints
 import tech.coner.trailer.presentation.adapter.PersonDetailModelAdapter
-import tech.coner.trailer.presentation.model.util.ItemModel
+import tech.coner.trailer.presentation.library.model.BaseItemModel
 import java.util.*
 
 class PersonDetailModel(
     override val original: Person,
-    override val adapter: PersonDetailModelAdapter,
-    override val constraints: PersonPersistConstraints
-) : ItemModel<Person, PersonPersistConstraints, PersonDetailModelAdapter>() {
+    override val constraints: PersonPersistConstraints,
+    private val adapter: PersonDetailModelAdapter
+) : BaseItemModel<Person, PersonPersistConstraints>() {
 
     val id
         get() = adapter.id(itemValue)
