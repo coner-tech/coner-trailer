@@ -3,6 +3,7 @@ package tech.coner.trailer.io.constraint
 import tech.coner.trailer.Season
 import tech.coner.trailer.datasource.snoozle.SeasonResource
 import tech.coner.trailer.io.mapper.SeasonMapper
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.util.*
 
 class SeasonPersistConstraints(

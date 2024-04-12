@@ -1,4 +1,4 @@
-package tech.coner.trailer.io.constraint
+package tech.coner.trailer.toolkit.konstraints
 
 abstract class Constraint<T> {
 

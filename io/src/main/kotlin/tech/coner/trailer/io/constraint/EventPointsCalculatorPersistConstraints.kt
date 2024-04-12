@@ -3,6 +3,7 @@ package tech.coner.trailer.io.constraint
 import java.util.UUID
 import tech.coner.trailer.datasource.snoozle.EventPointsCalculatorResource
 import tech.coner.trailer.seasonpoints.EventPointsCalculator
+import tech.coner.trailer.toolkit.konstraints.Constraint
 
 class EventPointsCalculatorPersistConstraints(
         private val resource: EventPointsCalculatorResource,

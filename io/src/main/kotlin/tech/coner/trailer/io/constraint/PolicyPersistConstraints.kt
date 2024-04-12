@@ -4,8 +4,8 @@ import tech.coner.trailer.Event
 import tech.coner.trailer.Policy
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.PolicyResource
-import tech.coner.trailer.datasource.snoozle.entity.EventEntity
 import tech.coner.trailer.io.mapper.EventMapper
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.util.*
 
 class PolicyPersistConstraints(

@@ -3,6 +3,7 @@ package tech.coner.trailer.io.constraint
 import tech.coner.trailer.datasource.snoozle.SeasonPointsCalculatorConfigurationResource
 import tech.coner.trailer.io.mapper.SeasonPointsCalculatorConfigurationMapper
 import tech.coner.trailer.seasonpoints.SeasonPointsCalculatorConfiguration
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.util.*
 
 class SeasonPointsCalculatorConfigurationConstraints(

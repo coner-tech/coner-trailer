@@ -3,6 +3,7 @@ package tech.coner.trailer.io.constraint
 import tech.coner.trailer.Event
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.io.DatabaseConfiguration
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.exists

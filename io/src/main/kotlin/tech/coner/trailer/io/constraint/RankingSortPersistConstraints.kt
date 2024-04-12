@@ -3,6 +3,7 @@ package tech.coner.trailer.io.constraint
 import tech.coner.trailer.datasource.snoozle.RankingSortResource
 import tech.coner.trailer.io.mapper.RankingSortMapper
 import tech.coner.trailer.seasonpoints.RankingSort
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.util.*
 
 class RankingSortPersistConstraints(

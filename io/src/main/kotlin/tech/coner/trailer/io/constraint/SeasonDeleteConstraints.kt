@@ -1,6 +1,7 @@
 package tech.coner.trailer.io.constraint
 
 import tech.coner.trailer.Season
+import tech.coner.trailer.toolkit.konstraints.Constraint
 
 class SeasonDeleteConstraints : Constraint<Season>() {
 

@@ -1,6 +1,7 @@
 package tech.coner.trailer.io.constraint
 
 import tech.coner.trailer.Event
+import tech.coner.trailer.toolkit.konstraints.Constraint
 
 class EventDeleteConstraints : Constraint<Event>() {
 

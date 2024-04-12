@@ -1,6 +1,7 @@
 package tech.coner.trailer.io.constraint
 
 import tech.coner.trailer.datasource.crispyfish.CrispyFishEventMappingContext
+import tech.coner.trailer.toolkit.konstraints.Constraint
 import java.nio.file.LinkOption
 import java.nio.file.Path
 import kotlin.io.path.extension

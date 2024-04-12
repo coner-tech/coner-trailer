@@ -1,5 +1,7 @@
 package tech.coner.trailer.io.constraint
 
+import tech.coner.trailer.toolkit.konstraints.Constraint
+
 class PortConstraints : Constraint<Int>() {
 
     override fun assess(candidate: Int) {

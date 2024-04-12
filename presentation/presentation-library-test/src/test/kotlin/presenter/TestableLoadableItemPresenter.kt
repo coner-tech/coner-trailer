@@ -1,7 +1,6 @@
 package presenter
 
-import tech.coner.trailer.io.constraint.CompositeConstraint
-import tech.coner.trailer.io.constraint.Constraint
+import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 import tech.coner.trailer.presentation.library.adapter.Adapter
 import tech.coner.trailer.presentation.library.adapter.LoadableItemAdapter
 import tech.coner.trailer.presentation.library.model.BaseItemModel

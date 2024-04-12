@@ -1,6 +1,6 @@
 package tech.coner.trailer.presentation.constraint
 
-import tech.coner.trailer.io.constraint.CompositeConstraint
+import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 import tech.coner.trailer.presentation.Strings
 import tech.coner.trailer.presentation.state.EventRunLatestState
 

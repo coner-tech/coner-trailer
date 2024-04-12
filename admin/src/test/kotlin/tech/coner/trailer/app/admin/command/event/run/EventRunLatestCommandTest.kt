@@ -22,7 +22,7 @@ import tech.coner.trailer.app.admin.clikt.statusCode
 import tech.coner.trailer.app.admin.clikt.stderr
 import tech.coner.trailer.app.admin.clikt.stdout
 import tech.coner.trailer.app.admin.command.BaseDataSessionCommandTest
-import tech.coner.trailer.io.constraint.ConstraintViolationException
+import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
 import tech.coner.trailer.presentation.Strings
 import tech.coner.trailer.presentation.model.EventRunLatestModel
 import tech.coner.trailer.presentation.model.RunCollectionModel

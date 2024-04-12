@@ -12,6 +12,7 @@ import tech.coner.trailer.TestEvents
 import tech.coner.trailer.datasource.snoozle.EventResource
 import tech.coner.trailer.datasource.snoozle.entity.EventEntity
 import tech.coner.trailer.io.mapper.EventMapper
+import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
 import java.util.*
 import java.util.stream.Stream
 

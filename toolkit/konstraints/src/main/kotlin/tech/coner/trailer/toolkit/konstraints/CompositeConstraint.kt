@@ -1,4 +1,4 @@
-package tech.coner.trailer.io.constraint
+package tech.coner.trailer.toolkit.konstraints
 
 import kotlin.reflect.KProperty1
 
@@ -15,7 +15,7 @@ abstract class CompositeConstraint<T> : Constraint<T>() {
             .toMap()
     }
 
-    fun propertyConstraint(
+    protected fun propertyConstraint(
         property: KProperty1<T, *>,
         assessFn: (T) -> Boolean,
         violationMessageFn: () -> String
@@ -36,7 +36,7 @@ abstract class CompositeConstraint<T> : Constraint<T>() {
     private val _objectConstraints = mutableListOf<Constraint<T>>()
     val objectConstraints by lazy { _objectConstraints.toList() }
 
-    fun objectConstraint(
+    protected fun objectConstraint(
         assessFn: (T) -> Boolean,
         violationMessageFn: () -> String
     ): Constraint<T> {

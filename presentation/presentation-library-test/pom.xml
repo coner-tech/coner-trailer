@@ -30,9 +30,24 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
+            <artifactId>presentation-library-testsupport</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.coner.trailer</groupId>
             <artifactId>io</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
         </dependency>
     </dependencies>
 
