@@ -27,7 +27,7 @@ class LoadableItemPresenterTest {
 
         val expected = TestableLoadableItemPresenter.Model(
             original = TestableLoadableItemPresenter.Item(0),
-            
+            constraints = TestableLoadableItemPresenter.ItemConstraint(true)
         )
         assertThat(presenter).itemModel().isEqualTo(expected)
     }

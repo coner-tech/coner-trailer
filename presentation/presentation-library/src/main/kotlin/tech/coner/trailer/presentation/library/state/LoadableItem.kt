@@ -1,8 +1,6 @@
 package tech.coner.trailer.presentation.library.state
 
-import tech.coner.trailer.presentation.library.model.Model
-
-sealed class LoadableItem<I> : State, Model {
+sealed class LoadableItem<I> {
 
     class Empty<I> : LoadableItem<I>() {
         override fun equals(other: Any?): Boolean {
