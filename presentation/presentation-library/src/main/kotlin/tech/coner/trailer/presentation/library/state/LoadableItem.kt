@@ -1,8 +1,11 @@
 package tech.coner.trailer.presentation.library.state
 
-sealed class LoadableItem<I> {
+sealed class LoadableItem<ITEM> {
 
-    class Empty<I> : LoadableItem<I>() {
+    /**
+     * The initial state of the presenter
+     */
+    class Empty<ITEM> : LoadableItem<ITEM>() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -17,16 +20,18 @@ sealed class LoadableItem<I> {
     /**
      * Presenter is loading an item.
      *
-     * @property priorItem the item that was previously loaded, if any.
+     * @property prior the item that was previously loaded, if any.
      */
-    data class Loading<I>(val priorItem: I? = null) : LoadableItem<I>()
+    data class Loading<ITEM>(
+        val prior: ITEM? = null
+    ) : LoadableItem<ITEM>()
 
     /**
      * Presenter has loaded the item.
      *
      * @property item the item resulting from the load operation.
      */
-    data class Loaded<I>(val item: I) : LoadableItem<I>()
+    data class Loaded<ITEM>(val item: ITEM) : LoadableItem<ITEM>()
 
     /**
      * Presenter failed to load the item.
@@ -34,7 +39,10 @@ sealed class LoadableItem<I> {
      * @property priorItem the item that was loaded previously, prior to the load attempt which failed, if any
      * @property cause the cause of the failure, if known
      */
-    data class LoadFailed<I>(val priorItem: I?, val cause: Throwable?) : LoadableItem<I>()
+    data class LoadFailed<I>(
+        val priorItem: I?,
+        val cause: Throwable?
+    ) : LoadableItem<I>()
 
 }
 

@@ -1,21 +1,21 @@
 package tech.coner.trailer.presentation.library.presenter
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import tech.coner.trailer.presentation.library.model.ItemModel
+import kotlinx.coroutines.flow.map
 import tech.coner.trailer.presentation.library.state.LoadableItem
 import tech.coner.trailer.presentation.library.state.LoadableItemState
 
-abstract class LoadableItemPresenter<S, I, IM>
-        where S : LoadableItemState<I>, IM : ItemModel<I> {
+abstract class LoadableItemPresenter<ARGUMENT, STATE, ITEM>
+        where STATE : LoadableItemState<ITEM> {
 
-    protected abstract val initialState: S
-    protected abstract val adapter: tech.coner.trailer.presentation.library.adapter.LoadableItemAdapter<I, IM>
+    protected abstract val argument: ARGUMENT
+    protected abstract val initialState: STATE
 
-    private val _itemModelFlow: MutableStateFlow<LoadableItem<IM>?> by lazy { MutableStateFlow(adapter(initialState.loadable)) }
-    val itemModelFlow: StateFlow<LoadableItem<IM>?> by lazy { _itemModelFlow.asStateFlow() }
-    val itemModel: LoadableItem<IM>?
-        get() = itemModelFlow.value
+    private val _stateFlow: MutableStateFlow<STATE> by lazy { MutableStateFlow(initialState) }
+    val stateFlow: StateFlow<STATE> by lazy { _stateFlow.asStateFlow() }
 
+    private val loadableItemFlow: Flow<LoadableItem<ITEM>> by lazy { stateFlow.map { it.loadable } }
 }
