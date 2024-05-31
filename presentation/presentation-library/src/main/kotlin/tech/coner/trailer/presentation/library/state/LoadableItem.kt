@@ -19,28 +19,24 @@ sealed class LoadableItem<ITEM> {
 
     /**
      * Presenter is loading an item.
-     *
-     * @property prior the item that was previously loaded, if any.
      */
-    data class Loading<ITEM>(
-        val prior: ITEM? = null
-    ) : LoadableItem<ITEM>()
+    class Loading<ITEM> : LoadableItem<ITEM>()
 
     /**
      * Presenter has loaded the item.
      *
      * @property item the item resulting from the load operation.
      */
-    data class Loaded<ITEM>(val item: ITEM) : LoadableItem<ITEM>()
+    data class Loaded<ITEM>(
+        val item: ITEM
+    ) : LoadableItem<ITEM>()
 
     /**
      * Presenter failed to load the item.
      *
-     * @property priorItem the item that was loaded previously, prior to the load attempt which failed, if any
      * @property cause the cause of the failure, if known
      */
     data class LoadFailed<I>(
-        val priorItem: I?,
         val cause: Throwable?
     ) : LoadableItem<I>()
 

@@ -5,19 +5,36 @@ import tech.coner.trailer.presentation.library.model.LoadableModel
 import tech.coner.trailer.presentation.library.state.LoadableItem
 import tech.coner.trailer.presentation.library.state.LoadableItemState
 
-class LoadableItemAdapter<ITEM, STATE : LoadableItemState<ITEM>, ITEM_MODEL : ItemModel<ITEM>, ARGUMENT_MODEL>(
-    private val itemAdapter: Adapter<ITEM, ITEM_MODEL>
-) : Adapter<STATE, LoadableModel<IM>> {
-    override fun invoke(model: STATE): LoadableItem<IM> {
-        val loadable = model.loadable
-        return when (model.loadable) {
-            is LoadableItem.Empty<I> -> LoadableModel.Empty
-            is LoadableItem.Loading<I> -> LoadableItem.Loading(prior = loadable.priorItem?.let { itemAdapter(it) })
-            is LoadableItem.Loaded<I> -> LoadableItem.Loaded(item = itemAdapter(loadable.item))
-            is LoadableItem.LoadFailed<I> -> LoadableItem.LoadFailed(
-                priorItem = model.priorItem?.let { itemAdapter(it) },
-                cause = model.cause
+abstract class LoadableItemAdapter<ARGUMENT, STATE, ITEM, ARGUMENT_MODEL, ITEM_MODEL>
+        where STATE : LoadableItemState<ITEM>,
+              ITEM_MODEL : ItemModel<ITEM> {
+
+    protected abstract val argumentModelAdapter: ((ARGUMENT) -> ARGUMENT_MODEL)?
+    protected abstract val partialItemAdapter: ((ARGUMENT, STATE) -> ITEM_MODEL)?
+    protected abstract val itemAdapter: (ITEM) -> ITEM_MODEL
+
+    operator fun invoke(argument: ARGUMENT, state: STATE): LoadableModel<ARGUMENT_MODEL, ITEM_MODEL> {
+        val argumentModel: ARGUMENT_MODEL? = argumentModelAdapter?.invoke(argument)
+        return when (val loadable = state.loadable) {
+            is LoadableItem.Empty<ITEM> -> LoadableModel.Empty(
+                argument = argumentModel
+            )
+
+            is LoadableItem.Loading<ITEM> -> LoadableModel.Loading(
+                argument = argumentModel,
+                partial = partialItemAdapter?.invoke(argument, state),
+            )
+
+            is LoadableItem.Loaded<ITEM> -> LoadableModel.Loaded(
+                argument = argumentModel,
+                item = itemAdapter(loadable.item)
+            )
+
+            is LoadableItem.LoadFailed<ITEM> -> LoadableModel.LoadFailed(
+                argument = argumentModel,
+                cause = loadable.cause
             )
         }
     }
 }
+
