@@ -2,11 +2,9 @@ package tech.coner.trailer.presentation.library.presenter
 
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -14,7 +12,6 @@ import kotlinx.coroutines.withTimeout
 import tech.coner.trailer.presentation.library.adapter.LoadableItemAdapter
 import tech.coner.trailer.presentation.library.model.ItemModel
 import tech.coner.trailer.presentation.library.model.LoadableModel
-import tech.coner.trailer.presentation.library.state.LoadableItem
 import tech.coner.trailer.presentation.library.state.LoadableItemState
 
 abstract class LoadableItemPresenter<
@@ -26,31 +23,28 @@ abstract class LoadableItemPresenter<
     : CoroutineScope
         where ITEM_MODEL : ItemModel<ITEM> {
 
-    protected abstract val argument: ARGUMENT
-
-    protected val initialState = LoadableItemState<ITEM>(LoadableItem.Empty())
-
     protected abstract val adapter: LoadableItemAdapter<ARGUMENT, ITEM, ARGUMENT_MODEL, ITEM_MODEL>
 
-    private val _stateMutex = Mutex()
-    private val _stateFlow: MutableStateFlow<LoadableItemState<ITEM>> by lazy { MutableStateFlow(initialState) }
-    val stateFlow: StateFlow<LoadableItemState<ITEM>> by lazy { _stateFlow.asStateFlow() }
-
-    val modelFlow: Flow<LoadableModel<ARGUMENT_MODEL, ITEM_MODEL>> by lazy {
-        stateFlow
-            .map { state -> adapter(argument, state) }
+    protected abstract val argument: ARGUMENT?
+    val argumentModel: ARGUMENT_MODEL? by lazy {
+        argument?.let { adapter.argumentToModelAdapter?.invoke(it) }
     }
 
+    private val initialState = LoadableItemState<ITEM, ITEM_MODEL>(LoadableModel.Empty())
+    private val _stateMutex = Mutex()
+    private val _stateFlow: MutableStateFlow<LoadableItemState<ITEM, ITEM_MODEL>> by lazy { MutableStateFlow(initialState) }
+    val stateFlow: StateFlow<LoadableItemState<ITEM, ITEM_MODEL>> by lazy { _stateFlow.asStateFlow() }
+
     suspend fun load() {
-        update { old -> old.copy(LoadableItem.Loading()) }
+        update { old -> old.copy(LoadableModel.Loading()) }
         performLoad()
-            .onSuccess { update { old -> old.copy(LoadableItem.Loaded(it)) } }
-            .onFailure { update { old -> old.copy(LoadableItem.LoadFailed(it)) } }
+            .onSuccess { loaded -> update { old -> old.copy(LoadableModel.Loaded(adapter.itemToModelAdapter(loaded))) } }
+            .onFailure { failed -> update { old -> old.copy(LoadableModel.LoadFailed(failed)) } }
     }
 
     protected abstract suspend fun performLoad(): Result<ITEM>
 
-    protected suspend fun update(reduceFn: (old: LoadableItemState<ITEM>) -> LoadableItemState<ITEM>) {
+    protected suspend fun update(reduceFn: (old: LoadableItemState<ITEM, ITEM_MODEL>) -> LoadableItemState<ITEM, ITEM_MODEL>) {
         _stateMutex.withLock {
             withTimeout(10.milliseconds) {
                 _stateFlow.update(reduceFn)
@@ -58,15 +52,10 @@ abstract class LoadableItemPresenter<
         }
     }
 
-    suspend fun commit(): Result<ITEM_MODEL> {
-        _stateMutex.withLock {
-            withTimeout(10.milliseconds) {
-                _stateFlow.update { state ->
-                    when (val loadable = state.loadable) {
-
-                    }
-                }
-            }
-        }
-    }
+//    suspend fun commit(): Result<ITEM_MODEL> {
+//        _stateMutex.withLock {
+//            withTimeout(10.milliseconds) {
+//            }
+//        }
+//    }
 }

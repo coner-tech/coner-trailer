@@ -1,5 +1,8 @@
 package tech.coner.trailer.presentation.library.state
 
-data class LoadableItemState<I>(
-    val loadable: LoadableItem<I>
+import tech.coner.trailer.presentation.library.model.ItemModel
+import tech.coner.trailer.presentation.library.model.LoadableModel
+
+data class LoadableItemState<ITEM, ITEM_MODEL : ItemModel<ITEM>>(
+    val loadable: LoadableModel<ITEM, ITEM_MODEL>
 ) : State
