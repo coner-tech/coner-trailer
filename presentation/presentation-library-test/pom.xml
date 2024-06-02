@@ -21,22 +21,16 @@
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
         </dependency>
-
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>presentation-library</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>presentation-library-testsupport</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>tech.coner.trailer</groupId>
-            <artifactId>io</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
@@ -52,6 +46,10 @@
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-test-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>app.cash.turbine</groupId>
+            <artifactId>turbine-jvm</artifactId>
         </dependency>
     </dependencies>
 

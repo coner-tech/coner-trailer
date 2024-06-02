@@ -1,5 +1,5 @@
 package tech.coner.trailer.presentation.library.state
 
-interface LoadableItemState<I> : State {
+data class LoadableItemState<I>(
     val loadable: LoadableItem<I>
-}
+) : State

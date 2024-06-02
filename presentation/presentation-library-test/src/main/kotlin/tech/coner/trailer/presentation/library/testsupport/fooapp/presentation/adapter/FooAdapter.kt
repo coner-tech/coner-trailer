@@ -3,11 +3,9 @@ package tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.
 import tech.coner.trailer.presentation.library.adapter.LoadableItemAdapter
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.Foo
 import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model.FooModel
-import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.state.FooState
 
 class FooAdapter : LoadableItemAdapter<
         Foo.Id,
-        FooState,
         Foo,
         Unit,
         FooModel
