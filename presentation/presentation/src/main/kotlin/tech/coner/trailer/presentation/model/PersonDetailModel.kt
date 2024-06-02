@@ -15,30 +15,30 @@ class PersonDetailModel(
     val id
         get() = adapter.id(itemValue)
     fun setId(id: UUID) {
-        updateItem { it.copy(id = id) }
+        update { it.copy(id = id) }
     }
 
     val firstName
         get() = adapter.firstName(itemValue)
     fun setFirstName(firstName: String) {
-        updateItem { it.copy(firstName = firstName) }
+        update { it.copy(firstName = firstName) }
     }
 
     val lastName
         get() = adapter.lastName(itemValue)
     fun setLastName(lastName: String) {
-        updateItem { it.copy(lastName = lastName) }
+        update { it.copy(lastName = lastName) }
     }
 
     val clubMemberId
         get() = adapter.clubMemberId(itemValue)
     fun setClubMemberId(clubMemberId: String) {
-        updateItem { it.copy(clubMemberId = clubMemberId) }
+        update { it.copy(clubMemberId = clubMemberId) }
     }
 
     val motorsportRegId
         get() = adapter.motorsportRegMemberId(itemValue)
     fun setMotorsportRegId(motorsportRegId: String) {
-        updateItem { it.copy(motorsportReg = Person.MotorsportRegMetadata(motorsportRegId)) }
+        update { it.copy(motorsportReg = Person.MotorsportRegMetadata(motorsportRegId)) }
     }
 }

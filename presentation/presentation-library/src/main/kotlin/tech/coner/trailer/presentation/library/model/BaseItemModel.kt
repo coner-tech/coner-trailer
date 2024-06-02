@@ -15,10 +15,10 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     override var itemValue: I
         get() = validatedItemFlow.value.value
         set(value) {
-            updateItem { value }
+            update { value }
         }
 
-    override fun updateItem(fn: (I) -> I) {
+    override fun update(fn: (I) -> I) {
         validatedItemFlow.update { old ->
             val newValue = fn(old.value)
             Validated(

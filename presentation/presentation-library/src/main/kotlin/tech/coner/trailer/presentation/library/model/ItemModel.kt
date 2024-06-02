@@ -1,9 +1,8 @@
 package tech.coner.trailer.presentation.library.model
 
+import kotlin.reflect.KProperty1
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import tech.coner.trailer.presentation.library.adapter.Adapter
-import kotlin.reflect.KProperty1
 
 interface ItemModel<I> : Model {
     val original: I
@@ -13,6 +12,6 @@ interface ItemModel<I> : Model {
     val isValid: Boolean
     val isDirty: Boolean
 
-    fun updateItem(fn: (I) -> I)
+    fun update(fn: (I) -> I)
     fun <P> validatedPropertyFlow(property: KProperty1<I, *>, fn: (I) -> P): Flow<Validated<P>>
 }

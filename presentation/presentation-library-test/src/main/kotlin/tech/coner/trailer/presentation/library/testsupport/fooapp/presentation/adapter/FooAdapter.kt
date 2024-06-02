@@ -11,7 +11,7 @@ class FooAdapter : LoadableItemAdapter<
         FooModel
         >() {
     override val argumentToModelAdapter = null
-    override val itemToModelAdapter: (Foo) -> FooModel = ::FooModel
+    override val itemToModelAdapter: (Foo) -> FooModel = { FooModel(it, this) }
     override val modelToItemAdapter: (FooModel) -> Foo = {
         Foo(
             id = it.original.id,
@@ -19,8 +19,8 @@ class FooAdapter : LoadableItemAdapter<
         )
     }
 
-    val modelNamePropertyAdapter: (Foo) -> String
-        get() { TODO() }
+    val modelNamePropertyAdapter: (String) -> String = { it.capitalizeFirstChar() }
+    val entityNamePropertyAdapter: (String) -> String = { it.lowercase() }
 
     private fun String.capitalizeFirstChar(): String { // TODO: adapter
         return when (length) {

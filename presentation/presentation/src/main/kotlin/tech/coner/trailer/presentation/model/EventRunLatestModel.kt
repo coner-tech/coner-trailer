@@ -13,7 +13,7 @@ class EventRunLatestModel(
 
     var count
         get() = itemValue.count
-        set(value) { updateItem { it.copy(count = value) } }
+        set(value) { update { it.copy(count = value) } }
 
     val latestRuns: RunCollectionModel
         get() = itemValue

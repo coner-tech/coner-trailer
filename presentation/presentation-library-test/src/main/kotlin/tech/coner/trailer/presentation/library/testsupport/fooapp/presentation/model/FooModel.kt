@@ -5,16 +5,18 @@ import kotlinx.coroutines.flow.map
 import tech.coner.trailer.presentation.library.model.BaseItemModel
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.constraint.FooConstraint
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.Foo
+import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.adapter.FooAdapter
 
-class FooModel(override val original: Foo) : BaseItemModel<Foo, FooConstraint>() {
+class FooModel(
+    override val original: Foo,
+    private val adapter: FooAdapter,
+) : BaseItemModel<Foo, FooConstraint>() {
     override val constraints = FooConstraint()
 
-    val nameFlow: Flow<String> = itemValueFlow.map { /* TODO: adapter */ nameFn(it) }
+    val nameFlow: Flow<String> = itemValueFlow.map { adapter.modelNamePropertyAdapter(it.name) }
     var name: String
-        get() = /* TODO: adapter */ nameFn(itemValue)
-        set(value) = updateItem { /* TODO: adapter */ it.copy(name = value.lowercase()) }
-    private val nameFn: (Foo) -> String = { /* TODO: adapter */ name.capitalizeFirstChar() }
-
+        get() = adapter.modelNamePropertyAdapter(itemValue.name)
+        set(value) = update { it.copy(name = adapter.entityNamePropertyAdapter(value)) }
 
 }
 

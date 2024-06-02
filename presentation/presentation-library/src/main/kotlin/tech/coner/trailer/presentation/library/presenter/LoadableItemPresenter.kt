@@ -5,6 +5,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -43,6 +45,17 @@ abstract class LoadableItemPresenter<
     }
 
     protected abstract suspend fun performLoad(): Result<ITEM>
+
+    suspend fun awaitLoadedModel(): LoadableModel<ITEM, ITEM_MODEL> {
+        return stateFlow
+            .map { it.loadable }
+            .first {
+                when (it) {
+                    is LoadableModel.Loaded, is LoadableModel.LoadFailed -> true
+                    else -> false
+                }
+            }
+    }
 
     protected suspend fun update(reduceFn: (old: LoadableItemState<ITEM, ITEM_MODEL>) -> LoadableItemState<ITEM, ITEM_MODEL>) {
         _stateMutex.withLock {
