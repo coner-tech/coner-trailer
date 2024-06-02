@@ -14,9 +14,3 @@ fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel.Loaded<ITEM, ITEM_
 
 fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel<ITEM, ITEM_MODEL>>.isLoadFailed() = isInstanceOf<LoadableModel.LoadFailed<ITEM, ITEM_MODEL>>()
 fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel.LoadFailed<ITEM, ITEM_MODEL>>.cause() = prop(LoadableModel.LoadFailed<ITEM, ITEM_MODEL>::cause)
-
-
-
-
-
-

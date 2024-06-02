@@ -1,11 +1,11 @@
 package tech.coner.trailer.presentation.library.model
 
+import kotlin.reflect.KProperty1
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
-import kotlin.reflect.KProperty1
 
 abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     abstract val constraints: C

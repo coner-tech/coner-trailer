@@ -9,15 +9,13 @@ import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.
 class FooModel(override val original: Foo) : BaseItemModel<Foo, FooConstraint>() {
     override val constraints = FooConstraint()
 
-    val nameFlow: Flow<String> = itemValueFlow.map {
-        it.name.capitalizeFirstChar()
-    }
+    val nameFlow: Flow<String> = itemValueFlow.map { /* TODO: adapter */ nameFn(it) }
+    var name: String
+        get() = /* TODO: adapter */ nameFn(itemValue)
+        set(value) = updateItem { /* TODO: adapter */ it.copy(name = value.lowercase()) }
+    private val nameFn: (Foo) -> String = { /* TODO: adapter */ name.capitalizeFirstChar() }
 
-    fun setName(name: String) {
-        updateItem { it.copy(name = name) }
-    }
-
-    private fun String.capitalizeFirstChar(): String {
+    private fun String.capitalizeFirstChar(): String { // TODO: adapter
         return when (length) {
             0 -> this
             1 -> uppercase()
