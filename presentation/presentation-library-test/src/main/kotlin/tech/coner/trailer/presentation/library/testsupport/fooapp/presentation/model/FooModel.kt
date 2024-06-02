@@ -15,12 +15,6 @@ class FooModel(override val original: Foo) : BaseItemModel<Foo, FooConstraint>()
         set(value) = updateItem { /* TODO: adapter */ it.copy(name = value.lowercase()) }
     private val nameFn: (Foo) -> String = { /* TODO: adapter */ name.capitalizeFirstChar() }
 
-    private fun String.capitalizeFirstChar(): String { // TODO: adapter
-        return when (length) {
-            0 -> this
-            1 -> uppercase()
-            else -> let { "${it[0].uppercaseChar()}${it.substring(1)}" }
-        }
-    }
+
 }
 

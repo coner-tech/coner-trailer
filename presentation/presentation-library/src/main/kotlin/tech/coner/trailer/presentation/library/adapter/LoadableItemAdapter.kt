@@ -7,5 +7,6 @@ abstract class LoadableItemAdapter<ARGUMENT, ITEM, ARGUMENT_MODEL, ITEM_MODEL>
 
     abstract val argumentToModelAdapter: ((ARGUMENT) -> ARGUMENT_MODEL)?
     abstract val itemToModelAdapter: (ITEM) -> ITEM_MODEL
+    abstract val modelToItemAdapter: (ITEM_MODEL) -> ITEM
 }
 
