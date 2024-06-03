@@ -47,7 +47,7 @@ sealed class LoadableModel<ITEM, ITEM_MODEL : ItemModel<ITEM>>
      * @property cause the cause of the failure, if known
      */
     data class LoadFailed<ITEM, ITEM_MODEL : ItemModel<ITEM>>(
-        val cause: Throwable?
+        val cause: Throwable
     ) : LoadableModel<ITEM, ITEM_MODEL>()
 
 }

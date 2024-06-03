@@ -47,5 +47,5 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
         get() = validatedItemFlow.value.isValid
 
     override val isDirty
-        get() = original == itemValue
+        get() = original != itemValue
 }

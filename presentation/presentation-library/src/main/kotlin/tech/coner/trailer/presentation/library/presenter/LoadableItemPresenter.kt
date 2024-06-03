@@ -2,12 +2,7 @@ package tech.coner.trailer.presentation.library.presenter
 
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
@@ -46,7 +41,7 @@ abstract class LoadableItemPresenter<
 
     protected abstract suspend fun performLoad(): Result<ITEM>
 
-    suspend fun awaitLoadedModel(): LoadableModel<ITEM, ITEM_MODEL> {
+    suspend fun awaitModelLoadedOrFailed(): LoadableModel<ITEM, ITEM_MODEL> {
         return stateFlow
             .map { it.loadable }
             .first {
@@ -55,6 +50,18 @@ abstract class LoadableItemPresenter<
                     else -> false
                 }
             }
+    }
+
+    suspend fun awaitModelLoadedOrThrow(): LoadableModel.Loaded<ITEM, ITEM_MODEL> {
+        return stateFlow
+            .map { it.loadable }
+            .first {
+                when (it) {
+                    is LoadableModel.Loaded -> true
+                    is LoadableModel.LoadFailed -> throw it.cause
+                    else -> false
+                }
+            } as LoadableModel.Loaded<ITEM, ITEM_MODEL>
     }
 
     protected suspend fun update(reduceFn: (old: LoadableItemState<ITEM, ITEM_MODEL>) -> LoadableItemState<ITEM, ITEM_MODEL>) {

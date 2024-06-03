@@ -13,6 +13,34 @@ class FooConstraint : CompositeConstraint<Foo>() {
                 else -> false
             }
         },
-        violationMessageFn = { "Value is out of range" }
+        violationMessageFn = { "ID value must be in 0 to 4" }
+    )
+
+
+    val nameIsLettersOnly = propertyConstraint(
+        property = Foo::name,
+        assessFn = { foo -> foo.name.all { it.isLetter() } },
+        violationMessageFn = { "Name must be only letters" }
+    )
+
+    val nameMustBeThreeCharacters = propertyConstraint(
+        property = Foo::name,
+        assessFn = { foo -> foo.name.length == 3 },
+        violationMessageFn = { "Name must be three letters long" }
+    )
+
+    private val vowels = "aeiouy"
+    private val consonants = "bcdfghjklmnpqrstvwxz"
+    private val namesOtherThanFooPattern = Regex("[$consonants][$vowels][$consonants]")
+
+    val namesOtherThanFooMustFollowPatternOfConsonantVowelConsonant = propertyConstraint(
+        property = Foo::name,
+        assessFn = { foo ->
+            when (foo.name) {
+                "foo" -> true
+                else -> namesOtherThanFooPattern.matches(foo.name)
+            }
+        },
+        violationMessageFn = { "Names other than foo must start with a consonant, followed by a vowel, and end with a consonant" }
     )
 }
