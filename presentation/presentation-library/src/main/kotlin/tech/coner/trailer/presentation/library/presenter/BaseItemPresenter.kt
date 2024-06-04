@@ -71,14 +71,14 @@ abstract class BaseItemPresenter<
             val itemModel = result.getOrNull()
             if (itemModel != null) {
                 // itemModel can be validated
-                if (itemModel.isValid) {
+                if (itemModel.isPendingItemValid) {
                     // itemModel is valid
                     Result.success(adapter(itemModel.pendingItem))
                         .also { commitReturn = it }
                 } else {
                     // itemModel is invalid
                     commitReturn =  itemModel.validate()
-                        .let { Result.failure(ModelValidationException(it)) }
+                        .let { Result.failure(ModelValidationException(/* this will cause breakage but this thing is deprecated */emptyList() /*it*/)) }
                     result // will retain the same result/model unchanged
                 }
             } else {

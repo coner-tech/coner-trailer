@@ -3,28 +3,16 @@ package tech.coner.trailer.presentation.library.presenter
 import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
-import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
-import assertk.assertions.isTrue
-import assertk.assertions.length
+import assertk.assertions.*
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import tech.coner.trailer.presentation.library.model.cause
-import tech.coner.trailer.presentation.library.model.isDirty
-import tech.coner.trailer.presentation.library.model.isEmpty
-import tech.coner.trailer.presentation.library.model.isLoadFailed
-import tech.coner.trailer.presentation.library.model.isLoaded
-import tech.coner.trailer.presentation.library.model.isLoading
-import tech.coner.trailer.presentation.library.model.isValid
-import tech.coner.trailer.presentation.library.model.item
-import tech.coner.trailer.presentation.library.model.partial
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
+import tech.coner.trailer.presentation.library.model.*
 import tech.coner.trailer.presentation.library.state.loadable
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.constraint.FooConstraint
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.FOO_ID_FOO
@@ -111,7 +99,9 @@ class FooDetailPresenterTest {
         val presenter = createPresenter(id)
         launch { presenter.load() }
         val model = presenter.awaitModelLoadedOrThrow()
+
         model.item.name = "bax"
+        model.item.validate()
 
         assertThat(model.item).all {
             name().isEqualTo("Bax")
@@ -128,10 +118,32 @@ class FooDetailPresenterTest {
         val model = presenter.awaitModelLoadedOrThrow()
 
         model.item.name = "boo"
+        model.item.validate()
 
         assertThat(model.item).all {
             name().isEqualTo("Boo")
             isValid().isFalse()
+            isDirty().isTrue()
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["Bar", "Baz", "Bat", "Cat", "Dat", "Far", "Ber", "Fir", "Nor", "Dur", "Xyr"])
+    fun whenItsModelNameChangedValidItsItemModelShouldValidateValid(newName: String) = runTest {
+        val id = Foo.Id(FOO_ID_FOO)
+        val presenter = createPresenter(id)
+        launch { presenter.load() }
+        val model = presenter.awaitModelLoadedOrThrow()
+
+        with (model.item) {
+            name = newName
+            validate()
+        }
+
+        assertThat(model.item).all {
+            name().isEqualTo(newName)
+            isValid().isTrue()
+            violations().isEmpty()
             isDirty().isTrue()
         }
     }

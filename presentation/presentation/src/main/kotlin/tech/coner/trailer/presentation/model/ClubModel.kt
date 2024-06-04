@@ -14,5 +14,5 @@ class ClubModel(
     val nameValidated = validatedPropertyFlow(Club::name) { adapter.name(it) }
     var name
         get() = adapter.name(pendingItem)
-        set(value) = update { it.copy(name = value) }
+        set(value) = mutatePendingItem { it.copy(name = value) }
 }

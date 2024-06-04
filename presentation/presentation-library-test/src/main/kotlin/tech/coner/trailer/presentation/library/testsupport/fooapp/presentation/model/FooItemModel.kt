@@ -1,6 +1,6 @@
 package tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model
 
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.runBlocking
 import tech.coner.trailer.presentation.library.model.BaseItemModel
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.constraint.FooConstraint
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.Foo
@@ -9,13 +9,12 @@ import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.a
 class FooItemModel(
     override val initialItem: Foo,
     private val adapter: FooAdapter,
-    override val coroutineContext: CoroutineContext
 ) : BaseItemModel<Foo, FooConstraint>() {
     override val constraints = FooConstraint()
 
     var name: String
         get() = adapter.modelNameProperty(pendingItem)
-        set(value) = update { it.copy(name = value) }
+        set(value) = runBlocking { mutatePendingItem { it.copy(name = adapter.entityNameProperty(value)) } }
 
 }
 

@@ -13,7 +13,7 @@ class EventRunLatestModel(
 
     var count
         get() = pendingItem.count
-        set(value) { update { it.copy(count = value) } }
+        set(value) { mutatePendingItem { it.copy(count = value) } }
 
     val latestRuns: RunCollectionModel
         get() = pendingItem

@@ -9,14 +9,15 @@ interface ItemModel<I> : Model {
     val item: I
     val pendingItemFlow: StateFlow<I>
     var pendingItem: I
-    val workingValidationViolationsFlow: Flow<List<Violation>>
-    val isValid: Boolean
-    val isDirty: Boolean
+    val pendingItemValidationFlow: Flow<List<ValidationContent>>
+    val pendingItemValidation: List<ValidationContent>
+    val isPendingItemValid: Boolean
+    val isPendingItemDirty: Boolean
 
-    fun update(forceValidate: Boolean = false, fn: (I) -> I)
+    suspend fun mutatePendingItem(forceValidate: Boolean? = null, mutatePendingItemFn: (I) -> I)
     fun <P> validatedPropertyFlow(property: KProperty1<I, *>, fn: (I) -> P): Flow<Validated<P>>
 
-    suspend fun validate(): List<Violation>
+    suspend fun validate(): List<ValidationContent>
 
     suspend fun commit(forceValidate: Boolean = true): Result<I>
 }

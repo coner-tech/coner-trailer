@@ -1,16 +1,12 @@
 package tech.coner.trailer.presentation.library.model
 
-import kotlin.reflect.KProperty1
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
+import kotlin.reflect.KProperty1
 
-abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I>, CoroutineScope {
+abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     abstract val constraints: C
 
     abstract val initialItem: I
@@ -23,14 +19,16 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I>, Coro
     final override val pendingItemFlow by lazy { _pendingItemFlow.asStateFlow() }
     final override var pendingItem: I
         get() = pendingItemFlow.value
-        set(value) {
-            update { value }
-        }
-    private val _workingViolationsFlow by lazy { MutableStateFlow(emptyList<Violation>()) }
-    final override val workingValidationViolationsFlow by lazy { _workingViolationsFlow.asStateFlow() }
+        set(value) = runBlocking { mutatePendingItem { value } }
+    private val _pendingItemValidationFlow by lazy { MutableStateFlow(emptyList<ValidationContent>()) }
+    final override val pendingItemValidationFlow by lazy { _pendingItemValidationFlow.asStateFlow() }
+    final override val pendingItemValidation get() = _pendingItemValidationFlow.value
 
-    final override fun update(forceValidate: Boolean, fn: (I) -> I) {
-        _pendingItemFlow.update { old -> fn(old) }
+    final override suspend fun mutatePendingItem(forceValidate: Boolean?, mutatePendingItemFn: (I) -> I) {
+        _pendingItemFlow.update { pending -> mutatePendingItemFn(pending) }
+        if (forceValidate == true) {
+            validate()
+        }
     }
 
     override fun <P> validatedPropertyFlow(property: KProperty1<I, *>, fn: (I) -> P): Flow<Validated<P>> {
@@ -46,17 +44,17 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I>, Coro
         }
     }
 
-    final override val isValid
-        get() = _workingViolationsFlow.value.isEmpty()
+    final override val isPendingItemValid
+        get() = _pendingItemValidationFlow.value.isValid()
 
-    final override val isDirty
+    final override val isPendingItemDirty
         get() = item != pendingItem
 
-    final override suspend fun validate(): List<Violation> {
+    final override suspend fun validate(): List<ValidationContent> {
         return constraints.all
             .mapNotNull { it.invoke(pendingItem).exceptionOrNull() as? ConstraintViolationException }
-            .map { Violation(it) }
-            .also { _workingViolationsFlow.emit(it) }
+            .map { ValidationContent.Error(it.message ?: "Invalid" /* TODO not hard-code english string */) }
+            .also { _pendingItemValidationFlow.emit(it) }
     }
 
     override suspend fun commit(forceValidate: Boolean): Result<I> {
@@ -72,6 +70,4 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I>, Coro
             .also { _itemFlow.emit(it) }
             .let { Result.success(it) }
     }
-
-    private fun List<Violation>.isValid() = isEmpty()
 }
