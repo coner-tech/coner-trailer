@@ -1,10 +1,13 @@
 package tech.coner.trailer.presentation.library.model
 
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
+import kotlin.reflect.KProperty1
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
-import kotlin.reflect.KProperty1
 
 abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     abstract val constraints: C
@@ -57,7 +60,7 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
             .also { _pendingItemValidationFlow.value = it }
     }
 
-    override suspend fun commit(forceValidate: Boolean): Result<I> {
+    override fun commit(forceValidate: Boolean): Result<I> {
         if (forceValidate) {
             validate()
                 .also {
@@ -67,7 +70,7 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
                 }
         }
         return pendingItem
-            .also { _itemFlow.emit(it) }
+            .also { _itemFlow.value = it }
             .let { Result.success(it) }
     }
 }
