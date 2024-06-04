@@ -6,13 +6,13 @@ import tech.coner.trailer.presentation.adapter.ClubModelAdapter
 import tech.coner.trailer.presentation.library.model.BaseItemModel
 
 class ClubModel(
-    override val original: Club,
+    override val initialItem: Club,
     override val constraints: ClubPersistConstraints,
     private val adapter: ClubModelAdapter
 ) : BaseItemModel<Club, ClubPersistConstraints>() {
 
     val nameValidated = validatedPropertyFlow(Club::name) { adapter.name(it) }
     var name
-        get() = adapter.name(itemValue)
+        get() = adapter.name(pendingItem)
         set(value) = update { it.copy(name = value) }
 }

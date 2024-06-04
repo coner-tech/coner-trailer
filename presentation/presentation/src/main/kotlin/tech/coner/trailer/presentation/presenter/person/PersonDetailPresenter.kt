@@ -41,15 +41,15 @@ class PersonDetailPresenter(
     }
 
     override suspend fun performLoad(): Result<Person> = runSuspendCatching {
-        service.findById(itemModel.original.id)
+        service.findById(itemModel.item.id)
     }
 
     suspend fun create() = runSuspendCatching {
-        service.create(itemModel.original)
+        service.create(itemModel.item)
     }
 
     suspend fun delete() = runSuspendCatching {
-        service.delete(itemModel.original)
+        service.delete(itemModel.item)
     }
 
     sealed class Argument : Presenter.Argument {

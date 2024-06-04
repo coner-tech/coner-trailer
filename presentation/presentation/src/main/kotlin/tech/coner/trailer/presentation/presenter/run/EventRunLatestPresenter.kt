@@ -32,7 +32,7 @@ class EventRunLatestPresenter(
             eventContext = eventService.findByKey(argument.eventId)
                 .map { eventContextService.load(it).getOrThrow() }
                 .getOrThrow(),
-            count = itemModel.itemValue.count
+            count = itemModel.pendingItem.count
         )
     }
 

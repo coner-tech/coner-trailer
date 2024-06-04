@@ -2,25 +2,25 @@ package tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.
 
 import tech.coner.trailer.presentation.library.adapter.LoadableItemAdapter
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.Foo
-import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model.FooModel
+import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model.FooItemModel
 
 class FooAdapter : LoadableItemAdapter<
         Foo.Id,
         Foo,
         Unit,
-        FooModel
+        FooItemModel
         >() {
     override val argumentToModelAdapter = null
-    override val itemToModelAdapter: (Foo) -> FooModel = { FooModel(it, this) }
-    override val modelToItemAdapter: (FooModel) -> Foo = {
+    override val itemToModelAdapter: (Foo) -> FooItemModel = { FooItemModel(it, this) }
+    override val modelToItemAdapter: (FooItemModel) -> Foo = {
         Foo(
-            id = it.original.id,
+            id = it.item.id,
             name = it.name.lowercase()
         )
     }
 
-    val modelNamePropertyAdapter: (String) -> String = { it.capitalizeFirstChar() }
-    val entityNamePropertyAdapter: (String) -> String = { it.lowercase() }
+    val modelNameProperty: (Foo) -> String = { it.name.capitalizeFirstChar() }
+    val entityNameProperty: (String) -> String = { it.lowercase() }
 
     private fun String.capitalizeFirstChar(): String { // TODO: adapter
         return when (length) {

@@ -1,7 +1,12 @@
 package tech.coner.trailer.presentation.library.presenter
 
-import kotlinx.coroutines.flow.*
-import tech.coner.trailer.presentation.library.adapter.Adapter
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.zip
 import tech.coner.trailer.presentation.library.model.ItemModel
 import tech.coner.trailer.presentation.library.model.ModelNotReadyToCommitException
 import tech.coner.trailer.presentation.library.model.ModelValidationException
@@ -9,6 +14,7 @@ import tech.coner.trailer.presentation.library.model.ModelValidationException
 /**
  * A base presenter that deals with a loadable entity as the focus of its state
  */
+@Deprecated("Replace with LoadableItemPresenter")
 abstract class BaseItemPresenter<
         ARGUMENT : Presenter.Argument,
         ENTITY,
@@ -59,7 +65,7 @@ abstract class BaseItemPresenter<
 
     protected abstract suspend fun performLoad(): Result<ENTITY>
 
-    fun commit(): Result<ITEM_MODEL> {
+    suspend fun commit(): Result<ITEM_MODEL> {
         var commitReturn: Result<ITEM_MODEL> = _itemModelFlow.value
         _itemModelFlow.update { result ->
             val itemModel = result.getOrNull()
@@ -67,11 +73,11 @@ abstract class BaseItemPresenter<
                 // itemModel can be validated
                 if (itemModel.isValid) {
                     // itemModel is valid
-                    Result.success(adapter(itemModel.itemValue))
+                    Result.success(adapter(itemModel.pendingItem))
                         .also { commitReturn = it }
                 } else {
                     // itemModel is invalid
-                    commitReturn =  itemModel.validatedItemFlow.value.violations
+                    commitReturn =  itemModel.validate()
                         .let { Result.failure(ModelValidationException(it)) }
                     result // will retain the same result/model unchanged
                 }
@@ -89,7 +95,7 @@ abstract class BaseItemPresenter<
 
     fun rollback() {
         _itemModelFlow.update { item ->
-            Result.success(adapter(item.getOrNull()?.original ?: entityDefault))
+            Result.success(adapter(item.getOrNull()?.item ?: entityDefault))
         }
     }
 }

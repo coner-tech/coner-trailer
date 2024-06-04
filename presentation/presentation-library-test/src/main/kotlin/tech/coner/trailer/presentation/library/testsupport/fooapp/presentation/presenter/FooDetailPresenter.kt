@@ -9,7 +9,7 @@ import tech.coner.trailer.presentation.library.state.LoadableItemState
 import tech.coner.trailer.presentation.library.testsupport.fooapp.data.service.FooService
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.Foo
 import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.adapter.FooAdapter
-import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model.FooModel
+import tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.model.FooItemModel
 
 class FooDetailPresenter(
     override val argument: Foo.Id,
@@ -19,7 +19,7 @@ class FooDetailPresenter(
         Foo.Id,
         Foo,
         Unit,
-        FooModel
+        FooItemModel
         >() {
     override val adapter = FooAdapter()
 

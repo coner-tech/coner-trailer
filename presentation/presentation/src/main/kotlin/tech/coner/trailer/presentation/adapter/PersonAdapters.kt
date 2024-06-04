@@ -2,8 +2,6 @@ package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Person
 import tech.coner.trailer.io.constraint.PersonPersistConstraints
-import tech.coner.trailer.presentation.library.adapter.Adapter
-import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.PersonCollectionModel
 import tech.coner.trailer.presentation.model.PersonDetailModel
 
@@ -55,7 +53,7 @@ class PersonDetailModelAdapter(
 ) : tech.coner.trailer.presentation.library.adapter.Adapter<Person, PersonDetailModel> {
     override fun invoke(model: Person): PersonDetailModel {
         return PersonDetailModel(
-            original = model,
+            item = model,
             constraints = personPersistConstraints,
             adapter = this
         )

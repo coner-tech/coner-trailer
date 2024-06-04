@@ -6,16 +6,16 @@ import tech.coner.trailer.presentation.library.model.BaseItemModel
 import tech.coner.trailer.presentation.state.EventRunLatestState
 
 class EventRunLatestModel(
-    override val original: EventRunLatestState,
+    override val item: EventRunLatestState,
     override val constraints: EventRunLatestConstraints,
     private val adapter: EventRunLatestModelAdapter
 ) : BaseItemModel<EventRunLatestState, EventRunLatestConstraints>() {
 
     var count
-        get() = itemValue.count
+        get() = pendingItem.count
         set(value) { update { it.copy(count = value) } }
 
     val latestRuns: RunCollectionModel
-        get() = itemValue
+        get() = pendingItem
             .let { state -> adapter.runCollectionModelAdapter(state) }
 }

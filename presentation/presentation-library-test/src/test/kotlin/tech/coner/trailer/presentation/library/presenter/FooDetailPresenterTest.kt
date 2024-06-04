@@ -3,14 +3,28 @@ package tech.coner.trailer.presentation.library.presenter
 import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import assertk.assertions.length
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import tech.coner.trailer.presentation.library.model.*
+import tech.coner.trailer.presentation.library.model.cause
+import tech.coner.trailer.presentation.library.model.isDirty
+import tech.coner.trailer.presentation.library.model.isEmpty
+import tech.coner.trailer.presentation.library.model.isLoadFailed
+import tech.coner.trailer.presentation.library.model.isLoaded
+import tech.coner.trailer.presentation.library.model.isLoading
+import tech.coner.trailer.presentation.library.model.isValid
+import tech.coner.trailer.presentation.library.model.item
+import tech.coner.trailer.presentation.library.model.partial
 import tech.coner.trailer.presentation.library.state.loadable
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.constraint.FooConstraint
 import tech.coner.trailer.presentation.library.testsupport.fooapp.domain.entity.FOO_ID_FOO
@@ -55,7 +69,7 @@ class FooDetailPresenterTest {
                 .isLoading()
                 .partial()
                 .isNotNull()
-                .original()
+                .item()
                 .name()
                 .length()
                 .isEqualTo(1)
@@ -63,7 +77,7 @@ class FooDetailPresenterTest {
                 .loadable()
                 .isLoaded()
                 .item()
-                .original()
+                .item()
                 .name()
                 .isEqualTo("foo")
         }

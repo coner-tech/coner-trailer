@@ -3,4 +3,4 @@ package tech.coner.trailer.presentation.library.testsupport.fooapp.presentation.
 import assertk.Assert
 import assertk.assertions.prop
 
-fun Assert<FooModel>.name() = prop(FooModel::name)
+fun Assert<FooItemModel>.name() = prop(FooItemModel::name)

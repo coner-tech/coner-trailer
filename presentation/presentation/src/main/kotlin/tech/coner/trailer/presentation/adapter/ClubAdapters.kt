@@ -2,8 +2,6 @@ package tech.coner.trailer.presentation.adapter
 
 import tech.coner.trailer.Club
 import tech.coner.trailer.io.constraint.ClubPersistConstraints
-import tech.coner.trailer.presentation.library.adapter.Adapter
-import tech.coner.trailer.presentation.library.adapter.StringFieldAdapter
 import tech.coner.trailer.presentation.model.ClubModel
 
 class ClubNameStringFieldAdapter : tech.coner.trailer.presentation.library.adapter.StringFieldAdapter<Club> {
@@ -18,7 +16,7 @@ class ClubModelAdapter(
 ) : tech.coner.trailer.presentation.library.adapter.Adapter<Club, ClubModel> {
     override fun invoke(model: Club): ClubModel {
         return ClubModel(
-            original = model,
+            item = model,
             constraints = clubPersistConstraints,
             adapter = this
         )

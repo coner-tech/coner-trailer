@@ -2,7 +2,12 @@ package tech.coner.trailer.presentation.library.presenter
 
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
@@ -71,11 +76,4 @@ abstract class LoadableItemPresenter<
             }
         }
     }
-
-//    suspend fun commit(): Result<ITEM_MODEL> {
-//        _stateMutex.withLock {
-//            withTimeout(10.milliseconds) {
-//            }
-//        }
-//    }
 }

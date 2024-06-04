@@ -1,4 +1,5 @@
 package tech.coner.trailer.presentation.library.model
 
-class Violation(val message: String) {
-}
+import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
+
+class Violation(val cause: ConstraintViolationException)
