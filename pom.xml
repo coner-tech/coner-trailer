@@ -37,6 +37,7 @@
         <module>presentation/presentation-library-test</module>
         <module>presentation/presentation-library-testsupport</module>
         <module>toolkit/konstraints</module>
+        <module>toolkit/validation</module>
     </modules>
 
     <properties>
