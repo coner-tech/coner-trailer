@@ -1,10 +1,13 @@
 package tech.coner.trailer.presentation.library.model
 
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
+import kotlin.reflect.KProperty1
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 import tech.coner.trailer.toolkit.konstraints.ConstraintViolationException
-import kotlin.reflect.KProperty1
 
 abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     abstract val constraints: C
@@ -19,12 +22,12 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     final override val pendingItemFlow by lazy { _pendingItemFlow.asStateFlow() }
     final override var pendingItem: I
         get() = pendingItemFlow.value
-        set(value) = runBlocking { mutatePendingItem { value } }
+        set(value) = mutatePendingItem { value }
     private val _pendingItemValidationFlow by lazy { MutableStateFlow(emptyList<ValidationContent>()) }
     final override val pendingItemValidationFlow by lazy { _pendingItemValidationFlow.asStateFlow() }
     final override val pendingItemValidation get() = _pendingItemValidationFlow.value
 
-    final override suspend fun mutatePendingItem(forceValidate: Boolean?, mutatePendingItemFn: (I) -> I) {
+    final override fun mutatePendingItem(forceValidate: Boolean?, mutatePendingItemFn: (I) -> I) {
         _pendingItemFlow.update { pending -> mutatePendingItemFn(pending) }
         if (forceValidate == true) {
             validate()
@@ -50,14 +53,14 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
     final override val isPendingItemDirty
         get() = item != pendingItem
 
-    final override suspend fun validate(): List<ValidationContent> {
+    final override fun validate(): List<ValidationContent> {
         return constraints.all
             .mapNotNull { it.invoke(pendingItem).exceptionOrNull() as? ConstraintViolationException }
             .map { ValidationContent.Error(it.message ?: "Invalid" /* TODO not hard-code english string */) }
-            .also { _pendingItemValidationFlow.emit(it) }
+            .also { _pendingItemValidationFlow.value = it }
     }
 
-    override suspend fun commit(forceValidate: Boolean): Result<I> {
+    override fun commit(forceValidate: Boolean): Result<I> {
         if (forceValidate) {
             validate()
                 .also {
@@ -67,7 +70,7 @@ abstract class BaseItemModel<I, C : CompositeConstraint<I>> : ItemModel<I> {
                 }
         }
         return pendingItem
-            .also { _itemFlow.emit(it) }
+            .also { _itemFlow.value = it }
             .let { Result.success(it) }
     }
 }
