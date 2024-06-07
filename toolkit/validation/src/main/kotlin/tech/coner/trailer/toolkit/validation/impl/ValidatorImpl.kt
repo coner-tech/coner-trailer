@@ -6,12 +6,13 @@ import tech.coner.trailer.toolkit.validation.Feedback
 import tech.coner.trailer.toolkit.validation.ValidationResult
 
 internal class ValidatorImpl<INPUT, FEEDBACK : Feedback>(
-    private val function: ValidationContext<FEEDBACK>.(INPUT) -> Unit
+    private val function: ValidationContext<INPUT, FEEDBACK>.(INPUT) -> FEEDBACK?
 ) : Validator<INPUT, FEEDBACK> {
 
     override fun invoke(input: INPUT): ValidationResult<FEEDBACK> {
-        val context = ValidationContextImpl<FEEDBACK>()
+        val context = ValidationContextImpl<INPUT, FEEDBACK>(null, input)
         function(context, input)
-        return ValidationResult(context.feedback.toList())
+            ?.also { context.give(it) }
+        return ValidationResult(context.feedback.toMap())
     }
 }

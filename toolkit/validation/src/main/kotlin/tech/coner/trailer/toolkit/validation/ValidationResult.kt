@@ -1,15 +1,17 @@
 package tech.coner.trailer.toolkit.validation
 
+import kotlin.reflect.KProperty1
+
 data class ValidationResult<FEEDBACK : Feedback>(
-    val feedback: List<FEEDBACK>
+    val feedback: Map<KProperty1<*, *>?, List<FEEDBACK>>
 ) {
     val isValid: Boolean by lazy {
         feedback.isEmpty()
-                || feedback.all { it.severity.valid }
+                || feedback.values.all { it.all { feedback -> feedback.severity.valid } }
     }
 
     val isInvalid: Boolean by lazy {
         feedback.isNotEmpty()
-                && feedback.any { !it.severity.valid }
+                && feedback.values.any { it.any { feedback -> !feedback.severity.valid } }
     }
 }
