@@ -10,4 +10,9 @@ interface ValidationContext<INPUT, FEEDBACK : Feedback> {
         property: KProperty1<INPUT, PROPERTY>,
         function: ValidationContext<PROPERTY, FEEDBACK>.(PROPERTY) -> FEEDBACK?
     )
+
+    fun <PROPERTY> on(
+        property: KProperty1<INPUT, PROPERTY>,
+        vararg functions: ValidationContext<PROPERTY, FEEDBACK>.(PROPERTY) -> FEEDBACK?
+    )
 }

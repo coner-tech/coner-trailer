@@ -1,8 +1,8 @@
 package tech.coner.trailer.toolkit.validation.impl
 
+import kotlin.reflect.KProperty1
 import tech.coner.trailer.toolkit.validation.Feedback
 import tech.coner.trailer.toolkit.validation.ValidationContext
-import kotlin.reflect.KProperty1
 
 internal class ValidationContextImpl<INPUT, FEEDBACK : Feedback>(
     private val property: KProperty1<*, *>? = null,
@@ -23,6 +23,19 @@ internal class ValidationContextImpl<INPUT, FEEDBACK : Feedback>(
         val propertyContext = ValidationContextImpl<PROPERTY, FEEDBACK>(property, propertyValue)
         function(propertyContext, propertyValue)
             ?.also { propertyContext.give(it) }
+        feedback.createOrAppend(propertyContext.feedback)
+    }
+
+    override fun <PROPERTY> on(
+        property: KProperty1<INPUT, PROPERTY>,
+        vararg functions: ValidationContext<PROPERTY, FEEDBACK>.(PROPERTY) -> FEEDBACK?
+    ) {
+        val propertyValue = property.get(input)
+        val propertyContext = ValidationContextImpl<PROPERTY, FEEDBACK>(property, propertyValue)
+        functions.forEach { function ->
+            function(propertyContext, propertyValue)
+                ?.also { propertyContext.give(it) }
+        }
         feedback.createOrAppend(propertyContext.feedback)
     }
 }
