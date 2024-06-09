@@ -20,32 +20,22 @@ fun changePasswordFormValidator() = Validator<ChangePasswordFormState, ChangePas
         }
         return severity?.let(feedbackFn)
     }
-    on(ChangePasswordFormState::currentPassword) {
-        if (it.isEmpty()) MustNotBeEmpty
-        else null
+    on(ChangePasswordFormState::currentPassword) { currentPassword ->
+        MustNotBeEmpty.takeIf { currentPassword.isEmpty() }
     }
-    on(ChangePasswordFormState::newPassword) {
-        if (state.currentPassword.isNotEmpty() && it == state.currentPassword) NewPasswordSameAsCurrentPassword
-        else null
-    }
-    on(ChangePasswordFormState::newPassword) {
-        state.passwordPolicy.lengthThreshold(it.length, ::InsufficientLength)
-    }
-    on(ChangePasswordFormState::newPassword) {
-        state.passwordPolicy.letterLowercaseThreshold(it.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase)
-    }
-    on(ChangePasswordFormState::newPassword) {
-        state.passwordPolicy.letterUppercaseThreshold(it.count { char -> char.isUpperCase() }, ::InsufficientLetterUppercase)
-    }
-    on(ChangePasswordFormState::newPassword) {
-        state.passwordPolicy.numericThreshold(it.count { char -> char.isDigit() }, ::InsufficientNumeric)
-    }
-    on(ChangePasswordFormState::newPassword) {
-        state.passwordPolicy.specialThreshold(it.count { char -> !char.isLetterOrDigit() }, ::InsufficientSpecial)
-    }
-    on(ChangePasswordFormState::newPasswordRepeated) {
-        if (state.newPassword != it) RepeatPasswordMismatch
-        else null
+    on(
+        ChangePasswordFormState::newPassword,
+        { newPassword ->
+            NewPasswordSameAsCurrentPassword.takeIf { state.currentPassword.isNotEmpty() && newPassword == state.currentPassword }
+        },
+        { state.passwordPolicy.lengthThreshold(it.length, ::InsufficientLength) },
+        { state.passwordPolicy.letterLowercaseThreshold(it.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase) },
+        { state.passwordPolicy.letterUppercaseThreshold(it.count { char -> char.isUpperCase() }, ::InsufficientLetterUppercase) },
+        { state.passwordPolicy.numericThreshold(it.count { char -> char.isDigit() }, ::InsufficientNumeric) },
+        { state.passwordPolicy.specialThreshold(it.count { char -> !char.isLetterOrDigit() }, ::InsufficientSpecial) }
+    )
+    on(ChangePasswordFormState::newPasswordRepeated) { newPasswordRepeated ->
+        RepeatPasswordMismatch.takeIf { state.newPassword != newPasswordRepeated }
     }
     null
 }
