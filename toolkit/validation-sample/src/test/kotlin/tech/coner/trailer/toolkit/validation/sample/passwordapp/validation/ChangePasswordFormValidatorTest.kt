@@ -118,7 +118,7 @@ class ChangePasswordFormValidatorTest {
     @ParameterizedTest
     @EnumSource
     fun itShouldValidateChangePasswordForm(scenario: ChangePasswordFormScenario) {
-        val actual = changePasswordFormValidator().invoke(scenario.input)
+        val actual = changePasswordFormValidator(scenario.input)
 
         assertThat(actual).all {
             feedback().all {

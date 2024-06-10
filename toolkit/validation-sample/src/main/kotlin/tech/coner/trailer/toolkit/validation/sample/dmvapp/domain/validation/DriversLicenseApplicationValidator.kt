@@ -6,22 +6,23 @@ import tech.coner.trailer.toolkit.validation.sample.dmvapp.domain.entity.Drivers
 import tech.coner.trailer.toolkit.validation.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback.TooOld
 import tech.coner.trailer.toolkit.validation.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback.TooYoung
 
+typealias DriversLicenseClerk = Validator<DriversLicenseApplication, DriversLicenseApplicationFeedback>
 
-fun driversLicenseClerk() = Validator<DriversLicenseApplication, DriversLicenseApplicationFeedback> {
-    on(DriversLicenseApplication::age) {
+val driversLicenseClerk: DriversLicenseClerk get() = Validator {
+    on(DriversLicenseApplication::age) { age ->
         when {
-            it < GraduatedLearnerPermit.MIN_AGE ->
+            age < GraduatedLearnerPermit.MIN_AGE ->
                 TooYoung(
-                    suggestOtherLicenseType = if (licenseType != GraduatedLearnerPermit) GraduatedLearnerPermit else null,
+                    suggestOtherLicenseType = GraduatedLearnerPermit.takeIf { licenseType != it },
                     reapplyWhenAge = GraduatedLearnerPermit.MIN_AGE
                 )
 
-            it in GraduatedLearnerPermit.AGE_RANGE && licenseType != GraduatedLearnerPermit ->
+            age in GraduatedLearnerPermit.AGE_RANGE && licenseType != GraduatedLearnerPermit ->
                 TooYoung(
                     suggestOtherLicenseType = GraduatedLearnerPermit,
                 )
 
-            it in 18..Int.MAX_VALUE && licenseType == GraduatedLearnerPermit ->
+            age in 18..Int.MAX_VALUE && licenseType == GraduatedLearnerPermit ->
                 TooOld(
                     suggestOtherLicenseType = DriversLicenseApplication.LicenseType.LearnerPermit
                 )

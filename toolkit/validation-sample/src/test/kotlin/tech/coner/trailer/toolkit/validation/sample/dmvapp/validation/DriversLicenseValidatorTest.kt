@@ -113,7 +113,7 @@ class DriversLicenseValidatorTest {
     @ParameterizedTest
     @EnumSource
     fun itShouldValidateDriversLicenseApplications(scenario: DriversLicenseApplicationScenario) {
-        val actual = driversLicenseClerk().invoke(scenario.input)
+        val actual = driversLicenseClerk(scenario.input)
 
         assertThat(actual).all {
             feedback().all {

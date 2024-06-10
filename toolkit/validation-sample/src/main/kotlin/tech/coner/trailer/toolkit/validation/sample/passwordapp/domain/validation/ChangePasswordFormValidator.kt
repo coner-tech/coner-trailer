@@ -15,18 +15,9 @@ import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validatio
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.NewPasswordSameAsCurrentPassword
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.RepeatPasswordMismatch
 
-fun changePasswordFormValidator(): Validator<ChangePasswordFormState, ChangePasswordFormFeedback> = Validator {
-    operator fun PasswordPolicy.MinimumThreshold.invoke(
-        value: Int,
-        feedbackFn: (Severity) -> ChangePasswordFormFeedback
-    ): ChangePasswordFormFeedback? {
-        val severity = when {
-            value < minForError -> Error
-            value < minForWarning -> Warning
-            else -> null
-        }
-        return severity?.let(feedbackFn)
-    }
+typealias ChangePasswordFormValidator = Validator<ChangePasswordFormState, ChangePasswordFormFeedback>
+
+val changePasswordFormValidator: ChangePasswordFormValidator get() = Validator {
     on(ChangePasswordFormState::currentPassword) { currentPassword ->
         MustNotBeEmpty.takeIf { currentPassword.isEmpty() }
     }
@@ -44,4 +35,16 @@ fun changePasswordFormValidator(): Validator<ChangePasswordFormState, ChangePass
     on(ChangePasswordFormState::newPasswordRepeated) { newPasswordRepeated ->
         RepeatPasswordMismatch.takeIf { newPassword != newPasswordRepeated }
     }
+}
+
+private operator fun PasswordPolicy.MinimumThreshold.invoke(
+    value: Int,
+    feedbackFn: (Severity) -> ChangePasswordFormFeedback
+): ChangePasswordFormFeedback? {
+    val severity = when {
+        value < minForError -> Error
+        value < minForWarning -> Warning
+        else -> null
+    }
+    return severity?.let(feedbackFn)
 }
