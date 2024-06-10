@@ -1,9 +1,9 @@
 package tech.coner.trailer.toolkit.validation.impl
 
-internal fun <K, I> MutableMap<K?, MutableList<I>>.createOrAppend(key: K, item: I) {
+internal fun <K, I> MutableMap<K?, MutableList<I>>.createOrAppend(key: K, vararg items: I) {
     get(key)
-        ?.also { it.add(item) }
-        ?: mutableListOf(item)
+        ?.also { it.addAll(items) }
+        ?: items.toMutableList()
             .also { put(key, it) }
 }
 
