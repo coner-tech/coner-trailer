@@ -1,59 +1,96 @@
 package tech.coner.trailer.toolkit.validation.impl
 
+import tech.coner.trailer.toolkit.validation.*
+import tech.coner.trailer.toolkit.validation.context.ValidationRuleContext
+import tech.coner.trailer.toolkit.validation.impl.entry.ValidationEntry
+import tech.coner.trailer.toolkit.validation.impl.rule.ObjectValidationRuleImpl
+import tech.coner.trailer.toolkit.validation.impl.rule.PropertyValidationRuleImpl
 import kotlin.reflect.KProperty1
-import tech.coner.trailer.toolkit.validation.Feedback
-import tech.coner.trailer.toolkit.validation.ValidationResult
-import tech.coner.trailer.toolkit.validation.ValidationRule
-import tech.coner.trailer.toolkit.validation.Validator
 
-internal class ValidatorImpl<INPUT, FEEDBACK : Feedback>(
-    builder: Validator.Builder<INPUT, FEEDBACK>.() -> Unit
-) : Validator<INPUT, FEEDBACK> {
+internal class ValidatorImpl<CONTEXT, INPUT, FEEDBACK : Feedback>(
+    builder: Validator.Builder<CONTEXT, INPUT, FEEDBACK>.() -> Unit
+) : Validator<CONTEXT, INPUT, FEEDBACK> {
 
-    private val rules: List<ValidationRule<INPUT, FEEDBACK>>
+    private val entries: List<ValidationEntry<CONTEXT, INPUT, FEEDBACK>>
 
     init {
-        BuilderImpl<INPUT, FEEDBACK>()
+        BuilderImpl<CONTEXT, INPUT, FEEDBACK>()
             .apply(builder)
-            .also { rules = it.rules }
+            .also { entries = it.entries }
     }
 
-    override fun invoke(input: INPUT): ValidationResult<FEEDBACK> {
+    override fun invoke(context: CONTEXT, input: INPUT): ValidationResult<FEEDBACK> {
         val feedback: MutableMap<KProperty1<*, *>?, MutableList<FEEDBACK>> = mutableMapOf()
-        rules
-            .forEach { rule ->
-                rule(input)
-                    ?.also {
-                        feedback.createOrAppend(
-                            key = when (rule) {
-                                is PropertyValidationRule<INPUT, *, FEEDBACK> -> rule.property
-                                else -> null
-                            },
-                            it
-                        )
+        entries.forEach { entry ->
+                when (entry) {
+                    is ValidationEntry.InputPropertySingleFeedback<CONTEXT, INPUT, *, FEEDBACK> -> {
+                        entry(context, input)
+                            ?.also { feedback.createOrAppend(entry.property, it) }
                     }
+                    is ValidationEntry.InputObjectSingleFeedback -> {
+                        entry(context, input)
+                            ?.also { feedback.createOrAppend(null, it) }
+                    }
+                    is ValidationEntry.InputPropertyDelegatesToValidator<CONTEXT, INPUT, *, *, *, FEEDBACK> -> {
+                        entry(context, input)
+                            .also { feedback.createOrAppend(it.feedback) }
+                    }
+                }
             }
         return ValidationResult(feedback.toMap())
     }
 
-    internal class BuilderImpl<INPUT, FEEDBACK : Feedback> : Validator.Builder<INPUT, FEEDBACK> {
+    internal class BuilderImpl<CONTEXT, INPUT, FEEDBACK : Feedback> : Validator.Builder<CONTEXT, INPUT, FEEDBACK> {
 
-        internal val rules: MutableList<ValidationRule<INPUT, FEEDBACK>> = mutableListOf()
+        internal val entries: MutableList<ValidationEntry<CONTEXT, INPUT, FEEDBACK>> = mutableListOf()
 
-        override fun <PROPERTY> on(
-            property: KProperty1<INPUT, PROPERTY>,
-            ruleFn: INPUT.(PROPERTY) -> FEEDBACK?
+        override fun <PROPERTY> KProperty1<INPUT, PROPERTY>.invoke(
+            ruleFn: ValidationRuleContext<CONTEXT, INPUT>.(PROPERTY) -> FEEDBACK?
         ) {
-            rules += PropertyValidationRuleImpl(property, ruleFn)
+            entries += ValidationEntry.InputPropertySingleFeedback(
+                property = this,
+                rule = PropertyValidationRuleImpl(this, ruleFn),
+            )
         }
 
-        override fun <PROPERTY> on(
-            property: KProperty1<INPUT, PROPERTY>,
-            vararg ruleFns: INPUT.(PROPERTY) -> FEEDBACK?
+        override fun <PROPERTY> KProperty1<INPUT, PROPERTY>.invoke(
+            vararg ruleFns: ValidationRuleContext<CONTEXT, INPUT>.(PROPERTY) -> FEEDBACK?
         ) {
-            rules += ruleFns
-                .map { PropertyValidationRuleImpl(property, it) }
+            entries += ruleFns
+                .map {
+                    ValidationEntry.InputPropertySingleFeedback(
+                        property = this,
+                        rule = PropertyValidationRuleImpl(this, it)
+                    )
+                }
         }
 
+        override fun <PROPERTY, DELEGATE_CONTEXT, DELEGATE_FEEDBACK : Feedback> KProperty1<INPUT, PROPERTY>.invoke(
+            validator: Validator<DELEGATE_CONTEXT, PROPERTY, DELEGATE_FEEDBACK>,
+            mapContextFn: CONTEXT.(INPUT) -> DELEGATE_CONTEXT,
+            mapFeedbackFn: (DELEGATE_FEEDBACK) -> FEEDBACK
+        ) {
+            entries += ValidationEntry.InputPropertyDelegatesToValidator(
+                property = this,
+                validator = validator,
+                mapContextFn = mapContextFn,
+                mapFeedbackFn = mapFeedbackFn
+            )
+        }
+
+        override fun input(ruleFn: ValidationRuleContext<CONTEXT, INPUT>.(INPUT) -> FEEDBACK?) {
+            entries += ValidationEntry.InputObjectSingleFeedback(
+                ObjectValidationRuleImpl(ruleFn)
+            )
+        }
+
+        override fun input(vararg ruleFns: ValidationRuleContext<CONTEXT, INPUT>.(INPUT) -> FEEDBACK?) {
+            entries += ruleFns
+                .map {
+                    ValidationEntry.InputObjectSingleFeedback(
+                        ObjectValidationRuleImpl(it)
+                    )
+                }
+        }
     }
 }

@@ -9,11 +9,14 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.toolkit.validation.Severity.Error
 import tech.coner.trailer.toolkit.validation.Severity.Warning
+import tech.coner.trailer.toolkit.validation.invoke
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy.Factory.anyOneChar
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy.Factory.irritating
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.state.ChangePasswordFormState
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.*
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.*
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.changePasswordFormValidator
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
@@ -37,7 +40,7 @@ class ChangePasswordFormValidatorTest {
                 newPasswordRepeated = ""
             ),
             expectedCurrentPasswordFeedback = listOf(MustNotBeEmpty),
-            expectedNewPasswordFeedback = listOf(InsufficientLength(Error)),
+            expectedNewPasswordFeedback = listOf(NewPasswordFeedback(InsufficientLength(Error))),
             expectedIsValid = false
         ),
         MINIMUM_ANY_ONE_CHAR_VALID(
@@ -77,11 +80,11 @@ class ChangePasswordFormValidatorTest {
                 newPasswordRepeated = "aA1!"
             ),
             expectedNewPasswordFeedback = listOf(
-                InsufficientLength(Error),
-                InsufficientLetterLowercase(Warning),
-                InsufficientLetterUppercase(Warning),
-                InsufficientNumeric(Warning),
-                InsufficientSpecial(Warning)
+                NewPasswordFeedback(InsufficientLength(Error)),
+                NewPasswordFeedback(InsufficientLetterLowercase(Warning)),
+                NewPasswordFeedback(InsufficientLetterUppercase(Warning)),
+                NewPasswordFeedback(InsufficientNumeric(Warning)),
+                NewPasswordFeedback(InsufficientSpecial(Warning))
             ),
             expectedIsValid = false
         ),
@@ -93,9 +96,9 @@ class ChangePasswordFormValidatorTest {
                 newPasswordRepeated = "Tr0ub4dor&3"
             ),
             expectedNewPasswordFeedback = listOf(
-                InsufficientLength(Warning),
-                InsufficientLetterUppercase(Warning),
-                InsufficientSpecial(Warning)
+                NewPasswordFeedback(InsufficientLength(Warning)),
+                NewPasswordFeedback(InsufficientLetterUppercase(Warning)),
+                NewPasswordFeedback(InsufficientSpecial(Warning))
             ),
             expectedIsValid = true
         ),
@@ -107,8 +110,8 @@ class ChangePasswordFormValidatorTest {
                 newPasswordRepeated = "battery horse staple correct"
             ),
             expectedNewPasswordFeedback = listOf(
-                InsufficientLetterUppercase(Error),
-                InsufficientNumeric(Error)
+                NewPasswordFeedback(InsufficientLetterUppercase(Error)),
+                NewPasswordFeedback(InsufficientNumeric(Error))
             ),
             expectedIsValid = false
         )
@@ -140,7 +143,4 @@ class ChangePasswordFormValidatorTest {
         }
     }
 
-    private fun feedback(): Any {
-        TODO("Not yet implemented")
-    }
 }

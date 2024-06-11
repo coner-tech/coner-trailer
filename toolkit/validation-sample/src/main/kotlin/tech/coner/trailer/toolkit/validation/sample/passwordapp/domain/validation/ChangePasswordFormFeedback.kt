@@ -10,11 +10,9 @@ sealed class ChangePasswordFormFeedback : Feedback {
     data object NewPasswordSameAsCurrentPassword : ChangePasswordFormFeedback() {
         override val severity = Severity.Error
     }
-    data class InsufficientLength(override val severity: Severity) : ChangePasswordFormFeedback()
-    data class InsufficientLetterLowercase(override val severity: Severity) : ChangePasswordFormFeedback()
-    data class InsufficientLetterUppercase(override val severity: Severity) : ChangePasswordFormFeedback()
-    data class InsufficientNumeric(override val severity: Severity) : ChangePasswordFormFeedback()
-    data class InsufficientSpecial(override val severity: Severity) : ChangePasswordFormFeedback()
+    data class NewPasswordFeedback(val feedback: PasswordFeedback) : ChangePasswordFormFeedback() {
+        override val severity: Severity get() = feedback.severity
+    }
     data object RepeatPasswordMismatch : ChangePasswordFormFeedback() {
         override val severity = Severity.Error
     }

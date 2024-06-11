@@ -6,34 +6,20 @@ import tech.coner.trailer.toolkit.validation.Severity.Warning
 import tech.coner.trailer.toolkit.validation.Validator
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.state.ChangePasswordFormState
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.InsufficientLength
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.InsufficientLetterLowercase
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.InsufficientLetterUppercase
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.InsufficientNumeric
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.InsufficientSpecial
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.MustNotBeEmpty
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.NewPasswordSameAsCurrentPassword
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.RepeatPasswordMismatch
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.*
 
-typealias ChangePasswordFormValidator = Validator<ChangePasswordFormState, ChangePasswordFormFeedback>
+typealias ChangePasswordFormValidator = Validator<Unit, ChangePasswordFormState, ChangePasswordFormFeedback>
 
 val changePasswordFormValidator: ChangePasswordFormValidator get() = Validator {
-    on(ChangePasswordFormState::currentPassword) { currentPassword ->
+    ChangePasswordFormState::currentPassword { currentPassword ->
         MustNotBeEmpty.takeIf { currentPassword.isEmpty() }
     }
-    on(
-        ChangePasswordFormState::newPassword,
-        { newPassword ->
-            NewPasswordSameAsCurrentPassword.takeIf { currentPassword.isNotEmpty() && newPassword == currentPassword }
-        },
-        { passwordPolicy.lengthThreshold(it.length, ::InsufficientLength) },
-        { passwordPolicy.letterLowercaseThreshold(it.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase) },
-        { passwordPolicy.letterUppercaseThreshold(it.count { char -> char.isUpperCase() }, ::InsufficientLetterUppercase) },
-        { passwordPolicy.numericThreshold(it.count { char -> char.isDigit() }, ::InsufficientNumeric) },
-        { passwordPolicy.specialThreshold(it.count { char -> !char.isLetterOrDigit() }, ::InsufficientSpecial) }
-    )
-    on(ChangePasswordFormState::newPasswordRepeated) { newPasswordRepeated ->
-        RepeatPasswordMismatch.takeIf { newPassword != newPasswordRepeated }
+    ChangePasswordFormState::newPassword { newPassword: String ->
+        NewPasswordSameAsCurrentPassword.takeIf { input.currentPassword.isNotEmpty() && newPassword == input.currentPassword }
+    }
+    ChangePasswordFormState::newPassword.invoke(passwordValidator, { it.passwordPolicy }, ::NewPasswordFeedback)
+    ChangePasswordFormState::newPasswordRepeated { newPasswordRepeated ->
+        RepeatPasswordMismatch.takeIf { input.newPassword != newPasswordRepeated }
     }
 }
 

@@ -1,27 +1,45 @@
 package tech.coner.trailer.toolkit.validation
 
+import tech.coner.trailer.toolkit.validation.context.ValidationRuleContext
 import kotlin.reflect.KProperty1
 import tech.coner.trailer.toolkit.validation.impl.ValidatorImpl
 
 
-fun <INPUT, FEEDBACK : Feedback> Validator(function: Validator.Builder<INPUT, FEEDBACK>.() -> Unit): Validator<INPUT, FEEDBACK> {
+fun <CONTEXT, INPUT, FEEDBACK : Feedback> Validator(
+    function: Validator.Builder<CONTEXT, INPUT, FEEDBACK>.() -> Unit
+): Validator<CONTEXT, INPUT, FEEDBACK> {
     return ValidatorImpl(function)
 }
 
-interface Validator<INPUT, FEEDBACK : Feedback> {
-    operator fun invoke(input: INPUT): ValidationResult<FEEDBACK>
+interface Validator<CONTEXT, INPUT, FEEDBACK : Feedback> {
+    operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<FEEDBACK>
 
+    interface Builder<CONTEXT, INPUT, FEEDBACK : Feedback> {
 
-    interface Builder<INPUT, FEEDBACK : Feedback> {
-
-        fun <PROPERTY> on(
-            property: KProperty1<INPUT, PROPERTY>,
-            ruleFn: INPUT.(PROPERTY) -> FEEDBACK?
+        operator fun <PROPERTY> KProperty1<INPUT, PROPERTY>.invoke(
+            ruleFn: ValidationRuleContext<CONTEXT, INPUT>.(PROPERTY) -> FEEDBACK?
         )
 
-        fun <PROPERTY> on(
-            property: KProperty1<INPUT, PROPERTY>,
-            vararg ruleFns: INPUT.(PROPERTY) -> FEEDBACK?
+        operator fun <PROPERTY> KProperty1<INPUT, PROPERTY>.invoke(
+            vararg ruleFns: ValidationRuleContext<CONTEXT, INPUT>.(PROPERTY) -> FEEDBACK?
+        )
+
+        operator fun <PROPERTY, DELEGATE_CONTEXT, DELEGATE_FEEDBACK : Feedback> KProperty1<INPUT, PROPERTY>.invoke(
+            validator: Validator<DELEGATE_CONTEXT, PROPERTY, DELEGATE_FEEDBACK>,
+            mapContextFn: CONTEXT.(INPUT) -> DELEGATE_CONTEXT,
+            mapFeedbackFn: (DELEGATE_FEEDBACK) -> FEEDBACK
+        )
+
+        fun input(
+            ruleFn: ValidationRuleContext<CONTEXT, INPUT>.(INPUT) -> FEEDBACK?
+        )
+
+        fun input(
+            vararg ruleFns: ValidationRuleContext<CONTEXT, INPUT>.(INPUT) -> FEEDBACK?
         )
     }
+}
+
+operator fun <INPUT, FEEDBACK : Feedback> Validator<Unit, INPUT, FEEDBACK>.invoke(input: INPUT): ValidationResult<FEEDBACK> {
+    return invoke(Unit, input)
 }
