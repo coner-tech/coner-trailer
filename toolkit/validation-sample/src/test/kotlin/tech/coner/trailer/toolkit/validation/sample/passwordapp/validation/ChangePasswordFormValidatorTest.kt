@@ -115,7 +115,6 @@ class ChangePasswordFormValidatorTest {
             ),
             expectedIsValid = false
         )
-
     }
 
     @ParameterizedTest
