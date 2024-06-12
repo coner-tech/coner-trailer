@@ -30,7 +30,7 @@ internal sealed class ValidationEntry<CONTEXT, INPUT, FEEDBACK : Feedback> {
     }
 
     internal class InputPropertyDelegatesToValidator<CONTEXT, INPUT, PROPERTY, DELEGATE_CONTEXT, DELEGATE_FEEDBACK : Feedback, FEEDBACK : Feedback>(
-        val property: KProperty1<INPUT, PROPERTY>,
+        private val property: KProperty1<INPUT, PROPERTY>,
         private val validator: Validator<DELEGATE_CONTEXT, PROPERTY, DELEGATE_FEEDBACK>,
         private val mapContextFn: CONTEXT.(INPUT) -> DELEGATE_CONTEXT,
         private val mapFeedbackFn: (DELEGATE_FEEDBACK) -> FEEDBACK,
