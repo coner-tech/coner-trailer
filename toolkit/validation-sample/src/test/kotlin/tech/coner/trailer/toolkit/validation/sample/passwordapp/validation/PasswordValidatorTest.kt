@@ -13,13 +13,19 @@ import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.Pa
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy.Factory.anyOneChar
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy.Factory.irritating
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.*
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.passwordValidator
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLength
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLetterLowercase
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLetterUppercase
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientNumeric
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientSpecial
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordValidator
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
 import tech.coner.trailer.toolkit.validation.testsupport.isValid
 
 class PasswordValidatorTest {
+
+    private val validator: PasswordValidator = PasswordValidator()
 
     enum class PasswordScenario(
         val policy: PasswordPolicy,
@@ -74,7 +80,7 @@ class PasswordValidatorTest {
     @ParameterizedTest
     @EnumSource(PasswordScenario::class)
     fun itShouldValidatePassword(scenario: PasswordScenario) {
-        val actual = passwordValidator(scenario.policy, scenario.password)
+        val actual = validator(scenario.policy, scenario.password)
 
         assertThat(actual).all {
             feedback().all {

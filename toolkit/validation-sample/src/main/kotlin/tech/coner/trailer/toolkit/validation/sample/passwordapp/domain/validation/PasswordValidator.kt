@@ -5,11 +5,15 @@ import tech.coner.trailer.toolkit.validation.Severity.Error
 import tech.coner.trailer.toolkit.validation.Severity.Warning
 import tech.coner.trailer.toolkit.validation.Validator
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.*
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLength
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLetterLowercase
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLetterUppercase
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientNumeric
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientSpecial
 
 typealias PasswordValidator = Validator<PasswordPolicy, String, PasswordFeedback>
 
-val passwordValidator: PasswordValidator get() = Validator {
+fun PasswordValidator(): PasswordValidator = Validator {
     input(
         { context.lengthThreshold(it.length, ::InsufficientLength) },
         { context.letterLowercaseThreshold(it.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase ) },

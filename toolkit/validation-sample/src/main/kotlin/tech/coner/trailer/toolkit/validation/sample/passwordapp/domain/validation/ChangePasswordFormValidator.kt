@@ -6,11 +6,16 @@ import tech.coner.trailer.toolkit.validation.Severity.Warning
 import tech.coner.trailer.toolkit.validation.Validator
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.entity.PasswordPolicy
 import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.state.ChangePasswordFormState
-import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.*
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.MustNotBeEmpty
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.NewPasswordFeedback
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.NewPasswordSameAsCurrentPassword
+import tech.coner.trailer.toolkit.validation.sample.passwordapp.domain.validation.ChangePasswordFormFeedback.RepeatPasswordMismatch
 
 typealias ChangePasswordFormValidator = Validator<Unit, ChangePasswordFormState, ChangePasswordFormFeedback>
 
-val changePasswordFormValidator: ChangePasswordFormValidator get() = Validator {
+fun ChangePasswordFormValidator(
+    passwordValidator: PasswordValidator = PasswordValidator(),
+): ChangePasswordFormValidator = Validator {
     ChangePasswordFormState::currentPassword { currentPassword ->
         MustNotBeEmpty.takeIf { currentPassword.isEmpty() }
     }
