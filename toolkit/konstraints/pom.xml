@@ -13,20 +13,6 @@
     <artifactId>toolkit-konstraints</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.willowtreeapps.assertk</groupId>
-            <artifactId>assertk-jvm</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

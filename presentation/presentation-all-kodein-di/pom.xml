@@ -30,10 +30,7 @@
             <artifactId>presentation-text</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.kodein.di</groupId>
             <artifactId>kodein-di-jvm</artifactId>

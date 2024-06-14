@@ -12,10 +12,7 @@
     <artifactId>api-client-motorsportreg-test</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.willowtreeapps.assertk</groupId>
             <artifactId>assertk-jvm</artifactId>
@@ -42,11 +39,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-migrationsupport</artifactId>
