@@ -1,0 +1,23 @@
+package tech.coner.trailer.toolkit.presentation.model
+
+import kotlin.reflect.KProperty1
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+
+interface ItemModel<I> : Model {
+    val itemFlow: StateFlow<I>
+    val item: I
+    val pendingItemFlow: StateFlow<I>
+    var pendingItem: I
+    val pendingItemValidationFlow: Flow<List<ValidationContent>>
+    val pendingItemValidation: List<ValidationContent>
+    val isPendingItemValid: Boolean
+    val isPendingItemDirty: Boolean
+
+    fun mutatePendingItem(forceValidate: Boolean? = null, mutatePendingItemFn: (I) -> I)
+    fun <P> validatedPropertyFlow(property: KProperty1<I, *>, fn: (I) -> P): Flow<Validated<P>>
+
+    fun validate(): List<ValidationContent>
+
+    fun commit(forceValidate: Boolean = true): Result<I>
+}

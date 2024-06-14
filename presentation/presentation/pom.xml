@@ -33,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
-            <artifactId>presentation-library</artifactId>
+            <artifactId>toolkit-presentation</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
 

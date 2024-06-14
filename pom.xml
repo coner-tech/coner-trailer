@@ -33,13 +33,13 @@
         <module>webapp-competition</module>
         <module>testutil/assertk-ktor</module>
         <module>presentation/presentation-all-testsupport-mockk</module>
-        <module>presentation/presentation-library</module>
-        <module>presentation/presentation-library-test</module>
-        <module>presentation/presentation-library-testsupport</module>
         <module>toolkit/konstraints</module>
-        <module>toolkit/validation</module>
-        <module>toolkit/validation-testsupport</module>
+        <module>toolkit/presentation/presentation</module>
+        <module>toolkit/presentation/presentation-test</module>
+        <module>toolkit/presentation/presentation-testsupport</module>
         <module>toolkit/samples/common</module>
+        <module>toolkit/validation/validation</module>
+        <module>toolkit/validation/validation-testsupport</module>
     </modules>
 
     <properties>
