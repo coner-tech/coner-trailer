@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.zip
-import tech.coner.trailer.presentation.library.model.ItemModel
-import tech.coner.trailer.presentation.library.model.ModelNotReadyToCommitException
-import tech.coner.trailer.presentation.library.model.ModelValidationException
+import tech.coner.trailer.toolkit.presentation.adapter.Adapter
+import tech.coner.trailer.toolkit.presentation.model.ItemModel
+import tech.coner.trailer.toolkit.presentation.model.ModelNotReadyToCommitException
+import tech.coner.trailer.toolkit.presentation.model.ModelValidationException
 
 /**
  * A base presenter that deals with a loadable entity as the focus of its state
@@ -18,7 +19,7 @@ import tech.coner.trailer.presentation.library.model.ModelValidationException
 abstract class BaseItemPresenter<
         ARGUMENT : Presenter.Argument,
         ENTITY,
-        ADAPTER : tech.coner.trailer.presentation.library.adapter.Adapter<ENTITY, ITEM_MODEL>,
+        ADAPTER : Adapter<ENTITY, ITEM_MODEL>,
         ITEM_MODEL : ItemModel<ENTITY>
         > : BasePresenter<ARGUMENT>() {
 
