@@ -11,9 +11,6 @@
 
     <artifactId>io-testsupport</artifactId>
 
-    <properties>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>tech.coner.trailer</groupId>
@@ -33,14 +30,4 @@
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

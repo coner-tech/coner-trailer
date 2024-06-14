@@ -13,7 +13,6 @@
     <artifactId>io</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>core</artifactId>
@@ -79,16 +78,10 @@
             <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>

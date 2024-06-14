@@ -13,7 +13,6 @@
     <artifactId>core-test</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>tech.coner.trailer</groupId>
             <artifactId>core</artifactId>
@@ -31,15 +30,4 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
-
 </project>

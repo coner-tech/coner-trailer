@@ -14,9 +14,6 @@
 
     <description>MockK test support code for the render module. Kodein DI modules and such.</description>
 
-    <properties>
-    </properties>
-
     <dependencies>
 
         <dependency>
@@ -49,14 +46,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
