@@ -1,11 +1,11 @@
 package tech.coner.trailer.toolkit.validation.impl.entry
 
+import kotlin.reflect.KProperty1
 import tech.coner.trailer.toolkit.validation.Feedback
 import tech.coner.trailer.toolkit.validation.ValidationResult
 import tech.coner.trailer.toolkit.validation.Validator
 import tech.coner.trailer.toolkit.validation.rule.PropertyValidationRule
 import tech.coner.trailer.toolkit.validation.rule.ValidationRule
-import kotlin.reflect.KProperty1
 
 internal sealed class ValidationEntry<CONTEXT, INPUT, FEEDBACK : Feedback> {
 
@@ -37,7 +37,7 @@ internal sealed class ValidationEntry<CONTEXT, INPUT, FEEDBACK : Feedback> {
     )
         : ValidationEntry<CONTEXT, INPUT, FEEDBACK>() {
 
-        operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<FEEDBACK> {
+        operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<INPUT, FEEDBACK> {
             return ValidationResult(
                 validator(
                     context = mapContextFn(context, input),

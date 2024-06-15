@@ -1,7 +1,7 @@
 package tech.coner.trailer.toolkit.validation
 
-import tech.coner.trailer.toolkit.validation.context.ValidationRuleContext
 import kotlin.reflect.KProperty1
+import tech.coner.trailer.toolkit.validation.context.ValidationRuleContext
 import tech.coner.trailer.toolkit.validation.impl.ValidatorImpl
 
 
@@ -12,7 +12,7 @@ fun <CONTEXT, INPUT, FEEDBACK : Feedback> Validator(
 }
 
 interface Validator<CONTEXT, INPUT, FEEDBACK : Feedback> {
-    operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<FEEDBACK>
+    operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<INPUT, FEEDBACK>
 
     interface Builder<CONTEXT, INPUT, FEEDBACK : Feedback> {
 
@@ -40,6 +40,6 @@ interface Validator<CONTEXT, INPUT, FEEDBACK : Feedback> {
     }
 }
 
-operator fun <INPUT, FEEDBACK : Feedback> Validator<Unit, INPUT, FEEDBACK>.invoke(input: INPUT): ValidationResult<FEEDBACK> {
+operator fun <INPUT, FEEDBACK : Feedback> Validator<Unit, INPUT, FEEDBACK>.invoke(input: INPUT): ValidationResult<INPUT, FEEDBACK> {
     return invoke(Unit, input)
 }

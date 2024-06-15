@@ -8,9 +8,9 @@ import assertk.assertions.isEqualTo
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseApplication
-import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseApplication.LicenseType.FullLicense
-import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseApplication.LicenseType.GraduatedLearnerPermit
-import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseApplication.LicenseType.LearnerPermit
+import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.FullLicense
+import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.GraduatedLearnerPermit
+import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.LearnerPermit
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback.TooYoung
 import tech.coner.trailer.toolkit.validation.invoke
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
@@ -26,6 +26,7 @@ class DriversLicenseValidatorTest {
     ) {
         UNDERAGE_FULL(
             input = DriversLicenseApplication(
+                name = "Underage Full",
                 age = GraduatedLearnerPermit.MIN_AGE - 1,
                 licenseType = FullLicense
             ),
@@ -39,6 +40,7 @@ class DriversLicenseValidatorTest {
         ),
         UNDERAGE_GRADUATED_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Underage Graduated Learner Permit",
                 age = GraduatedLearnerPermit.MIN_AGE - 1,
                 licenseType = GraduatedLearnerPermit
             ),
@@ -51,6 +53,7 @@ class DriversLicenseValidatorTest {
         ),
         UNDERAGE_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Underage Learner Permit",
                 age = GraduatedLearnerPermit.MIN_AGE - 1,
                 licenseType = LearnerPermit
             ),
@@ -64,6 +67,7 @@ class DriversLicenseValidatorTest {
         ),
         UNDERAGE_FULL_LICENSE(
             input = DriversLicenseApplication(
+                name = "Underage Full License",
                 age = 14,
                 licenseType = FullLicense
             ),
@@ -77,6 +81,7 @@ class DriversLicenseValidatorTest {
         ),
         ELIGIBLE_LOWER_GRADUATED_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Eligible Lower Graduated Learner Permit",
                 age = 15,
                 licenseType = GraduatedLearnerPermit
             ),
@@ -84,6 +89,7 @@ class DriversLicenseValidatorTest {
         ),
         ELIGIBLE_UPPER_GRADUATED_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Eligible Upper Graduated Learner Permit",
                 age = GraduatedLearnerPermit.MAX_AGE_INCLUSIVE,
                 licenseType = GraduatedLearnerPermit
             ),
@@ -91,6 +97,7 @@ class DriversLicenseValidatorTest {
         ),
         ELIGIBLE_LOWER_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Eligible Lower Learner Permit",
                 age = LearnerPermit.MIN_AGE,
                 licenseType = LearnerPermit
             ),
@@ -98,6 +105,7 @@ class DriversLicenseValidatorTest {
         ),
         ELIGIBLE_UPPER_LEARNER_PERMIT(
             input = DriversLicenseApplication(
+                name = "Eligible Upper Learner Permit",
                 age = Int.MAX_VALUE,
                 licenseType = LearnerPermit
             ),
@@ -105,6 +113,7 @@ class DriversLicenseValidatorTest {
         ),
         ELIGIBLE_LOWER_FULL_LICENSE(
             input = DriversLicenseApplication(
+                name = "Eligible Lower Full License",
                 age = FullLicense.MIN_AGE,
                 licenseType = FullLicense
             ),

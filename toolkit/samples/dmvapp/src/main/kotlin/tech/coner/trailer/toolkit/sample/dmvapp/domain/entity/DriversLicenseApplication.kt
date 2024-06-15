@@ -1,21 +1,16 @@
 package tech.coner.trailer.toolkit.sample.dmvapp.domain.entity
 
+import kotlin.reflect.KProperty1
+import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback
+
 data class DriversLicenseApplication(
+    val name: String,
     val age: Int,
     val licenseType: LicenseType,
 ) {
 
-    sealed class LicenseType {
-        data object GraduatedLearnerPermit : LicenseType() {
-            const val MIN_AGE = 15
-            const val MAX_AGE_INCLUSIVE = 17
-            val AGE_RANGE = MIN_AGE..MAX_AGE_INCLUSIVE
-        }
-        data object LearnerPermit : LicenseType() {
-            const val MIN_AGE = 18
-        }
-        data object FullLicense : LicenseType() {
-            const val MIN_AGE = 18
-        }
-    }
+    data class Outcome(
+        val driversLicense: DriversLicense?,
+        val feedback: Map<KProperty1<DriversLicenseApplication, *>?, List<DriversLicenseApplicationFeedback>>
+    )
 }

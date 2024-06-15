@@ -19,8 +19,8 @@ internal class ValidatorImpl<CONTEXT, INPUT, FEEDBACK : Feedback>(
             .also { entries = it.entries }
     }
 
-    override fun invoke(context: CONTEXT, input: INPUT): ValidationResult<FEEDBACK> {
-        val feedback: MutableMap<KProperty1<*, *>?, MutableList<FEEDBACK>> = mutableMapOf()
+    override fun invoke(context: CONTEXT, input: INPUT): ValidationResult<INPUT, FEEDBACK> {
+        val feedback: MutableMap<KProperty1<INPUT, *>?, MutableList<FEEDBACK>> = mutableMapOf()
         entries.forEach { entry ->
                 when (entry) {
                     is ValidationEntry.InputPropertySingleFeedback<CONTEXT, INPUT, *, FEEDBACK> -> {
