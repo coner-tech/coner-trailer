@@ -1,41 +1,24 @@
 package tech.coner.trailer.toolkit.presentation.presenter
 
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withTimeout
 import tech.coner.trailer.toolkit.presentation.adapter.LoadableItemAdapter
 import tech.coner.trailer.toolkit.presentation.model.ItemModel
 import tech.coner.trailer.toolkit.presentation.model.LoadableModel
+import tech.coner.trailer.toolkit.presentation.model.Model
 import tech.coner.trailer.toolkit.presentation.state.LoadableItemState
+import tech.coner.trailer.toolkit.validation.Feedback
 
-abstract class LoadableItemPresenter<
-        ARGUMENT,
-        ITEM,
-        ARGUMENT_MODEL,
-        ITEM_MODEL
-        >
-    : CoroutineScope
-        where ITEM_MODEL : ItemModel<ITEM> {
+abstract class LoadableItemPresenter<ITEM, ITEM_MODEL, FEEDBACK : Feedback>(
+    override val initialState: LoadableItemState<ITEM, ITEM_MODEL, FEEDBACK> = LoadableItemState(LoadableModel.Empty())
+)
+    : SecondDraftPresenter<
+        LoadableItemState<ITEM, ITEM_MODEL, FEEDBACK>
+        >(), CoroutineScope
+        where ITEM_MODEL : ItemModel<ITEM, FEEDBACK> {
 
-    protected abstract val adapter: LoadableItemAdapter<ARGUMENT, ITEM, ARGUMENT_MODEL, ITEM_MODEL>
-
-    protected abstract val argument: ARGUMENT?
-    val argumentModel: ARGUMENT_MODEL? by lazy {
-        argument?.let { adapter.argumentToModelAdapter?.invoke(it) }
-    }
-
-    private val initialState = LoadableItemState<ITEM, ITEM_MODEL>(LoadableModel.Empty())
-    private val _stateMutex = Mutex()
-    private val _stateFlow: MutableStateFlow<LoadableItemState<ITEM, ITEM_MODEL>> by lazy { MutableStateFlow(initialState) }
-    val stateFlow: StateFlow<LoadableItemState<ITEM, ITEM_MODEL>> by lazy { _stateFlow.asStateFlow() }
+    protected abstract val adapter: LoadableItemAdapter<ITEM, ITEM_MODEL, FEEDBACK>
 
     suspend fun load() {
         update { old -> old.copy(LoadableModel.Loading()) }
@@ -46,7 +29,7 @@ abstract class LoadableItemPresenter<
 
     protected abstract suspend fun performLoad(): Result<ITEM>
 
-    suspend fun awaitModelLoadedOrFailed(): LoadableModel<ITEM, ITEM_MODEL> {
+    suspend fun awaitModelLoadedOrFailed(): LoadableModel<ITEM, ITEM_MODEL, FEEDBACK> {
         return stateFlow
             .map { it.loadable }
             .first {
@@ -57,7 +40,7 @@ abstract class LoadableItemPresenter<
             }
     }
 
-    suspend fun awaitModelLoadedOrThrow(): LoadableModel.Loaded<ITEM, ITEM_MODEL> {
+    suspend fun awaitModelLoadedOrThrow(): LoadableModel.Loaded<ITEM, ITEM_MODEL, FEEDBACK> {
         return stateFlow
             .map { it.loadable }
             .first {
@@ -66,14 +49,6 @@ abstract class LoadableItemPresenter<
                     is LoadableModel.LoadFailed -> throw it.cause
                     else -> false
                 }
-            } as LoadableModel.Loaded<ITEM, ITEM_MODEL>
-    }
-
-    protected suspend fun update(reduceFn: (old: LoadableItemState<ITEM, ITEM_MODEL>) -> LoadableItemState<ITEM, ITEM_MODEL>) {
-        _stateMutex.withLock {
-            withTimeout(10.milliseconds) {
-                _stateFlow.update(reduceFn)
-            }
-        }
+            } as LoadableModel.Loaded<ITEM, ITEM_MODEL, FEEDBACK>
     }
 }

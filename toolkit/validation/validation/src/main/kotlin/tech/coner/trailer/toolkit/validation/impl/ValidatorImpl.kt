@@ -21,22 +21,35 @@ internal class ValidatorImpl<CONTEXT, INPUT, FEEDBACK : Feedback>(
 
     override fun invoke(context: CONTEXT, input: INPUT): ValidationResult<INPUT, FEEDBACK> {
         val feedback: MutableMap<KProperty1<INPUT, *>?, MutableList<FEEDBACK>> = mutableMapOf()
-        entries.forEach { entry ->
-                when (entry) {
-                    is ValidationEntry.InputPropertySingleFeedback<CONTEXT, INPUT, *, FEEDBACK> -> {
-                        entry(context, input)
-                            ?.also { feedback.createOrAppend(entry.property, it) }
-                    }
-                    is ValidationEntry.InputObjectSingleFeedback -> {
-                        entry(context, input)
-                            ?.also { feedback.createOrAppend(null, it) }
-                    }
-                    is ValidationEntry.InputPropertyDelegatesToValidator<CONTEXT, INPUT, *, *, *, FEEDBACK> -> {
-                        entry(context, input)
-                            .also { feedback.createOrAppend(it.feedback) }
+        for (entry in entries) {
+            when (entry) {
+                is ValidationEntry.InputPropertySingleFeedback<CONTEXT, INPUT, *, FEEDBACK> -> {
+                    entry(context, input)
+                        ?.also { feedback.createOrAppend(entry.property, it) }
+                }
+
+                is ValidationEntry.InputObjectSingleFeedback -> {
+                    entry(context, input)
+                        ?.also { feedback.createOrAppend(null, it) }
+                }
+
+                is ValidationEntry.InputPropertyDelegatesToValidator<CONTEXT, INPUT, *, *, *, FEEDBACK> -> {
+                    entry(context, input)
+                        .also { feedback.createOrAppend(it.feedback) }
+                }
+
+                is ValidationEntry.InputObjectDelegatesToValidator<CONTEXT, INPUT, *, *, *, FEEDBACK> -> {
+                    entry(context, input)
+                        .also { feedback.createOrAppend(it.feedback) }
+                }
+
+                is ValidationEntry.ReturnEarlyIfAny<CONTEXT, INPUT, FEEDBACK> -> {
+                    if (entry(feedback.toMap())) {
+                        break
                     }
                 }
             }
+        }
         return ValidationResult(feedback.toMap())
     }
 
@@ -91,6 +104,26 @@ internal class ValidatorImpl<CONTEXT, INPUT, FEEDBACK : Feedback>(
                         ObjectValidationRuleImpl(it)
                     )
                 }
+        }
+
+        override fun <DELEGATE_CONTEXT, DELEGATE_INPUT, DELEGATE_FEEDBACK : Feedback> input(
+            validator: Validator<DELEGATE_CONTEXT, DELEGATE_INPUT, DELEGATE_FEEDBACK>,
+            mapContextFn: CONTEXT.(INPUT) -> DELEGATE_CONTEXT,
+            mapInputFn: CONTEXT.(INPUT) -> DELEGATE_INPUT,
+            mapFeedbackKeys: Map<KProperty1<DELEGATE_INPUT, *>?, KProperty1<INPUT, *>?>,
+            mapFeedbackObjectFn: (DELEGATE_FEEDBACK) -> FEEDBACK
+        ) {
+            entries += ValidationEntry.InputObjectDelegatesToValidator(
+                validator = validator,
+                mapContextFn = mapContextFn,
+                mapInputFn = mapInputFn,
+                mapFeedbackKeys = mapFeedbackKeys,
+                mapFeedbackObjectFn = mapFeedbackObjectFn
+            )
+        }
+
+        override fun returnEarlyIfAny(matchFn: (FEEDBACK) -> Boolean) {
+            entries += ValidationEntry.ReturnEarlyIfAny(matchFn)
         }
     }
 }

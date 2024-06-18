@@ -19,6 +19,8 @@ import tech.coner.trailer.toolkit.validation.testsupport.isValid
 
 class DriversLicenseValidatorTest {
 
+    private val clerk = DriversLicenseClerk()
+
     enum class DriversLicenseApplicationScenario(
         val input: DriversLicenseApplication,
         val expectedAgeFeedback: List<DriversLicenseApplicationFeedback>? = null,
@@ -124,7 +126,7 @@ class DriversLicenseValidatorTest {
     @ParameterizedTest
     @EnumSource
     fun itShouldValidateDriversLicenseApplications(scenario: DriversLicenseApplicationScenario) {
-        val actual = driversLicenseClerk(scenario.input)
+        val actual = clerk(scenario.input)
 
         assertThat(actual).all {
             feedback().all {

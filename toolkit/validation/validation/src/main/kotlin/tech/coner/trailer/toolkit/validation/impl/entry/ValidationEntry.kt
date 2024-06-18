@@ -55,4 +55,37 @@ internal sealed class ValidationEntry<CONTEXT, INPUT, FEEDBACK : Feedback> {
             )
         }
     }
+
+    internal class InputObjectDelegatesToValidator<CONTEXT, INPUT, DELEGATE_CONTEXT, DELEGATE_INPUT, DELEGATE_FEEDBACK : Feedback, FEEDBACK : Feedback>(
+        private val validator: Validator<DELEGATE_CONTEXT, DELEGATE_INPUT, DELEGATE_FEEDBACK>,
+        private val mapContextFn: CONTEXT.(INPUT) -> DELEGATE_CONTEXT,
+        private val mapInputFn: CONTEXT.(INPUT) -> DELEGATE_INPUT,
+        private val mapFeedbackKeys: Map<KProperty1<DELEGATE_INPUT, *>?, KProperty1<INPUT, *>?>,
+        private val mapFeedbackObjectFn: (DELEGATE_FEEDBACK) -> FEEDBACK
+    ) : ValidationEntry<CONTEXT, INPUT, FEEDBACK>() {
+        operator fun invoke(context: CONTEXT, input: INPUT): ValidationResult<INPUT, FEEDBACK> {
+            return ValidationResult(
+                validator(
+                    context = mapContextFn(context, input),
+                    input = mapInputFn(context, input)
+                )
+                    .feedback
+                    .map { mapFeedbackKeys[it.key] to it.value.map(mapFeedbackObjectFn) }
+                    .toMap()
+            )
+        }
+    }
+
+    internal class ReturnEarlyIfAny<CONTEXT, INPUT, FEEDBACK : Feedback>(
+        private val matchFn: (FEEDBACK) -> Boolean
+    )
+        : ValidationEntry<CONTEXT, INPUT, FEEDBACK>() {
+
+        operator fun invoke(feedback: Map<KProperty1<INPUT, *>?, List<FEEDBACK>>): Boolean {
+            return feedback
+                .values
+                .flatten()
+                .any { matchFn(it) }
+        }
+    }
 }

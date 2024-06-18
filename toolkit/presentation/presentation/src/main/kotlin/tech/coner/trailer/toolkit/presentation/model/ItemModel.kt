@@ -1,23 +1,27 @@
 package tech.coner.trailer.toolkit.presentation.model
 
-import kotlin.reflect.KProperty1
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import tech.coner.trailer.toolkit.validation.Feedback
+import tech.coner.trailer.toolkit.validation.ValidationResult
 
-interface ItemModel<I> : Model {
-    val itemFlow: StateFlow<I>
-    val item: I
-    val pendingItemFlow: StateFlow<I>
-    var pendingItem: I
-    val pendingItemValidationFlow: Flow<List<ValidationContent>>
-    val pendingItemValidation: List<ValidationContent>
-    val isPendingItemValid: Boolean
+interface ItemModel<ITEM, FEEDBACK : Feedback> : Model {
+    val itemFlow: StateFlow<ITEM>
+    val item: ITEM
+
+    val pendingItemFlow: StateFlow<ITEM>
+    var pendingItem: ITEM
+
     val isPendingItemDirty: Boolean
 
-    fun mutatePendingItem(forceValidate: Boolean? = null, mutatePendingItemFn: (I) -> I)
-    fun <P> validatedPropertyFlow(property: KProperty1<I, *>, fn: (I) -> P): Flow<Validated<P>>
+    val pendingItemValidationFlow: Flow<ValidationResult<ITEM, FEEDBACK>>
+    val pendingItemValidation: ValidationResult<ITEM, FEEDBACK>
 
-    fun validate(): List<ValidationContent>
+    val isPendingItemValid: Boolean
 
-    fun commit(forceValidate: Boolean = true): Result<I>
+    fun mutatePendingItem(forceValidate: Boolean? = null, mutatePendingItemFn: (ITEM) -> ITEM)
+
+    fun validate(): ValidationResult<ITEM, FEEDBACK>
+
+    fun commit(requireValid: Boolean = true): CommitOutcome<ITEM, FEEDBACK>
 }

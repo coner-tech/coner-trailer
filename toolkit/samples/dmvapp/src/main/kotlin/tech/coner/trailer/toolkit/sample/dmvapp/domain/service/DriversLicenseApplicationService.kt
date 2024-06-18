@@ -4,7 +4,6 @@ import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseAppl
 
 interface DriversLicenseApplicationService {
 
-    fun process(application: DriversLicenseApplication): DriversLicenseApplication.Outcome
-
+    suspend fun process(application: DriversLicenseApplication): DriversLicenseApplication.Outcome
 
 }
