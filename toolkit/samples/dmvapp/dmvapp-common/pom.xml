@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>tech.coner.trailer</groupId>
-        <artifactId>toolkit-sample-common</artifactId>
+        <artifactId>toolkit-sample-dmvapp-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../samples-common/pom.xml</relativePath>
+        <relativePath>../dmvapp-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>toolkit-sample-passwordapp</artifactId>
+    <artifactId>toolkit-sample-dmvapp-common</artifactId>
 
 </project>
