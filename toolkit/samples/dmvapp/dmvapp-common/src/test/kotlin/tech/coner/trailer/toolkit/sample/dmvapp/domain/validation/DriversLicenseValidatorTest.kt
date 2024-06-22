@@ -3,8 +3,7 @@ package tech.coner.trailer.toolkit.sample.dmvapp.domain.validation
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
-import assertk.assertions.isEqualTo
+import assertk.assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicenseApplication
@@ -14,6 +13,7 @@ import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.Learne
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback.TooYoung
 import tech.coner.trailer.toolkit.validation.invoke
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
+import tech.coner.trailer.toolkit.validation.testsupport.feedbackByProperty
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
 import tech.coner.trailer.toolkit.validation.testsupport.isValid
 
@@ -136,8 +136,11 @@ class DriversLicenseValidatorTest {
                         else -> 0
                     }
                 )
-                transform { it[DriversLicenseApplication::age] }
-                    .isEqualTo(scenario.expectedAgeFeedback)
+            }
+            feedbackByProperty().all {
+                scenario.expectedAgeFeedback
+                    ?.also { key(DriversLicenseApplication::age).isEqualTo(it) }
+                    ?: doesNotContainKey(DriversLicenseApplication::age)
             }
 
             isValid().isEqualTo(scenario.expectedValid)

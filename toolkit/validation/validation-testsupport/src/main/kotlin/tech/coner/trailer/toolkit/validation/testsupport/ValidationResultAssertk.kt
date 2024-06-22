@@ -3,10 +3,12 @@ package tech.coner.trailer.toolkit.validation.testsupport
 import assertk.Assert
 import assertk.assertions.prop
 import tech.coner.trailer.toolkit.validation.Feedback
-import tech.coner.trailer.toolkit.validation.ValidationResult
+import tech.coner.trailer.toolkit.validation.ValidationOutcome
 
 
-fun <INPUT, FEEDBACK : Feedback> Assert<ValidationResult<INPUT, FEEDBACK>>.feedback() = prop(ValidationResult<INPUT, FEEDBACK>::feedback)
+fun <INPUT, FEEDBACK : Feedback<INPUT>> Assert<ValidationOutcome<INPUT, FEEDBACK>>.feedback() = prop(ValidationOutcome<INPUT, FEEDBACK>::feedback)
 
-fun Assert<ValidationResult<*, *>>.isValid() = prop(ValidationResult<*, *>::isValid)
-fun Assert<ValidationResult<*, *>>.isInvalid() = prop(ValidationResult<*, *>::isInvalid)
+fun <INPUT, FEEDBACK : Feedback<INPUT>> Assert<ValidationOutcome<INPUT, FEEDBACK>>.feedbackByProperty() = prop(ValidationOutcome<INPUT, FEEDBACK>::feedbackByProperty)
+
+fun Assert<ValidationOutcome<*, *>>.isValid() = prop(ValidationOutcome<*, *>::isValid)
+fun Assert<ValidationOutcome<*, *>>.isInvalid() = prop(ValidationOutcome<*, *>::isInvalid)

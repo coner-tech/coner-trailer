@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.key
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.Password
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy.Factory.anyOneChar
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy.Factory.irritating
@@ -20,6 +21,7 @@ import tech.coner.trailer.toolkit.sample.passwordapp.domain.validation.PasswordV
 import tech.coner.trailer.toolkit.validation.Severity.Error
 import tech.coner.trailer.toolkit.validation.Severity.Warning
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
+import tech.coner.trailer.toolkit.validation.testsupport.feedbackByProperty
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
 import tech.coner.trailer.toolkit.validation.testsupport.isValid
 
@@ -29,24 +31,24 @@ class PasswordValidatorTest {
 
     enum class PasswordScenario(
         val policy: PasswordPolicy,
-        val password: String,
+        val password: Password,
         val expectedFeedback: List<PasswordFeedback>? = null,
         val expectedIsValid: Boolean
     ) {
         EMPTY_ANY_ONE_CHAR_INVALID(
             policy = anyOneChar(),
-            password = "",
+            password = Password(""),
             expectedFeedback = listOf(InsufficientLength(Error)),
             expectedIsValid = false
         ),
         MINIMUM_ANY_ONE_CHAR_VALID(
             policy = anyOneChar(),
-            password = "b",
+            password = Password("b"),
             expectedIsValid = true
         ),
         IRRITATING_INVALID(
             policy = irritating(),
-            password = "aA1!",
+            password = Password("aA1!"),
             expectedFeedback = listOf(
                 InsufficientLength(Error),
                 InsufficientLetterLowercase(Warning),
@@ -58,7 +60,7 @@ class PasswordValidatorTest {
         ),
         IRRITATING_VALID_WITH_WARNINGS(
             policy = irritating(),
-            password = "Tr0ub4dor&3",
+            password = Password("Tr0ub4dor&3"),
             expectedFeedback = listOf(
                 InsufficientLength(Warning),
                 InsufficientLetterUppercase(Warning),
@@ -68,7 +70,7 @@ class PasswordValidatorTest {
         ),
         IRRITATING_HARD_TO_REMEMBER_EASY_GUESS_FOR_COMPUTER(
             policy = irritating(),
-            password = "battery horse staple correct",
+            password = Password("battery horse staple correct"),
             expectedFeedback = listOf(
                 InsufficientLetterUppercase(Error),
                 InsufficientNumeric(Error)
@@ -83,7 +85,7 @@ class PasswordValidatorTest {
         val actual = validator(scenario.policy, scenario.password)
 
         assertThat(actual).all {
-            feedback().all {
+            feedbackByProperty().all {
                 if (scenario.expectedFeedback?.isNotEmpty() == true) {
                     key(null).isEqualTo(scenario.expectedFeedback)
                 } else {

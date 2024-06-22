@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>tech.coner.trailer</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>buildsrc-kotlin-parent</artifactId>
+
+    <packaging>pom</packaging>
+    
+    <modules>
+        <module>../../core</module>
+        <module>../../core-test</module>
+        <module>../../datasource-crispy-fish</module>
+        <module>../../datasource-crispy-fish-test</module>
+        <module>../../datasource-snoozle</module>
+        <module>../../api-client-motorsportreg</module>
+        <module>../../api-client-motorsportreg-test</module>
+        <module>../../datasource-motorsportreg</module>
+        <module>../../io</module>
+        <module>../../io-kodein-di</module>
+        <module>../../admin</module>
+        <module>../../io-test</module>
+        <module>../../presentation/presentation</module>
+        <module>../../presentation/presentation-text</module>
+        <module>../../presentation/presentation-all-kodein-di</module>
+        <module>../../presentation/presentation-json</module>
+        <module>../../io-kodein-di-test</module>
+        <module>../../io-testsupport</module>
+        <module>../../core-kodein-di</module>
+        <module>../../core-kodein-di-test</module>
+        <module>../../webapp-competition</module>
+        <module>../../testutil/assertk-ktor</module>
+        <module>../../presentation/presentation-all-testsupport-mockk</module>
+        <module>../../toolkit/konstraints</module>
+        <module>../../toolkit/presentation/presentation</module>
+        <module>../../toolkit/presentation/presentation-testsupport</module>
+        <module>../../toolkit/samples/samples-common</module>
+        <module>../../toolkit/validation/validation</module>
+        <module>../../toolkit/validation/validation-testsupport</module>
+        <module>../../toolkit/toolkit</module>
+        <module>../../testutil/assertk-arrowkt</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.code.style>official</kotlin.code.style>
+        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-core-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-fx-coroutines-jvm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-test-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>app.cash.turbine</groupId>
+            <artifactId>turbine-jvm</artifactId>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>mavenCentral</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

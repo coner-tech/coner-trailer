@@ -9,6 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.Password
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy.Factory.anyOneChar
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy.Factory.irritating
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.state.ChangePasswordFormState
@@ -27,9 +28,10 @@ import tech.coner.trailer.toolkit.sample.passwordapp.domain.validation.PasswordF
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.validation.PasswordValidator
 import tech.coner.trailer.toolkit.validation.Severity.Error
 import tech.coner.trailer.toolkit.validation.Severity.Warning
-import tech.coner.trailer.toolkit.validation.ValidationResult
+import tech.coner.trailer.toolkit.validation.ValidationOutcome
 import tech.coner.trailer.toolkit.validation.invoke
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
+import tech.coner.trailer.toolkit.validation.testsupport.feedbackByProperty
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
 import tech.coner.trailer.toolkit.validation.testsupport.isValid
 
@@ -54,28 +56,28 @@ class ChangePasswordFormValidatorTest {
             mockNewPasswordFeedback = listOf(InsufficientLength(Error)),
             input = ChangePasswordFormState(
                 passwordPolicy = anyOneChar(),
-                currentPassword = "",
-                newPassword = "",
-                newPasswordRepeated = ""
+                currentPassword = Password(""),
+                newPassword = Password(""),
+                newPasswordRepeated = Password("")
             ),
-            expectedCurrentPasswordFeedback = listOf(MustNotBeEmpty),
+            expectedCurrentPasswordFeedback = listOf(MustNotBeEmpty(ChangePasswordFormState::currentPassword)),
             expectedIsValid = false
         ),
         MINIMUM_ANY_ONE_CHAR_VALID(
             input = ChangePasswordFormState(
                 passwordPolicy = anyOneChar(),
-                currentPassword = "a",
-                newPassword = "b",
-                newPasswordRepeated = "b"
+                currentPassword = Password("a"),
+                newPassword = Password("b"),
+                newPasswordRepeated = Password("b")
             ),
             expectedIsValid = true
         ),
         SAME_ANY_ONE_CHAR_INVALID(
             input = ChangePasswordFormState(
                 passwordPolicy = anyOneChar(),
-                currentPassword = "a",
-                newPassword = "a",
-                newPasswordRepeated = "a"
+                currentPassword = Password("a"),
+                newPassword = Password("a"),
+                newPasswordRepeated = Password("a")
             ),
             expectedLocalNewPasswordFeedback = listOf(NewPasswordSameAsCurrentPassword),
             expectedIsValid = false
@@ -83,9 +85,9 @@ class ChangePasswordFormValidatorTest {
         REPEAT_MISMATCH_ANY_ONE_CHAR_INVALID(
             input = ChangePasswordFormState(
                 passwordPolicy = anyOneChar(),
-                currentPassword = "a",
-                newPassword = "b",
-                newPasswordRepeated = "c"
+                currentPassword = Password("a"),
+                newPassword = Password("b"),
+                newPasswordRepeated = Password("c")
             ),
             expectedNewPasswordRepeatedFeedback = listOf(RepeatPasswordMismatch),
             expectedIsValid = false
@@ -100,9 +102,9 @@ class ChangePasswordFormValidatorTest {
             ),
             input = ChangePasswordFormState(
                 passwordPolicy = irritating(),
-                currentPassword = "a",
-                newPassword = "aA1!",
-                newPasswordRepeated = "aA1!"
+                currentPassword = Password("a"),
+                newPassword = Password("aA1!"),
+                newPasswordRepeated = Password("aA1!")
             ),
             expectedIsValid = false
         ),
@@ -114,9 +116,9 @@ class ChangePasswordFormValidatorTest {
             ),
             input = ChangePasswordFormState(
                 passwordPolicy = irritating(),
-                currentPassword = "a",
-                newPassword = "Tr0ub4dor&3",
-                newPasswordRepeated = "Tr0ub4dor&3"
+                currentPassword = Password("a"),
+                newPassword = Password("Tr0ub4dor&3"),
+                newPasswordRepeated = Password("Tr0ub4dor&3")
             ),
             expectedIsValid = true
         ),
@@ -127,9 +129,9 @@ class ChangePasswordFormValidatorTest {
             ),
             input = ChangePasswordFormState(
                 passwordPolicy = irritating(),
-                currentPassword = "a",
-                newPassword = "battery horse staple correct",
-                newPasswordRepeated = "battery horse staple correct"
+                currentPassword = Password("a"),
+                newPassword = Password("battery horse staple correct"),
+                newPasswordRepeated = Password("battery horse staple correct")
             ),
             expectedIsValid = false
         );
@@ -156,16 +158,16 @@ class ChangePasswordFormValidatorTest {
         every {
             passwordValidator(scenario.input.passwordPolicy, scenario.input.newPassword)
         } returns(
-            ValidationResult(
+            ValidationOutcome(
                 scenario.mockNewPasswordFeedback
-                    ?.let { mapOf(null to it) }
-                    ?: emptyMap())
+                    ?: emptyList()
+            )
         )
 
         val actual = changePasswordFormValidator(scenario.input)
 
         assertThat(actual).all {
-            feedback().all {
+            feedbackByProperty().all {
                 when (scenario.expectedCurrentPasswordFeedback) {
                     is List<ChangePasswordFormFeedback> -> key(ChangePasswordFormState::currentPassword).isEqualTo(scenario.expectedCurrentPasswordFeedback)
                     else -> doesNotContainKey(ChangePasswordFormState::currentPassword)

@@ -1,27 +1,35 @@
 package tech.coner.trailer.toolkit.presentation.model
 
+import arrow.core.Either
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import tech.coner.trailer.toolkit.validation.Feedback
-import tech.coner.trailer.toolkit.validation.ValidationResult
+import tech.coner.trailer.toolkit.validation.ValidationOutcome
 
-interface ItemModel<ITEM, FEEDBACK : Feedback> : Model {
-    val itemFlow: StateFlow<ITEM>
+interface ItemModel<ITEM, FEEDBACK : Feedback<ITEM>> : Model {
     val item: ITEM
+    val itemFlow: StateFlow<ITEM>
 
-    val pendingItemFlow: StateFlow<ITEM>
     var pendingItem: ITEM
+    val pendingItemFlow: StateFlow<ITEM>
 
     val isPendingItemDirty: Boolean
+    val isPendingItemDirtyFlow: Flow<Boolean>
 
-    val pendingItemValidationFlow: Flow<ValidationResult<ITEM, FEEDBACK>>
-    val pendingItemValidation: ValidationResult<ITEM, FEEDBACK>
+    val pendingItemValidation: ValidationOutcome<ITEM, FEEDBACK>
+    val pendingItemValidationFlow: StateFlow<ValidationOutcome<ITEM, FEEDBACK>>
 
     val isPendingItemValid: Boolean
+    val isPendingItemValidFlow: Flow<Boolean>
 
-    fun mutatePendingItem(forceValidate: Boolean? = null, mutatePendingItemFn: (ITEM) -> ITEM)
+    val canReset: Boolean
+    val canResetFlow: Flow<Boolean>
 
-    fun validate(): ValidationResult<ITEM, FEEDBACK>
+    fun updatePendingItem(forceValidate: Boolean? = null, updateFn: (ITEM) -> ITEM)
 
-    fun commit(requireValid: Boolean = true): CommitOutcome<ITEM, FEEDBACK>
+    fun validate(): ValidationOutcome<ITEM, FEEDBACK>
+
+    fun commit(requireValid: Boolean = true): Either<ValidationOutcome<ITEM, FEEDBACK>, ITEM>
+
+    fun reset()
 }

@@ -1,5 +1,6 @@
 package tech.coner.trailer.toolkit.sample.passwordapp.domain.validation
 
+import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.Password
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.entity.PasswordPolicy
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLength
 import tech.coner.trailer.toolkit.sample.passwordapp.domain.validation.PasswordFeedback.InsufficientLetterLowercase
@@ -11,15 +12,15 @@ import tech.coner.trailer.toolkit.validation.Severity.Error
 import tech.coner.trailer.toolkit.validation.Severity.Warning
 import tech.coner.trailer.toolkit.validation.Validator
 
-typealias PasswordValidator = Validator<PasswordPolicy, String, PasswordFeedback>
+typealias PasswordValidator = Validator<PasswordPolicy, Password, PasswordFeedback>
 
 fun PasswordValidator(): PasswordValidator = Validator {
     input(
-        { context.lengthThreshold(it.length, ::InsufficientLength) },
-        { context.letterLowercaseThreshold(it.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase ) },
-        { context.letterUppercaseThreshold(it.count { char -> char.isUpperCase() }, ::InsufficientLetterUppercase ) },
-        { context.numericThreshold(it.count { char -> char.isDigit() }, ::InsufficientNumeric ) },
-        { context.specialThreshold(it.count { char -> !char.isLetterOrDigit() }, ::InsufficientSpecial ) }
+        { context.lengthThreshold(it.value.length, ::InsufficientLength) },
+        { context.letterLowercaseThreshold(it.value.count { char -> char.isLowerCase() }, ::InsufficientLetterLowercase ) },
+        { context.letterUppercaseThreshold(it.value.count { char -> char.isUpperCase() }, ::InsufficientLetterUppercase ) },
+        { context.numericThreshold(it.value.count { char -> char.isDigit() }, ::InsufficientNumeric ) },
+        { context.specialThreshold(it.value.count { char -> !char.isLetterOrDigit() }, ::InsufficientSpecial ) }
     )
 }
 

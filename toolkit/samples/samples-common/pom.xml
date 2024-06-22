@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>tech.coner.trailer</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>buildsrc-kotlin-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>../../../buildsrc/buildsrc-kotlin-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>toolkit-sample-common</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>../fooapp/fooapp-parent</module>
         <module>../passwordapp</module>
         <module>../dmvapp/dmvapp-parent</module>
     </modules>

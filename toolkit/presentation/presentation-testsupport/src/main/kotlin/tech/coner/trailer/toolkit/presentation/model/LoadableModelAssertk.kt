@@ -3,14 +3,14 @@ package tech.coner.trailer.toolkit.presentation.model
 import assertk.Assert
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import tech.coner.trailer.toolkit.validation.Feedback
 
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel<ITEM, ITEM_MODEL>>.isEmpty() = isInstanceOf<LoadableModel.Empty<ITEM, ITEM_MODEL>>()
+fun <FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> Assert<Loadable<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>.isEmpty() = isInstanceOf<Loadable.Empty<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>()
 
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel<ITEM, ITEM_MODEL>>.isLoading() = isInstanceOf<LoadableModel.Loading<ITEM, ITEM_MODEL>>()
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel.Loading<ITEM, ITEM_MODEL>>.partial() = prop(LoadableModel.Loading<ITEM, ITEM_MODEL>::partial)
+fun <FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> Assert<Loadable<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>.isLoading() = isInstanceOf<Loadable.Loading<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>()
+fun <FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> Assert<Loadable.Loading<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>.partial() = prop(Loadable.Loading<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>::partial)
 
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel<ITEM, ITEM_MODEL>>.isLoaded() = isInstanceOf<LoadableModel.Loaded<ITEM, ITEM_MODEL>>()
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel.Loaded<ITEM, ITEM_MODEL>>.item() = prop(LoadableModel.Loaded<ITEM, ITEM_MODEL>::item)
+fun <FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> Assert<Loadable<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>.isLoaded() = isInstanceOf<Loadable.Loaded<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>()
+fun <FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> Assert<Loadable.Loaded<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>>.either() = prop(Loadable.Loaded<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>::either)
 
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel<ITEM, ITEM_MODEL>>.isLoadFailed() = isInstanceOf<LoadableModel.LoadFailed<ITEM, ITEM_MODEL>>()
-fun <ITEM, ITEM_MODEL : ItemModel<ITEM>> Assert<LoadableModel.LoadFailed<ITEM, ITEM_MODEL>>.cause() = prop(LoadableModel.LoadFailed<ITEM, ITEM_MODEL>::cause)
+// TODO: convenient API for asserting loaded either success or failure

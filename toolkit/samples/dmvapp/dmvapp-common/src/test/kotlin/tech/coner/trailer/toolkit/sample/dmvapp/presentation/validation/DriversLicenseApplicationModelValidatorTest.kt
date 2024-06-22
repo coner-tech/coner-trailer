@@ -10,11 +10,14 @@ import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.FullLicense
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.DriversLicenseApplicationFeedback.TooYoung
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.DriversLicenseClerk
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.adapter.DriversLicenseApplicationModelAdapters
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.model.DriversLicenseApplicationModel
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.AgeIsRequired
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.DelegatedFeedback
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.LicenseTypeIsRequired
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.NameIsRequired
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelValidator
 import tech.coner.trailer.toolkit.validation.invoke
 import tech.coner.trailer.toolkit.validation.testsupport.feedback
 import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
@@ -23,20 +26,21 @@ import tech.coner.trailer.toolkit.validation.testsupport.isValid
 class DriversLicenseApplicationModelValidatorTest {
 
     private val validator = DriversLicenseApplicationModelValidator(
-        driversLicenseClerk = DriversLicenseClerk()
+        driversLicenseClerk = DriversLicenseClerk(),
+        driversLicenseApplicationModelAdapters = DriversLicenseApplicationModelAdapters()
     )
 
     enum class Scenario(
         val input: DriversLicenseApplicationModel,
-        val expectedFeedback: Map<KProperty1<DriversLicenseApplicationModel, *>, List<DriversLicenseApplicationModelFeedback>> = emptyMap(),
+        val expectedFeedback: List<DriversLicenseApplicationModelFeedback> = emptyList(),
         val expectedIsValid: Boolean
     ) {
         FAIL_MODEL_FROM_DEFAULT_CONSTRUCTOR(
             input = DriversLicenseApplicationModel(),
-            expectedFeedback = mapOf(
-                DriversLicenseApplicationModel::name to listOf(NameIsRequired),
-                DriversLicenseApplicationModel::age to listOf(AgeIsRequired),
-                DriversLicenseApplicationModel::licenseType to listOf(LicenseTypeIsRequired)
+            expectedFeedback = listOf(
+                NameIsRequired,
+                AgeIsRequired,
+                LicenseTypeIsRequired,
             ),
             expectedIsValid = false
         ),
@@ -47,8 +51,8 @@ class DriversLicenseApplicationModelValidatorTest {
                 age = 42,
                 licenseType = FullLicense
             ),
-            expectedFeedback = mapOf(
-                DriversLicenseApplicationModel::name to listOf(NameIsRequired)
+            expectedFeedback = listOf(
+                NameIsRequired
             ),
             expectedIsValid = false
         ),
@@ -59,8 +63,8 @@ class DriversLicenseApplicationModelValidatorTest {
                 age = null,
                 licenseType = FullLicense
             ),
-            expectedFeedback = mapOf(
-                DriversLicenseApplicationModel::age to listOf(AgeIsRequired)
+            expectedFeedback = listOf(
+                AgeIsRequired
             ),
             expectedIsValid = false
         ),
@@ -71,8 +75,8 @@ class DriversLicenseApplicationModelValidatorTest {
                 age = 42,
                 licenseType = null
             ),
-            expectedFeedback = mapOf(
-                DriversLicenseApplicationModel::licenseType to listOf(LicenseTypeIsRequired)
+            expectedFeedback = listOf(
+                LicenseTypeIsRequired
             ),
             expectedIsValid = false
         ),
@@ -83,10 +87,8 @@ class DriversLicenseApplicationModelValidatorTest {
                 age = 15,
                 licenseType = FullLicense
             ),
-            expectedFeedback = mapOf(
-                DriversLicenseApplicationModel::age to listOf(
-                    DelegatedFeedback(TooYoung(suggestOtherLicenseType = LicenseType.GraduatedLearnerPermit))
-                )
+            expectedFeedback = listOf(
+                DelegatedFeedback(TooYoung(suggestOtherLicenseType = LicenseType.GraduatedLearnerPermit))
             ),
             expectedIsValid = false
         ),
@@ -97,7 +99,7 @@ class DriversLicenseApplicationModelValidatorTest {
                 age = 40,
                 licenseType = FullLicense
             ),
-            expectedFeedback = emptyMap(),
+            expectedFeedback = emptyList(),
             expectedIsValid = true
         )
     }

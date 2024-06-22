@@ -10,50 +10,23 @@
     <version>0.1.0-SNAPSHOT</version>
 
     <modules>
-        <module>core</module>
-        <module>core-test</module>
-        <module>datasource-crispy-fish</module>
-        <module>datasource-crispy-fish-test</module>
-        <module>datasource-snoozle</module>
-        <module>api-client-motorsportreg</module>
-        <module>api-client-motorsportreg-test</module>
-        <module>datasource-motorsportreg</module>
-        <module>io</module>
-        <module>io-kodein-di</module>
-        <module>admin</module>
-        <module>io-test</module>
-        <module>presentation/presentation</module>
-        <module>presentation/presentation-text</module>
-        <module>presentation/presentation-all-kodein-di</module>
-        <module>presentation/presentation-json</module>
-        <module>io-kodein-di-test</module>
-        <module>io-testsupport</module>
-        <module>core-kodein-di</module>
-        <module>core-kodein-di-test</module>
-        <module>webapp-competition</module>
-        <module>testutil/assertk-ktor</module>
-        <module>presentation/presentation-all-testsupport-mockk</module>
-        <module>toolkit/konstraints</module>
-        <module>toolkit/presentation/presentation</module>
-        <module>toolkit/presentation/presentation-test</module>
-        <module>toolkit/presentation/presentation-testsupport</module>
-        <module>toolkit/samples/samples-common</module>
-        <module>toolkit/validation/validation</module>
-        <module>toolkit/validation/validation-testsupport</module>
-        <module>toolkit/util</module>
+        <module>buildsrc/buildsrc-kotlin-parent</module>
+        <module>toolkit/samples/dmvapp/dmvapp-gui</module>
     </modules>
 
     <properties>
+        <coner-trailer.version>${project.version}</coner-trailer.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <maven.plugin.validation>VERBOSE</maven.plugin.validation>
+        <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-surefire-plugin.version>3.2.3</maven-surefire-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <appdirs.version>1.2.2</appdirs.version>
-        <kotlin.version>1.9.22</kotlin.version>
+        <kotlin.version>2.0.20</kotlin.version>
         <kotlin.compiler.languageVersion>2.0</kotlin.compiler.languageVersion>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.code.style>official</kotlin.code.style>
@@ -69,6 +42,7 @@
         <logback.version>1.4.14</logback.version>
         <clikt.version>4.2.1</clikt.version>
         <mordant.version>2.4.0</mordant.version>
+        <arrow.version>1.2.4</arrow.version>
 
         <junit.jupiter.version>5.10.1</junit.jupiter.version>
         <assertk.version>0.28.0</assertk.version>
@@ -79,39 +53,11 @@
         <turbine.version>1.0.0</turbine.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-test-jvm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.willowtreeapps.assertk</groupId>
-            <artifactId>assertk-jvm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.mockk</groupId>
-            <artifactId>mockk-jvm</artifactId>
-        </dependency>
-    </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <artifactId>kotlin-stdlib</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
             <dependency>
@@ -209,6 +155,16 @@
                 <artifactId>mordant-jvm</artifactId>
                 <version>${mordant.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.arrow-kt</groupId>
+                <artifactId>arrow-core-jvm</artifactId>
+                <version>${arrow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.arrow-kt</groupId>
+                <artifactId>arrow-fx-coroutines-jvm</artifactId>
+                <version>${arrow.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -274,26 +230,6 @@
     </dependencyManagement>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-
-        <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -342,6 +278,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

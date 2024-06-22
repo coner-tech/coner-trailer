@@ -1,28 +1,39 @@
 package tech.coner.trailer.toolkit.sample.dmvapp.cli.command
 
-import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.clikt.parameters.types.float
 import com.github.ajalt.clikt.parameters.types.int
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import tech.coner.trailer.toolkit.dashify
 import tech.coner.trailer.toolkit.sample.dmvapp.cli.view.DriversLicenseView
+import tech.coner.trailer.toolkit.sample.dmvapp.cli.view.ValidationResultView
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType
-import tech.coner.trailer.toolkit.sample.dmvapp.presentation.localization.Localization
+import tech.coner.trailer.toolkit.sample.dmvapp.domain.service.impl.DriversLicenseApplicationServiceImpl
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.localization.Strings
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.model.DriversLicenseApplicationModel
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.model.DriversLicenseApplicationRejectionModel
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.presenter.DriversLicenseApplicationPresenter
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback
-import tech.coner.trailer.toolkit.util.dashify
-import tech.coner.trailer.toolkit.validation.ValidationResult
+import tech.coner.trailer.toolkit.validation.ValidationOutcome
 
 class DriversLicenseApplicationCommand(
     private val presenter: DriversLicenseApplicationPresenter,
-    private val localization: Localization,
+    private val strings: Strings,
     private val driversLicenseView: DriversLicenseView,
+    private val service: DriversLicenseApplicationServiceImpl,
 ) : CliktCommand(
     name = "drivers-license-application"
 ), CoroutineScope by CoroutineScope(Dispatchers.Default + CoroutineName("DriversLicenseApplicationCommand")) {
@@ -33,32 +44,62 @@ class DriversLicenseApplicationCommand(
         .int()
         .required()
     private val licenseType: LicenseType by option()
-        .choice(localization.licenseTypeLabels.associate { it.second.dashify() to it.first })
+        .choice(strings.licenseTypeLabels.associate { it.second.dashify() to it.first })
         .required()
 
-    override fun run() {
-        val model = presenter.state.model
-        model.name = name
-        model.age = age
-        model.licenseType = licenseType
-        model.commit()
-            .onFailure {
-                it.feedback.echo()
-                throw Abort()
+    private val buildingOnFireChance: Float? by option()
+        .float()
+    private val sassChance: Float? by option()
+        .float()
+    private val legallyProhibitedChance: Float? by option()
+        .float()
+
+    override fun run(): Unit = runBlocking {
+        presenter.name.value = name
+        presenter.age.value = age
+        presenter.licenseType.value = licenseType
+
+        buildingOnFireChance?.also { service.buildingOnFireChance = it }
+        sassChance?.also { service.sassChance = it }
+        legallyProhibitedChance?.also { service.legallyProhibitedChance = it }
+
+        val processing = async {
+            val progress = launch {
+                echo("Processing...", trailingNewline = false)
+                while (isActive) {
+                    echo('.', trailingNewline = false)
+                    delay(Random.nextInt(100, 1000).milliseconds)
+                }
             }
-        runBlocking { presenter.processApplication() }
-            ?.also {
-                echo(localization.driversLicenseGranted)
-                echo(driversLicenseView(it.driversLicense!!))
+            presenter.submitApplication()
+                .also { progress.cancel() }
+        }
+
+        processing.await().getOrThrow()
+            .also { echo() }
+            .onLeft { rejection ->
+                when (rejection) {
+                    is DriversLicenseApplicationRejectionModel.Invalid -> rejection.validationOutcome.widget()
+                    is DriversLicenseApplicationRejectionModel.Sassed -> strings[rejection.sass]
+                    is DriversLicenseApplicationRejectionModel.LegallyProhibited -> strings.driversLicenseApplicationRejectionLegallyProhibited
+                }
+                    .also { echo(terminal.render(it), err = true) }
+            }
+            .onRight {
+                echo(strings.driversLicenseGranted)
+                echo(driversLicenseView(it))
             }
     }
 
-    private fun ValidationResult<DriversLicenseApplicationModel, DriversLicenseApplicationModelFeedback>.echo() {
-        if (feedback.isEmpty()) return
-        feedback
-            .map { (_, feedbacks) ->
-                feedbacks.joinToString(separator = System.lineSeparator()) { "[${it.severity.name.lowercase()}]: ${localization.label(it)}" }
-            }
-            .forEach { echo(it, err = true) }
-    }
+    private fun ValidationOutcome<DriversLicenseApplicationModel, DriversLicenseApplicationModelFeedback>.widget() =
+        ValidationResultView<DriversLicenseApplicationModel, DriversLicenseApplicationModelFeedback>(
+            terminal = terminal,
+            strings = strings,
+            fieldStringsMap = mapOf(
+                DriversLicenseApplicationModel::name to strings.driversLicenseNameField,
+                DriversLicenseApplicationModel::age to strings.driversLicenseAgeField,
+                DriversLicenseApplicationModel::licenseType to strings.driversLicenseLicenseTypeField,
+            ),
+            messageFn = { strings[it] }
+        ).invoke(this)
 }

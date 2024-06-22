@@ -2,80 +2,72 @@ package tech.coner.trailer.toolkit.sample.dmvapp.presentation.presenter
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import kotlinx.coroutines.runBlocking
+import assertk.assertions.isSuccess
+import assertk.assertions.prop
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
+import org.kodein.di.DIAware
+import org.kodein.di.instance
+import tech.coner.trailer.assertk.arrowkt.isRight
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.DriversLicense
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.LicenseType.FullLicense
-import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.driversLicense
-import tech.coner.trailer.toolkit.sample.dmvapp.domain.entity.feedback
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.model.DriversLicenseApplicationModel
-import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.AgeIsRequired
-import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.LicenseTypeIsRequired
-import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.NameIsRequired
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.state.DriversLicenseApplicationState
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.DriversLicenseApplicationModelFeedback.*
 import tech.coner.trailer.toolkit.sample.dmvapp.testDi
-import tech.coner.trailer.toolkit.validation.testsupport.feedback
-import tech.coner.trailer.toolkit.validation.testsupport.isValid
+import tech.coner.trailer.toolkit.validation.testsupport.feedbackByProperty
+import tech.coner.trailer.toolkit.validation.testsupport.isInvalid
 
-class DriversLicenseApplicationPresenterTest {
+class DriversLicenseApplicationPresenterTest: DIAware by testDi {
 
-    private val presenter = DriversLicenseApplicationPresenter(
-        di = testDi
-    )
+    private val presenter: DriversLicenseApplicationPresenter by instance()
 
     @Test
     fun itShouldProcessValidApplication() = runTest {
         val license = DriversLicense(
             name = "experienced driver",
-            ageWhenApplied = 42,
+            age = 42,
             licenseType = FullLicense
         )
-        with(presenter.state.model) {
-            name = license.name
-            age = license.ageWhenApplied
-            licenseType = license.licenseType
+        with(presenter) {
+            name.value = license.name
+            age.value = license.age
+            licenseType.value = license.licenseType
 
-            commit()
-                .onSuccess {
-                    runBlocking {
-                        presenter.processApplication()
-                    }
-                }
+            submitApplication()
         }
 
-        assertThat(presenter.state.outcome)
+        assertThat(presenter.state)
+            .prop(DriversLicenseApplicationState::outcome)
             .isNotNull()
-            .all {
-                driversLicense().isEqualTo(license)
-                feedback().isEmpty()
-            }
+            .isSuccess()
+            .isRight()
+            .isEqualTo(license)
     }
 
     @Test
     fun itShouldHandleInvalidApplication() = runTest {
-        with(presenter.state.model) {
+        with(presenter) {
             // model's initial values aren't valid
 
-            commit()
-                .onSuccess {
-                    fail("unexpected: commit invoked successFn")
-                }
+            submitApplication()
+            runCurrent()
         }
 
-        assertThat(presenter.state.model.pendingItemValidation).all {
-            isValid().isFalse()
-            feedback().isEqualTo(
-                mapOf(
-                    DriversLicenseApplicationModel::name to listOf(NameIsRequired),
-                    DriversLicenseApplicationModel::age to listOf(AgeIsRequired),
-                    DriversLicenseApplicationModel::licenseType to listOf(LicenseTypeIsRequired)
+        assertThat(presenter.validationResult)
+            .isNotNull()
+            .all {
+                isInvalid()
+                feedbackByProperty().isEqualTo(
+                    mapOf(
+                        DriversLicenseApplicationModel::name to listOf(NameIsRequired),
+                        DriversLicenseApplicationModel::age to listOf(AgeIsRequired),
+                        DriversLicenseApplicationModel::licenseType to listOf(LicenseTypeIsRequired)
+                    )
                 )
-            )
         }
     }
 }

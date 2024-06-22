@@ -16,11 +16,9 @@ typealias ChangePasswordFormValidator = Validator<Unit, ChangePasswordFormState,
 fun ChangePasswordFormValidator(
     passwordValidator: PasswordValidator = PasswordValidator(),
 ): ChangePasswordFormValidator = Validator {
-    ChangePasswordFormState::currentPassword { currentPassword ->
-        MustNotBeEmpty.takeIf { currentPassword.isEmpty() }
-    }
-    ChangePasswordFormState::newPassword { newPassword: String ->
-        NewPasswordSameAsCurrentPassword.takeIf { input.currentPassword.isNotEmpty() && newPassword == input.currentPassword }
+    ChangePasswordFormState::currentPassword { if (it.value.isEmpty()) MustNotBeEmpty(property) else null }
+    ChangePasswordFormState::newPassword { newPassword ->
+        NewPasswordSameAsCurrentPassword.takeIf { input.currentPassword.value.isNotEmpty() && newPassword == input.currentPassword }
     }
     ChangePasswordFormState::newPassword.invoke(passwordValidator, { it.passwordPolicy }, ::NewPasswordFeedback)
     ChangePasswordFormState::newPasswordRepeated { newPasswordRepeated ->

@@ -7,6 +7,7 @@ import tech.coner.trailer.toolkit.sample.dmvapp.cli.command.cliCommandModule
 import tech.coner.trailer.toolkit.sample.dmvapp.cli.view.cliViewModule
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.service.impl.domainServiceModule
 import tech.coner.trailer.toolkit.sample.dmvapp.domain.validation.domainValidationModule
+import tech.coner.trailer.toolkit.sample.dmvapp.presentation.adapter.presentationAdapterModule
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.localization.presentationLocalizationModule
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.presenter.presentationPresenterModule
 import tech.coner.trailer.toolkit.sample.dmvapp.presentation.validation.presentationValidationModule
@@ -24,6 +25,7 @@ private val di = DI {
         domainValidationModule,
         presentationLocalizationModule,
         presentationPresenterModule,
+        presentationAdapterModule,
         presentationValidationModule
     )
 }

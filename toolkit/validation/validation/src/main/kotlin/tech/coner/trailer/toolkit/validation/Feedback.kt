@@ -1,6 +1,8 @@
 package tech.coner.trailer.toolkit.validation
 
-interface Feedback {
+import kotlin.reflect.KProperty1
+
+interface Feedback<INPUT> {
+    val property: KProperty1<INPUT, *>?
     val severity: Severity
 }
-
