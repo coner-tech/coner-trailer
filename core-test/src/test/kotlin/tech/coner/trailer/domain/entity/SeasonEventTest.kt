@@ -1,4 +1,4 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isNegative
@@ -9,6 +9,11 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.nio.file.Paths
 import java.time.LocalDate
+import tech.coner.trailer.Event
+import tech.coner.trailer.SeasonEvent
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestPolicies
+import tech.coner.trailer.TestSeasonEvents
 
 class SeasonEventTest {
 

@@ -4,6 +4,7 @@ import tech.coner.trailer.eventresults.EventResultsType
 import tech.coner.trailer.eventresults.FinalScoreStyle
 import tech.coner.trailer.eventresults.PaxTimeStyle
 import java.util.*
+import tech.coner.trailer.domain.entity.Club
 
 data class Policy(
     val id: UUID,

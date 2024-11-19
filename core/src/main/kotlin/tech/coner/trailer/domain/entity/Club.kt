@@ -1,4 +1,4 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 data class Club(
     val name: String

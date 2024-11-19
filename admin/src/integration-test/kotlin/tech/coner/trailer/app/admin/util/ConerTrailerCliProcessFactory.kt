@@ -1,6 +1,6 @@
 package tech.coner.trailer.app.admin.util
 
-import tech.coner.trailer.Club
+import tech.coner.trailer.domain.entity.Club
 import tech.coner.trailer.Event
 import tech.coner.trailer.Participant
 import tech.coner.trailer.Person

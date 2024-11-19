@@ -28,7 +28,7 @@ class PolicyMapper(
     fun toCore(snoozle: PolicyEntity): Policy {
         return Policy(
             id = snoozle.id,
-            club = clubService.get(),
+            club = clubService.get().getOrThrow().getOrNull()!!,
             name = snoozle.name,
             conePenaltySeconds = snoozle.conePenaltySeconds,
             paxTimeStyle = PaxTimeStyle.valueOf(snoozle.paxTimeStyle),

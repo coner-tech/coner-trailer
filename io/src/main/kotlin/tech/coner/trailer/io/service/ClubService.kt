@@ -1,7 +1,9 @@
 package tech.coner.trailer.io.service
 
+import arrow.core.Either
+import arrow.core.raise.either
 import tech.coner.snoozle.db.entity.EntityIoException
-import tech.coner.trailer.Club
+import tech.coner.trailer.domain.entity.Club
 import tech.coner.trailer.datasource.snoozle.ClubResource
 import tech.coner.trailer.datasource.snoozle.entity.ClubEntity
 import tech.coner.trailer.io.constraint.ClubPersistConstraints
@@ -13,14 +15,18 @@ class ClubService(
     private val mapper: ClubMapper
 ) {
 
-    fun get(): Club {
-        return try {
-            mapper.toCore(resource.read(ClubEntity.Key))
-        } catch (notFoundException: EntityIoException.NotFound) {
-            throw NotFoundException(message = "Club not found.", cause = notFoundException)
-        } catch (readFailure: EntityIoException.ReadFailure) {
-            throw ReadException(message = "Failed to read contents of Club from storage.", cause = readFailure)
+    fun get(): Result<Either<GetFailure, Club>> = runCatching {
+        either {
+            try {
+                mapper.toCore(resource.read(ClubEntity.Key))
+            } catch (nFE: NotFoundException) {
+                raise(GetFailure.NotFound)
+            }
         }
+    }
+
+    sealed interface GetFailure {
+        data object NotFound : GetFailure
     }
 
     fun createOrUpdate(

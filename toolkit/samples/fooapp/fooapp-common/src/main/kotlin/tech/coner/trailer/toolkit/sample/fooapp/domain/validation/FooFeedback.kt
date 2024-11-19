@@ -3,7 +3,6 @@ package tech.coner.trailer.toolkit.sample.fooapp.domain.validation
 import tech.coner.trailer.toolkit.sample.fooapp.domain.entity.Foo
 import tech.coner.trailer.toolkit.validation.Feedback
 import tech.coner.trailer.toolkit.validation.Severity
-import kotlin.reflect.KProperty1
 
 sealed class FooFeedback : Feedback<Foo> {
 

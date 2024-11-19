@@ -1,14 +1,17 @@
 package tech.coner.trailer.toolkit.presentation.state
 
-import kotlinx.coroutines.flow.*
+import kotlin.reflect.KProperty1
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import tech.coner.trailer.toolkit.presentation.model.ItemModel
 import tech.coner.trailer.toolkit.presentation.model.Loadable
 import tech.coner.trailer.toolkit.presentation.model.letLoadedSuccess
 import tech.coner.trailer.toolkit.presentation.model.whenLoadedSuccess
 import tech.coner.trailer.toolkit.validation.Feedback
-import kotlin.reflect.KProperty1
 
-interface LoadableState<FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>>: State {
+interface LoadableState<FAILURE, ITEM, ITEM_MODEL : ItemModel<ITEM, FEEDBACK>, FEEDBACK : Feedback<ITEM>> : State {
     val loadable: Loadable<FAILURE, ITEM, ITEM_MODEL, FEEDBACK>
 }
 

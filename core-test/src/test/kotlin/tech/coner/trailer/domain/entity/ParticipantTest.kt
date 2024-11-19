@@ -1,11 +1,9 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
+import tech.coner.trailer.TestParticipants
 
 class ParticipantTest {
 

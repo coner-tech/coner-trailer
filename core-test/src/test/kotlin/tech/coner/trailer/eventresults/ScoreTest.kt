@@ -1,9 +1,9 @@
-package tech.coner.trailer
+package tech.coner.trailer.eventresults
 
 import assertk.assertThat
-import org.junit.jupiter.api.Test
-import tech.coner.trailer.eventresults.Score
 import java.math.BigDecimal
+import org.junit.jupiter.api.Test
+import tech.coner.trailer.hasValue
 
 class ScoreTest {
 

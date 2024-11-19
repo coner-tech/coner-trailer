@@ -3,6 +3,7 @@ package tech.coner.trailer.presentation.di.adapter
 import org.kodein.di.*
 import tech.coner.trailer.*
 import tech.coner.trailer.di.DataSessionScope
+import tech.coner.trailer.domain.entity.Club
 import tech.coner.trailer.io.model.PolicyCollection
 import tech.coner.trailer.presentation.adapter.*
 import tech.coner.trailer.presentation.adapter.eventresults.*
@@ -30,11 +31,6 @@ val presentationAdapterModule = DI.Module("tech.coner.trailer.presentation.adapt
     bindSingleton { new(::ClassParentNameStringFieldAdapter) }
     bindSingleton { new(::ClassParentModelAdapter) }
     bindSingleton<tech.coner.trailer.presentation.library.adapter.Adapter<Class.Parent, ClassParentModel>> { instance<ClassParentModelAdapter>() }
-
-    // Club
-    bind { scoped(DataSessionScope).singleton { new(::ClubModelAdapter) } }
-    bind<tech.coner.trailer.presentation.library.adapter.Adapter<Club, ClubModel>> { scoped(DataSessionScope).singleton { instance<ClubModelAdapter>() } }
-    bindSingleton { new(::ClubNameStringFieldAdapter) }
 
     // Event
     bindSingleton { new(::EventIdStringFieldAdapter) }

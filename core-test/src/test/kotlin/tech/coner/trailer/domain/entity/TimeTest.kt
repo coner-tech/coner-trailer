@@ -1,4 +1,4 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -10,6 +10,8 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
+import tech.coner.trailer.Time
+import tech.coner.trailer.average
 
 class TimeTest {
 

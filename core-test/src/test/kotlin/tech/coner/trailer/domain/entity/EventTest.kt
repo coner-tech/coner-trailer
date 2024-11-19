@@ -1,7 +1,6 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 import assertk.all
-import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
@@ -13,6 +12,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.platform.commons.util.Preconditions
+import tech.coner.trailer.Event
+import tech.coner.trailer.Policy
+import tech.coner.trailer.TestEvents
+import tech.coner.trailer.TestPolicies
 
 class EventTest {
 

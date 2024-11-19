@@ -5,6 +5,7 @@ import tech.coner.trailer.eventresults.EventResultsType
 import java.nio.file.Path
 import java.time.LocalDate
 import java.util.*
+import tech.coner.trailer.domain.entity.Club
 
 class SubcommandArgumentsFactory(
     private val snoozleDir: Path,

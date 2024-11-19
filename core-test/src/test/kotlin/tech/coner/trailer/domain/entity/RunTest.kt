@@ -1,10 +1,25 @@
-package tech.coner.trailer
+package tech.coner.trailer.domain.entity
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isSameInstanceAs
+import assertk.assertions.isTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import tech.coner.trailer.Run
+import tech.coner.trailer.TestParticipants
+import tech.coner.trailer.allPenalties
+import tech.coner.trailer.clean
+import tech.coner.trailer.effectivePenalty
+import tech.coner.trailer.supersededPenalties
 
 class RunTest {
 
@@ -215,6 +230,7 @@ class RunTest {
         }
     }
 }
+
 
 private fun cleanRun() = penaltyRun(
     cones = 0,

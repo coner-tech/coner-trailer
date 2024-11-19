@@ -1,6 +1,6 @@
 package tech.coner.trailer.io.constraint
 
-import tech.coner.trailer.Club
+import tech.coner.trailer.domain.entity.Club
 import tech.coner.trailer.toolkit.konstraints.CompositeConstraint
 
 class ClubPersistConstraints : CompositeConstraint<Club>() {
